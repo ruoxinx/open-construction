@@ -224,11 +224,52 @@
      "icon": "assets/models/slug.png"
    }
 --------------------------- */
-<script>
-let MODELS=[];
-fetch('assets/data/models.json').then(r=>r.json()).then(d=>{ MODELS=d; buildFacets(); attachFacetHandlers(); applyFilters(); });
-</script>
-
+const MODELS = [
+  {
+    id:"oc-safety-clip",
+    title:"OC-Safety-CLIP: Contrastive Pretraining for PPE and Hazard Awareness in Construction",
+    year:2023,
+    modalities:["image"],
+    tasks:["PPE detection","hazard recognition"],
+    license:"Apache-2.0",
+    paper_url:"#",
+    code_url:"#",
+    icon:"assets/img/model-icons/clip.png"
+  },
+  {
+    id:"oc-bim-llm",
+    title:"BIM-LLM: Instruction-tuned LLM for Quantity Takeoff and RFI Drafting",
+    year:2024,
+    modalities:["text"],
+    tasks:["quantity takeoff","document QA","RFI drafting"],
+    license:"CC BY-NC 4.0",
+    paper_url:"#",
+    code_url:"#",
+    icon:"assets/img/model-icons/llm.png"
+  },
+  {
+    id:"transformer-xl",
+    title:"Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context",
+    year:2019,
+    modalities:["text"],
+    tasks:["language modelling"],
+    license:"MIT",
+    paper_url:"https://arxiv.org/abs/1901.02860",
+    code_url:"https://github.com/kimiyoung/transformer-xl",
+    icon:"assets/img/model-icons/txl.png"
+  },
+  {
+    id:"multimodal-progress",
+    title:"MultiModal-Progress: Vision+Text Model for Progress Estimation from Photos and Logs",
+    year:2022,
+    modalities:["image","text"],
+    tasks:["progress tracking"],
+    license:"Apache-2.0",
+    paper_url:"#",
+    code_url:"#",
+    icon:"assets/img/model-icons/multimodal.png"
+  }
+];
 
 /* ---------------------------
    2) Helpers: DOM + rendering
