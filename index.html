@@ -129,7 +129,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="./">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="./">Home</a>
       <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
       <span class="brand-wordmark"><span class="oc-open">Open</span>·<span class="oc-sep"></span><span class="oc-construction">Construction</span></span>
     </a>
@@ -146,8 +146,8 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <!-- Clean bold links -->
-		<li class="nav-item"><a class="nav-link plain" href="/overview/">About</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="/contributors/">Contributors</a></li>
+		<a class="nav-link plain" href="./overview/">About</a>
+		<a class="nav-link plain" href="./contributors/">Contributors</a>
 
         <!-- CTA -->
         <li class="nav-item">
@@ -329,29 +329,22 @@
 
 <!-- Auto-active current nav link (adds aria-current + .active) -->
 <script>
-  (function () {
-    // Normalized current path always ends with a slash
-    var current = location.pathname;
-    if (!current.endsWith('/')) current += '/';
+(function(){
+  var current = location.pathname;
+  if (!current.endsWith('/')) current += '/';
 
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (!href) return;
+  document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
+    var href = a.getAttribute('href') || '';
+    if (!href.endsWith('/')) href += '/';
 
-      // Normalize target to end with a slash too
-      var target = href.split('#')[0].split('?')[0];
-      if (!target.endsWith('/')) target += '/';
-
-      var isHome = (target === '/' && current === '/');
-      var isSection = (target !== '/' && current.startsWith(target));
-
-      if (isHome || isSection) {
-        a.classList.add('active');
-        a.setAttribute('aria-current', 'page');
-      }
-    });
-  })();
+    if (current === href || (href !== './' && current.startsWith(href))) {
+      a.classList.add('active');
+      a.setAttribute('aria-current','page');
+    }
+  });
+})();
 </script>
+
 
 
 <!-- Optional: visit logger via Supabase -->

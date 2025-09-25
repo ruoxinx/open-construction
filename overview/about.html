@@ -166,7 +166,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
   <div class="container oc-container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="./">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="./">Home</a>
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
       <span class="brand-wordmark">
         <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
@@ -180,8 +180,8 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <!-- Clean bold links -->
-		<li class="nav-item"><a class="nav-link plain" href="/overview/">About</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="/contributors/">Contributors</a></li>
+		<a class="nav-link plain" href="./overview/">About</a>
+		<a class="nav-link plain" href="./contributors/">Contributors</a>
 
         <!-- CTA remains as button -->
         <li class="nav-item">
@@ -355,41 +355,43 @@
 
 <!-- Scripts -->
 <script>
-  document.getElementById('yearNow').textContent = new Date().getFullYear();
+(function(){
+  var current = location.pathname;
+  if (!current.endsWith('/')) current += '/';
 
-  const copyBtn = document.getElementById('copyBib');
-  if (copyBtn){
-    copyBtn.addEventListener('click', async ()=>{
-      const txt = document.getElementById('bibtex').innerText;
-      try{
-        await navigator.clipboard.writeText(txt);
-        copyBtn.textContent = 'Copied';
-        setTimeout(()=> copyBtn.textContent = 'Copy', 1600);
-      }catch(e){
-        copyBtn.textContent = 'Press Ctrl/Cmd+C';
-        setTimeout(()=> copyBtn.textContent = 'Copy', 2000);
-      }
-    });
-  }
+  document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
+    var href = a.getAttribute('href') || '';
+    if (!href.endsWith('/')) href += '/';
+
+    if (current === href || (href !== './' && current.startsWith(href))) {
+      a.classList.add('active');
+      a.setAttribute('aria-current','page');
+    }
+  });
+})();
 </script>
+
 
 <!-- Auto-active current nav link (adds aria-current + .active) -->
 <script>
   (function(){
-    var current = location.pathname.split('/').pop() || 'index.html';
+    // current file name, default to index.html on /
+    var path = location.pathname.split('/').pop();
+    if (!path) path = 'index.html';
+
     document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href');
-      if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'index.html' && (current === '' || current === '/'));
-      if(isMatch){
+      var href = (a.getAttribute('href') || '').split('#')[0].split('?')[0];
+      // normalize both sides
+      var cur = path.toLowerCase();
+      var tgt = href.toLowerCase();
+      if (cur === tgt || (cur === 'index.html' && tgt === './')) {
         a.classList.add('active');
         a.setAttribute('aria-current','page');
       }
     });
   })();
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
