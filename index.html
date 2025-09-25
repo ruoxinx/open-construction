@@ -131,7 +131,7 @@
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
-      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep"></span><span class="oc-construction">Construction</span></span>
+      <span class="brand-wordmark"><span class="oc-open">Open</span>·<span class="oc-sep"></span><span class="oc-construction">Construction</span></span>
     </a>
 
     <!-- Docked search (shown when scrolling) -->
@@ -146,8 +146,8 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <!-- Clean bold links -->
-        <li class="nav-item"><a class="nav-link plain" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Contributors</a></li>
+		<li class="nav-item"><a class="nav-link plain" href="/overview/">About</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="/contributors/">Contributors</a></li>
 
         <!-- CTA -->
         <li class="nav-item">
@@ -329,20 +329,30 @@
 
 <!-- Auto-active current nav link (adds aria-current + .active) -->
 <script>
-  (function(){
-    var current = location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href'); if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'index.html' && (current === '' || current === '/'));
-      if(isMatch){
+  (function () {
+    // Normalized current path always ends with a slash
+    var current = location.pathname;
+    if (!current.endsWith('/')) current += '/';
+
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (!href) return;
+
+      // Normalize target to end with a slash too
+      var target = href.split('#')[0].split('?')[0];
+      if (!target.endsWith('/')) target += '/';
+
+      var isHome = (target === '/' && current === '/');
+      var isSection = (target !== '/' && current.startsWith(target));
+
+      if (isHome || isSection) {
         a.classList.add('active');
-        a.setAttribute('aria-current','page');
+        a.setAttribute('aria-current', 'page');
       }
     });
   })();
 </script>
+
 
 <!-- Optional: visit logger via Supabase -->
 <script>
