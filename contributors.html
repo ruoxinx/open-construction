@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contributors</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Leaflet core -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+
+  <style>
+    /* ---------- Design tokens (light only) ---------- */
+    :root{
+      --oc-bg: #ffffff;
+      --oc-text: #1e2a36;
+      --oc-subtle: #6b7b8c;
+      --oc-border: #e9eef4;
+      --oc-ink: #0f2e4b;
+      --oc-link: #0b66c3;
+      --oc-card: #ffffff;
+      --oc-shadow: 0 8px 24px rgba(15,46,75,.06);
+      --oc-radius: 14px;
+    }
+    html, body{ background: var(--oc-bg); color: var(--oc-text); }
+    a{ color: var(--oc-link); }
+    .oc-container{ max-width: 1080px; }
+
+    /* ---------- Navbar ---------- */
+    .oc-nav{
+      backdrop-filter: saturate(120%) blur(6px);
+      border-bottom:1px solid var(--oc-border)!important;
+    }
+    .brand-wordmark{
+      display:inline-flex; gap:.25rem; align-items:baseline;
+      color:var(--oc-ink); font-weight:800; letter-spacing:.1px;
+      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+    }
+    .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
+    .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
+    .oc-logo{ height:44px; width:44px; }
+
+    /* Clean, professional nav links (bold, no background/outline) */
+    .navbar .nav-link.plain{
+      font-weight:700;
+      color: var(--oc-text);
+      padding:.5rem .6rem;
+    }
+    .navbar .nav-link.plain:hover{
+      color: var(--oc-ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .navbar .nav-link.plain.active{
+      color: var(--oc-ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Icon-only nav link */
+    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
+    .nav-link.icon-only:hover svg{ opacity:1; }
+
+    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
+    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-ink); }
+    .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
+
+    /* ---------- Hero ---------- */
+    .hero{
+      background: #fff;
+      color: var(--oc-ink);
+      border-bottom: 1px solid var(--oc-border);
+    }
+    .hero .content{
+      padding: 56px 0 44px;
+      text-align: center;
+    }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.2rem);
+      margin: .25rem 0 .35rem;
+    }
+    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
+    .pill{
+      display:inline-flex; gap:.5rem; align-items:center;
+      border-radius: 999px; padding:.4rem .8rem;
+      background: transparent; border: 1px solid #dfe6ee; color: var(--oc-ink);
+      font-size:.88rem;
+    }
+
+    /* ---------- People cards ---------- */
+    .person-card{
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
+      border-radius: var(--oc-radius);
+      box-shadow: var(--oc-shadow);
+      transition: transform .12s ease;
+    }
+    .person-card:hover{ transform: translateY(-1px); }
+    .person-card .card-body{ padding: 1rem 1.1rem; }
+    .person-card img.headshot{
+      width:86px; height:86px; object-fit:cover; border-radius:50%;
+      border: 2px solid rgba(0,0,0,.03);
+      box-shadow: 0 4px 12px rgba(0,0,0,.06);
+      flex: 0 0 auto;
+    }
+    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
+    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
+    .person-card .affil{ font-size:.92rem; }
+
+    /* ---------- Logo wall ---------- */
+    .logo-wall{
+      display:grid; gap:22px; align-items:center; justify-items:center;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      padding: 8px 6px;
+      border:1px solid var(--oc-border);
+      border-radius: var(--oc-radius);
+      background: #fff;
+    }
+    .logo-wall img{
+      max-height:60px; width:auto; display:block; object-fit:contain;
+      filter: grayscale(8%); transition: transform .16s ease;
+    }
+    .logo-wall img:hover{ transform: scale(1.03); }
+
+    /* ---------- Map ---------- */
+    #visitorMap{
+      height: 360px; border-radius: 12px;
+      border:1px solid var(--oc-border);
+      box-shadow: var(--oc-shadow);
+    }
+
+    /* ---------- Sections ---------- */
+    .oc-section{ margin-top: 34px; }
+    .oc-kicker{
+      font-size:.8rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--oc-subtle);
+    }
+
+    @media (max-width: 991.98px){
+      .navbar-brand .brand-wordmark{ font-size: 1.15rem; }
+      .hero .content{ padding: 40px 0 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <!-- Clean bold links -->
+        <li class="nav-item"><a class="nav-link plain" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Contributors</a></li>
+
+        <!-- CTA -->
+        <li class="nav-item">
+          <a class="btn btn-success btn-sm oc-cta"
+             href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml"
+             target="_blank" rel="noopener"> + New Dataset</a>
+        </li>
+
+        <!-- GitHub icon-only link -->
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only"
+             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
+             target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub"
+             title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
+                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
+                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
+                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container oc-container content">
+    <span class="pill">Community &amp; Collaboration</span>
+    <h1>Catalog Contributors</h1>
+    <p class="lead">The researchers building OpenConstruction together.</p>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <!-- People -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Team</div>
+    <div class="row g-4">
+      <!-- 1 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Ruoxin Xiong, Ph.D., M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University, Kent, OH, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 2 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Yanyu Wang, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University, Baton Rouge, LA, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 3 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Jiannan Cai, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">School of Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio, TX, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 4 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Kaijian Liu, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">Dept. of Civil, Environmental, and Ocean Engineering, Stevens Institute of Technology, Hoboken, NJ, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 5 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Yuansheng Zhu</h5>
+              <div class="role">Researcher</div>
+              <div class="affil">Dept. of Computing &amp; Information Sciences, Rochester Institute of Technology, Rochester, NY, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 6 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Pingbo Tang, Ph.D., M.ASCE</h5>
+              <div class="role">Associate Professor</div>
+              <div class="affil">Dept. of Civil &amp; Environmental Engineering, Carnegie Mellon University, Pittsburgh, PA, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 7 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title">Nora El-Gohary, Ph.D., A.M.ASCE</h5>
+              <div class="role">Professor</div>
+              <div class="affil">Dept. of Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign, Urbana, IL, USA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Contributors -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Community Contributors</div>
+    <div class="row g-4">
+      <!-- tsrobcvai -->
+      <div class="col-md-6 col-xl-4">
+        <a class="text-decoration-none" href="https://github.com/tsrobcvai" target="_blank" rel="noopener">
+          <div class="card person-card h-100">
+            <div class="card-body d-flex gap-3">
+              <img class="headshot" src="https://github.com/tsrobcvai.png?size=160" alt="GitHub avatar of @tsrobcvai" loading="lazy" decoding="async">
+              <div>
+                <h5 class="card-title mb-1">@tsrobcvai</h5>
+                <div class="role"></div>
+                <div class="affil">McGill University</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- (Add future community contributors as additional cards here) -->
+    </div>
+  </section>
+
+  <!-- Logos -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Affiliations</div>
+    <div class="logo-wall">
+      <img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/lsu.png"        alt="Louisiana State University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/utsa.png"       alt="University of Texas at San Antonio" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/stevens.png"    alt="Stevens Institute of Technology" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/rit.png"        alt="Rochester Institute of Technology" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/cmu.png"        alt="Carnegie Mellon University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/uiuc.png"       alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
+	  <img src="assets/img/institutions/McGill.png"       alt="McGill University" loading="lazy" decoding="async">
+    </div>
+  </section>
+
+  <!-- Collaboration -->
+  <section class="oc-section mb-4">
+    <div class="oc-kicker mb-2">Collaboration</div>
+    <h3 class="h4">Work with us</h3>
+    <p class="mb-1">Have a suggestion or want to collaborate?</p>
+    <ul class="mb-0">
+      <li>Email Dr. Ruoxin Xiong: <a href="mailto:ruoxinx@outlook.com">ruoxinx@outlook.com</a></li>
+      <li>Or open an issue:
+        <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
+          share an idea or feedback
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Visitors (heatmap only) -->
+  <section class="oc-section mb-5">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+      <div>
+        <div class="oc-kicker">Visitors</div>
+        <h3 class="h4 mb-0">Historical visits</h3>
+      </div>
+    </div>
+    <div id="visitorMap" aria-label="Visitor map"></div>
+    <p class="text-muted small mt-2 mb-0">
+      Shows historical visits. No raw IPs are stored.
+    </p>
+  </section>
+</main>
+
+<footer class="py-4 mt-3 border-top">
+  <div class="container oc-container small text-muted text-center">
+    © <span id="yearNow"></span> OpenConstruction
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Auto-active current nav link (adds aria-current + .active) -->
+<script>
+  (function(){
+    var current = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
+      var href = a.getAttribute('href'); if(!href) return;
+      var normalized = href.split('#')[0].split('?')[0];
+      var isMatch = normalized === current ||
+                    (normalized === 'index.html' && (current === '' || current === '/'));
+      if(isMatch){
+        a.classList.add('active');
+        a.setAttribute('aria-current','page');
+      }
+    });
+  })();
+</script>
+
+<!-- Leaflet core -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
+<!-- Heatmap plugin -->
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+<!-- Supabase client + your public keys -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+
+<!-- Render homepage history as heatmap -->
+<script>
+(async function(){
+  // Visualize visits recorded on the homepage
+  const PAGE_TO_SHOW = 'index';
+
+  // Map
+  const map = L.map('visitorMap', { zoomControl:true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  map.setView([39.5, -98.35], 3);
+  setTimeout(()=>map.invalidateSize(), 0);
+
+  // Supabase
+  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
+  const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
+  if (!sb) { console.warn('Supabase not configured; skipping'); return; }
+
+  try{
+    // Paginate all rows and build heat points
+    const pageSize = 1000;
+    let from = 0, to = pageSize - 1;
+    const bounds = L.latLngBounds();
+    const heatPoints = []; // [lat, lon, intensity]
+
+    while (true){
+      const { data: rows, error } = await sb
+        .from('visits')
+        .select('lat,lon')
+        .eq('page', PAGE_TO_SHOW)
+        .order('created_at', { ascending:false })
+        .range(from, to);
+      if (error){ console.error(error); break; }
+      if (!rows || rows.length === 0) break;
+
+      rows.forEach(r=>{
+        if (typeof r.lat === 'number' && typeof r.lon === 'number'){
+          heatPoints.push([r.lat, r.lon, 1]);
+          bounds.extend([r.lat, r.lon]);
+        }
+      });
+
+      if (rows.length < pageSize) break;
+      from += pageSize; to += pageSize;
+    }
+
+    // Add heat layer (weights=1 per visit)
+    L.heatLayer(heatPoints, { radius: 20, blur: 15, maxZoom: 11 }).addTo(map);
+
+    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+    else map.setView([20,0], 2); // fallback if no points
+  }catch(e){
+    console.error('heatmap render failed:', e);
+  }
+})();
+</script>
+</body>
+</html>

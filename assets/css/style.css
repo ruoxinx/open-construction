@@ -1,0 +1,101 @@
+/* =========================
+   Brand tokens (single :root)
+   ========================= */
+:root{
+  --brand-800:#0c2f4f;
+  --brand-700:#12345a;
+  --brand:#0f2e4b;
+  --accent:#f2a238;
+  --muted:#e9ecef;
+  --surface:#ffffff;
+}
+
+/* =========================
+   Hero background + headline
+   ========================= */
+.bg-hero{
+  /* gold swoosh → brand blue, like your mock */
+  background: radial-gradient(
+      ellipse at right top,
+      #f9c353 0%,
+      var(--accent) 42%,
+      var(--brand-700) 42%,
+      var(--brand-800) 100%
+  );
+  color: #fff;
+}
+
+/* Bigger, crisp logo in hero */
+.hero-logo{
+  height:88px;
+  width:auto;
+  object-fit:contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.18));
+}
+
+/* =========================
+   Search (hero + docked)
+   ========================= */
+.search-dock{ max-width:760px; margin:0 auto; }
+
+.search-input{
+  padding:.9rem 1.15rem;
+  border-radius:999px;
+  background: var(--surface);
+  border:2px solid rgba(255,255,255,.75);        /* soft white ring */
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.18),                 /* outer drop shadow */
+    0 0 0 6px rgba(255,255,255,.45) inset;       /* inner white glow */
+  transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+.search-input::placeholder{ color: rgba(0,0,0,.45); }
+.search-input:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.22),
+    0 0 0 3px rgba(242,162,56,.35);              /* accent glow */
+}
+
+/* When the page docks the search on scroll */
+.docked .search-dock{
+  position: fixed; top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 72vw);
+  z-index: 1030;
+}
+.docked .search-input{
+  border-radius: 12px;               /* squarer in navbar */
+  border-width: 2px;
+}
+
+/* On wide screens, align left-ish like DatasetNinja */
+@media (min-width: 992px){
+  .docked .search-dock{
+    left: 16px; transform:none;
+    width: min(560px, 52vw);
+  }
+}
+
+/* =========================
+   Cards / lists / footer
+   ========================= */
+.card-img-top{
+  object-fit: cover;
+  height: 160px;
+  background-color:#f3f5f8;
+}
+.dataset-card .badge{ font-weight: 600; }
+footer .container{ text-align:center; }
+
+/* Facet lists */
+.facet-list{
+  max-height: 280px; overflow:auto;
+  border: 1px solid var(--muted);
+  border-radius: .375rem; padding:.5rem;
+}
+.facet-list .form-check{ margin-bottom: .25rem; }
+
+/* Sidebar + navbar tweaks */
+.card .form-range{ margin-top:.25rem; }
+.navbar .navbar-brand img{ height:52px; width:auto; object-fit:contain; }

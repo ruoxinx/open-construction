@@ -1,0 +1,1974 @@
+{
+  "MINC-2500": {
+    "name": "MINC: Materials in Context Database-2500",
+	"authors": "Sean Bell, Paul Upchurch, Noah Snavely, Kavita Bala",
+	"doi": "https://doi.org/10.1109/CVPR.2015.7298970",
+    "year": 2015,
+    "data_modality": "Ground RGB",
+    "num_images": 57500,
+    "num_classes": 23,
+    "classes": [
+      "brick",
+      "carpet",
+      "ceramic",
+      "fabric",
+      "foliage",
+      "food",
+      "glass",
+      "hair",
+      "leather",
+      "metal",
+      "mirror",
+      "other",
+      "painted",
+      "paper",
+      "plastic",
+      "polishedstone",
+      "skin",
+      "sky",
+      "stone",
+      "tile",
+      "wallpaper",
+      "water",
+      "wood"
+    ],
+    "resolution": "362×362",
+    "annotation_types": [
+      "Patch material classification",
+      "Full scene material classification"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image Classification"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Material Recognition in the Wild with the Materials in Context Database",
+    "access": "http://opensurfaces.cs.cornell.edu/publications/minc/#download",
+    "id": "MINC-2500",
+    "image_url": "assets/img/datasets/MINC-2500.png"
+  },
+  "SCUT-HEAD": {
+    "name": "SCUT-HEAD Dataset",
+	"authors": "Dezhi Peng, Zikai Sun, Zirong Chen, Zirui Cai, Lele Xie, Lianwen Jin",
+	"doi": "https://doi.org/10.1109/ICPR.2018.8545068",
+    "year": 2018,
+    "data_modality": "Ground RGB",
+    "num_images": 4405,
+    "num_classes": 1,
+    "classes": [
+      "person head"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Detecting Heads using Feature Refine Net and Cascaded Multi-scale Architecture",
+    "access": "https://github.com/HCIILAB/SCUT-HEAD-Dataset-Release",
+    "id": "SCUT-HEAD",
+    "image_url": "assets/img/datasets/SCUT-HEAD.png"
+  },
+  "GDUT-HWD": {
+    "name": "GDUT-HWD",
+	"authors": "Jixiu Wu, Nian Cai, Wenjie Chen, Huiheng Wang, Guotian Wang",
+	"doi": "https://doi.org/10.1016/j.autcon.2019.102894",
+    "year": 2019,
+    "data_modality": "Ground RGB",
+    "num_images": 3174,
+    "num_classes": 5,
+    "classes": [
+      "Colored hardhat (Blue)",
+      "Colored hardhat (White)",
+      "Colored hardhat (Yellow)",
+      "Colored hardhat (Red)",
+      "None"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Apache-2.0",
+    "paper": "Automatic detection of hardhats worn by construction personnel: A deep learning approach and benchmark dataset",
+    "access": "https://github.com/wujixiu/helmet-detection",
+    "id": "GDUT-HWD",
+    "image_url": "assets/img/datasets/GDUT-HWD.png"
+  },
+  "Concrete-Crack": {
+    "name": "Concrete Crack Detection and Segmentation Dataset",
+	"authors": "Kangcheng Liu, Xiaodong Han, Ben M. Chen",
+	"doi": "https://doi.org/10.1109/ROBIO49542.2019.8961534",
+    "year": 2019,
+    "data_modality": "Ground RGB",
+    "num_images": 11298,
+    "num_classes": 1,
+    "classes": [
+      "concrete crack"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Deep Learning Based Automatic Crack Detection and Segmentation for Unmanned Aerial Vehicle Inspections",
+    "access": "https://drive.google.com/drive/folders/1RMf0GYXn7Mq1s9STGFG5iByavTr05SjF",
+    "id": "Concrete-Crack",
+    "image_url": "assets/img/datasets/Concrete-Crack.png"
+  },
+  "Earthmoving-Equipment": {
+    "name": "Earthmoving Equipment Tracking",
+	"authors": "Dominic Roberts, Mani Golparvar-Fard",
+	"doi": "https://doi.org/10.1016/j.autcon.2019.04.006",
+    "year": 2019,
+    "data_modality": "Video clips",
+    "num_images": null,
+    "num_classes": 7,
+    "classes": [
+      "Excavators-Idle",
+      "Excavators-Swing bucket",
+      "Excavators-Load bucket",
+      "Excavators-Dump",
+      "Excavators-Move",
+      "Dump trucks-Fill",
+      "Dump trucks-Move"
+    ],
+    "resolution": "480×272",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection",
+      "Object tracking",
+	  "Action recognition"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "End-to-end vision-based detection, tracking and activity analysis of earthmoving equipment filmed at ground level",
+    "access": "https://data.mendeley.com/datasets/fyw6ps2d2j/1",
+    "id": "Earthmoving-Equipment",
+    "image_url": "assets/img/datasets/Earthmoving-Equipment.png"
+  },
+  "SHWD": {
+    "name": "SHWD: SafetyHelmetWearing-Dataset",
+	"authors": "https://github.com/njvisionpower",
+	"doi": null,
+    "year": 2019,
+    "data_modality": "Ground RGB",
+    "num_images": 7581,
+    "num_classes": 2,
+    "classes": [
+      "person",
+      "hardhat"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "MIT",
+    "paper": null,
+    "access": "https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset",
+    "id": "SHWD",
+    "image_url": "assets/img/datasets/SHWD.png"
+  },
+  "ACID": {
+    "name": "ACID: Alberta Construction Image Data Set",
+	"authors": "Bo Xiao, Shih-Chung Kang ",
+	"doi": "https://doi.org/10.1061/(ASCE)CP.1943-5487.0000945",
+    "year": 2020,
+    "data_modality": "Aerial RGB, Ground RGB",
+    "num_images": 10000,
+    "num_classes": 10,
+    "classes": [
+      "Excavator",
+      "Compactor",
+      "Dozer",
+      "Grader",
+      "Dump truck",
+      "Concrete mixer truck",
+      "Wheel loader",
+      "Backhoe loader",
+      "Tower crane",
+      "Mobile crane"
+    ],
+    "resolution": "608×608",
+    "annotation_types": [
+      "Bounding boxes",
+      "Image captions",
+      "Semantic segmentation"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation",
+      "Image captioning"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Development of an image data set of construction machines for deep learning object detection",
+    "access": "https://www.acidb.ca/",
+    "id": "ACID",
+    "image_url": "assets/img/datasets/ACID.png"
+  },
+  "Construction-Equipment-Pose": {
+    "name": "Construction equipment pose dataset",
+	"authors": "Han Luo, Mingzhu Wang, Peter Kok-Yiu Wong, Jack C.P. Cheng",
+	"doi": "https://doi.org/10.1016/j.autcon.2019.103016",
+    "year": 2020,
+    "data_modality": "Ground RGB",
+    "num_images": 1281,
+    "num_classes": 6,
+    "classes": [
+      "Body_end",
+      "Cab_boom",
+      "Boom_arm",
+      "Arm_bucket",
+      "Left_bucket_end",
+      "Right_bucket_end"
+    ],
+    "resolution": "512×512",
+    "annotation_types": [
+      "Keypoints"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Pose estimation"
+    ],
+    "license": "Not Specified",
+    "paper": "Full body pose estimation of construction equipment using computer vision and deep learning techniques",
+    "access": "https://hkustconnect-my.sharepoint.com/:f:/g/personal/hluoaf_connect_ust_hk/EmiZELaKKoZMqgHO3k_2a68BFWu_gq9Z9MZWX5u0cQE1nw",
+    "id": "Construction-Equipment-Pose",
+    "image_url": "assets/img/datasets/Construction-Equipment-Pose.png"
+  },
+  "Hardhat-Wearing": {
+    "name": "Hardhat-Wearing Dataset",
+	"authors": " Lu Wang, Liangbin Xie, Peiyu Yang, Qingxu Deng, Shuo Du, Lisheng Xu",
+	"doi": "https://doi.org/10.3390/s20071868",
+    "year": 2020,
+    "data_modality": "Ground RGB",
+    "num_images": 7064,
+    "num_classes": 2,
+    "classes": [
+      "hardhat",
+      "no_hardhat"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC0",
+    "paper": "Hardhat-Wearing Detection Based on a Lightweight Convolutional Neural Network with Multi-Scale Features and a Top-Down Module",
+    "access": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/7CBGOS",
+    "id": "Hardhat-Wearing",
+    "image_url": "assets/img/datasets/Hardhat-Wearing.png"
+  },
+  "UAV-Construction": {
+    "name": "UAV-acquired construction site image caption dataset",
+	"authors": "Seongdeok Bang, Hyoungkwan Kim",
+	"doi": "https://doi.org/10.1016/j.autcon.2020.103116",
+    "year": 2020,
+    "data_modality": "Aerial RGB",
+    "num_images": 1431,
+    "num_classes": null,
+    "classes": [
+      "position",
+      "status",
+      "movement",
+      "color",
+      "quantity"
+    ],
+    "resolution": "960×540",
+    "annotation_types": [
+      "Image captions"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image captioning"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Context-based information generation from construction site images using unmanned aerial vehicle (UAV)-acquired data and image captioning",
+    "access": "https://data.mendeley.com/datasets/4h68fmktwh/1",
+    "id": "UAV-Construction",
+    "image_url": "assets/img/datasets/UAV-Construction.png"
+  },
+  "Construction-Activity-Scenes": {
+    "name": "Construction-activity-scenes-image-captioning dataset",
+	"authors": "Huan Liu, Guangbin Wang, Ting Huang, Ping He, Martin Skitmore, Xiaochun Luo",
+	"doi": "https://doi.org/10.1016/j.autcon.2020.103334",
+    "year": 2020,
+    "data_modality": "Ground RGB",
+    "num_images": 7382,
+    "num_classes": 5,
+    "classes": [
+      "Cart transportation",
+      "Masonry work",
+      "Rebar work",
+      "Plastering",
+      "Tiling"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Image captions"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image captioning"
+    ],
+    "license": "Not Specified",
+    "paper": "Manifesting construction activity scenes via image captioning",
+    "access": "https://github.com/HannahHuanLIU/AEC-image-captioning",
+    "id": "Construction-Activity-Scenes",
+    "image_url": "assets/img/datasets/Construction-Activity-Scenes.png"
+  },
+  "MOCS": {
+    "name": "MOCS: Moving Objects in Construction Sites",
+	"authors": "An Xuehui, Zhou Li, Liu Zuguang, Wang Chengzhi, Li Pengfei, Li Zhiwei",
+	"doi": "https://doi.org/10.1016/j.autcon.2020.103482",
+    "year": 2021,
+    "data_modality": "Aerial RGB, Ground RGB",
+    "num_images": 41668,
+    "num_classes": 13,
+    "classes": [
+      "Worker",
+      "Tower crane",
+      "Hanging hook",
+      "Vehicle crane",
+      "Roller",
+      "Bulldozer",
+      "Excavator",
+      "Truck",
+      "Loader",
+      "Pump truck",
+      "Concrete transport Mixer",
+      "Pile driver",
+      "Other vehicle"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes",
+      "Pixel-level masks"
+    ],
+    "geographical_location": "China, Pakistan",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Dataset and benchmark for detecting moving objects in construction sites",
+    "access": "http://www.anlab340.com/Archives/IndexArctype/index/t_id/17.html",
+    "id": "MOCS",
+    "image_url": "assets/img/datasets/MOCS.png"
+  },
+  "Peru-Construction": {
+    "name": "Dataset on object identification training in a construction site",
+	"authors": "Alexandre Del Savio, Ana Luna, Daniel Cárdenas-Salas, Mónica Vergara, Gianella Urday",
+	"doi": "https://doi.org/10.1016/j.dib.2022.108042",
+    "year": 2021,
+    "data_modality": "Ground RGB",
+    "num_images": 1046,
+    "num_classes": 8,
+    "classes": [
+      "Dump_truck",
+      "Excavator",
+      "Concrete_mixer_truck",
+      "Skid_steer",
+      "Tower_crane",
+      "Truck_crane",
+      "Truck",
+      "Person"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Peru",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Dataset of manually classified images obtained from a construction site",
+    "access": "https://repositorio.ulima.edu.pe/handle/20.500.12724/13359",
+    "id": "Peru-Construction",
+    "image_url": "assets/img/datasets/Peru-Construction.png"
+  },
+  "PC-Urban": {
+    "name": "PC-Urban: Urban Point Cloud",
+	"authors": "Muhammad Ibrahim, Naveed Akhtar, Michael Wise, Ajmal Mian",
+	"doi": "http://dx.doi.org/10.1109/ACCESS.2021.3062547",
+    "year": 2021,
+    "data_modality": "Point Cloud",
+    "num_images": null,
+    "num_classes": 25,
+    "classes": [
+      "car",
+      "building",
+      "bridge",
+      "tree",
+      "road",
+      "letterbox",
+      "traffic signal",
+      "light-pole",
+      "rubbish bin",
+      "cycles",
+      "motorcycle",
+      "truck",
+      "bus",
+      "bushes",
+      "road sign board",
+      "advertising board",
+      "road divider",
+      "road lane",
+      "pedestrians",
+      "side-path",
+      "wall",
+      "bus stop",
+      "water",
+      "zebra-crossing",
+      "background"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Labelled 3D point clouds"
+    ],
+    "geographical_location": "Australia",
+    "potential_tasks": [
+      "Point Cloud Segmentation"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Annotation Tool and Urban Dataset for 3D Point Cloud Semantic Segmentation",
+    "access": "https://ieee-dataport.org/documents/pc-urban-outdoor-dataset-3d-point-cloud-semantic-segmentation",
+    "id": "PC-Urban",
+    "image_url": "assets/img/datasets/PC-Urban.png"
+  },
+  "Kenki-Posi": {
+    "name": "kenki-posi dataset",
+	"authors": "Runqiu Bao,Ren Komatsu,Renato Miyagusuku,Masaki Chino, Atsushi Yamashita, Hajime Asama",
+	"doi": "https://doi.org/10.1080/01691864.2020.1869586",
+    "year": 2021,
+    "data_modality": "Ground RGB",
+    "num_images": null,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "960×540",
+    "annotation_types": [
+      "Camera pose"
+    ],
+    "geographical_location": "Japan",
+    "potential_tasks": [
+      "Simultaneous Localization and Mapping"
+    ],
+    "license": "GPL-3.0",
+    "paper": "Stereo camera visual SLAM with hierarchical masking and motion-state classification at outdoor construction sites containing large dynamic objects",
+    "access": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
+    "id": "Kenki-Posi",
+    "image_url": "assets/img/datasets/Kenki-Posi.png"
+  },
+  "CHV": {
+    "name": "CHV: Color Helmet and Vest Dataset",
+	"authors": "Zijian Wang, Yimin Wu, Lichao Yang, Arjun Thirunavukarasu, Colin Evison, Yifan Zhao",
+	"doi": "https://doi.org/10.3390/s21103478",
+    "year": 2021,
+    "data_modality": "Ground RGB",
+    "num_images": 1330,
+    "num_classes": 6,
+    "classes": [
+      "person",
+      "vest",
+      "colored helmet (yellow)",
+      "colored helmet (white)",
+      "colored helmet (red)",
+      "colored helmet (blue)"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Fast Personal Protective Equipment Detection for Real Construction Sites Using Deep Learning Approaches",
+    "access": "https://github.com/ZijianWang-ZW/PPE_detection",
+    "id": "CHV",
+    "image_url": "assets/img/datasets/CHV.png"
+  },
+  "CDE": {
+    "name": "CDE: Construction dust emissions dataset",
+	"authors": "Ruoxin Xiong, Pingbo Tang",
+	"doi": "https://doi.org/10.1108/SASBE-04-2021-0066",
+    "year": 2021,
+    "data_modality": "Ground RGB (real and synthetic)",
+    "num_images": 4875,
+    "num_classes": 1,
+    "classes": [
+      "Dust"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Machine learning using synthetic images for detecting dust emissions on construction sites",
+    "access": "https://github.com/ruoxinx/site-dust-detect",
+    "id": "CDE",
+    "image_url": "assets/img/datasets/CDE.png"
+  },
+  "CPPE": {
+    "name": "CPPE: Construction Personal Protective Equipment Dataset",
+	"authors": "Ruoxin Xiong, Pingbo Tang",
+	"doi": "https://doi.org/10.1016/j.autcon.2021.103828",
+    "year": 2021,
+    "data_modality": "Ground RGB",
+    "num_images": 932,
+    "num_classes": 3,
+    "classes": [
+      "hardhat",
+      "vest",
+      "worker"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Pose guided anchoring for detecting proper use of personal protective equipment",
+    "access": "https://github.com/ruoxinx/PPE-Detection-Pose",
+    "id": "CPPE",
+    "image_url": "assets/img/datasets/CPPE.png"
+  },
+  "Safety-Harness": {
+    "name": "Safety harness dataset",
+	"authors": "Zhijing Xu, Jiajing Huang, Kan Huang",
+	"doi": "https://doi.org/10.1049/ipr2.12696",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 3300,
+    "num_classes": 3,
+    "classes": [
+      "person",
+      "safety harness",
+      "clothes"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "A novel computer vision-based approach for monitoring safety harness use in construction",
+    "access": "https://github.com/Huangjiajing96/Dataset",
+    "id": "Safety-Harness",
+    "image_url": "assets/img/datasets/Safety-Harness.png"
+  },
+  "CML": {
+    "name": "CML: Construction motion data library",
+	"authors": "Yuanyuan Tian, Heng Li, Hongzhi Cui, Jiayu Chen",
+	"doi": "https://doi.org/10.1038/s41597-022-01841-1",
+    "year": 2022,
+    "data_modality": "Ground RGB, Depth",
+    "num_images": 146480,
+    "num_classes": 225,
+    "classes": [
+      "production activities",
+      "unsafe activities",
+      "awkward activities",
+      "common activities",
+      "other activities"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Joint-level 3D coordinates"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Pose estimation"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Construction motion data library: an integrated motion dataset for on-site activity recognition",
+    "access": "https://figshare.com/articles/dataset/Construction_Motion_Data_Library_An_Integrated_Motion_Dataset_for_On-Site_Activity_Recognition/20480787/1",
+    "id": "CML",
+    "image_url": "assets/img/datasets/CML.png"
+  },
+  "Opening-Segmentation": {
+    "name": "Opening segmentation and detection",
+	"authors": "Bryan German Pantoja Rosero, Radhakrishna Achanta, Mateusz Kozinski, Pascal Fua, Fernando Perez-Cruz, Katrin Beyer",
+	"doi": "https://doi.org/10.1016/j.autcon.2022.104430",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 270,
+    "num_classes": 3,
+    "classes": [
+      "facade",
+      "openings",
+      "opening corners"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "Not Specified",
+    "paper": "Generating LOD3 building models from structure-from-motion and semantic segmentation",
+    "access": "https://zenodo.org/records/6651663",
+    "id": "Opening-Segmentation",
+    "image_url": "assets/img/datasets/Opening-Segmentation.png"
+  },
+  "SODA": {
+    "name": "SODA: Site Object Detection Dataset",
+	"authors": "Rui Duan, Hui Deng, Mao Tian, Yichuan Deng, Jiarui Lin",
+	"doi": "https://doi.org/10.1016/j.autcon.2022.104499",
+    "year": 2022,
+    "data_modality": "Aerial RGB, Ground RGB",
+    "num_images": 19846,
+    "num_classes": 15,
+    "classes": [
+      "person",
+      "helmet",
+      "vest",
+      "board",
+      "wood",
+      "rebar",
+      "brick",
+      "scaffold",
+      "handcart",
+      "cutter",
+      "electric box",
+      "hopper",
+      "hook",
+      "fence",
+      "slogan"
+    ],
+    "resolution": "1920x1080",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "SODA: A large-scale open site object detection dataset for deep learning in construction",
+    "access": "https://linjiarui.net/en/portfolio/2022-02-22-SODA-site-object-detection-dataset-for-deep-learning-in-construction",
+    "id": "SODA",
+    "image_url": "assets/img/datasets/SODA.png"
+  },
+  "CHVG": {
+    "name": "CHVG: Color Hardhat, Vest, and Glass Dataset",
+	"authors": "Md. Ferdous, Sk. Md. Masudul Ahsan",
+	"doi": "https://doi.org/10.7717/peerj-cs.999",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 1699,
+    "num_classes": 8,
+    "classes": [
+      "colored hardhats (white)",
+      "colored hardhats (blue)",
+      "colored hardhats (red)",
+      "colored hardhats (yellow)",
+      "person head",
+      "vest",
+      "person body",
+      "safety glass"
+    ],
+    "resolution": "640×640",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "PPE detector: a YOLO-based architecture to detect personal protective equipment (PPE) for construction sites",
+    "access": "https://figshare.com/articles/dataset/CHVG_Dataset/19625166/1?file=34858290",
+    "id": "CHVG",
+    "image_url": "assets/img/datasets/CHVG.png"
+  },
+  "SHEL5K": {
+    "name": "SHEL5K",
+	"authors": "Munkh-Erdene Otgonbold, Munkhjargal Gochoo, Fady Alnajjar, Luqman Ali, Tan-Hsu Tan, Jun-Wei Hsieh, Ping-Yang Chen",
+	"doi": "https://doi.org/10.3390/s22062315",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 5000,
+    "num_classes": 6,
+    "classes": [
+      "helmet",
+      "head with helmet",
+      "person with helmet",
+      "head",
+      "person no helmet",
+      "face"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "SHEL5K: An Extended Dataset and Benchmarking for Safety Helmet Detection",
+    "access": "https://data.mendeley.com/datasets/9rcv8mm682/4",
+    "id": "SHEL5K",
+    "image_url": "assets/img/datasets/SHEL5K.png"
+  },
+  "Construction-Site-Segmentation": {
+    "name": "construction-site-segmentation dataset",
+	"authors": "Zifeng Wang, Yuyang Zhang, Khalid M. Mosalam, Yuqing Gao, Shao-Lun Huang",
+	"doi": "https://doi.org/10.1111/mice.12701",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 859,
+    "num_classes": 12,
+    "classes": [
+      "human",
+      "excavator",
+      "loader",
+      "pile driver",
+      "truck",
+      "car",
+      "fence",
+      "road roller",
+      "tower crane",
+      "crane",
+      "mixer truck",
+      "background"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "Not Specified",
+    "paper": "Deep Semantic Segmentation for Visual Understanding on Construction Sites",
+    "access": "https://github.com/RyanWangZf/construction-site-segmentation",
+    "id": "Construction-Site-Segmentation",
+    "image_url": "assets/img/datasets/Construction-Site-Segmentation.png"
+  },
+  "BCS": {
+    "name": "BCS dataset",
+	"authors": "Xuanhao Cheng, Mingming Jia, Jian He",
+	"doi": "https://doi.org/10.1111/mice.13118",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 212000,
+    "num_classes": 61,
+    "classes": null,
+    "resolution": [
+      "128×128",
+      "256×256",
+      "512×512",
+      "1024×1024"
+    ],
+    "annotation_types": [
+      "Image classification"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image Classification"
+    ],
+    "license": "Not Specified",
+    "paper": "A large-scale dataset of buildings and construction sites",
+    "access": "https://github.com/xuanhaocheng/BCS-dataset/",
+    "id": "BCS",
+    "image_url": "assets/img/datasets/BCS.png"
+  },
+  "SMART": {
+    "name": "SMART Heavy Construction Annotation Dataset",
+	"authors": "Hirsh R. Goldberg, Christopher R. Ratto, Amit Banerjee, Michael T. Kelbaugh, Mark Giglio, Eric F. Vermote",
+	"doi": "https://doi.org/10.1117/12.2663071",
+    "year": 2023,
+    "data_modality": "Satellite RGB",
+    "num_images": 13000,
+    "num_classes": 5,
+    "classes": [
+      "No activity",
+      "site preparation",
+      "active construction",
+      "post construction",
+      "unknown"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "MIT",
+    "paper": "Automated global-scale detection and characterization of anthropogenic activity using multi-source satellite-based remote sensing imagery",
+    "access": "https://github.com/pubgeo/IARPA-SMART",
+    "id": "SMART",
+    "image_url": "assets/img/datasets/SMART.png"
+  },
+  "CODD": {
+    "name": "CODD: Construction and Demolition Waste Object Detection Dataset",
+	"authors": "Demetris Demetriou, Pavlos Mavromatidis, Michael F. Petrou, Demetris Nicolaides",
+	"doi": "https://doi.org/10.1016/j.wasman.2024.02.017",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 3129,
+    "num_classes": 10,
+    "classes": [
+      "bricks",
+      "concrete",
+      "tiles",
+      "wood",
+      "pipes",
+      "plastics",
+      "general waste",
+      "foaming insulation",
+      "stones",
+      "plaster boards"
+    ],
+    "resolution": "1920×1200",
+    "annotation_types": [
+      "Bounding boxes",
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "CODD: A benchmark dataset for the automated sorting of construction and demolition waste",
+    "access": "https://data.mendeley.com/datasets/wds85kt64j/3",
+    "id": "CODD",
+    "image_url": "assets/img/datasets/CODD.png"
+  },
+  "ConSLAM": {
+    "name": "ConSLAM: Construction Dataset for SLAM",
+	"authors": "Maciej Trzeciak, Kacper Pluta, Yasmin Fathy, Lucio Alcalde, Stanley Chee, Antony Bromley, Ioannis Brilakis, Pierre Alliez",
+	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
+    "year": 2023,
+    "data_modality": "Ground RGB, Point Cloud",
+    "num_images": null,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Ground-truth trajectories"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Simultaneous Localization and Mapping"
+    ],
+    "license": "Not Specified",
+    "paper": "ConSLAM: Construction Dataset for SLAM",
+    "access": "https://github.com/mac137/ConSLAM",
+    "id": "ConSLAM",
+    "image_url": "assets/img/datasets/ConSLAM.png"
+  },
+  "CIS": {
+    "name": "CIS: Construction Instance Segmentation Dataset",
+	"authors": "Xuzhong Yan, Hong Zhang, Yefei Wu, Chen Lin, Shengwei Liu",
+	"doi": "https://doi.org/10.1016/j.autcon.2023.105083",
+    "year": 2023,
+    "data_modality": "Aerial RGB, Ground RGB",
+    "num_images": 50000,
+    "num_classes": 10,
+    "classes": [
+      "people-helmet",
+      "people-no-helmet",
+      "precast components",
+      "PC delivery trucks",
+      "dump trucks",
+      "concrete mixer trucks",
+      "excavators",
+      "rollers",
+      "dozers",
+      "wheel loaders"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Construction Instance Segmentation (CIS) Dataset for Deep Learning-Based Computer Vision",
+    "access": "https://github.com/XZ-YAN/CIS-Dataset",
+    "id": "CIS",
+    "image_url": "assets/img/datasets/CIS.png"
+  },
+  "Visible-Dust": {
+    "name": "Visible-Dust-Dataset",
+	"authors": "Mingpu Wang, Gang Yao, Yang Yang, Yujia Sun, Meng Yan, Rui Deng",
+	"doi": "https://doi.org/10.1016/j.dibe.2023.100245",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 7500,
+    "num_classes": 9,
+    "classes": [
+      "visible dust",
+      "face protection",
+      "no face protection",
+      "head protection",
+      "no head protection",
+      "spraying car",
+      "mulching fabric",
+      "particle monitors",
+      "spraying sink"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "MIT",
+    "paper": "Deep learning-based object detection for visible dust and prevention measures on construction sites",
+    "access": "https://github.com/ADR55555/Visible-Dust-Dataset",
+    "id": "Visible-Dust",
+    "image_url": "assets/img/datasets/Visible-Dust.png"
+  },
+  "CWT": {
+    "name": "CWT: Complex Worksite terrain Dataset",
+	"authors": "Tianrui Guan, Zhenpeng He, Ruitao Song, Dinesh Manocha, Liangjun Zhang",
+	"doi": "https://doi.org/10.48550/arXiv.2109.06250",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": null,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Terrain information",
+      "Semantic information",
+      "Geometric information",
+      "Traversability score",
+      "Planned trajectory"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Simultaneous Localization and Mapping"
+    ],
+    "license": "Not Specified",
+    "paper": "TNS: Terrain Traversability Mapping and Navigation System for Autonomous Excavators",
+    "access": "https://docs.google.com/forms/d/e/1FAIpQLSc7XuRzMP99xwDNka1t-jO7Qmek15LStjITfVIrFKdybvGRIA/viewform",
+    "id": "CWT",
+    "image_url": "assets/img/datasets/CWT.png"
+  },
+  "Construction-Material-Textual": {
+    "name": "Construction material textual dataset",
+	"authors": "Eyob Mengiste, Karunakar Reddy Mannem, Samuel A. Prieto, Borja Garcia de Soto",
+	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-5478",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 208,
+    "num_classes": 7,
+    "classes": [
+      "CMU wall",
+      "Chiseled concrete",
+      "Concrete",
+      "Gypsum",
+      "Mesh",
+      "First coat plaster",
+      "Second coat plaster"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Image classification"
+    ],
+    "geographical_location": "United Arab Emirates",
+    "potential_tasks": [
+      "Image Classification"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Transfer-learning and texture features for detailed recognition of the conditions of construction materials with small datasets",
+    "access": "https://data.mendeley.com/datasets/zv66h54b8j/1",
+    "id": "Construction-Material-Textual",
+    "image_url": "assets/img/datasets/Construction-Material-Textual.png"
+  },
+  "CMA": {
+    "name": "CMA: Construction Meta Action",
+	"authors": "Meng Yang, Chengke Wu, Yuanjun Guo, Rui Jiang, Feixiang Zhou, Jianlin Zhang, Zhile Yang",
+	"doi": "https://doi.org/10.1016/j.autcon.2022.104703",
+    "year": 2023,
+    "data_modality": "Video clips",
+    "num_images": 1595,
+    "num_classes": 7,
+    "classes": [
+      "Stand",
+      "Smoke",
+      "Walk",
+      "Fall Down",
+      "Talk",
+      "Climb Ladder",
+      "Wear Helmet"
+    ],
+    "resolution": "400×300 - 1920×1080",
+    "annotation_types": [
+      "Action classification"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Action recognition"
+    ],
+    "license": "Not Specified",
+    "paper": "Transformer-based deep learning model and video dataset for unsafe action identification in construction projects",
+    "access": "https://github.com/S1mpleyang/ConstructionActionRecognition",
+    "id": "CMA",
+    "image_url": "assets/img/datasets/CMA.png"
+  },
+  "VCVW-3D": {
+    "name": "VCVW-3D: Virtual Construction Vehicles and Workers dataset with 3D annotations",
+	"authors": "Yuexiong Ding, Xiaowei Luo ",
+	"doi": "https://doi.org/10.1016/j.engappai.2024.107964",
+    "year": 2023,
+    "data_modality": "Ground RGB (synthetic), RGB-D (Synthetic)",
+    "num_images": 375000,
+    "num_classes": 10,
+    "classes": [
+      "Worker",
+      "Dump truck",
+      "Excavator",
+      "Concrete mixer",
+      "Forklift",
+      "Crane",
+      "Loader",
+      "Bulldozer",
+      "Grader",
+      "Road roller"
+    ],
+    "resolution": "1920x1080",
+    "annotation_types": [
+      "2D/3D bounding boxes",
+      "2D semantic/instance segmentation",
+      "Depth maps"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation",
+      "Depth estimation"
+    ],
+    "license": "Not Specified",
+    "paper": "VCVW-3D: A Virtual Construction Vehicles and Workers Dataset with 3D Annotations",
+    "access": "https://github.com/dyxm/VCVW-3D",
+    "id": "VCVW-3D",
+    "image_url": "assets/img/datasets/VCVW-3D.png"
+  },
+  "Scaffolding": {
+    "name": "Scaffolding Dataset",
+	"authors": "Md Rakibul Islam",
+	"doi": "",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 3040,
+    "num_classes": 15,
+    "classes": [
+      "Bearer",
+      "Caster",
+      "Cross Bracing",
+      "Longitudinal Diagonal Bracing",
+      "MidRail",
+      "No Sole Board/Roller Support",
+      "No ToeBoard",
+      "OutTrigger",
+      "Platform",
+      "Runner",
+      "SOLE BOARD/Stable Support",
+      "Sole Plate with Screw",
+      "TopRail",
+      "TopRailing"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Video-image based mobile scaffolding safety detection using deep learning and internet of things (IOT)",
+    "access": "https://universe.roboflow.com/md-rakibul-islam/scaffolding-xxcds",
+    "id": "Scaffolding",
+    "image_url": "assets/img/datasets/Scaffolding.png"
+  },
+  "small-tool": {
+    "name": "Small size construction tool dataset",
+	"authors": "Kanghyeok Lee, Chanwoong Jeon, Do Hyoung Shin",
+	"doi": "https://doi.org/10.1007/s12205-023-1011-2",
+    "year": 2023,
+    "data_modality": "Ground RGB",
+    "num_images": 25084,
+    "num_classes": 12,
+    "classes": [
+      "bucket",
+      "cutter",
+      "drill",
+      "grinder",
+      "hammer",
+      "knife",
+      "saw",
+      "shovel",
+      "spanner",
+      "tacker",
+      "trowel",
+      "wrench"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "South Korea",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Small Tool Image Database and Object Detection Approach for Indoor Construction Site Safety",
+    "access": "https://doi.org/10.5281/zenodo.6530106",
+    "id": "small-tool",
+    "image_url": "assets/img/datasets/small-tool.png"
+  },
+  "ConPR": {
+    "name": "ConPR: Ongoing Construction Site dataset",
+	"authors": "Dongjae Lee, Minwoo Jung, Ayoung Kim",
+	"doi": "https://arxiv.org/abs/2407.03684",
+    "year": 2023,
+    "data_modality": "Ground RGB,Point Cloud",
+    "num_images": null,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Not Specified"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Simultaneous Localization and Mapping"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "ConPR: Ongoing Construction Site Dataset for Place Recognition",
+    "access": "https://github.com/dongjae0107/ConPR",
+    "id": "ConPR",
+    "image_url": "assets/img/datasets/ConPR.png"
+  },
+  "Thermal-Workers": {
+    "name": "Thermal image dataset of construction workers unsafe actions",
+	"authors": "Mi Yirong",
+	"doi": "https://doi.org/10.17632/rdr2vkszrc.1",
+    "year": 2023,
+    "data_modality": "Thermal",
+    "num_images": 2000,
+    "num_classes": 4,
+    "classes": [
+      "climbing with two hands",
+      "climbing with one hand",
+      "reaching far",
+      "standing"
+    ],
+    "resolution": "200×200",
+    "annotation_types": [
+      "Image classification"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image Classification"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Thermal image dataset of construction workers unsafe actions",
+    "access": "https://data.mendeley.com/datasets/rdr2vkszrc/1",
+    "id": "Thermal-Workers",
+    "image_url": "assets/img/datasets/Thermal-Workers.png"
+  },
+  "ThermalNet": {
+    "name": "ThermalNet Dataset",
+	"authors": "Haitao Wu, Heng Li, Hung-Lin Chi, Zhenyu Peng, Siwei Chang, Yue Wu",
+	"doi": "https://doi.org/10.1016/j.aei.2023.101939",
+    "year": 2023,
+    "data_modality": "Thermal",
+    "num_images": 19418,
+    "num_classes": 7,
+    "classes": [
+      "starting and following the worker",
+      "emergency stop",
+      "stopping and leaving away",
+      "picking a brick",
+      "placing a brick",
+      "holding the tool",
+      "delivering the tool"
+    ],
+    "resolution": "480 × 640",
+    "annotation_types": [
+      "Image classification"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+      "Image Classification"
+    ],
+    "license": "Not Specified",
+    "paper": "Thermal image-based hand gesture recognition for worker-robot collaboration in the construction industry: A feasible study",
+    "access": "https://drive.google.com/drive/folders/11KnJ4OC3tBjUXvDSLpqW-AbPCh0z8l0y",
+    "id": "ThermalNet",
+    "image_url": "assets/img/datasets/ThermalNet.png"
+  },
+  "Synthetic-Rebar": {
+    "name": "synthetic-datasets-for-rebar dataset",
+	"authors": "Haoyu Wang, Zhiming Ye, Dejiang Wang, Haili Jiang, Panpan Liu",
+	"doi": "https://doi.org/10.3390/buildings13030585",
+    "year": 2023,
+    "data_modality": "Ground RGB (real and synthetic)",
+    "num_images": 2500,
+    "num_classes": 1,
+    "classes": [
+      "rebar"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "Not Specified",
+    "paper": "Synthetic Datasets for Rebar Instance Segmentation Using Mask R-CNN",
+    "access": "https://github.com/whiesty/synthetic-datasets-for-rebar",
+    "id": "Synthetic-Rebar",
+    "image_url": "assets/img/datasets/Synthetic-Rebar.png"
+  },
+  "Rebar-Counting": {
+    "name": "Rebar counting detection",
+	"authors": "Seunghyeon Wang, Ikchul Eum, Sangkyun Park, Jaejun Kim",
+	"doi": "https://doi.org/10.1016/j.dib.2024.110720",
+    "year": 2024,
+    "data_modality": "Aerial RGB",
+    "num_images": 728,
+    "num_classes": 1,
+    "classes": [
+      "rebar"
+    ],
+    "resolution": "1500×900",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "South Korea",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "A labelled dataset for rebar counting inspection on construction sites using unmanned aerial vehicles",
+    "access": "https://figshare.com/articles/dataset/Rebar_counting_detection/23633703",
+    "id": "Rebar-Counting",
+    "image_url": "assets/img/datasets/Rebar-Counting.png"
+  },
+  "ROADWork": {
+    "name": "ROADWork: Learning to Recognize, Observe, Analyze and Drive Through Work Zones",
+	"authors": "Anurag Ghosh, Shen Zheng, Robert Tamburo, Khiem Vuong, Juan Alvarez-Padilla, Hailiang Zhu, Michael Cardei, Nicholas Dunn, Christoph Mertz, Srinivasa G. Narasimhan",
+	"doi": "https://arxiv.org/abs/2406.07661",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 7416,
+    "num_classes": null,
+    "classes": null,
+    "resolution": null,
+    "annotation_types": [
+      "object annotations",
+      "scene tags",
+      "text descriptions",
+      "2D/3D drivable path annotations"
+    ],
+    "geographical_location": "U.S.",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation",
+      "Image captioning",
+      "Pathway prediction"
+    ],
+    "license": "ODC-By",
+    "paper": "ROADWork Dataset: Recognize, Observe, Analyze and Drive Through Work Zones",
+    "access": "https://github.com/anuragxel/roadwork-dataset/?tab=readme-ov-file",
+    "id": "ROADWork",
+    "image_url": "assets/img/datasets/ROADWork.png"
+  },
+  "AIDCON": {
+    "name": "AIDCON: Aerial Image Dataset for Construction",
+	"authors": "Ahmet Bahaddin Ersoz, Onur Pekcan, Emre Akbas",
+	"doi": "https://doi.org/10.3390/rs16173295",
+    "year": 2024,
+    "data_modality": "Aerial RGB",
+    "num_images": 2155,
+    "num_classes": 9,
+    "classes": [
+      "Dump truck",
+      "excavator",
+      "backhoe loader",
+      "wheel loader",
+      "compactor",
+      "dozer",
+      "grader",
+      "car",
+      "other"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes",
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Türkiye",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "AIDCON: An Aerial Image Dataset and Benchmark for Construction Machinery",
+    "access": "https://www.ai2lab.org/aidcon/",
+    "id": "AIDCON",
+    "image_url": "assets/img/datasets/AIDCON.png"
+  },
+  "Steel-Cross-Section": {
+    "name": "Steel Cross-Section Image Dataset",
+	"authors": "Jun Chen, Qian Huang, Wenhao Chen, Yang Li, Yutao Chen",
+	"doi": "https://doi.org/10.3390/buildings14061661",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 3113,
+    "num_classes": 4,
+    "classes": [
+      "rebars",
+      "circular pipes",
+      "square tubes",
+      "I-beams"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Automated Counting of Steel Construction Materials: Model, Methodology, and Online Deployment",
+    "access": "https://github.com/H518123/SquareTubeCounting",
+    "id": "Steel-Cross-Section",
+    "image_url": "assets/img/datasets/Steel-Cross-Section.png"
+  },
+  "Building-Characteristics": {
+    "name": "Building characteristic datasets",
+	"authors": "Seunghyeon Wang, Sangkyun Park, Sungman Park, Jaejun Kim",
+	"doi": "https://doi.org/10.1016/j.dib.2024.110885",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 3717,
+    "num_classes": 15,
+    "classes": [
+      "1F",
+      "2F",
+      "3F",
+      "4F",
+      "5F",
+      "Others",
+      "Residential",
+      "Non-residential",
+      "Others",
+      "brick",
+      "concrete",
+      "glass",
+      "stone",
+      "mixed",
+      "others"
+    ],
+    "resolution": "640×640",
+    "annotation_types": [
+      "Image classification"
+    ],
+    "geographical_location": "UK",
+    "potential_tasks": [
+      "Image classification"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Building façade datasets for analyzing building characteristics using deep learning",
+    "access": "https://figshare.com/articles/dataset/Dataset_of_building_characteristics_from_building_fa_ade_images/25931941?file=46673209",
+    "id": "Building-Characteristics",
+    "image_url": "assets/img/datasets/Building-Characteristics.png"
+  },
+  "ConRebSeg": {
+    "name": "ConRebSeg Dataset",
+	"authors": "Segmentation dataset for reinforced concrete construction",
+	"doi": "https://doi.org/10.1016/j.autcon.2025.105990",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 14805,
+    "num_classes": 4,
+    "classes": [
+      "exposed reinforcement bars",
+      "persons",
+      "cars",
+      "trucks"
+    ],
+    "resolution": "1920×1200",
+    "annotation_types": [
+      "Bounding boxes",
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Denmark",
+    "potential_tasks": [
+      "Object detection",
+      "Semantic segmentation"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "ConRebSeg: A Segmentation Dataset for Reinforced Concrete Construction",
+    "access": "https://data.dtu.dk/articles/dataset/Self-collected_sequences_and_metadata_of_ConRebSeg/26213762",
+    "id": "ConRebSeg",
+    "image_url": "assets/img/datasets/ConRebSeg.png"
+  },
+  "VL-Con": {
+    "name": "VL-Con Dataset",
+	"authors": "Shun-Hsiang Hsu, Junryu Fu, Mani Golparvar-Fard",
+	"doi": "https://doi.org/10.22260/ISARC2024/0146",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 4073,
+    "num_classes": 641,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Image-text pairs"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image captioning"
+    ],
+    "license": "Not Specified",
+    "paper": "VL-Con: Vision-Language Dataset for Deep Learning-based Construction Monitoring Applications",
+    "access": "https://github.com/huhuman/VL-Con",
+    "id": "VL-Con",
+    "image_url": "assets/img/datasets/VL-Con.png"
+  },
+  "Object-Detection-Construction": {
+    "name": "Object Detection at Construction Sites",
+	"authors": "JongHo Na, JaeKang Lee, HyuSoung Shin, IlDong Yun",
+	"doi": "https://doi.org/10.3390/app15169000",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 87766,
+    "num_classes": 12,
+    "classes": [
+	"Car",
+	"Dump truck",
+	"Excavator",
+	"Backhoe",
+	"Loader",
+	"Bulldozer",
+	"Roller",
+	"Crawler drill",
+	"Earth auger",
+	"Pile driver",
+	"Tower crane",
+	"Mobile crane"
+	],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "South Korea",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Development and Validation of a Computer Vision Dataset for Object Detection and Instance Segmentation in Earthwork Construction Sites",
+    "access": "https://data.mendeley.com/datasets/rz8723t6d7/1",
+    "id": "Object-Detection-Construction",
+    "image_url": "assets/img/datasets/Object-Detection-Construction.png"
+  },
+  "SAFE": {
+    "name": "SAFE Dataset",
+	"authors": "Peichen Zhai, Junjie Wang, Lite Zhang",
+	"doi": "https://doi.org/10.1061/JCEMD4.COENG-12096",
+    "year": 2024,
+    "data_modality": "Ground RGB",
+    "num_images": 5659,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "256×256",
+    "annotation_types": [
+      "Image captions"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image captioning"
+    ],
+    "license": "Not Specified",
+    "paper": "Extracting Worker Unsafe Behaviors from Construction Images Using Image Captioning with Deep Learning–Based Attention Mechanism",
+    "access": "Upon request",
+    "id": "SAFE",
+    "image_url": "assets/img/datasets/SAFE.png"
+  },
+  "Small-Construction-Tools": {
+    "name": "Small-sized construction tool dataset",
+	"authors": "Soeun Han, Wonjun Park, Kyumin Jeong, Taehoon Hong, Choongwan Koo",
+	"doi": "https://doi.org/10.1016/j.autcon.2024.105415",
+    "year": 2024,
+    "data_modality": "Ground RGB (real and synthetic)",
+    "num_images": 8576,
+    "num_classes": 4,
+    "classes": [
+      "Bucket",
+      "Cord reel",
+      "Hammer",
+      "Tacker"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Bounding boxes"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "Object detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Utilizing synthetic images to enhance the automated recognition of small-sized construction tools",
+    "access": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
+    "id": "Small-Construction-Tools",
+    "image_url": "assets/img/datasets/Small-Construction-Tools.png"
+  },
+    "Stirrup-Rebar": {
+    "name": "Stirrup Rebar Segmentation Dataset",
+	"authors": "Tao Sun, Beining Han, Szymon Rusinkiewicz, Yi Shao",
+	"doi": "https://doi.org/10.1016/j.autcon.2025.106252",
+    "year": 2025,
+	"data_modality": "Ground RGB (real and synthetic)",
+    "num_images": 21033,
+    "num_classes": 1,
+    "classes": [
+      "Top Rebar"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "Not Specified",
+    "paper": "Rebar grasp detection using a synthetic model generator and domain randomization",
+    "access": "https://huggingface.co/datasets/tsrobcvai/Synthetic_Dataset_for_Stirrup_Rebar_Segmentation",
+    "id": "Stirrup-Rebar",
+    "image_url": "assets/img/datasets/Stirrup-Rebar.png"
+  },
+    "ROI-1555": {
+    "name": "ROI-1555: Rebar Detection and Instance Segmentation Dataset",
+	"authors": "Tao Sun, Qipei Fan, Yi Shao",
+	"doi": "https://doi.org/10.1016/j.aei.2025.103224",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 1555,
+    "num_classes": 2,
+    "classes": [
+      "straight rebar",
+	  "hoop rebar"
+    ],
+    "resolution": "1333×800",
+    "annotation_types": [
+	"Bounding boxes",
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Canada, China, U.S.",
+    "potential_tasks": [
+	 "Object Detection",
+      "Semantic Segmentation"
+    ],
+    "license": "Not Specified",
+    "paper": "Deep learning-based rebar detection and instance segmentation in images",
+    "access": "https://huggingface.co/datasets/tsrobcvai/ROI-1555_Rebar_Detection_and_Instance_Segmentation_Dataset",
+    "id": "ROI-1555",
+    "image_url": "assets/img/datasets/ROI-1555.png"
+  },
+    "CDW-Seg": {
+    "name": "CDW-Seg Dataset",
+	"authors": "Diani Sirimewan, Sanuwani Dayarathna, Sudharshan Raman, Yu Bai, Mehrdad Arashpour ",
+	"doi": "https://doi.org/10.1038/s41597-025-05243-x",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 430,
+    "num_classes": 10,
+    "classes": [
+	"concrete", 
+	"fill dirt", 
+	"timber", 
+	"hard plastic", 
+	"soft plastic", 
+	"steel", 
+	"fabric", 
+	"cardboard", 
+	"plasterboard", 
+	"skip bin"
+    ],
+    "resolution": "3000×4000",
+    "annotation_types": [
+      "Pixel-level masks"
+    ],
+    "geographical_location": "Australia",
+    "potential_tasks": [
+      "Semantic Segmentation"
+    ],
+    "license": "CC0",
+    "paper": "A benchmark dataset for class-wise segmentation of construction and demolition waste in cluttered environments",
+    "access": "https://doi.org/10.6084/m9.figshare.28573229.v1",
+    "id": "CDW-Seg",
+    "image_url": "assets/img/datasets/CDW-Seg.png"
+  },
+    "ConstructionSite-10k": {
+    "name": "ConstructionSite 10k Dataset",
+	"authors": "Xuezheng Chen, Zhengbo Zou",
+	"doi": "https://arxiv.org/abs/2508.11011",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 10013,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Image caption",
+	"Bounding boxes",
+	"Multiple choices",
+	"One or two sentences"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Image captioning",
+	  "visual question answering",
+	  "Visual grounding"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Are Large Pre-trained Vision Language Models Effective Construction Safety Inspectors?",
+    "access": "https://huggingface.co/datasets/LouisChen15/ConstructionSite",
+    "id": "ConstructionSite-10k",
+    "image_url": "assets/img/datasets/ConstructionSite-10k.png"
+  }, 
+    "Rohbau3D": {
+    "name": "Rohbau3D Dataset",
+	"authors": "Lukas Rauch, Thomas Braml",
+	"doi": "https://doi.org/10.1038/s41597-025-05827-7",
+    "year": 2025,
+	"data_modality": "3D point clouds",
+    "num_images": 504,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"RGB color",
+	"Surface reflection intensity",
+	"Reconstruction of surface normal vectors",
+	"Panoramic 2D image representations"
+    ],
+    "geographical_location": "Germany",
+    "potential_tasks": [
+      "Point Cloud Segmentation"
+    ],
+    "license": "MIT",
+    "paper": "Rohbau3D: A Shell Construction Site 3D Point Cloud Dataset",
+    "access": "https://github.com/RauchLukas/rohbau3d",
+    "id": "Rohbau3D",
+    "image_url": "assets/img/datasets/Rohbau3D.png"
+  },
+    "CMOT": {
+    "name": "CMOT Dataset",
+	"authors": "Xuzhong Yan, Rui Jin, Hong Zhang,Hui Gao, Shuyuan Xu",
+	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-6178",
+    "year": 2025,
+	"data_modality": "Ground RGB, Video clips",
+    "num_images": 77000,
+    "num_classes": 10,
+    "classes": [
+	"people-helmet", 
+	"people-no-helmet", 
+	"PC", 
+	"PC-truck", 
+	"dump-truck", 
+	"mixer", 
+	"excavator", 
+	"roller", 
+	"dozer", 
+	"wheel-loader"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Bounding boxes"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+	"Object detection", 
+	"Object tracking"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Computer Vision-Based Intelligent Monitoring of Disruptions due to Construction Machinery Arrival Delay",
+    "access": "https://github.com/XZ-YAN/CMOT-Dataset",
+    "id": "CMOT",
+    "image_url": "assets/img/datasets/CMOT.png"
+  },
+    "SODA-ktsh": {
+    "name": "SODA-ktsh",
+	"authors": "Hui Deng, Kejie Fu, Binglin Yu, Huimin Li,Rui Duan,Yichuan Deng, Jia-rui Lin",
+	"doi": "https://doi.org/10.3390/buildings15060959",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 14000,
+    "num_classes": 16,
+    "classes": [
+	"Reinforcement work",
+	"Scaffold work",
+	"Concrete casting work",
+	"Formwork",
+	"Handcart work",
+	"Machine work",
+	"Bricklayin and plastering work",
+	"Ladder work",
+	"Excavation and earthmoving work",
+	"Leveling ground work",
+	"Transport work",
+	"Mechanical hoisting work",
+	"Personnel hoisting work",
+	"Commanding work",
+	"Surveying work",
+	"Stand, rest, walk"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Image caption"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+	"Image Captioning"
+    ],
+    "license": "Not Specified",
+    "paper": "Enabling High-Level Worker-Centric Semantic Understanding of Onsite Images Using Visual Language Models with Attention Mechanism and Beam Search Strategy",
+    "access": "https://hkustconnect-my.sharepoint.com/:f:/g/personal/ycdeng_connect_ust_hk/EiQLht3OhstGnKXrjFXyRZYBIXFjUC43jUUNVBXfM_kkKg?e=jJ2Nhv",
+    "id": "SODA-ktsh",
+    "image_url": "assets/img/datasets/SODA-ktsh.png"
+  },
+    "OSHA-safety": {
+    "name": "OSHA-driven Safety Dataset",
+	"authors": "Amr A. Mohy, Hesham A. Bassioni, Elbadr O. Elgendi, Tarek M. Hassan",
+	"doi": "http://dx.doi.org/10.36680/j.itcon.2025.057",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 55594,
+    "num_classes": 28,
+    "classes": [
+  "Hardhat",
+  "Vest",
+  "Safety Boots",
+  "Not_Wearing_Safety_Equipment",
+  "Goggles",
+  "Gloves",
+  "Mask",
+  "Workers",
+  "Scaffolding",
+  "No_Scaffold",
+  "Fence",
+  "Safety_cone",
+  "Machinery",
+  "Board",
+  "Rebar",
+  "Wood",
+  "Ebox",
+  "Hopper",
+  "Hook",
+  "Brick",
+  "Toeboard",
+  "Cutter",
+  "Slogan",
+  "Handcart",
+  "Fall-Detected",
+  "Opening_hole",
+  "Fire",
+  "Smoke"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Bounding boxes"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+	"Object Detection"
+    ],
+    "license": "Not Specified",
+    "paper": "Deep Learning Enabled Computer Vision Model for Automated Safety Compliance in Construction Environments",
+    "access": "https://github.com/amr21006/PhD_Safety_Management_Object_Detection",
+    "id": "OSHA-safety",
+    "image_url": "assets/img/datasets/OSHA-safety.png"
+  },
+    "HangCon": {
+    "name": "HangCon Dataset: Hanging Objects in Construction Sites",
+	"authors": "Gilsu Jeong, Seongeun Park, Joonseok Lee, Moonseo Park, Changbum R. Ahn",
+	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-6283",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 101381,
+    "num_classes": 3,
+    "classes": [
+	  "hanging object",
+	  "rope",
+	  "hanging object with rope"
+    ],
+    "resolution": "640×360",
+    "annotation_types": [
+	"Bounding boxes"
+    ],
+    "geographical_location": "South Korea",
+    "potential_tasks": [
+	"Object Detection"
+    ],
+    "license": "Not Specified",
+    "paper": "HangCon: Benchmark Data Set for Enhanced Detection of Hanging Objects in Construction Sites",
+    "access": "https://github.com/gilsujeong/HangCon",
+    "id": "HangCon",
+    "image_url": "assets/img/datasets/HangCon.png"
+  },
+    "CPP-1214": {
+    "name": "Construction Personnel Pose",
+	"authors": "Alexandre Almeida Del Savio, Ana Luna Torres, Daniel Cárdenas-Salas, Mónica Vergara Olivera, Gianella Urday Ibarra",
+	"doi": "https://doi.org/10.1016/j.dib.2025.111516",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 1214,
+    "num_classes": 2,
+    "classes": [
+	  "leaning_person",
+	  "person"
+    ],
+    "resolution": "3840 × 2160",
+    "annotation_types": [
+	"Bounding boxes"
+    ],
+    "geographical_location": "Peru",
+    "potential_tasks": [
+	"Object Detection"
+    ],
+    "license": "CC0",
+    "paper": "Manually classified dataset of leaning and standing personnel images for construction site monitoring and neural network training",
+    "access": "https://repositorio.ulima.edu.pe/handle/20.500.12724/19853",
+    "id": "CPP-1214",
+    "image_url": "assets/img/datasets/CPP-1214.png"
+  },
+    "CTR": {
+    "name": "CTR Dataset: Concrete Techniques and Roughness",
+	"authors": "Yong Zhao, Zhiyan Wang, Jisong Liu, Boyu Zhang",
+	"doi": "https://doi.org/10.1016/j.engstruct.2025.119835",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 21916,
+    "num_classes": 8,
+    "classes": [
+	  "Broomiong-Vey Smooth",
+	  "Broomiong-Smooth",
+	  "Broomiong-Rough",
+	  "Exposed Aggregate-Smooth",
+	  "Exposed Aggregate-Rough",
+	  "Exposed Aggregate-Very Rough",
+	  "PE membrane-Vey Smooth",
+	  "PE membrane-Smooth"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Image label"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+	"Image Classification"
+    ],
+    "license": "Not Specified",
+    "paper": "Machine vision-based technology for the interface classification of precast concrete components",
+    "access": "https://github.com/wzzzzzzzzy/CTR-dataset",
+    "id": "CTR",
+    "image_url": "assets/img/datasets/CTR.png"
+  },
+    "MHC": {
+    "name": "MHC Dataset: Aerial Imagery-Derived Dataset of Manufactured Housing Communities",
+	"authors": "Armin Yeganeh, Maria Marshall, Noah Durst",
+	"doi": "https://doi.org/10.1038/s41597-025-05875-z",
+    "year": 2025,
+	"data_modality": "Satellite RGB",
+    "num_images": 4480,
+    "num_classes": 2,
+    "classes": [
+	  "manufactured housing communities (MHC)",
+	  "non-manufactured housing communities (non-MHC)"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Image label"
+    ],
+    "geographical_location": "U.S.",
+    "potential_tasks": [
+	"Image Classification"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Aerial Imagery-Derived Dataset of Manufactured Housing Communities in the North Central United States",
+    "access": "https://zenodo.org/records/16459113",
+    "id": "MHC",
+    "image_url": "assets/img/datasets/MHC.png"
+  },
+    "VPM": {
+    "name": "Visually Obstructed Construction Pose Dataset",
+	"authors": "Xinyu Chen, Yantao Yu, Yunpeng Wang, Zhen-Zhong Hu",
+	"doi": "https://doi.org/10.1016/j.autcon.2025.106495",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 14000,
+    "num_classes": null,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"2D/3D Human Joints"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+	"Pose Estimation"
+    ],
+    "license": "Not Specified",
+    "paper": "Multimodal data fusion for ergonomic assessment of construction workers in visually obstructed environments",
+    "access": "https://github.com/yantaolab/VPM.git",
+    "id": "VPM",
+    "image_url": "assets/img/datasets/VPM.png"
+  }
+}

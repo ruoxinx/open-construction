@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dataset Catalog",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "year": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "data_modality": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "num_images": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "num_classes": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "classes": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "annotation_types": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "potential_tasks": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "string"
+        }
+      },
+      "license": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "paper": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "access": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "image_url": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "authors": {
+        "type": ["string", "null"]
+      },
+      "doi": {
+        "type": ["string","null"]
+      }
+    },
+    "required": [
+      "id",
+      "name"
+    ],
+    "additionalProperties": true
+  }
+}
