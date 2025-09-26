@@ -8,7 +8,7 @@
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Design tokens + polish -->
+  <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
     :root{
       --oc-bg: #ffffff;
@@ -45,39 +45,29 @@
 
     /* Nav links */
     .navbar .nav-link.plain{
-      font-weight:700;
-      color: var(--oc-text);
-      padding:.5rem .6rem;
+      font-weight:700; color: var(--oc-text); padding:.5rem .6rem;
     }
     .navbar .nav-link.plain:hover{
       color: var(--oc-brand-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      text-decoration: underline; text-underline-offset: 3px;
     }
     .navbar .nav-link.plain.active{
       color: var(--oc-brand-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      text-decoration: underline; text-underline-offset: 3px;
     }
 
     /* Hero */
     .hero{
-      background: #fff;
-      color: var(--oc-brand-ink);
+      background: #fff; color: var(--oc-brand-ink);
       border-bottom: 1px solid var(--oc-border);
     }
-    .hero .content{
-      padding: 56px 0 44px;
-      text-align: center;
-    }
+    .hero .content{ padding: 56px 0 44px; text-align: center; }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
       font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
       margin:.25rem 0 .35rem;
     }
-    .hero p.lead{
-      max-width: 70ch; margin: 0 auto; color: var(--oc-subtle);
-    }
+    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
     .hero .pill{
       display:inline-flex; gap:.5rem; align-items:center;
       border-radius: 999px; padding:.45rem .85rem;
@@ -98,7 +88,7 @@
     }
     .btn-accent:hover{ background:#f7fbff; }
 
-    /* Cards & sections */
+    /* Sections & cards */
     .oc-section{ margin-top:40px; }
     .oc-card{
       background: var(--oc-card);
@@ -128,34 +118,99 @@
 
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
-    /* Horizontal timeline */
+    /* ==============================
+       Horizontal Timeline (Fancy)
+       ============================== */
+    .oc-tl-wrap{
+      position: relative;
+      padding: .25rem 2.75rem; /* space for arrows */
+    }
+    /* edge fades */
+    .oc-tl-wrap::before,
+    .oc-tl-wrap::after{
+      content:"";
+      position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
+    }
+    .oc-tl-wrap::before{
+      left:0; background: linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-left-radius: var(--oc-radius);
+      border-bottom-left-radius: var(--oc-radius);
+    }
+    .oc-tl-wrap::after{
+      right:0; background: linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-right-radius: var(--oc-radius);
+      border-bottom-right-radius: var(--oc-radius);
+    }
+
     .oc-timeline{
-      display:flex;
-      gap:2rem;
-      overflow-x:auto;
-      padding:1rem 0;
+      display:flex; gap:1.25rem;
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      padding: .5rem 0 1rem;
       scrollbar-width: thin;
     }
+
     .oc-tl-item{
+      scroll-snap-align:center;
       flex:0 0 auto;
-      min-width:220px;
-      max-width:260px;
-      background:var(--oc-muted);
+      width: 280px; max-width: 85vw;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
       border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
+      border-radius: var(--oc-radius);
       box-shadow: var(--oc-shadow);
-      padding:1rem;
-      text-align:left;
+      padding:1rem 1rem .95rem;
+      position:relative;
     }
     .oc-tl-date{
-      font-weight:700;
+      display:inline-block;
+      font-weight:800; letter-spacing:.02em;
       color:var(--oc-brand-ink);
-      margin-bottom:.35rem;
+      background: #eef4fb;
+      border:1px solid #dfe8f3;
+      padding:.25rem .55rem; border-radius:999px;
+      margin-bottom:.55rem;
+      font-size:.9rem;
     }
-    .oc-tl-content{
-      font-size:.95rem;
-      color:var(--oc-text);
+    .oc-tl-title{
+      font-weight:700; color:var(--oc-text); margin-bottom:.25rem;
     }
+    .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
+
+    /* center line accent (purely decorative) */
+    .oc-tl-item::after{
+      content:"";
+      position:absolute; left:50%; transform:translateX(-50%);
+      bottom:-18px; width:2px; height:14px; background:#dfe6ee;
+      border-radius:2px;
+    }
+
+    /* Prev/Next arrow buttons */
+    .oc-tl-nav{
+      position:absolute; top:50%; transform:translateY(-50%);
+      z-index:3;
+    }
+    .oc-tl-btn{
+      display:flex; align-items:center; justify-content:center;
+      width:38px; height:38px; border-radius:999px;
+      background:#ffffff; border:1px solid var(--oc-border);
+      box-shadow: var(--oc-shadow);
+      color:var(--oc-brand-ink);
+    }
+    .oc-tl-btn:hover{ filter:brightness(1.03); }
+    .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
+
+    .oc-tl-prev{ left:.5rem; }
+    .oc-tl-next{ right:.5rem; }
+
+    /* Tiny hint row (optional dots) */
+    .oc-tl-dots{
+      display:flex; gap:.35rem; justify-content:center; margin-top:.6rem;
+    }
+    .oc-tl-dot{
+      width:6px; height:6px; border-radius:999px; background:#d9e3ee; transition:.2s;
+    }
+    .oc-tl-dot.active{ background:var(--oc-brand-ink); }
   </style>
 </head>
 <body>
@@ -258,7 +313,6 @@
             <h3 class="oc-card-title mb-2">Why we built this</h3>
             <p class="mb-3">
               The industry is rapidly adopting AI-driven computer vision for monitoring, safety, and efficiency.
-              Our goals:
             </p>
             <ul class="oc-ul">
               <li>Provide a comprehensive catalog of open construction datasets</li>
@@ -279,24 +333,53 @@
         <div class="oc-kicker mb-2">Milestones</div>
         <h3 class="oc-card-title mb-3">Development & Achievements</h3>
 
-        <div class="oc-timeline">
-          <!-- Item -->
-          <div class="oc-tl-item">
-            <div class="oc-tl-date">2024.12</div>
-            <div class="oc-tl-content">
-              <p class="mb-0">Project team established to build the OpenConstruction platform.</p>
-            </div>
+        <div class="oc-tl-wrap">
+          <!-- Prev -->
+          <div class="oc-tl-nav oc-tl-prev">
+            <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
+              <!-- left chevron -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </div>
 
-          <!-- Item -->
-          <div class="oc-tl-item">
-            <div class="oc-tl-date">2025.09</div>
-            <div class="oc-tl-content">
-              <p class="mb-0">OpenConstruction Dataset Catalog officially launched online.</p>
+          <!-- Timeline -->
+          <div class="oc-timeline" id="ocTimeline" tabindex="0" aria-label="OpenConstruction milestones">
+            <!-- 2024.12 -->
+            <div class="oc-tl-item" data-title="Project Team Established">
+              <div class="oc-tl-date">2024.12</div>
+              <div class="oc-tl-title">Project Team Established</div>
+              <div class="oc-tl-content">
+                Core team formed to build the OpenConstruction platform and roadmap.
+              </div>
             </div>
+
+            <!-- 2025.09 -->
+            <div class="oc-tl-item" data-title="Dataset Catalog Online">
+              <div class="oc-tl-date">2025.09</div>
+              <div class="oc-tl-title">Dataset Catalog Online</div>
+              <div class="oc-tl-content">
+                OpenConstruction Dataset Catalog officially launched for the community.
+              </div>
+            </div>
+
+            <!-- Add future milestones by duplicating .oc-tl-item blocks -->
+          </div>
+
+          <!-- Next -->
+          <div class="oc-tl-nav oc-tl-next">
+            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
+              <!-- right chevron -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </div>
         </div>
 
+        <!-- dots -->
+        <div class="oc-tl-dots" id="tlDots" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -357,9 +440,9 @@
         <div class="oc-card h-100">
           <div class="oc-card-body">
             <div class="oc-kicker mb-2">Policy</div>
-            <h3 class="oc-card-title mb-2">Request dataset removal</h3>
+            <h3 class="oc-card-title mb-2">Request dataset/model removal</h3>
             <p class="mb-0">
-              If you’d like a dataset removed, please email
+              If you’d like a dataset/model removed, please email
               <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>
               from an address that can verify ownership, and we’ll act quickly.
             </p>
@@ -394,6 +477,76 @@
       }
     });
   }
+
+  /* ===== Timeline navigation, dots, and snap-centering ===== */
+  (function(){
+    const scroller = document.getElementById('ocTimeline');
+    const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
+    const prevBtn = document.getElementById('tlPrev');
+    const nextBtn = document.getElementById('tlNext');
+    const dotsWrap = document.getElementById('tlDots');
+
+    // build dots
+    items.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'oc-tl-dot' + (i===0 ? ' active':'');
+      dotsWrap.appendChild(d);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    const itemWidth = () => items[0].getBoundingClientRect().width + 20; // card + gap
+    let index = 0;
+
+    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
+    function scrollToIndex(i){
+      index = clamp(i, 0, items.length-1);
+      const target = items[index];
+      const offset = target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2);
+      scroller.scrollTo({ left: offset, behavior:'smooth' });
+      refreshButtons();
+      refreshDots();
+    }
+
+    function refreshButtons(){
+      prevBtn.disabled = (index === 0);
+      nextBtn.disabled = (index === items.length-1);
+    }
+    function refreshDots(){
+      dots.forEach((d, i)=> d.classList.toggle('active', i===index));
+    }
+
+    prevBtn.addEventListener('click', ()=> scrollToIndex(index-1));
+    nextBtn.addEventListener('click', ()=> scrollToIndex(index+1));
+
+    // keyboard nav when scroller focused
+    scroller.addEventListener('keydown', (e)=>{
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index-1); }
+      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index+1); }
+    });
+
+    // update index on manual scroll (nearest item to center)
+    let t; 
+    scroller.addEventListener('scroll', ()=>{
+      clearTimeout(t);
+      t = setTimeout(()=>{
+        const center = scroller.scrollLeft + scroller.clientWidth/2;
+        const nearest = items.reduce((best, el, i)=>{
+          const c = el.offsetLeft + el.clientWidth/2;
+          const d = Math.abs(c - center);
+          return (d < best.d) ? {i, d} : best;
+        }, {i:0, d: Infinity});
+        if (nearest.i !== index){ index = nearest.i; refreshButtons(); refreshDots(); }
+      }, 80);
+    });
+
+    // auto-center initial (middle item if >1)
+    const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
+    scrollToIndex(initial);
+    // small correction after fonts load
+    window.addEventListener('load', ()=> setTimeout(()=> scrollToIndex(initial), 120));
+    window.addEventListener('resize', ()=> setTimeout(()=> scrollToIndex(index), 80));
+  })();
 
   // Auto-highlight current nav
   (function(){
