@@ -109,9 +109,15 @@
       content:""; display:inline-block; width:48px; height:1em; margin-left:-48px;
       background: linear-gradient(90deg, rgba(255,255,255,0), #fff 70%);
     }
-    .btn-link.toggle{
-      padding:0; font-weight:600; text-decoration:none;
-    }
+	/* Abstract toggle (smaller + right-align helper) */
+	.btn-link.toggle {
+	  padding: 0;
+	  font-weight: 600;
+	  text-decoration: none;
+	  font-size: .875rem; /* smaller */
+	}
+	.abstract-toggle-wrap { text-align: right; } /* right align */
+
     .btn-link.toggle:focus{outline:2px solid rgba(13,110,253,.35); outline-offset:2px; border-radius:4px}
   </style>
 </head>
@@ -390,23 +396,25 @@ function render(items){
           <div class="d-flex flex-wrap gap-1 mb-2">
             ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
           </div>
-          ${abstract ? `
-            <p class="small mb-2 abstract"
-               data-full="${encodeURIComponent(abstract)}"
-               data-short="${encodeURIComponent(shortAbs)}"
-               data-expanded="false">
-               <span class="abstract-text">${shortAbs.replace(/</g,'&lt;')}</span>
-               ${isLong ? '<span class="abstract-fade"></span>' : ''}
-            </p>
-            ${isLong ? `
-              <button class="btn btn-link toggle abstract-toggle"
-                      type="button"
-                      aria-expanded="false"
-                      aria-controls="abs_${m.id || Math.random().toString(36).slice(2)}">
-                Show more
-              </button>
-            ` : '' }
-          `:''}
+			${abstract ? `
+			  <p class="small mb-2 abstract"
+				 data-full="${encodeURIComponent(abstract)}"
+				 data-short="${encodeURIComponent(shortAbs)}"
+				 data-expanded="false">
+				 <span class="abstract-text">${shortAbs.replace(/</g,'&lt;')}</span>
+				 ${isLong ? '<span class="abstract-fade"></span>' : ''}
+			  </p>
+			  ${isLong ? `
+				<div class="abstract-toggle-wrap">
+				  <button class="btn btn-link toggle abstract-toggle"
+						  type="button"
+						  aria-expanded="false"
+						  aria-controls="abs_${m.id || Math.random().toString(36).slice(2)}">
+					Show more
+				  </button>
+				</div>
+			  ` : '' }
+			` : ''}
           <div class="d-flex gap-2">
             ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
             ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Code</a>`:''}
