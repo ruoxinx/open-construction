@@ -83,11 +83,12 @@
       background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);padding:1rem;height:100%
     }
-    .paper-card .left{
-      width:84px;height:84px;flex:0 0 84px;border-radius:12px;background:#f4f7fb;
-      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
-    }
-    .paper-card img{max-width:100%;max-height:100%;object-fit:contain}
+	.paper-card .left{
+	  width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
+	  display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
+	}
+	.paper-card img{width:100%;height:100%;object-fit:cover}
+
     .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
     .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
     .badge-soft{background:var(--oc-muted);border:1px solid var(--oc-border);color:var(--oc-text);font-weight:600}
@@ -241,13 +242,19 @@
 const DATA_URL = 'data/models.json'; // place your models.json here
 let MODELS = [];
 
-/* ---- Fallback icon (inline SVG) ---- */
+/* ---- Thumbnails & placeholders ---- */
+const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
 const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84">
-     <rect width="84" height="84" rx="12" fill="#f1f5f9"/>
-     <path d="M18 54h48v6H18zM24 24h12v24H24zM48 36h12v12H48z" fill="#0f2e4b" opacity=".65"/>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+     <rect width="160" height="120" rx="12" fill="#f1f5f9"/>
+     <g fill="#0f2e4b" opacity=".6">
+       <rect x="24" y="76" width="112" height="8" rx="4"/>
+       <rect x="36" y="28" width="28" height="36" rx="6"/>
+       <rect x="88" y="44" width="36" height="20" rx="6"/>
+     </g>
    </svg>`
 );
+
 
 /* ---------------------------
    Helpers
@@ -346,28 +353,40 @@ function render(items){
   byId('emptyState').classList.add('d-none');
 
   items.forEach(m=>{
+    const doiLink = m.doi ? (m.doi.startsWith('http') ? m.doi : `https://doi.org/${m.doi}`) : '';
+    const thumb = m.thumbnail || m.icon || PLACEHOLDER_PNG;
+    const abstract = (m.abstract || '').trim();
+    const shortAbs = abstract.length>320 ? abstract.slice(0,320)+'…' : abstract;
+
     const el = document.createElement('div');
     el.className = 'paper-card';
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
         <div class="left">
-          <img src="${m.icon||ICON_FALLBACK}" alt="" onerror="this.src='${ICON_FALLBACK}'">
+          <img src="${thumb}" alt="${m.title||'thumbnail'}"
+               onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
         </div>
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1">${m.title}</h3>
-          <div class="meta mb-2">${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'}</div>
-          <div class="d-flex flex-wrap gap-1 mb-3">
+          <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
+          <div class="meta mb-1">
+            ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • `:''}
+            ${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'}
+            ${doiLink ? ` • <a href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
+          </div>
+          <div class="d-flex flex-wrap gap-1 mb-2">
             ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
           </div>
+          ${abstract ? `<p class="small mb-2">${shortAbs}</p>`:''}
           <div class="d-flex gap-2">
-            ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
-            ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Code</a>`:''}
+            ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Access paper</a>`:''}
+            ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Access code</a>`:''}
           </div>
         </div>
       </div>`;
     grid.appendChild(el);
   });
 }
+
 
 /* ---------------------------
    Wire up controls
@@ -457,17 +476,23 @@ async function loadModels(){
     const raw = Array.isArray(payload) ? payload : (Array.isArray(payload.models) ? payload.models : []);
 
     // minimal coercion/validation
-    MODELS = raw.map(m=>({
-      id: m.id || crypto.randomUUID(),
-      title: m.title || 'Untitled',
-      year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
-      modalities: Array.isArray(m.modalities) ? m.modalities : (m.modalities ? [m.modalities] : []),
-      tasks: Array.isArray(m.tasks) ? m.tasks : (m.tasks ? [m.tasks] : []),
-      license: m.license || '',
-      paper_url: m.paper_url || '',
-      code_url: m.code_url || '',
-      icon: m.icon || ''
-    }));
+	MODELS = raw.map(m=>({
+	  id: m.id || crypto.randomUUID(),
+	  title: m.title || 'Untitled',
+	  year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
+	  modalities: Array.isArray(m.modalities) ? m.modalities : (m.modalities ? [m.modalities] : []),
+	  tasks: Array.isArray(m.tasks) ? m.tasks : (m.tasks ? [m.tasks] : []),
+	  license: m.license || '',
+	  authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
+	  abstract: m.abstract || '',
+	  doi: m.doi || '',
+	  paper_url: m.paper_url || '',
+	  code_url: m.code_url || '',
+	  // prefer per-paper PNG thumbnail in assets/img/models
+	  thumbnail: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : ''),
+	  icon: m.icon || ''
+	}));
+
 
     byId('yearNow').textContent = new Date().getFullYear();
     buildFacets();

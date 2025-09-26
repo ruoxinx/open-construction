@@ -2,23 +2,29 @@
   {
     "id": "oc-safety-clip",
     "title": "OC-Safety-CLIP: Contrastive Pretraining for PPE and Hazard Awareness in Construction",
+    "authors": ["Ruoxin Xiong", "Pingbo Tang", "Yanyu Wang"],
+    "abstract": "We propose a CLIP-style contrastive pretraining pipeline for PPE and hazard awareness on construction imagery...",
     "year": 2023,
     "modalities": ["image"],
     "tasks": ["PPE detection", "hazard recognition"],
     "license": "Apache-2.0",
-    "paper_url": "#",
-    "code_url": "#",
-    "icon": "assets/img/model-icons/clip.png"
+    "doi": "10.1145/xxxxxx",
+    "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
+    "code_url": "https://github.com/ruoxinx/OC-Safety-CLIP",
+    "thumbnail": "assets/img/models/oc-safety-clip.png"
   },
   {
-    "id": "oc-bim-llm",
+    "id": "bim-llm",
     "title": "BIM-LLM: Instruction-tuned LLM for Quantity Takeoff and RFI Drafting",
+    "authors": ["First Last", "Second Last"],
+    "abstract": "An instruction-tuned LLM that supports quantity takeoff and RFI drafting across typical CM workflows...",
     "year": 2024,
     "modalities": ["text"],
     "tasks": ["quantity takeoff", "document QA", "RFI drafting"],
     "license": "CC BY-NC 4.0",
-    "paper_url": "#",
-    "code_url": "#",
-    "icon": "assets/img/model-icons/llm.png"
+    "doi": "https://doi.org/10.48550/arXiv.xxxxxxx",
+    "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
+    "code_url": "https://github.com/org/bim-llm",
+    "thumbnail": "assets/img/models/bim-llm.png"
   }
 ]
