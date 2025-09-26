@@ -1928,7 +1928,7 @@
     ],
     "license": "Not Specified",
     "paper": "Machine vision-based technology for the interface classification of precast concrete components",
-    "access": "https://github.com/wzzzzzzzzy/CTR-dataset",
+    "access": "https://github.com/wzzzzzzzzy/CTR-dataset/tree/master",
     "id": "CTR",
     "image_url": "assets/img/datasets/CTR.png",
 	"added_date": "2025-09-22"
