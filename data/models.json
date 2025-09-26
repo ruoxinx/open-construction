@@ -6,8 +6,8 @@
     "modalities": ["image"],
     "tasks": ["PPE detection", "hazard recognition"],
     "license": "Apache-2.0",
-    "paper_url": "https://example.org/paper",
-    "code_url": "https://github.com/org/oc-safety-clip",
+    "paper_url": "#",
+    "code_url": "#",
     "icon": "assets/img/model-icons/clip.png"
   },
   {
@@ -17,8 +17,8 @@
     "modalities": ["text"],
     "tasks": ["quantity takeoff", "document QA", "RFI drafting"],
     "license": "CC BY-NC 4.0",
-    "paper_url": "https://example.org/paper",
-    "code_url": "https://github.com/org/bim-llm",
+    "paper_url": "#",
+    "code_url": "#",
     "icon": "assets/img/model-icons/llm.png"
   }
 ]

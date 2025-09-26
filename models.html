@@ -96,6 +96,10 @@
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
     .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
     @keyframes shimmer{to{transform:translateX(100%)}}
+
+    /* Floating button: Add New Model */
+    .issue-btn { position: fixed; bottom: 20px; right: 20px; z-index: 1050; background: #0d6efd; color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: .9rem; box-shadow: 0 4px 12px rgba(0,0,0,.25); text-decoration: none; transition: background .2s ease, transform .2s ease; }
+    .issue-btn:hover { background: #0b5ed7; transform: translateY(-2px); color: #fff; text-decoration: none; }
   </style>
 </head>
 <body>
@@ -126,7 +130,7 @@
         <li class="nav-item"><a class="nav-link plain active" href="models.html" aria-current="page">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Models" target="_blank" rel="noopener"
              aria-label="OpenConstruction GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
               2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
@@ -219,6 +223,7 @@
       </div>
 
       <div id="emptyState" class="empty mt-3 d-none">No models match your filters. Try clearing some filters or changing the search.</div>
+      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load models.json. Please check the file path and JSON format.</div>
     </section>
   </div>
 </main>
@@ -231,54 +236,10 @@
 
 <script>
 /* ---------------------------
-   Inline MODEL METADATA (swap to JSON later)
+   DATA SOURCE (JSON instead of inline)
 --------------------------- */
-const MODELS = [
-  {
-    id:"oc-safety-clip",
-    title:"OC-Safety-CLIP: Contrastive Pretraining for PPE and Hazard Awareness in Construction",
-    year:2023,
-    modalities:["image"],
-    tasks:["PPE detection","hazard recognition"],
-    license:"Apache-2.0",
-    paper_url:"#",
-    code_url:"#",
-    icon:"assets/img/model-icons/clip.png"
-  },
-  {
-    id:"oc-bim-llm",
-    title:"BIM-LLM: Instruction-tuned LLM for Quantity Takeoff and RFI Drafting",
-    year:2024,
-    modalities:["text"],
-    tasks:["quantity takeoff","document QA","RFI drafting"],
-    license:"CC BY-NC 4.0",
-    paper_url:"#",
-    code_url:"#",
-    icon:"assets/img/model-icons/llm.png"
-  },
-  {
-    id:"transformer-xl",
-    title:"Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context",
-    year:2019,
-    modalities:["text"],
-    tasks:["language modelling"],
-    license:"MIT",
-    paper_url:"https://arxiv.org/abs/1901.02860",
-    code_url:"https://github.com/kimiyoung/transformer-xl",
-    icon:"assets/img/model-icons/txl.png"
-  },
-  {
-    id:"multimodal-progress",
-    title:"MultiModal-Progress: Vision+Text Model for Progress Estimation from Photos and Logs",
-    year:2022,
-    modalities:["image","text"],
-    tasks:["progress tracking"],
-    license:"Apache-2.0",
-    paper_url:"#",
-    code_url:"#",
-    icon:"assets/img/model-icons/multimodal.png"
-  }
-];
+const DATA_URL = 'assets/models.json'; // place your models.json here
+let MODELS = [];
 
 /* ---- Fallback icon (inline SVG) ---- */
 const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
@@ -469,7 +430,7 @@ function attachFacetHandlers(){
 const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
       track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
 function updateTrack(){
-  const minYear = +rmin.min, maxYear = +rmax.max;
+  const minYear = +rmin.min || 2005, maxYear = +rmax.max || new Date().getFullYear();
   const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
   const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
   const left = ((a - minYear) / (maxYear - minYear)) * 100;
@@ -484,13 +445,47 @@ function updateTrack(){
   rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
 });
 
-/* ---------- Init ---------- */
-(function init(){
-  byId('yearNow').textContent = new Date().getFullYear();
-  buildFacets();
-  attachFacetHandlers();
-  applyFilters();
-})();
+/* ---------- Load JSON + Init ---------- */
+async function loadModels(){
+  const grid = byId('modelGrid');
+  const errorBox = byId('errorState');
+  try{
+    // Cache-bust while developing; you can remove the query param once stable
+    const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    const raw = Array.isArray(payload) ? payload : (Array.isArray(payload.models) ? payload.models : []);
+
+    // minimal coercion/validation
+    MODELS = raw.map(m=>({
+      id: m.id || crypto.randomUUID(),
+      title: m.title || 'Untitled',
+      year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
+      modalities: Array.isArray(m.modalities) ? m.modalities : (m.modalities ? [m.modalities] : []),
+      tasks: Array.isArray(m.tasks) ? m.tasks : (m.tasks ? [m.tasks] : []),
+      license: m.license || '',
+      paper_url: m.paper_url || '',
+      code_url: m.code_url || '',
+      icon: m.icon || ''
+    }));
+
+    byId('yearNow').textContent = new Date().getFullYear();
+    buildFacets();
+    attachFacetHandlers();
+    applyFilters();
+  }catch(err){
+    console.error('Failed to load models.json', err);
+    grid.innerHTML = '';
+    errorBox.classList.remove('d-none');
+  }
+}
+
+// Kickoff once DOM is ready
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', loadModels);
+}else{
+  loadModels();
+}
 </script>
 
 <!-- (Optional) Supabase visit logger (kept consistent with index) -->
@@ -513,38 +508,11 @@ function updateTrack(){
 })();
 </script>
 
-<!-- Floating button: Add New Dataset -->
+<!-- Floating button: Add New Model -->
 <a href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml"
    class="issue-btn" target="_blank" rel="noopener">
    Add New Model
 </a>
-
-<style>
-  .issue-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1050;
-    background: #0d6efd; /* Bootstrap blue */
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: .9rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25);
-    text-decoration: none;
-    transition: background .2s ease, transform .2s ease;
-  }
-  .issue-btn:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
-    color: #fff;
-    text-decoration: none;
-  }
-</style>
-
-
-
 
 </body>
 </html>
