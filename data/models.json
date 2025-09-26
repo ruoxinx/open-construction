@@ -58,5 +58,20 @@
     "code_url": "https://github.com/ruoxinx/site-dust-detect",
     "thumbnail": "assets/img/models/CDE.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "CPPE",
+    "title": "Pose guided anchoring for detecting proper use of personal protective equipment",
+    "authors": ["Ruoxin Xiong", "Pingbo Tang"],
+    "abstract": "Ensuring proper use of personal protective equipment (PPE) is essential for improving workplace safety management. The authors present an extensible pose-guided anchoring framework aimed at multi-class PPE compliance detection. The overall approach harnesses a pose estimator to detect worker body parts as spatial anchors and guide the localization of part attention regions using body-knowledge-based rules considering workers' orientations and object scales. Specifically, “part attention regions” are local image patches expecting PPEs based on their inherent relationships with body parts, e.g., (head, hardhat) and (upper-body, vest). Finally, the shallow CNN-based classifiers can reliably recognize both PPE and non-PPE classes within their corresponding part attention regions. Quantitative evaluations tested on the developed construction personal protective equipment dataset (CPPE) show an overall 0.97 and 0.95 F1-score for hardhat and safety vest detection, respectively. Comparative studies with existing methods also demonstrate the higher detection accuracy and advantageous extensibility of the proposed strategy.",
+    "year": 2021,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2021.103828",
+    "code_url": "https://github.com/ruoxinx/PPE-Detection-Pose",
+    "thumbnail": "assets/img/models/CPPE.png",
+	"added_date": "2025-09-26"
   }
 ]
