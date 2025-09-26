@@ -472,7 +472,7 @@
     ],
     "geographical_location": "Japan",
     "potential_tasks": [
-      "Simultaneous Localization and Mapping"
+      "Simultaneous localization and mapping"
     ],
     "license": "GPL-3.0",
     "paper": "Stereo camera visual SLAM with hierarchical masking and motion-state classification at outdoor construction sites containing large dynamic objects",
