@@ -122,6 +122,13 @@
 
     /* Hide any legacy class-count spans inside labels */
     #filter-classes .form-check-label .text-muted{ display:none !important }
+
+    /* ---------- Added date pill (same style as models.html) ---------- */
+    .added-note{
+      align-self:center; color:#5f6b77; background:#eff3f6;
+      border:1px solid var(--oc-border); font-weight:600;
+      border-radius:999px; padding:.2rem .6rem; font-size:.78rem
+    }
   </style>
 </head>
 <body>
@@ -147,9 +154,9 @@
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <!-- Clean bold links -->
         <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="dataset.html" aria-current="page">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
 
         <!-- GitHub icon-only link -->
         <li class="nav-item">
@@ -257,13 +264,12 @@
 
       <!-- Grid -->
       <div id="datasetGrid" class="row g-3" aria-live="polite" aria-busy="true">
-        <!-- Optional skeleton tiles while loading; your JS can replace/remove -->
         <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
         <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
         <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
       </div>
 
-      <!-- Empty state your JS can toggle -->
+      <!-- Empty state -->
       <div id="emptyState" class="empty mt-3 d-none">No datasets match your filters. Try clearing some filters or changing the search.</div>
     </section>
   </div>
@@ -324,7 +330,7 @@
   })();
 </script>
 
-<!-- Auto-active current nav link (adds aria-current + .active) -->
+<!-- Auto-active current nav link -->
 <script>
   (function(){
     var current = location.pathname.split('/').pop() || 'index.html';
@@ -416,5 +422,79 @@
     text-decoration: none;
   }
 </style>
+
+<!-- Minimal, safe loader (correct path + JSON guard) -->
+<script>
+(async function(){
+  const GRID = document.getElementById('datasetGrid');
+  const COUNT = document.getElementById('resultCount');
+  const EMPTY = document.getElementById('emptyState');
+
+  function clearSkeleton(){
+    GRID.innerHTML = '';
+  }
+
+  try{
+    // FIX #1: correct path (avoid 404 -> HTML -> JSON parse error)
+    const res = await fetch('data/datasets.json', { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP '+res.status+' fetching data/datasets.json');
+
+    // Guard: if server serves HTML by mistake, bail early with readable error
+    const ct = res.headers.get('content-type') || '';
+    if(!ct.toLowerCase().includes('application/json')){
+      const text = await res.text();
+      throw new Error('Expected JSON but got: '+ct+'; first chars: '+text.slice(0,60));
+    }
+
+    const data = await res.json();
+    const rows = Array.isArray(data) ? data : Object.values(data || {});
+    clearSkeleton();
+
+    if(!rows.length){
+      EMPTY.classList.remove('d-none');
+      COUNT.textContent = '0';
+      return;
+    }
+
+    rows.forEach(d=>{
+      const doiLink = d.doi ? (String(d.doi).startsWith('http') ? d.doi : `https://doi.org/${d.doi}`) : '';
+      GRID.insertAdjacentHTML('beforeend', `
+        <div class="col-md-6 col-xl-4">
+          <div class="dataset-card h-100 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column">
+              <div class="title">${d.name || 'Untitled'}</div>
+              <div class="meta mb-1">
+                ${(d.authors && Array.isArray(d.authors) ? d.authors.join(', ') : (d.authors || ''))}
+                ${d.year ? ' • '+d.year : ''}
+              </div>
+              ${d.abstract ? `<p class="small flex-grow-1">${d.abstract}</p>` : `<div class="small flex-grow-1 text-muted"></div>`}
+              <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+                ${d.paper_url ? `<a class="btn btn-sm btn-primary" href="${d.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
+                ${d.access ? `<a class="btn btn-sm btn-outline-secondary" href="${d.access}" target="_blank" rel="noopener">Access</a>`:''}
+                ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
+                ${d.added_date ? `<span class="added-note ms-auto">Added ${d.added_date}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `);
+    });
+
+    COUNT.textContent = rows.length;
+    EMPTY.classList.add('d-none');
+
+  }catch(err){
+    console.error('Failed to load datasets:', err);
+    clearSkeleton();
+    GRID.insertAdjacentHTML('beforeend',
+      `<div class="col-12"><div class="empty text-danger">
+        Failed to load <code>data/datasets.json</code>. ${err.message}
+      </div></div>`);
+    COUNT.textContent = '0';
+    EMPTY.classList.add('d-none');
+  }
+})();
+</script>
+
 </body>
 </html>
