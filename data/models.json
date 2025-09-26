@@ -37,7 +37,7 @@
     "year": 2021,
     "modalities": ["Ground RGB"],
     "tasks": ["Simultaneous localization and mapping"],
-	"applications": ["Site navigation"],
+	"applications": ["Site mapping/navigation"],
     "license": "GPL-3.0",
     "paper_url": "https://doi.org/10.1080/01691864.2020.1869586",
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
