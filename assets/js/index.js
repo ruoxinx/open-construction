@@ -364,7 +364,8 @@ function sortAndRender(){
     name: d=>(d.name||'').toLowerCase(),
     year: d=> d.year ?? -Infinity,
     images: d=> d.num_images ?? -Infinity,
-    classes: d=> d.num_classes ?? -Infinity
+    classes: d=> d.num_classes ?? -Infinity,
+	added: d=> d.added_ts ?? -Infinity
   }[field] || (d=> d.year ?? -Infinity);
   LIST.sort((a,b)=> (key(a)<key(b)?(desc?1:-1):(key(a)>key(b)?(desc?-1:1):0)));
   renderGrid();
@@ -400,6 +401,7 @@ function cardHTML(ds){
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
           <a class="btn btn-sm btn-primary" href="datasets/detail.html?id=${slug}">View details</a>
+		  ${ds.added_date ? `<span class="badge text-bg-light ms-auto">Added ${ds.added_date}</span>` : ''}
         </div>
       </div>
     </div>
@@ -436,6 +438,13 @@ async function init(){
 
   const raw = await fetchDatasets();
   ALL = raw;
+  
+  Object.values(ALL).forEach(ds=>{
+  const added = ds.added_date || ds.added || null;
+  ds.added_date = added || null;
+  ds.added_ts = added ? Date.parse(added) : null;
+});
+
 
   canonicalizeAllDatasets();
 
