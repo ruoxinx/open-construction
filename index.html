@@ -182,31 +182,38 @@
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       Hero Metrics (circles)
-       ============================== */
-    .metrics{
-      display:flex; gap:1rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.1rem 0 .35rem;
-    }
-    .metric{
-      display:flex; gap:.8rem; align-items:center;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid var(--oc-border);
-      border-radius:999px; padding:.5rem .8rem; box-shadow:var(--oc-shadow);
-    }
-    .metric svg{ width:44px; height:44px; }
-    .metric .label{
-      display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
-    }
-    .metric .value{
-      font-weight:800; color:var(--oc-brand-ink);
-      font-size:1.1rem; min-width:1.5ch;
-    }
-    .metric .name{
-      font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
-    }
-    .metric .ring-bg{ stroke:#e7edf3; }
-    .metric .ring-val{ stroke:var(--oc-brand-accent); transition:stroke-dashoffset .9s ease; }
+   Hero Metrics (circles)
+   ============================== */
+	.metrics{
+	  display:flex; gap:1.1rem; justify-content:center; align-items:center;
+	  flex-wrap:wrap; margin:1.1rem 0 .35rem;
+	}
+	.metric{
+	  display:flex; gap:1rem; align-items:center;
+	  background:linear-gradient(180deg,#ffffff,#fbfdff);
+	  /* removed border */
+	  border:none;
+	  border-radius:999px;
+	  /* slightly beefier shadow to compensate for no border */
+	  box-shadow:0 10px 28px rgba(15,46,75,.10);
+	  padding:.65rem 1rem;
+	}
+	.metric svg{ width:60px; height:60px; }        /* 👈 enlarge animation */
+	.metric .label{
+	  display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
+	}
+	.metric .value{
+	  font-weight:800; color:var(--oc-brand-ink);
+	  font-size:1.2rem; min-width:1.5ch;
+	}
+	.metric .name{
+	  font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
+	}
+
+	/* make the donut strokes a bit bolder for the larger size */
+	.metric .ring-bg{ stroke:#e7edf3; stroke-width:5; }
+	.metric .ring-val{ stroke:var(--oc-brand-accent); stroke-width:5; transition:stroke-dashoffset .9s ease; }
+
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
