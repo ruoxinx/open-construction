@@ -131,7 +131,7 @@
     .btn-link.toggle { padding:0; font-weight:600; text-decoration:none; font-size:.875rem; }
     .abstract-toggle-wrap { text-align:right; }
 
-    /* Added date “note” */
+    /* Added date note */
     .added-note{
       align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
       font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
@@ -217,11 +217,17 @@
             <div id="filter-task" class="facet-list"></div>
           </div>
 
-          <!-- NEW: Applications facet (after tasks) -->
+          <!-- Applications facet (after Tasks) -->
           <div class="mb-3">
             <label class="form-label" for="appSearch">Applications</label>
             <input id="appSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search applications…">
             <div id="filter-app" class="facet-list"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="licenseSearch">Licenses</label>
+            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
+            <div id="filter-license" class="facet-list"></div>
           </div>
 
           <div class="mb-1">
@@ -333,32 +339,46 @@ const state = {
 function buildFacets(){
   // Modalities
   const modVals = uniqSorted(MODELS.flatMap(m=>m.modalities||[]));
-  const modWrap = byId('filter-modality'); modWrap.innerHTML='';
-  modVals.forEach((m,i)=> modWrap.appendChild(makeCheckbox('m_'+i, m, m)));
+  const modWrap = byId('filter-modality'); 
+  if (modWrap) {
+    modWrap.innerHTML='';
+    modVals.forEach((m,i)=> modWrap.appendChild(makeCheckbox('m_'+i, m, m)));
+  }
 
   // Tasks
   const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
-  const taskWrap = byId('filter-task'); taskWrap.innerHTML='';
-  taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+  const taskWrap = byId('filter-task'); 
+  if (taskWrap) {
+    taskWrap.innerHTML='';
+    taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+  }
 
-  // Applications (NEW)
+  // Applications
   const appVals = uniqSorted(MODELS.flatMap(m=>m.applications||[]));
-  const appWrap = byId('filter-app'); appWrap.innerHTML='';
-  appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
+  const appWrap = byId('filter-app'); 
+  if (appWrap) {
+    appWrap.innerHTML='';
+    appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
+  }
 
   // Licenses
   const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
-  const licWrap = byId('filter-license'); licWrap.innerHTML='';
-  licVals.forEach((l,i)=> licWrap.appendChild(makeCheckbox('l_'+i, l, l)));
+  const licWrap = byId('filter-license'); 
+  if (licWrap) {
+    licWrap.innerHTML='';
+    licVals.forEach((l,i)=> licWrap.appendChild(makeCheckbox('l_'+i, l, l)));
+  }
 
   // Year range
   const [minY, maxY] = yearExtent(MODELS);
   const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax');
-  rmin.min = rmax.min = String(minY);
-  rmin.max = rmax.max = String(maxY);
-  rmin.value = String(minY); rmax.value = String(maxY);
-  state.yMin = minY; state.yMax = maxY;
-  updateTrack();
+  if (rmin && rmax) {
+    rmin.min = rmax.min = String(minY);
+    rmin.max = rmax.max = String(maxY);
+    rmin.value = String(minY); rmax.value = String(maxY);
+    state.yMin = minY; state.yMax = maxY;
+    updateTrack();
+  }
 }
 
 /* ---------------------------
@@ -511,36 +531,49 @@ document.addEventListener('click', (e)=>{
 --------------------------- */
 function readFacet(containerId, setRef){
   setRef.clear();
-  byId(containerId).querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
+  const root = byId(containerId);
+  if(!root) return;
+  root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
 }
 function attachFacetHandlers(){
   // Modalities
-  byId('filter-modality').addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
-  // Tasks (with search)
-  byId('filter-task').addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
-  byId('taskSearch').addEventListener('input', debounce(e=>{
+  const modEl = byId('filter-modality');
+  if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
+
+  // Tasks
+  const taskEl = byId('filter-task');
+  if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
+  const taskSearch = byId('taskSearch');
+  if (taskSearch) taskSearch.addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
-    byId('filter-task').querySelectorAll('.form-check').forEach(w=>{
+    const root = byId('filter-task'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
       const label = w.querySelector('label').textContent.toLowerCase();
       w.style.display = label.includes(q)?'':'none';
     });
   }, 120));
 
-  // Applications (with search)
-  byId('filter-app').addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
-  byId('appSearch').addEventListener('input', debounce(e=>{
+  // Applications
+  const appEl = byId('filter-app');
+  if (appEl) appEl.addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
+  const appSearch = byId('appSearch');
+  if (appSearch) appSearch.addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
-    byId('filter-app').querySelectorAll('.form-check').forEach(w=>{
+    const root = byId('filter-app'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
       const label = w.querySelector('label').textContent.toLowerCase();
       w.style.display = label.includes(q)?'':'none';
     });
   }, 120));
 
   // Licenses
-  byId('filter-license').addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
-  byId('licenseSearch').addEventListener('input', debounce(e=>{
+  const licEl = byId('filter-license');
+  if (licEl) licEl.addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
+  const licenseSearch = byId('licenseSearch');
+  if (licenseSearch) licenseSearch.addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
-    byId('filter-license').querySelectorAll('.form-check').forEach(w=>{
+    const root = byId('filter-license'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
       const label = w.querySelector('label').textContent.toLowerCase();
       w.style.display = label.includes(q)?'':'none';
     });
@@ -570,13 +603,15 @@ function attachFacetHandlers(){
   })();
 
   // Sort
-  byId('sortBy').addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
+  const sortSel = byId('sortBy');
+  if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
 }
 
 /* ---------- Year selected track bar ---------- */
 const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
       track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
 function updateTrack(){
+  if(!rmin || !rmax || !track || !minVal || !maxVal) return;
   const minYear = +rmin.min || 2005, maxYear = +rmax.max || new Date().getFullYear();
   const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
   const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
@@ -588,8 +623,8 @@ function updateTrack(){
   state.yMin = a; state.yMax = b;
 }
 ['input','change'].forEach(ev=>{
-  rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
-  rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+  if(rmin) rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+  if(rmax) rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
 });
 
 /* ---------- Load JSON + Init ---------- */
@@ -600,7 +635,9 @@ async function loadModels(){
     const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
-    const raw = Array.isArray(payload) ? payload : (Array.isArray(payload.models) ? payload.models : (typeof payload==='object' ? Object.values(payload) : []));
+    const raw = Array.isArray(payload) ? payload
+              : (Array.isArray(payload.models) ? payload.models
+              : (typeof payload==='object' ? Object.values(payload) : []));
 
     // Coercion/validation (supports added_date + applications + legacy keys)
     MODELS = raw.map(m=>{
@@ -629,14 +666,14 @@ async function loadModels(){
       };
     });
 
-    byId('yearNow').textContent = new Date().getFullYear();
+    const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
     buildFacets();
     attachFacetHandlers();
     applyFilters();
   }catch(err){
     console.error('Failed to load models.json', err);
-    grid.innerHTML = '';
-    errorBox.classList.remove('d-none');
+    if (grid) grid.innerHTML = '';
+    if (errorBox) errorBox.classList.remove('d-none');
   }
 }
 
