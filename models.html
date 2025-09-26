@@ -166,7 +166,7 @@
         <li class="nav-item"><a class="nav-link plain active" href="models.html" aria-current="page">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Models" target="_blank" rel="noopener"
              aria-label="OpenConstruction GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
               2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
@@ -326,6 +326,13 @@ function fmtDate(d){
     return `${y}-${m}-${day}`;
   } catch { return null; }
 }
+/* Escape helper for safe innerHTML text insertion */
+function esc(s){
+  return String(s)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;');
+}
 
 /* ---------------------------
    State + facets
@@ -443,6 +450,10 @@ function render(items){
 
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
 
+    /* NEW: escape once, and use innerHTML later so <strong> persists */
+    const safeFull  = esc(abstract);
+    const safeShort = esc(shortAbs);
+
     const el = document.createElement('div');
     el.className = 'paper-card';
     el.innerHTML = `
@@ -467,10 +478,10 @@ function render(items){
           <!-- Abstract -->
           ${abstract ? `
             <p class="small mb-2 abstract"
-               data-full="${encodeURIComponent('Abstract. ' + abstract)}"
-               data-short="${encodeURIComponent('Abstract. ' + shortAbs)}"
+               data-full="${safeFull}"
+               data-short="${safeShort}"
                data-expanded="false">
-               <span class="abstract-text"><strong>Abstract.</strong> ${shortAbs.replace(/</g,'&lt;')}</span>
+               <span class="abstract-text"><strong>Abstract.</strong> ${safeShort}</span>
                ${isLong ? '<span class="abstract-fade"></span>' : ''}
             </p>
             ${isLong ? `
@@ -497,7 +508,7 @@ function render(items){
   });
 }
 
-/* ---------- Abstract toggle ---------- */
+/* ---------- Abstract toggle (uses innerHTML so <strong> stays bold) ---------- */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.abstract-toggle');
   if(!btn) return;
@@ -509,7 +520,7 @@ document.addEventListener('click', (e)=>{
 
   const expanded = p.getAttribute('data-expanded') === 'true';
   if(expanded){
-    span.textContent = decodeURIComponent(p.getAttribute('data-short')||'');
+    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-short')||''}`;
     p.setAttribute('data-expanded','false');
     btn.textContent = 'Show more';
     btn.setAttribute('aria-expanded','false');
@@ -518,7 +529,7 @@ document.addEventListener('click', (e)=>{
       p.appendChild(fade);
     }
   }else{
-    span.textContent = decodeURIComponent(p.getAttribute('data-full')||'');
+    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-full')||''}`;
     p.setAttribute('data-expanded','true');
     btn.textContent = 'Show less';
     btn.setAttribute('aria-expanded','true');
