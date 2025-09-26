@@ -15,6 +15,15 @@
       --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
+
+      /* Tag hues (subtle but clearer) */
+      --tag-task-bg:#eef5ff;        /* light blue */
+      --tag-task-border:#cfe2ff;
+      --tag-task-text:#0b4ea2;
+
+      --tag-app-bg:#edf8f2;         /* light green */
+      --tag-app-border:#cfe9db;
+      --tag-app-text:#106946;
     }
     html,body{background:var(--oc-bg); color:var(--oc-text)}
     a{color:var(--oc-link)}
@@ -91,10 +100,17 @@
 
     .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
     .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
-    .badge-soft{background:var(--oc-muted);border:1px solid var(--oc-border);color:var(--oc-text);font-weight:600}
 
-    /* Applications tags – a touch denser */
-    .badge-app { background:#f0f2f5; border:1px solid var(--oc-border); font-weight:600 }
+    /* Tag styling (compact) */
+    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
+    .badge-task{
+      background:var(--tag-task-bg); border:1px solid var(--tag-task-border); color:var(--tag-task-text);
+      font-weight:600; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
+    }
+    .badge-app{
+      background:var(--tag-app-bg); border:1px solid var(--tag-app-border); color:var(--tag-app-text);
+      font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
+    }
 
     .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
@@ -201,10 +217,11 @@
             <div id="filter-task" class="facet-list"></div>
           </div>
 
+          <!-- NEW: Applications facet (after tasks) -->
           <div class="mb-3">
-            <label class="form-label" for="licenseSearch">Licenses</label>
-            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
-            <div id="filter-license" class="facet-list"></div>
+            <label class="form-label" for="appSearch">Applications</label>
+            <input id="appSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search applications…">
+            <div id="filter-app" class="facet-list"></div>
           </div>
 
           <div class="mb-1">
@@ -260,7 +277,7 @@
 /* ---------------------------
    DATA SOURCE
 --------------------------- */
-const DATA_URL = 'data/models.json'; // place your models.json here
+const DATA_URL = 'data/models.json';
 let MODELS = [];
 
 /* ---- Thumbnails & placeholders ---- */
@@ -309,7 +326,7 @@ function fmtDate(d){
 --------------------------- */
 const state = {
   q: '', sort: 'added-desc',
-  tasks: new Set(), modalities: new Set(), licenses: new Set(),
+  tasks: new Set(), applications: new Set(), modalities: new Set(), licenses: new Set(),
   yMin: null, yMax: null
 };
 
@@ -323,6 +340,11 @@ function buildFacets(){
   const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
   const taskWrap = byId('filter-task'); taskWrap.innerHTML='';
   taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+
+  // Applications (NEW)
+  const appVals = uniqSorted(MODELS.flatMap(m=>m.applications||[]));
+  const appWrap = byId('filter-app'); appWrap.innerHTML='';
+  appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
 
   // Licenses
   const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
@@ -347,14 +369,18 @@ function applyFilters(){
 
   let rows = MODELS.filter(m=>{
     const text = [
-      m.title, (m.tasks||[]).join(' '), (m.modalities||[]).join(' '), m.license,
-      (m.abstract||''), (m.applications||[]).join(' ')
+      m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '), (m.modalities||[]).join(' '),
+      m.license, (m.abstract||'')
     ].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
 
     if(state.tasks.size){
       const set = new Set(m.tasks||[]);
       for(const t of state.tasks){ if(!set.has(t)) return false; }
+    }
+    if(state.applications.size){
+      const set = new Set(m.applications||[]);
+      for(const a of state.applications){ if(!set.has(a)) return false; }
     }
     if(state.modalities.size){
       const set = new Set(m.modalities||[]);
@@ -412,16 +438,11 @@ function render(items){
             ${m.year || '—'}
           </div>
 
-          <!-- Tasks -->
-          <div class="d-flex flex-wrap gap-1 mb-1">
-            ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
+          <!-- Compact combined tag row -->
+          <div class="tag-row">
+            ${(m.tasks||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
+            ${(m.applications||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
           </div>
-
-          <!-- Applications -->
-          ${(m.applications && m.applications.length) ? `
-          <div class="d-flex flex-wrap gap-1 mb-2">
-            ${(m.applications||[]).map(a=>`<span class="badge badge-app rounded-pill px-2 py-1">${a}</span>`).join('')}
-          </div>` : ''}
 
           <!-- Abstract -->
           ${abstract ? `
@@ -456,7 +477,7 @@ function render(items){
   });
 }
 
-/* ---------- Abstract toggle (event delegation) ---------- */
+/* ---------- Abstract toggle ---------- */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.abstract-toggle');
   if(!btn) return;
@@ -468,7 +489,6 @@ document.addEventListener('click', (e)=>{
 
   const expanded = p.getAttribute('data-expanded') === 'true';
   if(expanded){
-    // collapse
     span.textContent = decodeURIComponent(p.getAttribute('data-short')||'');
     p.setAttribute('data-expanded','false');
     btn.textContent = 'Show more';
@@ -478,7 +498,6 @@ document.addEventListener('click', (e)=>{
       p.appendChild(fade);
     }
   }else{
-    // expand
     span.textContent = decodeURIComponent(p.getAttribute('data-full')||'');
     p.setAttribute('data-expanded','true');
     btn.textContent = 'Show less';
@@ -506,6 +525,17 @@ function attachFacetHandlers(){
       w.style.display = label.includes(q)?'':'none';
     });
   }, 120));
+
+  // Applications (with search)
+  byId('filter-app').addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
+  byId('appSearch').addEventListener('input', debounce(e=>{
+    const q = e.target.value.toLowerCase();
+    byId('filter-app').querySelectorAll('.form-check').forEach(w=>{
+      const label = w.querySelector('label').textContent.toLowerCase();
+      w.style.display = label.includes(q)?'':'none';
+    });
+  }, 120));
+
   // Licenses
   byId('filter-license').addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
   byId('licenseSearch').addEventListener('input', debounce(e=>{
@@ -525,10 +555,9 @@ function attachFacetHandlers(){
     heroInput.addEventListener('input', updateQ);
   }
 
-  // Docked search show/hide (same style as index) with hysteresis
+  // Docked search show/hide
   (function(){
-    const SHOW_AT = 220;   // show navbar search after this
-    const HIDE_AT = 160;   // hide when scrolling back above this
+    const SHOW_AT = 220, HIDE_AT = 160;
     let docked = false;
     function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
     function onScroll(){
@@ -573,9 +602,9 @@ async function loadModels(){
     const payload = await res.json();
     const raw = Array.isArray(payload) ? payload : (Array.isArray(payload.models) ? payload.models : (typeof payload==='object' ? Object.values(payload) : []));
 
-    // minimal coercion/validation (now supports added_date + applications)
+    // Coercion/validation (supports added_date + applications + legacy keys)
     MODELS = raw.map(m=>{
-      const added = m.added_date || m.added || null;  // support either key
+      const added = m.added_date || m.added || null;
       const added_ts = added ? Date.parse(added) : null;
       return {
         id: m.id || crypto.randomUUID(),
@@ -617,26 +646,6 @@ if(document.readyState === 'loading'){
 }else{
   loadModels();
 }
-</script>
-
-<!-- (Optional) Supabase visit logger (kept consistent with index) -->
-<script>
-(async function(){
-  const PAGE = 'models';
-  if(!('SUPABASE_URL' in window) || !('SUPABASE_ANON_KEY' in window) || !window.supabase){ return; }
-  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-  async function sha256hex(text){ const enc=new TextEncoder().encode(text); const buf=await crypto.subtle.digest('SHA-256',enc); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
-  function getVisitorId(){ const k='oc_visitor_id'; let v=localStorage.getItem(k); if(!v){ v=(crypto.randomUUID?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2))); localStorage.setItem(k,v);} return v; }
-  async function getGeo(){ try{ const g=await fetch('https://get.geojs.io/v1/ip/geo.json',{cache:'no-store'}).then(r=>r.json()); if(g&&g.latitude&&g.longitude) return { ip:g.ip||null, lat:+g.latitude, lon:+g.longitude, city:g.city||null, region:g.region||null, country:g.country||null }; }catch(e){} return null; }
-  try{
-    const geo=await getGeo(); const base=geo?.ip?geo.ip:('vid:'+getVisitorId()); const ip_hash=await sha256hex(base);
-    const payload={page:PAGE, ip_hash, city:geo?.city||null, region:geo?.region||null, country:geo?.country||null,
-      lat:(geo&&typeof geo.lat==='number')?geo.lat:null, lon:(geo&&typeof geo.lon==='number')?geo.lon:null,
-      ua:navigator.userAgent, referrer: document.referrer||null};
-    const { error } = await sb.from('visits').insert(payload);
-    if(error) console.error('insert error', error);
-  }catch(e){ console.error('logger failed', e); }
-})();
 </script>
 
 <!-- Floating button: Add New Model -->
