@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
+    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
       --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
@@ -18,66 +19,83 @@
     html,body{background:var(--oc-bg); color:var(--oc-text)}
     a{color:var(--oc-link)}
 
+    /* ---------- Navbar (match index.html) ---------- */
     .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
     .oc-logo{height:44px;width:44px}
+    .brand-wordmark{
+      display:inline-flex;gap:.25rem;align-items:baseline;
+      color:#0F2E4B;font-weight:700;letter-spacing:.1px;
+      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)
+    }
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
     .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
-    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
-    .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{
+      color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px
+    }
+    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
+    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
     .nav-link.icon-only:hover svg{opacity:1}
 
-    /* Docked search */
-    .navbar-search{display:none; width: clamp(200px, 24vw, 320px)}
-    .navbar-search .form-control{height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px}
+    /* ---------- Docked search (same as index) ---------- */
+    .navbar-search{display:none;width:clamp(200px,24vw,320px)}
+    .navbar-search .form-control{
+      height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px
+    }
     body.docked .navbar-search{display:flex}
     body.docked #searchDock{display:none}
     @media (min-width: 992px){
-      .navbar .container{display:flex; align-items:center}
+      .navbar .container{display:flex;align-items:center}
       .navbar .navbar-collapse{flex-grow:0}
       .navbar .navbar-search{margin-left:.75rem}
     }
 
+    /* ---------- Hero ---------- */
     header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
-    header.hero .content{ padding:56px 0 36px; text-align:center }
-    header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
-    header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
-    .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
+    header.hero .content{padding:56px 0 36px;text-align:center}
+    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
+    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
+    .search-input{
+      border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;
+      box-shadow:inset 0 1px 0 rgba(15,46,75,.05)
+    }
 
-    /* Filters */
-    .filters{ position:sticky; top:86px; }
-    .facet-list{ max-height: 280px; overflow:auto; border:1px solid var(--oc-border); border-radius:.5rem; padding:.55rem; background:var(--oc-card) }
-    .card .form-label{ font-weight:700 }
-    .range-container{ position:relative; height:36px; margin:.25rem 0 .5rem }
-    .range-container .slider{ position:absolute; left:10px; right:10px; top:14px; height:8px; background:#e9ecef; border-radius:10px }
-    .range-container .range-selected{ position:absolute; top:14px; height:8px; background:#0d6efd; border-radius:10px }
-    .range-container .thumb{ pointer-events:none; position:absolute; height:0; width:100%; -webkit-appearance:none }
+    /* ---------- Filters ---------- */
+    .filters{position:sticky;top:86px}
+    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
+    .card .form-label{font-weight:700}
+    .range-container{position:relative;height:36px;margin:.25rem 0 .5rem}
+    .range-container .slider{position:absolute;left:10px;right:10px;top:14px;height:8px;background:#e9ecef;border-radius:10px}
+    .range-container .range-selected{position:absolute;top:14px;height:8px;background:#0d6efd;border-radius:10px}
+    .range-container .thumb{pointer-events:none;position:absolute;height:0;width:100%;-webkit-appearance:none}
     .range-container .thumb::-webkit-slider-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.12); -webkit-appearance:none
+      pointer-events:all;width:18px;height:18px;border-radius:50%;background:#0d6efd;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12);-webkit-appearance:none
     }
     .range-container .thumb::-moz-range-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff
+      pointer-events:all;width:18px;height:18px;border-radius:50%;background:#0d6efd;border:2px solid #fff
     }
 
-    .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap }
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 
-    /* Paper / Model card */
+    /* ---------- Paper / Model card ---------- */
     .paper-card{
-      background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow); padding:1rem; height:100%
+      background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);padding:1rem;height:100%
     }
     .paper-card .left{
-      width:84px; height:84px; flex:0 0 84px; border-radius:12px; background:#f4f7fb; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid var(--oc-border)
+      width:84px;height:84px;flex:0 0 84px;border-radius:12px;background:#f4f7fb;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
     }
-    .paper-card img{max-width:100%; max-height:100%; object-fit:contain}
-    .paper-card .title{ font-weight:700; color:var(--oc-ink); margin:0 0 .25rem }
-    .paper-card .meta{ font-size:.85rem; color:var(--oc-sub) }
-    .badge-soft{ background:var(--oc-muted); border:1px solid var(--oc-border); color:var(--oc-text); font-weight:600 }
+    .paper-card img{max-width:100%;max-height:100%;object-fit:contain}
+    .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
+    .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
+    .badge-soft{background:var(--oc-muted);border:1px solid var(--oc-border);color:var(--oc-text);font-weight:600}
 
-    .empty{ border:1px dashed var(--oc-border); border-radius:12px; padding:24px; text-align:center; color:var(--oc-sub) }
-    .skeleton{ position:relative; overflow:hidden; background:var(--oc-muted); border-radius:10px; min-height:120px }
-    .skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); animation:shimmer 1.1s infinite; mix-blend-mode:overlay }
-    @keyframes shimmer{ to{ transform:translateX(100%) } }
+    .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
+    .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
+    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
+    @keyframes shimmer{to{transform:translateX(100%)}}
   </style>
 </head>
 <body>
@@ -86,13 +104,13 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
       <span class="brand-wordmark">
         <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
       </span>
     </a>
 
-    <!-- Docked search -->
+    <!-- Docked search (small) -->
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
       <input id="qDock" type="text" class="form-control oc-search" placeholder="Search models, papers, tasks …" aria-label="Search models">
     </form>
@@ -130,11 +148,12 @@
 </nav>
 
 <!-- Hero -->
-<header class="hero" id="hero">
+<header class="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">Models & Papers</h1>
     <p class="lead">Explore open models for construction monitoring and analysis</p>
     <div id="searchDock" class="mt-3">
+      <!-- CENTER search (large) -->
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search models, papers, tasks …" aria-label="Search models large">
     </div>
   </div>
@@ -212,7 +231,7 @@
 
 <script>
 /* ---------------------------
-   1) Sample MODEL METADATA
+   Inline MODEL METADATA (swap to JSON later)
 --------------------------- */
 const MODELS = [
   {
@@ -270,10 +289,9 @@ const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
 );
 
 /* ---------------------------
-   2) Helpers
+   Helpers
 --------------------------- */
 const byId = id => document.getElementById(id);
-
 function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
 function yearExtent(items){
   const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
@@ -286,11 +304,10 @@ function makeCheckbox(id, label, value){
   const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
   wrap.appendChild(input); wrap.appendChild(lab); return wrap;
 }
-/* tiny debounce */
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
 
 /* ---------------------------
-   3) State + facets
+   State + facets
 --------------------------- */
 const state = {
   q: '', sort: 'year-desc',
@@ -325,7 +342,7 @@ function buildFacets(){
 }
 
 /* ---------------------------
-   4) Filter + sort + render
+   Filter + sort + render
 --------------------------- */
 function applyFilters(){
   const q = state.q.trim().toLowerCase();
@@ -364,10 +381,7 @@ function render(items){
   grid.innerHTML = '';
   byId('resultCount').textContent = items.length;
 
-  if(items.length===0){
-    byId('emptyState').classList.remove('d-none');
-    return;
-  }
+  if(items.length===0){ byId('emptyState').classList.remove('d-none'); return; }
   byId('emptyState').classList.add('d-none');
 
   items.forEach(m=>{
@@ -395,7 +409,7 @@ function render(items){
 }
 
 /* ---------------------------
-   5) Wire up controls
+   Wire up controls
 --------------------------- */
 function readFacet(containerId, setRef){
   setRef.clear();
@@ -403,13 +417,9 @@ function readFacet(containerId, setRef){
 }
 function attachFacetHandlers(){
   // Modalities
-  byId('filter-modality').addEventListener('change', ()=>{
-    readFacet('filter-modality', state.modalities); applyFilters();
-  });
+  byId('filter-modality').addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
   // Tasks (with search)
-  byId('filter-task').addEventListener('change', ()=>{
-    readFacet('filter-task', state.tasks); applyFilters();
-  });
+  byId('filter-task').addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
   byId('taskSearch').addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
     byId('filter-task').querySelectorAll('.form-check').forEach(w=>{
@@ -417,10 +427,8 @@ function attachFacetHandlers(){
       w.style.display = label.includes(q)?'':'none';
     });
   }, 120));
-  // Licenses (with search)
-  byId('filter-license').addEventListener('change', ()=>{
-    readFacet('filter-license', state.licenses); applyFilters();
-  });
+  // Licenses
+  byId('filter-license').addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
   byId('licenseSearch').addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
     byId('filter-license').querySelectorAll('.form-check').forEach(w=>{
@@ -429,32 +437,35 @@ function attachFacetHandlers(){
     });
   }, 120));
 
-  // Search (hero + docked)
+  // Search (hero + docked) with sync
   const heroInput = byId('q'), dockInput = byId('qDock');
   function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
   if (dockInput && heroInput){
-    const updateQ = debounce(()=>{
-      state.q = heroInput.value;
-      if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value;
-      applyFilters();
-    }, 120);
+    const updateQ = debounce(()=>{ state.q = heroInput.value; if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
     dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
     heroInput.addEventListener('input', updateQ);
   }
 
-  // Dock/undock via IntersectionObserver (no flicker)
-  const hero = document.getElementById('hero');
-  const obs = new IntersectionObserver((entries)=>{
-    const visible = entries[0].isIntersecting;
-    document.body.classList.toggle('docked', !visible);
-  }, {root: null, threshold: 0, rootMargin: "-64px 0px 0px 0px"}); // adjust for navbar height
-  obs.observe(hero);
+  // Docked search show/hide (same style as index) with hysteresis
+  (function(){
+    const SHOW_AT = 220;   // show navbar search after this
+    const HIDE_AT = 160;   // hide when scrolling back above this
+    let docked = false;
+    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
+    function onScroll(){
+      const y = window.scrollY || 0;
+      if(!docked && y > SHOW_AT) setDock(true);
+      else if(docked && y < HIDE_AT) setDock(false);
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+  })();
 
   // Sort
   byId('sortBy').addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
 }
 
-/* Year selected track bar */
+/* ---------- Year selected track bar ---------- */
 const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
       track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
 function updateTrack(){
@@ -473,7 +484,7 @@ function updateTrack(){
   rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
 });
 
-/* Init */
+/* ---------- Init ---------- */
 (function init(){
   byId('yearNow').textContent = new Date().getFullYear();
   buildFacets();
@@ -482,7 +493,7 @@ function updateTrack(){
 })();
 </script>
 
-<!-- (Optional) Supabase visit logger -->
+<!-- (Optional) Supabase visit logger (kept consistent with index) -->
 <script>
 (async function(){
   const PAGE = 'models';
