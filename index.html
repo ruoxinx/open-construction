@@ -11,182 +11,215 @@
   <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
     :root{
-      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
-      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 14px 36px rgba(15,46,75,.12);
-      --oc-radius:18px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 6px 22px rgba(15,46,75,.08);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
-    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
-    /* Navbar (borderless) */
+    /* Focus-visible for keyboard users */
+    :focus-visible{
+      outline:2px solid var(--oc-focus);
+      outline-offset:2px;
+      border-radius:6px;
+    }
+
+    /* Navbar */
     .oc-nav{
       backdrop-filter:saturate(120%) blur(6px);
-      background:#fff !important;
-      box-shadow:0 8px 24px rgba(15,46,75,.06);
-      border:0 !important;
+      border-bottom:1px solid var(--oc-border)!important;
     }
-    .brand-wordmark{ display:inline-flex; gap:.25rem; align-items:baseline; font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink); font-size:clamp(1.1rem, 1rem + .6vw, 1.4rem); }
+    .brand-wordmark{
+      display:inline-flex; gap:.25rem; align-items:baseline;
+      font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink);
+      font-size:clamp(1.1rem, 1rem + .6vw, 1.4rem);
+    }
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
-    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{ color:var(--oc-brand-ink); text-decoration:underline; text-underline-offset:3px; }
 
-    /* Hero (borderless) */
-    .hero{ background:#fff; color:var(--oc-brand-ink); }
-    .hero .content{ padding:56px 0 36px; text-align:center; }
-    .hero h1{ font-weight:800; letter-spacing:.2px; line-height:1.12; font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem); margin:.25rem 0 .35rem; }
+    .navbar .nav-link.plain{
+      font-weight:700; color:var(--oc-text); padding:.5rem .6rem;
+    }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{
+      color:var(--oc-brand-ink);
+      text-decoration:underline; text-underline-offset:3px;
+    }
+
+    /* Hero */
+    .hero{
+      background:#fff; color:var(--oc-brand-ink);
+      border-bottom:1px solid var(--oc-border);
+    }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
+      margin:.25rem 0 .35rem;
+    }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
     .hero .pill{
       display:inline-flex; gap:.5rem; align-items:center;
-      border-radius:999px; padding:.45rem .85rem; color:var(--oc-brand-ink);
-      background:linear-gradient(180deg,#fff,#f9fbff);
-      box-shadow:0 10px 24px rgba(15,46,75,.06), inset 0 1px 0 rgba(255,255,255,.8);
+      border-radius:999px; padding:.45rem .85rem;
+      background:transparent; border:1px solid #dfe6ee; color:var(--oc-brand-ink);
+      font-size:.9rem;
     }
 
     /* Buttons */
-    .oc-btn{ border-radius:999px; color:var(--oc-text); }
-    .oc-btn:hover{ background:#f6f9fc; color:var(--oc-brand-ink); }
-    .btn-ink{ background:var(--oc-brand-ink); color:#fff; border-radius:999px; }
+    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
+    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
+    .btn-ink{
+      background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
+    }
     .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
-    .btn-accent{ background:#fff; color:var(--oc-brand-ink); border-radius:999px; box-shadow:0 8px 24px rgba(15,46,75,.06); }
+    .btn-accent{
+      background:#fff; color:var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
+    }
     .btn-accent:hover{ background:#f7fbff; }
 
-    /* Sections & cards (borderless) */
+    /* Sections & cards */
     .oc-section{ margin-top:40px; }
     .oc-card{
-      background:linear-gradient(180deg,#ffffff,#fbfdff);
-      border:0;
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
       border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);
     }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-brand-ink); }
     .oc-card .oc-card-body{ padding:1.25rem; }
-    .oc-kicker{ font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .oc-kicker{
+      font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle);
+    }
     .oc-ul{ margin-bottom:0; padding-left:1.1rem; }
     .oc-ul li{ margin:.35rem 0; }
 
     /* Reference block */
     pre.oc-bib{
-      background:var(--oc-muted); color:#415367;
-      border:0; border-radius:12px; padding:1rem; overflow:auto;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+      background:var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
+      border-radius:10px; padding:1rem; overflow:auto;
     }
 
     /* Footer */
-    footer{ background:linear-gradient(180deg, transparent, rgba(0,0,0,.02)); }
-
-    /* Timeline (borderless tiles & buttons) */
-    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
-    .oc-timeline{
-      display:flex; gap:1.25rem; overflow-x:auto; overflow-y:hidden;
-      scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:.5rem 0 1rem; scrollbar-width:thin;
+    footer{
+      border-top:1px solid var(--oc-border);
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.02));
     }
+    .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
+
+    /* ==============================
+       Horizontal Timeline (Fancy)
+       ============================== */
+    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
+    .oc-tl-wrap::before,
+    .oc-tl-wrap::after{
+      content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
+    }
+    .oc-tl-wrap::before{
+      left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius);
+    }
+    .oc-tl-wrap::after{
+      right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius);
+    }
+
+    .oc-timeline{
+      display:flex; gap:1.25rem;
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      padding:.5rem 0 1rem;
+      scrollbar-width:thin;
+    }
+
     .oc-tl-item{
-      scroll-snap-align:center; flex:0 0 auto; width:280px; max-width:85vw;
+      scroll-snap-align:center;
+      flex:0 0 auto;
+      width:280px; max-width:85vw;
       background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--oc-border);
       border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);
-      padding:1rem .95rem; position:relative;
+      padding:1rem .95rem;
+      position:relative;
     }
     .oc-tl-date{
-      display:inline-block; font-weight:800; letter-spacing:.02em; color:var(--oc-brand-ink);
-      background:#eef4fb; padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+      display:inline-block;
+      font-weight:800; letter-spacing:.02em;
+      color:var(--oc-brand-ink);
+      background:#eef4fb; border:1px solid #dfe8f3;
+      padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
     }
     .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
     .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
-    .oc-tl-item::after{ content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-18px; width:2px; height:14px; background:#e6eef7; border-radius:2px; }
+
+    .oc-tl-item::after{
+      content:""; position:absolute; left:50%; transform:translateX(-50%);
+      bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
+    }
 
     .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
     .oc-tl-btn{
-      display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:999px;
-      background:#ffffff; box-shadow:0 10px 24px rgba(15,46,75,.10);
-      color:var(--oc-brand-ink); border:0;
+      display:flex; align-items:center; justify-content:center;
+      width:38px; height:38px; border-radius:999px;
+      background:#ffffff; border:1px solid var(--oc-border);
+      box-shadow:var(--oc-shadow); color:var(--oc-brand-ink);
     }
     .oc-tl-btn:hover{ filter:brightness(1.03); }
     .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
-    .oc-tl-prev{ left:.5rem; } .oc-tl-next{ right:.5rem; }
+    .oc-tl-prev{ left:.5rem; }
+    .oc-tl-next{ right:.5rem; }
+
     .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
-    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; border:0; }
+    .oc-tl-dot{
+      width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s;
+    }
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       Hero Metrics (borderless + sheen)
+       Hero Metrics (circles)
        ============================== */
-    .metrics-pro{
-      display:flex; gap:1.2rem; justify-content:center; align-items:stretch; flex-wrap:wrap;
-      margin:1.1rem auto .2rem; max-width:760px;
+    .metrics{
+      display:flex; gap:1rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.1rem 0 .35rem;
     }
-    .metric-pro{
-      --ring-size: 110px; --ring-stroke: 8; --ring-radius: calc((var(--ring-size) - var(--ring-stroke)) / 2);
-      display:flex; align-items:center; gap:1rem;
-      background:linear-gradient(180deg,#fff,#f9fbff);
-      border:0; border-radius:22px; padding:1rem 1.25rem;
-      box-shadow:0 14px 36px rgba(15,46,75,.12), inset 0 1px 0 rgba(255,255,255,.65);
-      transition: transform .18s ease, box-shadow .18s ease;
-      min-width: 320px;
+    .metric{
+      display:flex; gap:.8rem; align-items:center;
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      border:1px solid var(--oc-border);
+      border-radius:999px; padding:.5rem .8rem; box-shadow:var(--oc-shadow);
     }
-    .metric-pro:hover{ transform:translateY(-2px); box-shadow:0 16px 40px rgba(15,46,75,.16), inset 0 1px 0 rgba(255,255,255,.65); }
-
-    .metric-vis{ position:relative; width:var(--ring-size); height:var(--ring-size); display:grid; place-items:center; filter:drop-shadow(0 6px 18px rgba(15,46,75,.12)); }
-    .metric-vis svg{ width:var(--ring-size); height:var(--ring-size); }
-
-    .ring-bg{ stroke:#e9eff6; }
-    .ring-val{
-      stroke:url(#grad-oc);
-      stroke-linecap:round;
-      transition:stroke-dashoffset 1s ease-out;
-      filter: drop-shadow(0 0 10px rgba(242,162,56,.35));
+    .metric svg{ width:44px; height:44px; }
+    .metric .label{
+      display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
     }
-    .ring-sheen{
-      stroke:rgba(255,255,255,.85);
-      stroke-linecap:round;
-      stroke-dasharray:42 300;  /* small bright arc */
-      opacity:.75;
-      transform-origin:50% 50%;
-      animation: spin 6s linear infinite;
+    .metric .value{
+      font-weight:800; color:var(--oc-brand-ink);
+      font-size:1.1rem; min-width:1.5ch;
     }
-
-    .gloss{
-      position:absolute; inset:0; border-radius:50%; pointer-events:none;
-      background:radial-gradient(120px 90px at 30% 15%, rgba(255,255,255,.62), transparent 60%),
-                 radial-gradient(140px 100px at 75% 5%, rgba(255,255,255,.45), transparent 60%);
-      mix-blend-mode:screen; opacity:.9;
+    .metric .name{
+      font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
     }
-
-    .metric-copy{ display:flex; flex-direction:column; align-items:flex-start; line-height:1.1; }
-    .metric-label{ font-size:.78rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.14em; }
-    .metric-value{ font-weight:900; color:var(--oc-brand-ink); font-size:clamp(1.8rem, 1.2rem + 1.6vw, 2.3rem); }
-    .metric-note{ font-size:.86rem; color:#5b6b7d; }
-
-    .ico{ position:absolute; width:48px; height:48px; color:#40556b; opacity:.9; left:50%; top:50%; transform:translate(-50%,-50%); }
-
-    .reveal-up { opacity:0; transform: translateY(8px); }
-    .reveal-up.is-visible{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
-
-    @keyframes spin{ to{ transform: rotate(360deg); } }
+    .metric .ring-bg{ stroke:#e7edf3; }
+    .metric .ring-val{ stroke:var(--oc-brand-accent); transition:stroke-dashoffset .9s ease; }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
-      .oc-tl-btn, .ring-val{ transition:none; }
-      .ring-sheen{ animation:none; }
-    }
-
-    @media (max-width: 480px){
-      .metric-pro{ min-width: 100%; }
+      .oc-tl-btn{ transition:none; }
+      .metric .ring-val{ transition:none; }
     }
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg oc-nav sticky-top">
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
@@ -208,7 +241,8 @@
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
              aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
                        0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
@@ -234,64 +268,48 @@
       Curated datasets and models for AI in AEC
     </span>
     <h1 class="mb-1">OpenConstruction Overview</h1>
-    <p class="lead mb-0">A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.</p>
+    <p class="lead mb-0">
+      A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.
+    </p>
 
-    <!-- Fancy, borderless metrics -->
-    <div class="metrics-pro reveal-up" id="heroMetrics" role="group" aria-label="Catalog statistics">
-      <!-- Datasets -->
-      <div class="metric-pro">
-        <div class="metric-vis">
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <defs>
-              <linearGradient id="grad-oc" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#f2a238"/>
-                <stop offset="100%" stop-color="#0f2e4b"/>
-              </linearGradient>
-            </defs>
-            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="8"></circle>
-            <circle class="ring-val" id="ringDatasets" cx="60" cy="60" r="46" fill="none" stroke-width="8"
-                    transform="rotate(-90 60 60)" stroke-dasharray="289" stroke-dashoffset="289"></circle>
-            <!-- rotating sheen -->
-            <circle class="ring-sheen" cx="60" cy="60" r="46" fill="none" stroke-width="8"
-                    transform="rotate(-90 60 60)" stroke-dasharray="42 300"></circle>
-          </svg>
-          <!-- icon -->
-          <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 3h12v4H6zM4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.6" />
-            <path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-          <span class="gloss" aria-hidden="true"></span>
-        </div>
-        <div class="metric-copy">
-          <span class="metric-label">Datasets</span>
-          <span class="metric-value" id="countDatasets">—</span>
-          <span class="metric-note">Curated & searchable</span>
-        </div>
+    <!-- ===== Stats ribbon (above buttons) ===== -->
+    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+      <!-- Datasets metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <!-- simple crane hook icon in center -->
+          <g transform="translate(11,8)" stroke="currentColor" fill="none" stroke-width="1.4" opacity=".8">
+            <path d="M6 0v6a4 4 0 1 0 8 0V0" />
+            <path d="M10 10v6" />
+          </g>
+          <!-- donut -->
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none" stroke-width="4"></circle>
+          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none" stroke-width="4"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+        </svg>
+        <span class="label">
+          <span class="value" id="countDatasets">—</span>
+          <span class="name">Datasets</span>
+        </span>
       </div>
 
-      <!-- Models -->
-      <div class="metric-pro">
-        <div class="metric-vis">
-          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="8"></circle>
-            <circle class="ring-val" id="ringModels" cx="60" cy="60" r="46" fill="none" stroke-width="8"
-                    transform="rotate(-90 60 60)" stroke-dasharray="289" stroke-dashoffset="289"></circle>
-            <circle class="ring-sheen" cx="60" cy="60" r="46" fill="none" stroke-width="8"
-                    transform="rotate(-90 60 60)" stroke-dasharray="42 300"></circle>
-          </svg>
-          <!-- icon -->
-          <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2.2 2.2M19 5l-2.2 2.2M5 19l2.2-2.2M19 19l-2.2-2.2"
-                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          <span class="gloss" aria-hidden="true"></span>
-        </div>
-        <div class="metric-copy">
-          <span class="metric-label">Models</span>
-          <span class="metric-value" id="countModels">—</span>
-          <span class="metric-note">Benchmarks & links</span>
-        </div>
+      <!-- Models metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <!-- gear-ish icon -->
+          <g transform="translate(12,12)" stroke="currentColor" fill="none" stroke-width="1.4" opacity=".8">
+            <circle cx="10" cy="10" r="3.5"/>
+            <path d="M10 1v3M10 16v3M1 10h3M16 10h3M3.5 3.5l2.2 2.2M14.3 14.3l2.2 2.2M16.5 3.5l-2.2 2.2M5.7 14.3l-2.2 2.2"/>
+          </g>
+          <!-- donut -->
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none" stroke-width="4"></circle>
+          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none" stroke-width="4"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+        </svg>
+        <span class="label">
+          <span class="value" id="countModels">—</span>
+          <span class="name">Models</span>
+        </span>
       </div>
     </div>
 
@@ -323,7 +341,9 @@
           <div class="oc-card-body">
             <div class="oc-kicker mb-2">Vision</div>
             <h3 class="oc-card-title mb-2">Why we built this</h3>
-            <p class="mb-3">The industry is rapidly adopting AI-driven methods for core tasks. We aim to:</p>
+            <p class="mb-3">
+              The industry is rapidly adopting AI-driven methods for core tasks. We aim to:
+            </p>
             <ul class="oc-ul">
               <li>Provide an open science catalog of construction AI applications</li>
               <li>Standardize metadata for comparison and selection</li>
@@ -343,6 +363,7 @@
         <h3 id="milestones-heading" class="oc-card-title mb-3">Development & Achievements</h3>
 
         <div class="oc-tl-wrap">
+          <!-- Prev -->
           <div class="oc-tl-nav oc-tl-prev">
             <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -351,32 +372,47 @@
             </button>
           </div>
 
+          <!-- Timeline -->
           <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
+            <!-- 2024.12 -->
             <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
               <div class="oc-tl-date">2024.12</div>
               <div class="oc-tl-title">Project Team Established</div>
-              <div class="oc-tl-content">Core team formed to build the OpenConstruction platform and roadmap.</div>
+              <div class="oc-tl-content">
+                Core team formed to build the OpenConstruction platform and roadmap.
+              </div>
             </div>
 
+            <!-- 2025.03 -->
             <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
               <div class="oc-tl-date">2025.03</div>
               <div class="oc-tl-title">First Paper Submitted</div>
-              <div class="oc-tl-content">Initial review of open-access datasets completed and the first research paper submitted. The dataset collection continues to expand with ongoing updates.</div>
+              <div class="oc-tl-content">
+                Initial review of open-access datasets completed and the first research paper submitted.
+                The dataset collection continues to expand with ongoing updates.
+              </div>
             </div>
 
+            <!-- 2025.09 -->
             <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
               <div class="oc-tl-date">2025.09</div>
               <div class="oc-tl-title">Dataset Catalog Online</div>
-              <div class="oc-tl-content">OpenConstruction Dataset Catalog website officially launched for the community.</div>
+              <div class="oc-tl-content">
+                OpenConstruction Dataset Catalog website officially launched for the community.
+              </div>
             </div>
 
+            <!-- 2025.10 -->
             <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
               <div class="oc-tl-date">2025.10</div>
               <div class="oc-tl-title">Model Catalog Online</div>
-              <div class="oc-tl-content">OpenConstruction Model Catalog released, offering curated AI models for construction applications.</div>
+              <div class="oc-tl-content">
+                OpenConstruction Model Catalog released, offering curated AI models for construction applications.
+              </div>
             </div>
           </div>
 
+          <!-- Next -->
           <div class="oc-tl-nav oc-tl-next">
             <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -386,6 +422,7 @@
           </div>
         </div>
 
+        <!-- dots -->
         <div class="oc-tl-dots" id="tlDots" aria-hidden="false" role="tablist"></div>
       </div>
     </div>
@@ -399,7 +436,11 @@
         <h3 class="oc-card-title mb-2">Cite the catalog</h3>
         <p class="mb-2">Our work is documented in:</p>
         <p class="mb-3">
-          <strong><a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring</a></strong><br>
+          <strong>
+            <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
+              OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring
+            </a>
+          </strong><br>
           Ruoxin Xiong, Yanyu Wang, Jiannan Cai, Kaijian Liu, Yuansheng Zhu, Pingbo Tang, Nora El-Gohary<br>
           arXiv:2508.11482, 2025
         </p>
@@ -431,7 +472,9 @@
             <h3 class="oc-card-title mb-2">Have an idea or request?</h3>
             <p class="mb-0">
               We’d love to hear from you. Share suggestions or feature requests here:
-              <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Create a suggestion</a>.
+              <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
+                Create a suggestion
+              </a>.
             </p>
           </div>
         </div>
@@ -475,18 +518,21 @@
         copyBtn.textContent = 'Copied';
         setTimeout(() => copyBtn.textContent = 'Copy', 1600);
       }catch(e){
+        // Fallback prompt
         window.prompt('Copy to clipboard: Ctrl/Cmd+C, Enter', txt);
       }
     });
   }
 
-  /* ===== Timeline ===== */
+  /* ===== Timeline navigation, dots, snap-centering, and a11y ===== */
   (function(){
     const scroller = document.getElementById('ocTimeline');
     const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
     const prevBtn = document.getElementById('tlPrev');
     const nextBtn = document.getElementById('tlNext');
     const dotsWrap = document.getElementById('tlDots');
+
+    // Hide nav if single page of items (or none)
     const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
     const updateNavVisibility = () => {
       const show = canScroll();
@@ -494,16 +540,23 @@
       nextBtn.parentElement.style.display = show ? '' : 'none';
       dotsWrap.style.display = show ? '' : 'none';
     };
+
+    // Build dots
     items.forEach((_, i) => {
       const d = document.createElement('button');
-      d.type = 'button'; d.className = 'oc-tl-dot'; d.setAttribute('role', 'tab');
+      d.type = 'button';
+      d.className = 'oc-tl-dot';
+      d.setAttribute('role', 'tab');
       d.setAttribute('aria-label', `Go to milestone ${i+1}`);
       d.addEventListener('click', () => scrollToIndex(i));
       dotsWrap.appendChild(d);
     });
     const dots = Array.from(dotsWrap.children);
+
     let index = 0;
-    const clamp = (v,min,max) => Math.min(max, Math.max(min, v));
+
+    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
     function scrollToIndex(i){
       index = clamp(i, 0, items.length - 1);
       const target = items[index];
@@ -511,13 +564,23 @@
       scroller.scrollTo({ left: offset, behavior: 'smooth' });
       refresh();
     }
+
     function refresh(){
       prevBtn.disabled = (index === 0);
       nextBtn.disabled = (index === items.length - 1);
       dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
     }
+
     prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
     nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
+
+    // Keyboard nav when scroller focused
+    scroller.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
+      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
+    });
+
+    // Update index on manual scroll (nearest item to center)
     let t;
     scroller.addEventListener('scroll', () => {
       clearTimeout(t);
@@ -531,6 +594,8 @@
         if (nearest.i !== index){ index = nearest.i; refresh(); }
       }, 80);
     });
+
+    // Initialize
     const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
     scrollToIndex(initial);
     updateNavVisibility();
@@ -538,98 +603,99 @@
     window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
   })();
 
-  /* ===== Hero Metrics: counts + ring sweep + reveal ===== */
-  (function(){
-    const hero = document.getElementById('heroMetrics');
+  // ===== Hero Metrics: fetch counts from datasets.json & models.json =====
+  (async function(){
     const countElDatasets = document.getElementById('countDatasets');
     const countElModels = document.getElementById('countModels');
     const ringDatasets = document.getElementById('ringDatasets');
     const ringModels = document.getElementById('ringModels');
 
-    // reveal once
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          hero.classList.add('is-visible');
-          init(); io.disconnect();
-        }
-      });
-    }, { threshold: .2 });
-    hero && io.observe(hero);
+    const CIRC = 2 * Math.PI * 17; // r=17 -> circumference for donut
+    [ringDatasets, ringModels].forEach(r => {
+      if(r){ r.setAttribute('stroke-dasharray', String(CIRC)); r.setAttribute('stroke-dashoffset', String(CIRC)); }
+    });
 
+    // Try multiple likely paths (works on GitHub Pages or local dev)
     async function fetchFirst(paths){
       for(const p of paths){
         try{
           const res = await fetch(p, { cache:'no-cache' });
           if(res.ok){ return res.json(); }
-        }catch(_){}
+        }catch(e){ /* ignore and try next */ }
       }
-      throw new Error('All JSON paths failed');
+      throw new Error('All JSON paths failed: ' + paths.join(', '));
     }
 
     function arrayishLength(json){
       if(Array.isArray(json)) return json.length;
       if(json && Array.isArray(json.items)) return json.items.length;
       if(json && Array.isArray(json.data)) return json.data.length;
+      // fallback: count object keys if looks like id->item map
       if(json && typeof json === 'object') return Object.keys(json).length;
       return 0;
     }
 
-    function countUp(el, to, dur=900){
-      const start = performance.now(); const from = 0;
+    try{
+      const [datasetsJson, modelsJson] = await Promise.all([
+        fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
+        fetchFirst(['data/models.json','assets/models.json','models.json'])
+      ]);
+
+      const dCount = arrayishLength(datasetsJson);
+      const mCount = arrayishLength(modelsJson);
+
+      // Update text
+      countElDatasets.textContent = dCount.toString();
+      countElModels.textContent = mCount.toString();
+
+      // Animate rings (cap at 100% visually if huge)
+      const dPct = Math.max(0, Math.min(1, dCount / Math.max(10, dCount))); // always full circle for now
+      const mPct = Math.max(0, Math.min(1, mCount / Math.max(10, mCount)));
+      ringDatasets && ringDatasets.setAttribute('stroke-dashoffset', String(CIRC * (1 - dPct)));
+      ringModels && ringModels.setAttribute('stroke-dashoffset', String(CIRC * (1 - mPct)));
+
+      // Animate number count-up (subtle)
       const ease = t => 1 - Math.pow(1 - t, 3);
-      function step(now){
-        const t = Math.min(1, (now - start)/dur);
-        const v = Math.round(from + (to - from)*ease(t));
-        el.textContent = v.toString();
-        if(t < 1) requestAnimationFrame(step);
+      function countUp(el, to, dur=700){
+        const start = performance.now();
+        const from = 0;
+        function step(now){
+          const t = Math.min(1, (now - start)/dur);
+          const v = Math.round(from + (to - from)*ease(t));
+          el.textContent = v.toString();
+          if(t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
       }
-      requestAnimationFrame(step);
-    }
-
-    function sweepRing(ring, pct=1, circumference=289, dur=1000){
-      const start = performance.now();
-      const from = circumference; const to = circumference*(1 - pct);
-      function step(now){
-        const t = Math.min(1, (now - start)/dur);
-        const eased = 1 - Math.pow(1 - t, 2.2);
-        const val = from + (to - from)*eased;
-        ring.setAttribute('stroke-dashoffset', String(val));
-        if(t < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    async function init(){
-      try{
-        const [datasetsJson, modelsJson] = await Promise.all([
-          fetchFirst(['assets/data/datasets.json','assets/datasets.json','datasets.json']),
-          fetchFirst(['assets/data/models.json','assets/models.json','models.json'])
-        ]);
-        const dCount = arrayishLength(datasetsJson);
-        const mCount = arrayishLength(modelsJson);
-
-        countUp(countElDatasets, dCount);
-        countUp(countElModels, mCount);
-
-        // ring sweep (full)
-        sweepRing(ringDatasets, 1);
-        sweepRing(ringModels, 1);
-      }catch(_){
-        countElDatasets.textContent = '—';
-        countElModels.textContent = '—';
-      }
+      countUp(countElDatasets, dCount);
+      countUp(countElModels, mCount);
+    }catch(err){
+      // graceful fallback
+      countElDatasets.textContent = '—';
+      countElModels.textContent = '—';
+      ringDatasets && ringDatasets.setAttribute('stroke-dashoffset', String(CIRC));
+      ringModels && ringModels.setAttribute('stroke-dashoffset', String(CIRC));
+      // console.warn(err);
     }
   })();
 
-  // Auto-highlight current nav
+  // Auto-highlight current nav (supports clean URLs and index.html)
   (function(){
-    const path = (location.pathname || '').replace(/\/+$/, '');
+    const path = (location.pathname || '').replace(/\/+$/, ''); // trim trailing '/'
     const file = path.split('/').pop() || 'index.html';
-    const routeByFile = {'':'index','index':'index','index.html':'index','dataset':'dataset','dataset.html':'dataset','models':'models','models.html':'models','contributors':'contributors','contributors.html':'contributors'};
+    const routeByFile = {
+      '': 'index',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models',
+      'contributors': 'contributors', 'contributors.html': 'contributors'
+    };
     const route = routeByFile[file] || (file.includes('index') ? 'index' : '');
     document.querySelectorAll('.navbar .nav-link.plain').forEach(a => {
-      if (a.dataset.route === route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+      if (a.dataset.route === route){
+        a.classList.add('active');
+        a.setAttribute('aria-current','page');
+      }
     });
   })();
 </script>
