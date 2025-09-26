@@ -388,11 +388,10 @@ function render(items){
         </div>
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
-          <div class="meta mb-1">
-            ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • `:''}
-            ${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'}
-            ${doiLink ? ` • <a href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
-          </div>
+		<div class="meta mb-1">
+		  ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • ` : ''}
+		  ${m.year || '—'}
+		</div>
           <div class="d-flex flex-wrap gap-1 mb-2">
             ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
           </div>
