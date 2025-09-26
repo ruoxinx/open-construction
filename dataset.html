@@ -33,8 +33,16 @@
       color:var(--oc-text);
       padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
-    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
+    .navbar .nav-link.plain:hover{
+      color:var(--oc-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    .navbar .nav-link.plain.active{
+      color:var(--oc-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
 
     .oc-btn{border-radius:999px;border-color:#d6dde6;color:#24384d}
     .oc-btn:hover{background:#f4f7fb;border-color:#cbd6e3;color:#0f2e4b}
@@ -47,8 +55,17 @@
     .nav-link.icon-only:hover svg{opacity:1}
 
     /* ---------- Docked search (TOP bar only; smaller) ---------- */
-    .navbar-search{ display:none; width: clamp(200px, 24vw, 320px); }
-    .navbar-search .form-control{ height:34px; padding:.25rem .75rem; font-size:.875rem; line-height:1.2; border-radius:999px; }
+    .navbar-search{
+      display:none;
+      width: clamp(200px, 24vw, 320px);
+    }
+    .navbar-search .form-control{
+      height:34px;
+      padding:.25rem .75rem;
+      font-size:.875rem;
+      line-height:1.2;
+      border-radius:999px;
+    }
     body.docked .navbar-search{display:flex; flex:0 0 auto}
     body.docked #searchDock{display:none}
     @media (min-width: 992px){
@@ -57,11 +74,15 @@
       .navbar .navbar-search{margin-left:.75rem}
     }
 
-    /* ---------- Hero ---------- */
-    header.hero{ border-bottom:1px solid var(--oc-border); background:#fff; }
+    /* ---------- Hero (center search UNCHANGED) ---------- */
+    header.hero{
+      border-bottom:1px solid var(--oc-border);
+      background:#fff;
+    }
     header.hero .content{ padding:56px 0 36px; text-align:center }
     header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
     header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
+    /* original big search size */
     .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
 
     /* ---------- Filters card ---------- */
@@ -132,6 +153,7 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <!-- Clean bold links -->
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link plain active" href="dataset.html" aria-current="page">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
@@ -171,6 +193,7 @@
     <h1 class="display-6 fw-bold">OpenConstruction Dataset Catalog</h1>
     <p class="lead">Explore open datasets for construction monitoring and analysis</p>
     <div id="searchDock" class="mt-3">
+      <!-- CENTER search (kept original size) -->
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search datasets, objects, tasks …" aria-label="Search datasets large">
     </div>
   </div>
@@ -392,33 +415,39 @@
     text-decoration: none;
     transition: background .2s ease, transform .2s ease;
   }
-  .issue-btn:hover { background: #0b5ed7; transform: translateY(-2px); color: #fff; text-decoration: none; }
+  .issue-btn:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    color: #fff;
+    text-decoration: none;
+  }
 </style>
 
-<!-- Minimal, safe loader (correct path + JSON guard + added date pill) -->
+<!-- Minimal, safe loader (correct path + JSON guard) -->
 <script>
 (async function(){
   const GRID = document.getElementById('datasetGrid');
   const COUNT = document.getElementById('resultCount');
   const EMPTY = document.getElementById('emptyState');
 
-  function clearSkeleton(){ GRID.innerHTML = ''; }
-  function fmtAddedDate(v){ const d=new Date(v); return isNaN(d)?String(v):d.toISOString().slice(0,10); }
+  function clearSkeleton(){
+    GRID.innerHTML = '';
+  }
 
   try{
-    // FIX: correct path (avoid 404 -> HTML -> JSON parse error)
+    // FIX #1: correct path (avoid 404 -> HTML -> JSON parse error)
     const res = await fetch('data/datasets.json', { cache: 'no-store' });
     if(!res.ok) throw new Error('HTTP '+res.status+' fetching data/datasets.json');
 
-    // Guard against servers returning HTML
-    const ct = (res.headers.get('content-type')||'').toLowerCase();
-    if(!ct.includes('application/json')){
-      const txt = await res.text();
-      throw new Error('Expected JSON but got '+ct+'; starts with: '+txt.slice(0,60));
+    // Guard: if server serves HTML by mistake, bail early with readable error
+    const ct = res.headers.get('content-type') || '';
+    if(!ct.toLowerCase().includes('application/json')){
+      const text = await res.text();
+      throw new Error('Expected JSON but got: '+ct+'; first chars: '+text.slice(0,60));
     }
 
-    const payload = await res.json();
-    const rows = Array.isArray(payload) ? payload : Object.values(payload || {});
+    const data = await res.json();
+    const rows = Array.isArray(data) ? data : Object.values(data || {});
     clearSkeleton();
 
     if(!rows.length){
@@ -429,26 +458,21 @@
 
     rows.forEach(d=>{
       const doiLink = d.doi ? (String(d.doi).startsWith('http') ? d.doi : `https://doi.org/${d.doi}`) : '';
-      const added = d.added_date || d.added || d.addedDate || null;
-
       GRID.insertAdjacentHTML('beforeend', `
         <div class="col-md-6 col-xl-4">
           <div class="dataset-card h-100 d-flex flex-column">
             <div class="card-body flex-grow-1 d-flex flex-column">
               <div class="title">${d.name || 'Untitled'}</div>
               <div class="meta mb-1">
-                ${(Array.isArray(d.authors)?d.authors.join(', '):(d.authors||''))}
+                ${(d.authors && Array.isArray(d.authors) ? d.authors.join(', ') : (d.authors || ''))}
                 ${d.year ? ' • '+d.year : ''}
               </div>
-              ${d.data_modality ? `<div class="small text-muted mb-1">${d.data_modality}</div>`:''}
-              <div class="small text-muted mb-2">
-                ${typeof d.num_images==='number' ? `Images <strong>${d.num_images.toLocaleString()}</strong>`:''}
-                ${typeof d.num_classes==='number' ? ` • Classes <strong>${d.num_classes}</strong>`:''}
-              </div>
-              <div class="d-flex flex-wrap align-items-center gap-2 mt-auto">
-                ${d.access ? `<a class="btn btn-sm btn-primary" href="${d.access}" target="_blank" rel="noopener">View details</a>`:''}
+              ${d.abstract ? `<p class="small flex-grow-1">${d.abstract}</p>` : `<div class="small flex-grow-1 text-muted"></div>`}
+              <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+                ${d.paper_url ? `<a class="btn btn-sm btn-primary" href="${d.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
+                ${d.access ? `<a class="btn btn-sm btn-outline-secondary" href="${d.access}" target="_blank" rel="noopener">Access</a>`:''}
                 ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
-                ${added ? `<span class="added-note ms-auto">Added ${fmtAddedDate(added)}</span>` : ''}
+                ${d.added_date ? `<span class="added-note ms-auto">Added ${d.added_date}</span>` : ''}
               </div>
             </div>
           </div>
