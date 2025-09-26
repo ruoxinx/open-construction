@@ -182,31 +182,38 @@
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       Hero Metrics (circles)
-       ============================== */
-    .metrics{
-      display:flex; gap:1rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.1rem 0 .35rem;
-    }
-    .metric{
-      display:flex; gap:.8rem; align-items:center;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid var(--oc-border);
-      border-radius:999px; padding:.5rem .8rem; box-shadow:var(--oc-shadow);
-    }
-    .metric svg{ width:44px; height:44px; }
-    .metric .label{
-      display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
-    }
-    .metric .value{
-      font-weight:800; color:var(--oc-brand-ink);
-      font-size:1.1rem; min-width:1.5ch;
-    }
-    .metric .name{
-      font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
-    }
-    .metric .ring-bg{ stroke:#e7edf3; }
-    .metric .ring-val{ stroke:var(--oc-brand-accent); transition:stroke-dashoffset .9s ease; }
+   Hero Metrics (circles)
+   ============================== */
+	.metrics{
+	  display:flex; gap:1.1rem; justify-content:center; align-items:center;
+	  flex-wrap:wrap; margin:1.1rem 0 .35rem;
+	}
+	.metric{
+	  display:flex; gap:1rem; align-items:center;
+	  background:linear-gradient(180deg,#ffffff,#fbfdff);
+	  /* removed border */
+	  border:none;
+	  border-radius:999px;
+	  /* slightly beefier shadow to compensate for no border */
+	  box-shadow:0 10px 28px rgba(15,46,75,.10);
+	  padding:.65rem 1rem;
+	}
+	.metric svg{ width:60px; height:60px; }        /* 👈 enlarge animation */
+	.metric .label{
+	  display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
+	}
+	.metric .value{
+	  font-weight:800; color:var(--oc-brand-ink);
+	  font-size:1.2rem; min-width:1.5ch;
+	}
+	.metric .name{
+	  font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
+	}
+
+	/* make the donut strokes a bit bolder for the larger size */
+	.metric .ring-bg{ stroke:#e7edf3; stroke-width:5; }
+	.metric .ring-val{ stroke:var(--oc-brand-accent); stroke-width:5; transition:stroke-dashoffset .9s ease; }
+
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
@@ -214,6 +221,49 @@
       .oc-tl-btn{ transition:none; }
       .metric .ring-val{ transition:none; }
     }
+	
+		/* ===== Hero Metrics (improved) ===== */
+	.metrics{
+	  display:flex; gap:1.2rem; justify-content:center; align-items:center;
+	  flex-wrap:wrap; margin:1.25rem 0 .25rem;
+	}
+
+	.metric{
+	  display:flex; align-items:center; gap:1rem;
+	  background:linear-gradient(180deg,#ffffff 0%, #f9fbff 100%);
+	  border:none;                                 /* ← remove borders */
+	  border-radius:999px;
+	  padding:.8rem 1.15rem;                       /* ← a bit roomier */
+	  box-shadow:0 14px 36px rgba(15,46,75,.12);   /* ← soft depth */
+	  transition:transform .18s ease, box-shadow .18s ease;
+	}
+	.metric:hover{                                  /* subtle lift on hover */
+	  transform:translateY(-1px);
+	  box-shadow:0 18px 42px rgba(15,46,75,.14);
+	}
+
+	/* Bigger donut + crisper stroke */
+	.metric svg{
+	  width:68px; height:68px;                     /* ← larger animation */
+	  filter:drop-shadow(0 4px 10px rgba(15,46,75,.08));
+	}
+	.metric .ring-bg{ stroke:#e7edf3; stroke-width:6; }
+	.metric .ring-val{ stroke:var(--oc-brand-accent); stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset .9s ease; }
+
+	/* Tight, readable labels */
+	.metric .label{ display:flex; flex-direction:column; line-height:1.05; }
+	.metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
+	.metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
+
+	/* Slightly closer buttons to metrics */
+	.metrics + .d-flex{ margin-top:.6rem !important; }
+
+	@media (max-width: 576px){
+	  .metric{ padding:.7rem 1rem; }
+	  .metric svg{ width:62px; height:62px; }
+	  .metric .value{ font-size:1.16rem; }
+}
+
   </style>
 </head>
 <body>
@@ -313,7 +363,7 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-center flex-wrap gap-2 mt-2">
+    <div class="d-flex justify-content-center flex-wrap gap-8 mt-2">
       <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
       <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
