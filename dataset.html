@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -27,22 +27,44 @@
     .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
     .oc-logo{height:44px;width:44px}
 
+    /* Clean, professional nav links (bold, no background/outline) */
     .navbar .nav-link.plain{
-      font-weight:700; color:var(--oc-text); padding:.5rem .6rem;
+      font-weight:700;
+      color:var(--oc-text);
+      padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain:hover{
+      color:var(--oc-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
     .navbar .nav-link.plain.active{
-      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
+      color:var(--oc-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
     }
 
+    .oc-btn{border-radius:999px;border-color:#d6dde6;color:#24384d}
+    .oc-btn:hover{background:#f4f7fb;border-color:#cbd6e3;color:#0f2e4b}
+    .oc-cta{border-radius:999px;box-shadow:0 4px 10px rgba(16,185,129,.15)}
+    .oc-cta:hover{box-shadow:0 6px 14px rgba(16,185,129,.22);transform:translateY(-1px)}
+
+    /* Minimal icon-only link (GitHub) */
     .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
     .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
     .nav-link.icon-only:hover svg{opacity:1}
 
-    /* ---------- Docked search ---------- */
-    .navbar-search{display:none;width: clamp(200px, 24vw, 320px);}
+    /* ---------- Docked search (TOP bar only; smaller) ---------- */
+    .navbar-search{
+      display:none;
+      width: clamp(200px, 24vw, 320px);
+    }
     .navbar-search .form-control{
-      height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px;
+      height:34px;
+      padding:.25rem .75rem;
+      font-size:.875rem;
+      line-height:1.2;
+      border-radius:999px;
     }
     body.docked .navbar-search{display:flex; flex:0 0 auto}
     body.docked #searchDock{display:none}
@@ -52,21 +74,25 @@
       .navbar .navbar-search{margin-left:.75rem}
     }
 
-    /* ---------- Hero ---------- */
-    header.hero{border-bottom:1px solid var(--oc-border); background:#fff;}
+    /* ---------- Hero (center search UNCHANGED) ---------- */
+    header.hero{
+      border-bottom:1px solid var(--oc-border);
+      background:#fff;
+    }
     header.hero .content{ padding:56px 0 36px; text-align:center }
     header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
     header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
+    /* original big search size */
     .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
 
-    /* ---------- Filters ---------- */
+    /* ---------- Filters card ---------- */
     .filters{ position:sticky; top:86px; }
     .facet-list{ max-height: 280px; overflow:auto; border:1px solid var(--oc-border); border-radius:.5rem; padding:.55rem; background:var(--oc-card) }
     .facet-list .form-check{ margin-bottom:.25rem }
     .card .form-label{ font-weight:700 }
     .facet-toggle{ font-size:.875rem; line-height:1.2 }
 
-    /* ---------- Year dual range ---------- */
+    /* ---------- Year dual range with selected track ---------- */
     .range-container{ position:relative; height:36px; margin:.25rem 0 .5rem }
     .range-container .slider{ position:absolute; left:10px; right:10px; top:14px; height:8px; background:#e9ecef; border-radius:10px }
     .range-container .range-selected{ position:absolute; top:14px; height:8px; background:#0d6efd; border-radius:10px }
@@ -78,27 +104,21 @@
       pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff
     }
 
-    /* ---------- Toolbar ---------- */
+    /* ---------- Result toolbar ---------- */
     .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap }
 
-    /* ---------- Cards ---------- */
+    /* ---------- Dataset cards ---------- */
     .dataset-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); height:100% }
     .dataset-card .card-body{ padding:1rem 1rem }
     .dataset-card .title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem }
     .dataset-card .meta{ font-size:.85rem; color:var(--oc-sub) }
     .badge-soft{ background:var(--oc-muted); border:1px solid var(--oc-border); color:var(--oc-text); font-weight:600 }
 
-    /* ---------- Empty & skeleton ---------- */
+    /* ---------- Empty state & skeleton ---------- */
     .empty{ border:1px dashed var(--oc-border); border-radius:12px; padding:24px; text-align:center; color:var(--oc-sub) }
     .skeleton{ position:relative; overflow:hidden; background:var(--oc-muted); border-radius:10px; min-height:120px }
     .skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); animation:shimmer 1.1s infinite; mix-blend-mode:overlay }
     @keyframes shimmer{ to{ transform:translateX(100%) } }
-
-    /* ---------- Added date pill (same style as models) ---------- */
-    .added-note{
-      align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
-      font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
-    }
 
     /* Hide any legacy class-count spans inside labels */
     #filter-classes .form-check-label .text-muted{ display:none !important }
@@ -125,11 +145,13 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <!-- Clean bold links -->
         <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain active" href="dataset.html" aria-current="page">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
 		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
 
+        <!-- GitHub icon-only link -->
         <li class="nav-item">
           <a class="nav-link px-2 icon-only"
              href="https://github.com/ruoxinx/OpenConstruction-Datasets"
@@ -164,6 +186,7 @@
     <h1 class="display-6 fw-bold">OpenConstruction Dataset Catalog</h1>
     <p class="lead">Explore open datasets for construction monitoring and analysis</p>
     <div id="searchDock" class="mt-3">
+      <!-- CENTER search (kept original size) -->
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search datasets, objects, tasks …" aria-label="Search datasets large">
     </div>
   </div>
@@ -198,8 +221,8 @@
             <div class="range-container">
               <div class="slider"></div>
               <div class="range-selected" id="yearRangeSelected"></div>
-              <input type="range" class="thumb" id="yearRangeMin" min="2000" max="2030" step="1" aria-label="Min year">
-              <input type="range" class="thumb" id="yearRangeMax" min="2000" max="2030" step="1" aria-label="Max year">
+              <input type="range" class="thumb" id="yearRangeMin" min="2000" max="2030" step="1">
+              <input type="range" class="thumb" id="yearRangeMax" min="2000" max="2030" step="1">
             </div>
             <div class="small text-muted">From <span id="yearRangeMinVal"></span> to <span id="yearRangeMaxVal"></span></div>
           </div>
@@ -221,10 +244,8 @@
         <div class="d-flex align-items-center gap-2">
           <label for="sortBy" class="me-1 small">Sort by</label>
           <select id="sortBy" class="form-select form-select-sm w-auto">
-            <option value="added-desc" selected>Added date ↓</option>
-            <option value="added-asc">Added date ↑</option>
             <option value="name-asc">Name A→Z</option>
-            <option value="year-desc">Year ↓</option>
+            <option value="year-desc" selected>Year ↓</option>
             <option value="year-asc">Year ↑</option>
             <option value="images-desc">Images ↓</option>
             <option value="images-asc">Images ↑</option>
@@ -236,13 +257,14 @@
 
       <!-- Grid -->
       <div id="datasetGrid" class="row g-3" aria-live="polite" aria-busy="true">
-        <div class="col-md-6 col-xl-4"><div class="skeleton" style="height:140px"></div></div>
-        <div class="col-md-6 col-xl-4"><div class="skeleton" style="height:140px"></div></div>
-        <div class="col-md-6 col-xl-4"><div class="skeleton" style="height:140px"></div></div>
+        <!-- Optional skeleton tiles while loading; your JS can replace/remove -->
+        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
+        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
+        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
       </div>
 
+      <!-- Empty state your JS can toggle -->
       <div id="emptyState" class="empty mt-3 d-none">No datasets match your filters. Try clearing some filters or changing the search.</div>
-      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load datasets.json. Please check the file path and JSON format.</div>
     </section>
   </div>
 </main>
@@ -253,396 +275,115 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/index.js"></script>
 
 <script>
-/* ---------------------------
-   DATA SOURCE
---------------------------- */
-const DATA_URL = 'data/datasets.json';
-let DATASETS = [];
-
-/* ---------------------------
-   Helpers
---------------------------- */
-const byId = id => document.getElementById(id);
-function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
-function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
-function fmtDate(d){
-  try {
-    const dt = (d instanceof Date) ? d : new Date(d);
-    if (isNaN(+dt)) return null;
-    const y = dt.getFullYear();
-    const m = String(dt.getMonth()+1).padStart(2,'0');
-    const day = String(dt.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
-  } catch { return null; }
-}
-function yearExtent(items){
-  const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
-  if(!ys.length) return [2000, new Date().getFullYear()];
-  return [Math.min(...ys), Math.max(...ys)];
-}
-function makeCheckbox(id, label, value){
-  const wrap = document.createElement('div'); wrap.className = 'form-check';
-  const input = document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
-  const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
-  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
-}
-
-/* ---------------------------
-   State + facets
---------------------------- */
-const state = {
-  q: '', sort: 'added-desc',
-  tasks: new Set(), modalities: new Set(), licenses: new Set(), classes: new Set(),
-  yMin: null, yMax: null
-};
-
-function buildFacets(){
-  // Modalities
-  const modVals = uniqSorted(DATASETS.flatMap(d=>d.modalities||[]));
-  const modWrap = byId('filter-modality'); 
-  if (modWrap) {
-    modWrap.innerHTML='';
-    modVals.forEach((m,i)=> modWrap.appendChild(makeCheckbox('m_'+i, m, m)));
-  }
-
-  // Tasks
-  const taskVals = uniqSorted(DATASETS.flatMap(d=>d.tasks||[]));
-  const taskWrap = byId('filter-task'); 
-  if (taskWrap) {
-    taskWrap.innerHTML='';
-    taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
-  }
-
-  // Licenses
-  const licVals = uniqSorted(DATASETS.map(d=>d.license).filter(Boolean));
-  const licWrap = byId('filter-license'); 
-  if (licWrap) {
-    licWrap.innerHTML='';
-    licVals.forEach((l,i)=> licWrap.appendChild(makeCheckbox('l_'+i, l, l)));
-  }
-
-  // Classes (flatten & clip initially)
-  const classVals = uniqSorted(DATASETS.flatMap(d=>d.classes||[]).filter(Boolean));
-  const clsWrap = byId('filter-classes');
-  if (clsWrap) {
-    clsWrap.innerHTML='';
-    classVals.forEach((c,i)=> clsWrap.appendChild(makeCheckbox('c_'+i, c, c)));
-    // Collapser
-    const toggle = byId('toggleClasses');
-    if (toggle) {
-      let expanded = false;
-      function setExpanded(on){
-        expanded = on;
-        toggle.textContent = on ? 'Show less' : 'Show all';
-        const items = Array.from(clsWrap.children);
-        items.forEach((node, idx)=>{
-          node.style.display = (expanded || idx < 20) ? '' : 'none';
-        });
-      }
-      toggle.onclick = ()=> setExpanded(!expanded);
-      setExpanded(false);
-    }
-  }
-
-  // Year range
-  const [minY, maxY] = yearExtent(DATASETS);
-  const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax');
-  if (rmin && rmax) {
-    rmin.min = rmax.min = String(minY);
-    rmin.max = rmax.max = String(maxY);
-    rmin.value = String(minY); rmax.value = String(maxY);
-    state.yMin = minY; state.yMax = maxY;
-    updateTrack();
-  }
-}
-
-/* ---------------------------
-   Filter + sort + render
---------------------------- */
-function applyFilters(){
-  const q = state.q.trim().toLowerCase();
-
-  let rows = DATASETS.filter(d=>{
-    const hay = [
-      d.title, (d.tasks||[]).join(' '), (d.modalities||[]).join(' '), d.license,
-      (d.classes||[]).join(' ')
-    ].join(' ').toLowerCase();
-    if(q && !hay.includes(q)) return false;
-
-    if(state.tasks.size){
-      const set = new Set(d.tasks||[]);
-      for(const t of state.tasks){ if(!set.has(t)) return false; }
-    }
-    if(state.modalities.size){
-      const set = new Set(d.modalities||[]);
-      for(const m of state.modalities){ if(!set.has(m)) return false; }
-    }
-    if(state.licenses.size && !state.licenses.has(d.license)) return false;
-
-    if(state.classes.size){
-      const set = new Set(d.classes||[]);
-      for(const c of state.classes){ if(!set.has(c)) return false; }
-    }
-
-    if((d.year||0) < state.yMin || (d.year||0) > state.yMax) return false;
-
-    return true;
-  });
-
-  switch(state.sort){
-    case 'name-asc':     rows.sort((a,b)=> a.title.localeCompare(b.title)); break;
-    case 'year-asc':     rows.sort((a,b)=> (a.year||0)-(b.year||0)); break;
-    case 'year-desc':    rows.sort((a,b)=> (b.year||0)-(a.year||0)); break;
-    case 'images-asc':   rows.sort((a,b)=> (a.num_images||0)-(b.num_images||0)); break;
-    case 'images-desc':  rows.sort((a,b)=> (b.num_images||0)-(a.num_images||0)); break;
-    case 'classes-asc':  rows.sort((a,b)=> (a.num_classes||0)-(b.num_classes||0)); break;
-    case 'classes-desc': rows.sort((a,b)=> (b.num_classes||0)-(a.num_classes||0)); break;
-    case 'added-asc':    rows.sort((a,b)=> (a.added_ts||0)-(b.added_ts||0)); break;
-    default:             rows.sort((a,b)=> (b.added_ts||0)-(a.added_ts||0)); // added-desc
-  }
-
-  render(rows);
-}
-
-function render(items){
-  const grid = byId('datasetGrid');
-  const empty = byId('emptyState');
-  if (!grid) return;
-
-  grid.innerHTML = '';
-  const rc = byId('resultCount'); if (rc) rc.textContent = items.length;
-
-  if(items.length===0){ empty?.classList.remove('d-none'); return; }
-  empty?.classList.add('d-none');
-
-  items.forEach(d=>{
-    const img = d.thumbnail || d.image_url || 'assets/img/datasets/_placeholder.png';
-    const doiLink = d.doi ? (String(d.doi).startsWith('http') ? d.doi : `https://doi.org/${d.doi}`) : '';
-    const addedTxt = d.added_date_fmt ? `Added ${d.added_date_fmt}` : null;
-
-    const col = document.createElement('div');
-    col.className = 'col-md-6 col-xl-4';
-    col.innerHTML = `
-      <div class="dataset-card h-100 d-flex flex-column">
-        <div class="ratio ratio-16x9" style="background:#f4f7fb;border-bottom:1px solid var(--oc-border);border-top-left-radius:var(--oc-radius);border-top-right-radius:var(--oc-radius);overflow:hidden">
-          <img src="${img}" alt="${d.title}" onerror="this.style.display='none'">
-        </div>
-        <div class="card-body">
-          <div class="title h6 mb-1">${d.title}</div>
-          <div class="meta mb-2">
-            ${(d.authors && d.authors.length) ? `${d.authors.join(', ')} • ` : ''}
-            ${d.year || '—'}
-            ${d.license ? ` • ${d.license}` : ''}
-          </div>
-          ${ (d.tasks && d.tasks.length)
-            ? `<div class="d-flex flex-wrap gap-1 mb-2">${d.tasks.map(t=>`<span class="badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}</div>`
-            : '' }
-          ${ (d.modalities && d.modalities.length)
-            ? `<div class="d-flex flex-wrap gap-1 mb-2">${d.modalities.map(m=>`<span class="badge-soft rounded-pill px-2 py-1">${m}</span>`).join('')}</div>`
-            : '' }
-          <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
-            ${d.paper_url ? `<a class="btn btn-sm btn-primary" href="${d.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
-            ${d.access ? `<a class="btn btn-sm btn-outline-secondary" href="${d.access}" target="_blank" rel="noopener">Access</a>`:''}
-            ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
-            ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
-          </div>
-        </div>
-      </div>
-    `;
-    grid.appendChild(col);
-  });
-}
-
-/* ---------------------------
-   Facet read + handlers
---------------------------- */
-function readFacet(containerId, setRef){
-  setRef.clear();
-  const root = byId(containerId);
-  if(!root) return;
-  root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
-}
-function attachFacetHandlers(){
-  // Modalities
-  const modEl = byId('filter-modality');
-  if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
-
-  // Tasks (+ search)
-  const taskEl = byId('filter-task');
-  if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
-  const taskSearch = byId('taskSearch');
-  if (taskSearch) taskSearch.addEventListener('input', debounce(e=>{
-    const q = e.target.value.toLowerCase();
-    const root = byId('filter-task'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{
-      const label = w.querySelector('label').textContent.toLowerCase();
-      w.style.display = label.includes(q)?'':'none';
-    });
-  }, 120));
-
-  // Licenses (+ search)
-  const licEl = byId('filter-license');
-  if (licEl) licEl.addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
-  const licenseSearch = byId('licenseSearch');
-  if (licenseSearch) licenseSearch.addEventListener('input', debounce(e=>{
-    const q = e.target.value.toLowerCase();
-    const root = byId('filter-license'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{
-      const label = w.querySelector('label').textContent.toLowerCase();
-      w.style.display = label.includes(q)?'':'none';
-    });
-  }, 120));
-
-  // Classes (+ search)
-  const clsEl = byId('filter-classes');
-  if (clsEl) clsEl.addEventListener('change', ()=>{ readFacet('filter-classes', state.classes); applyFilters(); });
-  const classSearch = byId('classSearch');
-  if (classSearch) classSearch.addEventListener('input', debounce(e=>{
-    const q = e.target.value.toLowerCase();
-    const root = byId('filter-classes'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{
-      const label = w.querySelector('label').textContent.toLowerCase();
-      w.style.display = label.includes(q)?'':'none';
-    });
-  }, 120));
-
-  // Sort
-  const sortSel = byId('sortBy');
-  if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
-
-  // Search (hero + docked) with sync
-  const heroInput = byId('q'), dockInput = byId('qDock');
-  function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-  if (dockInput && heroInput){
-    const updateQ = debounce(()=>{ state.q = heroInput.value; if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
-    dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
-    heroInput.addEventListener('input', updateQ);
-  }
-
-  // Docked search show/hide
+  // Year + docked search + selected-range bar
   (function(){
-    const SHOW_AT = 220, HIDE_AT = 160;
-    let docked = false;
-    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
-    function onScroll(){
-      const y = window.scrollY || 0;
-      if(!docked && y > SHOW_AT) setDock(true);
-      else if(docked && y < HIDE_AT) setDock(false);
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    const heroInput = document.getElementById('q');
+    const dockInput = document.getElementById('qDock');
+    const dockThreshold = 220;
+
+    function sync(to, from){
+      to.value = from.value;
+      const ev = new Event('input', {bubbles:true});
+      to.dispatchEvent(ev);
     }
-    onScroll();
-    window.addEventListener('scroll', onScroll, {passive:true});
-  })();
-}
-
-/* ---------- Year selected track bar ---------- */
-const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
-      track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
-function updateTrack(){
-  if(!rmin || !rmax || !track || !minVal || !maxVal) return;
-  const minYear = +rmin.min || 2000, maxYear = +rmax.max || new Date().getFullYear();
-  const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
-  const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
-  const left = ((a - minYear) / (maxYear - minYear)) * 100;
-  const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
-  track.style.left = `calc(${left}% + 10px)`;
-  track.style.right = `calc(${right}% + 10px)`;
-  minVal.textContent = a; maxVal.textContent = b;
-}
-['input','change'].forEach(ev=>{
-  if(rmin) rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
-  if(rmax) rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
-});
-
-/* ---------- Load JSON + Init ---------- */
-async function loadDatasets(){
-  const grid = byId('datasetGrid');
-  const errorBox = byId('errorState');
-  try{
-    const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const payload = await res.json();
-    const raw = Array.isArray(payload) ? payload
-              : (Array.isArray(payload.datasets) ? payload.datasets
-              : (typeof payload==='object' ? Object.values(payload) : []));
-
-    DATASETS = raw.map(d=>{
-      const added = d.added_date || d.added || null;
-      const added_ts = added ? Date.parse(added) : null;
-      // Normalize common fields from your sample JSON
-      const modalities = Array.isArray(d.modalities) ? d.modalities
-                       : (d.data_modality ? String(d.data_modality).split(',').map(s=>s.trim()) : []);
-      const tasks = Array.isArray(d.tasks) ? d.tasks
-                   : (d.potential_tasks ? d.potential_tasks : (d.tasks ? [d.tasks] : []));
-      const authors = Array.isArray(d.authors) ? d.authors : (d.authors ? String(d.authors).split(/,\s*/) : []);
-      const classes = Array.isArray(d.classes) ? d.classes : (d.classes ? [d.classes] : []);
-      return {
-        id: d.id || crypto.randomUUID(),
-        title: d.title || d.name || 'Untitled',
-        year: (d.year!==undefined && d.year!==null) ? Number(d.year) : null,
-        modalities, tasks, classes,
-        license: d.license || '',
-        authors,
-        doi: d.doi || '',
-        paper_url: d.paper_url || d.paper || '',
-        access: d.access || '',
-        num_images: (d.num_images!==undefined && d.num_images!==null) ? Number(d.num_images) : null,
-        num_classes: (d.num_classes!==undefined && d.num_classes!==null) ? Number(d.num_classes) : (classes ? classes.length : null),
-        image_url: d.image_url || '',
-        thumbnail: d.thumbnail || d.image_url || '',
-        added_date: added || null,
-        added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
-        added_date_fmt: added ? fmtDate(added) : null
-      };
+    if (dockInput && heroInput){
+      dockInput.addEventListener('input', ()=> sync(heroInput, dockInput));
+      heroInput.addEventListener('input', ()=> { if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; });
+    }
+    window.addEventListener('scroll', ()=>{
+      if (window.scrollY > dockThreshold) document.body.classList.add('docked');
+      else document.body.classList.remove('docked');
     });
 
-    const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
-    buildFacets();
-    attachFacetHandlers();
-    applyFilters();
-  }catch(err){
-    console.error('Failed to load datasets.json', err);
-    if (grid) grid.innerHTML = '';
-    if (errorBox) errorBox.classList.remove('d-none');
-  }
-}
+    // Selected track between dual range thumbs
+    const min = document.getElementById('yearRangeMin');
+    const max = document.getElementById('yearRangeMax');
+    const track = document.getElementById('yearRangeSelected');
+    const minVal = document.getElementById('yearRangeMinVal');
+    const maxVal = document.getElementById('yearRangeMaxVal');
 
-// Kickoff once DOM is ready
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', loadDatasets);
-}else{
-  loadDatasets();
-}
-
-/* ---------- Basic nav current marker ---------- */
-(function(){
-  var current = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-    var href = a.getAttribute('href'); if(!href) return;
-    var normalized = href.split('#')[0].split('?')[0];
-    var isMatch = normalized === current ||
-                  (normalized === 'index.html' && (current === '' || current === '/'));
-    if(isMatch){
-      a.classList.add('active');
-      a.setAttribute('aria-current','page');
+    function updateTrack(){
+      const minYear = +min.min, maxYear = +max.max;
+      const a = Math.min(+min.value, +max.value);
+      const b = Math.max(+min.value, +max.value);
+      const left = ((a - minYear) / (maxYear - minYear)) * 100;
+      const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
+      track.style.left = `calc(${left}% + 10px)`;
+      track.style.right = `calc(${right}% + 10px)`;
+      minVal.textContent = a; maxVal.textContent = b;
     }
-  });
-})();
+    if (min && max && track){ ['input','change'].forEach(e=>{min.addEventListener(e,updateTrack); max.addEventListener(e,updateTrack);}); updateTrack(); }
+  })();
+</script>
 
-/* ---------- YearNow + docked search ---------- */
-(function(){
-  const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
-  const heroInput = byId('q'); const dockInput = byId('qDock'); const dockThreshold = 220;
-  function sync(to, from){ to.value = from.value; const ev = new Event('input',{bubbles:true}); to.dispatchEvent(ev); }
-  if (dockInput && heroInput){
-    dockInput.addEventListener('input', ()=> sync(heroInput, dockInput));
-    heroInput.addEventListener('input', ()=> { if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; });
+<!-- Auto-active current nav link (adds aria-current + .active) -->
+<script>
+  (function(){
+    var current = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
+      var href = a.getAttribute('href'); if(!href) return;
+      var normalized = href.split('#')[0].split('?')[0];
+      var isMatch = normalized === current ||
+                    (normalized === 'index.html' && (current === '' || current === '/'));
+      if(isMatch){
+        a.classList.add('active');
+        a.setAttribute('aria-current','page');
+      }
+    });
+  })();
+</script>
+
+<!-- Optional: visit logger via Supabase -->
+<script>
+(async function(){
+  const PAGE = 'index';
+  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
+  if(!hasSB){ console.warn('Supabase config missing'); return; }
+  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+
+  async function sha256hex(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
   }
-  window.addEventListener('scroll', ()=>{
-    if (window.scrollY > dockThreshold) document.body.classList.add('docked');
-    else document.body.classList.remove('docked');
-  });
+  function getVisitorId(){
+    const k='oc_visitor_id';
+    let v=localStorage.getItem(k);
+    if(!v){ v=(crypto.randomUUID?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2))); localStorage.setItem(k,v); }
+    return v;
+  }
+  async function getGeo(){
+    try{
+      const g=await fetch('https://get.geojs.io/v1/ip/geo.json',{cache:'no-store'}).then(r=>r.json());
+      if(g && g.latitude && g.longitude) return { ip:g.ip||null, lat:+g.latitude, lon:+g.longitude, city:g.city||null, region:g.region||null, country:g.country||null };
+    }catch(e){}
+    return null;
+  }
+
+  try{
+    const geo=await getGeo();
+    const base = geo?.ip ? geo.ip : ('vid:'+getVisitorId());
+    const ip_hash=await sha256hex(base);
+    const payload={
+      page: PAGE, ip_hash,
+      city: geo?.city||null, region: geo?.region||null, country: geo?.country||null,
+      lat: (geo && typeof geo.lat==='number')?geo.lat:null,
+      lon: (geo && typeof geo.lon==='number')?geo.lon:null,
+      ua: navigator.userAgent, referrer: document.referrer||null
+    };
+    const { error } = await sb.from('visits').insert(payload);
+    if(error) console.error('insert error', error);
+  }catch(e){
+    console.error('logger failed', e);
+  }
 })();
 </script>
 
@@ -658,7 +399,7 @@ if(document.readyState === 'loading'){
     bottom: 20px;
     right: 20px;
     z-index: 1050;
-    background: #0d6efd;
+    background: #0d6efd; /* Bootstrap blue */
     color: #fff;
     padding: 12px 20px;
     border-radius: 999px;
