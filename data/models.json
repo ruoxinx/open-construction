@@ -118,5 +118,20 @@
     "code_url": "https://github.com/joonv2/VisualSiteDiary",
     "thumbnail": "assets/img/models/VisualSiteDiary.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "Small-Construction-Tools",
+    "title": "Utilizing synthetic images to enhance the automated recognition of small-sized construction tools",
+    "authors": ["Soeun Han", "Wonjun Park", "Kyumin Jeong", "Taehoon Hong", "Choongwan Koo"],
+    "abstract": "Previous studies on vision-based classifiers often overlooked the need for detecting small-sized construction tools. Considering the substantial variations in these tools' size and shape, it is essential to train models using synthetic images that encompass diverse angles and distances. This study aimed to improve the performance of classifiers for small-sized construction tools by leveraging synthetic data. Three classifiers were proposed using YOLOv8 algorithm, varying in data composition: (i) ‘Real-4000’: 4000 authentic images; (ii) ‘Hybrid-4000’: 2000 authentic and 2000 synthetic images; (iii) ‘Hybrid-8000’: 4000 authentic and 4000 synthetic images. To assess practical applicability, a test dataset of 144 samples for each type was collected directly from construction sites. Results revealed that the ‘Hybrid-8000’ model, utilizing synthetic images, excelled at 94.8% of mAP_0.5. This represented a significant 15.2% improvement, affirming its practical applicability. These classifiers hold promise for enhancing safety and advancing real-time automation and robotics in construction.",
+    "year": 2024,
+    "modalities": ["Ground RGB (real and synthetic)"],
+    "tasks": ["Object detection"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105415",
+    "code_url": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
+    "thumbnail": "assets/img/models/Small-Construction-Tools.png",
+	"added_date": "2025-09-27"
   }
 ]
