@@ -4,7 +4,7 @@
 ========================= */
 
 /* ---------- Config ---------- */
-const DATA_URL = 'datasets.json'; // adjust if your site uses 'data/datasets.json'
+const DATA_URL = 'data/datasets.json'; // adjust if your site uses 'data/datasets.json'
 
 /* ---------- State ---------- */
 let ALL = {};     // id -> dataset object (normalized)
