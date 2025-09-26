@@ -1,30 +1,30 @@
 [
   {
-    "id": "oc-safety-clip",
-    "title": "OC-Safety-CLIP: Contrastive Pretraining for PPE and Hazard Awareness in Construction",
-    "authors": ["Ruoxin Xiong", "Pingbo Tang", "Yanyu Wang"],
-    "abstract": "We propose a CLIP-style contrastive pretraining pipeline for PPE and hazard awareness on construction imagery...",
-    "year": 2023,
+    "id": "GDUT-HWD",
+    "title": "Automatic detection of hardhats worn by construction personnel: A deep learning approach and benchmark dataset",
+    "authors": ["Jixiu Wu", "Nian Cai", "Wenjie Chen", "Huiheng Wang", "Guotian Wang"],
+    "abstract": "Hardhats play an essential role in protecting construction individuals from accidents. However, wearing hardhats is not strictly enforced among workers due to all kinds of reasons. To enhance construction sites safety, the majority of existing works monitor the presence and proper use of hardhats through multi-stage data processing, which come with limitations on adaption and generalizability. In this paper, a one-stage system based on convolutional neural network is proposed to automatically monitor whether construction personnel are wearing hardhats and identify the corresponding colors. To facilitate the study, this work constructs a new and publicly available hardhat wearing detection benchmark dataset, which consists of 3174 images covering various on-site conditions. Then, features from different layers with different scales are fused discriminately by the proposed reverse progressive attention to generate a new feature pyramid, which will be fed into the Single Shot Multibox Detector (SSD) to predict the final detection results. The proposed system is trained by an end-to-end scheme. The experimental results demonstrate that the proposed system is effective under all kinds of on-site conditions, which can achieve 83.89% mAP (mean average precision) with the input size 512×512."
+    "year": 2019,
     "modalities": ["image"],
-    "tasks": ["PPE detection", "hazard recognition"],
-    "license": "Apache-2.0",
-    "doi": "10.1145/xxxxxx",
-    "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
-    "code_url": "https://github.com/ruoxinx/OC-Safety-CLIP",
-    "thumbnail": "assets/img/models/_placeholder.png"
+    "tasks": ["Object detection"],
+    "license": "Apache License 2.0",
+    "doi": "https://doi.org/10.1016/j.autcon.2019.102894",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2019.102894",
+    "code_url": "https://github.com/HCIILAB/SCUT-HEAD-Dataset-Release",
+    "thumbnail": "assets/img/models/GDUT-HWD.png"
   },
   {
-    "id": "bim-llm",
-    "title": "BIM-LLM: Instruction-tuned LLM for Quantity Takeoff and RFI Drafting",
-    "authors": ["First Last", "Second Last"],
+    "id": "Construction-Activity-Scenes",
+    "title": "Manifesting construction activity scenes via image captioning",
+    "authors": ["Huan Liu", "Guangbin Wang", "Ting Huang", "Ping He", "Martin Skitmore", "Xiaochun Luo"],
     "abstract": "An instruction-tuned LLM that supports quantity takeoff and RFI drafting across typical CM workflows...",
-    "year": 2024,
-    "modalities": ["text"],
-    "tasks": ["quantity takeoff", "document QA", "RFI drafting"],
-    "license": "CC BY-NC 4.0",
-    "doi": "https://doi.org/10.48550/arXiv.xxxxxxx",
-    "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
-    "code_url": "https://github.com/org/bim-llm",
-    "thumbnail": "assets/img/models/_placeholder.png"
+    "year": 2020,
+    "modalities": ["image"],
+    "tasks": ["Image captioning"],
+    "license": "Not specified",
+    "doi": "https://doi.org/10.1016/j.autcon.2020.103334",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2020.103334",
+    "code_url": "https://github.com/HannahHuanLIU/AEC-image-captioning",
+    "thumbnail": "assets/img/models/Construction-Activity-Scenes.png"
   }
 ]
