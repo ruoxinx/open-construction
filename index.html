@@ -637,8 +637,8 @@
 
     try{
       const [datasetsJson, modelsJson] = await Promise.all([
-        fetchFirst(['assets/data/datasets.json','assets/datasets.json','datasets.json']),
-        fetchFirst(['assets/data/models.json','assets/models.json','models.json'])
+        fetchFirst(['data/datasets.json', 'datasets.json']),
+        fetchFirst(['data/models.json','models.json'])
       ]);
 
       const dCount = arrayishLength(datasetsJson);
