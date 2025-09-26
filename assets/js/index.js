@@ -148,12 +148,6 @@ function canonicalizeAllDatasets(){
 
   const TASK_CANON  = buildCanonMap(allTasks,  normKey);
   const CLASS_CANON = buildCanonMap(allClasses, normClassKey);
-  
-  const addedRaw = ds.added_date ?? ds.added ?? ds.addedAt ?? ds.date_added ?? null;
-  const ts = addedRaw ? Date.parse(addedRaw) : NaN;
-  
-  ds._added_ts = Number.isFinite(ts) ? ts : null;         // numeric for sorting if you want later
-  ds.added_date = Number.isFinite(ts) ? new Date(ts).toISOString() : null; // normalized ISO (optional)
 
   Object.values(ALL).forEach(ds=>{
     // Tasks
@@ -386,14 +380,6 @@ function renderGrid(){
 function cardHTML(ds){
   const id = ds.id || ds.name, slug = encodeURIComponent(id);
   const img = ds.image_url || 'assets/img/placeholder.png';
-  
-    // inline date format without helpers
-  let addedTag = '';
-  if (ds._added_ts) {
-    const d = new Date(ds._added_ts);
-    const addedText = d.toLocaleDateString(undefined, {year:'numeric', month:'short', day:'2-digit'});
-    addedTag = `<span class="badge rounded-pill bg-light text-muted border ms-auto">Added ${addedText}</span>`;
-  }
 
   return `<div class="col-md-6 col-xl-4">
     <div class="card dataset-card h-100 shadow-sm">
