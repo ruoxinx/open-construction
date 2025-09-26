@@ -11,20 +11,24 @@
   <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
     :root{
-      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c;
       --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
-      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 10px 28px rgba(15,46,75,.10);
-      --oc-radius:16px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 14px 36px rgba(15,46,75,.12);
+      --oc-radius:18px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
-
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
-    /* Navbar */
-    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    /* Navbar (borderless) */
+    .oc-nav{
+      backdrop-filter:saturate(120%) blur(6px);
+      background:#fff !important;
+      box-shadow:0 8px 24px rgba(15,46,75,.06);
+      border:0 !important;
+    }
     .brand-wordmark{ display:inline-flex; gap:.25rem; align-items:baseline; font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink); font-size:clamp(1.1rem, 1rem + .6vw, 1.4rem); }
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
@@ -32,24 +36,34 @@
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
     .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{ color:var(--oc-brand-ink); text-decoration:underline; text-underline-offset:3px; }
 
-    /* Hero */
-    .hero{ background:#fff; color:var(--oc-brand-ink); border-bottom:1px solid var(--oc-border); }
-    .hero .content{ padding:56px 0 44px; text-align:center; }
+    /* Hero (borderless) */
+    .hero{ background:#fff; color:var(--oc-brand-ink); }
+    .hero .content{ padding:56px 0 36px; text-align:center; }
     .hero h1{ font-weight:800; letter-spacing:.2px; line-height:1.12; font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem); margin:.25rem 0 .35rem; }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
-    .hero .pill{ display:inline-flex; gap:.5rem; align-items:center; border-radius:999px; padding:.45rem .85rem; background:transparent; border:1px solid #dfe6ee; color:var(--oc-brand-ink); font-size:.9rem; }
+    .hero .pill{
+      display:inline-flex; gap:.5rem; align-items:center;
+      border-radius:999px; padding:.45rem .85rem; color:var(--oc-brand-ink);
+      background:linear-gradient(180deg,#fff,#f9fbff);
+      box-shadow:0 10px 24px rgba(15,46,75,.06), inset 0 1px 0 rgba(255,255,255,.8);
+    }
 
     /* Buttons */
-    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
-    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
-    .btn-ink{ background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink); }
+    .oc-btn{ border-radius:999px; color:var(--oc-text); }
+    .oc-btn:hover{ background:#f6f9fc; color:var(--oc-brand-ink); }
+    .btn-ink{ background:var(--oc-brand-ink); color:#fff; border-radius:999px; }
     .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
-    .btn-accent{ background:#fff; color:var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink); }
+    .btn-accent{ background:#fff; color:var(--oc-brand-ink); border-radius:999px; box-shadow:0 8px 24px rgba(15,46,75,.06); }
     .btn-accent:hover{ background:#f7fbff; }
 
-    /* Sections & cards */
+    /* Sections & cards (borderless) */
     .oc-section{ margin-top:40px; }
-    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card{
+      background:linear-gradient(180deg,#ffffff,#fbfdff);
+      border:0;
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-brand-ink); }
     .oc-card .oc-card-body{ padding:1.25rem; }
     .oc-kicker{ font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
@@ -57,59 +71,69 @@
     .oc-ul li{ margin:.35rem 0; }
 
     /* Reference block */
-    pre.oc-bib{ background:var(--oc-muted); color:#415367; border:1px solid var(--oc-border); border-radius:10px; padding:1rem; overflow:auto; }
+    pre.oc-bib{
+      background:var(--oc-muted); color:#415367;
+      border:0; border-radius:12px; padding:1rem; overflow:auto;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+    }
 
     /* Footer */
-    footer{ border-top:1px solid var(--oc-border); background:linear-gradient(180deg, transparent, rgba(0,0,0,.02)); }
-    .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
+    footer{ background:linear-gradient(180deg, transparent, rgba(0,0,0,.02)); }
 
-    /* Timeline (unchanged) */
+    /* Timeline (borderless tiles & buttons) */
     .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
-    .oc-tl-wrap::before,.oc-tl-wrap::after{ content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2; }
-    .oc-tl-wrap::before{ left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0)); border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius); }
-    .oc-tl-wrap::after{ right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0)); border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius); }
-    .oc-timeline{ display:flex; gap:1.25rem; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:.5rem 0 1rem; scrollbar-width:thin; }
-    .oc-tl-item{ scroll-snap-align:center; flex:0 0 auto; width:280px; max-width:85vw; background:linear-gradient(180deg, #ffffff, #fbfdff); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:1rem .95rem; position:relative; }
-    .oc-tl-date{ display:inline-block; font-weight:800; letter-spacing:.02em; color:var(--oc-brand-ink); background:#eef4fb; border:1px solid #dfe8f3; padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem; }
+    .oc-timeline{
+      display:flex; gap:1.25rem; overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:.5rem 0 1rem; scrollbar-width:thin;
+    }
+    .oc-tl-item{
+      scroll-snap-align:center; flex:0 0 auto; width:280px; max-width:85vw;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      padding:1rem .95rem; position:relative;
+    }
+    .oc-tl-date{
+      display:inline-block; font-weight:800; letter-spacing:.02em; color:var(--oc-brand-ink);
+      background:#eef4fb; padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    }
     .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
     .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
-    .oc-tl-item::after{ content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px; }
+    .oc-tl-item::after{ content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-18px; width:2px; height:14px; background:#e6eef7; border-radius:2px; }
+
     .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
-    .oc-tl-btn{ display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:999px; background:#ffffff; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); color:var(--oc-brand-ink); }
+    .oc-tl-btn{
+      display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:999px;
+      background:#ffffff; box-shadow:0 10px 24px rgba(15,46,75,.10);
+      color:var(--oc-brand-ink); border:0;
+    }
     .oc-tl-btn:hover{ filter:brightness(1.03); }
     .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
     .oc-tl-prev{ left:.5rem; } .oc-tl-next{ right:.5rem; }
     .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
-    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; }
+    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; border:0; }
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       PRO Hero Metrics (bigger & glossy)
+       Hero Metrics (borderless + sheen)
        ============================== */
     .metrics-pro{
-      display:flex; gap:1.2rem; justify-content:center; align-items:stretch;
-      flex-wrap:wrap; margin:1.2rem auto .4rem; max-width:680px;
+      display:flex; gap:1.2rem; justify-content:center; align-items:stretch; flex-wrap:wrap;
+      margin:1.1rem auto .2rem; max-width:760px;
     }
     .metric-pro{
-      --ring-size: 96px;           /* visible size */
-      --ring-stroke: 7;            /* thickness */
-      --ring-radius: calc((var(--ring-size) - var(--ring-stroke)) / 2);
+      --ring-size: 110px; --ring-stroke: 8; --ring-radius: calc((var(--ring-size) - var(--ring-stroke)) / 2);
       display:flex; align-items:center; gap:1rem;
       background:linear-gradient(180deg,#fff,#f9fbff);
-      border:1px solid var(--oc-border);
-      border-radius:18px;
-      padding:.9rem 1rem;
-      box-shadow: 0 8px 28px rgba(15,46,75,.08), inset 0 1px 0 rgba(255,255,255,.65);
+      border:0; border-radius:22px; padding:1rem 1.25rem;
+      box-shadow:0 14px 36px rgba(15,46,75,.12), inset 0 1px 0 rgba(255,255,255,.65);
       transition: transform .18s ease, box-shadow .18s ease;
-      min-width: 280px;
+      min-width: 320px;
     }
-    .metric-pro:hover{ transform:translateY(-2px); box-shadow: 0 10px 30px rgba(15,46,75,.12), inset 0 1px 0 rgba(255,255,255,.65); }
+    .metric-pro:hover{ transform:translateY(-2px); box-shadow:0 16px 40px rgba(15,46,75,.16), inset 0 1px 0 rgba(255,255,255,.65); }
 
-    .metric-vis{
-      position:relative; width:var(--ring-size); height:var(--ring-size);
-      display:grid; place-items:center;
-      filter: drop-shadow(0 4px 14px rgba(15,46,75,.10));
-    }
+    .metric-vis{ position:relative; width:var(--ring-size); height:var(--ring-size); display:grid; place-items:center; filter:drop-shadow(0 6px 18px rgba(15,46,75,.12)); }
     .metric-vis svg{ width:var(--ring-size); height:var(--ring-size); }
 
     .ring-bg{ stroke:#e9eff6; }
@@ -117,32 +141,42 @@
       stroke:url(#grad-oc);
       stroke-linecap:round;
       transition:stroke-dashoffset 1s ease-out;
-      filter: drop-shadow(0 0 8px rgba(242,162,56,.35));
+      filter: drop-shadow(0 0 10px rgba(242,162,56,.35));
+    }
+    .ring-sheen{
+      stroke:rgba(255,255,255,.85);
+      stroke-linecap:round;
+      stroke-dasharray:42 300;  /* small bright arc */
+      opacity:.75;
+      transform-origin:50% 50%;
+      animation: spin 6s linear infinite;
     }
 
     .gloss{
-      position:absolute; inset:0; pointer-events:none;
-      background: radial-gradient(120px 90px at 30% 15%, rgba(255,255,255,.62), transparent 60%),
-                  radial-gradient(140px 100px at 75% 5%, rgba(255,255,255,.4), transparent 60%);
-      border-radius:50%;
-      mix-blend-mode:screen;
-      opacity:.9;
+      position:absolute; inset:0; border-radius:50%; pointer-events:none;
+      background:radial-gradient(120px 90px at 30% 15%, rgba(255,255,255,.62), transparent 60%),
+                 radial-gradient(140px 100px at 75% 5%, rgba(255,255,255,.45), transparent 60%);
+      mix-blend-mode:screen; opacity:.9;
     }
 
     .metric-copy{ display:flex; flex-direction:column; align-items:flex-start; line-height:1.1; }
     .metric-label{ font-size:.78rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.14em; }
-    .metric-value{ font-weight:900; color:var(--oc-brand-ink); font-size:clamp(1.6rem, 1.2rem + 1.2vw, 2rem); }
+    .metric-value{ font-weight:900; color:var(--oc-brand-ink); font-size:clamp(1.8rem, 1.2rem + 1.6vw, 2.3rem); }
     .metric-note{ font-size:.86rem; color:#5b6b7d; }
 
-    .ico{
-      position:absolute; width:42px; height:42px; color:#40556b; opacity:.9;
-    }
-    .ico-datasets{ left:50%; top:50%; transform:translate(-50%,-50%); }
-    .ico-models{ left:50%; top:50%; transform:translate(-50%,-50%); }
+    .ico{ position:absolute; width:48px; height:48px; color:#40556b; opacity:.9; left:50%; top:50%; transform:translate(-50%,-50%); }
 
-    /* Reveal animation */
     .reveal-up { opacity:0; transform: translateY(8px); }
     .reveal-up.is-visible{ opacity:1; transform:none; transition:opacity .5s ease, transform .5s ease; }
+
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .oc-timeline{ scroll-behavior:auto; }
+      .oc-tl-btn, .ring-val{ transition:none; }
+      .ring-sheen{ animation:none; }
+    }
 
     @media (max-width: 480px){
       .metric-pro{ min-width: 100%; }
@@ -152,7 +186,7 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+<nav class="navbar navbar-expand-lg oc-nav sticky-top">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
@@ -172,7 +206,8 @@
         <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
@@ -201,7 +236,7 @@
     <h1 class="mb-1">OpenConstruction Overview</h1>
     <p class="lead mb-0">A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.</p>
 
-    <!-- ===== PRO Stats (bigger, glossy, once-on-scroll) ===== -->
+    <!-- Fancy, borderless metrics -->
     <div class="metrics-pro reveal-up" id="heroMetrics" role="group" aria-label="Catalog statistics">
       <!-- Datasets -->
       <div class="metric-pro">
@@ -213,14 +248,17 @@
                 <stop offset="100%" stop-color="#0f2e4b"/>
               </linearGradient>
             </defs>
-            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="7"></circle>
-            <circle class="ring-val" id="ringDatasets" cx="60" cy="60" r="46" fill="none" stroke-width="7"
+            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="8"></circle>
+            <circle class="ring-val" id="ringDatasets" cx="60" cy="60" r="46" fill="none" stroke-width="8"
                     transform="rotate(-90 60 60)" stroke-dasharray="289" stroke-dashoffset="289"></circle>
+            <!-- rotating sheen -->
+            <circle class="ring-sheen" cx="60" cy="60" r="46" fill="none" stroke-width="8"
+                    transform="rotate(-90 60 60)" stroke-dasharray="42 300"></circle>
           </svg>
           <!-- icon -->
-          <svg class="ico ico-datasets" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 3h12v4H6zM4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.5" />
-            <path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 3h12v4H6zM4 7h16v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.6" />
+            <path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           </svg>
           <span class="gloss" aria-hidden="true"></span>
         </div>
@@ -235,15 +273,17 @@
       <div class="metric-pro">
         <div class="metric-vis">
           <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="7"></circle>
-            <circle class="ring-val" id="ringModels" cx="60" cy="60" r="46" fill="none" stroke-width="7"
+            <circle class="ring-bg" cx="60" cy="60" r="46" fill="none" stroke-width="8"></circle>
+            <circle class="ring-val" id="ringModels" cx="60" cy="60" r="46" fill="none" stroke-width="8"
                     transform="rotate(-90 60 60)" stroke-dasharray="289" stroke-dashoffset="289"></circle>
+            <circle class="ring-sheen" cx="60" cy="60" r="46" fill="none" stroke-width="8"
+                    transform="rotate(-90 60 60)" stroke-dasharray="42 300"></circle>
           </svg>
           <!-- icon -->
-          <svg class="ico ico-models" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6"/>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/>
             <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2.2 2.2M19 5l-2.2 2.2M5 19l2.2-2.2M19 19l-2.2-2.2"
-                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
           <span class="gloss" aria-hidden="true"></span>
         </div>
@@ -498,7 +538,7 @@
     window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
   })();
 
-  /* ===== PRO Hero Metrics: counts + glossy ring + reveal ===== */
+  /* ===== Hero Metrics: counts + ring sweep + reveal ===== */
   (function(){
     const hero = document.getElementById('heroMetrics');
     const countElDatasets = document.getElementById('countDatasets');
@@ -506,7 +546,7 @@
     const ringDatasets = document.getElementById('ringDatasets');
     const ringModels = document.getElementById('ringModels');
 
-    // IntersectionObserver to reveal/animate once
+    // reveal once
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting){
@@ -522,7 +562,7 @@
         try{
           const res = await fetch(p, { cache:'no-cache' });
           if(res.ok){ return res.json(); }
-        }catch(_){/* try next */}
+        }catch(_){}
       }
       throw new Error('All JSON paths failed');
     }
@@ -563,17 +603,16 @@
     async function init(){
       try{
         const [datasetsJson, modelsJson] = await Promise.all([
-          fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
-          fetchFirst(['data/models.json','assets/models.json','models.json'])
+          fetchFirst(['assets/data/datasets.json','assets/datasets.json','datasets.json']),
+          fetchFirst(['assets/data/models.json','assets/models.json','models.json'])
         ]);
         const dCount = arrayishLength(datasetsJson);
         const mCount = arrayishLength(modelsJson);
 
-        // Count-up
         countUp(countElDatasets, dCount);
         countUp(countElModels, mCount);
 
-        // Fancy sweep (full circle, looks premium regardless of absolute values)
+        // ring sweep (full)
         sweepRing(ringDatasets, 1);
         sweepRing(ringModels, 1);
       }catch(_){
