@@ -355,7 +355,7 @@ function render(items){
         </div>
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title}</h3>
-          <div class="meta mb-2">${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'} • ${m.license||'—'}</div>
+          <div class="meta mb-2">${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'}</div>
           <div class="d-flex flex-wrap gap-1 mb-3">
             ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
           </div>
