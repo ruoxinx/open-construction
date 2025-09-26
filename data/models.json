@@ -5,13 +5,14 @@
     "authors": ["Jixiu Wu", "Nian Cai", "Wenjie Chen", "Huiheng Wang", "Guotian Wang"],
     "abstract": "Hardhats play an essential role in protecting construction individuals from accidents. However, wearing hardhats is not strictly enforced among workers due to all kinds of reasons. To enhance construction sites safety, the majority of existing works monitor the presence and proper use of hardhats through multi-stage data processing, which come with limitations on adaption and generalizability. In this paper, a one-stage system based on convolutional neural network is proposed to automatically monitor whether construction personnel are wearing hardhats and identify the corresponding colors. To facilitate the study, this work constructs a new and publicly available hardhat wearing detection benchmark dataset, which consists of 3174 images covering various on-site conditions. Then, features from different layers with different scales are fused discriminately by the proposed reverse progressive attention to generate a new feature pyramid, which will be fed into the Single Shot Multibox Detector (SSD) to predict the final detection results. The proposed system is trained by an end-to-end scheme. The experimental results demonstrate that the proposed system is effective under all kinds of on-site conditions, which can achieve 83.89% mAP (mean average precision) with the input size 512×512.",
     "year": 2019,
-    "modalities": ["image"],
+    "modalities": ["Ground RGB"],
     "tasks": ["Object detection"],
+	"applications": ["Safety management", "Compliance monitoring"],
     "license": "Apache License 2.0",
-    "doi": "https://doi.org/10.1016/j.autcon.2019.102894",
     "paper_url": "https://doi.org/10.1016/j.autcon.2019.102894",
     "code_url": "https://github.com/HCIILAB/SCUT-HEAD-Dataset-Release",
-    "thumbnail": "assets/img/models/GDUT-HWD.png"
+    "thumbnail": "assets/img/models/GDUT-HWD.png",
+	"added_date": "2025-09-25"
   },
   {
     "id": "Construction-Activity-Scenes",
@@ -19,12 +20,12 @@
     "authors": ["Huan Liu", "Guangbin Wang", "Ting Huang", "Ping He", "Martin Skitmore", "Xiaochun Luo"],
     "abstract": "This study proposed an automated method for manifesting construction activity scenes by image captioning – an approach rooted in computer vision and natural language generation. A linguistic description schema for manifesting the scenes is developed initially and two unique dedicated image captioning datasets are created for method validation. A general model architecture of image captioning is then instituted by combining an encoder-decoder framework with deep neural networks, followed by three experimental tests involving the selection of model learning strategies and performance evaluation metrics. It is demonstrated the method's performance is comparable with that of state-of-the-art computer vision methods in general. The paper concludes with a discussion of the feasibility of the practical application of the proposed approach at the current technical level.",
     "year": 2020,
-    "modalities": ["image"],
+    "modalities": ["Ground RGB"],
     "tasks": ["Image captioning"],
     "license": "Not specified",
-    "doi": "https://doi.org/10.1016/j.autcon.2020.103334",
     "paper_url": "https://doi.org/10.1016/j.autcon.2020.103334",
     "code_url": "https://github.com/HannahHuanLIU/AEC-image-captioning",
-    "thumbnail": "assets/img/models/Construction-Activity-Scenes.png"
+    "thumbnail": "assets/img/models/Construction-Activity-Scenes.png",
+	"added_date": "2025-09-25"
   }
 ]
