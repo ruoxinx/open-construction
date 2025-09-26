@@ -1323,7 +1323,7 @@
     ],
     "license": "ODC-By",
     "paper": "ROADWork Dataset: Recognize, Observe, Analyze and Drive Through Work Zones",
-    "access": "https://github.com/anuragxel/roadwork-dataset/?tab=readme-ov-file",
+    "access": "https://github.com/anuragxel/roadwork-dataset",
     "id": "ROADWork",
     "image_url": "assets/img/datasets/ROADWork.png"
   },
