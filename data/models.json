@@ -10,7 +10,7 @@
 	"applications": ["Safety monitoring"],
     "license": "Apache-2.0",
     "paper_url": "https://doi.org/10.1016/j.autcon.2019.102894",
-    "code_url": "https://github.com/HCIILAB/SCUT-HEAD-Dataset-Release",
+    "code_url": "https://github.com/wujixiu/helmet-detection",
     "thumbnail": "assets/img/models/GDUT-HWD.png",
 	"added_date": "2025-09-25"
   },
