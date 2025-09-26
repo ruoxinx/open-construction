@@ -87,7 +87,9 @@
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
-      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
+      <span class="brand-wordmark">
+        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
+      </span>
     </a>
 
     <!-- Docked search -->
@@ -102,9 +104,9 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <li class="nav-item"><a class="nav-link plain" href="about.html">About</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="index.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain active" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Contributors</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Contributors</a></li>
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
              aria-label="OpenConstruction GitHub" title="View on GitHub">
@@ -128,10 +130,10 @@
 </nav>
 
 <!-- Hero -->
-<header class="hero">
+<header class="hero" id="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">Models & Papers</h1>
-    <p class="lead">Explore construction-relevant models, their tasks, licenses, and code.</p>
+    <p class="lead">Explore open models for construction monitoring and analysis</p>
     <div id="searchDock" class="mt-3">
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search models, papers, tasks …" aria-label="Search models large">
     </div>
@@ -167,8 +169,8 @@
             <div class="range-container">
               <div class="slider"></div>
               <div class="range-selected" id="yearRangeSelected"></div>
-              <input type="range" class="thumb" id="yearRangeMin" min="2005" max="2030" step="1">
-              <input type="range" class="thumb" id="yearRangeMax" min="2005" max="2030" step="1">
+              <input type="range" class="thumb" id="yearRangeMin" min="2005" max="2030" step="1" aria-label="Min year">
+              <input type="range" class="thumb" id="yearRangeMax" min="2005" max="2030" step="1" aria-label="Max year">
             </div>
             <div class="small text-muted">From <span id="yearRangeMinVal"></span> to <span id="yearRangeMaxVal"></span></div>
           </div>
@@ -211,18 +213,6 @@
 <script>
 /* ---------------------------
    1) Sample MODEL METADATA
-   Save as assets/data/models.json later. Structure:
-   {
-     "id": "unique-slug",
-     "title": "Paper / Model Title",
-     "year": 2024,
-     "modalities": ["text","image","point-cloud","multimodal"],
-     "tasks": ["construction-safety","progress-tracking"],
-     "license": "Apache-2.0",
-     "paper_url": "https://…",
-     "code_url": "https://…",
-     "icon": "assets/models/slug.png"
-   }
 --------------------------- */
 const MODELS = [
   {
@@ -271,16 +261,24 @@ const MODELS = [
   }
 ];
 
+/* ---- Fallback icon (inline SVG) ---- */
+const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 84 84">
+     <rect width="84" height="84" rx="12" fill="#f1f5f9"/>
+     <path d="M18 54h48v6H18zM24 24h12v24H24zM48 36h12v12H48z" fill="#0f2e4b" opacity=".65"/>
+   </svg>`
+);
+
 /* ---------------------------
-   2) Helpers: DOM + rendering
+   2) Helpers
 --------------------------- */
-const qs = s => document.querySelector(s);
 const byId = id => document.getElementById(id);
 
 function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
 function yearExtent(items){
-  const ys = items.map(d=>d.year).filter(Boolean);
-  return [Math.min(...ys, 2010), Math.max(...ys, 2030)];
+  const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
+  if(!ys.length) return [2005, new Date().getFullYear()];
+  return [Math.min(...ys), Math.max(...ys)];
 }
 function makeCheckbox(id, label, value){
   const wrap = document.createElement('div'); wrap.className = 'form-check';
@@ -288,9 +286,11 @@ function makeCheckbox(id, label, value){
   const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
   wrap.appendChild(input); wrap.appendChild(lab); return wrap;
 }
+/* tiny debounce */
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
 
 /* ---------------------------
-   3) Build facets
+   3) State + facets
 --------------------------- */
 const state = {
   q: '', sort: 'year-desc',
@@ -375,7 +375,9 @@ function render(items){
     el.className = 'paper-card';
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
-        <div class="left"><img src="${m.icon||'assets/img/model-icons/default.png'}" alt=""></div>
+        <div class="left">
+          <img src="${m.icon||ICON_FALLBACK}" alt="" onerror="this.src='${ICON_FALLBACK}'">
+        </div>
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title}</h3>
           <div class="meta mb-2">${m.year||'—'} • ${(m.modalities||[]).join(', ') || '—'} • ${m.license||'—'}</div>
@@ -408,33 +410,45 @@ function attachFacetHandlers(){
   byId('filter-task').addEventListener('change', ()=>{
     readFacet('filter-task', state.tasks); applyFilters();
   });
-  byId('taskSearch').addEventListener('input', e=>{
+  byId('taskSearch').addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
     byId('filter-task').querySelectorAll('.form-check').forEach(w=>{
       const label = w.querySelector('label').textContent.toLowerCase();
       w.style.display = label.includes(q)?'':'none';
     });
-  });
+  }, 120));
   // Licenses (with search)
   byId('filter-license').addEventListener('change', ()=>{
     readFacet('filter-license', state.licenses); applyFilters();
   });
-  byId('licenseSearch').addEventListener('input', e=>{
+  byId('licenseSearch').addEventListener('input', debounce(e=>{
     const q = e.target.value.toLowerCase();
     byId('filter-license').querySelectorAll('.form-check').forEach(w=>{
       const label = w.querySelector('label').textContent.toLowerCase();
       w.style.display = label.includes(q)?'':'none';
     });
-  });
+  }, 120));
 
   // Search (hero + docked)
-  const heroInput = byId('q'), dockInput = byId('qDock'), dockThreshold = 220;
+  const heroInput = byId('q'), dockInput = byId('qDock');
   function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
   if (dockInput && heroInput){
+    const updateQ = debounce(()=>{
+      state.q = heroInput.value;
+      if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value;
+      applyFilters();
+    }, 120);
     dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
-    heroInput.addEventListener('input', ()=>{ if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; state.q = heroInput.value; applyFilters(); });
+    heroInput.addEventListener('input', updateQ);
   }
-  window.addEventListener('scroll', ()=>{ if (window.scrollY>dockThreshold) document.body.classList.add('docked'); else document.body.classList.remove('docked'); });
+
+  // Dock/undock via IntersectionObserver (no flicker)
+  const hero = document.getElementById('hero');
+  const obs = new IntersectionObserver((entries)=>{
+    const visible = entries[0].isIntersecting;
+    document.body.classList.toggle('docked', !visible);
+  }, {root: null, threshold: 0, rootMargin: "-64px 0px 0px 0px"}); // adjust for navbar height
+  obs.observe(hero);
 
   // Sort
   byId('sortBy').addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
@@ -445,8 +459,8 @@ const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
       track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
 function updateTrack(){
   const minYear = +rmin.min, maxYear = +rmax.max;
-  const a = Math.min(+rmin.value, +rmax.value);
-  const b = Math.max(+rmin.value, +rmax.value);
+  const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
+  const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
   const left = ((a - minYear) / (maxYear - minYear)) * 100;
   const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
   track.style.left = `calc(${left}% + 10px)`;
