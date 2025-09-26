@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Models • Open·Construction</title>
+  <title>Models</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -15,669 +15,692 @@
       --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
+
+      /* Tag hues (subtle but clearer) */
+      --tag-task-bg:#eef5ff;        /* light blue */
+      --tag-task-border:#cfe2ff;
+      --tag-task-text:#0b4ea2;
+
+      --tag-app-bg:#edf8f2;         /* light green */
+      --tag-app-border:#cfe9db;
+      --tag-app-text:#106946;
     }
     html,body{background:var(--oc-bg); color:var(--oc-text)}
     a{color:var(--oc-link)}
-    .container-narrow{max-width:1120px}
 
-    /* Header */
-    .site-head{padding:28px 0 10px;border-bottom:1px solid var(--oc-border);background:#fff;position:sticky;top:0;z-index:40}
-    .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;color:var(--oc-ink);font-size:1.05rem;text-decoration:none}
-    .brand .dot{color:var(--oc-accent)}
-
-    /* Hero */
-    .hero{padding:26px 0 18px}
-    .hero h1{font-size:1.6rem;margin:0 0 .4rem}
-    .hero p{color:var(--oc-sub);margin:0 0 1rem}
-
-    /* Docked search */
-    .docked-bar{position:sticky;top:62px;z-index:38;background:#fff;border-bottom:1px solid var(--oc-border);display:none}
-    body.docked .docked-bar{display:block}
-    .docked-bar .container-narrow{display:flex;gap:12px;align-items:center;padding:8px 0}
-
-    /* Layout */
-    .main{padding:14px 0 36px}
-    .grid{display:grid;grid-template-columns:260px 1fr;gap:20px}
-    @media (max-width: 992px){ .grid{grid-template-columns:1fr} }
-
-    /* Sidebar */
-    .facet{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:14px}
-    .facet h6{font-size:.9rem;margin:0 0 .6rem;color:var(--oc-ink)}
-    .facet .search-in-facet{margin-bottom:.5rem}
-    .form-check{margin:.15rem 0}
-
-    /* Year range */
-    .range-wrap{position:relative;padding:10px 0}
-    .range-selected{position:absolute;height:4px;background:#cbd8e6;left:10px;right:10px;top:24px;border-radius:99px;pointer-events:none}
-    .range-pipes input[type=range]{width:100%}
-    .range-values{display:flex;justify-content:space-between;color:var(--oc-sub);font-size:.85rem}
-
-    /* Toolbar */
-    .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px}
-    .toolbar .meta{color:var(--oc-sub)}
-
-    /* Cards */
-    .paper-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:14px;margin-bottom:14px}
-    .paper-card .left img{width:160px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--oc-border)}
-    @media (max-width:576px){ .paper-card .left img{width:120px;height:90px} }
-    .paper-card .title{color:var(--oc-ink)}
-    .paper-card .meta{color:var(--oc-sub)}
-    .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:.35rem 0}
-    .badge-task, .badge-app, .badge-mod{
-      display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;border:1px solid var(--oc-border);background:#fafcff
+    /* ---------- Navbar (match index.html) ---------- */
+    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
+    .oc-logo{height:44px;width:44px}
+    .brand-wordmark{
+      display:inline-flex;gap:.25rem;align-items:baseline;
+      color:#0F2E4B;font-weight:700;letter-spacing:.1px;
+      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)
     }
-    .badge-task{background:#eef5ff}
-    .badge-app{background:#fff7ee}
-    .badge-mod{background:#f3f7f3}
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{
+      color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px
+    }
+    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
+    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
+    .nav-link.icon-only:hover svg{opacity:1}
 
-    /* Abstract toggle to the right, smaller font */
+    /* ---------- Docked search (same as index) ---------- */
+    .navbar-search{display:none;width:clamp(200px,24vw,320px)}
+    .navbar-search .form-control{
+      height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px
+    }
+    body.docked .navbar-search{display:flex}
+    body.docked #searchDock{display:none}
+    @media (min-width: 992px){
+      .navbar .container{display:flex;align-items:center}
+      .navbar .navbar-collapse{flex-grow:0}
+      .navbar .navbar-search{margin-left:.75rem}
+    }
+
+    /* ---------- Hero ---------- */
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:56px 0 36px;text-align:center}
+    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
+    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
+    .search-input{
+      border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;
+      box-shadow:inset 0 1px 0 rgba(15,46,75,.05)
+    }
+
+    /* ---------- Filters ---------- */
+    .filters{position:sticky;top:86px}
+    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
+    .card .form-label{font-weight:700}
+    .range-container{position:relative;height:36px;margin:.25rem 0 .5rem}
+    .range-container .slider{position:absolute;left:10px;right:10px;top:14px;height:8px;background:#e9ecef;border-radius:10px}
+    .range-container .range-selected{position:absolute;top:14px;height:8px;background:#0d6efd;border-radius:10px}
+    .range-container .thumb{pointer-events:none;position:absolute;height:0;width:100%;-webkit-appearance:none}
+    .range-container .thumb::-webkit-slider-thumb{
+      pointer-events:all;width:18px;height:18px;border-radius:50%;background:#0d6efd;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12);-webkit-appearance:none
+    }
+    .range-container .thumb::-moz-range-thumb{
+      pointer-events:all;width:18px;height:18px;border-radius:50%;background:#0d6efd;border:2px solid #fff
+    }
+
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+
+    /* ---------- Paper / Model card ---------- */
+    .paper-card{
+      background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);padding:1rem;height:100%
+    }
+    .paper-card .left{
+      width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
+    }
+    .paper-card img{width:100%;height:100%;object-fit:cover}
+
+    .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
+    .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
+
+    /* Tag styling (compact) */
+    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
+    .badge-task{
+      background:var(--tag-task-bg); border:1px solid var(--tag-task-border); color:var(--tag-task-text);
+      font-weight:600; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
+    }
+    .badge-app{
+      background:var(--tag-app-bg); border:1px solid var(--tag-app-border); color:var(--tag-app-text);
+      font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
+    }
+
+    .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
+    .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
+    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
+    @keyframes shimmer{to{transform:translateX(100%)}}
+
+    /* Floating button: Add New Model */
+    .issue-btn { position: fixed; bottom: 20px; right: 20px; z-index: 1050; background: #0d6efd; color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: .9rem; box-shadow: 0 4px 12px rgba(0,0,0,.25); text-decoration: none; transition: background .2s ease, transform .2s ease; }
+    .issue-btn:hover { background: #0b5ed7; transform: translateY(-2px); color: #fff; text-decoration: none; }
+
+    /* ---------- Abstract toggle helpers ---------- */
     .abstract{position:relative}
-    .abstract-fade{position:absolute;right:0;bottom:0;width:40%;height:1.2em;background:linear-gradient(90deg, rgba(255,255,255,0), #fff)}
-    .abstract-toggle-wrap{display:flex;justify-content:flex-end}
-    .abstract-toggle{font-size:.82rem;padding:0 .25rem}
+    .abstract-fade{position:relative;display:inline}
+    .abstract-fade::after{
+      content:""; display:inline-block; width:48px; height:1em; margin-left:-48px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), #fff 70%);
+    }
+    .btn-link.toggle { padding:0; font-weight:600; text-decoration:none; font-size:.875rem; }
+    .abstract-toggle-wrap { text-align:right; }
 
-    .added-note{color:var(--oc-sub);font-size:.8rem}
-
-    /* Empty/Error */
-    .empty, .error{padding:24px;border:1px dashed var(--oc-border);border-radius:var(--oc-radius);text-align:center;color:var(--oc-sub)}
+    /* Added date note */
+    .added-note{
+      align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
+      font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
+    }
   </style>
 </head>
 <body>
 
-  <!-- Site header -->
-  <div class="site-head">
-    <div class="container container-narrow d-flex justify-content-between align-items-center">
-      <a class="brand" href="index.html">
-        <span>Open<span class="dot">·</span>Construction</span>
-      </a>
-      <nav class="d-flex gap-3 small">
-        <a href="dataset.html">Datasets</a>
-        <strong>Models</strong>
-        <a href="about.html">About</a>
-      </nav>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark">
+        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
+      </span>
+    </a>
+
+    <!-- Docked search (small) -->
+    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
+      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search models, tasks, applications …" aria-label="Search models">
+    </form>
+
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="models.html" aria-current="page">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Models" target="_blank" rel="noopener"
+             aria-label="OpenConstruction GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
+              2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              0-.53.63-.01 1.08.58 1.23.82.72 1.21 
+              1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+              0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
+              0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+              1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+              1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+              0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+              1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
+              8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
+</nav>
 
-  <!-- Docked search -->
-  <div class="docked-bar">
-    <div class="container container-narrow">
-      <input id="qDock" type="search" class="form-control" placeholder="Search models, authors, tasks…" />
-      <div class="ms-auto small text-muted">Results: <span id="resultCount">0</span></div>
+<!-- Hero -->
+<header class="hero">
+  <div class="container content">
+    <h1 class="display-6 fw-bold">OpenConstruction Model Catalog</h1>
+    <p class="lead">Explore open models for construction monitoring and analysis</p>
+    <div id="searchDock" class="mt-3">
+      <!-- CENTER search (large) -->
+      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search models, tasks, applications …" aria-label="Search models large">
     </div>
   </div>
+</header>
 
-  <!-- Hero -->
-  <div class="container container-narrow hero">
-    <h1 class="mb-1">Models</h1>
-    <p class="mb-2">Search and filter AI models for construction tasks by modality, task, application, year, and license.</p>
-    <div class="d-flex gap-2">
-      <input id="q" type="search" class="form-control" placeholder="Search models, authors, tasks…" />
-      <select id="sortBy" class="form-select" style="max-width:220px">
-        <option value="added-desc">Newest added</option>
-        <option value="added-asc">Oldest added</option>
-        <option value="year-desc">Year ↓</option>
-        <option value="year-asc">Year ↑</option>
-        <option value="name-asc">A → Z</option>
-        <option value="name-desc">Z → A</option>
-      </select>
-    </div>
-  </div>
+<main class="container my-4">
+  <div class="row g-3">
+    <!-- Filters -->
+    <aside class="col-lg-3">
+      <div class="card shadow-sm filters">
+        <div class="card-header"><strong>Filters</strong></div>
+        <div class="card-body small">
+          <div class="mb-3">
+            <label class="form-label" for="filter-modality">Modalities</label>
+            <div id="filter-modality" class="facet-list vstack gap-1"></div>
+          </div>
 
-  <!-- Main -->
-  <div class="container container-narrow main">
-    <div class="grid">
-      <!-- Sidebar filters -->
-      <aside class="d-flex flex-column gap-3">
-        <!-- Modalities (split like Datasets) -->
-        <div class="facet">
-          <h6>Modalities</h6>
-          <input id="modalitySearch" type="search" class="form-control form-control-sm search-in-facet" placeholder="Filter modalities…" />
-          <div id="filter-modality" class="facet-body" style="max-height:240px; overflow:auto"></div>
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="taskSearch">Tasks</label>
+            <input id="taskSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search tasks…">
+            <div id="filter-task" class="facet-list"></div>
+          </div>
 
-        <div class="facet">
-          <h6>Tasks</h6>
-          <input id="taskSearch" type="search" class="form-control form-control-sm search-in-facet" placeholder="Filter tasks…" />
-          <div id="filter-task" class="facet-body" style="max-height:200px; overflow:auto"></div>
-        </div>
+          <!-- Applications facet (after Tasks) -->
+          <div class="mb-3">
+            <label class="form-label" for="appSearch">Applications</label>
+            <input id="appSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search applications…">
+            <div id="filter-app" class="facet-list"></div>
+          </div>
 
-        <div class="facet">
-          <h6>Applications</h6>
-          <input id="appSearch" type="search" class="form-control form-control-sm search-in-facet" placeholder="Filter applications…" />
-          <div id="filter-app" class="facet-body" style="max-height:200px; overflow:auto"></div>
-        </div>
+          <div class="mb-3">
+            <label class="form-label" for="licenseSearch">Licenses</label>
+            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
+            <div id="filter-license" class="facet-list"></div>
+          </div>
 
-        <div class="facet">
-          <h6>License</h6>
-          <input id="licenseSearch" type="search" class="form-control form-control-sm search-in-facet" placeholder="Filter licenses…" />
-          <div id="filter-license" class="facet-body" style="max-height:160px; overflow:auto"></div>
-        </div>
-
-        <div class="facet">
-          <h6>Year</h6>
-          <div class="range-wrap">
-            <div id="yearRangeSelected" class="range-selected"></div>
-            <div class="range-pipes">
-              <input id="yearRangeMin" type="range" step="1">
-              <input id="yearRangeMax" type="range" step="1">
+          <div class="mb-1">
+            <label class="form-label">Release year</label>
+            <div class="range-container">
+              <div class="slider"></div>
+              <div class="range-selected" id="yearRangeSelected"></div>
+              <input type="range" class="thumb" id="yearRangeMin" min="2005" max="2030" step="1" aria-label="Min year">
+              <input type="range" class="thumb" id="yearRangeMax" min="2005" max="2030" step="1" aria-label="Max year">
             </div>
-            <div class="range-values"><span id="yearRangeMinVal">—</span><span id="yearRangeMaxVal">—</span></div>
+            <div class="small text-muted">From <span id="yearRangeMinVal"></span> to <span id="yearRangeMaxVal"></span></div>
           </div>
         </div>
-      </aside>
+      </div>
+    </aside>
 
-      <!-- Results -->
-      <section>
-        <div class="toolbar">
-          <div class="meta">Showing <strong id="resultCount">0</strong> models</div>
+    <!-- Results -->
+    <section class="col-lg-9">
+      <div class="toolbar mb-2">
+        <div><span id="resultCount" class="fw-semibold">0</span> models</div>
+        <div class="d-flex align-items-center gap-2">
+          <label for="sortBy" class="me-1 small">Sort by</label>
+          <select id="sortBy" class="form-select form-select-sm w-auto">
+		    <option value="year-desc">Year ↓</option>
+            <option value="year-asc">Year ↑</option>
+            <option value="added-desc" selected >Added date ↓</option>
+            <option value="added-asc">Added date ↑</option>
+            <option value="name-asc">Title A→Z</option>
+            <option value="name-desc">Title Z→A</option>
+          </select>
         </div>
+      </div>
 
-        <div id="errorState" class="error d-none">Could not load models. Please try again.</div>
-        <div id="emptyState" class="empty d-none">No models match your filters.</div>
+      <div id="modelGrid" class="vstack gap-3" aria-live="polite" aria-busy="true">
+        <div class="skeleton" style="height:120px"></div>
+        <div class="skeleton" style="height:120px"></div>
+        <div class="skeleton" style="height:120px"></div>
+      </div>
 
-        <div id="modelGrid"></div>
-      </section>
-    </div>
+      <div id="emptyState" class="empty mt-3 d-none">No models match your filters. Try clearing some filters or changing the search.</div>
+      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load models.json. Please check the file path and JSON format.</div>
+    </section>
   </div>
+</main>
 
-  <!-- Data + Logic -->
-  <script>
-  /* ---------------------------
-     DATA SOURCE
-  --------------------------- */
-  const DATA_URL = 'data/models.json';
-  let MODELS = [];
+<footer class="border-top py-4 mt-5">
+  <div class="container small text-muted">© <span id="yearNow"></span> OpenConstruction</div>
+</footer>
 
-  /* ---- Thumbnails & placeholders ---- */
-  const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
-  const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
-       <rect width="160" height="120" rx="12" fill="#f1f5f9"/>
-       <g fill="#0f2e4b" opacity=".6">
-         <rect x="24" y="76" width="112" height="8" rx="4"/>
-         <rect x="36" y="28" width="28" height="36" rx="6"/>
-         <rect x="88" y="44" width="36" height="20" rx="6"/>
-       </g>
-     </svg>`
-  );
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  /* ---------------------------
-     Helpers (match datasets)
-  --------------------------- */
-  const byId = id => document.getElementById(id);
-  function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
-  function yearExtent(items){
-    const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
-    if(!ys.length) return [2005, new Date().getFullYear()];
-    return [Math.min(...ys), Math.max(...ys)];
-  }
-  function makeCheckbox(id, label, value){
-    const wrap = document.createElement('div'); wrap.className = 'form-check';
-    const input = document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
-    const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
-    wrap.appendChild(input); wrap.appendChild(lab); return wrap;
-  }
-  function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
-  function fmtDate(d){
-    try {
-      const dt = (d instanceof Date) ? d : new Date(d);
-      if (isNaN(+dt)) return null;
-      const y = dt.getFullYear();
-      const m = String(dt.getMonth()+1).padStart(2,'0');
-      const day = String(dt.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
-    } catch { return null; }
-  }
-  function esc(s){
-    return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-  }
+<script>
+/* ---------------------------
+   DATA SOURCE
+--------------------------- */
+const DATA_URL = 'data/models.json';
+let MODELS = [];
 
-  /* ---------- normalization + modality canonicalization (copied/adapted from Datasets) ---------- */
-  function normKey(s){
-    if (s == null) return '';
-    return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
-  }
-  // Canonicalize a single free-text modality description into one label
-  function canonicalizeModalityLabel(raw){
-    if (!raw) return 'Other';
-    const s = normKey(raw);
-    const has = re => re.test(s);
+/* ---- Thumbnails & placeholders ---- */
+const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
+const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+     <rect width="160" height="120" rx="12" fill="#f1f5f9"/>
+     <g fill="#0f2e4b" opacity=".6">
+       <rect x="24" y="76" width="112" height="8" rx="4"/>
+       <rect x="36" y="28" width="28" height="36" rx="6"/>
+       <rect x="88" y="44" width="36" height="20" rx="6"/>
+     </g>
+   </svg>`
+);
 
-    const hasSynthetic = has(/\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/);
+/* ---------------------------
+   Helpers
+--------------------------- */
+const byId = id => document.getElementById(id);
+function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
+function yearExtent(items){
+  const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
+  if(!ys.length) return [2005, new Date().getFullYear()];
+  return [Math.min(...ys), Math.max(...ys)];
+}
+function makeCheckbox(id, label, value){
+  const wrap = document.createElement('div'); wrap.className = 'form-check';
+  const input = document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
+  const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
+  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
+}
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
+function fmtDate(d){
+  try {
+    const dt = (d instanceof Date) ? d : new Date(d);
+    if (isNaN(+dt)) return null;
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth()+1).padStart(2,'0');
+    const day = String(dt.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  } catch { return null; }
+}
+/* Escape helper for safe innerHTML text insertion */
+function esc(s){
+  return String(s)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;');
+}
 
-    const hasLidar   = has(/\blidar\b|li[\s-]?dar|\bvelodyne\b|\brplidar\b/);
-    const hasPC      = has(/point\s*cloud/);
-    const hasDepth   = has(/\bdepth\b|\brgb\s*-?\s*d\b|\brgbd\b|\bstereo\b|\bkinect\b/);
-    const hasThermal = has(/\bthermal\b|\binfrared\b|\b(ir)\b/);
-    const hasSAR     = has(/\bsar\b|\bradar\b/);
-    const hasMulti   = has(/\bmultispectral\b/);
-    const hasHyper   = has(/\bhyperspectral\b/);
-    const hasVideo   = has(/\bvideo\b|\bsequence\b|\bstream\b/);
-    const hasSat     = has(/\bsatellite\b|\blandsat\b|\bsentinel\b/);
-    const hasAerial  = has(/\baerial\b|\bdrone\b|\buav\b|\bauv\b/);
-    const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
-    const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
+/* ---------------------------
+   State + facets
+--------------------------- */
+const state = {
+  q: '', sort: 'added-desc',
+  tasks: new Set(), applications: new Set(), modalities: new Set(), licenses: new Set(),
+  yMin: null, yMax: null
+};
 
-    if (hasLidar)   return 'LiDAR';
-    if (hasSAR)     return 'SAR';
-    if (hasDepth)   return 'RGB-D';
-    if (hasThermal) return 'Thermal';
-    if (hasMulti)   return 'Multispectral';
-    if (hasHyper)   return 'Hyperspectral';
-    if (hasPC)      return '3D Point Cloud';
-    if (hasVideo)   return 'Video Clips';
-    if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
-    if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
-    if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
-    if (hasSynthetic) return 'Synthetic';
-    return 'Other';
-  }
-  // Split & canonicalize to ARRAY; add separate "Synthetic" when implied
-  function canonicalizeModalityLabels(raw){
-    if (raw == null) return ['Other'];
-    let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
-    parts = parts.map(p => p && p.trim()).filter(Boolean);
-    if (!parts.length) parts = [String(raw)];
-
-    const labels = new Set();
-    const globalHasSynthetic = /\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/i.test(String(raw));
-
-    for (const p of parts){ labels.add(canonicalizeModalityLabel(p)); }
-    if (globalHasSynthetic) labels.add('Synthetic');
-    if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
-    return Array.from(labels);
+function buildFacets(){
+  // Modalities
+  const modVals = uniqSorted(MODELS.flatMap(m=>m.modalities||[]));
+  const modWrap = byId('filter-modality'); 
+  if (modWrap) {
+    modWrap.innerHTML='';
+    modVals.forEach((m,i)=> modWrap.appendChild(makeCheckbox('m_'+i, m, m)));
   }
 
-  /* ---------------------------
-     State + facets
-  --------------------------- */
-  const state = {
-    q: '', sort: 'added-desc',
-    tasks: new Set(), applications: new Set(),
-    modalities: new Set(),            // normalized keys
-    licenses: new Set(),
-    yMin: null, yMax: null
-  };
+  // Tasks
+  const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
+  const taskWrap = byId('filter-task'); 
+  if (taskWrap) {
+    taskWrap.innerHTML='';
+    taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+  }
 
-  // global modality dictionary: normKey -> Pretty Label
-  let MODALITY_MAP = new Map();
+  // Applications
+  const appVals = uniqSorted(MODELS.flatMap(m=>m.applications||[]));
+  const appWrap = byId('filter-app'); 
+  if (appWrap) {
+    appWrap.innerHTML='';
+    appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
+  }
 
-  function buildFacets(){
-    // Build modality map from per-model canonical labels
-    MODALITY_MAP = new Map();
-    MODELS.forEach(m=>{
-      (m.data_modalities||[]).forEach(lab=>{
-        const k = normKey(lab);
-        if (!MODALITY_MAP.has(k)) MODALITY_MAP.set(k, lab);
-      });
-    });
+  // Licenses
+  const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
+  const licWrap = byId('filter-license'); 
+  if (licWrap) {
+    licWrap.innerHTML='';
+    licVals.forEach((l,i)=> licWrap.appendChild(makeCheckbox('l_'+i, l, l)));
+  }
 
-    // Modalities UI (values are normalized keys)
-    const modWrap = byId('filter-modality');
-    if (modWrap) {
-      modWrap.innerHTML='';
-      const items = Array.from(MODALITY_MAP.entries()).map(([k,lab])=>({k,lab}))
-                        .sort((a,b)=> a.lab.localeCompare(b.lab));
-      items.forEach((it,i)=> modWrap.appendChild(makeCheckbox('m_'+i, it.lab, it.k)));
+  // Year range
+  const [minY, maxY] = yearExtent(MODELS);
+  const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax');
+  if (rmin && rmax) {
+    rmin.min = rmax.min = String(minY);
+    rmin.max = rmax.max = String(maxY);
+    rmin.value = String(minY); rmax.value = String(maxY);
+    state.yMin = minY; state.yMax = maxY;
+    updateTrack();
+  }
+}
+
+/* ---------------------------
+   Filter + sort + render
+--------------------------- */
+function applyFilters(){
+  const q = state.q.trim().toLowerCase();
+
+  let rows = MODELS.filter(m=>{
+    const text = [
+      m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '), (m.modalities||[]).join(' '),
+      m.license, (m.abstract||'')
+    ].join(' ').toLowerCase();
+    if(q && !text.includes(q)) return false;
+
+    if(state.tasks.size){
+      const set = new Set(m.tasks||[]);
+      for(const t of state.tasks){ if(!set.has(t)) return false; }
     }
-
-    // Tasks
-    const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
-    const taskWrap = byId('filter-task');
-    if (taskWrap) {
-      taskWrap.innerHTML='';
-      taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+    if(state.applications.size){
+      const set = new Set(m.applications||[]);
+      for(const a of state.applications){ if(!set.has(a)) return false; }
     }
-
-    // Applications
-    const appVals = uniqSorted(MODELS.flatMap(m=>m.applications||[]));
-    const appWrap = byId('filter-app');
-    if (appWrap) {
-      appWrap.innerHTML='';
-      appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
+    if(state.modalities.size){
+      const set = new Set(m.modalities||[]);
+      for(const mo of state.modalities){ if(!set.has(mo)) return false; }
     }
+    if(state.licenses.size && !state.licenses.has(m.license)) return false;
 
-    // Licenses
-    const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
-    const licWrap = byId('filter-license');
-    if (licWrap) {
-      licWrap.innerHTML='';
-      licVals.forEach((l,i)=> licWrap.appendChild(makeCheckbox('l_'+i, l, l)));
-    }
+    if((m.year||0) < state.yMin || (m.year||0) > state.yMax) return false;
 
-    // Year range
-    const [minY, maxY] = yearExtent(MODELS);
-    const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax');
-    if (rmin && rmax) {
-      rmin.min = rmax.min = String(minY);
-      rmin.max = rmax.max = String(maxY);
-      rmin.value = String(minY); rmax.value = String(maxY);
-      state.yMin = minY; state.yMax = maxY;
-      updateTrack();
-    }
-  }
-
-  /* ---------------------------
-     Filter + sort + render
-  --------------------------- */
-  function applyFilters(){
-    const q = state.q.trim().toLowerCase();
-
-    let rows = MODELS.filter(m=>{
-      const text = [
-        m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '),
-        (m.data_modalities||[]).join(' '), m.license, (m.abstract||'')
-      ].join(' ').toLowerCase();
-      if(q && !text.includes(q)) return false;
-
-      if(state.tasks.size){
-        const set = new Set(m.tasks||[]);
-        for(const t of state.tasks){ if(!set.has(t)) return false; }
-      }
-      if(state.applications.size){
-        const set = new Set(m.applications||[]);
-        for(const a of state.applications){ if(!set.has(a)) return false; }
-      }
-
-      // Modalities: ANY overlap (OR) between selected keys and m._mod_keys
-      if(state.modalities.size){
-        const keys = new Set(m._mod_keys||[]);
-        let hit = false;
-        for(const k of state.modalities){ if(keys.has(k)) { hit = true; break; } }
-        if(!hit) return false;
-      }
-
-      if(state.licenses.size && !state.licenses.has(m.license)) return false;
-
-      if((m.year||0) < state.yMin || (m.year||0) > state.yMax) return false;
-
-      return true;
-    });
-
-    switch(state.sort){
-      case 'name-asc':  rows.sort((a,b)=> a.title.localeCompare(b.title)); break;
-      case 'name-desc': rows.sort((a,b)=> b.title.localeCompare(a.title)); break;
-      case 'year-asc':  rows.sort((a,b)=> (a.year||0)-(b.year||0)); break;
-      case 'year-desc': rows.sort((a,b)=> (b.year||0)-(a.year||0)); break;
-      case 'added-asc': rows.sort((a,b)=> (a.added_ts||0)-(b.added_ts||0)); break;
-      default:           rows.sort((a,b)=> (b.added_ts||0)-(a.added_ts||0)); // added-desc
-    }
-
-    render(rows);
-  }
-
-  function render(items){
-    const grid = byId('modelGrid');
-    grid.innerHTML = '';
-    byId('resultCount').textContent = items.length;
-
-    if(items.length===0){ byId('emptyState').classList.remove('d-none'); return; }
-    byId('emptyState').classList.add('d-none');
-
-    items.forEach(m=>{
-      const doiLink = m.doi ? (m.doi.startsWith('http') ? m.doi : `https://doi.org/${m.doi}`) : '';
-      const thumb = m.thumbnail || m.icon || PLACEHOLDER_PNG;
-      const abstract = (m.abstract || '').trim();
-      const MAX = 320;
-      const isLong = abstract.length > MAX;
-      const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
-
-      const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
-
-      const safeFull  = esc(abstract);
-      const safeShort = esc(shortAbs);
-
-      const el = document.createElement('div');
-      el.className = 'paper-card';
-      el.innerHTML = `
-        <div class="d-flex gap-3 align-items-start">
-          <div class="left">
-            <img src="${thumb}" alt="${m.title||'thumbnail'}"
-                 onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
-          </div>
-          <div class="flex-grow-1">
-            <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
-            <div class="meta mb-1">
-              ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • ` : ''}${m.year || '—'}
-            </div>
-
-            <!-- Tag rows -->
-            <div class="tag-row">
-              ${(m.tasks||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
-              ${(m.applications||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
-              ${(m.data_modalities||[]).map(md=>`<span class="badge-mod">${md}</span>`).join('')}
-            </div>
-
-            <!-- Abstract -->
-            ${abstract ? `
-              <p class="small mb-2 abstract"
-                 data-full="${safeFull}"
-                 data-short="${safeShort}"
-                 data-expanded="false">
-                 <span class="abstract-text"><strong>Abstract.</strong> ${safeShort}</span>
-                 ${isLong ? '<span class="abstract-fade"></span>' : ''}
-              </p>
-              ${isLong ? `
-                <div class="abstract-toggle-wrap">
-                  <button class="btn btn-link toggle abstract-toggle" type="button" aria-expanded="false">Show more</button>
-                </div>` : '' }
-            ` : ''}
-
-            <!-- Actions + Added note -->
-            <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-              ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
-              ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Code</a>`:''}
-              ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
-              ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
-            </div>
-          </div>
-        </div>`;
-      grid.appendChild(el);
-    });
-  }
-
-  /* ---------- Abstract toggle ---------- */
-  document.addEventListener('click', (e)=>{
-    const btn = e.target.closest('.abstract-toggle');
-    if(!btn) return;
-    const card = btn.closest('.paper-card');
-    if(!card) return;
-    const p = card.querySelector('.abstract');
-    const span = card.querySelector('.abstract-text');
-    if(!p || !span) return;
-
-    const expanded = p.getAttribute('data-expanded') === 'true';
-    if(expanded){
-      span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-short')||''}`;
-      p.setAttribute('data-expanded','false');
-      btn.textContent = 'Show more';
-      btn.setAttribute('aria-expanded','false');
-      if(!p.querySelector('.abstract-fade')){
-        const fade = document.createElement('span'); fade.className='abstract-fade';
-        p.appendChild(fade);
-      }
-    }else{
-      span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-full')||''}`;
-      p.setAttribute('data-expanded','true');
-      btn.textContent = 'Show less';
-      btn.setAttribute('aria-expanded','true');
-      const fade = p.querySelector('.abstract-fade'); if(fade) fade.remove();
-    }
+    return true;
   });
 
-  /* ---------------------------
-     Wire up controls
-  --------------------------- */
-  function readFacet(containerId, setRef){
-    setRef.clear();
-    const root = byId(containerId);
-    if(!root) return;
-    root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
-  }
-  function attachFacetHandlers(){
-    // Modalities (store normalized keys)
-    const modEl = byId('filter-modality');
-    if (modEl) modEl.addEventListener('change', ()=>{
-      readFacet('filter-modality', state.modalities);
-      applyFilters();
-    });
-    const modSearch = byId('modalitySearch');
-    if (modSearch) modSearch.addEventListener('input', debounce(e=>{
-      const q = e.target.value.toLowerCase();
-      const root = byId('filter-modality'); if(!root) return;
-      root.querySelectorAll('.form-check').forEach(w=>{
-        const label = w.querySelector('label').textContent.toLowerCase();
-        w.style.display = label.includes(q)?'':'none';
-      });
-    }, 120));
-
-    // Tasks
-    const taskEl = byId('filter-task');
-    if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
-    const taskSearch = byId('taskSearch');
-    if (taskSearch) taskSearch.addEventListener('input', debounce(e=>{
-      const q = e.target.value.toLowerCase();
-      const root = byId('filter-task'); if(!root) return;
-      root.querySelectorAll('.form-check').forEach(w=>{
-        const label = w.querySelector('label').textContent.toLowerCase();
-        w.style.display = label.includes(q)?'':'none';
-      });
-    }, 120));
-
-    // Applications
-    const appEl = byId('filter-app');
-    if (appEl) appEl.addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
-    const appSearch = byId('appSearch');
-    if (appSearch) appSearch.addEventListener('input', debounce(e=>{
-      const q = e.target.value.toLowerCase();
-      const root = byId('filter-app'); if(!root) return;
-      root.querySelectorAll('.form-check').forEach(w=>{
-        const label = w.querySelector('label').textContent.toLowerCase();
-        w.style.display = label.includes(q)?'':'none';
-      });
-    }, 120));
-
-    // Licenses
-    const licEl = byId('filter-license');
-    if (licEl) licEl.addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
-    const licenseSearch = byId('licenseSearch');
-    if (licenseSearch) licenseSearch.addEventListener('input', debounce(e=>{
-      const q = e.target.value.toLowerCase();
-      const root = byId('filter-license'); if(!root) return;
-      root.querySelectorAll('.form-check').forEach(w=>{
-        const label = w.querySelector('label').textContent.toLowerCase();
-        w.style.display = label.includes(q)?'':'none';
-      });
-    }, 120));
-
-    // Search (hero + docked) with sync
-    const heroInput = byId('q'), dockInput = byId('qDock');
-    function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-    if (dockInput && heroInput){
-      const updateQ = debounce(()=>{ state.q = heroInput.value; if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
-      dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
-      heroInput.addEventListener('input', updateQ);
-    }
-
-    // Docked search show/hide
-    (function(){
-      const SHOW_AT = 220, HIDE_AT = 160;
-      let docked = false;
-      function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
-      function onScroll(){
-        const y = window.scrollY || 0;
-        if(!docked && y > SHOW_AT) setDock(true);
-        else if(docked && y < HIDE_AT) setDock(false);
-      }
-      onScroll();
-      window.addEventListener('scroll', onScroll, {passive:true});
-    })();
-
-    // Sort
-    const sortSel = byId('sortBy');
-    if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
+  switch(state.sort){
+    case 'name-asc':  rows.sort((a,b)=> a.title.localeCompare(b.title)); break;
+    case 'name-desc': rows.sort((a,b)=> b.title.localeCompare(a.title)); break;
+    case 'year-asc':  rows.sort((a,b)=> (a.year||0)-(b.year||0)); break;
+    case 'year-desc': rows.sort((a,b)=> (b.year||0)-(a.year||0)); break;
+    case 'added-asc': rows.sort((a,b)=> (a.added_ts||0)-(b.added_ts||0)); break;
+    default:           rows.sort((a,b)=> (b.added_ts||0)-(a.added_ts||0)); // added-desc
   }
 
-  /* ---------- Year selected track bar ---------- */
-  const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
-        track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
-  function updateTrack(){
-    if(!rmin || !rmax || !track || !minVal || !maxVal) return;
-    const minYear = +rmin.min || 2005, maxYear = +rmax.max || new Date().getFullYear();
-    const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
-    const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
-    const left = ((a - minYear) / (maxYear - minYear)) * 100;
-    const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
-    track.style.left = `calc(${left}% + 10px)`;
-    track.style.right = `calc(${right}% + 10px)`;
-    minVal.textContent = a; maxVal.textContent = b;
-  }
-  ['input','change'].forEach(ev=>{
-    if(rmin) rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
-    if(rmax) rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+  render(rows);
+}
+
+function render(items){
+  const grid = byId('modelGrid');
+  grid.innerHTML = '';
+  byId('resultCount').textContent = items.length;
+
+  if(items.length===0){ byId('emptyState').classList.remove('d-none'); return; }
+  byId('emptyState').classList.add('d-none');
+
+  items.forEach(m=>{
+    const doiLink = m.doi ? (m.doi.startsWith('http') ? m.doi : `https://doi.org/${m.doi}`) : '';
+    const thumb = m.thumbnail || m.icon || PLACEHOLDER_PNG;
+    const abstract = (m.abstract || '').trim();
+    const MAX = 320;
+    const isLong = abstract.length > MAX;
+    const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
+
+    const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
+
+    /* NEW: escape once, and use innerHTML later so <strong> persists */
+    const safeFull  = esc(abstract);
+    const safeShort = esc(shortAbs);
+
+    const el = document.createElement('div');
+    el.className = 'paper-card';
+    el.innerHTML = `
+      <div class="d-flex gap-3 align-items-start">
+        <div class="left">
+          <img src="${thumb}" alt="${m.title||'thumbnail'}"
+               onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
+        </div>
+        <div class="flex-grow-1">
+          <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
+          <div class="meta mb-1">
+            ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • ` : ''}
+            ${m.year || '—'}
+          </div>
+
+          <!-- Compact combined tag row -->
+          <div class="tag-row">
+            ${(m.tasks||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
+            ${(m.applications||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
+          </div>
+
+          <!-- Abstract -->
+          ${abstract ? `
+            <p class="small mb-2 abstract"
+               data-full="${safeFull}"
+               data-short="${safeShort}"
+               data-expanded="false">
+               <span class="abstract-text"><strong>Abstract.</strong> ${safeShort}</span>
+               ${isLong ? '<span class="abstract-fade"></span>' : ''}
+            </p>
+            ${isLong ? `
+              <div class="abstract-toggle-wrap">
+                <button class="btn btn-link toggle abstract-toggle"
+                        type="button"
+                        aria-expanded="false">
+                  Show more
+                </button>
+              </div>
+            ` : '' }
+          ` : ''}
+
+          <!-- Actions + Added note -->
+          <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+            ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
+            ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Code</a>`:''}
+            ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
+            ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(el);
   });
+}
 
-  /* ---------- Load JSON + Init (canonicalizes modalities) ---------- */
-  async function loadModels(){
-    const grid = byId('modelGrid');
-    const errorBox = byId('errorState');
-    try{
-      const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const payload = await res.json();
-      const raw = Array.isArray(payload) ? payload
-                : (Array.isArray(payload.models) ? payload.models
-                : (typeof payload==='object' ? Object.values(payload) : []));
+/* ---------- Abstract toggle (uses innerHTML so <strong> stays bold) ---------- */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.abstract-toggle');
+  if(!btn) return;
+  const card = btn.closest('.paper-card');
+  if(!card) return;
+  const p = card.querySelector('.abstract');
+  const span = card.querySelector('.abstract-text');
+  if(!p || !span) return;
 
-      MODELS = raw.map(m=>{
-        const added = m.added_date || m.added || null;
-        const added_ts = added ? Date.parse(added) : null;
-
-        // Accept arrays or strings, then canonicalize like datasets page
-        const rawMods = Array.isArray(m.modalities) ? m.modalities
-                      : (m.data_modality ? String(m.data_modality).split(',') : []);
-        const prettyArr = canonicalizeModalityLabels(rawMods.join(', '));
-        const normKeys  = prettyArr.map(l => normKey(l));
-
-        return {
-          id: m.id || (crypto.randomUUID ? crypto.randomUUID() : (m.title || Math.random().toString(36).slice(2))),
-          title: m.title || m.name || 'Untitled',
-          year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
-          data_modalities: prettyArr,  // pretty labels for display
-          _mod_keys: normKeys,         // normalized keys for filtering
-          tasks: Array.isArray(m.tasks) ? m.tasks : (m.potential_tasks ? m.potential_tasks : (m.tasks ? [m.tasks] : [])),
-          applications: Array.isArray(m.applications) ? m.applications : (m.application ? [m.application] : []),
-          license: m.license || '',
-          authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
-          abstract: m.abstract || '',
-          doi: m.doi || '',
-          paper_url: m.paper_url || m.paper || '',
-          code_url: m.code_url || m.code || '',
-          thumbnail: m.thumbnail || m.image_url || (m.id ? `assets/img/models/${m.id}.png` : ''),
-          icon: m.icon || '',
-          added_date: added || null,
-          added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
-          added_date_fmt: added ? fmtDate(added) : null
-        };
-      });
-
-      const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
-      buildFacets();
-      attachFacetHandlers();
-      applyFilters();
-    }catch(err){
-      console.error('Failed to load models.json', err);
-      if (grid) grid.innerHTML = '';
-      if (errorBox) errorBox.classList.remove('d-none');
+  const expanded = p.getAttribute('data-expanded') === 'true';
+  if(expanded){
+    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-short')||''}`;
+    p.setAttribute('data-expanded','false');
+    btn.textContent = 'Show more';
+    btn.setAttribute('aria-expanded','false');
+    if(!p.querySelector('.abstract-fade')){
+      const fade = document.createElement('span'); fade.className='abstract-fade';
+      p.appendChild(fade);
     }
-  }
-
-  // Kickoff once DOM is ready
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', loadModels);
   }else{
-    loadModels();
+    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-full')||''}`;
+    p.setAttribute('data-expanded','true');
+    btn.textContent = 'Show less';
+    btn.setAttribute('aria-expanded','true');
+    const fade = p.querySelector('.abstract-fade'); if(fade) fade.remove();
   }
-  </script>
+});
+
+/* ---------------------------
+   Wire up controls
+--------------------------- */
+function readFacet(containerId, setRef){
+  setRef.clear();
+  const root = byId(containerId);
+  if(!root) return;
+  root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
+}
+function attachFacetHandlers(){
+  // Modalities
+  const modEl = byId('filter-modality');
+  if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
+
+  // Tasks
+  const taskEl = byId('filter-task');
+  if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
+  const taskSearch = byId('taskSearch');
+  if (taskSearch) taskSearch.addEventListener('input', debounce(e=>{
+    const q = e.target.value.toLowerCase();
+    const root = byId('filter-task'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
+      const label = w.querySelector('label').textContent.toLowerCase();
+      w.style.display = label.includes(q)?'':'none';
+    });
+  }, 120));
+
+  // Applications
+  const appEl = byId('filter-app');
+  if (appEl) appEl.addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
+  const appSearch = byId('appSearch');
+  if (appSearch) appSearch.addEventListener('input', debounce(e=>{
+    const q = e.target.value.toLowerCase();
+    const root = byId('filter-app'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
+      const label = w.querySelector('label').textContent.toLowerCase();
+      w.style.display = label.includes(q)?'':'none';
+    });
+  }, 120));
+
+  // Licenses
+  const licEl = byId('filter-license');
+  if (licEl) licEl.addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
+  const licenseSearch = byId('licenseSearch');
+  if (licenseSearch) licenseSearch.addEventListener('input', debounce(e=>{
+    const q = e.target.value.toLowerCase();
+    const root = byId('filter-license'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{
+      const label = w.querySelector('label').textContent.toLowerCase();
+      w.style.display = label.includes(q)?'':'none';
+    });
+  }, 120));
+
+  // Search (hero + docked) with sync
+  const heroInput = byId('q'), dockInput = byId('qDock');
+  function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
+  if (dockInput && heroInput){
+    const updateQ = debounce(()=>{ state.q = heroInput.value; if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
+    dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
+    heroInput.addEventListener('input', updateQ);
+  }
+
+  // Docked search show/hide
+  (function(){
+    const SHOW_AT = 220, HIDE_AT = 160;
+    let docked = false;
+    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
+    function onScroll(){
+      const y = window.scrollY || 0;
+      if(!docked && y > SHOW_AT) setDock(true);
+      else if(docked && y < HIDE_AT) setDock(false);
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, {passive:true});
+  })();
+
+  // Sort
+  const sortSel = byId('sortBy');
+  if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
+}
+
+/* ---------- Year selected track bar ---------- */
+const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'),
+      track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
+function updateTrack(){
+  if(!rmin || !rmax || !track || !minVal || !maxVal) return;
+  const minYear = +rmin.min || 2005, maxYear = +rmax.max || new Date().getFullYear();
+  const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
+  const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
+  const left = ((a - minYear) / (maxYear - minYear)) * 100;
+  const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
+  track.style.left = `calc(${left}% + 10px)`;
+  track.style.right = `calc(${right}% + 10px)`;
+  minVal.textContent = a; maxVal.textContent = b;
+  state.yMin = a; state.yMax = b;
+}
+['input','change'].forEach(ev=>{
+  if(rmin) rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+  if(rmax) rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+});
+
+/* ---------- Load JSON + Init ---------- */
+async function loadModels(){
+  const grid = byId('modelGrid');
+  const errorBox = byId('errorState');
+  try{
+    const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    const raw = Array.isArray(payload) ? payload
+              : (Array.isArray(payload.models) ? payload.models
+              : (typeof payload==='object' ? Object.values(payload) : []));
+
+    // Coercion/validation (supports added_date + applications + legacy keys)
+    MODELS = raw.map(m=>{
+      const added = m.added_date || m.added || null;
+      const added_ts = added ? Date.parse(added) : null;
+      return {
+        id: m.id || crypto.randomUUID(),
+        title: m.title || m.name || 'Untitled',
+        year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
+        modalities: Array.isArray(m.modalities) ? m.modalities
+                   : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim()) : []),
+        tasks: Array.isArray(m.tasks) ? m.tasks : (m.potential_tasks ? m.potential_tasks : (m.tasks ? [m.tasks] : [])),
+        applications: Array.isArray(m.applications) ? m.applications
+                     : (m.application ? [m.application] : []),
+        license: m.license || '',
+        authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
+        abstract: m.abstract || '',
+        doi: m.doi || '',
+        paper_url: m.paper_url || m.paper || '',
+        code_url: m.code_url || m.code || '',
+        thumbnail: m.thumbnail || m.image_url || (m.id ? `assets/img/models/${m.id}.png` : ''),
+        icon: m.icon || '',
+        added_date: added || null,
+        added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
+        added_date_fmt: added ? fmtDate(added) : null
+      };
+    });
+
+    const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
+    buildFacets();
+    attachFacetHandlers();
+    applyFilters();
+  }catch(err){
+    console.error('Failed to load models.json', err);
+    if (grid) grid.innerHTML = '';
+    if (errorBox) errorBox.classList.remove('d-none');
+  }
+}
+
+// Kickoff once DOM is ready
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', loadModels);
+}else{
+  loadModels();
+}
+</script>
+
+<!-- Floating button: Add New Model -->
+<a href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml"
+   class="issue-btn" target="_blank" rel="noopener">
+   Add New Model
+</a>
+
 </body>
 </html>
