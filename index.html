@@ -11,135 +11,121 @@
   <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
     :root{
-      --oc-bg: #ffffff;
-      --oc-text: #1e2a36;
-      --oc-subtle: #6b7b8c;
-      --oc-border: #e7edf3;
-      --oc-brand-ink: #0f2e4b;
-      --oc-brand-accent: #f2a238;
-      --oc-brand-accent-2: #123c62;
-      --oc-link: #0b66c3;
-      --oc-card: #ffffff;
-      --oc-shadow: 0 6px 22px rgba(15,46,75,.08);
-      --oc-radius: 14px;
-      --oc-muted: #f6f9fc;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
+      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 6px 22px rgba(15,46,75,.08);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 
-    html,body{ background: var(--oc-bg); color: var(--oc-text); }
-    a{ color: var(--oc-link); }
-    .oc-container{ max-width: 1080px; }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
+
+    /* Focus-visible for keyboard users */
+    :focus-visible{
+      outline:2px solid var(--oc-focus);
+      outline-offset:2px;
+      border-radius:6px;
+    }
 
     /* Navbar */
     .oc-nav{
-      backdrop-filter: saturate(120%) blur(6px);
-      border-bottom: 1px solid var(--oc-border) !important;
+      backdrop-filter:saturate(120%) blur(6px);
+      border-bottom:1px solid var(--oc-border)!important;
     }
     .brand-wordmark{
       display:inline-flex; gap:.25rem; align-items:baseline;
       font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink);
-      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+      font-size:clamp(1.1rem, 1rem + .6vw, 1.4rem);
     }
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
 
-    /* Nav links */
     .navbar .nav-link.plain{
-      font-weight:700; color: var(--oc-text); padding:.5rem .6rem;
+      font-weight:700; color:var(--oc-text); padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover{
-      color: var(--oc-brand-ink);
-      text-decoration: underline; text-underline-offset: 3px;
-    }
+    .navbar .nav-link.plain:hover,
     .navbar .nav-link.plain.active{
-      color: var(--oc-brand-ink);
-      text-decoration: underline; text-underline-offset: 3px;
+      color:var(--oc-brand-ink);
+      text-decoration:underline; text-underline-offset:3px;
     }
 
     /* Hero */
     .hero{
-      background: #fff; color: var(--oc-brand-ink);
-      border-bottom: 1px solid var(--oc-border);
+      background:#fff; color:var(--oc-brand-ink);
+      border-bottom:1px solid var(--oc-border);
     }
-    .hero .content{ padding: 56px 0 44px; text-align: center; }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
+      font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
       margin:.25rem 0 .35rem;
     }
-    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
+    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
     .hero .pill{
       display:inline-flex; gap:.5rem; align-items:center;
-      border-radius: 999px; padding:.45rem .85rem;
-      background: transparent; border:1px solid #dfe6ee; color: var(--oc-brand-ink);
+      border-radius:999px; padding:.45rem .85rem;
+      background:transparent; border:1px solid #dfe6ee; color:var(--oc-brand-ink);
       font-size:.9rem;
     }
 
     /* Buttons */
     .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
     .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
-    .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
     .btn-ink{
-      background: var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
+      background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
     }
-    .btn-ink:hover{ filter: brightness(1.05); color:#fff; }
+    .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
     .btn-accent{
-      background:#fff; color: var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
+      background:#fff; color:var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
     }
     .btn-accent:hover{ background:#f7fbff; }
 
     /* Sections & cards */
     .oc-section{ margin-top:40px; }
     .oc-card{
-      background: var(--oc-card);
-      border: 1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      box-shadow: var(--oc-shadow);
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
     }
-    .oc-card .oc-card-title{ font-weight:700; color: var(--oc-brand-ink); }
-    .oc-card .oc-card-body{ padding: 1.25rem 1.25rem; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-brand-ink); }
+    .oc-card .oc-card-body{ padding:1.25rem; }
     .oc-kicker{
       font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle);
     }
-    .oc-ul{ margin-bottom:0; padding-left: 1.1rem; }
+    .oc-ul{ margin-bottom:0; padding-left:1.1rem; }
     .oc-ul li{ margin:.35rem 0; }
 
     /* Reference block */
     pre.oc-bib{
-      background: var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
-      border-radius: 10px; padding: 1rem; overflow:auto;
+      background:var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
+      border-radius:10px; padding:1rem; overflow:auto;
     }
 
     /* Footer */
     footer{
       border-top:1px solid var(--oc-border);
-      background: linear-gradient(180deg, transparent, rgba(0,0,0,.02));
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.02));
     }
-
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
     /* ==============================
        Horizontal Timeline (Fancy)
        ============================== */
-    .oc-tl-wrap{
-      position: relative;
-      padding: .25rem 2.75rem; /* space for arrows */
-    }
-    /* edge fades */
+    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
     .oc-tl-wrap::before,
     .oc-tl-wrap::after{
-      content:"";
-      position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
+      content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
     }
     .oc-tl-wrap::before{
-      left:0; background: linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-left-radius: var(--oc-radius);
-      border-bottom-left-radius: var(--oc-radius);
+      left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius);
     }
     .oc-tl-wrap::after{
-      right:0; background: linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-right-radius: var(--oc-radius);
-      border-bottom-right-radius: var(--oc-radius);
+      right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius);
     }
 
     .oc-timeline{
@@ -147,70 +133,59 @@
       overflow-x:auto; overflow-y:hidden;
       scroll-snap-type:x mandatory;
       scroll-behavior:smooth;
-      padding: .5rem 0 1rem;
-      scrollbar-width: thin;
+      padding:.5rem 0 1rem;
+      scrollbar-width:thin;
     }
 
     .oc-tl-item{
       scroll-snap-align:center;
       flex:0 0 auto;
-      width: 280px; max-width: 85vw;
+      width:280px; max-width:85vw;
       background:linear-gradient(180deg, #ffffff, #fbfdff);
       border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      box-shadow: var(--oc-shadow);
-      padding:1rem 1rem .95rem;
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      padding:1rem .95rem;
       position:relative;
     }
     .oc-tl-date{
       display:inline-block;
       font-weight:800; letter-spacing:.02em;
       color:var(--oc-brand-ink);
-      background: #eef4fb;
-      border:1px solid #dfe8f3;
-      padding:.25rem .55rem; border-radius:999px;
-      margin-bottom:.55rem;
-      font-size:.9rem;
+      background:#eef4fb; border:1px solid #dfe8f3;
+      padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
     }
-    .oc-tl-title{
-      font-weight:700; color:var(--oc-text); margin-bottom:.25rem;
-    }
+    .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
     .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
 
-    /* center line accent (purely decorative) */
     .oc-tl-item::after{
-      content:"";
-      position:absolute; left:50%; transform:translateX(-50%);
-      bottom:-18px; width:2px; height:14px; background:#dfe6ee;
-      border-radius:2px;
+      content:""; position:absolute; left:50%; transform:translateX(-50%);
+      bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
     }
 
-    /* Prev/Next arrow buttons */
-    .oc-tl-nav{
-      position:absolute; top:50%; transform:translateY(-50%);
-      z-index:3;
-    }
+    .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
     .oc-tl-btn{
       display:flex; align-items:center; justify-content:center;
       width:38px; height:38px; border-radius:999px;
       background:#ffffff; border:1px solid var(--oc-border);
-      box-shadow: var(--oc-shadow);
-      color:var(--oc-brand-ink);
+      box-shadow:var(--oc-shadow); color:var(--oc-brand-ink);
     }
     .oc-tl-btn:hover{ filter:brightness(1.03); }
     .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
-
     .oc-tl-prev{ left:.5rem; }
     .oc-tl-next{ right:.5rem; }
 
-    /* Tiny hint row (optional dots) */
-    .oc-tl-dots{
-      display:flex; gap:.35rem; justify-content:center; margin-top:.6rem;
-    }
+    .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
     .oc-tl-dot{
-      width:6px; height:6px; border-radius:999px; background:#d9e3ee; transition:.2s;
+      width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s;
     }
-    .oc-tl-dot.active{ background:var(--oc-brand-ink); }
+    .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .oc-timeline{ scroll-behavior:auto; }
+      .oc-tl-btn{ transition:none; }
+    }
   </style>
 </head>
 <body>
@@ -231,30 +206,22 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only"
-             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
-             target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub"
-             title="View on GitHub">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
-                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
-                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
         </li>
@@ -293,7 +260,7 @@
             <div class="oc-kicker mb-2">About</div>
             <h3 class="oc-card-title mb-2">OpenConstruction</h3>
             <p class="mb-0">
-              OpenConstruction is a curated collection of publicly available datasets and models for researchers, practitioners, and developers on AI applications in the construction industry.
+              OpenConstruction is a curated collection of publicly available datasets and models for researchers, practitioners, and developers working on AI applications in the construction industry.
             </p>
           </div>
         </div>
@@ -305,7 +272,7 @@
             <div class="oc-kicker mb-2">Vision</div>
             <h3 class="oc-card-title mb-2">Why we built this</h3>
             <p class="mb-3">
-              The industry is rapidly adopting AI-driven methods for tasks.
+              The industry is rapidly adopting AI-driven methods for core tasks. We aim to:
             </p>
             <ul class="oc-ul">
               <li>Provide a catalog of open construction datasets and models</li>
@@ -319,17 +286,16 @@
   </section>
 
   <!-- Development & Achievements -->
-  <section class="oc-section">
+  <section class="oc-section" aria-labelledby="milestones-heading">
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Milestones</div>
-        <h3 class="oc-card-title mb-3">Development & Achievements</h3>
+        <h3 id="milestones-heading" class="oc-card-title mb-3">Development & Achievements</h3>
 
         <div class="oc-tl-wrap">
           <!-- Prev -->
           <div class="oc-tl-nav oc-tl-prev">
             <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
-              <!-- left chevron -->
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -337,9 +303,9 @@
           </div>
 
           <!-- Timeline -->
-          <div class="oc-timeline" id="ocTimeline" tabindex="0" aria-label="OpenConstruction milestones">
+          <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
             <!-- 2024.12 -->
-            <div class="oc-tl-item" data-title="Project Team Established">
+            <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
               <div class="oc-tl-date">2024.12</div>
               <div class="oc-tl-title">Project Team Established</div>
               <div class="oc-tl-content">
@@ -347,22 +313,38 @@
               </div>
             </div>
 
-            <!-- 2025.09 -->
-            <div class="oc-tl-item" data-title="Dataset Catalog Online">
-              <div class="oc-tl-date">2025.09</div>
-              <div class="oc-tl-title">Dataset Catalog Online</div>
+            <!-- 2025.03 -->
+            <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
+              <div class="oc-tl-date">2025.03</div>
+              <div class="oc-tl-title">First Paper Submitted</div>
               <div class="oc-tl-content">
-                OpenConstruction Dataset Catalog officially launched for the community.
+                Initial review of open-access datasets completed and the first research paper submitted.
+                The dataset collection continues to expand with ongoing updates.
               </div>
             </div>
 
-            <!-- Add future milestones by duplicating .oc-tl-item blocks -->
+            <!-- 2025.09 -->
+            <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
+              <div class="oc-tl-date">2025.09</div>
+              <div class="oc-tl-title">Dataset Catalog Online</div>
+              <div class="oc-tl-content">
+                OpenConstruction Dataset Catalog website officially launched for the community.
+              </div>
+            </div>
+
+            <!-- 2025.10 -->
+            <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
+              <div class="oc-tl-date">2025.10</div>
+              <div class="oc-tl-title">Model Catalog Online</div>
+              <div class="oc-tl-content">
+                OpenConstruction Model Catalog released, offering curated AI models for construction applications.
+              </div>
+            </div>
           </div>
 
           <!-- Next -->
           <div class="oc-tl-nav oc-tl-next">
             <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
-              <!-- right chevron -->
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -371,7 +353,7 @@
         </div>
 
         <!-- dots -->
-        <div class="oc-tl-dots" id="tlDots" aria-hidden="true"></div>
+        <div class="oc-tl-dots" id="tlDots" aria-hidden="false" role="tablist"></div>
       </div>
     </div>
   </section>
@@ -395,10 +377,10 @@
 
         <div class="d-flex justify-content-between align-items-center mb-2">
           <span class="text-muted small">BibTeX</span>
-          <button id="copyBib" class="btn btn-sm btn-outline-secondary oc-btn">Copy</button>
+          <button id="copyBib" class="btn btn-sm btn-outline-secondary oc-btn" type="button">Copy</button>
         </div>
         <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
-  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring}, 
+  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring},
   author={Ruoxin Xiong and Yanyu Wang and Jiannan Cai and Kaijian Liu and Yuansheng Zhu and Pingbo Tang and Nora El-Gohary},
   year={2025},
   eprint={2508.11482},
@@ -453,24 +435,26 @@
 
 <!-- Scripts -->
 <script>
+  // Year
   document.getElementById('yearNow').textContent = new Date().getFullYear();
 
+  // Copy BibTeX
   const copyBtn = document.getElementById('copyBib');
   if (copyBtn){
-    copyBtn.addEventListener('click', async ()=>{
+    copyBtn.addEventListener('click', async () => {
       const txt = document.getElementById('bibtex').innerText;
       try{
         await navigator.clipboard.writeText(txt);
         copyBtn.textContent = 'Copied';
-        setTimeout(()=> copyBtn.textContent = 'Copy', 1600);
+        setTimeout(() => copyBtn.textContent = 'Copy', 1600);
       }catch(e){
-        copyBtn.textContent = 'Press Ctrl/Cmd+C';
-        setTimeout(()=> copyBtn.textContent = 'Copy', 2000);
+        // Fallback prompt
+        window.prompt('Copy to clipboard: Ctrl/Cmd+C, Enter', txt);
       }
     });
   }
 
-  /* ===== Timeline navigation, dots, and snap-centering ===== */
+  /* ===== Timeline navigation, dots, snap-centering, and a11y ===== */
   (function(){
     const scroller = document.getElementById('ocTimeline');
     const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
@@ -478,78 +462,91 @@
     const nextBtn = document.getElementById('tlNext');
     const dotsWrap = document.getElementById('tlDots');
 
-    // build dots
+    // Hide nav if single page of items (or none)
+    const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
+    const updateNavVisibility = () => {
+      const show = canScroll();
+      prevBtn.parentElement.style.display = show ? '' : 'none';
+      nextBtn.parentElement.style.display = show ? '' : 'none';
+      dotsWrap.style.display = show ? '' : 'none';
+    };
+
+    // Build dots
     items.forEach((_, i) => {
-      const d = document.createElement('span');
-      d.className = 'oc-tl-dot' + (i===0 ? ' active':'');
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'oc-tl-dot';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', `Go to milestone ${i+1}`);
+      d.addEventListener('click', () => scrollToIndex(i));
       dotsWrap.appendChild(d);
     });
     const dots = Array.from(dotsWrap.children);
 
-    const itemWidth = () => items[0].getBoundingClientRect().width + 20; // card + gap
     let index = 0;
 
     function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
 
     function scrollToIndex(i){
-      index = clamp(i, 0, items.length-1);
+      index = clamp(i, 0, items.length - 1);
       const target = items[index];
-      const offset = target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2);
-      scroller.scrollTo({ left: offset, behavior:'smooth' });
-      refreshButtons();
-      refreshDots();
+      const offset = Math.max(0, target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2));
+      scroller.scrollTo({ left: offset, behavior: 'smooth' });
+      refresh();
     }
 
-    function refreshButtons(){
+    function refresh(){
       prevBtn.disabled = (index === 0);
-      nextBtn.disabled = (index === items.length-1);
-    }
-    function refreshDots(){
-      dots.forEach((d, i)=> d.classList.toggle('active', i===index));
+      nextBtn.disabled = (index === items.length - 1);
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
     }
 
-    prevBtn.addEventListener('click', ()=> scrollToIndex(index-1));
-    nextBtn.addEventListener('click', ()=> scrollToIndex(index+1));
+    prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
+    nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
 
-    // keyboard nav when scroller focused
-    scroller.addEventListener('keydown', (e)=>{
-      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index-1); }
-      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index+1); }
+    // Keyboard nav when scroller focused
+    scroller.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
+      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
     });
 
-    // update index on manual scroll (nearest item to center)
-    let t; 
-    scroller.addEventListener('scroll', ()=>{
+    // Update index on manual scroll (nearest item to center)
+    let t;
+    scroller.addEventListener('scroll', () => {
       clearTimeout(t);
-      t = setTimeout(()=>{
+      t = setTimeout(() => {
         const center = scroller.scrollLeft + scroller.clientWidth/2;
-        const nearest = items.reduce((best, el, i)=>{
+        const nearest = items.reduce((best, el, i) => {
           const c = el.offsetLeft + el.clientWidth/2;
           const d = Math.abs(c - center);
-          return (d < best.d) ? {i, d} : best;
-        }, {i:0, d: Infinity});
-        if (nearest.i !== index){ index = nearest.i; refreshButtons(); refreshDots(); }
+          return (d < best.d) ? { i, d } : best;
+        }, { i: 0, d: Infinity });
+        if (nearest.i !== index){ index = nearest.i; refresh(); }
       }, 80);
     });
 
-    // auto-center initial (middle item if >1)
+    // Initialize
     const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
     scrollToIndex(initial);
-    // small correction after fonts load
-    window.addEventListener('load', ()=> setTimeout(()=> scrollToIndex(initial), 120));
-    window.addEventListener('resize', ()=> setTimeout(()=> scrollToIndex(index), 80));
+    updateNavVisibility();
+    window.addEventListener('load', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(initial); }, 120));
+    window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
   })();
 
-  // Auto-highlight current nav
+  // Auto-highlight current nav (supports clean URLs and index.html)
   (function(){
-    var current = location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href');
-      if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'index.html' && (current === '' || current === '/'));
-      if(isMatch){
+    const path = (location.pathname || '').replace(/\/+$/, ''); // trim trailing '/'
+    const file = path.split('/').pop() || 'index.html';
+    const routeByFile = {
+      '': 'index',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models',
+      'contributors': 'contributors', 'contributors.html': 'contributors'
+    };
+    const route = routeByFile[file] || (file.includes('index') ? 'index' : '');
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a => {
+      if (a.dataset.route === route){
         a.classList.add('active');
         a.setAttribute('aria-current','page');
       }
