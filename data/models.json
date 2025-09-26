@@ -28,5 +28,20 @@
     "code_url": "https://github.com/HannahHuanLIU/AEC-image-captioning",
     "thumbnail": "assets/img/models/Construction-Activity-Scenes.png",
 	"added_date": "2025-09-25"
+  },
+  {
+    "id": "Kenki-Posi",
+    "title": "Stereo camera visual SLAM with hierarchical masking and motion-state classification at outdoor construction sites containing large dynamic objects",
+    "authors": ["Runqiu Bao","Ren Komatsu","Renato Miyagusuku","Masaki Chino", "Atsushi Yamashita", "Hajime Asama"],
+    "abstract": "At modern construction sites, utilizing GNSS (Global Navigation Satellite System) to measure the real-time location and orientation (i.e. pose) of construction machines and navigate them is very common. However, GNSS is not always available. Replacing GNSS with on-board cameras and visual simultaneous localization and mapping (visual SLAM) to navigate the machines is a cost-effective solution. Nevertheless, at construction sites, multiple construction machines will usually work together and side-by-side, causing large dynamic occlusions in the cameras' view. Standard visual SLAM cannot handle large dynamic occlusions well. In this work, we propose a motion segmentation method to efficiently extract static parts from crowded dynamic scenes to enable robust tracking of camera ego-motion. Our method utilizes semantic information combined with object-level geometric constraints to quickly detect the static parts of the scene. Then, we perform a two-step coarse-to-fine ego-motion tracking with reference to the static parts. This leads to a novel dynamic visual SLAM formation. We test our proposals through a real implementation based on ORB-SLAM2, and datasets we collected from real construction sites. The results show that when standard visual SLAM fails, our method can still retain accurate camera ego-motion tracking in real-time. Comparing to state-of-the-art dynamic visual SLAM methods, ours shows outstanding efficiency and competitive result trajectory accuracy.",
+    "year": 2021,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Simultaneous Localization and Mapping"],
+	"applications": ["Site navigtion"],
+    "license": "GPL-3.0",
+    "paper_url": "https://doi.org/10.1080/01691864.2020.1869586",
+    "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
+    "thumbnail": "assets/img/models/Kenki-Posi.png",
+	"added_date": "2025-09-26"
   }
 ]
