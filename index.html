@@ -181,10 +181,38 @@
     }
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
+    /* ==============================
+       Hero Metrics (circles)
+       ============================== */
+    .metrics{
+      display:flex; gap:1rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.1rem 0 .35rem;
+    }
+    .metric{
+      display:flex; gap:.8rem; align-items:center;
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      border:1px solid var(--oc-border);
+      border-radius:999px; padding:.5rem .8rem; box-shadow:var(--oc-shadow);
+    }
+    .metric svg{ width:44px; height:44px; }
+    .metric .label{
+      display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
+    }
+    .metric .value{
+      font-weight:800; color:var(--oc-brand-ink);
+      font-size:1.1rem; min-width:1.5ch;
+    }
+    .metric .name{
+      font-size:.8rem; color:var(--oc-subtle); text-transform:uppercase; letter-spacing:.12em;
+    }
+    .metric .ring-bg{ stroke:#e7edf3; }
+    .metric .ring-val{ stroke:var(--oc-brand-accent); transition:stroke-dashoffset .9s ease; }
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
       .oc-tl-btn{ transition:none; }
+      .metric .ring-val{ transition:none; }
     }
   </style>
 </head>
@@ -243,9 +271,51 @@
     <p class="lead mb-0">
       A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.
     </p>
-    <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
-      <a class="btn btn-ink btn-sm" href="dataset.html">Explore Datasets</a>
-      <a class="btn btn-accent btn-sm" href="models.html">Explore Models</a>
+
+    <!-- ===== Stats ribbon (above buttons) ===== -->
+    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+      <!-- Datasets metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <!-- simple crane hook icon in center -->
+          <g transform="translate(11,8)" stroke="currentColor" fill="none" stroke-width="1.4" opacity=".8">
+            <path d="M6 0v6a4 4 0 1 0 8 0V0" />
+            <path d="M10 10v6" />
+          </g>
+          <!-- donut -->
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none" stroke-width="4"></circle>
+          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none" stroke-width="4"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+        </svg>
+        <span class="label">
+          <span class="value" id="countDatasets">—</span>
+          <span class="name">Datasets</span>
+        </span>
+      </div>
+
+      <!-- Models metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <!-- gear-ish icon -->
+          <g transform="translate(12,12)" stroke="currentColor" fill="none" stroke-width="1.4" opacity=".8">
+            <circle cx="10" cy="10" r="3.5"/>
+            <path d="M10 1v3M10 16v3M1 10h3M16 10h3M3.5 3.5l2.2 2.2M14.3 14.3l2.2 2.2M16.5 3.5l-2.2 2.2M5.7 14.3l-2.2 2.2"/>
+          </g>
+          <!-- donut -->
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none" stroke-width="4"></circle>
+          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none" stroke-width="4"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+        </svg>
+        <span class="label">
+          <span class="value" id="countModels">—</span>
+          <span class="name">Models</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center flex-wrap gap-2 mt-2">
+      <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
+      <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
   </div>
 </header>
@@ -531,6 +601,82 @@
     updateNavVisibility();
     window.addEventListener('load', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(initial); }, 120));
     window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
+  })();
+
+  // ===== Hero Metrics: fetch counts from datasets.json & models.json =====
+  (async function(){
+    const countElDatasets = document.getElementById('countDatasets');
+    const countElModels = document.getElementById('countModels');
+    const ringDatasets = document.getElementById('ringDatasets');
+    const ringModels = document.getElementById('ringModels');
+
+    const CIRC = 2 * Math.PI * 17; // r=17 -> circumference for donut
+    [ringDatasets, ringModels].forEach(r => {
+      if(r){ r.setAttribute('stroke-dasharray', String(CIRC)); r.setAttribute('stroke-dashoffset', String(CIRC)); }
+    });
+
+    // Try multiple likely paths (works on GitHub Pages or local dev)
+    async function fetchFirst(paths){
+      for(const p of paths){
+        try{
+          const res = await fetch(p, { cache:'no-cache' });
+          if(res.ok){ return res.json(); }
+        }catch(e){ /* ignore and try next */ }
+      }
+      throw new Error('All JSON paths failed: ' + paths.join(', '));
+    }
+
+    function arrayishLength(json){
+      if(Array.isArray(json)) return json.length;
+      if(json && Array.isArray(json.items)) return json.items.length;
+      if(json && Array.isArray(json.data)) return json.data.length;
+      // fallback: count object keys if looks like id->item map
+      if(json && typeof json === 'object') return Object.keys(json).length;
+      return 0;
+    }
+
+    try{
+      const [datasetsJson, modelsJson] = await Promise.all([
+        fetchFirst(['assets/data/datasets.json','assets/datasets.json','datasets.json']),
+        fetchFirst(['assets/data/models.json','assets/models.json','models.json'])
+      ]);
+
+      const dCount = arrayishLength(datasetsJson);
+      const mCount = arrayishLength(modelsJson);
+
+      // Update text
+      countElDatasets.textContent = dCount.toString();
+      countElModels.textContent = mCount.toString();
+
+      // Animate rings (cap at 100% visually if huge)
+      const dPct = Math.max(0, Math.min(1, dCount / Math.max(10, dCount))); // always full circle for now
+      const mPct = Math.max(0, Math.min(1, mCount / Math.max(10, mCount)));
+      ringDatasets && ringDatasets.setAttribute('stroke-dashoffset', String(CIRC * (1 - dPct)));
+      ringModels && ringModels.setAttribute('stroke-dashoffset', String(CIRC * (1 - mPct)));
+
+      // Animate number count-up (subtle)
+      const ease = t => 1 - Math.pow(1 - t, 3);
+      function countUp(el, to, dur=700){
+        const start = performance.now();
+        const from = 0;
+        function step(now){
+          const t = Math.min(1, (now - start)/dur);
+          const v = Math.round(from + (to - from)*ease(t));
+          el.textContent = v.toString();
+          if(t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      countUp(countElDatasets, dCount);
+      countUp(countElModels, mCount);
+    }catch(err){
+      // graceful fallback
+      countElDatasets.textContent = '—';
+      countElModels.textContent = '—';
+      ringDatasets && ringDatasets.setAttribute('stroke-dashoffset', String(CIRC));
+      ringModels && ringModels.setAttribute('stroke-dashoffset', String(CIRC));
+      // console.warn(err);
+    }
   })();
 
   // Auto-highlight current nav (supports clean URLs and index.html)
