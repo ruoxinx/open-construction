@@ -73,5 +73,20 @@
     "code_url": "https://github.com/ruoxinx/PPE-Detection-Pose",
     "thumbnail": "assets/img/models/CPPE.png",
 	"added_date": "2025-09-26"
+  },
+   {
+    "id": "ConSLAM",
+    "title": "ConSLAM: Construction Dataset for SLAM",
+    "authors": ["ConSLAM: Construction Dataset for SLAM"],
+    "abstract": "This paper presents a data set collected periodically on a construction site. The data set aims to evaluate the performance of simultaneous localization and mapping (SLAM) algorithms used by mobile scanners or autonomous robots. It includes ground-truth scans of a construction site collected using a terrestrial laser scanner along with five sequences of spatially registered and time-synchronized images, lidar scans, and inertial data coming from our prototypical handheld scanner. We also recover the ground-truth trajectory of the mobile scanner by registering the sequential lidar scans to the ground-truth scans and show how to use a popular software package to measure the accuracy of SLAM algorithms against our trajectory automatically. To the best of our knowledge, this is the first publicly accessible data set consisting of periodically collected sequential data on a construction site.",
+    "year": 2023,
+    "modalities": ["Ground RGB, Point Cloud"],
+    "tasks": ["Simultaneous localization and mapping"],
+	"applications": ["Site mapping/navigation"],
+    "license": "Academic use only",
+    "paper_url": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
+    "code_url": "https://github.com/mac137/ConSLAM",
+    "thumbnail": "assets/img/models/ConSLAM.png",
+	"added_date": "2025-09-26"
   }
 ]
