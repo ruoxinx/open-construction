@@ -391,5 +391,38 @@
   }
 })();
 </script>
+
+<!-- Floating button: Add new dataset -->
+<style>
+  .add-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    background: #198754; /* Bootstrap green */
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .9rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .add-btn:hover {
+    background: #157347;
+    transform: translateY(-2px);
+    color: #fff;
+    text-decoration: none;
+  }
+</style>
+
+<a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml"
+   class="add-btn" target="_blank" rel="noopener">
+  + Add New Dataset
+</a>
+
+
+
 </body>
 </html>
