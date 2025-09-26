@@ -269,35 +269,51 @@
     </p>
 
     <!-- ===== Stats ribbon (above buttons) ===== -->
-    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
-      <!-- Datasets metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-        </svg>
-        <span class="label">
-          <span class="value" id="countDatasets">—</span>
-          <span class="name">Datasets</span>
-        </span>
-      </div>
+<!-- ===== Stats ribbon (above buttons) ===== -->
+<div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
 
-      <!-- Models metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-        </svg>
-        <span class="label">
-          <span class="value" id="countModels">—</span>
-          <span class="name">Models</span>
-        </span>
-      </div>
-    </div>
+  <!-- Datasets metric -->
+  <div class="metric" aria-live="polite">
+    <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+      <!-- circle background + animated ring -->
+      <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+      <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
+              stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+      <!-- dataset icon (simple stack of blocks) -->
+      <g transform="translate(14,14)" fill="none" stroke="currentColor" stroke-width="1.4">
+        <rect x="0" y="0" width="7" height="7" rx="1"/>
+        <rect x="9" y="0" width="7" height="7" rx="1"/>
+        <rect x="4.5" y="9" width="7" height="7" rx="1"/>
+      </g>
+    </svg>
+    <span class="label">
+      <span class="value" id="countDatasets">—</span>
+      <span class="name">Datasets</span>
+    </span>
+  </div>
 
-    <div class="d-flex justify-content-center flex-wrap gap-8 mt-2">
+  <!-- Models metric -->
+  <div class="metric" aria-live="polite">
+    <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+      <!-- circle background + animated ring -->
+      <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+      <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
+              stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+      <!-- models icon (gear) -->
+      <g transform="translate(11,11)" fill="none" stroke="currentColor" stroke-width="1.4">
+        <circle cx="11" cy="11" r="3.5"/>
+        <path d="M11 0v3M11 19v3M0 11h3M19 11h3M3.5 3.5l2.2 2.2M18.5 18.5l2.2 2.2M18.5 3.5l-2.2 2.2M3.5 18.5l-2.2 2.2"/>
+      </g>
+    </svg>
+    <span class="label">
+      <span class="value" id="countModels">—</span>
+      <span class="name">Models</span>
+    </span>
+  </div>
+
+</div>
+
+    <div class="d-flex justify-content-center flex-wrap gap-4 mt-2">
       <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
       <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
