@@ -1,143 +1,229 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction</title>
+  <title>Overview</title>
 
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
-      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
-      --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
-      --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-muted:#f6f9fc;
-      --oc-brand:#0f2e4b; --oc-accent:#f2a238;
+      --oc-bg: #ffffff;
+      --oc-text: #1e2a36;
+      --oc-subtle: #6b7b8c;
+      --oc-border: #e7edf3;
+      --oc-brand-ink: #0f2e4b;
+      --oc-brand-accent: #f2a238;
+      --oc-brand-accent-2: #123c62;
+      --oc-link: #0b66c3;
+      --oc-card: #ffffff;
+      --oc-shadow: 0 6px 22px rgba(15,46,75,.08);
+      --oc-radius: 14px;
+      --oc-muted: #f6f9fc;
     }
-    html,body{background:var(--oc-bg); color:var(--oc-text)}
-    a{color:var(--oc-link)}
 
-    /* ---------- Navbar ---------- */
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
-    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
-    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
-    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
-    .oc-logo{height:44px;width:44px}
+    html,body{ background: var(--oc-bg); color: var(--oc-text); }
+    a{ color: var(--oc-link); }
+    .oc-container{ max-width: 1080px; }
 
-    /* Clean, professional nav links (bold, no background/outline) */
+    /* Navbar */
+    .oc-nav{
+      backdrop-filter: saturate(120%) blur(6px);
+      border-bottom: 1px solid var(--oc-border) !important;
+    }
+    .brand-wordmark{
+      display:inline-flex; gap:.25rem; align-items:baseline;
+      font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink);
+      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+    }
+    .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
+    .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
+    .oc-logo{ height:44px; width:44px; }
+
+    /* Nav links */
     .navbar .nav-link.plain{
-      font-weight:700;
-      color:var(--oc-text);
-      padding:.5rem .6rem;
+      font-weight:700; color: var(--oc-text); padding:.5rem .6rem;
     }
     .navbar .nav-link.plain:hover{
-      color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
+      color: var(--oc-brand-ink);
+      text-decoration: underline; text-underline-offset: 3px;
     }
     .navbar .nav-link.plain.active{
-      color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
+      color: var(--oc-brand-ink);
+      text-decoration: underline; text-underline-offset: 3px;
     }
 
-    .oc-btn{border-radius:999px;border-color:#d6dde6;color:#24384d}
-    .oc-btn:hover{background:#f4f7fb;border-color:#cbd6e3;color:#0f2e4b}
-    .oc-cta{border-radius:999px;box-shadow:0 4px 10px rgba(16,185,129,.15)}
-    .oc-cta:hover{box-shadow:0 6px 14px rgba(16,185,129,.22);transform:translateY(-1px)}
-
-    /* Minimal icon-only link (GitHub) */
-    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
-    .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    /* ---------- Docked search (TOP bar only; smaller) ---------- */
-    .navbar-search{
-      display:none;
-      width: clamp(200px, 24vw, 320px);
+    /* Hero */
+    .hero{
+      background: #fff; color: var(--oc-brand-ink);
+      border-bottom: 1px solid var(--oc-border);
     }
-    .navbar-search .form-control{
-      height:34px;
-      padding:.25rem .75rem;
-      font-size:.875rem;
-      line-height:1.2;
-      border-radius:999px;
+    .hero .content{ padding: 56px 0 44px; text-align: center; }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
+      margin:.25rem 0 .35rem;
     }
-    body.docked .navbar-search{display:flex; flex:0 0 auto}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex; align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
+    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
+    .hero .pill{
+      display:inline-flex; gap:.5rem; align-items:center;
+      border-radius: 999px; padding:.45rem .85rem;
+      background: transparent; border:1px solid #dfe6ee; color: var(--oc-brand-ink);
+      font-size:.9rem;
     }
 
-    /* ---------- Hero (center search UNCHANGED) ---------- */
-    header.hero{
-      border-bottom:1px solid var(--oc-border);
-      background:#fff;
+    /* Buttons */
+    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
+    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
+    .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
+    .btn-ink{
+      background: var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
     }
-    header.hero .content{ padding:56px 0 36px; text-align:center }
-    header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
-    header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
-    /* original big search size */
-    .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
-
-    /* ---------- Filters card ---------- */
-    .filters{ position:sticky; top:86px; }
-    .facet-list{ max-height: 280px; overflow:auto; border:1px solid var(--oc-border); border-radius:.5rem; padding:.55rem; background:var(--oc-card) }
-    .facet-list .form-check{ margin-bottom:.25rem }
-    .card .form-label{ font-weight:700 }
-    .facet-toggle{ font-size:.875rem; line-height:1.2 }
-
-    /* ---------- Year dual range with selected track ---------- */
-    .range-container{ position:relative; height:36px; margin:.25rem 0 .5rem }
-    .range-container .slider{ position:absolute; left:10px; right:10px; top:14px; height:8px; background:#e9ecef; border-radius:10px }
-    .range-container .range-selected{ position:absolute; top:14px; height:8px; background:#0d6efd; border-radius:10px }
-    .range-container .thumb{ pointer-events:none; position:absolute; height:0; width:100%; -webkit-appearance:none }
-    .range-container .thumb::-webkit-slider-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.12); -webkit-appearance:none
+    .btn-ink:hover{ filter: brightness(1.05); color:#fff; }
+    .btn-accent{
+      background:#fff; color: var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
     }
-    .range-container .thumb::-moz-range-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff
+    .btn-accent:hover{ background:#f7fbff; }
+
+    /* Sections & cards */
+    .oc-section{ margin-top:40px; }
+    .oc-card{
+      background: var(--oc-card);
+      border: 1px solid var(--oc-border);
+      border-radius: var(--oc-radius);
+      box-shadow: var(--oc-shadow);
+    }
+    .oc-card .oc-card-title{ font-weight:700; color: var(--oc-brand-ink); }
+    .oc-card .oc-card-body{ padding: 1.25rem 1.25rem; }
+    .oc-kicker{
+      font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle);
+    }
+    .oc-ul{ margin-bottom:0; padding-left: 1.1rem; }
+    .oc-ul li{ margin:.35rem 0; }
+
+    /* Reference block */
+    pre.oc-bib{
+      background: var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
+      border-radius: 10px; padding: 1rem; overflow:auto;
     }
 
-    /* ---------- Result toolbar ---------- */
-    .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap }
+    /* Footer */
+    footer{
+      border-top:1px solid var(--oc-border);
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.02));
+    }
 
-    /* ---------- Dataset cards ---------- */
-    .dataset-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); height:100% }
-    .dataset-card .card-body{ padding:1rem 1rem }
-    .dataset-card .title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem }
-    .dataset-card .meta{ font-size:.85rem; color:var(--oc-sub) }
-    .badge-soft{ background:var(--oc-muted); border:1px solid var(--oc-border); color:var(--oc-text); font-weight:600 }
+    .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
-    /* ---------- Empty state & skeleton ---------- */
-    .empty{ border:1px dashed var(--oc-border); border-radius:12px; padding:24px; text-align:center; color:var(--oc-sub) }
-    .skeleton{ position:relative; overflow:hidden; background:var(--oc-muted); border-radius:10px; min-height:120px }
-    .skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); animation:shimmer 1.1s infinite; mix-blend-mode:overlay }
-    @keyframes shimmer{ to{ transform:translateX(100%) } }
+    /* ==============================
+       Horizontal Timeline (Fancy)
+       ============================== */
+    .oc-tl-wrap{
+      position: relative;
+      padding: .25rem 2.75rem; /* space for arrows */
+    }
+    /* edge fades */
+    .oc-tl-wrap::before,
+    .oc-tl-wrap::after{
+      content:"";
+      position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
+    }
+    .oc-tl-wrap::before{
+      left:0; background: linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-left-radius: var(--oc-radius);
+      border-bottom-left-radius: var(--oc-radius);
+    }
+    .oc-tl-wrap::after{
+      right:0; background: linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-right-radius: var(--oc-radius);
+      border-bottom-right-radius: var(--oc-radius);
+    }
 
-    /* Hide any legacy class-count spans inside labels */
-    #filter-classes .form-check-label .text-muted{ display:none !important }
+    .oc-timeline{
+      display:flex; gap:1.25rem;
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      padding: .5rem 0 1rem;
+      scrollbar-width: thin;
+    }
+
+    .oc-tl-item{
+      scroll-snap-align:center;
+      flex:0 0 auto;
+      width: 280px; max-width: 85vw;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--oc-border);
+      border-radius: var(--oc-radius);
+      box-shadow: var(--oc-shadow);
+      padding:1rem 1rem .95rem;
+      position:relative;
+    }
+    .oc-tl-date{
+      display:inline-block;
+      font-weight:800; letter-spacing:.02em;
+      color:var(--oc-brand-ink);
+      background: #eef4fb;
+      border:1px solid #dfe8f3;
+      padding:.25rem .55rem; border-radius:999px;
+      margin-bottom:.55rem;
+      font-size:.9rem;
+    }
+    .oc-tl-title{
+      font-weight:700; color:var(--oc-text); margin-bottom:.25rem;
+    }
+    .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
+
+    /* center line accent (purely decorative) */
+    .oc-tl-item::after{
+      content:"";
+      position:absolute; left:50%; transform:translateX(-50%);
+      bottom:-18px; width:2px; height:14px; background:#dfe6ee;
+      border-radius:2px;
+    }
+
+    /* Prev/Next arrow buttons */
+    .oc-tl-nav{
+      position:absolute; top:50%; transform:translateY(-50%);
+      z-index:3;
+    }
+    .oc-tl-btn{
+      display:flex; align-items:center; justify-content:center;
+      width:38px; height:38px; border-radius:999px;
+      background:#ffffff; border:1px solid var(--oc-border);
+      box-shadow: var(--oc-shadow);
+      color:var(--oc-brand-ink);
+    }
+    .oc-tl-btn:hover{ filter:brightness(1.03); }
+    .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
+
+    .oc-tl-prev{ left:.5rem; }
+    .oc-tl-next{ right:.5rem; }
+
+    /* Tiny hint row (optional dots) */
+    .oc-tl-dots{
+      display:flex; gap:.35rem; justify-content:center; margin-top:.6rem;
+    }
+    .oc-tl-dot{
+      width:6px; height:6px; border-radius:999px; background:#d9e3ee; transition:.2s;
+    }
+    .oc-tl-dot.active{ background:var(--oc-brand-ink); }
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="about.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
-      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
+      </span>
     </a>
-
-    <!-- Docked search (shown when scrolling) -->
-    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search datasets, objects, tasks …" aria-label="Search datasets">
-    </form>
 
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -145,18 +231,15 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <!-- Clean bold links -->
-        <li class="nav-item"><a class="nav-link plain" href="about.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="index.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-
-        <!-- CTA -->
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
         <li class="nav-item">
-          <a class="btn btn-success btn-sm oc-cta" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener"> + New Dataset</a>
+          <a class="btn btn-success btn-sm oc-cta"
+             href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml"
+             target="_blank" rel="noopener"> + New Dataset</a>
         </li>
-
-        <!-- GitHub icon-only link -->
         <li class="nav-item">
           <a class="nav-link px-2 icon-only"
              href="https://github.com/ruoxinx/OpenConstruction-Datasets"
@@ -187,157 +270,293 @@
 
 <!-- Hero -->
 <header class="hero">
-  <div class="container content">
-    <h1 class="display-6 fw-bold">OpenConstruction Dataset Catalog</h1>
-    <p class="lead">Explore open datasets for construction monitoring and analysis</p>
-    <div id="searchDock" class="mt-3">
-      <!-- CENTER search (kept original size) -->
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search datasets, objects, tasks …" aria-label="Search datasets large">
+  <div class="container oc-container content">
+    <span class="pill">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3l7 4v7c0 3.866-3.134 7-7 7s-7-3.134-7-7V7l7-4z" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      Curated datasets and models for AI in AEC
+    </span>
+    <h1 class="mb-1">OpenConstruction Overview</h1>
+    <p class="lead mb-0">
+      A centralized, carefully maintained catalog of open-access visual datasets and models for construction monitoring, safety,
+      and productivity—designed to accelerate reproducible research and practical AI deployment.
+    </p>
+    <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
+      <a class="btn btn-ink btn-sm" href="index.html">Explore Datasets</a>
+      <a class="btn btn-accent btn-sm" href="models.html">Explore Models</a>
     </div>
   </div>
 </header>
 
-<main class="container my-4">
-  <div class="row g-3">
-    <!-- Filters -->
-    <aside class="col-lg-3">
-      <div class="card shadow-sm filters">
-        <div class="card-header"><strong>Filters</strong></div>
-        <div class="card-body small">
-          <div class="mb-3">
-            <label class="form-label" for="filter-modality">Modalities</label>
-            <div id="filter-modality" class="facet-list vstack gap-1"></div>
+<main class="container oc-container">
+  <!-- About + Vision -->
+  <section class="oc-section">
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">About</div>
+            <h3 class="oc-card-title mb-2">OpenConstruction</h3>
+            <p class="mb-0">
+              OpenConstruction is a curated collection of publicly available datasets and models focused on construction monitoring and analysis.
+              This serves as a central hub for researchers, practitioners, and developers on AI applications in the construction industry.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Vision</div>
+            <h3 class="oc-card-title mb-2">Why we built this</h3>
+            <p class="mb-3">
+              The industry is rapidly adopting AI-driven methods for diverse tasks.
+            </p>
+            <ul class="oc-ul">
+              <li>Provide a catalog of open construction datasets and models</li>
+              <li>Standardize metadata for comparison and selection</li>
+              <li>Enable fair benchmarking and evaluation</li>
+              <li>Support reproducible research and education</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Development & Achievements -->
+  <section class="oc-section">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Milestones</div>
+        <h3 class="oc-card-title mb-3">Development & Achievements</h3>
+
+        <div class="oc-tl-wrap">
+          <!-- Prev -->
+          <div class="oc-tl-nav oc-tl-prev">
+            <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
+              <!-- left chevron -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="taskSearch">Tasks</label>
-            <input id="taskSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search for tasks…">
-            <div id="filter-task" class="facet-list"></div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label" for="licenseSearch">Licenses</label>
-            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search for licenses…">
-            <div id="filter-license" class="facet-list"></div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Release year</label>
-            <div class="range-container">
-              <div class="slider"></div>
-              <div class="range-selected" id="yearRangeSelected"></div>
-              <input type="range" class="thumb" id="yearRangeMin" min="2000" max="2030" step="1">
-              <input type="range" class="thumb" id="yearRangeMax" min="2000" max="2030" step="1">
+          <!-- Timeline -->
+          <div class="oc-timeline" id="ocTimeline" tabindex="0" aria-label="OpenConstruction milestones">
+            <!-- 2024.12 -->
+            <div class="oc-tl-item" data-title="Project Team Established">
+              <div class="oc-tl-date">2024.12</div>
+              <div class="oc-tl-title">Project Team Established</div>
+              <div class="oc-tl-content">
+                Core team formed to build the OpenConstruction platform and roadmap.
+              </div>
             </div>
-            <div class="small text-muted">From <span id="yearRangeMinVal"></span> to <span id="yearRangeMaxVal"></span></div>
+
+            <!-- 2025.09 -->
+            <div class="oc-tl-item" data-title="Dataset Catalog Online">
+              <div class="oc-tl-date">2025.09</div>
+              <div class="oc-tl-title">Dataset Catalog Online</div>
+              <div class="oc-tl-content">
+                OpenConstruction Dataset Catalog officially launched for the community.
+              </div>
+            </div>
+
+            <!-- Add future milestones by duplicating .oc-tl-item blocks -->
           </div>
 
-          <div class="mb-1">
-            <label class="form-label" for="classSearch">Object classes</label>
-            <input id="classSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search for classes…">
-            <div id="filter-classes" class="facet-list"></div>
-            <button class="btn btn-link p-0 facet-toggle" id="toggleClasses" type="button" aria-expanded="false">Show all</button>
+          <!-- Next -->
+          <div class="oc-tl-nav oc-tl-next">
+            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
+              <!-- right chevron -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- dots -->
+        <div class="oc-tl-dots" id="tlDots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reference -->
+  <section class="oc-section">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Reference</div>
+        <h3 class="oc-card-title mb-2">Cite the catalog</h3>
+        <p class="mb-2">Our work is documented in:</p>
+        <p class="mb-3">
+          <strong>
+            <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
+              OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring
+            </a>
+          </strong><br>
+          Ruoxin Xiong, Yanyu Wang, Jiannan Cai, Kaijian Liu, Yuansheng Zhu, Pingbo Tang, Nora El-Gohary<br>
+          arXiv:2508.11482, 2025
+        </p>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-muted small">BibTeX</span>
+          <button id="copyBib" class="btn btn-sm btn-outline-secondary oc-btn">Copy</button>
+        </div>
+        <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
+  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring}, 
+  author={Ruoxin Xiong and Yanyu Wang and Jiannan Cai and Kaijian Liu and Yuansheng Zhu and Pingbo Tang and Nora El-Gohary},
+  year={2025},
+  eprint={2508.11482},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2508.11482}
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback / Removal -->
+  <section class="oc-section">
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Feedback</div>
+            <h3 class="oc-card-title mb-2">Have an idea or request?</h3>
+            <p class="mb-0">
+              We’d love to hear from you. Share suggestions or feature requests here:
+              <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
+                Create a suggestion
+              </a>.
+            </p>
           </div>
         </div>
       </div>
-    </aside>
 
-    <!-- Results -->
-    <section class="col-lg-9">
-      <div class="toolbar mb-2">
-        <div><span id="resultCount" class="fw-semibold">0</span> datasets</div>
-        <div class="d-flex align-items-center gap-2">
-          <label for="sortBy" class="me-1 small">Sort by</label>
-          <select id="sortBy" class="form-select form-select-sm w-auto">
-            <option value="name-asc">Name A→Z</option>
-            <option value="year-desc" selected>Year ↓</option>
-            <option value="year-asc">Year ↑</option>
-            <option value="images-desc">Images ↓</option>
-            <option value="images-asc">Images ↑</option>
-            <option value="classes-desc">Classes ↓</option>
-            <option value="classes-asc">Classes ↑</option>
-          </select>
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Policy</div>
+            <h3 class="oc-card-title mb-2">Request dataset/model removal</h3>
+            <p class="mb-0">
+              If you’d like a dataset/model removed, please email
+              <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>
+              from an address that can verify ownership, and we’ll act quickly.
+            </p>
+          </div>
         </div>
       </div>
-
-      <!-- Grid -->
-      <div id="datasetGrid" class="row g-3" aria-live="polite" aria-busy="true">
-        <!-- Optional skeleton tiles while loading; your JS can replace/remove -->
-        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
-        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
-        <div class="col-md-6 col-xl-4"><div class="skeleton"></div></div>
-      </div>
-
-      <!-- Empty state your JS can toggle -->
-      <div id="emptyState" class="empty mt-3 d-none">No datasets match your filters. Try clearing some filters or changing the search.</div>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 
-<footer class="border-top py-4 mt-5">
-  <div class="container small text-muted">© <span id="yearNow"></span> OpenConstruction</div>
+<footer class="py-4 mt-5">
+  <div class="container oc-container small text-muted text-center">
+    © <span id="yearNow"></span> OpenConstruction
+  </div>
 </footer>
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="assets/js/config.js"></script>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/index.js"></script>
-
 <script>
-  // Year + docked search + selected-range bar
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+  const copyBtn = document.getElementById('copyBib');
+  if (copyBtn){
+    copyBtn.addEventListener('click', async ()=>{
+      const txt = document.getElementById('bibtex').innerText;
+      try{
+        await navigator.clipboard.writeText(txt);
+        copyBtn.textContent = 'Copied';
+        setTimeout(()=> copyBtn.textContent = 'Copy', 1600);
+      }catch(e){
+        copyBtn.textContent = 'Press Ctrl/Cmd+C';
+        setTimeout(()=> copyBtn.textContent = 'Copy', 2000);
+      }
+    });
+  }
+
+  /* ===== Timeline navigation, dots, and snap-centering ===== */
   (function(){
-    document.getElementById('yearNow').textContent = new Date().getFullYear();
+    const scroller = document.getElementById('ocTimeline');
+    const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
+    const prevBtn = document.getElementById('tlPrev');
+    const nextBtn = document.getElementById('tlNext');
+    const dotsWrap = document.getElementById('tlDots');
 
-    const heroInput = document.getElementById('q');
-    const dockInput = document.getElementById('qDock');
-    const dockThreshold = 220;
+    // build dots
+    items.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'oc-tl-dot' + (i===0 ? ' active':'');
+      dotsWrap.appendChild(d);
+    });
+    const dots = Array.from(dotsWrap.children);
 
-    function sync(to, from){
-      to.value = from.value;
-      const ev = new Event('input', {bubbles:true});
-      to.dispatchEvent(ev);
+    const itemWidth = () => items[0].getBoundingClientRect().width + 20; // card + gap
+    let index = 0;
+
+    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
+    function scrollToIndex(i){
+      index = clamp(i, 0, items.length-1);
+      const target = items[index];
+      const offset = target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2);
+      scroller.scrollTo({ left: offset, behavior:'smooth' });
+      refreshButtons();
+      refreshDots();
     }
-    if (dockInput && heroInput){
-      dockInput.addEventListener('input', ()=> sync(heroInput, dockInput));
-      heroInput.addEventListener('input', ()=> { if (!document.body.classList.contains('docked')) dockInput.value = heroInput.value; });
+
+    function refreshButtons(){
+      prevBtn.disabled = (index === 0);
+      nextBtn.disabled = (index === items.length-1);
     }
-    window.addEventListener('scroll', ()=>{
-      if (window.scrollY > dockThreshold) document.body.classList.add('docked');
-      else document.body.classList.remove('docked');
+    function refreshDots(){
+      dots.forEach((d, i)=> d.classList.toggle('active', i===index));
+    }
+
+    prevBtn.addEventListener('click', ()=> scrollToIndex(index-1));
+    nextBtn.addEventListener('click', ()=> scrollToIndex(index+1));
+
+    // keyboard nav when scroller focused
+    scroller.addEventListener('keydown', (e)=>{
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index-1); }
+      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index+1); }
     });
 
-    // Selected track between dual range thumbs
-    const min = document.getElementById('yearRangeMin');
-    const max = document.getElementById('yearRangeMax');
-    const track = document.getElementById('yearRangeSelected');
-    const minVal = document.getElementById('yearRangeMinVal');
-    const maxVal = document.getElementById('yearRangeMaxVal');
+    // update index on manual scroll (nearest item to center)
+    let t; 
+    scroller.addEventListener('scroll', ()=>{
+      clearTimeout(t);
+      t = setTimeout(()=>{
+        const center = scroller.scrollLeft + scroller.clientWidth/2;
+        const nearest = items.reduce((best, el, i)=>{
+          const c = el.offsetLeft + el.clientWidth/2;
+          const d = Math.abs(c - center);
+          return (d < best.d) ? {i, d} : best;
+        }, {i:0, d: Infinity});
+        if (nearest.i !== index){ index = nearest.i; refreshButtons(); refreshDots(); }
+      }, 80);
+    });
 
-    function updateTrack(){
-      const minYear = +min.min, maxYear = +max.max;
-      const a = Math.min(+min.value, +max.value);
-      const b = Math.max(+min.value, +max.value);
-      const left = ((a - minYear) / (maxYear - minYear)) * 100;
-      const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
-      track.style.left = `calc(${left}% + 10px)`;
-      track.style.right = `calc(${right}% + 10px)`;
-      minVal.textContent = a; maxVal.textContent = b;
-    }
-    if (min && max && track){ ['input','change'].forEach(e=>{min.addEventListener(e,updateTrack); max.addEventListener(e,updateTrack);}); updateTrack(); }
+    // auto-center initial (middle item if >1)
+    const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
+    scrollToIndex(initial);
+    // small correction after fonts load
+    window.addEventListener('load', ()=> setTimeout(()=> scrollToIndex(initial), 120));
+    window.addEventListener('resize', ()=> setTimeout(()=> scrollToIndex(index), 80));
   })();
-</script>
 
-<!-- Auto-active current nav link (adds aria-current + .active) -->
-<script>
+  // Auto-highlight current nav
   (function(){
-    var current = location.pathname.split('/').pop() || 'about.html';
+    var current = location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href'); if(!href) return;
+      var href = a.getAttribute('href');
+      if(!href) return;
       var normalized = href.split('#')[0].split('?')[0];
       var isMatch = normalized === current ||
-                    (normalized === 'about.html' && (current === '' || current === '/'));
+                    (normalized === 'index.html' && (current === '' || current === '/'));
       if(isMatch){
         a.classList.add('active');
         a.setAttribute('aria-current','page');
@@ -346,50 +565,6 @@
   })();
 </script>
 
-<!-- Optional: visit logger via Supabase -->
-<script>
-(async function(){
-  const PAGE = 'index';
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  if(!hasSB){ console.warn('Supabase config missing'); return; }
-  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
-  async function sha256hex(text){
-    const enc = new TextEncoder().encode(text);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  }
-  function getVisitorId(){
-    const k='oc_visitor_id';
-    let v=localStorage.getItem(k);
-    if(!v){ v=(crypto.randomUUID?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2))); localStorage.setItem(k,v); }
-    return v;
-  }
-  async function getGeo(){
-    try{
-      const g=await fetch('https://get.geojs.io/v1/ip/geo.json',{cache:'no-store'}).then(r=>r.json());
-      if(g && g.latitude && g.longitude) return { ip:g.ip||null, lat:+g.latitude, lon:+g.longitude, city:g.city||null, region:g.region||null, country:g.country||null };
-    }catch(e){}
-    return null;
-  }
-
-  try{
-    const geo=await getGeo();
-    const base = geo?.ip ? geo.ip : ('vid:'+getVisitorId());
-    const ip_hash=await sha256hex(base);
-    const payload={
-      page: PAGE, ip_hash,
-      city: geo?.city||null, region: geo?.region||null, country: geo?.country||null,
-      lat: (geo && typeof geo.lat==='number')?geo.lat:null,
-      lon: (geo && typeof geo.lon==='number')?geo.lon:null,
-      ua: navigator.userAgent, referrer: document.referrer||null
-    };
-    const { error } = await sb.from('visits').insert(payload);
-    if(error) console.error('insert error', error);
-  }catch(e){
-    console.error('logger failed', e);
-  }
-})();
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
