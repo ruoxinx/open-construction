@@ -148,6 +148,15 @@ function canonicalizeAllDatasets(){
 
   const TASK_CANON  = buildCanonMap(allTasks,  normKey);
   const CLASS_CANON = buildCanonMap(allClasses, normClassKey);
+  
+  Object.values(ALL).forEach(ds=>{
+  const added = ds.added_date || ds.added || null;
+  const added_ts = added ? Date.parse(added) : null;
+  ds.added_date = added || null;
+  ds.added_ts = (typeof added_ts==='number' && !isNaN(added_ts)) ? added_ts : null;
+  ds.added_date_fmt = added ? fmtDate(added) : null;
+});
+
 
   Object.values(ALL).forEach(ds=>{
     // Tasks
