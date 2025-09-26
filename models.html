@@ -83,11 +83,11 @@
       background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);padding:1rem;height:100%
     }
-	.paper-card .left{
-	  width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
-	  display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
-	}
-	.paper-card img{width:100%;height:100%;object-fit:cover}
+    .paper-card .left{
+      width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
+    }
+    .paper-card img{width:100%;height:100%;object-fit:cover}
 
     .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
     .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
@@ -101,6 +101,18 @@
     /* Floating button: Add New Model */
     .issue-btn { position: fixed; bottom: 20px; right: 20px; z-index: 1050; background: #0d6efd; color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: .9rem; box-shadow: 0 4px 12px rgba(0,0,0,.25); text-decoration: none; transition: background .2s ease, transform .2s ease; }
     .issue-btn:hover { background: #0b5ed7; transform: translateY(-2px); color: #fff; text-decoration: none; }
+
+    /* ---------- Abstract toggle helpers ---------- */
+    .abstract{position:relative}
+    .abstract-fade{position:relative;display:inline}
+    .abstract-fade::after{
+      content:""; display:inline-block; width:48px; height:1em; margin-left:-48px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), #fff 70%);
+    }
+    .btn-link.toggle{
+      padding:0; font-weight:600; text-decoration:none;
+    }
+    .btn-link.toggle:focus{outline:2px solid rgba(13,110,253,.35); outline-offset:2px; border-radius:4px}
   </style>
 </head>
 <body>
@@ -316,7 +328,7 @@ function applyFilters(){
   const q = state.q.trim().toLowerCase();
 
   let rows = MODELS.filter(m=>{
-    const text = [m.title,(m.tasks||[]).join(' '),(m.modalities||[]).join(' '),m.license].join(' ').toLowerCase();
+    const text = [m.title,(m.tasks||[]).join(' '),(m.modalities||[]).join(' '),m.license,(m.abstract||'')].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
 
     if(state.tasks.size){
@@ -356,7 +368,9 @@ function render(items){
     const doiLink = m.doi ? (m.doi.startsWith('http') ? m.doi : `https://doi.org/${m.doi}`) : '';
     const thumb = m.thumbnail || m.icon || PLACEHOLDER_PNG;
     const abstract = (m.abstract || '').trim();
-    const shortAbs = abstract.length>320 ? abstract.slice(0,320)+'…' : abstract;
+    const MAX = 320;
+    const isLong = abstract.length > MAX;
+    const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
 
     const el = document.createElement('div');
     el.className = 'paper-card';
@@ -376,7 +390,23 @@ function render(items){
           <div class="d-flex flex-wrap gap-1 mb-2">
             ${(m.tasks||[]).map(t=>`<span class="badge badge-soft rounded-pill px-2 py-1">${t}</span>`).join('')}
           </div>
-          ${abstract ? `<p class="small mb-2">${shortAbs}</p>`:''}
+          ${abstract ? `
+            <p class="small mb-2 abstract"
+               data-full="${encodeURIComponent(abstract)}"
+               data-short="${encodeURIComponent(shortAbs)}"
+               data-expanded="false">
+               <span class="abstract-text">${shortAbs.replace(/</g,'&lt;')}</span>
+               ${isLong ? '<span class="abstract-fade"></span>' : ''}
+            </p>
+            ${isLong ? `
+              <button class="btn btn-link toggle abstract-toggle"
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls="abs_${m.id || Math.random().toString(36).slice(2)}">
+                Show more
+              </button>
+            ` : '' }
+          `:''}
           <div class="d-flex gap-2">
             ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Access paper</a>`:''}
             ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Access code</a>`:''}
@@ -387,6 +417,36 @@ function render(items){
   });
 }
 
+/* ---------- Abstract toggle (event delegation) ---------- */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.abstract-toggle');
+  if(!btn) return;
+  const card = btn.closest('.paper-card');
+  if(!card) return;
+  const p = card.querySelector('.abstract');
+  const span = card.querySelector('.abstract-text');
+  if(!p || !span) return;
+
+  const expanded = p.getAttribute('data-expanded') === 'true';
+  if(expanded){
+    // collapse
+    span.textContent = decodeURIComponent(p.getAttribute('data-short')||'');
+    p.setAttribute('data-expanded','false');
+    btn.textContent = 'Show more';
+    btn.setAttribute('aria-expanded','false');
+    if(!p.querySelector('.abstract-fade')){
+      const fade = document.createElement('span'); fade.className='abstract-fade';
+      p.appendChild(fade);
+    }
+  }else{
+    // expand
+    span.textContent = decodeURIComponent(p.getAttribute('data-full')||'');
+    p.setAttribute('data-expanded','true');
+    btn.textContent = 'Show less';
+    btn.setAttribute('aria-expanded','true');
+    const fade = p.querySelector('.abstract-fade'); if(fade) fade.remove();
+  }
+});
 
 /* ---------------------------
    Wire up controls
@@ -469,30 +529,28 @@ async function loadModels(){
   const grid = byId('modelGrid');
   const errorBox = byId('errorState');
   try{
-    // Cache-bust while developing; you can remove the query param once stable
     const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     const raw = Array.isArray(payload) ? payload : (Array.isArray(payload.models) ? payload.models : []);
 
     // minimal coercion/validation
-	MODELS = raw.map(m=>({
-	  id: m.id || crypto.randomUUID(),
-	  title: m.title || 'Untitled',
-	  year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
-	  modalities: Array.isArray(m.modalities) ? m.modalities : (m.modalities ? [m.modalities] : []),
-	  tasks: Array.isArray(m.tasks) ? m.tasks : (m.tasks ? [m.tasks] : []),
-	  license: m.license || '',
-	  authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
-	  abstract: m.abstract || '',
-	  doi: m.doi || '',
-	  paper_url: m.paper_url || '',
-	  code_url: m.code_url || '',
-	  // prefer per-paper PNG thumbnail in assets/img/models
-	  thumbnail: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : ''),
-	  icon: m.icon || ''
-	}));
-
+    MODELS = raw.map(m=>({
+      id: m.id || crypto.randomUUID(),
+      title: m.title || 'Untitled',
+      year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
+      modalities: Array.isArray(m.modalities) ? m.modalities : (m.modalities ? [m.modalities] : []),
+      tasks: Array.isArray(m.tasks) ? m.tasks : (m.tasks ? [m.tasks] : []),
+      license: m.license || '',
+      authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
+      abstract: m.abstract || '',
+      doi: m.doi || '',
+      paper_url: m.paper_url || '',
+      code_url: m.code_url || '',
+      // prefer per-paper PNG thumbnail in assets/img/models
+      thumbnail: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : ''),
+      icon: m.icon || ''
+    }));
 
     byId('yearNow').textContent = new Date().getFullYear();
     buildFacets();
