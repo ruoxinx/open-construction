@@ -88,5 +88,22 @@
     "code_url": "https://github.com/mac137/ConSLAM",
     "thumbnail": "assets/img/models/ConSLAM.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "CMA",
+    "title": "Transformer-based deep learning model and video dataset for unsafe action identification in construction projects",
+    "authors": ["Meng Yang", "Chengke Wu", "Yuanjun Guo", "Rui Jiang", "Feixiang Zhou", "Jianlin Zhang", "Zhile Yang"],
+    "abstract": "A large proportion of construction accidents are caused by unintentional and unsafe actions and behaviors. It is of significant difficulties and ineffectiveness to monitor unsafe behaviors using conventional manual supervision due to the complex and dynamic working conditions on construction sites. Recently, surveillance videos and computer vision (CV) techniques have been increasingly adopted to automatically identify risky behaviors. However, the challenge remains that spatial and temporal features in video clips cannot be effectively captured and fused by current CV models. To address this challenge, this paper describes a deep learning model named Spatial Temporal Relation Transformer (STR-Transformer), where spatial and temporal features of work behaviors are simultaneously extracted in paralleling video streams and then fused by a specially designed module. To verify the effectiveness of the STR-Transformer, a customized dataset is developed, including seven categories of construction worker behaviors and 1595 video clips. In numerical experiments and case studies, the STR-Transformer achieves an average precision of 88.7%, 4.0% higher than the baseline model. The STR-Transformer enables more accurate and reliable automatic safety surveillance on construction projects, and is expected to reduce accident rates and management costs. Moreover, the performance of STR-Transformer relies on efficient feature integration, which may inspire future studies to identify, extract, and fuse richer features when applying CV-based deep learning models in construction management.",
+    "year": 2023,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Action recognition"],
+	"applications": ["Safety monitoring"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2022.104703",
+    "code_url": "https://github.com/S1mpleyang/ConstructionActionRecognition",
+    "thumbnail": "assets/img/models/CMA.png",
+	"added_date": "2025-09-26"
   }
+  
+  
 ]
