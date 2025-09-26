@@ -43,5 +43,20 @@
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
     "thumbnail": "assets/img/models/Kenki-Posi.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "CDE",
+    "title": "Machine learning using synthetic images for detecting dust emissions on construction sites",
+    "authors": ["Ruoxin Xiong", "Pingbo Tang"],
+    "abstract": "Automated dust monitoring in workplaces helps provide timely alerts to over-exposed workers and effective mitigation measures for proactive dust control. However, the cluttered nature of construction sites poses a practical challenge to obtain enough high-quality images in the real world. The study aims to establish a framework that overcomes the challenges of lacking sufficient imagery data (“data-hungry problem”) for training computer vision algorithms to monitor construction dust. This study develops a synthetic image generation method that incorporates virtual environments of construction dust for producing training samples. Three state-of-the-art object detection algorithms, including Faster-RCNN, you only look once (YOLO) and single shot detection (SSD), are trained using solely synthetic images. Finally, this research provides a comparative analysis of object detection algorithms for real-world dust monitoring regarding the accuracy and computational efficiency. This study creates a construction dust emission (CDE) dataset consisting of 3,860 synthetic dust images as the training dataset and 1,015 real-world images as the testing dataset. The YOLO-v3 model achieves the best performance with a 0.93 F1 score and 31.44 fps among all three object detection models. The experimental results indicate that training dust detection algorithms with only synthetic images can achieve acceptable performance on real-world images. This study provides insights into two questions: (1) how synthetic images could help train dust detection models to overcome data-hungry problems and (2) how well state-of-the-art deep learning algorithms can detect nonrigid construction dust.",
+    "year": 2021,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Compliance monitoring"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1108/SASBE-04-2021-0066",
+    "code_url": "https://github.com/ruoxinx/site-dust-detect",
+    "thumbnail": "assets/img/models/CDE.png",
+	"added_date": "2025-09-26"
   }
 ]
