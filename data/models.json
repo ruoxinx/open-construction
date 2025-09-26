@@ -43,20 +43,5 @@
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
     "thumbnail": "assets/img/models/Kenki-Posi.png",
 	"added_date": "2025-09-26"
-  },
-  {
-    "id": "CHV",
-    "title": "Fast Personal Protective Equipment Detection for Real Construction Sites Using Deep Learning Approaches",
-    "authors": ["Zijian Wang", "Yimin Wu", "Lichao Yang", "Arjun Thirunavukarasu", "Colin Evison", "Yifan Zhao"],
-    "abstract": "The existing deep learning-based Personal Protective Equipment (PPE) detectors can only detect limited types of PPE and their performance needs to be improved, particularly for their deployment on real construction sites. This paper introduces an approach to train and evaluate eight deep learning detectors, for real application purposes, based on You Only Look Once (YOLO) architectures for six classes, including helmets with four colours, person, and vest. Meanwhile, a dedicated high-quality dataset, CHV, consisting of 1330 images, is constructed by considering real construction site background, different gestures, varied angles and distances, and multi PPE classes. The comparison result among the eight models shows that YOLO v5x has the best mAP (86.55%), and YOLO v5s has the fastest speed (52 FPS) on GPU. The detection accuracy of helmet classes on blurred faces decreases by 7%, while there is no effect on other person and vest classes. And the proposed detectors trained on the CHV dataset have a superior performance compared to other deep learning approaches on the same datasets. The novel multiclass CHV dataset is open for public use.",
-    "year": 2021,
-    "modalities": ["Ground RGB"],
-    "tasks": ["Object detection"],
-	"applications": ["Safety monitoring"],
-    "license": "Not specified",
-    "paper_url": "https://doi.org/10.3390/s21103478",
-    "code_url": "https://github.com/ZijianWang-ZW/PPE_detection",
-    "thumbnail": "assets/img/models/CHV.png",
-	"added_date": "2025-09-26"
   }
 ]
