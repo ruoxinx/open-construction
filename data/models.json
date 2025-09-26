@@ -133,5 +133,20 @@
     "code_url": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
     "thumbnail": "assets/img/models/Small-Construction-Tools.png",
 	"added_date": "2025-09-27"
+  },
+  {
+    "id": "OSHA-safety",
+    "title": "Deep Learning Enabled Computer Vision Model for Automated Safety Compliance in Construction Environments",
+    "authors": ["Amr A. Mohy", "Hesham A. Bassioni", "Elbadr O. Elgendi", "Tarek M. Hassan"],
+    "abstract": "Construction site safety demands proactive hazard detection, a challenge traditionally met with reactive measures that are often inadequate. This paper introduces a novel deep learning-based computer vision model designed for automated safety compliance monitoring, addressing critical limitations of existing approaches. The model utilizes a modified one-stage object detection algorithm, uniquely enhanced with Contextual Transformer Networks (CoTs), a Triplet Attention module, Activate or Not (ACON) activation functions, and Content-Aware Reassembly of Features (CARAFE) up-sampling, to significantly improve feature extraction, visual recognition, and contextual understanding in complex construction environments. To support this model development, a new OSHA-data-driven dataset of 55,594 images across 28 safety categories was developed. This dataset encompasses personal protective equipment (PPE), scaffolding, materials, hazards, and worker actions, ensuring comprehensive coverage of key safety domains. The Wise-Intersection over Union (IoU) loss function further refines bounding box regression, enhancing localization accuracy. Evaluations on both a benchmarking dataset and the newly developed dataset demonstrate the model's benchmark-surpassing performance (Precision: 0.89, mAP95: 0.45). This research offers a practically viable, data-driven solution for a critical industry challenge, moving towards a future of zero-accident construction sites.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "http://dx.doi.org/10.36680/j.itcon.2025.057",
+    "code_url": "https://github.com/amr21006/PhD_Safety_Management_Object_Detection",
+    "thumbnail": "assets/img/models/OSHA-safety.png",
+	"added_date": "2025-09-27"
   }
 ]
