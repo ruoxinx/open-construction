@@ -11,7 +11,7 @@
     "doi": "10.1145/xxxxxx",
     "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
     "code_url": "https://github.com/ruoxinx/OC-Safety-CLIP",
-    "thumbnail": "assets/img/models/oc-safety-clip.png"
+    "thumbnail": "assets/img/models/_placeholder.png"
   },
   {
     "id": "bim-llm",
@@ -25,6 +25,6 @@
     "doi": "https://doi.org/10.48550/arXiv.xxxxxxx",
     "paper_url": "https://arxiv.org/abs/xxxx.xxxxx",
     "code_url": "https://github.com/org/bim-llm",
-    "thumbnail": "assets/img/models/bim-llm.png"
+    "thumbnail": "assets/img/models/_placeholder.png"
   }
 ]
