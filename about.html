@@ -236,8 +236,8 @@
       and productivity—designed to accelerate reproducible research and practical AI deployment.
     </p>
     <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
-      <a class="btn btn-ink btn-sm" href="index.html">Explore Catalog</a>
-      <a class="btn btn-accent btn-sm" href="about.html">How it works</a>
+      <a class="btn btn-ink btn-sm" href="index.html">Explore Datasets</a>
+      <a class="btn btn-accent btn-sm" href="models.html">Explore Models</a>
     </div>
   </div>
 </header>
@@ -378,13 +378,13 @@
 <!-- Auto-active current nav link (adds aria-current + .active) -->
 <script>
   (function(){
-    var current = location.pathname.split('/').pop() || 'index.html';
+    var current = location.pathname.split('/').pop() || 'about.html';
     document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
       var href = a.getAttribute('href');
       if(!href) return;
       var normalized = href.split('#')[0].split('?')[0];
       var isMatch = normalized === current ||
-                    (normalized === 'index.html' && (current === '' || current === '/'));
+                    (normalized === 'about.html' && (current === '' || current === '/'));
       if(isMatch){
         a.classList.add('active');
         a.setAttribute('aria-current','page');
