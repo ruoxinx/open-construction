@@ -251,9 +251,9 @@
         <div class="d-flex align-items-center gap-2">
           <label for="sortBy" class="me-1 small">Sort by</label>
           <select id="sortBy" class="form-select form-select-sm w-auto">
-		    <option value="year-desc">Year ↓</option>
+            <option value="year-desc">Year ↓</option>
             <option value="year-asc">Year ↑</option>
-            <option value="added-desc" selected >Added date ↓</option>
+            <option value="added-desc" selected>Added date ↓</option>
             <option value="added-asc">Added date ↑</option>
             <option value="name-asc">Title A→Z</option>
             <option value="name-desc">Title Z→A</option>
@@ -334,23 +334,92 @@ function esc(s){
     .replaceAll('>','&gt;');
 }
 
+/* ===== Modalities canonicalization (match Datasets) — ONLY NEW LOGIC BELOW ===== */
+function normKey(s){
+  if (s == null) return '';
+  return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
+}
+function canonicalizeModalityLabel(raw){
+  if (!raw) return 'Other';
+  const s = normKey(raw);
+  const has = re => re.test(s);
+
+  const hasSynthetic = has(/\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/);
+
+  const hasLidar   = has(/\blidar\b|li[\s-]?dar|\bvelodyne\b|\brplidar\b/);
+  const hasPC      = has(/point\s*cloud/);
+  const hasDepth   = has(/\bdepth\b|\brgb\s*-?\s*d\b|\brgbd\b|\bstereo\b|\bkinect\b/);
+  const hasThermal = has(/\bthermal\b|\binfrared\b|\b(ir)\b/);
+  const hasSAR     = has(/\bsar\b|\bradar\b/);
+  const hasMulti   = has(/\bmultispectral\b/);
+  const hasHyper   = has(/\bhyperspectral\b/);
+  const hasVideo   = has(/\bvideo\b|\bsequence\b|\bstream\b/);
+  const hasSat     = has(/\bsatellite\b|\blandsat\b|\bsentinel\b/);
+  const hasAerial  = has(/\baerial\b|\bdrone\b|\buav\b|\bauv\b/);
+  const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
+  const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
+
+  if (hasLidar)   return 'LiDAR';
+  if (hasSAR)     return 'SAR';
+  if (hasDepth)   return 'RGB-D';
+  if (hasThermal) return 'Thermal';
+  if (hasMulti)   return 'Multispectral';
+  if (hasHyper)   return 'Hyperspectral';
+  if (hasPC)      return '3D Point Cloud';
+  if (hasVideo)   return 'Video Clips';
+  if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
+  if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
+  if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
+  if (hasSynthetic) return 'Synthetic';
+  return 'Other';
+}
+function canonicalizeModalityLabels(raw){
+  if (raw == null) return ['Other'];
+  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
+  parts = parts.map(p => p && p.trim()).filter(Boolean);
+  if (!parts.length) parts = [String(raw)];
+
+  const labels = new Set();
+  const globalHasSynthetic = /\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/i.test(String(raw));
+
+  for (const p of parts){ labels.add(canonicalizeModalityLabel(p)); }
+  if (globalHasSynthetic) labels.add('Synthetic');
+  if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
+  return Array.from(labels);
+}
+/* ===== End of NEW modality helpers ===== */
+
 /* ---------------------------
    State + facets
 --------------------------- */
 const state = {
   q: '', sort: 'added-desc',
-  tasks: new Set(), applications: new Set(), modalities: new Set(), licenses: new Set(),
+  tasks: new Set(), applications: new Set(),
+  modalities: new Set(), // now holds normalized keys
+  licenses: new Set(),
   yMin: null, yMax: null
 };
 
+let MODALITY_MAP = new Map(); // normKey -> Pretty label
+
 function buildFacets(){
-  // Modalities
-  const modVals = uniqSorted(MODELS.flatMap(m=>m.modalities||[]));
+  /* ===== Modalities facet (from canonical labels) — UPDATED BLOCK ===== */
+  MODALITY_MAP = new Map();
+  MODELS.forEach(m=>{
+    (m.data_modalities || []).forEach(lbl=>{
+      const k = normKey(lbl);
+      if (!MODALITY_MAP.has(k)) MODALITY_MAP.set(k, lbl);
+    });
+  });
   const modWrap = byId('filter-modality'); 
   if (modWrap) {
     modWrap.innerHTML='';
-    modVals.forEach((m,i)=> modWrap.appendChild(makeCheckbox('m_'+i, m, m)));
+    Array.from(MODALITY_MAP.entries())
+      .map(([k,lbl])=>({k,lbl}))
+      .sort((a,b)=> a.lbl.localeCompare(b.lbl))
+      .forEach((it,i)=> modWrap.appendChild(makeCheckbox('m_'+i, it.lbl, it.k)));
   }
+  /* ===== End modalities facet ===== */
 
   // Tasks
   const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
@@ -396,8 +465,8 @@ function applyFilters(){
 
   let rows = MODELS.filter(m=>{
     const text = [
-      m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '), (m.modalities||[]).join(' '),
-      m.license, (m.abstract||'')
+      m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '),
+      (m.data_modalities||[]).join(' '), m.license, (m.abstract||'')
     ].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
 
@@ -409,10 +478,16 @@ function applyFilters(){
       const set = new Set(m.applications||[]);
       for(const a of state.applications){ if(!set.has(a)) return false; }
     }
+
+    /* ===== Modalities filter (OR overlap on normalized keys) — UPDATED ===== */
     if(state.modalities.size){
-      const set = new Set(m.modalities||[]);
-      for(const mo of state.modalities){ if(!set.has(mo)) return false; }
+      const keys = new Set(m._mod_keys || []);
+      let hit = false;
+      for(const k of state.modalities){ if(keys.has(k)) { hit = true; break; } }
+      if(!hit) return false;
     }
+    /* ===== End modalities filter ===== */
+
     if(state.licenses.size && !state.licenses.has(m.license)) return false;
 
     if((m.year||0) < state.yMin || (m.year||0) > state.yMax) return false;
@@ -547,7 +622,7 @@ function readFacet(containerId, setRef){
   root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
 }
 function attachFacetHandlers(){
-  // Modalities
+  // Modalities (store normalized keys)
   const modEl = byId('filter-modality');
   if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
 
@@ -650,16 +725,27 @@ async function loadModels(){
               : (Array.isArray(payload.models) ? payload.models
               : (typeof payload==='object' ? Object.values(payload) : []));
 
-    // Coercion/validation (supports added_date + applications + legacy keys)
+    // Coercion/validation + CANONICAL MODALITIES
     MODELS = raw.map(m=>{
       const added = m.added_date || m.added || null;
       const added_ts = added ? Date.parse(added) : null;
+
+      // pull raw modalities from either array or string fields
+      const rawMods = Array.isArray(m.modalities) ? m.modalities
+                    : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim()) : (m.modality ? String(m.modality).split(',').map(s=>s.trim()) : []));
+
+      const prettyArr = canonicalizeModalityLabels(rawMods.join(', ')); // e.g., ['LiDAR','RGB-D','Synthetic']
+      const normKeys  = prettyArr.map(l => normKey(l));                 // normalized keys for filtering
+
       return {
-        id: m.id || crypto.randomUUID(),
+        id: m.id || (crypto.randomUUID ? crypto.randomUUID() : (m.title || Math.random().toString(36).slice(2))),
         title: m.title || m.name || 'Untitled',
         year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
-        modalities: Array.isArray(m.modalities) ? m.modalities
-                   : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim()) : []),
+
+        // keep original m.modalities untouched; add canonical fields:
+        data_modalities: prettyArr,   // for display/search
+        _mod_keys: normKeys,          // for filtering
+
         tasks: Array.isArray(m.tasks) ? m.tasks : (m.potential_tasks ? m.potential_tasks : (m.tasks ? [m.tasks] : [])),
         applications: Array.isArray(m.applications) ? m.applications
                      : (m.application ? [m.application] : []),
