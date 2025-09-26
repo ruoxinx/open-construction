@@ -103,7 +103,20 @@
     "code_url": "https://github.com/S1mpleyang/ConstructionActionRecognition",
     "thumbnail": "assets/img/models/CMA.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "VisualSiteDiary",
+    "title": "VisualSiteDiary: A detector-free Vision-Language Transformer model for captioning photologs for daily construction reporting and image retrievals",
+    "authors": ["Yoonhwa Jung, Ikhyun Cho, Shun-Hsiang Hsu, Mani Golparvar-Fard"],
+    "abstract": "This paper presents VisualSiteDiary, a Vision Transformer-based image captioning model which creates human-readable captions for daily progress and work activity log, and enhances image retrieval tasks. As a model for deciphering construction photologs, VisualSiteDiary incorporates pseudo-region features, utilizes high-level knowledge in pretraining, and fine-tunes for diverse captioning styles. To validate VisualSiteDiary, a new image captioning dataset, VSD, is presented. This dataset includes many realistic yet challenging cases commonly observed in commercial building projects. Experimental results using five different metrics demonstrate that VisualSiteDiary provides superior-quality captions compared to the state-of-the-art image captioning models. Excluding the task of object recognition, the presented model also outperformed mPLUG –the state-of-the-art visual-language model– in the image retrieval task by 0.6% in precision and 0.9% in recall, respectively. Detailed discussions illustrate practical examples on how VisualSiteDiary improves the process of creating daily construction reports, paving the way for future developments in the field.",
+    "year": 2024,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Image captioning"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105483",
+    "code_url": "https://github.com/joonv2/VisualSiteDiary",
+    "thumbnail": "assets/img/models/VisualSiteDiary.png",
+	"added_date": "2025-09-26"
   }
-  
-  
 ]

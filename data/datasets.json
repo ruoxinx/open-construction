@@ -1979,7 +1979,7 @@
     ],
     "license": "Not Specified",
     "paper": "Multimodal data fusion for ergonomic assessment of construction workers in visually obstructed environments",
-    "access": "https://github.com/yantaolab/VPM.git",
+    "access": "https://github.com/yantaolab/VPM",
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.png",
 	"added_date": "2025-09-23"
