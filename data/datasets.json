@@ -1983,20 +1983,5 @@
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.png",
 	"added_date": "2025-09-23"
-  },
-  {
-    "id": "repetitive-action",
-    "title": "Automatic repetitive action counting for construction worker ergonomic assessment",
-    "authors": ["Xinyu Chen", "Yantao Yu"],
-    "abstract": "",
-    "year": 2024,
-    "modalities": ["Ground RGB"],
-    "tasks": ["Pose estimation"],
-	"applications": ["Ergonomic assessment"],
-    "license": "Not specified",
-    "paper_url": "https://doi.org/10.1016/j.aei.2025.103463",
-    "code_url": "https://github.com/Chenxy875/Repetitive-Actions-Counting-Method-for-Construction-Workers-Ergonomic-Assessments",
-    "thumbnail": "assets/img/models/repetitive-action.png",
-	"added_date": "2025-09-27"
   }
 }
