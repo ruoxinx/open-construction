@@ -36,12 +36,27 @@
     "abstract": "At modern construction sites, utilizing GNSS (Global Navigation Satellite System) to measure the real-time location and orientation (i.e. pose) of construction machines and navigate them is very common. However, GNSS is not always available. Replacing GNSS with on-board cameras and visual simultaneous localization and mapping (visual SLAM) to navigate the machines is a cost-effective solution. Nevertheless, at construction sites, multiple construction machines will usually work together and side-by-side, causing large dynamic occlusions in the cameras' view. Standard visual SLAM cannot handle large dynamic occlusions well. In this work, we propose a motion segmentation method to efficiently extract static parts from crowded dynamic scenes to enable robust tracking of camera ego-motion. Our method utilizes semantic information combined with object-level geometric constraints to quickly detect the static parts of the scene. Then, we perform a two-step coarse-to-fine ego-motion tracking with reference to the static parts. This leads to a novel dynamic visual SLAM formation. We test our proposals through a real implementation based on ORB-SLAM2, and datasets we collected from real construction sites. The results show that when standard visual SLAM fails, our method can still retain accurate camera ego-motion tracking in real-time. Comparing to state-of-the-art dynamic visual SLAM methods, ours shows outstanding efficiency and competitive result trajectory accuracy.",
     "year": 2021,
     "modalities": ["Ground RGB"],
-    "tasks": ["Simultaneous Localization and Mapping"],
-	"applications": ["Site navigtion"],
+    "tasks": ["Simultaneous localization and mapping"],
+	"applications": ["Site navigation"],
     "license": "GPL-3.0",
     "paper_url": "https://doi.org/10.1080/01691864.2020.1869586",
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
     "thumbnail": "assets/img/models/Kenki-Posi.png",
+	"added_date": "2025-09-26"
+  },
+  {
+    "id": "CHV",
+    "title": "Fast Personal Protective Equipment Detection for Real Construction Sites Using Deep Learning Approaches",
+    "authors": ["Zijian Wang", "Yimin Wu", "Lichao Yang", "Arjun Thirunavukarasu", "Colin Evison", "Yifan Zhao"],
+    "abstract": "The existing deep learning-based Personal Protective Equipment (PPE) detectors can only detect limited types of PPE and their performance needs to be improved, particularly for their deployment on real construction sites. This paper introduces an approach to train and evaluate eight deep learning detectors, for real application purposes, based on You Only Look Once (YOLO) architectures for six classes, including helmets with four colours, person, and vest. Meanwhile, a dedicated high-quality dataset, CHV, consisting of 1330 images, is constructed by considering real construction site background, different gestures, varied angles and distances, and multi PPE classes. The comparison result among the eight models shows that YOLO v5x has the best mAP (86.55%), and YOLO v5s has the fastest speed (52 FPS) on GPU. The detection accuracy of helmet classes on blurred faces decreases by 7%, while there is no effect on other person and vest classes. And the proposed detectors trained on the CHV dataset have a superior performance compared to other deep learning approaches on the same datasets. The novel multiclass CHV dataset is open for public use.",
+    "year": 2021,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.3390/s21103478",
+    "code_url": "https://github.com/ZijianWang-ZW/PPE_detection",
+    "thumbnail": "assets/img/models/CHV.png",
 	"added_date": "2025-09-26"
   }
 ]
