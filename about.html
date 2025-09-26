@@ -22,22 +22,7 @@
       --oc-card: #ffffff;
       --oc-shadow: 0 6px 22px rgba(15,46,75,.08);
       --oc-radius: 14px;
-    }
-    @media (prefers-color-scheme: ){
-      :root{
-        --oc-bg: #0e1620;
-        --oc-text: #ecf2f8;
-        --oc-subtle: #a3b2c2;
-        --oc-border: #1d2a37;
-        --oc-brand-ink: #e5f0ff;
-        --oc-brand-accent: #f6ae4f;
-        --oc-brand-accent-2: #2a7ab8;
-        --oc-link: #7db7ff;
-        --oc-card: #101a25;
-        --oc-shadow: 0 6px 22px rgba(0,0,0,.35);
-      }
-      .navbar.bg-white { background-color: var(--oc-card) !important; }
-      .border-top, .border-bottom { border-color: var(--oc-border) !important; }
+      --oc-muted: #f6f9fc;
     }
 
     html,body{ background: var(--oc-bg); color: var(--oc-text); }
@@ -58,7 +43,7 @@
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
 
-    /* Clean, professional nav links (bold, no background/outline) */
+    /* Nav links */
     .navbar .nav-link.plain{
       font-weight:700;
       color: var(--oc-text);
@@ -69,19 +54,13 @@
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-    /* Active state (auto-applied by JS) */
     .navbar .nav-link.plain.active{
       color: var(--oc-brand-ink);
       text-decoration: underline;
       text-underline-offset: 3px;
     }
 
-    /* Icon-only nav link */
-    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
-    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
-    .nav-link.icon-only:hover svg{ opacity:1; }
-
-    /* Hero — light & simple */
+    /* Hero */
     .hero{
       background: #fff;
       color: var(--oc-brand-ink);
@@ -106,12 +85,10 @@
       font-size:.9rem;
     }
 
-    /* Buttons (used elsewhere on page) */
+    /* Buttons */
     .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
     .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
     .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
-
-    /* Brand CTAs for hero on light bg */
     .btn-ink{
       background: var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
     }
@@ -121,7 +98,7 @@
     }
     .btn-accent:hover{ background:#f7fbff; }
 
-    /* Sections */
+    /* Cards & sections */
     .oc-section{ margin-top:40px; }
     .oc-card{
       background: var(--oc-card);
@@ -139,11 +116,8 @@
 
     /* Reference block */
     pre.oc-bib{
-      background: #f6f8fb; color:#415367; border:1px solid var(--oc-border);
+      background: var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
       border-radius: 10px; padding: 1rem; overflow:auto;
-    }
-    @media (prefers-color-scheme: ){
-      pre.oc-bib{ background:#0f1a24; color:#cfe0f2; }
     }
 
     /* Footer */
@@ -152,12 +126,35 @@
       background: linear-gradient(180deg, transparent, rgba(0,0,0,.02));
     }
 
-    /* Utility */
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
-    @media (max-width: 991.98px){
-      .navbar-brand .brand-wordmark{ font-size: 1.15rem; }
-      .hero .content{ padding: 40px 0 32px; }
+    /* Horizontal timeline */
+    .oc-timeline{
+      display:flex;
+      gap:2rem;
+      overflow-x:auto;
+      padding:1rem 0;
+      scrollbar-width: thin;
+    }
+    .oc-tl-item{
+      flex:0 0 auto;
+      min-width:220px;
+      max-width:260px;
+      background:var(--oc-muted);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow: var(--oc-shadow);
+      padding:1rem;
+      text-align:left;
+    }
+    .oc-tl-date{
+      font-weight:700;
+      color:var(--oc-brand-ink);
+      margin-bottom:.35rem;
+    }
+    .oc-tl-content{
+      font-size:.95rem;
+      color:var(--oc-text);
     }
   </style>
 </head>
@@ -179,20 +176,15 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <!-- Clean bold links -->
         <li class="nav-item"><a class="nav-link plain" href="about.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="index.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-
-        <!-- CTA remains as button -->
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
         <li class="nav-item">
           <a class="btn btn-success btn-sm oc-cta"
              href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml"
              target="_blank" rel="noopener"> + New Dataset</a>
         </li>
-
-        <!-- GitHub icon-only link -->
         <li class="nav-item">
           <a class="nav-link px-2 icon-only"
              href="https://github.com/ruoxinx/OpenConstruction-Datasets"
@@ -243,7 +235,7 @@
 </header>
 
 <main class="container oc-container">
-  <!-- What it is -->
+  <!-- About + Vision -->
   <section class="oc-section">
     <div class="row g-4">
       <div class="col-12 col-lg-6">
@@ -276,6 +268,35 @@
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Development & Achievements -->
+  <section class="oc-section">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Milestones</div>
+        <h3 class="oc-card-title mb-3">Development & Achievements</h3>
+
+        <div class="oc-timeline">
+          <!-- Item -->
+          <div class="oc-tl-item">
+            <div class="oc-tl-date">2024.12</div>
+            <div class="oc-tl-content">
+              <p class="mb-0">Project team established to build the OpenConstruction platform.</p>
+            </div>
+          </div>
+
+          <!-- Item -->
+          <div class="oc-tl-item">
+            <div class="oc-tl-date">2025.09</div>
+            <div class="oc-tl-content">
+              <p class="mb-0">OpenConstruction Dataset Catalog officially launched online.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -373,10 +394,8 @@
       }
     });
   }
-</script>
 
-<!-- Auto-active current nav link (adds aria-current + .active) -->
-<script>
+  // Auto-highlight current nav
   (function(){
     var current = location.pathname.split('/').pop() || 'about.html';
     document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
