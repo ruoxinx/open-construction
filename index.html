@@ -13,7 +13,7 @@
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
-      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 6px 22px rgba(15,46,75,.08);
+      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 
@@ -63,22 +63,16 @@
       margin:.25rem 0 .35rem;
     }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
-    .hero .pill{
-      display:inline-flex; gap:.5rem; align-items:center;
-      border-radius:999px; padding:.45rem .85rem;
-      background:transparent; border:1px solid #dfe6ee; color:var(--oc-brand-ink);
-      font-size:.9rem;
-    }
 
-    /* Buttons */
-    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
-    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-brand-ink); }
+    /* Buttons (consistent with inner pages) */
     .btn-ink{
       background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
+      padding:.55rem 1rem; font-weight:700;
     }
     .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
     .btn-accent{
       background:#fff; color:var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
+      padding:.55rem 1rem; font-weight:700;
     }
     .btn-accent:hover{ background:#f7fbff; }
 
@@ -112,7 +106,7 @@
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
     /* ==============================
-       Horizontal Timeline (Fancy)
+       Horizontal Timeline
        ============================== */
     .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
     .oc-tl-wrap::before,
@@ -182,27 +176,20 @@
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       Hero Metrics (circles) — visuals only, no layout change
+       Hero Metrics (circles) — visuals only
        ============================== */
     .metrics{
-      display:flex; gap:1.2rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.25rem 0 .25rem;
+      display:flex; gap:1.4rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.15rem 0 .25rem;
     }
-	.metric{
-	  display:flex; align-items:center; gap:1rem;
-	  background:transparent;        /* ← no background */
-	  border:none;                   /* ← no border */
-	  border-radius:0;               /* ← no rounded pill */
-	  padding:0;                     /* ← no padding */
-	  box-shadow:none;               /* ← no shadow */
-	}
-
-
+    .metric{
+      display:flex; align-items:center; gap:1rem;
+      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
+    }
     .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
     .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
     .metric .ring-val{
       stroke:var(--oc-brand-accent); stroke-width:4; stroke-linecap:round;
-      /* start values are set via JS; transition toggled by .ring-ready */
       stroke-dasharray:0 999; stroke-dashoffset:0;
     }
     .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
@@ -210,7 +197,6 @@
     .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
     .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
       .ring-ready .ring-val{ transition:none; }
@@ -267,52 +253,48 @@
       A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.
     </p>
 
-    <!-- ===== Stats ribbon (above buttons) ===== -->
-<!-- ===== Stats ribbon (above buttons) ===== -->
-<div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+    <!-- Stats ribbon -->
+    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
 
-  <!-- Datasets metric -->
-  <div class="metric" aria-live="polite">
-    <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-      <!-- circle background + animated ring -->
-      <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-      <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
-              stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-      <!-- dataset icon (simple stack of blocks) -->
-      <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
-        <rect x="0" y="0" width="6" height="6" rx="1"/>
-        <rect x="9" y="0" width="6" height="6" rx="1"/>
-        <rect x="4.5" y="9" width="6" height="6" rx="1"/>
-      </g>
-    </svg>
-    <span class="label">
-      <span class="value" id="countDatasets">—</span>
-      <span class="name">Datasets</span>
-    </span>
-  </div>
+      <!-- Datasets metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="0" y="0" width="6" height="6" rx="1"/>
+            <rect x="9" y="0" width="6" height="6" rx="1"/>
+            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
+          </g>
+        </svg>
+        <span class="label">
+          <span class="value" id="countDatasets">—</span>
+          <span class="name">Datasets</span>
+        </span>
+      </div>
 
-  <!-- Models metric -->
-  <div class="metric" aria-live="polite">
-    <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-      <!-- circle background + animated ring -->
-      <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-      <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
-              stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-      <!-- models icon (gear) -->
-    <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
-      <circle cx="9" cy="9" r="3"/>
-      <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
-    </g>s
-    </svg>
-    <span class="label">
-      <span class="value" id="countModels">—</span>
-      <span class="name">Models</span>
-    </span>
-  </div>
+      <!-- Models metric -->
+      <div class="metric" aria-live="polite">
+        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
+                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+          <!-- gear icon -->
+          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="9" cy="9" r="3"/>
+            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
+          </g>
+        </svg>
+        <span class="label">
+          <span class="value" id="countModels">—</span>
+          <span class="name">Models</span>
+        </span>
+      </div>
 
-</div>
+    </div>
 
-    <div class="d-flex justify-content-center flex-wrap gap-5 mt-2">
+    <div class="d-flex justify-content-center flex-wrap gap-4 mt-2">
       <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
       <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
@@ -373,7 +355,6 @@
 
           <!-- Timeline -->
           <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
-            <!-- 2024.12 -->
             <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
               <div class="oc-tl-date">2024.11</div>
               <div class="oc-tl-title">Project Team Established</div>
@@ -382,7 +363,6 @@
               </div>
             </div>
 
-            <!-- 2025.03 -->
             <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
               <div class="oc-tl-date">2025.03</div>
               <div class="oc-tl-title">First Paper Submitted</div>
@@ -392,7 +372,6 @@
               </div>
             </div>
 
-            <!-- 2025.09 -->
             <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
               <div class="oc-tl-date">2025.09</div>
               <div class="oc-tl-title">Dataset Catalog Online</div>
@@ -401,7 +380,6 @@
               </div>
             </div>
 
-            <!-- 2025.10 -->
             <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
               <div class="oc-tl-date">2025.10</div>
               <div class="oc-tl-title">Model Catalog Online</div>
@@ -422,7 +400,7 @@
         </div>
 
         <!-- dots -->
-        <div class="oc-tl-dots" id="tlDots" aria-hidden="false" role="tablist"></div>
+        <div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
       </div>
     </div>
   </section>
@@ -446,7 +424,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-2">
           <span class="text-muted small">BibTeX</span>
-          <button id="copyBib" class="btn btn-sm btn-outline-secondary oc-btn" type="button">Copy</button>
+          <button id="copyBib" class="btn btn-sm btn-outline-secondary" type="button" style="border-radius:999px;">Copy</button>
         </div>
         <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
   title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring},
@@ -530,7 +508,6 @@
     const nextBtn = document.getElementById('tlNext');
     const dotsWrap = document.getElementById('tlDots');
 
-    // Hide nav if single page of items (or none)
     const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
     const updateNavVisibility = () => {
       const show = canScroll();
@@ -572,13 +549,13 @@
     prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
     nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
 
-    // Keyboard nav when scroller focused
+    // Keyboard nav
     scroller.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
       if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
     });
 
-    // Update index on manual scroll (nearest item to center)
+    // Update index on manual scroll
     let t;
     scroller.addEventListener('scroll', () => {
       clearTimeout(t);
@@ -593,7 +570,6 @@
       }, 80);
     });
 
-    // Initialize
     const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
     scrollToIndex(initial);
     updateNavVisibility();
@@ -601,7 +577,7 @@
     window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
   })();
 
-  // ===== Hero Metrics: REAL counts + always-full rings that re-animate on scroll-in =====
+  // ===== Hero Metrics: counts + re-animating rings on view =====
   (function(){
     const metrics = document.getElementById('heroMetrics');
     const countElDatasets = document.getElementById('countDatasets');
@@ -610,14 +586,12 @@
     const ringModels = document.getElementById('ringModels');
     const R = 17, CIRC = 2 * Math.PI * R;
 
-    // Prepare rings (hide by default)
     [ringDatasets, ringModels].forEach(r => {
       if(!r) return;
       r.style.strokeDasharray = `${CIRC}`;
       r.style.strokeDashoffset = `${CIRC}`;
     });
 
-    // Count-up helper (run once when data loads)
     const ease = t => 1 - Math.pow(1 - t, 3);
     function countUp(el, to, dur=900){
       const start = performance.now();
@@ -631,7 +605,6 @@
       requestAnimationFrame(step);
     }
 
-    // Robust JSON fetch
     async function fetchFirst(paths){
       for(const p of paths){
         try{
@@ -649,34 +622,27 @@
       return 0;
     }
 
-    // Animation control: re-animate every time metrics enter viewport
     function setRings(offset){
       ringDatasets && (ringDatasets.style.strokeDashoffset = String(offset));
       ringModels && (ringModels.style.strokeDashoffset = String(offset));
     }
     function playRings(){
-      // ensure transitions are enabled
       document.body.classList.add('ring-ready');
-      requestAnimationFrame(() => {
-        setRings(0); // animate to full circle
-      });
+      requestAnimationFrame(() => { setRings(0); });
     }
 
-    // Observer: reset when leaving view, animate when entering
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.target !== metrics) return;
         if (e.isIntersecting){
           playRings();
         } else {
-          // reset so it can animate again next time
           setRings(CIRC);
         }
       });
     }, { threshold: 0.35 });
     io.observe(metrics);
 
-    // Load counts (once)
     (async function(){
       try{
         const [datasetsJson, modelsJson] = await Promise.all([
@@ -688,26 +654,22 @@
         countUp(countElDatasets, dCount);
         countUp(countElModels, mCount);
 
-        // If metrics are already visible at load time, kick the animation
         const rect = metrics.getBoundingClientRect();
         const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
         if (inView) {
-          // ensure we start from hidden and then animate
           setRings(CIRC);
-          // slight delay to ensure styles apply before animating
           requestAnimationFrame(playRings);
         }
       }catch(err){
         countElDatasets.textContent = '—';
         countElModels.textContent = '—';
-        // keep rings hidden if failed
       }
     })();
   })();
 
   // Auto-highlight current nav (supports clean URLs and index.html)
   (function(){
-    const path = (location.pathname || '').replace(/\/+$/, ''); // trim trailing '/'
+    const path = (location.pathname || '').replace(/\/+$/, '');
     const file = path.split('/').pop() || 'index.html';
     const routeByFile = {
       '': 'index',
