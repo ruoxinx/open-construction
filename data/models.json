@@ -433,5 +433,20 @@
     "code_url": "https://github.com/sugar-fifty-doge/FLE-YOLO",
     "thumbnail": "assets/img/models/FLE-YOLO.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "VR-Point-Cloud-Analysis",
+    "title": "Fusion of Thermal Point Cloud Series of Buildings for Inspection in Virtual Reality",
+    "authors": ["Emiliano Pérez", "Pilar Merchán", "Alejandro Espacio", "Santiago Salamanca"],
+    "abstract": "Point cloud acquisition systems now enable the capture of geometric models enriched with additional attribute data, providing a deeper semantic understanding of the measured environments. However, visualizing complex spatiotemporal point clouds remains computationally challenging. This paper presents a fusion methodology that aggregates points from different instants into unified clouds with reduced redundancy while preserving time-varying information. The static 3D structure is condensed using a voxel approach, while temporal attributes are propagated across the merged data. The resulting point cloud is optimized and rendered interactively in a virtual reality (VR) application. This platform allows for intuitive exploration, visualization, and analysis of the merged clouds. Users can examine thermographic properties using color maps and study graphical temperature trends. The potential of VR for insightful interrogation of point clouds enriched with multiple properties is highlighted by the system.",
+    "year": 2024,
+    "modalities": ["3D point cloud"],
+    "tasks": ["Point Cloud Visualization"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.3390/buildings14072127",
+    "code_url": "https://github.com/3dcovim/VR-Point-Cloud-Analysis",
+    "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png",
+	"added_date": "2025-09-26"
   }
 ]
