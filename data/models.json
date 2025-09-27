@@ -418,5 +418,20 @@
     "code_url": "https://github.com/HuangBugWei/DA-MaskRCNN",
     "thumbnail": "assets/img/models/SORD.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "FLE-YOLO",
+    "title": "FLE-YOLO: A Faster, Lighter, and More Efficient Strategy for Autonomous Tower Crane Hook Detection",
+    "authors": ["Xin Hu", "Xiyu Wang", "Yashu Chang", "Jian Xiao", "Hongliang Cheng"],
+    "abstract": "To address the complexities of crane hook operating environments, the challenges faced by large-scale object detection algorithms on edge devices, and issues such as frame rate mismatch causing image delays, this paper proposes a faster, lighter, and more efficient object detection algorithm called FLE-YOLO. Firstly, the FasterNet is used as the backbone for feature extraction, and the Triplet Attention mechanism is integrated to effectively emphasize target information while maintaining network lightweightness effectively. Additionally, the Slim-neck module is introduced in the neck connection layer, utilizing a lightweight convolutional network GSconv to further streamline the network structure without compromising recognition accuracy. Lastly, the Dyhead module is employed in the head section to unify multiple attention operations, improve the ability to resist interference from small objects and complex backgrounds. Experimental evaluations on public datasets VOC2012 and COCO2017 demonstrate the effectiveness of our proposed algorithm in terms of lightweight design and detection accuracy. Experimental evaluations were also conducted using images of crane hooks captured under complex operating conditions. The results demonstrate that compared to the original algorithm, the proposed approach achieves a reduction in computational complexity to 19.4 GFLOPs, an increase in FPS to 142.857 f/s, and the precision reached 97.3%. Additionally, the AP50 reaches 98.3%, reflecting 0.6% improvement. Ultimately, the testing carried out at the construction site successfully facilitated the identification and tracking of hooks, thereby ensuring the safety and efficiency of tower crane operations.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.3390/app15105364",
+    "code_url": "https://github.com/sugar-fifty-doge/FLE-YOLO",
+    "thumbnail": "assets/img/models/FLE-YOLO.png",
+	"added_date": "2025-09-26"
   }
 ]
