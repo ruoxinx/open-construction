@@ -313,5 +313,20 @@
     "code_url": "https://github.com/kakke14/Automated-inspection-and-compliance-checking",
     "thumbnail": "assets/img/models/compliance-checking.png",
 	"added_date": "2025-09-25"
+  },
+  {
+    "id": "URRE-Net",
+    "title": "An unsupervised low-light image enhancement method for improving V-SLAM localization in uneven low-light construction sites",
+    "authors": ["Xinyu Chen", "Yantao Yu"],
+    "abstract": "Construction robots have been increasingly adopted in construction projects to improve productivity, reduce risk, and speed up work cycles. Visual Simultaneous Localization and Mapping (V-SLAM) technology is widely used in construction robots due to its lightweight weight, cost-effectiveness, and provision of semantic information. On real construction sites, lighting conditions are often challenging due to factors such as uneven lighting intensity, inadequate exposure, or robots in backlit positions (e.g. roughcast houses without artificial lighting, underground car parks), which cause images captured under these conditions to exhibit low signal-to-noise ratio, uneven lighting, color distortion, noise, and other problems. These challenges make the extraction and matching of feature points in V-SLAM difficult, resulting in significant positioning errors or the inability to generate positioning trajectories for construction robotics. Although existing methods for enhancing low-light images can certainly improve image brightness, they still cannot effectively address the localization challenges brought about by low-light construction scenes with uneven illumination and noise. To address the interference of uneven and changing lighting conditions on V-SLAM localization in construction sites, this paper proposes the Unsupervised Reflectance Retinex and Noise model (URRN-Net) to enhance low-light construction images. By using a CNN model based on the Retinex theory to decompose the illumination characteristics of images, we achieve effective brightness restoration of uneven low-light images by utilizing unsupervised loss functions. URRE-Net can reduce the root mean square localization error by >65% compared to low-light images in the ORB-SLAM3 method, and the maximum error is reduced by >71% in on-site experiments. The proposed URRE-Net can be integrated with existing V-SLAM algorithms to provide more robust localization services for low-light construction site applications such as building operations (e.g., interior wall spraying robotic) or construction management tasks (e.g., automatic tunnel inspection).",
+    "year": 2024,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Simultaneous localization and mapping"],
+	"applications": ["Site mapping and navigation"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105404",
+    "code_url": "https://github.com/Chenxy875/URRE-Net",
+    "thumbnail": "assets/img/models/URRE-Net.gif",
+	"added_date": "2025-09-27"
   }
 ]
