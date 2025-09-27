@@ -52,7 +52,7 @@
     "year": 2021,
     "modalities": ["Ground RGB (real and synthetic)"],
     "tasks": ["Object detection"],
-	"applications": ["Compliance monitoring"],
+	"applications": ["Compliance checking"],
     "license": "MIT",
     "paper_url": "https://doi.org/10.1108/SASBE-04-2021-0066",
     "code_url": "https://github.com/ruoxinx/site-dust-detect",
