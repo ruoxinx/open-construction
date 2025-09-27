@@ -1992,7 +1992,7 @@
 	"data_modality": "Point Cloud",
     "num_images": null,
     "num_classes": 10,
-    "classes": ["airduct", "ceiling", "ceiling", "floor", "pillar", "pipe", "wall", "cabletray", "firehydrant", "lamp"],
+    "classes": ["airduct", "ceiling", "door", "floor", "pillar", "pipe", "wall", "cabletray", "firehydrant", "lamp"],
     "resolution": "Not Specified",
     "annotation_types": [
 	"Semantic Segmentation"
@@ -2004,7 +2004,7 @@
     ],
     "license": "CC BY 4.0",
     "paper": "A point cloud dataset and deep learning method for semantic segmentation of underground garages",
-    "access": "https://zenodo.org/records/15619435",
+    "access": "https://doi.org/10.5281/zenodo.15619435",
     "id": "UGD",
     "image_url": "assets/img/datasets/UGD.png",
 	"added_date": "2025-09-27"
