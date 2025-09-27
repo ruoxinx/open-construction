@@ -186,7 +186,7 @@
     "image_url": "assets/img/datasets/SHWD.png"
   },
   "ACID": {
-    "name": "ACID: Alberta Construction Image Data Set",
+    "name": "ACID: Advanced Construction Image Dataset Suite",
 	"authors": "Bo Xiao, Shih-Chung Kang ",
 	"doi": "https://doi.org/10.1061/(ASCE)CP.1943-5487.0000945",
     "year": 2020,
