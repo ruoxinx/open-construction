@@ -388,5 +388,20 @@
     "code_url": "https://github.com/TJSG337/MTKF",
     "thumbnail": "assets/img/models/MTKF.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "SOC-YOLO",
+    "title": "Small and overlapping worker detection at construction sites",
+    "authors": ["Minsoo Park", "Dai Quoc Tran", "Jinyeong Bak", "Seunghee Park"],
+    "abstract": "Although there has been study on worker detection using computer vision (CV) for the safety of construction sites, it is still challenging to identify employees who are obstructed or have poor vision. To solve these problems, we propose a method of small and overlapping target (worker) detection at a complex construction site named SOC-YOLO. The method is based on YOLOv5 and utilizes distance intersection over union (DIoU) non-maximum suppression (NMS), incorporating weighted triplet attention, expansion feature-level, and Soft-pool. Workers can be captured with overlap, particularly in large-scale construction sites, using the DIoU-based loss function, and NMS contributed to accuracy improvement. Next, we propose a weighted-triplet attention mechanism that can extract feature information from space more effectively and channel attention when learning object detection networks, using a simple average approach based on the same weight between the existing triplet attention. Next, we propose a model that adds additional predictive heads and residual connections to address the poor detection accuracy of workers photographed over long distances. A low-level feature map containing more information regarding small targets is used by extending the feature level. Finally, Softpool-spatial pyramid pooling fast (Softpool-SPPF) is proposed to solve the problem of inconsistent input image sizes. Softpool-SPPF performs an spatial pyramid pooling (SPP) function while preserving more functional information for accurate small target detection. Experiments were conducted using published worker detection datasets and handmade datasets, and the results showed increase from 81.26% to 84.63% average precision (AP) for small objects, from 67.52% to 73.88% mAP for minute objects, from 74.56% to77.57% for overlapping objects. The proposed method is expected to be useful for safety monitoring by applying it to the construction site worker tracking model.",
+    "year": 2023,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "GNU",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2023.104856",
+    "code_url": "https://github.com/pms5343/SOC-YOLO",
+    "thumbnail": "assets/img/models/SOC-YOLO.png",
+	"added_date": "2025-09-25"
   }
 ]
