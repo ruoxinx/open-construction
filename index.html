@@ -21,7 +21,6 @@
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
 
-    /* Focus-visible for keyboard users */
     :focus-visible{
       outline:2px solid var(--oc-focus);
       outline-offset:2px;
@@ -64,7 +63,7 @@
     }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* Buttons (consistent with inner pages) */
+    /* Buttons */
     .btn-ink{
       background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
       padding:.55rem 1rem; font-weight:700;
@@ -103,103 +102,35 @@
       border-top:1px solid var(--oc-border);
       background:linear-gradient(180deg, transparent, rgba(0,0,0,.02));
     }
-    .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
-    /* ==============================
-       Horizontal Timeline
-       ============================== */
-    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
-    .oc-tl-wrap::before,
-    .oc-tl-wrap::after{
-      content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
-    }
-    .oc-tl-wrap::before{
-      left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius);
-    }
-    .oc-tl-wrap::after{
-      right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius);
-    }
-
-    .oc-timeline{
-      display:flex; gap:1.25rem;
-      overflow-x:auto; overflow-y:hidden;
-      scroll-snap-type:x mandatory;
-      scroll-behavior:smooth;
-      padding:.5rem 0 1rem;
-      scrollbar-width:thin;
-    }
-
-    .oc-tl-item{
-      scroll-snap-align:center;
-      flex:0 0 auto;
-      width:280px; max-width:85vw;
-      background:linear-gradient(180deg, #ffffff, #fbfdff);
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow);
-      padding:1rem .95rem;
-      position:relative;
-    }
-    .oc-tl-date{
-      display:inline-block;
-      font-weight:800; letter-spacing:.02em;
-      color:var(--oc-brand-ink);
-      background:#eef4fb; border:1px solid #dfe8f3;
-      padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
-    }
-    .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
-    .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
-
-    .oc-tl-item::after{
-      content:""; position:absolute; left:50%; transform:translateX(-50%);
-      bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
-    }
-
-    .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
-    .oc-tl-btn{
-      display:flex; align-items:center; justify-content:center;
-      width:38px; height:38px; border-radius:999px;
-      background:#ffffff; border:1px solid var(--oc-border);
-      box-shadow:var(--oc-shadow); color:var(--oc-brand-ink);
-    }
-    .oc-tl-btn:hover{ filter:brightness(1.03); }
-    .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
-    .oc-tl-prev{ left:.5rem; }
-    .oc-tl-next{ right:.5rem; }
-
-    .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
-    .oc-tl-dot{
-      width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s;
-    }
-    .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
-
-    /* ==============================
-       Hero Metrics (circles) — visuals only
-       ============================== */
+    /* Metrics */
     .metrics{
       display:flex; gap:1.4rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.15rem 0 .25rem;
+      flex-wrap:wrap;
     }
     .metric{
       display:flex; align-items:center; gap:1rem;
-      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
     }
-    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
+    .metric svg{ width:120px; height:120px; }
     .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
     .metric .ring-val{
       stroke:var(--oc-brand-accent); stroke-width:4; stroke-linecap:round;
       stroke-dasharray:0 999; stroke-dashoffset:0;
     }
-    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
     .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
     .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
     .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    @media (prefers-reduced-motion: reduce){
-      .oc-timeline{ scroll-behavior:auto; }
-      .ring-ready .ring-val{ transition:none; }
+    /* Alignment fix */
+    .hero-cluster {
+      display: grid;
+      justify-items: center;
+      gap: 1rem;
+    }
+    .cta-group {
+      display: inline-flex;
+      gap: 1rem;
+      align-items: center;
     }
   </style>
 </head>
@@ -214,34 +145,6 @@
         <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
       </span>
     </a>
-
-    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
-        <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 
-                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
 
@@ -253,226 +156,54 @@
       A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.
     </p>
 
-    <!-- Stats ribbon -->
-    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+    <!-- Cluster: metrics + buttons -->
+    <div class="hero-cluster">
 
-      <!-- Datasets metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <rect x="0" y="0" width="6" height="6" rx="1"/>
-            <rect x="9" y="0" width="6" height="6" rx="1"/>
-            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countDatasets">—</span>
-          <span class="name">Datasets</span>
-        </span>
+      <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+        <!-- Dataset metric -->
+        <div class="metric">
+          <svg viewBox="0 0 44 44">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="0" y="0" width="6" height="6" rx="1"/>
+              <rect x="9" y="0" width="6" height="6" rx="1"/>
+              <rect x="4.5" y="9" width="6" height="6" rx="1"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countDatasets">68</span>
+            <span class="name">Datasets</span>
+          </span>
+        </div>
+
+        <!-- Models metric -->
+        <div class="metric">
+          <svg viewBox="0 0 44 44">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="9" cy="9" r="3"/>
+              <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countModels">30</span>
+            <span class="name">Models</span>
+          </span>
+        </div>
       </div>
 
-      <!-- Models metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-          <!-- gear icon -->
-          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <circle cx="9" cy="9" r="3"/>
-            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countModels">—</span>
-          <span class="name">Models</span>
-        </span>
+      <!-- Buttons -->
+      <div class="cta-group mt-2">
+        <a class="btn btn-ink btn-sm" href="dataset.html">Explore Datasets</a>
+        <a class="btn btn-accent btn-sm" href="models.html">Explore Models</a>
       </div>
-
-    </div>
-
-    <div class="d-flex justify-content-center flex-wrap gap-4 mt-2">
-      <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
-      <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
   </div>
 </header>
-
-<main class="container oc-container">
-  <!-- About + Vision -->
-  <section class="oc-section">
-    <div class="row g-4">
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">About</div>
-            <h3 class="oc-card-title mb-2">OpenConstruction</h3>
-            <p class="mb-0">
-              OpenConstruction is a curated collection of publicly available datasets and models for researchers, practitioners, and developers working on AI applications in the construction industry.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Vision</div>
-            <h3 class="oc-card-title mb-2">Why we built this</h3>
-            <p class="mb-3">
-              The industry is rapidly adopting AI-driven methods for core tasks. We aim to:
-            </p>
-            <ul class="oc-ul">
-              <li>Provide an open science catalog of construction AI applications</li>
-              <li>Standardize metadata for comparison and selection</li>
-              <li>Support reproducible research, education, and deployment</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Development & Achievements -->
-  <section class="oc-section" aria-labelledby="milestones-heading">
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Milestones</div>
-        <h3 id="milestones-heading" class="oc-card-title mb-3">Development & Achievements</h3>
-
-        <div class="oc-tl-wrap">
-          <!-- Prev -->
-          <div class="oc-tl-nav oc-tl-prev">
-            <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Timeline -->
-          <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
-            <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
-              <div class="oc-tl-date">2024.11</div>
-              <div class="oc-tl-title">Project Team Established</div>
-              <div class="oc-tl-content">
-                Core team formed to build the OpenConstruction platform and roadmap.
-              </div>
-            </div>
-
-            <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
-              <div class="oc-tl-date">2025.03</div>
-              <div class="oc-tl-title">First Paper Submitted</div>
-              <div class="oc-tl-content">
-                Initial review of open-access datasets completed and the first research paper submitted.
-                The dataset collection continues to expand with ongoing updates.
-              </div>
-            </div>
-
-            <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
-              <div class="oc-tl-date">2025.09</div>
-              <div class="oc-tl-title">Dataset Catalog Online</div>
-              <div class="oc-tl-content">
-                OpenConstruction Dataset Catalog website officially launched for the community.
-              </div>
-            </div>
-
-            <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
-              <div class="oc-tl-date">2025.10</div>
-              <div class="oc-tl-title">Model Catalog Online</div>
-              <div class="oc-tl-content">
-                OpenConstruction Model Catalog released, offering curated AI models for construction applications.
-              </div>
-            </div>
-          </div>
-
-          <!-- Next -->
-          <div class="oc-tl-nav oc-tl-next">
-            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- dots -->
-        <div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reference -->
-  <section class="oc-section">
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Reference</div>
-        <h3 class="oc-card-title mb-2">Cite the catalog</h3>
-        <p class="mb-2">Our work is documented in:</p>
-        <p class="mb-3">
-          <strong>
-            <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
-              OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring
-            </a>
-          </strong><br>
-          Ruoxin Xiong, Yanyu Wang, Jiannan Cai, Kaijian Liu, Yuansheng Zhu, Pingbo Tang, Nora El-Gohary<br>
-          arXiv:2508.11482, 2025
-        </p>
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <span class="text-muted small">BibTeX</span>
-          <button id="copyBib" class="btn btn-sm btn-outline-secondary" type="button" style="border-radius:999px;">Copy</button>
-        </div>
-        <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
-  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring},
-  author={Ruoxin Xiong and Yanyu Wang and Jiannan Cai and Kaijian Liu and Yuansheng Zhu and Pingbo Tang and Nora El-Gohary},
-  year={2025},
-  eprint={2508.11482},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
-  url={https://arxiv.org/abs/2508.11482}
-}</pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feedback / Policy -->
-  <section class="oc-section">
-    <div class="row g-4">
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Feedback</div>
-            <h3 class="oc-card-title mb-2">Have an idea or request?</h3>
-            <p class="mb-0">
-              We’d love to hear from you. Share suggestions or feature requests here:
-              <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
-                Create a suggestion
-              </a>.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Policy</div>
-            <h3 class="oc-card-title mb-2">Request dataset/model removal</h3>
-            <p class="mb-0">
-              If you’d like a dataset/model removed, please email
-              <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>
-              from an address that can verify ownership, and we’ll act quickly.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
 
 <footer class="py-4 mt-5">
   <div class="container oc-container small text-muted text-center">
@@ -480,212 +211,8 @@
   </div>
 </footer>
 
-<!-- Scripts -->
 <script>
-  // Year
   document.getElementById('yearNow').textContent = new Date().getFullYear();
-
-  // Copy BibTeX
-  const copyBtn = document.getElementById('copyBib');
-  if (copyBtn){
-    copyBtn.addEventListener('click', async () => {
-      const txt = document.getElementById('bibtex').innerText;
-      try{
-        await navigator.clipboard.writeText(txt);
-        copyBtn.textContent = 'Copied';
-        setTimeout(() => copyBtn.textContent = 'Copy', 1600);
-      }catch(e){
-        window.prompt('Copy to clipboard: Ctrl/Cmd+C, Enter', txt);
-      }
-    });
-  }
-
-  /* ===== Timeline navigation, dots, snap-centering, and a11y ===== */
-  (function(){
-    const scroller = document.getElementById('ocTimeline');
-    const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
-    const prevBtn = document.getElementById('tlPrev');
-    const nextBtn = document.getElementById('tlNext');
-    const dotsWrap = document.getElementById('tlDots');
-
-    const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
-    const updateNavVisibility = () => {
-      const show = canScroll();
-      prevBtn.parentElement.style.display = show ? '' : 'none';
-      nextBtn.parentElement.style.display = show ? '' : 'none';
-      dotsWrap.style.display = show ? '' : 'none';
-    };
-
-    // Build dots
-    items.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.type = 'button';
-      d.className = 'oc-tl-dot';
-      d.setAttribute('role', 'tab');
-      d.setAttribute('aria-label', `Go to milestone ${i+1}`);
-      d.addEventListener('click', () => scrollToIndex(i));
-      dotsWrap.appendChild(d);
-    });
-    const dots = Array.from(dotsWrap.children);
-
-    let index = 0;
-
-    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
-
-    function scrollToIndex(i){
-      index = clamp(i, 0, items.length - 1);
-      const target = items[index];
-      const offset = Math.max(0, target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2));
-      scroller.scrollTo({ left: offset, behavior: 'smooth' });
-      refresh();
-    }
-
-    function refresh(){
-      prevBtn.disabled = (index === 0);
-      nextBtn.disabled = (index === items.length - 1);
-      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
-    }
-
-    prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
-    nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
-
-    // Keyboard nav
-    scroller.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
-      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
-    });
-
-    // Update index on manual scroll
-    let t;
-    scroller.addEventListener('scroll', () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        const center = scroller.scrollLeft + scroller.clientWidth/2;
-        const nearest = items.reduce((best, el, i) => {
-          const c = el.offsetLeft + el.clientWidth/2;
-          const d = Math.abs(c - center);
-          return (d < best.d) ? { i, d } : best;
-        }, { i: 0, d: Infinity });
-        if (nearest.i !== index){ index = nearest.i; refresh(); }
-      }, 80);
-    });
-
-    const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
-    scrollToIndex(initial);
-    updateNavVisibility();
-    window.addEventListener('load', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(initial); }, 120));
-    window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
-  })();
-
-  // ===== Hero Metrics: counts + re-animating rings on view =====
-  (function(){
-    const metrics = document.getElementById('heroMetrics');
-    const countElDatasets = document.getElementById('countDatasets');
-    const countElModels = document.getElementById('countModels');
-    const ringDatasets = document.getElementById('ringDatasets');
-    const ringModels = document.getElementById('ringModels');
-    const R = 17, CIRC = 2 * Math.PI * R;
-
-    [ringDatasets, ringModels].forEach(r => {
-      if(!r) return;
-      r.style.strokeDasharray = `${CIRC}`;
-      r.style.strokeDashoffset = `${CIRC}`;
-    });
-
-    const ease = t => 1 - Math.pow(1 - t, 3);
-    function countUp(el, to, dur=900){
-      const start = performance.now();
-      const from = 0;
-      function step(now){
-        const t = Math.min(1, (now - start)/dur);
-        const v = Math.round(from + (to - from)*ease(t));
-        el.textContent = v.toString();
-        if(t < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
-    async function fetchFirst(paths){
-      for(const p of paths){
-        try{
-          const res = await fetch(p, { cache:'no-cache' });
-          if(res.ok){ return res.json(); }
-        }catch(e){}
-      }
-      throw new Error('All JSON paths failed');
-    }
-    function arrayishLength(json){
-      if(Array.isArray(json)) return json.length;
-      if(json && Array.isArray(json.items)) return json.items.length;
-      if(json && Array.isArray(json.data)) return json.data.length;
-      if(json && typeof json === 'object') return Object.keys(json).length;
-      return 0;
-    }
-
-    function setRings(offset){
-      ringDatasets && (ringDatasets.style.strokeDashoffset = String(offset));
-      ringModels && (ringModels.style.strokeDashoffset = String(offset));
-    }
-    function playRings(){
-      document.body.classList.add('ring-ready');
-      requestAnimationFrame(() => { setRings(0); });
-    }
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.target !== metrics) return;
-        if (e.isIntersecting){
-          playRings();
-        } else {
-          setRings(CIRC);
-        }
-      });
-    }, { threshold: 0.35 });
-    io.observe(metrics);
-
-    (async function(){
-      try{
-        const [datasetsJson, modelsJson] = await Promise.all([
-          fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
-          fetchFirst(['data/models.json','assets/models.json','models.json'])
-        ]);
-        const dCount = arrayishLength(datasetsJson);
-        const mCount = arrayishLength(modelsJson);
-        countUp(countElDatasets, dCount);
-        countUp(countElModels, mCount);
-
-        const rect = metrics.getBoundingClientRect();
-        const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
-        if (inView) {
-          setRings(CIRC);
-          requestAnimationFrame(playRings);
-        }
-      }catch(err){
-        countElDatasets.textContent = '—';
-        countElModels.textContent = '—';
-      }
-    })();
-  })();
-
-  // Auto-highlight current nav (supports clean URLs and index.html)
-  (function(){
-    const path = (location.pathname || '').replace(/\/+$/, '');
-    const file = path.split('/').pop() || 'index.html';
-    const routeByFile = {
-      '': 'index',
-      'index': 'index', 'index.html': 'index',
-      'dataset': 'dataset', 'dataset.html': 'dataset',
-      'models': 'models', 'models.html': 'models',
-      'contributors': 'contributors', 'contributors.html': 'contributors'
-    };
-    const route = routeByFile[file] || (file.includes('index') ? 'index' : '');
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a => {
-      if (a.dataset.route === route){
-        a.classList.add('active');
-        a.setAttribute('aria-current','page');
-      }
-    });
-  })();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
