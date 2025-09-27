@@ -64,8 +64,6 @@
 	  align-items: center;
 	}
 
-
-
     /* Hero */
     .hero{
       background:#fff; color:var(--oc-brand-ink);
@@ -167,6 +165,17 @@
     .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
     .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
 
+    /* Tiny icon chip for timeline cards */
+    .oc-tl-title-row{
+      display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem;
+    }
+    .oc-tl-icon{
+      flex:0 0 auto; width:22px; height:22px; border-radius:8px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background:#eef4fb; border:1px solid #dfe8f3; color:var(--oc-brand-ink);
+      box-shadow:0 1px 2px rgba(15,46,75,.04);
+    }
+
     .oc-tl-item::after{
       content:""; position:absolute; left:50%; transform:translateX(-50%);
       bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
@@ -211,6 +220,10 @@
     .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
     .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
     .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
+
+    /* NEW: Different ring color for Models (keeps dataset ring as-is) */
+    .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
+    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent-2); } /* deep ink-blue */
 
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
@@ -276,7 +289,7 @@
       <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
 
         <!-- Dataset metric -->
-        <div class="metric">
+        <div class="metric" data-kind="datasets">
           <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
             <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
             <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
@@ -294,7 +307,7 @@
         </div>
 
         <!-- Models metric -->
-        <div class="metric">
+        <div class="metric" data-kind="models">
           <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
             <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
             <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
@@ -378,34 +391,77 @@
 
           <!-- Timeline -->
           <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
+            <!-- Team Established -->
             <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
               <div class="oc-tl-date">2024.11</div>
-              <div class="oc-tl-title">Project Team Established</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- users/team -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Project Team Established</div>
+              </div>
               <div class="oc-tl-content">
                 Core team formed to build the OpenConstruction platform and roadmap.
               </div>
             </div>
 
+            <!-- First Paper Submitted -->
             <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
               <div class="oc-tl-date">2025.03</div>
-              <div class="oc-tl-title">First Paper Submitted</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- document/paper -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M8 13h8M8 17h8M8 9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">First Paper Submitted</div>
+              </div>
               <div class="oc-tl-content">
                 Initial review of open-access datasets completed and the first research paper submitted.
                 The dataset collection continues to expand with ongoing updates.
               </div>
             </div>
 
+            <!-- Dataset Catalog Online -->
             <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
               <div class="oc-tl-date">2025.09</div>
-              <div class="oc-tl-title">Dataset Catalog Online</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- globe/launch -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Dataset Catalog Online</div>
+              </div>
               <div class="oc-tl-content">
                 OpenConstruction Dataset Catalog website officially launched for the community.
               </div>
             </div>
 
+            <!-- Model Catalog Online -->
             <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
               <div class="oc-tl-date">2025.10</div>
-              <div class="oc-tl-title">Model Catalog Online</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- chip/model -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Model Catalog Online</div>
+              </div>
               <div class="oc-tl-content">
                 OpenConstruction Model Catalog released, offering curated AI models for construction applications.
               </div>
