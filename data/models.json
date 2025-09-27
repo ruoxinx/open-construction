@@ -406,7 +406,7 @@
   },
   {
     "id": "SORD",
-    "title": "https://github.com/HuangBugWei/DA-MaskRCNN",
+    "title": "Deep learning without human labeling for on-site rebar instance segmentation using synthetic BIM data and domain adaptation",
     "authors": ["Tsung-Wei Huang", "Yi-Hsiang Chen", "Jacob J. Lin", "Chuin-Shan Chen"],
     "abstract": "On-site rebar inspection is crucial for structural safety but remains labor-intensive and time-consuming. While deep learning presents a promising solution, existing research often relies on limited real-world labeled data. This paper introduces a framework to train a deep learning model for on-site rebar instance segmentation without human labeling. Synthetic data are generated from BIM models, creating a Synthetic On-site Rebar Dataset (SORD) with 25,287 labeled images. Domain adaptation is incorporated to bridge the gap between synthetic and real-world non-labeled data. This approach eliminates the need for human labeling. It significantly enhances model performance, achieving a threefold improvement in Average Precision (AP) metrics compared to models trained on limited real-world data. Additionally, the proposed method demonstrates superior performance across various on-site rebar images collected online, underscoring its generalizability and practical applications.",
     "year": 2025,
