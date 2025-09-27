@@ -231,7 +231,7 @@
 	"abstract": "Construction sites are challenging environments for autonomous systems due to their unstructured nature and the presence of dynamic actors, such as workers and machinery. This work presents a comprehensive panoptic scene understanding solution designed to handle the complexities of such environments by integrating 2D panoptic segmentation with 3D LiDAR mapping. Our system generates detailed environmental representations in real-time by combining semantic and geometric data, supported by Kalman Filter-based tracking for dynamic object detection. We introduce a fine-tuning method that adapts large pre-trained panoptic segmentation models for construction site applications using a limited number of domain-specific samples. For this use case, we release a first-of-its-kind dataset of 502 hand-labeled sample images with panoptic annotations from construction sites. In addition, we propose a dynamic panoptic mapping technique that enhances scene understanding in unstructured environments. As a case study, we demonstrate the system's application for autonomous navigation, utilizing real-time RRT* for reactive path planning in dynamic scenarios. The dataset and code for training and deployment are publicly available to support future research.",
     "year": 2025,
     "modalities": ["Ground RGB, 3D Point Cloud"],
-    "tasks": ["Semantic segmentation, object tracking"],
+    "tasks": ["Semantic segmentation, Object tracking"],
 	"applications": ["Site mapping and navigation"],
     "license": "Not specified",
     "paper_url": "https://arxiv.org/abs/2410.04250",
