@@ -51,6 +51,22 @@
       text-decoration:underline; text-underline-offset:3px;
     }
 	
+	/* Make the metrics row shrink to its content and center it */
+.hero .metrics{
+  width:max-content;           /* shrink-to-fit width */
+  margin:1.15rem auto 0;       /* center horizontally */
+}
+
+/* Keep the buttons centered under the metrics by shrink-wrapping them too */
+.hero .cta-group{
+  width:max-content;           /* shrink-to-fit */
+  margin:0 auto;               /* center horizontally */
+  display:inline-flex;         /* your existing styles can stay */
+  gap:1rem;
+  align-items:center;
+}
+
+	
 
     /* Hero */
     .hero{
@@ -295,7 +311,7 @@
 
     </div>
 
-    <div class="d-flex justify-content-center flex-wrap gap-4 mt-2">
+    <div class="cta-group mt-2">
       <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
       <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
     </div>
