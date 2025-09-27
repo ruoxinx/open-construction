@@ -445,11 +445,11 @@
     ],
     "resolution": "Not Specified",
     "annotation_types": [
-      "Labelled 3D point clouds"
+      "Scene Classification"
     ],
     "geographical_location": "Australia",
     "potential_tasks": [
-      "Point Cloud Segmentation"
+      "Semantic Segmentation"
     ],
     "license": "CC BY 4.0",
     "paper": "Annotation Tool and Urban Dataset for 3D Point Cloud Semantic Segmentation",
@@ -1706,7 +1706,7 @@
     ],
     "geographical_location": "Germany",
     "potential_tasks": [
-      "Point Cloud Segmentation"
+      "Semantic Segmentation"
     ],
     "license": "MIT",
     "paper": "Rohbau3D: A Shell Construction Site 3D Point Cloud Dataset",
@@ -1983,5 +1983,30 @@
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.gif",
 	"added_date": "2025-09-23"
+  },
+    "UGD": {
+    "name": "UGD: Underground Garage Point Cloud Dataset",
+	"authors": "Hongzhe Yue, Qian Wang, Yang Su, Hai Fang, Jack C. P. Cheng, Mingyu Zhang",
+	"doi": "https://doi.org/10.1111/mice.70020",
+    "year": 2025,
+	"data_modality": "Point Cloud",
+    "num_images": null,
+    "num_classes": 10,
+    "classes": ["airduct", "ceiling", "ceiling", "floor", "pillar", "pipe", "wall", "cabletray", "firehydrant", "lamp"],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Semantic Segmentation"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+	"semantic segmentation",
+	"3D reconstruction"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "A point cloud dataset and deep learning method for semantic segmentation of underground garages",
+    "access": "https://zenodo.org/records/15619435",
+    "id": "VPM",
+    "image_url": "assets/img/datasets/UGD.png",
+	"added_date": "2025-09-27"
   }
 }
