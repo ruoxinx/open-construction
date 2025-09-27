@@ -2011,7 +2011,7 @@
   },
     "GOOSE-Ex": {
     "name": "GOOSE-Ex Dataset",
-	"authors": "Raphael Hagmanns1, Peter Mortimer, Miguel Granero, Thorsten Luettel, Janko Petereit",
+	"authors": "Raphael Hagmanns, Peter Mortimer, Miguel Granero, Thorsten Luettel, Janko Petereit",
 	"doi": "https://arxiv.org/abs/2409.18788",
     "year": 2024,
 	"data_modality": "Ground RGB, Point Cloud, Thermal",
@@ -2032,6 +2032,30 @@
     "access": "https://goose-dataset.de/",
     "id": "GOOSE-Ex",
     "image_url": "assets/img/datasets/GOOSE-Ex.png",
+	"added_date": "2025-09-27"
+  },
+    "SORD": {
+    "name": "SORD Dataset: Synthetic On-site Rebar Data",
+	"authors": "Tsung-Wei Huang, Yi-Hsiang Chen, Jacob J. Lin, Chuin-Shan Chen",
+	"doi": "https://doi.org/10.1016/j.autcon.2024.105953",
+    "year": 2025,
+	"data_modality": "Ground RGB, Synthetic",
+    "num_images": 25287,
+    "num_classes": 1,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Pixel-level masks"
+    ],
+    "geographical_location": "Not specified",
+    "potential_tasks": [
+	"Semantic segmentation"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "Deep learning without human labeling for on-site rebar instance segmentation using synthetic BIM data and domain adaptation",
+    "access": "https://huggingface.co/datasets/bugwei/synthetic_on-site_rebar_data",
+    "id": "SORD",
+    "image_url": "assets/img/datasets/SORD.png",
 	"added_date": "2025-09-27"
   }
 }
