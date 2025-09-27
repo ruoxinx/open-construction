@@ -401,7 +401,7 @@ function cardHTML(ds){
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
           <a class="btn btn-sm btn-primary" href="datasets/detail.html?id=${slug}">View details</a>
-		  ${ds.added_date ? `<span class="badge text-bg-light ms-auto">Added ${ds.added_date}</span>` : ''}
+		  ${ds.added_date ? `<span class="badge text-light ms-auto">Added ${ds.added_date}</span>` : ''}
         </div>
       </div>
     </div>
