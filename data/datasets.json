@@ -1995,7 +1995,7 @@
     "classes": ["airduct", "ceiling", "door", "floor", "pillar", "pipe", "wall", "cabletray", "firehydrant", "lamp"],
     "resolution": "Not Specified",
     "annotation_types": [
-	"Semantic Segmentation"
+	"Point cloud segmetation"
     ],
     "geographical_location": "China",
     "potential_tasks": [
@@ -2007,6 +2007,31 @@
     "access": "https://doi.org/10.5281/zenodo.15619435",
     "id": "UGD",
     "image_url": "assets/img/datasets/UGD.png",
+	"added_date": "2025-09-27"
+  },
+    "GOOSE-Ex": {
+    "name": "GOOSE-Ex Dataset",
+	"authors": "Raphael Hagmanns1, Peter Mortimer, Miguel Granero, Thorsten Luettel, Janko Petereit",
+	"doi": "https://arxiv.org/abs/2409.18788",
+    "year": 2024,
+	"data_modality": "Ground RGB, Point Cloud, Thermal",
+    "num_images": 5000,
+    "num_classes": 64,
+    "classes": null,
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Pixel-level masks",
+	"Point cloud segmetation"
+    ],
+    "geographical_location": "Germany",
+    "potential_tasks": [
+	"Semantic segmentation"
+    ],
+    "license": "CC BY-SA 4.0",
+    "paper": "Excavating in the Wild: The GOOSE-Ex Dataset for Semantic Segmentation",
+    "access": "https://goose-dataset.de/",
+    "id": "GOOSE-Ex",
+    "image_url": "assets/img/datasets/GOOSE-Ex.png",
 	"added_date": "2025-09-27"
   }
 }
