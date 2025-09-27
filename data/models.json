@@ -208,5 +208,20 @@
     "code_url": "https://github.com/JimmyTsai-Yun/MGCAR",
     "thumbnail": "assets/img/models/MGCAR.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "AID-AI-Infraction-Detection",
+    "title": "Exploring a Multimodal Conversational Agent for Construction Site Safety: A Low-Code Approach to Hazard Detection and Compliance Assessment",
+    "authors": ["Giancarlo de Marco", "Elias Niederwieser", "Dietmar Siegele"],
+    "abstract": "This paper discusses the viability of using a low-code multimodal large language model agent with computer vision functionality to support occupational safety and health evaluations on construction sites. The central hypothesis aims to verify that these systems can provide reliable answers, as evaluated against a ground truth review, including the identification of high-risk dangers. A conversational agent was given the task of finding hazards and checking for national legislative compliance within a dataset of 100 real-world construction photos. The comparison of the agent’s results to the ground truth provides insight into current limitations. The primary issues identified were inconsistent taxonomies, inadequate causal reasoning, and insufficient contextual consideration, all of which adversely impacted performance—particularly when analyzing low-resolution images. The metrics supporting the conclusion synthesize that this tool is a valuable augmentation technology, enhancing safety evaluations while still requiring human supervision to ensure reliability.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Vision–Language Reasoning"],
+	"applications": ["Safety monitoring"],
+    "license": "Non-Commercial Use Only",
+    "paper_url": "https://doi.org/10.3390/buildings15183352",
+    "code_url": "https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection",
+    "thumbnail": "assets/img/models/AID-AI-Infraction-Detection.png",
+	"added_date": "2025-09-26"
   }
 ]
