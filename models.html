@@ -334,11 +334,26 @@ function esc(s){
     .replaceAll('>','&gt;');
 }
 
-/* ===== Modalities canonicalization (match Datasets) — ONLY NEW LOGIC BELOW ===== */
+/* ===== Normalizers & splitters ===== */
 function normKey(s){
   if (s == null) return '';
   return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
 }
+/* Split comma/ slash/ pipe/ ampersand/ plus/ " and " into tokens; dedupe case-insensitively */
+function splitTags(input){
+  if (input == null) return [];
+  const str = Array.isArray(input) ? input.join(',') : String(input);
+  const parts = str.split(/[,/|&+]| and /gi).map(p => p && p.trim()).filter(Boolean);
+  // de-dup by normalized key, but keep first-seen pretty label
+  const seen = new Set(); const out = [];
+  for (const p of parts){
+    const k = normKey(p);
+    if (!seen.has(k)){ seen.add(k); out.push(p); }
+  }
+  return out;
+}
+
+/* ===== Modalities canonicalization (already added earlier) ===== */
 function canonicalizeModalityLabel(raw){
   if (!raw) return 'Other';
   const s = normKey(raw);
@@ -387,7 +402,6 @@ function canonicalizeModalityLabels(raw){
   if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
   return Array.from(labels);
 }
-/* ===== End of NEW modality helpers ===== */
 
 /* ---------------------------
    State + facets
@@ -395,15 +409,17 @@ function canonicalizeModalityLabels(raw){
 const state = {
   q: '', sort: 'added-desc',
   tasks: new Set(), applications: new Set(),
-  modalities: new Set(), // now holds normalized keys
+  modalities: new Set(), // normalized keys
   licenses: new Set(),
   yMin: null, yMax: null
 };
 
 let MODALITY_MAP = new Map(); // normKey -> Pretty label
+let TASK_MAP = new Map();     // normKey -> Pretty label
+let APP_MAP  = new Map();     // normKey -> Pretty label
 
 function buildFacets(){
-  /* ===== Modalities facet (from canonical labels) — UPDATED BLOCK ===== */
+  /* ===== Modalities facet (from canonical labels) ===== */
   MODALITY_MAP = new Map();
   MODELS.forEach(m=>{
     (m.data_modalities || []).forEach(lbl=>{
@@ -419,25 +435,42 @@ function buildFacets(){
       .sort((a,b)=> a.lbl.localeCompare(b.lbl))
       .forEach((it,i)=> modWrap.appendChild(makeCheckbox('m_'+i, it.lbl, it.k)));
   }
-  /* ===== End modalities facet ===== */
 
-  // Tasks
-  const taskVals = uniqSorted(MODELS.flatMap(m=>m.tasks||[]));
+  /* ===== Tasks facet (from split tags) — NEW ===== */
+  TASK_MAP = new Map();
+  MODELS.forEach(m=>{
+    (m.tasks_pretty || []).forEach(lbl=>{
+      const k = normKey(lbl);
+      if (!TASK_MAP.has(k)) TASK_MAP.set(k, lbl);
+    });
+  });
   const taskWrap = byId('filter-task'); 
   if (taskWrap) {
     taskWrap.innerHTML='';
-    taskVals.forEach((t,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, t, t)));
+    Array.from(TASK_MAP.entries())
+      .map(([k,lbl])=>({k,lbl}))
+      .sort((a,b)=> a.lbl.localeCompare(b.lbl))
+      .forEach((it,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, it.lbl, it.k)));
   }
 
-  // Applications
-  const appVals = uniqSorted(MODELS.flatMap(m=>m.applications||[]));
+  /* ===== Applications facet (from split tags) — NEW ===== */
+  APP_MAP = new Map();
+  MODELS.forEach(m=>{
+    (m.applications_pretty || []).forEach(lbl=>{
+      const k = normKey(lbl);
+      if (!APP_MAP.has(k)) APP_MAP.set(k, lbl);
+    });
+  });
   const appWrap = byId('filter-app'); 
   if (appWrap) {
     appWrap.innerHTML='';
-    appVals.forEach((a,i)=> appWrap.appendChild(makeCheckbox('a_'+i, a, a)));
+    Array.from(APP_MAP.entries())
+      .map(([k,lbl])=>({k,lbl}))
+      .sort((a,b)=> a.lbl.localeCompare(b.lbl))
+      .forEach((it,i)=> appWrap.appendChild(makeCheckbox('a_'+i, it.lbl, it.k)));
   }
 
-  // Licenses
+  // Licenses (unchanged)
   const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
   const licWrap = byId('filter-license'); 
   if (licWrap) {
@@ -465,28 +498,32 @@ function applyFilters(){
 
   let rows = MODELS.filter(m=>{
     const text = [
-      m.title, (m.tasks||[]).join(' '), (m.applications||[]).join(' '),
-      (m.data_modalities||[]).join(' '), m.license, (m.abstract||'')
+      m.title,
+      (m.tasks_pretty||[]).join(' '),        // UPDATED
+      (m.applications_pretty||[]).join(' '), // UPDATED
+      (m.data_modalities||[]).join(' '),
+      m.license, (m.abstract||'')
     ].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
 
+    // Tasks = AND logic (unchanged behavior)
     if(state.tasks.size){
-      const set = new Set(m.tasks||[]);
-      for(const t of state.tasks){ if(!set.has(t)) return false; }
+      const keys = new Set(m._task_keys || []);
+      for(const t of state.tasks){ if(!keys.has(t)) return false; }
     }
+    // Applications = AND logic (unchanged behavior)
     if(state.applications.size){
-      const set = new Set(m.applications||[]);
-      for(const a of state.applications){ if(!set.has(a)) return false; }
+      const keys = new Set(m._app_keys || []);
+      for(const a of state.applications){ if(!keys.has(a)) return false; }
     }
 
-    /* ===== Modalities filter (OR overlap on normalized keys) — UPDATED ===== */
+    // Modalities = OR overlap on normalized keys (as previously updated)
     if(state.modalities.size){
       const keys = new Set(m._mod_keys || []);
       let hit = false;
       for(const k of state.modalities){ if(keys.has(k)) { hit = true; break; } }
       if(!hit) return false;
     }
-    /* ===== End modalities filter ===== */
 
     if(state.licenses.size && !state.licenses.has(m.license)) return false;
 
@@ -525,7 +562,6 @@ function render(items){
 
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
 
-    /* NEW: escape once, and use innerHTML later so <strong> persists */
     const safeFull  = esc(abstract);
     const safeShort = esc(shortAbs);
 
@@ -546,8 +582,8 @@ function render(items){
 
           <!-- Compact combined tag row -->
           <div class="tag-row">
-            ${(m.tasks||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
-            ${(m.applications||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
+            ${(m.tasks_pretty||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
+            ${(m.applications_pretty||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
           </div>
 
           <!-- Abstract -->
@@ -583,7 +619,7 @@ function render(items){
   });
 }
 
-/* ---------- Abstract toggle (uses innerHTML so <strong> stays bold) ---------- */
+/* ---------- Abstract toggle ---------- */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.abstract-toggle');
   if(!btn) return;
@@ -626,7 +662,7 @@ function attachFacetHandlers(){
   const modEl = byId('filter-modality');
   if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
 
-  // Tasks
+  // Tasks (store normalized keys)
   const taskEl = byId('filter-task');
   if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
   const taskSearch = byId('taskSearch');
@@ -639,7 +675,7 @@ function attachFacetHandlers(){
     });
   }, 120));
 
-  // Applications
+  // Applications (store normalized keys)
   const appEl = byId('filter-app');
   if (appEl) appEl.addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
   const appSearch = byId('appSearch');
@@ -725,30 +761,44 @@ async function loadModels(){
               : (Array.isArray(payload.models) ? payload.models
               : (typeof payload==='object' ? Object.values(payload) : []));
 
-    // Coercion/validation + CANONICAL MODALITIES
+    // Coercion/validation + canonical splits
     MODELS = raw.map(m=>{
       const added = m.added_date || m.added || null;
       const added_ts = added ? Date.parse(added) : null;
 
-      // pull raw modalities from either array or string fields
+      // ----- Modalities -----
       const rawMods = Array.isArray(m.modalities) ? m.modalities
                     : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim()) : (m.modality ? String(m.modality).split(',').map(s=>s.trim()) : []));
-
       const prettyArr = canonicalizeModalityLabels(rawMods.join(', ')); // e.g., ['LiDAR','RGB-D','Synthetic']
-      const normKeys  = prettyArr.map(l => normKey(l));                 // normalized keys for filtering
+      const modKeys  = prettyArr.map(l => normKey(l));
+
+      // ----- Tasks (split + dedupe) -----
+      const rawTasks = Array.isArray(m.tasks) ? m.tasks
+                     : (m.potential_tasks ? m.potential_tasks
+                     : (m.task ? [m.task] : []));
+      const tasksPretty = splitTags(rawTasks);      // array of labels
+      const taskKeys    = tasksPretty.map(normKey); // normalized keys
+
+      // ----- Applications (split + dedupe) -----
+      const rawApps = Array.isArray(m.applications) ? m.applications
+                    : (m.application ? [m.application] : []);
+      const appsPretty = splitTags(rawApps);
+      const appKeys    = appsPretty.map(normKey);
 
       return {
         id: m.id || (crypto.randomUUID ? crypto.randomUUID() : (m.title || Math.random().toString(36).slice(2))),
         title: m.title || m.name || 'Untitled',
         year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
 
-        // keep original m.modalities untouched; add canonical fields:
-        data_modalities: prettyArr,   // for display/search
-        _mod_keys: normKeys,          // for filtering
+        data_modalities: prettyArr,  // display/search
+        _mod_keys: modKeys,          // filter (OR)
 
-        tasks: Array.isArray(m.tasks) ? m.tasks : (m.potential_tasks ? m.potential_tasks : (m.tasks ? [m.tasks] : [])),
-        applications: Array.isArray(m.applications) ? m.applications
-                     : (m.application ? [m.application] : []),
+        tasks_pretty: tasksPretty,   // display/search (split)
+        _task_keys: taskKeys,        // filter (AND)
+
+        applications_pretty: appsPretty, // display/search (split)
+        _app_keys: appKeys,              // filter (AND)
+
         license: m.license || '',
         authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
         abstract: m.abstract || '',
