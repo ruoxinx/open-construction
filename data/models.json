@@ -238,5 +238,20 @@
     "code_url": "https://github.com/leggedrobotics/rsl_panoptic_mapping",
     "thumbnail": "assets/img/models/ETHcavation.gif",
 	"added_date": "2025-09-28"
+  },
+  {
+    "id": "Buildee",
+    "title": "Buildee: A 3D Simulation Framework for Scene Exploration and Reconstruction with Understanding",
+    "authors": ["Clementin Boittiaux", "Vincent Lepetit"],
+    "abstract": "We introduce Buildee, a 3D simulation framework designed to benchmark scene exploration, 3D reconstruction, and semantic segmentation tasks in both static and dynamic environments. Built as a Python module on top of Blender, Buildee leverages its advanced rendering capabilities to generate realistic RGB, depth, and semantic data while enabling 2D / 3D point tracking and occlusion checking. Additionally, we provide a procedural generator for construction site environments and baseline methods for key computer vision tasks. Through Buildee, we establish a standardized platform for evaluating scene understanding algorithms in realistic settings. Our code is publicly available at https://github.com/clementinboittiaux/buildee.",
+    "year": 2025,
+    "modalities": ["Ground RGB, depth"],
+    "tasks": ["Scene generation"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://openreview.net/pdf?id=1LmsiOaMTy",
+    "code_url": "https://github.com/clementinboittiaux/buildee",
+    "thumbnail": "assets/img/models/Buildee.mp4",
+	"added_date": "2025-09-28"
   }
 ]
