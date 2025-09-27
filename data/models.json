@@ -441,7 +441,7 @@
     "abstract": "Point cloud acquisition systems now enable the capture of geometric models enriched with additional attribute data, providing a deeper semantic understanding of the measured environments. However, visualizing complex spatiotemporal point clouds remains computationally challenging. This paper presents a fusion methodology that aggregates points from different instants into unified clouds with reduced redundancy while preserving time-varying information. The static 3D structure is condensed using a voxel approach, while temporal attributes are propagated across the merged data. The resulting point cloud is optimized and rendered interactively in a virtual reality (VR) application. This platform allows for intuitive exploration, visualization, and analysis of the merged clouds. Users can examine thermographic properties using color maps and study graphical temperature trends. The potential of VR for insightful interrogation of point clouds enriched with multiple properties is highlighted by the system.",
     "year": 2024,
     "modalities": ["3D point cloud"],
-    "tasks": ["Point Cloud Visualization"],
+    "tasks": ["Point cloud visualization"],
 	"applications": ["Site understanding"],
     "license": "Not specified",
     "paper_url": "https://doi.org/10.3390/buildings14072127",
