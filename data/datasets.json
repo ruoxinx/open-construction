@@ -478,7 +478,7 @@
     "paper": "Stereo camera visual SLAM with hierarchical masking and motion-state classification at outdoor construction sites containing large dynamic objects",
     "access": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
     "id": "Kenki-Posi",
-    "image_url": "assets/img/datasets/Kenki-Posi.png"
+    "image_url": "assets/img/datasets/Kenki-Posi.gif"
   },
   "CHV": {
     "name": "CHV: Color Helmet and Vest Dataset",
