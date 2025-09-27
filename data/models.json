@@ -83,7 +83,7 @@
     "modalities": ["Ground RGB, Point Cloud"],
     "tasks": ["Simultaneous localization and mapping"],
 	"applications": ["Site mapping/navigation"],
-    "license": "Academic use only",
+    "license": "Academic Use Only",
     "paper_url": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
     "code_url": "https://github.com/mac137/ConSLAM",
     "thumbnail": "assets/img/models/ConSLAM.png",
