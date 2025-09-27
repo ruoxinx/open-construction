@@ -2056,5 +2056,29 @@
     "id": "SORD",
     "image_url": "assets/img/datasets/SORD.png",
 	"added_date": "2025-09-27"
+  },
+    "hook": {
+    "name": "Tower crane hook dataset",
+	"authors": "Xin Hu, Xiyu Wang, Yashu Chang, Jian Xiao, Hongliang Cheng",
+	"doi": "https://doi.org/10.3390/app15105364",
+    "year": 2025,
+	"data_modality": "Ground RGB",
+    "num_images": 1526,
+    "num_classes": 1,
+    "classes": ["Crane hook"],
+    "resolution": "Not Specified",
+    "annotation_types": [
+	"Bounding boxes"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+	"Object detection"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "FLE-YOLO: A Faster, Lighter, and More Efficient Strategy for Autonomous Tower Crane Hook Detection",
+    "access": "https://github.com/sugar-fifty-doge/Tower-crane-dataset",
+    "id": "hook",
+    "image_url": "assets/img/datasets/hook.png",
+	"added_date": "2025-09-27"
   }
 }
