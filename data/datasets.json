@@ -508,7 +508,7 @@
     "paper": "Fast Personal Protective Equipment Detection for Real Construction Sites Using Deep Learning Approaches",
     "access": "https://github.com/ZijianWang-ZW/PPE_detection",
     "id": "CHV",
-    "image_url": "assets/img/datasets/CHV.png"
+    "image_url": "assets/img/datasets/CHV.gif"
   },
   "CDE": {
     "name": "CDE: Construction dust emissions dataset",
