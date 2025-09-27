@@ -390,7 +390,7 @@ function canonicalizeModalityLabel(raw){
 }
 function canonicalizeModalityLabels(raw){
   if (raw == null) return ['Other'];
-  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
+  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| /gi);
   parts = parts.map(p => p && p.trim()).filter(Boolean);
   if (!parts.length) parts = [String(raw)];
 
