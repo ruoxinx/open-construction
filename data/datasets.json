@@ -1983,20 +1983,5 @@
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.gif",
 	"added_date": "2025-09-23"
-  },
-  {
-    "id": "MGCAR",
-    "title": "Multi-granular crew activity recognition for construction monitoring",
-    "authors": ["Cheng Yun Tsai", "Mik Wanul Khosiin", "Jacob J. Lin", "Chuin-Shan Chen"],
-    "abstract": "The labor force is vital to construction projects, but traditional manual methods for productivity analysis are time-consuming and error-prone. Recent advancements in computer vision and deep learning offer automated solutions, yet most studies focus on low-level pose recognition, neglecting the collaborative dynamics of construction sites. This paper introduces a multi-granular crew activity recognition framework that identifies individual actions, groups collaborating workers, and links them to specific tasks. Using graph-based representations and self-attention mechanisms, the model integrates spatial and contextual information for accurate recognition. Experiments on a dataset covering rebar, formwork, and concrete operations show an overall F1 Score of 70.31%. Results highlight the importance of balancing visual features and spatial proximity for optimal performance. This framework offers an efficient solution for construction site monitoring and lays groundwork for future research on temporal modeling and human-object interaction analysis.",
-    "year": 2025,
-    "modalities": ["Ground RGB"],
-    "tasks": ["Crew activity recognition"],
-	"applications": ["Productivity monitoring"],
-    "license": "Not specified",
-    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106428",
-    "code_url": "https://github.com/JimmyTsai-Yun/MGCAR",
-    "thumbnail": "assets/img/models/MGCAR.png",
-	"added_date": "2025-09-26"
   }
 }
