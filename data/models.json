@@ -164,21 +164,6 @@
     "thumbnail": "assets/img/models/repetitive-action.gif",
 	"added_date": "2025-09-27"
   },
-    {
-    "id": "repetitive-action",
-    "title": "Automatic repetitive action counting for construction worker ergonomic assessment",
-    "authors": ["Xinyu Chen", "Yantao Yu"],
-    "abstract": "Work-related musculoskeletal disorders are the primary cause of nonfatal occupational injuries in the construction industry. Accurate ergonomic assessment is essential to reduce the risk of work-related injuries. Repetitive work significantly contributes to musculoskeletal injuries, and various ergonomic evaluation methods have specific criteria for assessing repetitive actions. However, most existing methods for repetitive motions primarily rely on subjective and time-consuming manual observation. To accurately assess ergonomic risk, an automatic and precise method is required to count repetitive actions in construction work. This poses a challenge due to the unstructured nature of construction actions and their varying frequencies and cycles. This paper aims to overcome these challenges by identifying repetitive unstructured actions using posture self-similarity comparison and predicting construction actions' length using a transformer layer. Experimental results demonstrated that the proposed method achieved a 91.5 % accuracy in identifying repetitive actions. The research results will contribute to the promotion of accurate ergonomics evaluation of automation.",
-    "year": 2024,
-    "modalities": ["Ground RGB"],
-    "tasks": ["Pose estimation"],
-	"applications": ["Ergonomic assessment"],
-    "license": "Not specified",
-    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105726",
-    "code_url": "https://github.com/Chenxy875/Repetitive-Actions-Counting-Method-for-Construction-Workers-Ergonomic-Assessments",
-    "thumbnail": "assets/img/models/repetitive-action.png",
-	"added_date": "2025-09-27"
-  },
   {
     "id": "Pictor-v3",
     "title": "Deep Learning for Site Safety: Real-Time Detection of Personal Protective Equipment",
