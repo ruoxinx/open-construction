@@ -2005,7 +2005,7 @@
     "license": "CC BY 4.0",
     "paper": "A point cloud dataset and deep learning method for semantic segmentation of underground garages",
     "access": "https://zenodo.org/records/15619435",
-    "id": "VPM",
+    "id": "UGD",
     "image_url": "assets/img/datasets/UGD.png",
 	"added_date": "2025-09-27"
   }
