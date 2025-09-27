@@ -268,5 +268,20 @@
     "code_url": "https://github.com/eesd-epfl/LOD3_buildings",
     "thumbnail": "assets/img/models/LOD3.png",
 	"added_date": "2025-09-26"
-  } 
+  },
+    {
+    "id": "Open",
+    "title": "Facilitating Construction Scene Understanding Knowledge Sharing and Reuse via Lifelong Site Object Detection",
+    "authors": ["Ruoxin Xiong", "Yuansheng Zhu", "Yanyu Wang", "Pengkun Liu", "Pingbo Tang"],
+	"abstract": "Automatically recognizing diverse construction resources (e.g., workers and equipment) from construction scenes supports efficient and intelligent workplace management. Previous studies have focused on identifying fixed object categories in specific contexts, but they have difficulties in accumulating existing knowledge while extending the model for handling additional classes in changing applications. This work proposes a novel lifelong construction resource detection framework for continuously learning from dynamic changing contexts without catastrophically forgetting previous knowledge. In particular, we contribute: (1) an OpenConstruction Dataset with 31 unique object categories, integrating three large datasets for validating lifelong object detection algorithms; (2) an OpenConstruction Taxonomy, unifying heterogeneous label space from various scenarios; and (3) an informativeness-based lifelong object detector that leverages very limited examples from previous learning tasks and adds new data progressively. We train and evaluate the proposed method on the OpenConstruction Dataset in sequential data streams and show mAP improvements on the overall task. Code is available at https://github.com/YUZ128pitt/OpenConstruction.",
+    "year": 2022,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1007/978-3-031-25082-8_15",
+    "code_url": "https://github.com/YUZ128pitt/OpenConstruction",
+    "thumbnail": "assets/img/models/Open.png",
+	"added_date": "2025-09-25"
+  }
 ]
