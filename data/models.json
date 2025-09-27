@@ -298,5 +298,20 @@
     "code_url": "https://github.com/almosenja/Worker-Safety-Twin",
     "thumbnail": "assets/img/models/Worker-Safety-Twin.gif",
 	"added_date": "2025-09-28"
+  },
+  {
+    "id": "compliance-checking",
+    "title": "Automated rule-based safety inspection and compliance checking of temporary guardrail systems in construction",
+    "authors": ["K.W. Johansen", "J. Teizer", "C. Schultz"],
+    "abstract": "The construction industry records more hazards compared to any other sector. Protective equipment, such as guardrail systems, is essential for protecting workers from deadly falls but may quickly become incompliant after installation. Yet, many construction projects do not have the resources to dedicate personnel to perform the inspection as frequently as needed. Therefore, this paper proposes an automated rule-based inspection and compliance-checking system that can assist the responsible personnel in detecting faulty guardrails in live work environments. The classification approach utilizes safety design and mimics the steps of human guardrailing compliance assessment, which enforces simplicity and transparency, allowing the human domain expert to remain in control. Even under scarce data availability, this first-of-a-kind classification approach is reliable and scalable and successfully classifies 21 predefined and 9 validation scenarios of guardrail systems for fall protection.",
+    "year": 2024,
+    "modalities": ["Aerial RGB"],
+    "tasks": ["Knowledge reasoning"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105849",
+    "code_url": "https://github.com/kakke14/Automated-inspection-and-compliance-checking",
+    "thumbnail": "assets/img/models/compliance-checking.png",
+	"added_date": "2025-09-25"
   }
 ]
