@@ -245,7 +245,7 @@
     "authors": ["Clementin Boittiaux", "Vincent Lepetit"],
     "abstract": "We introduce Buildee, a 3D simulation framework designed to benchmark scene exploration, 3D reconstruction, and semantic segmentation tasks in both static and dynamic environments. Built as a Python module on top of Blender, Buildee leverages its advanced rendering capabilities to generate realistic RGB, depth, and semantic data while enabling 2D / 3D point tracking and occlusion checking. Additionally, we provide a procedural generator for construction site environments and baseline methods for key computer vision tasks. Through Buildee, we establish a standardized platform for evaluating scene understanding algorithms in realistic settings. Our code is publicly available at https://github.com/clementinboittiaux/buildee.",
     "year": 2025,
-    "modalities": ["Ground RGB, depth"],
+    "modalities": ["Ground RGB, depth, synthetic"],
     "tasks": ["Scene generation"],
 	"applications": ["Site understanding"],
     "license": "Not specified",
