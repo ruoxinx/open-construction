@@ -403,5 +403,20 @@
     "code_url": "https://github.com/pms5343/SOC-YOLO",
     "thumbnail": "assets/img/models/SOC-YOLO.png",
 	"added_date": "2025-09-25"
+  },
+  {
+    "id": "SORD",
+    "title": "https://github.com/HuangBugWei/DA-MaskRCNN",
+    "authors": ["Tsung-Wei Huang", "Yi-Hsiang Chen", "Jacob J. Lin", "Chuin-Shan Chen"],
+    "abstract": "On-site rebar inspection is crucial for structural safety but remains labor-intensive and time-consuming. While deep learning presents a promising solution, existing research often relies on limited real-world labeled data. This paper introduces a framework to train a deep learning model for on-site rebar instance segmentation without human labeling. Synthetic data are generated from BIM models, creating a Synthetic On-site Rebar Dataset (SORD) with 25,287 labeled images. Domain adaptation is incorporated to bridge the gap between synthetic and real-world non-labeled data. This approach eliminates the need for human labeling. It significantly enhances model performance, achieving a threefold improvement in Average Precision (AP) metrics compared to models trained on limited real-world data. Additionally, the proposed method demonstrates superior performance across various on-site rebar images collected online, underscoring its generalizability and practical applications.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Semantic segmentation"],
+	"applications": ["Site understanding"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105953",
+    "code_url": "https://github.com/HuangBugWei/DA-MaskRCNN",
+    "thumbnail": "assets/img/models/SORD.png",
+	"added_date": "2025-09-26"
   }
 ]
