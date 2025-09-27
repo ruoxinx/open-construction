@@ -163,5 +163,35 @@
     "code_url": "https://github.com/Chenxy875/Repetitive-Actions-Counting-Method-for-Construction-Workers-Ergonomic-Assessments",
     "thumbnail": "assets/img/models/repetitive-action.png",
 	"added_date": "2025-09-27"
+  },
+    {
+    "id": "repetitive-action",
+    "title": "Automatic repetitive action counting for construction worker ergonomic assessment",
+    "authors": ["Xinyu Chen", "Yantao Yu"],
+    "abstract": "Work-related musculoskeletal disorders are the primary cause of nonfatal occupational injuries in the construction industry. Accurate ergonomic assessment is essential to reduce the risk of work-related injuries. Repetitive work significantly contributes to musculoskeletal injuries, and various ergonomic evaluation methods have specific criteria for assessing repetitive actions. However, most existing methods for repetitive motions primarily rely on subjective and time-consuming manual observation. To accurately assess ergonomic risk, an automatic and precise method is required to count repetitive actions in construction work. This poses a challenge due to the unstructured nature of construction actions and their varying frequencies and cycles. This paper aims to overcome these challenges by identifying repetitive unstructured actions using posture self-similarity comparison and predicting construction actions' length using a transformer layer. Experimental results demonstrated that the proposed method achieved a 91.5 % accuracy in identifying repetitive actions. The research results will contribute to the promotion of accurate ergonomics evaluation of automation.",
+    "year": 2024,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Pose estimation"],
+	"applications": ["Ergonomic assessment"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105726",
+    "code_url": "https://github.com/Chenxy875/Repetitive-Actions-Counting-Method-for-Construction-Workers-Ergonomic-Assessments",
+    "thumbnail": "assets/img/models/repetitive-action.png",
+	"added_date": "2025-09-27"
+  },
+  {
+    "id": "Pictor-v3",
+    "title": "Deep Learning for Site Safety: Real-Time Detection of Personal Protective Equipment",
+    "authors": ["Nipun D. Nath", "Amir H. Behzadan", "Stephanie G. Paal"],
+    "abstract": "The leading causes of construction fatalities include traumatic brain injuries (resulted from fall and electrocution) and collisions (resulted from struck by objects). As a preventive step, the U.S. Occupational Safety and Health Administration (OSHA) requires that contractors enforce and monitor appropriate usage of personal protective equipment (PPE) of workers (e.g., hard hat and vest) at all times. This paper presents three deep learning (DL) models built on You-Only-Look-Once (YOLO) architecture to verify PPE compliance of workers; i.e., if a worker is wearing hard hat, vest, or both, from image/video in real-time. In the first approach, the algorithm detects workers, hats, and vests and then, a machine learning model (e.g., neural network and decision tree) verifies if each detected worker is properly wearing hat or vest. In the second approach, the algorithm simultaneously detects individual workers and verifies PPE compliance with a single convolutional neural network (CNN) framework. In the third approach, the algorithm first detects only the workers in the input image which are then cropped and classified by CNN-based classifiers (i.e., VGG-16, ResNet-50, and Xception) according to the presence of PPE attire. All models are trained on an in-house image dataset that is created using crowd-sourcing and web-mining. The dataset, named Pictor-v3, contains ~1,500 annotated images and ~4,700 instances of workers wearing various combinations of PPE components. It is found that the second approach achieves the best performance, i.e., 72.3% mean average precision (mAP), in real-world settings, and can process 11 frames per second (FPS) on a laptop computer which makes it suitable for real-time detection, as well as a good candidate for running on light-weight mobile devices. The closest alternative in terms of performance (67.93% mAP) is the third approach where VGG-16, ResNet-50, and Xception classifiers are assembled in a Bayesian framework. However, the first approach is the fastest among all and can process 13 FPS with 63.1% mAP. The crowed-sourced Pictor-v3 dataset and all trained models are publicly available to support the design and testing of other innovative applications for monitoring safety compliance, and advancing future research in automation in construction.",
+    "year": 2020,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2020.103085",
+    "code_url": "https://github.com/ciber-lab/pictor-ppe",
+    "thumbnail": "assets/img/models/Pictor-v3.gif",
+	"added_date": "2025-09-27"
   }
 ]
