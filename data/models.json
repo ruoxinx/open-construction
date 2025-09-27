@@ -343,5 +343,20 @@
     "code_url": "https://github.com/juuuungwon/LMs_ConstructionSafety",
     "thumbnail": "assets/img/models/LMs_ConstructionSafety.png",
 	"added_date": "2025-09-27"
-  } 
+  },
+  {
+    "id": "ego",
+    "title": "Egocentric camera-based method for detecting static hazardous objects on construction sites",
+    "authors": ["Ziming Liu", "Jiuyi Xu", "Christine Wun Ki Suen", "Meida Chen", "Zhengbo Zou", "Yangming Shi"],
+    "abstract": "The construction site is a hazardous workplace, accounting for more than 20 % of worker fatalities compared to other industries in the United States. Predominant causes of these fatalities are slips, trips, and falls (STFs). Therefore, identifying hazardous objects on construction sites that could lead to STFs is crucial for enhancing construction safety. Previous studies using fixed-position cameras often miss observations of obstructed or hidden objects. This paper proposes an alternative approach using safety helmets with lightweight wide-angle cameras and leveraging open-vocabulary object detection (OVOD) methods to identify hazardous objects on construction sites that could lead to STFs. In addition, an egocentric view dataset specifically for construction sites was created and released for benchmarking purposes. Research results indicated a 79.0 % weighted F1-score in classifying static hazardous objects on construction sites. This proposed system has the potential to enhance construction safety and provide a valuable dataset for future construction safety research.",
+    "year": 2025,
+    "modalities": ["Egocentric RGB"],
+    "tasks": ["object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106048",
+    "code_url": "https://github.com/JiuyiX/Tripping-Hazard-Detection-based-on-OVOD",
+    "thumbnail": "assets/img/models/ego.png",
+	"added_date": "2025-09-26"
+  }
 ]
