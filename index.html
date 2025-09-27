@@ -51,22 +51,20 @@
       text-decoration:underline; text-underline-offset:3px;
     }
 	
-	/* Make the metrics row shrink to its content and center it */
-.hero .metrics{
-  width:max-content;           /* shrink-to-fit width */
-  margin:1.15rem auto 0;       /* center horizontally */
-}
+	.hero-center {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center; /* keeps metrics + buttons perfectly centered */
+	  gap: 1rem;
+	}
 
-/* Keep the buttons centered under the metrics by shrink-wrapping them too */
-.hero .cta-group{
-  width:max-content;           /* shrink-to-fit */
-  margin:0 auto;               /* center horizontally */
-  display:inline-flex;         /* your existing styles can stay */
-  gap:1rem;
-  align-items:center;
-}
+	.cta-group {
+	  display: inline-flex;
+	  gap: 1rem;
+	  align-items: center;
+	}
 
-	
+
 
     /* Hero */
     .hero{
@@ -267,56 +265,64 @@
   <div class="container oc-container content">
     <h1 class="mb-1">OpenConstruction Overview</h1>
     <p class="lead mb-0">
-      A centralized catalog of open-access datasets and models to accelerate research, education, and practical deployment in construction.
+      A centralized catalog of open-access datasets and models to accelerate research,
+      education, and practical deployment in construction.
     </p>
 
-    <!-- Stats ribbon -->
-    <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+    <!-- grouped metrics + buttons -->
+    <div class="hero-center">
 
-      <!-- Datasets metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <rect x="0" y="0" width="6" height="6" rx="1"/>
-            <rect x="9" y="0" width="6" height="6" rx="1"/>
-            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countDatasets">—</span>
-          <span class="name">Datasets</span>
-        </span>
+      <!-- metrics -->
+      <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+
+        <!-- Dataset metric -->
+        <div class="metric">
+          <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="0" y="0" width="6" height="6" rx="1"/>
+              <rect x="9" y="0" width="6" height="6" rx="1"/>
+              <rect x="4.5" y="9" width="6" height="6" rx="1"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countDatasets">68</span>
+            <span class="name">Datasets</span>
+          </span>
+        </div>
+
+        <!-- Models metric -->
+        <div class="metric">
+          <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="9" cy="9" r="3"/>
+              <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countModels">30</span>
+            <span class="name">Models</span>
+          </span>
+        </div>
+
+      </div><!-- /metrics -->
+
+      <!-- buttons -->
+      <div class="cta-group mt-2">
+        <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
+        <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
       </div>
 
-      <!-- Models metric -->
-      <div class="metric" aria-live="polite">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
-                  stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
-          <!-- gear icon -->
-          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <circle cx="9" cy="9" r="3"/>
-            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countModels">—</span>
-          <span class="name">Models</span>
-        </span>
-      </div>
+    </div><!-- /hero-center -->
 
-    </div>
-
-    <div class="cta-group mt-2">
-      <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
-      <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
-    </div>
   </div>
 </header>
+
 
 <main class="container oc-container">
   <!-- About + Vision -->
