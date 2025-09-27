@@ -2042,7 +2042,7 @@
 	"data_modality": "Ground RGB, Synthetic",
     "num_images": 25287,
     "num_classes": 1,
-    "classes": null,
+    "classes": ["rebar"],
     "resolution": "Not Specified",
     "annotation_types": [
 	"Pixel-level masks"
