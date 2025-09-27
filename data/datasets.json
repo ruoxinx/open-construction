@@ -1296,7 +1296,7 @@
     "paper": "A labelled dataset for rebar counting inspection on construction sites using unmanned aerial vehicles",
     "access": "https://figshare.com/articles/dataset/Rebar_counting_detection/23633703",
     "id": "Rebar-Counting",
-    "image_url": "assets/img/datasets/Rebar-Counting.png"
+    "image_url": "assets/img/datasets/Rebar-Counting.gif"
   },
   "ROADWork": {
     "name": "ROADWork: Learning to Recognize, Observe, Analyze and Drive Through Work Zones",
@@ -1981,7 +1981,7 @@
     "paper": "Multimodal data fusion for ergonomic assessment of construction workers in visually obstructed environments",
     "access": "https://github.com/yantaolab/VPM",
     "id": "VPM",
-    "image_url": "assets/img/datasets/VPM.png",
+    "image_url": "assets/img/datasets/VPM.gif",
 	"added_date": "2025-09-23"
   }
 }
