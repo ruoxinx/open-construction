@@ -340,10 +340,12 @@ function normKey(s){
   return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
 }
 /* Split comma/ slash/ pipe/ ampersand/ plus/ " and " into tokens; dedupe case-insensitively */
+/* Split by comma / slash / pipe / ampersand / plus — DO NOT split the word "and" */
 function splitTags(input){
   if (input == null) return [];
   const str = Array.isArray(input) ? input.join(',') : String(input);
-  const parts = str.split(/[,/|&+]| and /gi).map(p => p && p.trim()).filter(Boolean);
+  // split on , / | & +
+  const parts = str.split(/[,\/|&+]/g).map(p => p && p.trim()).filter(Boolean);
   // de-dup by normalized key, but keep first-seen pretty label
   const seen = new Set(); const out = [];
   for (const p of parts){
@@ -352,6 +354,7 @@ function splitTags(input){
   }
   return out;
 }
+
 
 /* ===== Modalities canonicalization (already added earlier) ===== */
 function canonicalizeModalityLabel(raw){
@@ -390,7 +393,7 @@ function canonicalizeModalityLabel(raw){
 }
 function canonicalizeModalityLabels(raw){
   if (raw == null) return ['Other'];
-  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| /gi);
+  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
   parts = parts.map(p => p && p.trim()).filter(Boolean);
   if (!parts.length) parts = [String(raw)];
 
