@@ -358,5 +358,20 @@
     "code_url": "https://github.com/JiuyiX/Tripping-Hazard-Detection-based-on-OVOD",
     "thumbnail": "assets/img/models/ego.png",
 	"added_date": "2025-09-26"
+  },
+  {
+    "id": "YOLO-FAS",
+    "title": "YOLO-FAS: A lightweight model for detecting rebar intersections location and tying status",
+    "authors": ["Hao Duan", "Mingming Yu", "Tengfeng Ai", "Mengmeng Zhu", "Haili Jiang", "Shuai Guo"],
+    "abstract": "Current deep learning (DL) algorithms for detecting complex rebar mesh intersection points rely heavily on large amounts of training data to ensure recognition accuracy and generalization capabilities. However, deploying such algorithms on small mobile robots is challenging due to limited computational resources, making it difficult to achieve both real-time performance and high precision. To address this issue, this paper proposes a lightweight YOLO-FAS model specifically designed for rebar intersections detection on tying robots. This model is based on YOLOv5s and optimizes the FastNet structure by introducing the PGConv module, enhances feature fusion with the AFPN (Asymptotic feature pyramid network) module, and improves localization accuracy using the EIOU loss function. Experimental results demonstrate that the model's parameters and computational load are reduced by 60.6 % and 62 %, respectively. Furthermore, through BN (Batch Normalization) channel pruning and QAT (Quantization Aware Training), the model is compressed, and inference is accelerated using TensorRT. The improved YOLO-FAS model achieves a FPS (frames per second) increase of 84.1 % in FP32 mode and 33.2 % in INT8 mode. Finally, after real-world deployment testing, the system's average memory usage is reduced by 0.77 GB, and the accuracy of recognition of intersection points reaches 98.21 %, representing an improvement of 3.04 % over YOLOv5s. The results indicate that this method effectively achieves model lightweighting while ensuring efficient and accurate detection of rebar intersection points, demonstrating robust performance and promising application prospects.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Site understanding"],
+    "license": "GNU",
+    "paper_url": "https://doi.org/10.1016/j.neucom.2025.129485",
+    "code_url": "https://github.com/5204338/yolov5_node",
+    "thumbnail": "assets/img/models/YOLO-FAS.gif",
+	"added_date": "2025-09-26"
   }
 ]
