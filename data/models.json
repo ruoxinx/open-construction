@@ -283,5 +283,20 @@
     "code_url": "https://github.com/YUZ128pitt/OpenConstruction",
     "thumbnail": "assets/img/models/Open.png",
 	"added_date": "2025-09-25"
+  },
+  {
+    "id": "Worker-Safety-Twin",
+    "title": "Advancing construction site workforce safety monitoring through BIM and computer vision integration",
+    "authors": ["Almo Senja Kulinan", "Minsoo Park", "Pa Pa Win Aung", "Gichun Cha", "Seunghee Park"],
+    "abstract": "Ensuring a safe work environment is crucial for construction projects. It is essential that workforce monitoring is both efficient and non-intrusive to the ongoing construction activities. This paper introduces a method that integrates building information modeling (BIM) and computer vision to monitor workforce safety hazards at construction sites in real time. Despite the rising adoption of BIM and computer vision individually within the construction sector, the potential of their integrated application as a cohesive system for workforce safety monitoring remains unexplored. While BIM provides rich 3D semantic information about the construction site, computer vision captures real-time field data. The system was tested using a realistic construction simulation, and the accuracy of the position estimate was evaluated in a real-world interior environment, yielding a mean error distance (MED) of 13.2 cm. Overall, the findings have substantial significance for the construction industry to help minimize accidents and enhance overall worker safety.",
+    "year": 2024,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection"],
+	"applications": ["Safety monitoring"],
+    "license": "Not specified",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2023.105227",
+    "code_url": "https://github.com/almosenja/Worker-Safety-Twin",
+    "thumbnail": "assets/img/models/Worker-Safety-Twin.gif",
+	"added_date": "2025-09-28"
   }
 ]
