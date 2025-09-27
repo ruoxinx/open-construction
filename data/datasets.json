@@ -2031,8 +2031,7 @@
     "paper": "Excavating in the Wild: The GOOSE-Ex Dataset for Semantic Segmentation",
     "access": "https://goose-dataset.de/",
     "id": "GOOSE-Ex",
-    "image_url": "assets/img/datasets/GOOSE-Ex.png",
-	"added_date": "2025-09-27"
+    "image_url": "assets/img/datasets/GOOSE-Ex.png"
   },
     "SORD": {
     "name": "SORD Dataset: Synthetic On-site Rebar Data",
