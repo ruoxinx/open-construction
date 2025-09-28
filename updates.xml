@@ -39,6 +39,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Automated Structural Design of Shear Wall Residential Buildings using Generative Adversarial Networks (StructGAN)]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=structgan-v1</link>
+    <guid isPermaLink="false">models:structgan-v1:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[StructGAN is a conditional generative adversarial network designed to automate the structural design of shear wall residential buildings. By learning from paired architectural and structural drawings, the model can synthesize realistic shear wall layouts from architectural floor plans. The framework is based on pix2pix / pix2pixHD-style architectures and is trained on rasterized CAD drawings. Evaluation using intersection-over-union (IoU) and confusion-matrix-based metrics demonstrates the potential of GAN-based approaches to accelerate and augment structural engineering workflows.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: UGD: Underground Garage Point Cloud Dataset]]></title>
     <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=UGD</link>
     <guid isPermaLink="false">datasets:UGD:2025-09-27</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:Pictor-v3:2025-09-27</guid>
     <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[The leading causes of construction fatalities include traumatic brain injuries (resulted from fall and electrocution) and collisions (resulted from struck by objects). As a preventive step, the U.S. Occupational Safety and Health Administration (OSHA) requires that contractors enforce and monitor appropriate usage of personal protective equipment (PPE) of workers (e.g., hard hat and vest) at all times. This paper presents three deep learning (DL) models built on You-Only-Look-Once (YOLO) architecture to verify PPE compliance of workers; i.e., if a worker is wearing hard hat, vest, or both, from image/video in real-time. In the first approach, the algorithm detects workers, hats, and vests and then, a machine learning model (e.g., neural network and decision tree) verifies if each detected worker is properly wearing hat or vest. In the second approach, the algorithm simultaneously detects individual workers and verifies PPE compliance with a single convolutional neural network (CNN) framework. In the third approach, the algorithm first detects only the workers in the input image which are then cropped and classified by CNN-based classifiers (i.e., VGG-16, ResNet-50, and Xception) according to the presence of PPE attire. All models are trained on an in-house image dataset that is created using crowd-sourcing and web-mining. The dataset, named Pictor-v3, contains ~1,500 annotated images and ~4,700 instances of workers wearing various combinations of PPE components. It is found that the second approach achieves the best performance, i.e., 72.3% mean average precision (mAP), in real-world settings, and can process 11 frames per second (FPS) on a laptop computer which makes it suitable for real-time detection, as well as a good candidate for running on light-weight mobile devices. The closest alternative in terms of performance (67.93% mAP) is the third approach where VGG-16, ResNet-50, and Xception classifiers are assembled in a Bayesian framework. However, the first approach is the fastest among all and can process 13 FPS with 63.1% mAP. The crowed-sourced Pictor-v3 dataset and all trained models are publicly available to support the design and testing of other innovative applications for monitoring safety compliance, and advancing future research in automation in construction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Developing a Free and Open-Source Semi-Automated Building Exterior Crack Inspection Software for Construction and Facility Managers]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ABECIS</link>
-    <guid isPermaLink="false">models:ABECIS:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Inspection of cracks is an important process for properly monitoring and maintaining a building. However, manual crack inspection is time-consuming, inconsistent, and dangerous (e.g., in tall buildings). Due to the development of open-source AI technologies, the increase in available Unmanned Aerial Vehicles (UAVs) and the availability of smartphone cameras, it has become possible to automate the building crack inspection process. This study presents the development of an easy-to-use, free and open-source Automated Building Exterior Crack Inspection Software (ABECIS) for construction and facility managers, using state-of-the-art segmentation algorithms to identify concrete cracks and generate a quantitative and qualitative report. ABECIS was tested using images collected from a UAV and smartphone cameras in real-world conditions and a controlled laboratory environment. From the raw output of the algorithm, the median Intersection over Unions (IoU) for the test experiments are (1) 0.686 for indoor crack detection experiment in a controlled lab environment using a commercial drone, (2) 0.186 for indoor crack detection at a construction site using a smartphone and (3) 0.958 for outdoor crack detection on university campus using a commercial drone. These IoU results can be improved significantly to over 0.8 when a human operator selectively removes the false positives. In general, ABECIS performs best for outdoor drone images, and combining the algorithm predictions with human verification/intervention offers very accurate crack detection results. The software is available publicly and can be downloaded for out-of-the-box use.]]></description>
   </item>
   </channel>
 </rss>
