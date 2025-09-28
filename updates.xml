@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: MEP2BIM Dataset]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=mep2bim</link>
+    <guid isPermaLink="false">datasets:mep2bim:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: ETHcavation: A Dataset and Pipeline for Panoptic Scene Understanding and Object Tracking in Dynamic Construction Environments]]></title>
     <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ETHcavation</link>
     <guid isPermaLink="false">models:ETHcavation:2025-09-28</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: SORD Dataset: Synthetic On-site Rebar Data]]></title>
     <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=SORD</link>
     <guid isPermaLink="false">datasets:SORD:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Tower crane hook dataset]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=hook</link>
-    <guid isPermaLink="false">datasets:hook:2025-09-27</guid>
     <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
