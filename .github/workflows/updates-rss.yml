@@ -1,0 +1,29 @@
+name: Build updates.xml (RSS)
+
+on:
+  push:
+    paths:
+      - data/datasets.json
+      - data/models.json
+      - data/generate-updates.js
+      - .github/workflows/updates-rss.yml
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node -v
+      - name: Generate RSS
+        run: |
+          mkdir -p data
+          node data/generate-updates.js
+      - name: Commit updates.xml
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update updates.xml feed"
+          file_pattern: "updates.xml"
