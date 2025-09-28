@@ -13,17 +13,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: node -v
-      - name: Generate RSS
-        run: |
-          mkdir -p data
-          node data/generate-updates.js
+
+      - name: Generate updates.xml
+        run: node data/generate-updates.js
+
       - name: Commit updates.xml
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: update updates.xml feed"
+          commit_message: "chore: update RSS feed (updates.xml)"
           file_pattern: "updates.xml"
