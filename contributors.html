@@ -189,40 +189,64 @@
     <!-- Metric circles (placed ABOVE the buttons) -->
     <div class="metrics" id="communityMetrics" role="group" aria-label="Community statistics">
       <!-- Contributors -->
-      <div class="metric" data-kind="contributors">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringContrib" cx="22" cy="22" r="17" fill="none"
-                  transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <circle cx="9" cy="9" r="3"/>
-            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countContrib">—</span>
-          <span class="name">Contributors</span>
-        </span>
-      </div>
+		<!-- Contributors (better icon) -->
+		<div class="metric" data-kind="contributors">
+		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+			<circle class="ring-val" id="ringContrib" cx="22" cy="22" r="17" fill="none"
+					transform="rotate(-90 22 22)"></circle>
 
-      <!-- Institutions -->
-      <div class="metric" data-kind="institutions">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringInst" cx="22" cy="22" r="17" fill="none"
-                  transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <rect x="0" y="0" width="6" height="6" rx="1"/>
-            <rect x="9" y="0" width="6" height="6" rx="1"/>
-            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countInst">—</span>
-          <span class="name">Institutions</span>
-        </span>
-      </div>
-    </div>
+			<!-- Group of users -->
+			<g transform="translate(8,10)" fill="none" stroke="currentColor" stroke-width="1.4"
+			   stroke-linecap="round" stroke-linejoin="round">
+			  <!-- Heads -->
+			  <circle cx="14" cy="4.5" r="3.2"></circle>
+			  <circle cx="6"  cy="6.2" r="2.4"></circle>
+			  <circle cx="22" cy="6.2" r="2.4"></circle>
+			  <!-- Shoulders / torsos -->
+			  <!-- Center -->
+			  <path d="M6 16.5c2.4-2.6 6.2-3.8 8-3.8s5.6 1.2 8 3.8"></path>
+			  <!-- Left -->
+			  <path d="M1.2 16.2c1.6-2 3.8-2.9 6.2-2.9"></path>
+			  <!-- Right -->
+			  <path d="M26.8 16.2c-1.6-2-3.8-2.9-6.2-2.9"></path>
+			</g>
+		  </svg>
+		  <span class="label">
+			<span class="value" id="countContrib">—</span>
+			<span class="name">Contributors</span>
+		  </span>
+		</div>
+
+		<!-- Institutions (better icon) -->
+		<div class="metric" data-kind="institutions">
+		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+			<circle class="ring-val" id="ringInst" cx="22" cy="22" r="17" fill="none"
+					transform="rotate(-90 22 22)"></circle>
+
+			<!-- Classical building -->
+			<g transform="translate(10,11)" fill="none" stroke="currentColor" stroke-width="1.4"
+			   stroke-linecap="round" stroke-linejoin="round">
+			  <!-- Roof (pediment) -->
+			  <path d="M12 0L24 5.8H0L12 0Z"></path>
+			  <!-- Columns -->
+			  <path d="M4 6.6v8.2"></path>
+			  <path d="M12 6.6v8.2"></path>
+			  <path d="M20 6.6v8.2"></path>
+			  <!-- Architrave -->
+			  <path d="M0.8 6.2H23.2"></path>
+			  <!-- Base / stylobate -->
+			  <path d="M-1 16.2H25"></path>
+			  <path d="M-2 18H26"></path>
+			</g>
+		  </svg>
+		  <span class="label">
+			<span class="value" id="countInst">—</span>
+			<span class="name">Institutions</span>
+		  </span>
+		</div>
+
 
     <!-- CTA buttons -->
     <div class="cta-row">
