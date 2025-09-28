@@ -229,7 +229,15 @@
    Transforms create a new containing block that can break fixed modals. */
 html, body, .oc-container { transform: none !important; }
 
-	
+	.oc-modal-compact{
+  padding:16px 16px 14px;
+  border-radius:12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.12);
+}
+.oc-modal-compact .form-control{
+  height:40px;
+  border-radius:10px;
+}
 	
 	
   </style>
@@ -808,32 +816,44 @@ html, body, .oc-container { transform: none !important; }
 
 <!-- Subscribe Modal (place this just before </body>) -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4">
-      <div class="d-flex justify-content-between align-items-start">
-        <div>
-          <h5 class="mb-1">Stay Updated</h5>
-          <p class="text-muted mb-3">Get an email when new datasets or models are added.</p>
-        </div>
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content oc-modal-compact">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <!-- Replace action with your Mailchimp URL -->
       <form action="https://YOUR_DC.list-manage.com/subscribe/post?u=YOUR_U&id=YOUR_LIST_ID"
             method="post" target="_blank" novalidate>
-        <label for="mce-EMAIL" class="form-label">Email</label>
-        <input type="email" id="mce-EMAIL" name="EMAIL" class="form-control mb-3"
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
                placeholder="you@university.edu" required>
-        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
 
-        <!-- anti-bot -->
+        <!-- (Optional) simple choice -->
+        <!--
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="optDatasets" name="group[datasets]" value="1">
+          <label class="form-check-label small" for="optDatasets">Datasets</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="optModels" name="group[models]" value="1">
+          <label class="form-check-label small" for="optModels">Models</label>
+        </div>
+        -->
+
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+
+        <!-- Mailchimp anti-bot (keep) -->
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_YOUR_U_YOUR_LIST_ID" tabindex="-1" value="">
         </div>
+
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
       </form>
     </div>
   </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
