@@ -71,19 +71,19 @@
   </item>
 
   <item>
-    <title><![CDATA[Dataset: UGD: Underground Garage Point Cloud Dataset]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=UGD</link>
-    <guid isPermaLink="false">datasets:UGD:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+    <title><![CDATA[Model: Image2Triplets: A computer vision-based explicit relationship extraction framework for updating construction activity knowledge graphs]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=image2triplets</link>
+    <guid isPermaLink="false">models:image2triplets:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Knowledge graph (KG) is an effective tool for knowledge management, particularly in the architecture, engineering and construction (AEC) industry, where knowledge is fragmented and complicated. However, research on KG updates in the industry is scarce, with most current research focusing on text-based KG updates. Considering the superiority of visual data over textual data in terms of accuracy and timeliness, the potential of computer vision technology for explicit relationship extraction in KG updates is yet to be explored. This paper combines zero-shot human-object interaction detection techniques with general KGs to propose a novel framework called Image2Triplets that can extract explicit visual relationships from images to update the construction activity KG. Comprehensive experiments on the images of architectural decoration processes have been performed to validate the proposed framework. The results and insights will contribute new knowledge and evidence to human-object interaction detection, KG update and construction informatics from the theoretical perspective.]]></description>
   </item>
 
   <item>
-    <title><![CDATA[Dataset: SORD Dataset: Synthetic On-site Rebar Data]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=SORD</link>
-    <guid isPermaLink="false">datasets:SORD:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+    <title><![CDATA[Model: Real-time mixed reality-based visual warning for construction workforce safety]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=mr-visual-warning</link>
+    <guid isPermaLink="false">models:mr-visual-warning:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Spatial locations of personnel, equipment, and materials are constantly changing as construction projects progress. The dynamic nature of the construction industry affects workers' performance of identifying hazards. Even though a great deal of effort has been made to improve construction safety, the construction industry still witnesses a high accident rate. In order to complement the existing body of knowledge relating to construction safety, this paper integrates Digital Twin (DT), Deep Learning (DL), and Mixed Reality (MR) technologies into a newly developed real-time visual warning system, which enables construction workers to proactively determine their safety status and avoid accidents. Next, system tests were conducted under three quasi-on-site scenarios, and the feasibility was proven in terms of synchronising construction activities over a large area and visually representing hazard information to its users. These evidenced merits of the development testing scenarios can improve workers' risk assessment accuracy, reinforce workers' safety behaviour, and provide a new perspective for construction safety managers to analyse construction safety status.]]></description>
   </item>
   </channel>
 </rss>
