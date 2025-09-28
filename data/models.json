@@ -448,5 +448,20 @@
     "code_url": "https://github.com/3dcovim/VR-Point-Cloud-Analysis",
     "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png",
 	"added_date": "2025-09-26"
-  }
+  },
+  {
+  "id": "structgan-v1",
+  "title": "Automated Structural Design of Shear Wall Residential Buildings using Generative Adversarial Networks (StructGAN)",
+  "authors": ["Wenjie Liao", "Xinzheng Lu", "Yuli Huang", "Zhe Zheng", "Yuanqing Lin"],
+  "abstract": "StructGAN is a conditional generative adversarial network designed to automate the structural design of shear wall residential buildings. By learning from paired architectural and structural drawings, the model can synthesize realistic shear wall layouts from architectural floor plans. The framework is based on pix2pix / pix2pixHD-style architectures and is trained on rasterized CAD drawings. Evaluation using intersection-over-union (IoU) and confusion-matrix-based metrics demonstrates the potential of GAN-based approaches to accelerate and augment structural engineering workflows.",
+  "year": 2021,
+  "modalities": ["2D CAD images"],
+  "tasks": ["Image-to-image translation", "Layout synthesis"],
+  "applications": ["Automated structural design", "Shear wall layout generation"],
+  "license": "Not specified",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2021.103931",
+  "code_url": "https://github.com/wenjie-liao/StructGAN_v1",
+  "thumbnail": "assets/img/models/structgan-v1.png",
+  "added_date": "2025-09-28"
+}  
 ]
