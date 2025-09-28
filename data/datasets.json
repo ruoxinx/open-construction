@@ -2059,7 +2059,7 @@
   },
     "hook": {
     "name": "Tower crane hook dataset",
-	"authors": "Xin Hu, Xiyu Wang, Yashu Chang, Jian Xiao, Hongliang Cheng",
+	"authors": "Xin Hu, Xiyu Wang, Yashu Chang, Jian Xiao, Hongliang Cheng, Firdaousse Abdelhad",
 	"doi": "https://doi.org/10.3390/app15105364",
     "year": 2025,
 	"data_modality": "Ground RGB",
@@ -2109,7 +2109,7 @@
 },
 "mep2bim": {
   "name": "MEP2BIM Dataset",
-  "authors": "Xiangyu Wang, Wenjie Liao, Yuli Huang, Xinzheng Lu",
+  "authors": "Zaolin Pan, Yantao Yu, Fu Xiao, Jing Zhang",
   "doi": "https://doi.org/10.1016/j.autcon.2023.104914",
   "year": 2023,
   "data_modality": "Rasterized CAD images",
