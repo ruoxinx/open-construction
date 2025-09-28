@@ -2080,5 +2080,31 @@
     "id": "hook",
     "image_url": "assets/img/datasets/hook.png",
 	"added_date": "2025-09-27"
-  }
+  },
+  "structgan": {
+  "name": "Architectural–structural Design Pairs",
+  "authors": "Wenjie Liao, Xinzheng Lu, Yuli Huang, Zhe Zheng, Yuanqing Lin",
+  "doi": "https://doi.org/10.1016/j.autcon.2021.103931",
+  "year": 2021,
+  "data_modality": "Rasterized CAD",
+  "num_images": 250,
+  "num_classes": null,
+  "classes": ["Architectural floor plan", "Shear wall structural layout"],
+  "resolution": "Not specified",
+  "annotation_types": [
+    "Paired images (architectural and structural layout)",
+    "Pixel-level layout maps"
+  ],
+  "geographical_location": "China",
+  "potential_tasks": [
+    "Image-to-image translation",
+    "Layout synthesis"
+  ],
+  "license": "Not specified",
+  "paper": "Automated structural design of shear wall residential buildings using generative adversarial networks",
+  "access": "https://github.com/wenjie-liao/StructGAN_v1",
+  "id": "structgan",
+  "image_url": "assets/img/datasets/structgan.png",
+  "added_date": "2025-09-28"
+}
 }
