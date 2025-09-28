@@ -2106,5 +2106,37 @@
   "id": "structgan",
   "image_url": "assets/img/datasets/structgan.png",
   "added_date": "2025-09-28"
+},
+"mep2bim": {
+  "name": "MEP2BIM Dataset",
+  "authors": "Xiangyu Wang, Wenjie Liao, Yuli Huang, Xinzheng Lu",
+  "doi": "https://doi.org/10.1016/j.autcon.2023.104914",
+  "year": 2023,
+  "data_modality": "Rasterized CAD images",
+  "num_images": 335,
+  "num_classes": 7,
+  "classes": ["Duct", "Muffler", "AHU", "FCU", "VAV", "Grille", "Air terminal"],
+  "resolution": "600 × 600",
+  "annotation_types": [
+    "Bounding boxes",
+    "Pixel-level masks"
+  ],
+  "geographical_location": "China",
+  "potential_tasks": [
+    "Object detection",
+    "Semantic segmentation"
+  ],
+  "license": "Not specified",
+  "paper": "Recovering building information model from 2D drawings for mechanical, electrical and plumbing systems of ageing buildings",
+  "access": "https://github.com/CrossStyle/MEP2BIM",
+  "id": "mep2bim",
+  "image_url": "assets/img/datasets/mep2bim.png",
+  "added_date": "2025-09-28"
 }
+
+
+
+
+
+
 }
