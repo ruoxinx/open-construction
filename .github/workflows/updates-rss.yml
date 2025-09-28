@@ -1,5 +1,8 @@
 name: Build updates.xml (RSS)
 
+permissions:
+  contents: write  # allow pushing commits
+
 on:
   push:
     paths:
@@ -9,23 +12,22 @@ on:
       - .github/workflows/updates-rss.yml
   workflow_dispatch:
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Generate updates.xml
-        run: node data/generate-updates.js
+      - run: node data/generate-updates.js
 
       - name: Commit updates.xml
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update RSS feed (updates.xml)"
           file_pattern: "updates.xml"
+
