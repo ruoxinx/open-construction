@@ -2089,7 +2089,7 @@
   "data_modality": "Rasterized CAD images",
   "num_images": 250,
   "num_classes": null,
-  "classes": ["Architectural floor plan", "Shear wall structural layout"],
+  "classes": null,
   "resolution": "Not specified",
   "annotation_types": [
     "Paired images (architectural and structural layout)",
