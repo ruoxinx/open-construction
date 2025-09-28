@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home</title>
+  <title>OpenConstruction · Home</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,12 +15,18 @@
       --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
       --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-	  --oc-brand-model:#4e6ce8; /* teal for Models ring */
     }
 
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
+
+    /* Utility highlight (for key phrases) */
+    .hl{
+      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
+      padding:0 .06em;
+      font-weight:700;
+    }
 
     /* Focus-visible for keyboard users */
     :focus-visible{
@@ -51,19 +57,6 @@
       color:var(--oc-brand-ink);
       text-decoration:underline; text-underline-offset:3px;
     }
-	
-	.hero-center {
-	  display: flex;
-	  flex-direction: column;
-	  align-items: center; /* keeps metrics + buttons perfectly centered */
-	  gap: 1rem;
-	}
-
-	.cta-group {
-	  display: inline-flex;
-	  gap: 1rem;
-	  align-items: center;
-	}
 
     /* Hero */
     .hero{
@@ -89,6 +82,11 @@
       padding:.55rem 1rem; font-weight:700;
     }
     .btn-accent:hover{ background:#f7fbff; }
+
+    .hero-center {
+      display:flex; flex-direction:column; align-items:center; gap:1rem;
+    }
+    .cta-group { display:inline-flex; gap:1rem; align-items:center; }
 
     /* Sections & cards */
     .oc-section{ margin-top:40px; }
@@ -166,10 +164,7 @@
     .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
     .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
 
-    /* Tiny icon chip for timeline cards */
-    .oc-tl-title-row{
-      display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem;
-    }
+    .oc-tl-title-row{ display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem; }
     .oc-tl-icon{
       flex:0 0 auto; width:22px; height:22px; border-radius:8px;
       display:inline-flex; align-items:center; justify-content:center;
@@ -195,26 +190,22 @@
     .oc-tl-next{ right:.5rem; }
 
     .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
-    .oc-tl-dot{
-      width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s;
-    }
+    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; }
     .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
-       Hero Metrics (circles) — visuals only
+       Hero Metrics (rings)
        ============================== */
     .metrics{
       display:flex; gap:1.4rem; justify-content:center; align-items:center;
       flex-wrap:wrap; margin:1.15rem 0 .25rem;
     }
-    .metric{
-      display:flex; align-items:center; gap:1rem;
-      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
-    }
+    .metric{ display:flex; align-items:center; gap:1rem; background:transparent; border:none; }
     .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
     .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
     .metric .ring-val{
-      stroke:var(--oc-brand-accent); stroke-width:4; stroke-linecap:round;
+      stroke:var(--oc-brand-accent); /* PRIMARY RING COLOR */
+      stroke-width:4; stroke-linecap:round;
       stroke-dasharray:0 999; stroke-dashoffset:0;
     }
     .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
@@ -222,9 +213,9 @@
     .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
     .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    /* NEW: Different ring color for Models (keeps dataset ring as-is) */
+    /* Ensure Models ring matches Datasets ring exactly */
+    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
     .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
-    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-model); }
 
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
@@ -279,16 +270,14 @@
   <div class="container oc-container content">
     <h1 class="mb-1">OpenConstruction Overview</h1>
     <p class="lead mb-0">
-      An open science platform for the construction industry to accelerate research,
-      education, and practical deployment through community-driven collaboration and shared resources.
+      An <span class="hl">open-science</span> platform advancing <span class="hl">AI for construction</span> through
+      a curated catalog of datasets and models, shared by a <span class="hl">community of contributors</span>.
     </p>
 
     <!-- grouped metrics + buttons -->
     <div class="hero-center">
-
       <!-- metrics -->
       <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
-
         <!-- Dataset metric -->
         <div class="metric" data-kind="datasets">
           <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
@@ -323,21 +312,17 @@
             <span class="name">Models</span>
           </span>
         </div>
-
       </div><!-- /metrics -->
 
       <!-- buttons -->
       <div class="cta-group mt-2">
         <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
         <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
-		<a class="btn btn-ink btn-sm" href="contributors.html">Get&nbsp;Involved</a>
+        <a class="btn btn-ink btn-sm" href="contributors.html">Get&nbsp;Involved</a>
       </div>
-
     </div><!-- /hero-center -->
-
   </div>
 </header>
-
 
 <main class="container oc-container">
   <!-- About + Vision -->
@@ -349,7 +334,8 @@
             <div class="oc-kicker mb-2">About</div>
             <h3 class="oc-card-title mb-2">What is OpenConstruction?</h3>
             <p class="mb-0">
-              OpenConstruction is a curated collection of publicly available datasets and models for researchers, practitioners, and developers working on AI applications in the construction industry. We aggregate, standardise and maintain metadata to accelerate discovery and reuse of resources across the construction lifecycle.
+              OpenConstruction is a curated catalog of <span class="hl">open datasets</span> and <span class="hl">AI models</span> for the construction domain.
+              We standardize metadata and links to speed discovery, reuse, and reproducibility across the project lifecycle.
             </p>
           </div>
         </div>
@@ -361,44 +347,37 @@
             <div class="oc-kicker mb-2">Vision</div>
             <h3 class="oc-card-title mb-2">Our Mission</h3>
             <p class="mb-3">
-              The construction industry is rapidly adopting AI-driven methods for core tasks. Our mission is to foster an open science ecosystem:
+              We foster an <span class="hl">open-science ecosystem</span> by:
             </p>
             <ul class="oc-ul">
-              <li>Provide an open science catalog of construction AI applications.</li>
-              <li>Support reproducible research, education, and deployment.</li>
-			  <li>Creates a community-driven space where contributors can share resources.</li>
+              <li>Maintaining an <span class="hl">open catalog </span> of construction AI resources.</li>
+              <li>Supporting <span class="hl">transparent research, education, and deployment</span>.</li>
+              <li>Building a <span class="hl">community-driven</span> space for sharing and feedback.</li>
             </ul>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
+
   <!-- Open Science & Community -->
-    <section class="oc-section">
-      <div class="oc-card">
-        <div class="oc-card-body">
-          <div class="oc-kicker mb-2">Get Involved</div>
-          <h3 class="oc-card-title mb-3">Building an OpenConstruction Community</h3>
-          <p class="mb-3">
-            Open science thrives when diverse voices share knowledge, challenge ideas and work
-            together. We invite you to participate in the OpenConstruction community. Here are a few
-            ways to contribute:
-          </p>
-          <ul class="oc-ul">
-            <li><strong>Share your datasets and models:</strong> Submit new resources or improvements. Your contributions help enrich the catalogue.</li>
-            <li><strong>Join the discussion:</strong> Participate in our public forums and discussion. Collaboration accelerates discovery and innovation.</li>
-            <li><strong>Offer feedback and ideas:</strong> Suggest features, report issues and help
-                prioritise development. Your feedback shapes the platform’s
-                direction.</li>
-            <li><strong>Spread the word:</strong> Cite the catalogue and share
-                it with colleagues to expand awareness of open construction resources.</li>
-          </ul>
-          <p class="mb-0">
-          </p>
-        </div>
+  <section class="oc-section">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Get Involved</div>
+        <h3 class="oc-card-title mb-3">Build the OpenConstruction Community</h3>
+        <p class="mb-3">
+          Open science thrives when diverse voices collaborate. We invite you to participate in the OpenConstruction community. Here are a few ways to contribute:
+        </p>
+        <ul class="oc-ul">
+          <li><strong>Share resources:</strong> Submit new datasets or models to enrich the catalog.</li>
+          <li><strong>Discuss & collaborate:</strong> Participate in our public forums and discussion. Collaboration accelerates discovery and innovation.</li>
+          <li><strong>Give feedback:</strong> Suggest features, report issues, and help prioritize.</li>
+          <li><strong>Spread the word:</strong> Share the catalog to grow the community.</li>
+        </ul>
       </div>
-    </section>
+    </div>
+  </section>
 
   <!-- Development & Achievements -->
   <section class="oc-section" aria-labelledby="milestones-heading">
@@ -435,7 +414,7 @@
                 <div class="oc-tl-title">Project Team Established</div>
               </div>
               <div class="oc-tl-content">
-                Core team formed to build the OpenConstruction platform and roadmap.
+                Core team formed to build the platform and roadmap.
               </div>
             </div>
 
@@ -454,8 +433,7 @@
                 <div class="oc-tl-title">First Paper Submitted</div>
               </div>
               <div class="oc-tl-content">
-                Initial review of open-access datasets completed and the first research paper submitted.
-                The dataset collection continues to expand with ongoing updates.
+                Initial synthesis of open datasets completed and submitted.
               </div>
             </div>
 
@@ -473,7 +451,7 @@
                 <div class="oc-tl-title">Dataset Catalog Online</div>
               </div>
               <div class="oc-tl-content">
-                OpenConstruction Dataset Catalog website officially launched for the community.
+                Dataset Catalog officially launched for the community.
               </div>
             </div>
 
@@ -491,7 +469,7 @@
                 <div class="oc-tl-title">Model Catalog Online</div>
               </div>
               <div class="oc-tl-content">
-                OpenConstruction Model Catalog released, offering curated AI models for construction applications.
+                Model Catalog released with curated AI models for construction tasks.
               </div>
             </div>
           </div>
@@ -511,7 +489,6 @@
       </div>
     </div>
   </section>
-  
 
   <!-- Reference -->
   <section class="oc-section">
