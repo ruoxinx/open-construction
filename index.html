@@ -239,23 +239,21 @@ html, body, .oc-container { transform: none !important; }
   border-radius:10px;
 }
 
-/* Accent/yellow button */
-.btn-accent-solid{
-  background:var(--oc-brand-accent);
-  border:1px solid var(--oc-brand-accent);
-  color:#1e2a36; /* readable on yellow */
-  border-radius:999px;
-  font-weight:700;
-  padding:.5rem .9rem;
+/* Yellow bell only */
+.btn-subscribe-icon{
+  color: var(--oc-brand-accent);           /* makes the SVG (currentColor) yellow */
+  background: transparent;
+  border: 0;
+  padding: .25rem .4rem;
+  line-height: 1;
 }
-.btn-accent-solid:hover{ filter:brightness(1.04); color:#1e2a36; }
+.btn-subscribe-icon:hover{ filter: brightness(1.05); }
+.btn-subscribe-icon:focus-visible{
+  outline: 2px solid var(--oc-focus);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
 
-/* Navbar subscribe pill with bell */
-.btn-subscribe{
-  display:inline-flex; align-items:center; gap:.4rem;
-  line-height:1; padding:.4rem .7rem;
-}
-.btn-subscribe svg{ width:18px; height:18px; }
 
 	
 	
@@ -302,14 +300,18 @@ html, body, .oc-container { transform: none !important; }
 	         <!-- 🔔 Subscribe button -->
 <li class="nav-item">
 <button type="button"
-        class="btn btn-accent-solid btn-sm btn-subscribe"
+        class="nav-link px-2 icon-only btn-subscribe-icon"
         data-bs-toggle="modal" data-bs-target="#subscribeModal"
         aria-label="Subscribe for updates" title="Subscribe">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+       fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16" aria-hidden="true">
+    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+             7 0 0 0 8.5 2z"/>
   </svg>
-  <span class="d-none d-lg-inline">Subscribe</span>
 </button>
+
 
 </li>
       </ul>
