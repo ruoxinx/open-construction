@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contributors</title>
+  <title>Community · OpenConstruction</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,137 +12,114 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <style>
-    /* ---------- Design tokens (light only) ---------- */
+    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
-      --oc-bg: #ffffff;
-      --oc-text: #1e2a36;
-      --oc-subtle: #6b7b8c;
-      --oc-border: #e9eef4;
-      --oc-ink: #0f2e4b;
-      --oc-link: #0b66c3;
-      --oc-card: #ffffff;
-      --oc-shadow: 0 8px 24px rgba(15,46,75,.06);
-      --oc-radius: 14px;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
-    html, body{ background: var(--oc-bg); color: var(--oc-text); }
-    a{ color: var(--oc-link); }
-    .oc-container{ max-width: 1080px; }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
 
-    /* ---------- Navbar ---------- */
-    .oc-nav{
-      backdrop-filter: saturate(120%) blur(6px);
-      border-bottom:1px solid var(--oc-border)!important;
+    /* Utility highlight (subtle) */
+    .hl{
+      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700;
     }
+
+    /* Navbar */
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
     .brand-wordmark{
       display:inline-flex; gap:.25rem; align-items:baseline;
       color:var(--oc-ink); font-weight:800; letter-spacing:.1px;
-      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+      font-size:clamp(1.1rem,1rem + .6vw,1.4rem);
     }
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
 
-    /* Clean, professional nav links (bold, no background/outline) */
-    .navbar .nav-link.plain{
-      font-weight:700;
-      color: var(--oc-text);
-      padding:.5rem .6rem;
-    }
-    .navbar .nav-link.plain:hover{
-      color: var(--oc-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,
     .navbar .nav-link.plain.active{
-      color: var(--oc-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
     }
-
-    /* Icon-only nav link */
     .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
     .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
     .nav-link.icon-only:hover svg{ opacity:1; }
 
-    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
-    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-ink); }
-    .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
-
-    /* ---------- Hero ---------- */
-    .hero{
-      background: #fff;
-      color: var(--oc-ink);
-      border-bottom: 1px solid var(--oc-border);
-    }
-    .hero .content{
-      padding: 56px 0 44px;
-      text-align: center;
-    }
+    /* Hero */
+    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.2rem);
-      margin: .25rem 0 .35rem;
+      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
+      margin:.25rem 0 .35rem;
     }
-    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
-    .pill{
-      display:inline-flex; gap:.5rem; align-items:center;
-      border-radius: 999px; padding:.4rem .8rem;
-      background: transparent; border: 1px solid #dfe6ee; color: var(--oc-ink);
-      font-size:.88rem;
-    }
+    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* ---------- People cards ---------- */
-    .person-card{
-      background:var(--oc-card);
-      border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      box-shadow: var(--oc-shadow);
-      transition: transform .12s ease;
+    /* CTAs */
+    .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+    .btn-ink{
+      background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700;
     }
-    .person-card:hover{ transform: translateY(-1px); }
-    .person-card .card-body{ padding: 1rem 1.1rem; }
-    .person-card img.headshot{
+    .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
+    .btn-accent{
+      background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700;
+    }
+    .btn-accent:hover{ background:#f7fbff; }
+
+    /* Sections */
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+
+    /* Cards */
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+
+    /* People cards */
+    .person-card{ transition:transform .12s ease; }
+    .person-card:hover{ transform:translateY(-1px); }
+    .person-card .card-body{ padding:1rem 1.1rem; }
+    .headshot{
       width:86px; height:86px; object-fit:cover; border-radius:50%;
-      border: 2px solid rgba(0,0,0,.03);
-      box-shadow: 0 4px 12px rgba(0,0,0,.06);
-      flex: 0 0 auto;
+      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
     }
     .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
 
-    /* ---------- Logo wall ---------- */
+    /* Badges (stats) */
+    .stat-badges{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin-top:.75rem; }
+    .stat-pill{
+      display:inline-flex; align-items:center; gap:.45rem;
+      border:1px solid #dfe6ee; border-radius:999px; padding:.35rem .75rem; background:#fff; color:var(--oc-ink);
+      font-weight:700; font-size:.92rem;
+    }
+    .stat-pill .num{ font-variant-numeric:tabular-nums; }
+
+    /* Logo wall */
     .logo-wall{
       display:grid; gap:22px; align-items:center; justify-items:center;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      padding: 8px 6px;
-      border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      background: #fff;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
     }
-    .logo-wall img{
-      max-height:60px; width:auto; display:block; object-fit:contain;
-      filter: grayscale(8%); transition: transform .16s ease;
-    }
-    .logo-wall img:hover{ transform: scale(1.03); }
+    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
+    .logo-wall img:hover{ transform:scale(1.03); }
 
-    /* ---------- Map ---------- */
-    #visitorMap{
-      height: 360px; border-radius: 12px;
-      border:1px solid var(--oc-border);
-      box-shadow: var(--oc-shadow);
-    }
+    /* Map */
+    #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
 
-    /* ---------- Sections ---------- */
-    .oc-section{ margin-top: 34px; }
-    .oc-kicker{
-      font-size:.8rem; letter-spacing:.18em; text-transform:uppercase;
-      color:var(--oc-subtle);
-    }
+    /* Focus */
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
     @media (max-width: 991.98px){
-      .navbar-brand .brand-wordmark{ font-size: 1.15rem; }
-      .hero .content{ padding: 40px 0 32px; }
+      .navbar-brand .brand-wordmark{ font-size:1.15rem; }
+      .hero .content{ padding:40px 0 32px; }
     }
   </style>
 </head>
@@ -163,33 +140,21 @@
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <!-- Clean bold links -->
-        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-
-        <!-- GitHub icon-only link -->
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only"
-             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
-             target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub"
-             title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
-                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
-                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
         </li>
@@ -202,102 +167,117 @@
 <header class="hero">
   <div class="container oc-container content">
     <h1>Community &amp; Collaboration</h1>
-    <p class="lead">Together, we’re building the OpenConstruction community, connecting researchers, practitioners, and innovators to share knowledge for the future of construction.</p>
+    <p class="lead">
+      Together, we’re building an <span class="hl">open-science</span> community for <span class="hl">AI in construction</span> —
+      connecting researchers, practitioners, and innovators to share knowledge and accelerate impact.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=model.yml" target="_blank" rel="noopener">Submit a Model</a>
+      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">Join Discussions</a>
+    </div>
+
+    <div class="stat-badges" aria-label="Community stats">
+      <span class="stat-pill" title="Contributors"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="num" id="statContrib">7</span> Contributors</span>
+      <span class="stat-pill" title="Institutions"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="num" id="statInst">8</span> Institutions</span>
+      <span class="stat-pill" title="Countries"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V5a2 2 0 0 1 2-2h11l-1 3h4v15" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="num" id="statCountries">2</span> Countries</span>
+    </div>
   </div>
 </header>
 
 <main class="container oc-container">
-  <!-- People -->
+  <!-- Core Team -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Team</div>
     <div class="row g-4">
       <!-- 1 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong">
             <div>
               <h5 class="card-title">Ruoxin Xiong, Ph.D., M.ASCE</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University, Kent, OH, USA</div>
+              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (OH, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 2 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang">
             <div>
               <h5 class="card-title">Yanyu Wang, Ph.D., A.M.ASCE</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University, Baton Rouge, LA, USA</div>
+              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University (LA, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 3 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai">
             <div>
               <h5 class="card-title">Jiannan Cai, Ph.D., A.M.ASCE</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">School of Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio, TX, USA</div>
+              <div class="affil">Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio (TX, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 4 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu">
             <div>
               <h5 class="card-title">Kaijian Liu, Ph.D., A.M.ASCE</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">Dept. of Civil, Environmental, and Ocean Engineering, Stevens Institute of Technology, Hoboken, NJ, USA</div>
+              <div class="affil">Civil, Environmental &amp; Ocean Engineering, Stevens Institute of Technology (NJ, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 5 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu">
             <div>
               <h5 class="card-title">Yuansheng Zhu</h5>
               <div class="role">Researcher</div>
-              <div class="affil">Dept. of Computing &amp; Information Sciences, Rochester Institute of Technology, Rochester, NY, USA</div>
+              <div class="affil">Computing &amp; Information Sciences, Rochester Institute of Technology (NY, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 6 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang">
             <div>
               <h5 class="card-title">Pingbo Tang, Ph.D., M.ASCE</h5>
               <div class="role">Associate Professor</div>
-              <div class="affil">Dept. of Civil &amp; Environmental Engineering, Carnegie Mellon University, Pittsburgh, PA, USA</div>
+              <div class="affil">Civil &amp; Environmental Engineering, Carnegie Mellon University (PA, USA)</div>
             </div>
           </div>
         </div>
       </div>
       <!-- 7 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
+        <div class="card oc-card person-card h-100">
           <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary" loading="lazy" decoding="async">
+            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary">
             <div>
               <h5 class="card-title">Nora El-Gohary, Ph.D., A.M.ASCE</h5>
               <div class="role">Professor</div>
-              <div class="affil">Dept. of Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign, Urbana, IL, USA</div>
+              <div class="affil">Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign (IL, USA)</div>
             </div>
           </div>
         </div>
@@ -311,13 +291,13 @@
     <div class="row g-4">
       <!-- tsrobcvai -->
       <div class="col-md-6 col-xl-4">
-        <a class="text-decoration-none" href="https://github.com/tsrobcvai" target="_blank" rel="noopener">
-          <div class="card person-card h-100">
+        <a class="text-decoration-none" href="https://github.com/tsrobcvai" target="_blank" rel="noopener" aria-label="Visit @tsrobcvai on GitHub">
+          <div class="card oc-card person-card h-100">
             <div class="card-body d-flex gap-3">
               <img class="headshot" src="https://github.com/tsrobcvai.png?size=160" alt="GitHub avatar of @tsrobcvai" loading="lazy" decoding="async">
               <div>
                 <h5 class="card-title mb-1">@tsrobcvai</h5>
-                <div class="role"></div>
+                <div class="role">Contributor</div>
                 <div class="affil">McGill University</div>
               </div>
             </div>
@@ -328,93 +308,69 @@
     </div>
   </section>
 
-  <!-- Logos -->
+  <!-- Affiliations -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Affiliations</div>
     <div class="logo-wall">
       <img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/lsu.png"        alt="Louisiana State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/utsa.png"       alt="University of Texas at San Antonio" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/stevens.png"    alt="Stevens Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/rit.png"        alt="Rochester Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/cmu.png"        alt="Carnegie Mellon University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/uiuc.png"       alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
-	  <img src="assets/img/institutions/McGill.png"       alt="McGill University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
+      <img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async">
     </div>
   </section>
 
-  <!-- Collaboration -->
-  <section class="oc-section mb-4">
-    <div class="oc-kicker mb-2">Collaboration and Contribution</div>	
-	      <!-- Guidelines for contributors -->
-      <div class="content-block">
-        <h2 class="section-title">Contributor guidelines</h2>
-        <p>
-          We encourage contributions that uphold the core values of open
-          science. When sharing datasets, models or code, please consider
-          the following guidelines derived from international best practices:
-        </p>
-        <ul>
-          <li>
-            <strong>Inclusivity and accessibility:</strong> Ensure your
-            contributions are understandable and usable by diverse audiences.
-            Open science guidelines should be inclusive of researchers from
-            different disciplines, career stages and regions.
-          </li>
-          <li>
-            <strong>Ethical and responsible sharing:</strong> Protect
-            privacy and confidentiality. Balance openness with ethical
-            considerations such as data anonymisation and consent.
-          </li>
-          <li>
-            <strong>Data management and sharing:</strong> Provide clear
-            documentation, metadata and licensing information. Follow
-            recommendations on data organisation, storage and use of open
-            repositories.
-          </li>
-          <li>
-            <strong>Intellectual property & attribution:</strong> Cite
-            sources properly. Respect intellectual property rights and
-            acknowledge the creators of data, software and other research
-            outputs.
-          </li>
-        </ul>
+  <!-- Contribute: Guidelines & Contact -->
+  <section class="oc-section">
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Contribute</div>
+            <h3 class="oc-card-title mb-2">Contributor Guidelines</h3>
+            <p class="mb-3">We welcome contributions that uphold <span class="hl">open-science</span> values:</p>
+            <ul class="mb-0">
+              <li><strong>Inclusive & accessible:</strong> Clear docs for diverse audiences.</li>
+              <li><strong>Ethical sharing:</strong> Respect privacy, consent, and anonymization.</li>
+              <li><strong>Good data hygiene:</strong> Provide metadata, license, and repository links.</li>
+              <li><strong>Attribution:</strong> Cite sources and acknowledge creators.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-	  
-	        <!-- Contact & support -->
-      <div class="content-block">
-        <h2 class="section-title">Connect with us</h2>
-        <p>
-          We’re here to support your journey in open construction research.
-          You can reach out in several ways:
-        </p>
-        <ul>
-          <li>
-            <strong>Create an issue:</strong> For feature requests, bug
-            reports or new dataset/model submissions, use our
-            <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub issue templates</a>.
-          </li>
-          <li>
-            <strong>General enquiries:</strong> Email
-            <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a> for
-            support or partnership discussions.
-          </li>
-        </ul>
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Connect</div>
+            <h3 class="oc-card-title mb-2">Work with Us</h3>
+            <p class="mb-2">Have ideas, features, or partnership opportunities?</p>
+            <ul class="mb-3">
+              <li><strong>Create an issue:</strong> Use our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a>.</li>
+              <li><strong>Email:</strong> <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>.</li>
+            </ul>
+            <div class="d-flex gap-2">
+              <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Propose a Feature</a>
+              <a class="btn-accent btn-sm" href="contributors.html#visitorMap">View Reach</a>
+            </div>
+          </div>
+        </div>
       </div>
-	  
+    </div>
+  </section>
 
-  <!-- Visitors (heatmap only) -->
-  <section class="oc-section mb-5">
+  <!-- Visitors (heatmap) -->
+  <section class="oc-section mb-5" id="visitorMapSection">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
       <div>
         <div class="oc-kicker">Visitors</div>
-        <h3 class="h4 mb-0">Historical visits</h3>
+        <h3 class="oc-card-title mb-0">Historical Visits</h3>
       </div>
     </div>
     <div id="visitorMap" aria-label="Visitor map"></div>
-    <p class="text-muted small mt-2 mb-0">
-      Shows historical visits. No raw IPs are stored.
-    </p>
+    <p class="text-muted small mt-2 mb-0">Aggregated locations for the homepage only. No raw IPs stored.</p>
   </section>
 </main>
 
@@ -428,19 +384,21 @@
 <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Auto-active current nav link (adds aria-current + .active) -->
+<!-- Auto-active current nav link -->
 <script>
   (function(){
-    var current = location.pathname.split('/').pop() || 'about.html';
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href'); if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'about.html' && (current === '' || current === '/'));
-      if(isMatch){
-        a.classList.add('active');
-        a.setAttribute('aria-current','page');
-      }
+    const path = (location.pathname || '').replace(/\/+$/,'');
+    const file = path.split('/').pop() || 'contributors.html';
+    const routeByFile = {
+      '': 'contributors',
+      'contributors': 'contributors', 'contributors.html': 'contributors',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models'
+    };
+    const route = routeByFile[file] || (file.includes('contributors') ? 'contributors' : '');
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
     });
   })();
 </script>
@@ -458,15 +416,13 @@
 <!-- Render homepage history as heatmap -->
 <script>
 (async function(){
-  // Visualize visits recorded on the homepage
-  const PAGE_TO_SHOW = 'index';
+  const PAGE_TO_SHOW = 'index'; // showing homepage visits
 
   // Map
   const map = L.map('visitorMap', { zoomControl:true });
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
   }).addTo(map);
   map.setView([39.5, -98.35], 3);
   setTimeout(()=>map.invalidateSize(), 0);
@@ -474,14 +430,13 @@
   // Supabase
   const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
   const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
-  if (!sb) { console.warn('Supabase not configured; skipping'); return; }
+  if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
 
   try{
-    // Paginate all rows and build heat points
     const pageSize = 1000;
     let from = 0, to = pageSize - 1;
     const bounds = L.latLngBounds();
-    const heatPoints = []; // [lat, lon, intensity]
+    const heatPoints = [];
 
     while (true){
       const { data: rows, error } = await sb
@@ -493,24 +448,20 @@
       if (error){ console.error(error); break; }
       if (!rows || rows.length === 0) break;
 
-      rows.forEach(r=>{
+      for (const r of rows){
         if (typeof r.lat === 'number' && typeof r.lon === 'number'){
           heatPoints.push([r.lat, r.lon, 1]);
           bounds.extend([r.lat, r.lon]);
         }
-      });
-
+      }
       if (rows.length < pageSize) break;
       from += pageSize; to += pageSize;
     }
 
-    // Add heat layer (weights=1 per visit)
-    L.heatLayer(heatPoints, { radius: 20, blur: 15, maxZoom: 11 }).addTo(map);
-
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
-    else map.setView([20,0], 2); // fallback if no points
+    L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
+    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2)); else map.setView([20,0], 2);
   }catch(e){
-    console.error('heatmap render failed:', e);
+    console.error('Heatmap render failed:', e);
   }
 })();
 </script>
