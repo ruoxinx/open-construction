@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Models</title>
+  <title>OpenConstruction · Models</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -142,6 +142,28 @@
       align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
       font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
     }
+	
+	/* Yellow bell only */
+.btn-subscribe-icon{
+  color: var(--oc-brand-accent);           /* makes the SVG (currentColor) yellow */
+  background: transparent;
+  border: 0;
+  padding: .25rem .4rem;
+  line-height: 1;
+}
+.btn-subscribe-icon:hover{ filter: brightness(1.05); }
+.btn-subscribe-icon:focus-visible{
+  outline: 2px solid var(--oc-focus);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.icon-bell{
+  fill: var(--oc-brand-accent); /* your yellow */
+}
+
+	
+	
   </style>
 </head>
 <body>
@@ -188,6 +210,22 @@
               8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
           </a>
         </li>
+		
+				<!-- Subscribe bell -->
+<li class="nav-item">
+<button type="button"
+        class="nav-link px-2 icon-only btn-subscribe-icon"
+        data-bs-toggle="modal" data-bs-target="#subscribeModal"
+        aria-label="Subscribe for updates" title="Subscribe">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+       viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+             7 0 0 0 8.5 2z"/>
+  </svg>
+</button>
+		
       </ul>
     </div>
   </div>
@@ -846,6 +884,31 @@ if(document.readyState === 'loading'){
    class="issue-btn" target="_blank" rel="noopener">
    Add New Model
 </a>
+
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
+               placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
