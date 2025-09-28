@@ -507,7 +507,23 @@
   "code_url": "https://github.com/CrossStyle/Image2Triplets",
   "thumbnail": "assets/img/models/image2triplets.png",
   "added_date": "2025-09-28"
+},
+{
+  "id": "mr-visual-warning",
+  "title": "Real-time mixed reality-based visual warning for construction workforce safety",
+  "authors": ["Shuaiyi Mercer", "Yujie Lu", "Runhe Shi", "Weili Fang", "Siyuan Lu"],
+  "abstract": "Spatial locations of personnel, equipment, and materials are constantly changing as construction projects progress. The dynamic nature of the construction industry affects workers' performance of identifying hazards. Even though a great deal of effort has been made to improve construction safety, the construction industry still witnesses a high accident rate. In order to complement the existing body of knowledge relating to construction safety, this paper integrates Digital Twin (DT), Deep Learning (DL), and Mixed Reality (MR) technologies into a newly developed real-time visual warning system, which enables construction workers to proactively determine their safety status and avoid accidents. Next, system tests were conducted under three quasi-on-site scenarios, and the feasibility was proven in terms of synchronising construction activities over a large area and visually representing hazard information to its users. These evidenced merits of the development testing scenarios can improve workers' risk assessment accuracy, reinforce workers' safety behaviour, and provide a new perspective for construction safety managers to analyse construction safety status.",
+  "year": 2022,
+  "modalities": ["Video", "BIM Models"],
+  "tasks": ["Object detection", "Object tracking"],
+  "applications": ["Safety monitoring"],
+  "license": "Not specified",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2022.104252",
+  "code_url": "https://github.com/Mercer-S/MR-visual-warning",
+  "thumbnail": "assets/img/models/mr-visual-warning.png",
+  "added_date": "2025-09-28"
 }
+
 
 
 
