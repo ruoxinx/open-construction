@@ -111,6 +111,12 @@
       background:var(--tag-app-bg); border:1px solid var(--tag-app-border); color:var(--tag-app-text);
       font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
     }
+	
+	.hl{
+      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
+      padding:0 .06em;
+      font-weight:700;
+    }
 
     .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
@@ -191,7 +197,7 @@
 <header class="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">OpenConstruction Model Catalog</h1>
-    <p class="lead">Explore open models for construction monitoring and analysis</p>
+    <p class="lead">Explore <span class="hl">open models</span> for construction monitoring and analysis</p>
     <div id="searchDock" class="mt-3">
       <!-- CENTER search (large) -->
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search models, tasks, applications …" aria-label="Search models large">
