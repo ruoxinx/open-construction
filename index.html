@@ -221,6 +221,17 @@
       .oc-timeline{ scroll-behavior:auto; }
       .ring-ready .ring-val{ transition:none; }
     }
+
+	/* Keep sticky nav below Bootstrap modal (modal/backdrop are 1055/1050) */
+.oc-nav { z-index: 1030 !important; }
+
+/* If you previously added transforms to any ancestors, remove them.
+   Transforms create a new containing block that can break fixed modals. */
+html, body, .oc-container { transform: none !important; }
+
+	
+	
+	
   </style>
 </head>
 <body>
@@ -259,90 +270,21 @@
                        0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
-		  
-  <!-- Subscribe trigger -->
-  <button type="button"
-          class="btn btn-outline-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#subscribeModal"
-          id="subscribeTrigger">
-    🔔 Subscribe
-  </button>
-
-  <!-- Fallback (shown only if JS/Bootstrap not available) -->
-  <a href="https://YOUR_DC.list-manage.com/subscribe?u=YOUR_U&id=YOUR_LIST_ID"
-     target="_blank" rel="noopener"
-     class="btn btn-primary d-none" id="subscribeFallback">
-     🔔 Subscribe
-  </a>
-</div>
-
-<!-- Subscribe Modal -->
-<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4">
-      <div class="d-flex justify-content-between align-items-start">
-        <div>
-          <h5 class="mb-1">Stay Updated</h5>
-          <p class="text-muted mb-3">Get an email when new datasets or models are added.</p>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <!-- Mailchimp embedded form -->
-      <form action="https://YOUR_DC.list-manage.com/subscribe/post?u=YOUR_U&id=YOUR_LIST_ID"
-            method="post" target="_blank" novalidate>
-        <div class="mb-3">
-          <label for="mce-EMAIL" class="form-label">Email</label>
-          <input type="email" name="EMAIL" id="mce-EMAIL" class="form-control" placeholder="you@university.edu" required>
-        </div>
-
-        <!-- Optional: let subscribers choose updates -->
-        <div class="mb-3">
-          <label class="form-label">I want updates about:</label>
-          <div class="d-flex gap-3 flex-wrap">
-            <label class="form-check">
-              <input class="form-check-input" type="checkbox" name="group[datasets]" value="1">
-              <span class="form-check-label">Datasets</span>
-            </label>
-            <label class="form-check">
-              <input class="form-check-input" type="checkbox" name="group[models]" value="1">
-              <span class="form-check-label">Models</span>
-            </label>
-            <label class="form-check">
-              <input class="form-check-input" type="checkbox" name="group[both]" value="1">
-              <span class="form-check-label">Both</span>
-            </label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
-
-        <!-- Mailchimp anti-bot field (keep hidden) -->
-        <div style="position: absolute; left: -5000px;" aria-hidden="true">
-          <input type="text" name="b_YOUR_U_YOUR_LIST_ID" tabindex="-1" value="">
-        </div>
-      </form>
+     </li>
+	 
+	         <!-- 🔔 Subscribe button -->
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-primary ms-lg-2"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  id="subscribeTrigger">
+            🔔 Subscribe
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
-</div>
-
-<!-- Load Bootstrap JS (must be before </body>) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Safety: show fallback link if Bootstrap modal isn't available -->
-<script>
-  (function(){
-    // If Bootstrap JS didn't load or modal API missing, reveal fallback link
-    var hasBootstrap = !!(window.bootstrap && bootstrap.Modal);
-    if (!hasBootstrap) {
-      document.getElementById('subscribeTrigger').classList.add('d-none');
-      document.getElementById('subscribeFallback').classList.remove('d-none');
-    }
-  })();
-</script>		  
-		  
-        </li>
+</nav>
+	 
       </ul>
     </div>
   </div>
@@ -857,5 +799,50 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Subscribe Modal (place this just before </body>) -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="mb-1">Stay Updated</h5>
+          <p class="text-muted mb-3">Get an email when new datasets or models are added.</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Replace action with your Mailchimp URL -->
+      <form action="https://YOUR_DC.list-manage.com/subscribe/post?u=YOUR_U&id=YOUR_LIST_ID"
+            method="post" target="_blank" novalidate>
+        <label for="mce-EMAIL" class="form-label">Email</label>
+        <input type="email" id="mce-EMAIL" name="EMAIL" class="form-control mb-3"
+               placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+
+        <!-- anti-bot -->
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_YOUR_U_YOUR_LIST_ID" tabindex="-1" value="">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Optional: fallback link if JS fails -->
+<script>
+  (function () {
+    var ok = !!(window.bootstrap && bootstrap.Modal);
+    if (!ok) {
+      var trig = document.getElementById('subscribeTrigger');
+      if (trig) trig.outerHTML =
+        '<a class="btn btn-primary ms-lg-2" target="_blank" rel="noopener" ' +
+        'href="https://YOUR_DC.list-manage.com/subscribe?u=YOUR_U&id=YOUR_LIST_ID">🔔 Subscribe</a>';
+    }
+  })();
+</script>
+
 </body>
 </html>
