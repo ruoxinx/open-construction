@@ -20,10 +20,10 @@
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
-    a{ color:var(--oc-link); text-decoration:none; }
+    a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
 
-    /* Subtle text highlight */
+    /* Utility highlight (subtle) */
     .hl{
       background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
       padding:0 .06em; font-weight:700;
@@ -63,18 +63,20 @@
     .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
     .btn-ink{
       background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
+      padding:.55rem 1rem; font-weight:700;
     }
-    .btn-ink:hover{ filter:brightness(1.05); color:#fff; text-decoration:none; }
+    .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
     .btn-accent{
       background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
+      padding:.55rem 1rem; font-weight:700;
     }
-    .btn-accent:hover{ background:#f7fbff; text-decoration:none; }
+    .btn-accent:hover{ background:#f7fbff; }
 
-    /* Sections & Cards */
+    /* Sections */
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+
+    /* Cards */
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
@@ -91,39 +93,28 @@
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
 
+    /* Badges (stats) */
+    .stat-badges{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin-top:.75rem; }
+    .stat-pill{
+      display:inline-flex; align-items:center; gap:.45rem;
+      border:1px solid #dfe6ee; border-radius:999px; padding:.35rem .75rem; background:#fff; color:var(--oc-ink);
+      font-weight:700; font-size:.92rem;
+    }
+    .stat-pill .num{ font-variant-numeric:tabular-nums; }
+
     /* Logo wall */
     .logo-wall{
       display:grid; gap:22px; align-items:center; justify-items:center;
       grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
       padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
     }
-    .logo-wall img{
-      max-height:60px; width:auto; display:block; object-fit:contain;
-      filter:grayscale(8%); transition:transform .16s ease;
-    }
+    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
     .logo-wall img:hover{ transform:scale(1.03); }
 
     /* Map */
     #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
 
-    /* Metrics (same style as Home) */
-    .metrics{
-      display:flex; gap:1.4rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.15rem 0 .25rem;
-    }
-    .metric{ display:flex; align-items:center; gap:1rem; }
-    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
-    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
-    .metric .ring-val{
-      stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
-      stroke-dasharray:0 999; stroke-dashoffset:0;
-    }
-    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
-    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
-    .metric .value{ font-weight:800; color:var(--oc-ink); font-size:1.28rem; }
-    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
-
-    /* Focus-visible */
+    /* Focus */
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
     @media (max-width: 991.98px){
@@ -156,15 +147,14 @@
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
              aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
                        0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
                        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
                        1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
         </li>
@@ -182,50 +172,12 @@
       connecting researchers, practitioners, and innovators to share knowledge.
     </p>
 
-    <!-- CTA buttons (kept above metrics for layout parity) -->
-    <div class="cta-row">
-      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
-      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
-      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Join Discussions</a>
-    </div>
+	<div class="cta-row">
+	  <a class="btn-ink btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
+	  <a class="btn-accent btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
+	  <a class="btn-ink btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Join Discussions</a>
+	</div>
 
-    <!-- Community metrics -->
-    <div class="metrics" id="communityMetrics" role="group" aria-label="Community statistics">
-      <!-- Contributors -->
-      <div class="metric" data-kind="contributors">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringContrib" cx="22" cy="22" r="17" fill="none"
-                  transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <circle cx="9" cy="9" r="3"/>
-            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countContrib">—</span>
-          <span class="name">Contributors</span>
-        </span>
-      </div>
-
-      <!-- Institutions -->
-      <div class="metric" data-kind="institutions">
-        <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
-          <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
-          <circle class="ring-val" id="ringInst" cx="22" cy="22" r="17" fill="none"
-                  transform="rotate(-90 22 22)"></circle>
-          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
-            <rect x="0" y="0" width="6" height="6" rx="1"/>
-            <rect x="9" y="0" width="6" height="6" rx="1"/>
-            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
-          </g>
-        </svg>
-        <span class="label">
-          <span class="value" id="countInst">—</span>
-          <span class="name">Institutions</span>
-        </span>
-      </div>
-    </div>
   </div>
 </header>
 
@@ -366,7 +318,7 @@
     </div>
   </section>
 
-  <!-- Contribute & Connect -->
+  <!-- Contribute: Guidelines & Contact -->
   <section class="oc-section">
     <div class="row g-4">
       <div class="col-12 col-lg-6">
@@ -376,10 +328,10 @@
             <h3 class="oc-card-title mb-2">Contributor Guidelines</h3>
             <p class="mb-3">We welcome contributions that uphold <span class="hl">open-science</span> values:</p>
             <ul class="mb-0">
-              <li><strong>Inclusive &amp; accessible:</strong> Clear docs for diverse audiences.</li>
+              <li><strong>Inclusive & accessible:</strong> Clear docs for diverse audiences.</li>
               <li><strong>Ethical sharing:</strong> Respect privacy, consent, and anonymization.</li>
               <li><strong>Data management and sharing:</strong> Provide metadata, license, and repository links.</li>
-              <li><strong>Intellectual property &amp; attribution:</strong> Cite sources and acknowledge creators.</li>
+              <li><strong>Intellectual property & attribution:</strong> Cite sources and acknowledge creators.</li>
             </ul>
           </div>
         </div>
@@ -391,7 +343,7 @@
             <h3 class="oc-card-title mb-2">Work with Us</h3>
             <p class="mb-2">Have ideas, features, or partnership opportunities?</p>
             <ul class="mb-3">
-              <li><strong>Create an issue:</strong> Use our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a>.</li>
+              <li><strong>Create an issue:</strong> For feature requests and bug reports, use our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a>.</li>
               <li><strong>General enquiries:</strong> Email <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a> for support or partnership discussions.</li>
             </ul>
           </div>
@@ -502,93 +454,6 @@
   }catch(e){
     console.error('Heatmap render failed:', e);
   }
-})();
-</script>
-
-<!-- Community metric circles (auto counts + animation) -->
-<script>
-(function(){
-  const metricsWrap = document.getElementById('communityMetrics');
-  if (!metricsWrap) return;
-
-  const countContribEl = document.getElementById('countContrib');
-  const countInstEl    = document.getElementById('countInst');
-  const ringContrib    = document.getElementById('ringContrib');
-  const ringInst       = document.getElementById('ringInst');
-
-  const R = 17, CIRC = 2 * Math.PI * R;
-
-  [ringContrib, ringInst].forEach(r => {
-    if(!r) return;
-    r.style.strokeDasharray = `${CIRC}`;
-    r.style.strokeDashoffset = `${CIRC}`;
-  });
-
-  const ease = t => 1 - Math.pow(1 - t, 3);
-  function countUp(el, to, dur=900){
-    const start = performance.now();
-    function step(now){
-      const t = Math.min(1, (now - start)/dur);
-      el.textContent = Math.round(to * ease(t));
-      if(t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function measure(){
-    // contributors: all person cards (team + community)
-    const contributors = document.querySelectorAll('.person-card').length;
-    // institutions: number of logos in the wall
-    const institutions = document.querySelectorAll('.logo-wall img').length;
-    return { contributors, institutions };
-  }
-
-  function setRings(offset){
-    if (ringContrib) ringContrib.style.strokeDashoffset = String(offset);
-    if (ringInst)    ringInst.style.strokeDashoffset    = String(offset);
-  }
-
-  function playRings(){
-    document.body.classList.add('ring-ready');
-    requestAnimationFrame(() => { setRings(0); });
-  }
-
-  // Animate when in view (parity with Home)
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.target !== metricsWrap) return;
-      if (e.isIntersecting){
-        const { contributors, institutions } = measure();
-        countUp(countContribEl, contributors);
-        countUp(countInstEl, institutions);
-        playRings();
-      } else {
-        setRings(CIRC);
-      }
-    });
-  }, { threshold: 0.35 });
-  io.observe(metricsWrap);
-
-  // Initialize values and play if above the fold
-  (function init(){
-    const rect = metricsWrap.getBoundingClientRect();
-    const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
-    const { contributors, institutions } = measure();
-    countContribEl.textContent = contributors.toString();
-    countInstEl.textContent = institutions.toString();
-    if (inView) {
-      setRings(CIRC);
-      requestAnimationFrame(playRings);
-    }
-  })();
-
-  // Keep counts fresh if DOM changes (e.g., cards/logos added dynamically)
-  const mo = new MutationObserver(() => {
-    const { contributors, institutions } = measure();
-    countContribEl.textContent = contributors.toString();
-    countInstEl.textContent = institutions.toString();
-  });
-  mo.observe(document.body, { childList:true, subtree:true });
 })();
 </script>
 </body>
