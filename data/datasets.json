@@ -2086,7 +2086,7 @@
   "authors": "Wenjie Liao, Xinzheng Lu, Yuli Huang, Zhe Zheng, Yuanqing Lin",
   "doi": "https://doi.org/10.1016/j.autcon.2021.103931",
   "year": 2021,
-  "data_modality": "Rasterized CAD",
+  "data_modality": "Rasterized CAD images",
   "num_images": 250,
   "num_classes": null,
   "classes": ["Architectural floor plan", "Shear wall structural layout"],
