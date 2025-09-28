@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://www.openconstruction.org'; // change to your domain
+const SITE = 'http://ruoxinx.github.io/open-construction-test/'; // change to your domain
 const MAX_ITEMS = 10;
 
 // ---------- helpers ----------
