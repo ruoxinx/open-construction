@@ -3,146 +3,223 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contributors</title>
+  <title>OpenConstruction · Home</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Leaflet core -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-
+  <!-- Design tokens + polish (LIGHT ONLY) -->
   <style>
-    /* ---------- Design tokens (light only) ---------- */
     :root{
-      --oc-bg: #ffffff;
-      --oc-text: #1e2a36;
-      --oc-subtle: #6b7b8c;
-      --oc-border: #e9eef4;
-      --oc-ink: #0f2e4b;
-      --oc-link: #0b66c3;
-      --oc-card: #ffffff;
-      --oc-shadow: 0 8px 24px rgba(15,46,75,.06);
-      --oc-radius: 14px;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
+      --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
-    html, body{ background: var(--oc-bg); color: var(--oc-text); }
-    a{ color: var(--oc-link); }
-    .oc-container{ max-width: 1080px; }
 
-    /* ---------- Navbar ---------- */
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
+
+    /* Utility highlight (for key phrases) */
+    .hl{
+      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
+      padding:0 .06em;
+      font-weight:700;
+    }
+
+    /* Focus-visible for keyboard users */
+    :focus-visible{
+      outline:2px solid var(--oc-focus);
+      outline-offset:2px;
+      border-radius:6px;
+    }
+
+    /* Navbar */
     .oc-nav{
-      backdrop-filter: saturate(120%) blur(6px);
+      backdrop-filter:saturate(120%) blur(6px);
       border-bottom:1px solid var(--oc-border)!important;
     }
     .brand-wordmark{
       display:inline-flex; gap:.25rem; align-items:baseline;
-      color:var(--oc-ink); font-weight:800; letter-spacing:.1px;
-      font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem);
+      font-weight:800; letter-spacing:.1px; color:var(--oc-brand-ink);
+      font-size:clamp(1.1rem, 1rem + .6vw, 1.4rem);
     }
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
 
-    /* Clean, professional nav links (bold, no background/outline) */
     .navbar .nav-link.plain{
-      font-weight:700;
-      color: var(--oc-text);
-      padding:.5rem .6rem;
+      font-weight:700; color:var(--oc-text); padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover{
-      color: var(--oc-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
+    .navbar .nav-link.plain:hover,
     .navbar .nav-link.plain.active{
-      color: var(--oc-ink);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      color:var(--oc-brand-ink);
+      text-decoration:underline; text-underline-offset:3px;
     }
 
-    /* Icon-only nav link */
-    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
-    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
-    .nav-link.icon-only:hover svg{ opacity:1; }
-
-    .oc-btn{ border-radius:999px; border-color:var(--oc-border); color:var(--oc-text); }
-    .oc-btn:hover{ background:#f6f9fc; border-color:#d9e3ee; color:var(--oc-ink); }
-    .oc-cta{ border-radius:999px; box-shadow: var(--oc-shadow); }
-
-    /* ---------- Hero ---------- */
+    /* Hero */
     .hero{
-      background: #fff;
-      color: var(--oc-ink);
-      border-bottom: 1px solid var(--oc-border);
+      background:#fff; color:var(--oc-brand-ink);
+      border-bottom:1px solid var(--oc-border);
     }
-    .hero .content{
-      padding: 56px 0 44px;
-      text-align: center;
-    }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.2rem);
-      margin: .25rem 0 .35rem;
+      font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
+      margin:.25rem 0 .35rem;
     }
-    .hero p.lead{ max-width: 70ch; margin: 0 auto; color: var(--oc-subtle); }
-    .pill{
-      display:inline-flex; gap:.5rem; align-items:center;
-      border-radius: 999px; padding:.4rem .8rem;
-      background: transparent; border: 1px solid #dfe6ee; color: var(--oc-ink);
-      font-size:.88rem;
-    }
+    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* ---------- People cards ---------- */
-    .person-card{
+    /* Buttons (consistent with inner pages) */
+    .btn-ink{
+      background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
+      padding:.55rem 1rem; font-weight:700;
+    }
+    .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
+    .btn-accent{
+      background:#fff; color:var(--oc-brand-ink); border-radius:999px; border:1px solid var(--oc-brand-ink);
+      padding:.55rem 1rem; font-weight:700;
+    }
+    .btn-accent:hover{ background:#f7fbff; }
+
+    .hero-center {
+      display:flex; flex-direction:column; align-items:center; gap:1rem;
+    }
+    .cta-group { display:inline-flex; gap:1rem; align-items:center; }
+
+    /* Sections & cards */
+    .oc-section{ margin-top:40px; }
+    .oc-card{
       background:var(--oc-card);
       border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      box-shadow: var(--oc-shadow);
-      transition: transform .12s ease;
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
     }
-    .person-card:hover{ transform: translateY(-1px); }
-    .person-card .card-body{ padding: 1rem 1.1rem; }
-    .person-card img.headshot{
-      width:86px; height:86px; object-fit:cover; border-radius:50%;
-      border: 2px solid rgba(0,0,0,.03);
-      box-shadow: 0 4px 12px rgba(0,0,0,.06);
-      flex: 0 0 auto;
-    }
-    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
-    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
-    .person-card .affil{ font-size:.92rem; }
-
-    /* ---------- Logo wall ---------- */
-    .logo-wall{
-      display:grid; gap:22px; align-items:center; justify-items:center;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      padding: 8px 6px;
-      border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      background: #fff;
-    }
-    .logo-wall img{
-      max-height:60px; width:auto; display:block; object-fit:contain;
-      filter: grayscale(8%); transition: transform .16s ease;
-    }
-    .logo-wall img:hover{ transform: scale(1.03); }
-
-    /* ---------- Map ---------- */
-    #visitorMap{
-      height: 360px; border-radius: 12px;
-      border:1px solid var(--oc-border);
-      box-shadow: var(--oc-shadow);
-    }
-
-    /* ---------- Sections ---------- */
-    .oc-section{ margin-top: 34px; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-brand-ink); }
+    .oc-card .oc-card-body{ padding:1.25rem; }
     .oc-kicker{
-      font-size:.8rem; letter-spacing:.18em; text-transform:uppercase;
-      color:var(--oc-subtle);
+      font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle);
+    }
+    .oc-ul{ margin-bottom:0; padding-left:1.1rem; }
+    .oc-ul li{ margin:.35rem 0; }
+
+    /* Reference block */
+    pre.oc-bib{
+      background:var(--oc-muted); color:#415367; border:1px solid var(--oc-border);
+      border-radius:10px; padding:1rem; overflow:auto;
     }
 
-    @media (max-width: 991.98px){
-      .navbar-brand .brand-wordmark{ font-size: 1.15rem; }
-      .hero .content{ padding: 40px 0 32px; }
+    /* Footer */
+    footer{
+      border-top:1px solid var(--oc-border);
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.02));
+    }
+    .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
+
+    /* ==============================
+       Horizontal Timeline
+       ============================== */
+    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
+    .oc-tl-wrap::before,
+    .oc-tl-wrap::after{
+      content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
+    }
+    .oc-tl-wrap::before{
+      left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius);
+    }
+    .oc-tl-wrap::after{
+      right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
+      border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius);
+    }
+
+    .oc-timeline{
+      display:flex; gap:1.25rem;
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      padding:.5rem 0 1rem;
+      scrollbar-width:thin;
+    }
+
+    .oc-tl-item{
+      scroll-snap-align:center;
+      flex:0 0 auto;
+      width:280px; max-width:85vw;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      padding:1rem .95rem;
+      position:relative;
+    }
+    .oc-tl-date{
+      display:inline-block;
+      font-weight:800; letter-spacing:.02em;
+      color:var(--oc-brand-ink);
+      background:#eef4fb; border:1px solid #dfe8f3;
+      padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
+    }
+    .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
+    .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
+
+    .oc-tl-title-row{ display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem; }
+    .oc-tl-icon{
+      flex:0 0 auto; width:22px; height:22px; border-radius:8px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background:#eef4fb; border:1px solid #dfe8f3; color:var(--oc-brand-ink);
+      box-shadow:0 1px 2px rgba(15,46,75,.04);
+    }
+
+    .oc-tl-item::after{
+      content:""; position:absolute; left:50%; transform:translateX(-50%);
+      bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
+    }
+
+    .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
+    .oc-tl-btn{
+      display:flex; align-items:center; justify-content:center;
+      width:38px; height:38px; border-radius:999px;
+      background:#ffffff; border:1px solid var(--oc-border);
+      box-shadow:var(--oc-shadow); color:var(--oc-brand-ink);
+    }
+    .oc-tl-btn:hover{ filter:brightness(1.03); }
+    .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
+    .oc-tl-prev{ left:.5rem; }
+    .oc-tl-next{ right:.5rem; }
+
+    .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
+    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; }
+    .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
+
+    /* ==============================
+       Hero Metrics (rings)
+       ============================== */
+    .metrics{
+      display:flex; gap:1.4rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.15rem 0 .25rem;
+    }
+    .metric{ display:flex; align-items:center; gap:1rem; background:transparent; border:none; }
+    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
+    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
+    .metric .ring-val{
+      stroke:var(--oc-brand-accent); /* PRIMARY RING COLOR */
+      stroke-width:4; stroke-linecap:round;
+      stroke-dasharray:0 999; stroke-dashoffset:0;
+    }
+    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
+    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
+    .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
+    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
+
+    /* Ensure Models ring matches Datasets ring exactly */
+    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
+    .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
+
+    @media (prefers-reduced-motion: reduce){
+      .oc-timeline{ scroll-behavior:auto; }
+      .ring-ready .ring-val{ transition:none; }
     }
   </style>
 </head>
@@ -157,39 +234,29 @@
         <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
       </span>
     </a>
+
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <!-- Clean bold links -->
-        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-
-        <!-- GitHub icon-only link -->
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only"
-             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
-             target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub"
-             title="View on GitHub">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
-                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
                        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
-                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
         </li>
@@ -201,243 +268,504 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Community &amp; Collaboration</h1>
-    <p class="lead">Together, we’re building the OpenConstruction community, connecting researchers, practitioners, and innovators to share knowledge for the future of construction.</p>
+    <h1 class="mb-1">OpenConstruction Overview</h1>
+    <p class="lead mb-0">
+      An <span class="hl">open-science</span> platform advancing <span class="hl">AI for construction</span> through
+      a curated catalog of datasets and models, shared by a <span class="hl">community of contributors</span>.
+    </p>
+
+    <!-- grouped metrics + buttons -->
+    <div class="hero-center">
+      <!-- metrics -->
+      <div class="metrics" id="heroMetrics" role="group" aria-label="Catalog statistics">
+        <!-- Dataset metric -->
+        <div class="metric" data-kind="datasets">
+          <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringDatasets" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="0" y="0" width="6" height="6" rx="1"/>
+              <rect x="9" y="0" width="6" height="6" rx="1"/>
+              <rect x="4.5" y="9" width="6" height="6" rx="1"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countDatasets">68</span>
+            <span class="name">Datasets</span>
+          </span>
+        </div>
+
+        <!-- Models metric -->
+        <div class="metric" data-kind="models">
+          <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringModels" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="9" cy="9" r="3"/>
+              <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countModels">30</span>
+            <span class="name">Models</span>
+          </span>
+        </div>
+      </div><!-- /metrics -->
+
+      <!-- buttons -->
+      <div class="cta-group mt-2">
+        <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
+        <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
+        <a class="btn btn-ink btn-sm" href="contributors.html">Get&nbsp;Involved</a>
+      </div>
+    </div><!-- /hero-center -->
   </div>
 </header>
 
 <main class="container oc-container">
-  <!-- People -->
+  <!-- About + Vision -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Team</div>
     <div class="row g-4">
-      <!-- 1 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Ruoxin Xiong, Ph.D., M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University, Kent, OH, USA</div>
-            </div>
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">About</div>
+            <h3 class="oc-card-title mb-2">What is OpenConstruction?</h3>
+            <p class="mb-0">
+              OpenConstruction is a curated catalog of <span class="hl">open datasets</span> and <span class="hl">AI models</span> for the construction domain.
+              We standardize metadata and links to speed discovery, reuse, and reproducibility across the project lifecycle.
+            </p>
           </div>
         </div>
       </div>
-      <!-- 2 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Yanyu Wang, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University, Baton Rouge, LA, USA</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 3 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Jiannan Cai, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">School of Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio, TX, USA</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 4 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Kaijian Liu, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">Dept. of Civil, Environmental, and Ocean Engineering, Stevens Institute of Technology, Hoboken, NJ, USA</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 5 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Yuansheng Zhu</h5>
-              <div class="role">Researcher</div>
-              <div class="affil">Dept. of Computing &amp; Information Sciences, Rochester Institute of Technology, Rochester, NY, USA</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 6 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Pingbo Tang, Ph.D., M.ASCE</h5>
-              <div class="role">Associate Professor</div>
-              <div class="affil">Dept. of Civil &amp; Environmental Engineering, Carnegie Mellon University, Pittsburgh, PA, USA</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 7 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary" loading="lazy" decoding="async">
-            <div>
-              <h5 class="card-title">Nora El-Gohary, Ph.D., A.M.ASCE</h5>
-              <div class="role">Professor</div>
-              <div class="affil">Dept. of Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign, Urbana, IL, USA</div>
-            </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Vision</div>
+            <h3 class="oc-card-title mb-2">Our Mission</h3>
+            <p class="mb-3">
+              We foster an <span class="hl">open-science ecosystem</span> by:
+            </p>
+            <ul class="oc-ul">
+              <li>Maintaining an open catalog of construction AI resources.</li>
+              <li>Supporting <span class="hl">reproducible research</span>, teaching, and deployment.</li>
+              <li>Building a <span class="hl">community-driven</span> space for sharing and feedback.</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Community Contributors -->
+  <!-- Open Science & Community -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Community Contributors</div>
-    <div class="row g-4">
-      <!-- tsrobcvai -->
-      <div class="col-md-6 col-xl-4">
-        <a class="text-decoration-none" href="https://github.com/tsrobcvai" target="_blank" rel="noopener">
-          <div class="card person-card h-100">
-            <div class="card-body d-flex gap-3">
-              <img class="headshot" src="https://github.com/tsrobcvai.png?size=160" alt="GitHub avatar of @tsrobcvai" loading="lazy" decoding="async">
-              <div>
-                <h5 class="card-title mb-1">@tsrobcvai</h5>
-                <div class="role"></div>
-                <div class="affil">McGill University</div>
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Get Involved</div>
+        <h3 class="oc-card-title mb-3">Build the OpenConstruction Community</h3>
+        <p class="mb-3">
+          Open science thrives when diverse voices collaborate. Here’s how you can help:
+        </p>
+        <ul class="oc-ul">
+          <li><strong>Share resources:</strong> Submit new datasets or models to enrich the catalog.</li>
+          <li><strong>Discuss & collaborate:</strong> Join public threads and propose ideas.</li>
+          <li><strong>Give feedback:</strong> Suggest features, report issues, and help prioritize.</li>
+          <li><strong>Amplify:</strong> Cite and share the catalog to grow the community.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Development & Achievements -->
+  <section class="oc-section" aria-labelledby="milestones-heading">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Milestones</div>
+        <h3 id="milestones-heading" class="oc-card-title mb-3">Development & Achievements</h3>
+
+        <div class="oc-tl-wrap">
+          <!-- Prev -->
+          <div class="oc-tl-nav oc-tl-prev">
+            <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Timeline -->
+          <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
+            <!-- Team Established -->
+            <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
+              <div class="oc-tl-date">2024.11</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- users/team -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Project Team Established</div>
+              </div>
+              <div class="oc-tl-content">
+                Core team formed to build the platform and roadmap.
+              </div>
+            </div>
+
+            <!-- First Paper Submitted -->
+            <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
+              <div class="oc-tl-date">2025.03</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- document/paper -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M8 13h8M8 17h8M8 9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">First Paper Submitted</div>
+              </div>
+              <div class="oc-tl-content">
+                Initial synthesis of open datasets completed and submitted.
+              </div>
+            </div>
+
+            <!-- Dataset Catalog Online -->
+            <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
+              <div class="oc-tl-date">2025.09</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- globe/launch -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Dataset Catalog Online</div>
+              </div>
+              <div class="oc-tl-content">
+                Dataset Catalog officially launched for the community.
+              </div>
+            </div>
+
+            <!-- Model Catalog Online -->
+            <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
+              <div class="oc-tl-date">2025.10</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- chip/model -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Model Catalog Online</div>
+              </div>
+              <div class="oc-tl-content">
+                Model Catalog released with curated AI models for construction tasks.
               </div>
             </div>
           </div>
-        </a>
+
+          <!-- Next -->
+          <div class="oc-tl-nav oc-tl-next">
+            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- dots -->
+        <div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
       </div>
-      <!-- (Add future community contributors as additional cards here) -->
     </div>
   </section>
 
-  <!-- Logos -->
+  <!-- Reference -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Affiliations</div>
-    <div class="logo-wall">
-      <img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/lsu.png"        alt="Louisiana State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/utsa.png"       alt="University of Texas at San Antonio" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/stevens.png"    alt="Stevens Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/rit.png"        alt="Rochester Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/cmu.png"        alt="Carnegie Mellon University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/uiuc.png"       alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
-	  <img src="assets/img/institutions/McGill.png"       alt="McGill University" loading="lazy" decoding="async">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Reference</div>
+        <h3 class="oc-card-title mb-2">Cite the catalog</h3>
+        <p class="mb-2">Our work is documented in:</p>
+        <p class="mb-3">
+          <strong>
+            <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
+              OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring
+            </a>
+          </strong><br>
+          Ruoxin Xiong, Yanyu Wang, Jiannan Cai, Kaijian Liu, Yuansheng Zhu, Pingbo Tang, Nora El-Gohary<br>
+          arXiv:2508.11482, 2025
+        </p>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="text-muted small">BibTeX</span>
+          <button id="copyBib" class="btn btn-sm btn-outline-secondary" type="button" style="border-radius:999px;">Copy</button>
+        </div>
+        <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
+  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring},
+  author={Ruoxin Xiong and Yanyu Wang and Jiannan Cai and Kaijian Liu and Yuansheng Zhu and Pingbo Tang and Nora El-Gohary},
+  year={2025},
+  eprint={2508.11482},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2508.11482}
+}</pre>
+      </div>
     </div>
   </section>
 
-  <!-- Collaboration -->
-  <section class="oc-section mb-4">
-    <div class="oc-kicker mb-2">Collaboration and Contribution</div>	
-	      <!-- Guidelines for contributors -->
-      <div class="content-block">
-        <h2 class="section-title">Contributor guidelines</h2>
-        <p>
-          We encourage contributions that uphold the core values of open
-          science. When sharing datasets, models or code, please consider
-          the following guidelines derived from international best practices:
-        </p>
-        <ul>
-          <li>
-            <strong>Inclusivity and accessibility:</strong> Ensure your
-            contributions are understandable and usable by diverse audiences.
-            Open science guidelines should be inclusive of researchers from
-            different disciplines, career stages and regions.
-          </li>
-          <li>
-            <strong>Ethical and responsible sharing:</strong> Protect
-            privacy and confidentiality. Balance openness with ethical
-            considerations such as data anonymisation and consent.
-          </li>
-          <li>
-            <strong>Data management and sharing:</strong> Provide clear
-            documentation, metadata and licensing information. Follow
-            recommendations on data organisation, storage and use of open
-            repositories.
-          </li>
-          <li>
-            <strong>Intellectual property & attribution:</strong> Cite
-            sources properly. Respect intellectual property rights and
-            acknowledge the creators of data, software and other research
-            outputs.
-          </li>
-        </ul>
+  <!-- Feedback / Policy -->
+  <section class="oc-section">
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Feedback</div>
+            <h3 class="oc-card-title mb-2">Have an idea or request?</h3>
+            <p class="mb-0">
+              We’d love to hear from you. Share suggestions or feature requests here:
+              <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
+                Create a suggestion
+              </a>.
+            </p>
+          </div>
+        </div>
       </div>
-	  
-	        <!-- Contact & support -->
-      <div class="content-block">
-        <h2 class="section-title">Connect with us</h2>
-        <p>
-          We’re here to support your journey in open construction research.
-          You can reach out in several ways:
-        </p>
-        <ul>
-          <li>
-            <strong>Create an issue:</strong> For feature requests, bug
-            reports or new dataset/model submissions, use our
-            <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub issue templates</a>.
-          </li>
-          <li>
-            <strong>General enquiries:</strong> Email
-            <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a> for
-            support or partnership discussions.
-          </li>
-        </ul>
-      </div>
-	  
 
-  <!-- Visitors (heatmap only) -->
-  <section class="oc-section mb-5">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <div>
-        <div class="oc-kicker">Visitors</div>
-        <h3 class="h4 mb-0">Historical visits</h3>
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Policy</div>
+            <h3 class="oc-card-title mb-2">Request dataset/model removal</h3>
+            <p class="mb-0">
+              If you’d like a dataset/model removed, please email
+              <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>
+              from an address that can verify ownership, and we’ll act quickly.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="visitorMap" aria-label="Visitor map"></div>
-    <p class="text-muted small mt-2 mb-0">
-      Shows historical visits. No raw IPs are stored.
-    </p>
   </section>
 </main>
 
-<footer class="py-4 mt-3 border-top">
+<footer class="py-4 mt-5">
   <div class="container oc-container small text-muted text-center">
     © <span id="yearNow"></span> OpenConstruction
   </div>
 </footer>
 
 <!-- Scripts -->
-<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Auto-active current nav link (adds aria-current + .active) -->
 <script>
+  // Year
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+  // Copy BibTeX
+  const copyBtn = document.getElementById('copyBib');
+  if (copyBtn){
+    copyBtn.addEventListener('click', async () => {
+      const txt = document.getElementById('bibtex').innerText;
+      try{
+        await navigator.clipboard.writeText(txt);
+        copyBtn.textContent = 'Copied';
+        setTimeout(() => copyBtn.textContent = 'Copy', 1600);
+      }catch(e){
+        window.prompt('Copy to clipboard: Ctrl/Cmd+C, Enter', txt);
+      }
+    });
+  }
+
+  /* ===== Timeline navigation, dots, snap-centering, and a11y ===== */
   (function(){
-    var current = location.pathname.split('/').pop() || 'about.html';
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href'); if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'about.html' && (current === '' || current === '/'));
-      if(isMatch){
+    const scroller = document.getElementById('ocTimeline');
+    const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
+    const prevBtn = document.getElementById('tlPrev');
+    const nextBtn = document.getElementById('tlNext');
+    const dotsWrap = document.getElementById('tlDots');
+
+    const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
+    const updateNavVisibility = () => {
+      const show = canScroll();
+      prevBtn.parentElement.style.display = show ? '' : 'none';
+      nextBtn.parentElement.style.display = show ? '' : 'none';
+      dotsWrap.style.display = show ? '' : 'none';
+    };
+
+    // Build dots
+    items.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'oc-tl-dot';
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', `Go to milestone ${i+1}`);
+      d.addEventListener('click', () => scrollToIndex(i));
+      dotsWrap.appendChild(d);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    let index = 0;
+
+    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
+    function scrollToIndex(i){
+      index = clamp(i, 0, items.length - 1);
+      const target = items[index];
+      const offset = Math.max(0, target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2));
+      scroller.scrollTo({ left: offset, behavior: 'smooth' });
+      refresh();
+    }
+
+    function refresh(){
+      prevBtn.disabled = (index === 0);
+      nextBtn.disabled = (index === items.length - 1);
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
+    }
+
+    prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
+    nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
+
+    // Keyboard nav
+    scroller.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
+      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
+    });
+
+    // Update index on manual scroll
+    let t;
+    scroller.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const center = scroller.scrollLeft + scroller.clientWidth/2;
+        const nearest = items.reduce((best, el, i) => {
+          const c = el.offsetLeft + el.clientWidth/2;
+          const d = Math.abs(c - center);
+          return (d < best.d) ? { i, d } : best;
+        }, { i: 0, d: Infinity });
+        if (nearest.i !== index){ index = nearest.i; refresh(); }
+      }, 80);
+    });
+
+    const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
+    scrollToIndex(initial);
+    updateNavVisibility();
+    window.addEventListener('load', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(initial); }, 120));
+    window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
+  })();
+
+  // ===== Hero Metrics: counts + re-animating rings on view =====
+  (function(){
+    const metrics = document.getElementById('heroMetrics');
+    const countElDatasets = document.getElementById('countDatasets');
+    const countElModels = document.getElementById('countModels');
+    const ringDatasets = document.getElementById('ringDatasets');
+    const ringModels = document.getElementById('ringModels');
+    const R = 17, CIRC = 2 * Math.PI * R;
+
+    [ringDatasets, ringModels].forEach(r => {
+      if(!r) return;
+      r.style.strokeDasharray = `${CIRC}`;
+      r.style.strokeDashoffset = `${CIRC}`;
+    });
+
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    function countUp(el, to, dur=900){
+      const start = performance.now();
+      const from = 0;
+      function step(now){
+        const t = Math.min(1, (now - start)/dur);
+        const v = Math.round(from + (to - from)*ease(t));
+        el.textContent = v.toString();
+        if(t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    async function fetchFirst(paths){
+      for(const p of paths){
+        try{
+          const res = await fetch(p, { cache:'no-cache' });
+          if(res.ok){ return res.json(); }
+        }catch(e){}
+      }
+      throw new Error('All JSON paths failed');
+    }
+    function arrayishLength(json){
+      if(Array.isArray(json)) return json.length;
+      if(json && Array.isArray(json.items)) return json.items.length;
+      if(json && Array.isArray(json.data)) return json.data.length;
+      if(json && typeof json === 'object') return Object.keys(json).length;
+      return 0;
+    }
+
+    function setRings(offset){
+      ringDatasets && (ringDatasets.style.strokeDashoffset = String(offset));
+      ringModels && (ringModels.style.strokeDashoffset = String(offset));
+    }
+    function playRings(){
+      document.body.classList.add('ring-ready');
+      requestAnimationFrame(() => { setRings(0); });
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.target !== metrics) return;
+        if (e.isIntersecting){
+          playRings();
+        } else {
+          setRings(CIRC);
+        }
+      });
+    }, { threshold: 0.35 });
+    io.observe(metrics);
+
+    (async function(){
+      try{
+        const [datasetsJson, modelsJson] = await Promise.all([
+          fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
+          fetchFirst(['data/models.json','assets/models.json','models.json'])
+        ]);
+        const dCount = arrayishLength(datasetsJson);
+        const mCount = arrayishLength(modelsJson);
+        countUp(countElDatasets, dCount);
+        countUp(countElModels, mCount);
+
+        const rect = metrics.getBoundingClientRect();
+        const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
+        if (inView) {
+          setRings(CIRC);
+          requestAnimationFrame(playRings);
+        }
+      }catch(err){
+        countElDatasets.textContent = '—';
+        countElModels.textContent = '—';
+      }
+    })();
+  })();
+
+  // Auto-highlight current nav (supports clean URLs and index.html)
+  (function(){
+    const path = (location.pathname || '').replace(/\/+$/, '');
+    const file = path.split('/').pop() || 'index.html';
+    const routeByFile = {
+      '': 'index',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models',
+      'contributors': 'contributors', 'contributors.html': 'contributors'
+    };
+    const route = routeByFile[file] || (file.includes('index') ? 'index' : '');
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a => {
+      if (a.dataset.route === route){
         a.classList.add('active');
         a.setAttribute('aria-current','page');
       }
@@ -445,74 +773,6 @@
   })();
 </script>
 
-<!-- Leaflet core -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
-
-<!-- Heatmap plugin -->
-<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-
-<!-- Supabase client + your public keys -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="assets/js/config.js"></script>
-
-<!-- Render homepage history as heatmap -->
-<script>
-(async function(){
-  // Visualize visits recorded on the homepage
-  const PAGE_TO_SHOW = 'index';
-
-  // Map
-  const map = L.map('visitorMap', { zoomControl:true });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
-  }).addTo(map);
-  map.setView([39.5, -98.35], 3);
-  setTimeout(()=>map.invalidateSize(), 0);
-
-  // Supabase
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
-  if (!sb) { console.warn('Supabase not configured; skipping'); return; }
-
-  try{
-    // Paginate all rows and build heat points
-    const pageSize = 1000;
-    let from = 0, to = pageSize - 1;
-    const bounds = L.latLngBounds();
-    const heatPoints = []; // [lat, lon, intensity]
-
-    while (true){
-      const { data: rows, error } = await sb
-        .from('visits')
-        .select('lat,lon')
-        .eq('page', PAGE_TO_SHOW)
-        .order('created_at', { ascending:false })
-        .range(from, to);
-      if (error){ console.error(error); break; }
-      if (!rows || rows.length === 0) break;
-
-      rows.forEach(r=>{
-        if (typeof r.lat === 'number' && typeof r.lon === 'number'){
-          heatPoints.push([r.lat, r.lon, 1]);
-          bounds.extend([r.lat, r.lon]);
-        }
-      });
-
-      if (rows.length < pageSize) break;
-      from += pageSize; to += pageSize;
-    }
-
-    // Add heat layer (weights=1 per visit)
-    L.heatLayer(heatPoints, { radius: 20, blur: 15, maxZoom: 11 }).addTo(map);
-
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
-    else map.setView([20,0], 2); // fallback if no points
-  }catch(e){
-    console.error('heatmap render failed:', e);
-  }
-})();
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
