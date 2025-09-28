@@ -2,88 +2,88 @@
 <rss version="2.0">
   <channel>
     <title>OpenConstruction — Updates</title>
-    <link>http://ruoxinx.github.io/open-construction-test//</link>
+    <link>http://ruoxinx.github.io/open-construction-test/</link>
     <description>Newest datasets and models from OpenConstruction</description>
     <language>en-US</language>
 
   <item>
-    <title><![CDATA[Dataset: datasets item]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//datasets/detail.html?id=datasets-item</link>
-    <guid isPermaLink="false">datasets:datasets-item:2025-09-28T17:43:31.905Z</guid>
-    <pubDate>Sun, 28 Sep 2025 17:43:31 GMT</pubDate>
+    <title><![CDATA[Dataset: Architectural–structural Design Pairs]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=structgan</link>
+    <guid isPermaLink="false">datasets:structgan:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
 
   <item>
     <title><![CDATA[Model: ETHcavation: A Dataset and Pipeline for Panoptic Scene Understanding and Object Tracking in Dynamic Construction Environments]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=ethcavation-a-dataset-and-pipeline-for-panoptic-scene-understanding-and-object-tracking-in-dynamic-construction-environments</link>
-    <guid isPermaLink="false">models:ethcavation-a-dataset-and-pipeline-for-panoptic-scene-understanding-and-object-tracking-in-dynamic-construction-environments:2025-09-28</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ETHcavation</link>
+    <guid isPermaLink="false">models:ETHcavation:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Construction sites are challenging environments for autonomous systems due to their unstructured nature and the presence of dynamic actors, such as workers and machinery. This work presents a comprehensive panoptic scene understanding solution designed to handle the complexities of such environments by integrating 2D panoptic segmentation with 3D LiDAR mapping. Our system generates detailed environmental representations in real-time by combining semantic and geometric data, supported by Kalman Filter-based tracking for dynamic object detection. We introduce a fine-tuning method that adapts large pre-trained panoptic segmentation models for construction site applications using a limited number of domain-specific samples. For this use case, we release a first-of-its-kind dataset of 502 hand-labeled sample images with panoptic annotations from construction sites. In addition, we propose a dynamic panoptic mapping technique that enhances scene understanding in unstructured environments. As a case study, we demonstrate the system's application for autonomous navigation, utilizing real-time RRT* for reactive path planning in dynamic scenarios. The dataset and code for training and deployment are publicly available to support future research.]]></description>
   </item>
 
   <item>
     <title><![CDATA[Model: Buildee: A 3D Simulation Framework for Scene Exploration and Reconstruction with Understanding]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=buildee-a-3d-simulation-framework-for-scene-exploration-and-reconstruction-with-understanding</link>
-    <guid isPermaLink="false">models:buildee-a-3d-simulation-framework-for-scene-exploration-and-reconstruction-with-understanding:2025-09-28</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=Buildee</link>
+    <guid isPermaLink="false">models:Buildee:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[We introduce Buildee, a 3D simulation framework designed to benchmark scene exploration, 3D reconstruction, and semantic segmentation tasks in both static and dynamic environments. Built as a Python module on top of Blender, Buildee leverages its advanced rendering capabilities to generate realistic RGB, depth, and semantic data while enabling 2D / 3D point tracking and occlusion checking. Additionally, we provide a procedural generator for construction site environments and baseline methods for key computer vision tasks. Through Buildee, we establish a standardized platform for evaluating scene understanding algorithms in realistic settings. Our code is publicly available at https://github.com/clementinboittiaux/buildee.]]></description>
   </item>
 
   <item>
     <title><![CDATA[Model: Advancing construction site workforce safety monitoring through BIM and computer vision integration]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=advancing-construction-site-workforce-safety-monitoring-through-bim-and-computer-vision-integration</link>
-    <guid isPermaLink="false">models:advancing-construction-site-workforce-safety-monitoring-through-bim-and-computer-vision-integration:2025-09-28</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=Worker-Safety-Twin</link>
+    <guid isPermaLink="false">models:Worker-Safety-Twin:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Ensuring a safe work environment is crucial for construction projects. It is essential that workforce monitoring is both efficient and non-intrusive to the ongoing construction activities. This paper introduces a method that integrates building information modeling (BIM) and computer vision to monitor workforce safety hazards at construction sites in real time. Despite the rising adoption of BIM and computer vision individually within the construction sector, the potential of their integrated application as a cohesive system for workforce safety monitoring remains unexplored. While BIM provides rich 3D semantic information about the construction site, computer vision captures real-time field data. The system was tested using a realistic construction simulation, and the accuracy of the position estimate was evaluated in a real-world interior environment, yielding a mean error distance (MED) of 13.2 cm. Overall, the findings have substantial significance for the construction industry to help minimize accidents and enhance overall worker safety.]]></description>
   </item>
 
   <item>
+    <title><![CDATA[Dataset: UGD: Underground Garage Point Cloud Dataset]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=UGD</link>
+    <guid isPermaLink="false">datasets:UGD:2025-09-27</guid>
+    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: SORD Dataset: Synthetic On-site Rebar Data]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=SORD</link>
+    <guid isPermaLink="false">datasets:SORD:2025-09-27</guid>
+    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: Tower crane hook dataset]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=hook</link>
+    <guid isPermaLink="false">datasets:hook:2025-09-27</guid>
+    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Automatic repetitive action counting for construction worker ergonomic assessment]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=automatic-repetitive-action-counting-for-construction-worker-ergonomic-assessment</link>
-    <guid isPermaLink="false">models:automatic-repetitive-action-counting-for-construction-worker-ergonomic-assessment:2025-09-27</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=repetitive-action</link>
+    <guid isPermaLink="false">models:repetitive-action:2025-09-27</guid>
     <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Work-related musculoskeletal disorders are the primary cause of nonfatal occupational injuries in the construction industry. Accurate ergonomic assessment is essential to reduce the risk of work-related injuries. Repetitive work significantly contributes to musculoskeletal injuries, and various ergonomic evaluation methods have specific criteria for assessing repetitive actions. However, most existing methods for repetitive motions primarily rely on subjective and time-consuming manual observation. To accurately assess ergonomic risk, an automatic and precise method is required to count repetitive actions in construction work. This poses a challenge due to the unstructured nature of construction actions and their varying frequencies and cycles. This paper aims to overcome these challenges by identifying repetitive unstructured actions using posture self-similarity comparison and predicting construction actions' length using a transformer layer. Experimental results demonstrated that the proposed method achieved a 91.5 % accuracy in identifying repetitive actions. The research results will contribute to the promotion of accurate ergonomics evaluation of automation.]]></description>
   </item>
 
   <item>
     <title><![CDATA[Model: Deep Learning for Site Safety: Real-Time Detection of Personal Protective Equipment]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=deep-learning-for-site-safety-real-time-detection-of-personal-protective-equipment</link>
-    <guid isPermaLink="false">models:deep-learning-for-site-safety-real-time-detection-of-personal-protective-equipment:2025-09-27</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=Pictor-v3</link>
+    <guid isPermaLink="false">models:Pictor-v3:2025-09-27</guid>
     <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[The leading causes of construction fatalities include traumatic brain injuries (resulted from fall and electrocution) and collisions (resulted from struck by objects). As a preventive step, the U.S. Occupational Safety and Health Administration (OSHA) requires that contractors enforce and monitor appropriate usage of personal protective equipment (PPE) of workers (e.g., hard hat and vest) at all times. This paper presents three deep learning (DL) models built on You-Only-Look-Once (YOLO) architecture to verify PPE compliance of workers; i.e., if a worker is wearing hard hat, vest, or both, from image/video in real-time. In the first approach, the algorithm detects workers, hats, and vests and then, a machine learning model (e.g., neural network and decision tree) verifies if each detected worker is properly wearing hat or vest. In the second approach, the algorithm simultaneously detects individual workers and verifies PPE compliance with a single convolutional neural network (CNN) framework. In the third approach, the algorithm first detects only the workers in the input image which are then cropped and classified by CNN-based classifiers (i.e., VGG-16, ResNet-50, and Xception) according to the presence of PPE attire. All models are trained on an in-house image dataset that is created using crowd-sourcing and web-mining. The dataset, named Pictor-v3, contains ~1,500 annotated images and ~4,700 instances of workers wearing various combinations of PPE components. It is found that the second approach achieves the best performance, i.e., 72.3% mean average precision (mAP), in real-world settings, and can process 11 frames per second (FPS) on a laptop computer which makes it suitable for real-time detection, as well as a good candidate for running on light-weight mobile devices. The closest alternative in terms of performance (67.93% mAP) is the third approach where VGG-16, ResNet-50, and Xception classifiers are assembled in a Bayesian framework. However, the first approach is the fastest among all and can process 13 FPS with 63.1% mAP. The crowed-sourced Pictor-v3 dataset and all trained models are publicly available to support the design and testing of other innovative applications for monitoring safety compliance, and advancing future research in automation in construction.]]></description>
   </item>
 
   <item>
     <title><![CDATA[Model: Developing a Free and Open-Source Semi-Automated Building Exterior Crack Inspection Software for Construction and Facility Managers]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=developing-a-free-and-open-source-semi-automated-building-exterior-crack-inspection-software-for-construction-and-facility-managers</link>
-    <guid isPermaLink="false">models:developing-a-free-and-open-source-semi-automated-building-exterior-crack-inspection-software-for-construction-and-facility-managers:2025-09-27</guid>
+    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ABECIS</link>
+    <guid isPermaLink="false">models:ABECIS:2025-09-27</guid>
     <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Inspection of cracks is an important process for properly monitoring and maintaining a building. However, manual crack inspection is time-consuming, inconsistent, and dangerous (e.g., in tall buildings). Due to the development of open-source AI technologies, the increase in available Unmanned Aerial Vehicles (UAVs) and the availability of smartphone cameras, it has become possible to automate the building crack inspection process. This study presents the development of an easy-to-use, free and open-source Automated Building Exterior Crack Inspection Software (ABECIS) for construction and facility managers, using state-of-the-art segmentation algorithms to identify concrete cracks and generate a quantitative and qualitative report. ABECIS was tested using images collected from a UAV and smartphone cameras in real-world conditions and a controlled laboratory environment. From the raw output of the algorithm, the median Intersection over Unions (IoU) for the test experiments are (1) 0.686 for indoor crack detection experiment in a controlled lab environment using a commercial drone, (2) 0.186 for indoor crack detection at a construction site using a smartphone and (3) 0.958 for outdoor crack detection on university campus using a commercial drone. These IoU results can be improved significantly to over 0.8 when a human operator selectively removes the false positives. In general, ABECIS performs best for outdoor drone images, and combining the algorithm predictions with human verification/intervention offers very accurate crack detection results. The software is available publicly and can be downloaded for out-of-the-box use.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: An unsupervised low-light image enhancement method for improving V-SLAM localization in uneven low-light construction sites]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=an-unsupervised-low-light-image-enhancement-method-for-improving-v-slam-localization-in-uneven-low-light-construction-sites</link>
-    <guid isPermaLink="false">models:an-unsupervised-low-light-image-enhancement-method-for-improving-v-slam-localization-in-uneven-low-light-construction-sites:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Construction robots have been increasingly adopted in construction projects to improve productivity, reduce risk, and speed up work cycles. Visual Simultaneous Localization and Mapping (V-SLAM) technology is widely used in construction robots due to its lightweight weight, cost-effectiveness, and provision of semantic information. On real construction sites, lighting conditions are often challenging due to factors such as uneven lighting intensity, inadequate exposure, or robots in backlit positions (e.g. roughcast houses without artificial lighting, underground car parks), which cause images captured under these conditions to exhibit low signal-to-noise ratio, uneven lighting, color distortion, noise, and other problems. These challenges make the extraction and matching of feature points in V-SLAM difficult, resulting in significant positioning errors or the inability to generate positioning trajectories for construction robotics. Although existing methods for enhancing low-light images can certainly improve image brightness, they still cannot effectively address the localization challenges brought about by low-light construction scenes with uneven illumination and noise. To address the interference of uneven and changing lighting conditions on V-SLAM localization in construction sites, this paper proposes the Unsupervised Reflectance Retinex and Noise model (URRN-Net) to enhance low-light construction images. By using a CNN model based on the Retinex theory to decompose the illumination characteristics of images, we achieve effective brightness restoration of uneven low-light images by utilizing unsupervised loss functions. URRE-Net can reduce the root mean square localization error by >65% compared to low-light images in the ORB-SLAM3 method, and the maximum error is reduced by >71% in on-site experiments. The proposed URRE-Net can be integrated with existing V-SLAM algorithms to provide more robust localization services for low-light construction site applications such as building operations (e.g., interior wall spraying robotic) or construction management tasks (e.g., automatic tunnel inspection).]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Performance comparison of retrieval-augmented generation and fine-tuned large language models for construction safety management knowledge retrieval]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=performance-comparison-of-retrieval-augmented-generation-and-fine-tuned-large-language-models-for-construction-safety-management-knowledge-retrieval</link>
-    <guid isPermaLink="false">models:performance-comparison-of-retrieval-augmented-generation-and-fine-tuned-large-language-models-for-construction-safety-management-knowledge-retrieval:2025-09-27</guid>
-    <pubDate>Sat, 27 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Construction safety standards are in unstructured formats like text and images, complicating their effective use in daily tasks. This paper compares the performance of Retrieval-Augmented Generation (RAG) and fine-tuned Large Language Model (LLM) for the construction safety knowledge retrieval. The RAG model was created by integrating GPT-4 with a knowledge graph derived from construction safety guidelines, while the fine-tuned LLM was fine-tuned using a question-answering dataset derived from the same guidelines. These models' performance is tested through case studies, using accident synopses as a query to generate preventive measurements. The responses were assessed using metrics, including cosine similarity, Euclidean distance, BLEU, and ROUGE scores. It was found that both models outperformed GPT-4, with the RAG model improving by 21.5 % and the fine-tuned LLM by 26 %. The findings highlight the relative strengths and weaknesses of the RAG and fine-tuned LLM approaches in terms of applicability and reliability for safety management.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Stereo camera visual SLAM with hierarchical masking and motion-state classification at outdoor construction sites containing large dynamic objects]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test//models/detail.html?id=stereo-camera-visual-slam-with-hierarchical-masking-and-motion-state-classification-at-outdoor-construction-sites-containing-large-dynamic-objects</link>
-    <guid isPermaLink="false">models:stereo-camera-visual-slam-with-hierarchical-masking-and-motion-state-classification-at-outdoor-construction-sites-containing-large-dynamic-objects:2025-09-26</guid>
-    <pubDate>Fri, 26 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[At modern construction sites, utilizing GNSS (Global Navigation Satellite System) to measure the real-time location and orientation (i.e. pose) of construction machines and navigate them is very common. However, GNSS is not always available. Replacing GNSS with on-board cameras and visual simultaneous localization and mapping (visual SLAM) to navigate the machines is a cost-effective solution. Nevertheless, at construction sites, multiple construction machines will usually work together and side-by-side, causing large dynamic occlusions in the cameras' view. Standard visual SLAM cannot handle large dynamic occlusions well. In this work, we propose a motion segmentation method to efficiently extract static parts from crowded dynamic scenes to enable robust tracking of camera ego-motion. Our method utilizes semantic information combined with object-level geometric constraints to quickly detect the static parts of the scene. Then, we perform a two-step coarse-to-fine ego-motion tracking with reference to the static parts. This leads to a novel dynamic visual SLAM formation. We test our proposals through a real implementation based on ORB-SLAM2, and datasets we collected from real construction sites. The results show that when standard visual SLAM fails, our method can still retain accurate camera ego-motion tracking in real-time. Comparing to state-of-the-art dynamic visual SLAM methods, ours shows outstanding efficiency and competitive result trajectory accuracy.]]></description>
   </item>
   </channel>
 </rss>
