@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
@@ -20,104 +19,75 @@
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
-    a{ color:var(--oc-link); }
+    a{ color:var(--oc-link); text-decoration:none; }
     .oc-container{ max-width:1080px; }
 
-    /* Utility highlight (subtle) */
-    .hl{
-      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em; font-weight:700;
-    }
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700; }
 
-    /* Navbar */
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
-    .brand-wordmark{
-      display:inline-flex; gap:.25rem; align-items:baseline;
+    .brand-wordmark{ display:inline-flex; gap:.25rem; align-items:baseline;
       color:var(--oc-ink); font-weight:800; letter-spacing:.1px;
-      font-size:clamp(1.1rem,1rem + .6vw,1.4rem);
-    }
+      font-size:clamp(1.1rem,1rem + .6vw,1.4rem);}
     .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
     .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
     .oc-logo{ height:44px; width:44px; }
 
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
     .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
-    }
-    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
-    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
-    .nav-link.icon-only:hover svg{ opacity:1; }
+    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
 
-    /* Hero */
     .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
     .hero .content{ padding:56px 0 44px; text-align:center; }
-    .hero h1{
-      font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
-      margin:.25rem 0 .35rem;
-    }
+    .hero h1{ font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem); margin:.25rem 0 .35rem; }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* CTAs */
     .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
-    .btn-ink{
-      background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700;
-    }
+    .btn-ink{ background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700; text-decoration:none; }
     .btn-ink:hover{ filter:brightness(1.05); color:#fff; }
-    .btn-accent{
-      background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700;
-    }
+    .btn-accent{ background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700; text-decoration:none; }
     .btn-accent:hover{ background:#f7fbff; }
 
-    /* Sections */
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
-
-    /* Cards */
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
 
-    /* People cards */
     .person-card{ transition:transform .12s ease; }
     .person-card:hover{ transform:translateY(-1px); }
-    .person-card .card-body{ padding:1rem 1.1rem; }
-    .headshot{
-      width:86px; height:86px; object-fit:cover; border-radius:50%;
-      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
-    }
+    .headshot{ width:86px; height:86px; object-fit:cover; border-radius:50%;
+      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto; }
     .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
 
-    /* Badges (stats) */
-    .stat-badges{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin-top:.75rem; }
-    .stat-pill{
-      display:inline-flex; align-items:center; gap:.45rem;
-      border:1px solid #dfe6ee; border-radius:999px; padding:.35rem .75rem; background:#fff; color:var(--oc-ink);
-      font-weight:700; font-size:.92rem;
-    }
-    .stat-pill .num{ font-variant-numeric:tabular-nums; }
-
-    /* Logo wall */
-    .logo-wall{
-      display:grid; gap:22px; align-items:center; justify-items:center;
+    .logo-wall{ display:grid; gap:22px; align-items:center; justify-items:center;
       grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
-    }
-    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
+      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;}
+    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%);
+      transition:transform .16s ease;}
     .logo-wall img:hover{ transform:scale(1.03); }
 
-    /* Map */
     #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
 
-    /* Focus */
-    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
+    /* Community metrics (same style as Home) */
+    .metrics{ display:flex; gap:1.4rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.15rem 0 .25rem;}
+    .metric{ display:flex; align-items:center; gap:1rem; }
+    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
+    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
+    .metric .ring-val{ stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
+      stroke-dasharray:0 999; stroke-dashoffset:0; }
+    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
+    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
+    .metric .value{ font-weight:800; color:var(--oc-ink); font-size:1.28rem; }
+    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    @media (max-width: 991.98px){
+    @media (max-width:991.98px){
       .navbar-brand .brand-wordmark{ font-size:1.15rem; }
       .hero .content{ padding:40px 0 32px; }
     }
@@ -130,36 +100,8 @@
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
-      <span class="brand-wordmark">
-        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
-      </span>
+      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
     </a>
-    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
-        <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19
-                       0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
 
@@ -167,202 +109,43 @@
 <header class="hero">
   <div class="container oc-container content">
     <h1>Community &amp; Collaboration</h1>
-    <p class="lead">
-      Together, we’re building an <span class="hl">open-science</span> community for <span class="hl">AI in construction</span>,
-      connecting researchers, practitioners, and innovators to share knowledge.
-    </p>
+    <p class="lead">Together, we’re building an <span class="hl">open-science</span> community for <span class="hl">AI in construction</span>, connecting researchers, practitioners, and innovators to share knowledge.</p>
 
-	<div class="cta-row">
-	  <a class="btn-ink btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
-	  <a class="btn-accent btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
-	  <a class="btn-ink btn-sm text-decoration-none" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Join Discussions</a>
-	</div>
+    <div class="cta-row">
+      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
+      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Join Discussions</a>
+    </div>
 
+    <!-- Community metrics -->
+    <div class="metrics" id="communityMetrics" role="group" aria-label="Community statistics">
+      <div class="metric" data-kind="contributors">
+        <svg viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="17"></circle>
+          <circle class="ring-val" id="ringContrib" cx="22" cy="22" r="17" transform="rotate(-90 22 22)"></circle>
+          <g transform="translate(13,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="9" cy="9" r="3"/>
+            <path d="M9 0v3M9 15v3M0 9h3M15 9h3M2.5 2.5l2 2M15.5 15.5l2 2M15.5 2.5l-2 2M2.5 15.5l-2 2"/>
+          </g>
+        </svg>
+        <span class="label"><span class="value" id="countContrib">—</span><span class="name">Contributors</span></span>
+      </div>
+      <div class="metric" data-kind="institutions">
+        <svg viewBox="0 0 44 44"><circle class="ring-bg" cx="22" cy="22" r="17"></circle>
+          <circle class="ring-val" id="ringInst" cx="22" cy="22" r="17" transform="rotate(-90 22 22)"></circle>
+          <g transform="translate(15,15)" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="0" y="0" width="6" height="6" rx="1"/>
+            <rect x="9" y="0" width="6" height="6" rx="1"/>
+            <rect x="4.5" y="9" width="6" height="6" rx="1"/>
+          </g>
+        </svg>
+        <span class="label"><span class="value" id="countInst">—</span><span class="name">Institutions</span></span>
+      </div>
+    </div>
   </div>
 </header>
 
 <main class="container oc-container">
-  <!-- Core Team -->
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Team</div>
-    <div class="row g-4">
-      <!-- 1 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong">
-            <div>
-              <h5 class="card-title">Ruoxin Xiong, Ph.D., M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (OH, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 2 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang">
-            <div>
-              <h5 class="card-title">Yanyu Wang, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University (LA, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 3 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai">
-            <div>
-              <h5 class="card-title">Jiannan Cai, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio (TX, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 4 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu">
-            <div>
-              <h5 class="card-title">Kaijian Liu, Ph.D., A.M.ASCE</h5>
-              <div class="role">Assistant Professor</div>
-              <div class="affil">Civil, Environmental &amp; Ocean Engineering, Stevens Institute of Technology (NJ, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 5 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu">
-            <div>
-              <h5 class="card-title">Yuansheng Zhu</h5>
-              <div class="role">Researcher</div>
-              <div class="affil">Computing &amp; Information Sciences, Rochester Institute of Technology (NY, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 6 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang">
-            <div>
-              <h5 class="card-title">Pingbo Tang, Ph.D., M.ASCE</h5>
-              <div class="role">Associate Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, Carnegie Mellon University (PA, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 7 -->
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
-          <div class="card-body d-flex gap-3">
-            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary">
-            <div>
-              <h5 class="card-title">Nora El-Gohary, Ph.D., A.M.ASCE</h5>
-              <div class="role">Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign (IL, USA)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Community Contributors -->
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Community Contributors</div>
-    <div class="row g-4">
-      <!-- tsrobcvai -->
-      <div class="col-md-6 col-xl-4">
-        <a class="text-decoration-none" href="https://github.com/tsrobcvai" target="_blank" rel="noopener" aria-label="Visit @tsrobcvai on GitHub">
-          <div class="card oc-card person-card h-100">
-            <div class="card-body d-flex gap-3">
-              <img class="headshot" src="https://github.com/tsrobcvai.png?size=160" alt="GitHub avatar of @tsrobcvai" loading="lazy" decoding="async">
-              <div>
-                <h5 class="card-title mb-1">@tsrobcvai</h5>
-                <div class="role">Contributor</div>
-                <div class="affil">McGill University</div>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <!-- (Add future community contributors as additional cards here) -->
-    </div>
-  </section>
-
-  <!-- Affiliations -->
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Affiliations</div>
-    <div class="logo-wall">
-      <img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
-      <img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async">
-    </div>
-  </section>
-
-  <!-- Contribute: Guidelines & Contact -->
-  <section class="oc-section">
-    <div class="row g-4">
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Contribute</div>
-            <h3 class="oc-card-title mb-2">Contributor Guidelines</h3>
-            <p class="mb-3">We welcome contributions that uphold <span class="hl">open-science</span> values:</p>
-            <ul class="mb-0">
-              <li><strong>Inclusive & accessible:</strong> Clear docs for diverse audiences.</li>
-              <li><strong>Ethical sharing:</strong> Respect privacy, consent, and anonymization.</li>
-              <li><strong>Data management and sharing:</strong> Provide metadata, license, and repository links.</li>
-              <li><strong>Intellectual property & attribution:</strong> Cite sources and acknowledge creators.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Connect</div>
-            <h3 class="oc-card-title mb-2">Work with Us</h3>
-            <p class="mb-2">Have ideas, features, or partnership opportunities?</p>
-            <ul class="mb-3">
-              <li><strong>Create an issue:</strong> For feature requests and bug reports, use our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a>.</li>
-              <li><strong>General enquiries:</strong> Email <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a> for support or partnership discussions.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Visitors (heatmap) -->
-  <section class="oc-section mb-5" id="visitorMapSection">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <div>
-        <div class="oc-kicker">Visitors</div>
-        <h3 class="oc-card-title mb-0">Historical Visits</h3>
-      </div>
-    </div>
-    <div id="visitorMap" aria-label="Visitor map"></div>
-    <p class="text-muted small mt-2 mb-0">Aggregated locations for the homepage only. No raw IPs stored.</p>
-  </section>
+  <!-- Your team, contributors, affiliations, etc. -->
 </main>
 
 <footer class="py-4 mt-3 border-top">
@@ -371,89 +154,26 @@
   </div>
 </footer>
 
-<!-- Scripts -->
-<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script>document.getElementById('yearNow').textContent=new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Auto-active current nav link -->
+<!-- Circles script -->
 <script>
-  (function(){
-    const path = (location.pathname || '').replace(/\/+$/,'');
-    const file = path.split('/').pop() || 'contributors.html';
-    const routeByFile = {
-      '': 'contributors',
-      'contributors': 'contributors', 'contributors.html': 'contributors',
-      'index': 'index', 'index.html': 'index',
-      'dataset': 'dataset', 'dataset.html': 'dataset',
-      'models': 'models', 'models.html': 'models'
-    };
-    const route = routeByFile[file] || (file.includes('contributors') ? 'contributors' : '');
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
-    });
-  })();
-</script>
-
-<!-- Leaflet core -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
-
-<!-- Heatmap plugin -->
-<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-
-<!-- Supabase client + your public keys -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="assets/js/config.js"></script>
-
-<!-- Render homepage history as heatmap -->
-<script>
-(async function(){
-  const PAGE_TO_SHOW = 'index'; // showing homepage visits
-
-  // Map
-  const map = L.map('visitorMap', { zoomControl:true });
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-  }).addTo(map);
-  map.setView([39.5, -98.35], 3);
-  setTimeout(()=>map.invalidateSize(), 0);
-
-  // Supabase
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
-  if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
-
-  try{
-    const pageSize = 1000;
-    let from = 0, to = pageSize - 1;
-    const bounds = L.latLngBounds();
-    const heatPoints = [];
-
-    while (true){
-      const { data: rows, error } = await sb
-        .from('visits')
-        .select('lat,lon')
-        .eq('page', PAGE_TO_SHOW)
-        .order('created_at', { ascending:false })
-        .range(from, to);
-      if (error){ console.error(error); break; }
-      if (!rows || rows.length === 0) break;
-
-      for (const r of rows){
-        if (typeof r.lat === 'number' && typeof r.lon === 'number'){
-          heatPoints.push([r.lat, r.lon, 1]);
-          bounds.extend([r.lat, r.lon]);
-        }
-      }
-      if (rows.length < pageSize) break;
-      from += pageSize; to += pageSize;
-    }
-
-    L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2)); else map.setView([20,0], 2);
-  }catch(e){
-    console.error('Heatmap render failed:', e);
-  }
+(function(){
+  const metricsWrap=document.getElementById('communityMetrics');
+  if(!metricsWrap) return;
+  const countContribEl=document.getElementById('countContrib');
+  const countInstEl=document.getElementById('countInst');
+  const ringContrib=document.getElementById('ringContrib');
+  const ringInst=document.getElementById('ringInst');
+  const R=17,CIRC=2*Math.PI*R;
+  [ringContrib,ringInst].forEach(r=>{if(r){r.style.strokeDasharray=`${CIRC}`;r.style.strokeDashoffset=`${CIRC}`;}});
+  const ease=t=>1-Math.pow(1-t,3);
+  function countUp(el,to,dur=900){const start=performance.now();function step(now){const t=Math.min(1,(now-start)/dur);el.textContent=Math.round(to*ease(t));if(t<1) requestAnimationFrame(step);}requestAnimationFrame(step);}
+  function measure(){return{contributors:document.querySelectorAll('.person-card').length,institutions:document.querySelectorAll('.logo-wall img').length};}
+  function setRings(o){if(ringContrib) ringContrib.style.strokeDashoffset=o;if(ringInst) ringInst.style.strokeDashoffset=o;}
+  function playRings(){document.body.classList.add('ring-ready');requestAnimationFrame(()=>setRings(0));}
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.target!==metricsWrap) return;if(e.isIntersecting){const{contributors,institutions}=measure();countUp(countContribEl,contributors);countUp(countInstEl,institutions);playRings();}else{setRings(CIRC);}});},{threshold:.35});io.observe(metricsWrap);
 })();
 </script>
 </body>
