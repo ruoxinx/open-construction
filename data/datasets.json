@@ -2166,13 +2166,32 @@
   "id": "bfa-yolo-dataset",
   "image_url": "assets/img/datasets/bfa-yolo-dataset.png",
   "added_date": "2025-09-28"
+},
+"mlstruct-fp": {
+  "name": "MLSTRUCT-FP: Machine Learning STRUCTural Floor Plan Dataset",
+  "authors": "Pablo N. Pizarro, Nancy Hitschfeld, Iván Sipirán",
+  "doi": "https://doi.org/10.1016/j.autcon.2023.105132",
+  "year": 2023,
+  "data_modality": "Rasterized CAD images",
+  "num_images": 954,
+  "num_classes": 2,
+  "classes": [
+    "Walls",
+    "Slabs"
+  ],
+  "resolution": "Not specified",
+  "annotation_types": [
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Not specified",
+  "potential_tasks": [
+    "Semantic segmentation"
+  ],
+  "license": "MIT",
+  "paper": "Large-scale multi-unit floor plan dataset for architectural plan analysis and recognition",
+  "access": "https://github.com/MLSTRUCT/MLSTRUCT-FP",
+  "id": "mlstruct-fp",
+  "image_url": "assets/img/datasets/mlstruct-fp.png",
+  "added_date": "2025-09-28"
 }
-
-
-
-
-
-
-
-
 }
