@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: MLSTRUCT-FP: Machine Learning STRUCTural Floor Plan Dataset]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=mlstruct-fp</link>
+    <guid isPermaLink="false">datasets:mlstruct-fp:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: ETHcavation: A Dataset and Pipeline for Panoptic Scene Understanding and Object Tracking in Dynamic Construction Environments]]></title>
     <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ETHcavation</link>
     <guid isPermaLink="false">models:ETHcavation:2025-09-28</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:structgan-txt-txtimg2img:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Like the way engineers designing buildings, competent generative design methods try to understand the prescriptive requirement in text and architectural sketches, apply engineering principles and develop the structural design. However, this requirement may be challenging to existing methods because they are not good at simultaneously taking text and image input and then generating designs. This study proposed an innovative design approach, TxtImg2Img, to overcome the difficulties. Based on generative adversarial networks architecture, the generator is proposed to encode, extract and fuse texts and images, and generate new design images; the discriminator is developed to judge real and fake images and texts. Consequently, TxtImg2Img is advantageous in extracting features from the multimodal text and image data, fusing the features using the Hadamard product, and generating designs to satisfy the text-image requirements after learning from a limited number of design samples. Specifically, TxtImg2Img can generate structural design images without distortion, and the corresponding structural design meets the mechanical requirements, after being trained by dozens of words and hundreds of image data. The case studies confirm performance improvement of up to 21% and that the proposed approach presents a promising breakthrough for intelligent construction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Image2Triplets: A computer vision-based explicit relationship extraction framework for updating construction activity knowledge graphs]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=image2triplets</link>
-    <guid isPermaLink="false">models:image2triplets:2025-09-28</guid>
-    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Knowledge graph (KG) is an effective tool for knowledge management, particularly in the architecture, engineering and construction (AEC) industry, where knowledge is fragmented and complicated. However, research on KG updates in the industry is scarce, with most current research focusing on text-based KG updates. Considering the superiority of visual data over textual data in terms of accuracy and timeliness, the potential of computer vision technology for explicit relationship extraction in KG updates is yet to be explored. This paper combines zero-shot human-object interaction detection techniques with general KGs to propose a novel framework called Image2Triplets that can extract explicit visual relationships from images to update the construction activity KG. Comprehensive experiments on the images of architectural decoration processes have been performed to validate the proposed framework. The results and insights will contribute new knowledge and evidence to human-object interaction detection, KG update and construction informatics from the theoretical perspective.]]></description>
   </item>
   </channel>
 </rss>
