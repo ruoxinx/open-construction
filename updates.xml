@@ -39,6 +39,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: TBBR dataset: Thermal Bridges on Building Rooftops]]></title>
+    <link>http://ruoxinx.github.io/open-construction-test/datasets/detail.html?id=TBBR</link>
+    <guid isPermaLink="false">datasets:TBBR:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: ETHcavation: A Dataset and Pipeline for Panoptic Scene Understanding and Object Tracking in Dynamic Construction Environments]]></title>
     <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=ETHcavation</link>
     <guid isPermaLink="false">models:ETHcavation:2025-09-28</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:structgan-phy:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Intelligent structural design using generative adversarial networks (GANs) is a revolutionary design approach for building structures. Despite its far-reaching capability, the data quantity and quality may have limited the performance of such a data-driven network. This study proposes to enhance the objectiveness of training processes by innovatively introducing a surrogate model, Physics Estimator, that informs the generator by appraising the physical behavior of the generated design. Dual loss functions evaluated by a traditional data-driven discriminator and the Physics Estimator collaboratively foster the physics-enhanced GAN architecture. We further develop a structural mechanics model to train and optimize the inherent accuracy of the Physics Estimator. The comparative study suggests that the proposed physics-enhanced GAN can generate structural designs from architectural drawings and specified design conditions 44% better than a data-driven design method and 90 times faster than a competent engineer.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Intelligent generative structural design method for shear wall building based on “fused-text-image-to-image” generative adversarial networks]]></title>
-    <link>http://ruoxinx.github.io/open-construction-test/models/detail.html?id=structgan-txt-txtimg2img</link>
-    <guid isPermaLink="false">models:structgan-txt-txtimg2img:2025-09-28</guid>
-    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Like the way engineers designing buildings, competent generative design methods try to understand the prescriptive requirement in text and architectural sketches, apply engineering principles and develop the structural design. However, this requirement may be challenging to existing methods because they are not good at simultaneously taking text and image input and then generating designs. This study proposed an innovative design approach, TxtImg2Img, to overcome the difficulties. Based on generative adversarial networks architecture, the generator is proposed to encode, extract and fuse texts and images, and generate new design images; the discriminator is developed to judge real and fake images and texts. Consequently, TxtImg2Img is advantageous in extracting features from the multimodal text and image data, fusing the features using the Hadamard product, and generating designs to satisfy the text-image requirements after learning from a limited number of design samples. Specifically, TxtImg2Img can generate structural design images without distortion, and the corresponding structural design meets the mechanical requirements, after being trained by dozens of words and hundreds of image data. The case studies confirm performance improvement of up to 21% and that the proposed approach presents a promising breakthrough for intelligent construction.]]></description>
   </item>
   </channel>
 </rss>
