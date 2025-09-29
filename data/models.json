@@ -644,5 +644,35 @@
   "code_url": "https://github.com/yueyisui/OccFacade",
   "thumbnail": "assets/img/models/OccFaçade.png",
   "added_date": "2025-09-28"
-}
+},
+{
+    "id": "MultiWorker3DPose",
+    "title": "A synthetic data-enhanced method for automated 3D pose recognition of construction workers",
+    "authors": ["Yonglin Fu", "Weisheng Lu", "Zhiming Dong", "Yihai Fang"],
+    "abstract": "Automated 3D pose recognition of construction workers is instrumental to analyzing their occupational safety and health, productivity and other jobsite behaviors. Existing studies in this field have been confined to high-quality training datasets collected from real-life construction jobsites, potentially triggering ethical, privacy, and cost concerns. Inspired by the success of synthetic data in other fields, this research proposes a synthetic data-enhanced method for automated 3D pose recognition of construction workers. It generates a synthetic dataset to supplement a real-life dataset for model training, presents a monocular vision-based model for recognizing multiple workers’ 3D poses, and then validates the model performance. Experiments verify that this model jointly trained with synthetic and real data outperforms a model trained on real data alone. The data enrichment approach explored in this study offers reliable data quality at less expense than real data-focused approaches. This research therefore lays a foundation for a series of studies to enhance workers’ occupational safety and health and productivity.",
+    "year": 2021,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Pose estimation"],
+	"applications": ["Site understanding"],
+    "license": "Unspecified",
+    "paper_url": "https://doi.org/10.1016/j.eswa.2025.128768",
+    "code_url": "https://github.com/fyongl6/MultiWorker3DPose",
+    "thumbnail": "assets/img/models/MultiWorker3DPose.png",
+	"added_date": "2025-09-26"
+  },
+{
+    "id": "SkeySpot",
+    "title": " Automating Service Key Detection for Digital Electrical Layout Plans in the Construction Industry",
+    "authors": ["Dhruv Dosi", "Rohit Meena", "Param Rajpura", "Yogesh Kumar Meena"],
+    "abstract": "Legacy floor plans, often preserved only as scanned documents, remain essential resources for architecture, urban planning, and facility management in the construction industry. However, the lack of machine-readable floor plans render large-scale interpretation both time-consuming and error-prone. Automated symbol spotting offers a scalable solution by enabling the identification of service key symbols directly from floor plans, supporting workflows such as cost estimation, infrastructure maintenance, and regulatory compliance. This work introduces a labelled Digitised Electrical Layout Plans (DELP) dataset comprising 45 scanned electrical layout plans annotated with 2,450 instances across 34 distinct service key classes. A systematic evaluation framework is proposed using pretrained object detection models for DELP dataset. Among the models benchmarked, YOLOv8 achieves the highest performance with a mean Average Precision (mAP) of 82.5%. Using YOLOv8, we develop SkeySpot, a lightweight, open-source toolkit for real-time detection, classification, and quantification of electrical symbols. SkeySpot produces structured, standardised outputs that can be scaled up for interoperable building information workflows, ultimately enabling compatibility across downstream applications and regulatory platforms. By lowering dependency on proprietary CAD systems and reducing manual annotation effort, this approach makes the digitisation of electrical layouts more accessible to small and medium-sized enterprises (SMEs) in the construction industry, while supporting broader goals of standardisation, interoperability, and sustainability in the built environment.",
+    "year": 2025,
+    "modalities": ["Rasterized CAD images"],
+    "tasks": ["Object detection"],
+	"applications": ["Plan recognition"],
+    "license": "Unspecified",
+    "paper_url": "https://doi.org/10.48550/arXiv.2508.10449",
+    "code_url": "https://github.com/HAIx-Lab/SkeySpot",
+    "thumbnail": "assets/img/models/SkeySpot.png",
+	"added_date": "2025-09-26"
+  }
 ]
