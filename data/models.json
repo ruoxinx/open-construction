@@ -532,7 +532,7 @@
   "modalities": ["3D point cloud", "Synthetic"],
   "tasks": ["Point cloud generation"],
   "applications": ["Structural health monitoring"],
-  "license": "GPL",
+  "license": "GPL-3.0",
   "paper_url": "https://doi.org/10.1016/j.autcon.2023.105176",
   "code_url": "https://github.com/GeoTechUVigo/synthetic_truss_bridges",
   "thumbnail": "assets/img/models/synthetic-truss-bridges.png",
@@ -547,7 +547,7 @@
   "modalities": ["3D point cloud"],
   "tasks": ["Semantic segmentation"],
   "applications": ["Structural health monitoring"],
-  "license": "GPL",
+  "license": "GPL-3.0",
   "paper_url": "https://doi.org/10.1016/j.autcon.2023.104659",
   "code_url": "https://github.com/GeoTechUVigo/truss_bridge_pointcloud_segmentation",
   "thumbnail": "assets/img/models/truss-bridge-pointcloud-segmentation.gif",
@@ -566,6 +566,22 @@
   "paper_url": "https://doi.org/10.1016/j.autcon.2022.104470",
   "code_url": "https://github.com/luozn15/FloorplanGAN",
   "thumbnail": "assets/img/models/floorplangan.png",
+  "added_date": "2025-09-28"
+},
+
+{
+  "id": "cloud2bim",
+  "title": "Open-source automatic pipeline for efficient conversion of large-scale point clouds to IFC format",
+  "authors": ["Slávek Zbirovský", "Václav Nežerka"],
+  "abstract": "Building Information Model (BIM) creation usually relies on laborious manual transformation of the unstructured point cloud data provided by laser scans or photogrammetry. This paper presents Cloud2BIM, an open-source software tool designed to automate the conversion of point clouds into BIM models compliant with the Industry Foundation Classes (IFC) standard. Cloud2BIM integrates advanced algorithms for wall and slab segmentation, opening detection, and room zoning based on real wall surfaces, resulting in a comprehensive and fully automated workflow. Unlike existing tools, it avoids computationally- and calibration-intensive techniques such as RANSAC, supports non-orthogonal geometries, and provides unprecedented processing speed, achieving results up to seven times faster than fastest competing solutions. Systematic validation using benchmark datasets confirms that Cloud2BIM is an easy-to-use, efficient, and scalable solution for generating accurate BIM models, capable of converting extensive point cloud datasets for entire buildings into IFC format with minimal user input.",
+  "year": 2025,
+  "modalities": ["3D point cloud"],
+  "tasks": ["Scan-to-BIM"],
+  "applications": ["Site understanding"],
+  "license": "GPL-3.0",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2025.106303",
+  "code_url": "https://github.com/VaclavNezerka/Cloud2BIM",
+  "thumbnail": "assets/img/models/cloud2bim.png",
   "added_date": "2025-09-28"
 }
 ]
