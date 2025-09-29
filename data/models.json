@@ -537,5 +537,21 @@
   "code_url": "https://github.com/GeoTechUVigo/synthetic_truss_bridges",
   "thumbnail": "assets/img/models/synthetic-truss-bridges.png",
   "added_date": "2025-09-28"
+},
+{
+  "id": "truss-bridge-pointcloud-segmentation",
+  "title": "Instance and semantic segmentation of point clouds of large metallic truss bridges",
+  "authors": ["Daniel Lamas", "Andrés Justo", "Mario Soilán", "Manuel Cabaleiro", "Belén Riveiro"],
+  "abstract": "Several methods have been developed for the semantic segmentation of reinforced concrete bridges, however, there is a gap for truss bridges. Therefore, in this study a state-of-the-art methodology for the instance and semantic segmentation of point clouds of truss bridges for modelling purposes is presented, which, to the best of the authors' knowledge, is the first such methodology. This algorithm segments each truss element and classifies them as a chord, diagonal, vertical post, interior lateral brace, bottom lateral brace, or strut. The algorithm consists of a sequence of methods, including principal component analysis or clustering, that analyse each point and its neighbours in the point cloud. Case studies show that by adjusting only six manually measured parameters, the algorithm can automatically segment a truss bridge point cloud.",
+  "year": 2023,
+  "modalities": ["3D point cloud"],
+  "tasks": ["Semantic segmentation"],
+  "applications": ["Structural health monitoring"],
+  "license": "GPL",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2023.104659",
+  "code_url": "https://github.com/GeoTechUVigo/truss_bridge_pointcloud_segmentation",
+  "thumbnail": "assets/img/models/truss-bridge-pointcloud-segmentation.gif",
+  "added_date": "2025-09-28"
 }
+
 ]
