@@ -2193,5 +2193,31 @@
   "id": "mlstruct-fp",
   "image_url": "assets/img/datasets/mlstruct-fp.png",
   "added_date": "2025-09-28"
+},
+"TBBR": {
+  "name": "TBBR dataset: Thermal Bridges on Building Rooftops",
+  "authors": "Zoe Mayer, James Kahn, Yu Hou, Markus Götz, Rebekka Volk, Frank Schultmann",
+  "doi": "https://doi.org/10.1016/j.autcon.2022.104690",
+  "year": 2023,
+  "data_modality": "Aerial RGB", "Hyperspectral",
+  "num_images": 5696,
+  "num_classes": 1,
+  "classes": [
+    "Thermal Bridges"
+  ],
+  "resolution": "4000 × 3000", "640 × 512"
+  "annotation_types": [
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Germany",
+  "potential_tasks": [
+    "Bounding boxes"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "Deep learning approaches to building rooftop thermal bridge detection from aerial images",
+  "access": "https://zenodo.org/records/7360996",
+  "id": "TBBR",
+  "image_url": "assets/img/datasets/TBBR.gif",
+  "added_date": "2025-09-28"
 }
 }
