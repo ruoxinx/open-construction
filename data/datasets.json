@@ -2132,7 +2132,43 @@
   "id": "mep2bim",
   "image_url": "assets/img/datasets/mep2bim.png",
   "added_date": "2025-09-28"
+},
+"bfa-yolo-dataset": {
+  "name": "BFA-YOLO Construction Safety Dataset",
+  "authors": "Yangguang Chen, Tong Wang, Guanzhou Chen, Kun Zhu, Xiaoliang Tan, Jiaqi Wang, Wenchao Guo, Qing Wang, Xiaolong Luo, Xiaodong Zhang",
+  "doi": "https://doi.org/10.1016/j.aei.2025.103289",
+  "year": 2025,
+  "data_modality": "Ground RGB",
+  "num_images": 1240,
+  "num_classes": 7,
+  "classes": [
+    "Door",
+    "Embedded window",
+    "Protruding window",
+    "Balcony",
+    "Air conditioning unit",
+    "Billboard",
+    "Glass curtain wall"
+  ],
+  "resolution": "1200 × 1200",
+  "annotation_types": [
+    "Bounding boxes",
+	"Pixel-level masks"
+  ],
+  "geographical_location": "China",
+  "potential_tasks": [
+    "Object detection",
+	"Semantic segmentation"
+  ],
+  "license": "Not specified",
+  "paper": "BFA-YOLO: An enhanced YOLO framework with balanced feature aggregation for intelligent construction site monitoring",
+  "access": "https://github.com/CVEO/BFA-YOLO",
+  "id": "bfa-yolo-dataset",
+  "image_url": "assets/img/datasets/bfa-yolo-dataset.png",
+  "added_date": "2025-09-28"
 }
+
+
 
 
 
