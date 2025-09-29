@@ -650,7 +650,7 @@
     "title": "A synthetic data-enhanced method for automated 3D pose recognition of construction workers",
     "authors": ["Yonglin Fu", "Weisheng Lu", "Zhiming Dong", "Yihai Fang"],
     "abstract": "Automated 3D pose recognition of construction workers is instrumental to analyzing their occupational safety and health, productivity and other jobsite behaviors. Existing studies in this field have been confined to high-quality training datasets collected from real-life construction jobsites, potentially triggering ethical, privacy, and cost concerns. Inspired by the success of synthetic data in other fields, this research proposes a synthetic data-enhanced method for automated 3D pose recognition of construction workers. It generates a synthetic dataset to supplement a real-life dataset for model training, presents a monocular vision-based model for recognizing multiple workers’ 3D poses, and then validates the model performance. Experiments verify that this model jointly trained with synthetic and real data outperforms a model trained on real data alone. The data enrichment approach explored in this study offers reliable data quality at less expense than real data-focused approaches. This research therefore lays a foundation for a series of studies to enhance workers’ occupational safety and health and productivity.",
-    "year": 2021,
+    "year": 2025,
     "modalities": ["Ground RGB"],
     "tasks": ["Pose estimation"],
 	"applications": ["Site understanding"],
