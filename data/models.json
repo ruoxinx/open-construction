@@ -485,7 +485,7 @@
   "authors": ["Wenjie Liao", "Yuli Huang", "Zhe Zheng", "Xinzheng Lu"],
   "abstract": "Like the way engineers designing buildings, competent generative design methods try to understand the prescriptive requirement in text and architectural sketches, apply engineering principles and develop the structural design. However, this requirement may be challenging to existing methods because they are not good at simultaneously taking text and image input and then generating designs. This study proposed an innovative design approach, TxtImg2Img, to overcome the difficulties. Based on generative adversarial networks architecture, the generator is proposed to encode, extract and fuse texts and images, and generate new design images; the discriminator is developed to judge real and fake images and texts. Consequently, TxtImg2Img is advantageous in extracting features from the multimodal text and image data, fusing the features using the Hadamard product, and generating designs to satisfy the text-image requirements after learning from a limited number of design samples. Specifically, TxtImg2Img can generate structural design images without distortion, and the corresponding structural design meets the mechanical requirements, after being trained by dozens of words and hundreds of image data. The case studies confirm performance improvement of up to 21% and that the proposed approach presents a promising breakthrough for intelligent construction.",
   "year": 2022,
-  "modalities": ["Text", "Rasterized CAD images"],
+  "modalities": ["Rasterized CAD images"],
   "tasks": ["Multimodal conditional generation", "Image-to-image translation", "Layout synthesis"],
   "applications": ["Automated structural design", "Shear wall layout generation"],
   "license": "Not specified",
@@ -588,7 +588,7 @@
 {
   "id": "bfa-yolo",
   "title": "BFA-YOLO: A balanced multiscale object detection network for building façade elements detection",
-  "authors": "Yangguang Chen, Tong Wang, Guanzhou Chen, Kun Zhu, Xiaoliang Tan, Jiaqi Wang, Wenchao Guo, Qing Wang, Xiaolong Luo, Xiaodong Zhang",
+  "authors": "Yangguang Chen", "Tong Wang", "Guanzhou Chen", "Kun Zhu", "Xiaoliang Tan", "Jiaqi Wang", "Wenchao Guo", "Qing Wang", "Xiaolong Luo", "Xiaodong Zhang",
   "abstract": "The detection of façade elements on buildings, such as doors, windows, balconies, air conditioning units, billboards, and glass curtain walls, is a critical step in automating the creation of Building Information Modeling (BIM). However, this field faces significant challenges, including the uneven distribution of façade elements, the presence of small objects, and substantial background noise, which hamper detection accuracy. To address these issues, we developed the BFA-YOLO model and the BFA-3D dataset in this study. The BFA-YOLO model is an advanced architecture designed specifically for analyzing multi-view images of façade elements. It integrates three novel components: the Feature Balanced Spindle Module (FBSM) that tackles the issue of uneven object distribution; the Target Dynamic Alignment Task Detection Head (TDATH) that enhances the detection of small objects; and the Position Memory Enhanced Self-Attention Mechanism (PMESA), aimed at reducing the impact of background noise. These elements collectively enable BFA-YOLO to effectively address each challenge, thereby improving model robustness and detection precision. The BFA-3D dataset offers multi-view images with precise annotations across a wide range of façade element categories. This dataset is developed to address the limitations present in existing façade detection datasets, which often feature a single perspective and insufficient category coverage. Through comparative analysis, BFA-YOLO demonstrated improvements of 1.8% and 2.9% in mAP50 on the BFA-3D dataset and the public Façade-WHU dataset, respectively, when compared to the baseline YOLOv8 model. These results highlight the superior performance of BFA-YOLO in façade element detection and the advancement of intelligent BIM technologies. The dataset and code are available at https://github.com/CVEO/BFA-YOLO.",
   "year": 2025,
   "modalities": ["Aerial RGB"],
@@ -598,6 +598,21 @@
   "paper_url": "https://doi.org/10.1016/j.aei.2025.103289",
   "code_url": "https://github.com/CVEO/BFA-YOLO",
   "thumbnail": "assets/img/models/bfa-yolo.png",
+  "added_date": "2025-09-28"
+},
+{
+  "id": "MLSTRUCT-FP_benchmarks",
+  "title": "Large-scale multi-unit floor plan dataset for architectural plan analysis and recognition",
+  "authors": "Pablo N. Pizarro", "Nancy Hitschfeld", "Ivan Sipiran",
+  "abstract": "Among automatic floor plan analysis, data-driven methods have become increasingly popular in recent years because of their superior accuracy and generalizability compared to traditional approaches while processing rasterized floor plans. However, the scarcity of public raster datasets with various styles and sufficient quantity hinders the development of new models, as current ones only contain a single apartment or house, limiting the analysis of large-scale plans usually designed in architectural and structural offices. In order to address that issue, this paper presents a multi-unit floor plan dataset comprising 954 high-resolution images of residential buildings with annotated walls and slabs as polygons, enabling large-scale plan analysis. Additionally, this study implements an automatic wall vectorization method that uses a learning discriminative-based semantic segmentation U-Net model to retrieve wall objects, followed by a deep-learning model that predicts the segmented primitives, providing a baseline for future comparison of automatic wall segmentation results.",
+  "year": 2023,
+  "modalities": ["Rasterized CAD images"],
+  "tasks": ["Semantic segmentation"],
+  "applications": ["Plan recognition"],
+  "license": "Not specified",
+  "paper_url": "https://doi.org/10.1016/j.aei.2025.103289",
+  "code_url": "https://github.com/MLSTRUCT/MLSTRUCT-FP_benchmarks",
+  "thumbnail": "assets/img/models/MLSTRUCT-FP_benchmarks.png",
   "added_date": "2025-09-28"
 }
 ]
