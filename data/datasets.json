@@ -2199,7 +2199,7 @@
   "authors": "Zoe Mayer, James Kahn, Yu Hou, Markus Götz, Rebekka Volk, Frank Schultmann",
   "doi": "https://doi.org/10.1016/j.autcon.2022.104690",
   "year": 2023,
-  "data_modality": "Aerial RGB", "Hyperspectral",
+  "data_modality": "Aerial RGB, Hyperspectral",
   "num_images": 5696,
   "num_classes": 1,
   "classes": [
