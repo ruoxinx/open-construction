@@ -614,5 +614,20 @@
   "code_url": "https://github.com/MLSTRUCT/MLSTRUCT-FP_benchmarks",
   "thumbnail": "assets/img/models/MLSTRUCT-FP_benchmarks.png",
   "added_date": "2025-09-28"
+},
+{
+  "id": "tbbrdet",
+  "title": "Deep learning approaches to building rooftop thermal bridge detection from aerial images",
+    "authors": ["Zoe Mayer", "James Kahn", "Yu Hou", "Markus Götz", "Rebekka Volk", "Frank Schultmann"],
+  "abstract": "Thermal bridges are weak points of building envelopes that can lead to energy losses, collection of moisture, and formation of mould in the building fabric. To detect thermal bridges of large building stocks, drones with thermographic cameras can be used. As the manual analysis of comprehensive image datasets is very time-consuming, we investigate deep learning approaches for its automation. For this, we focus on thermal bridges on building rooftops recorded in panorama drone images from our updated dataset of Thermal Bridges on Building Rooftops (TBBRv2), containing 926 images with 6,927 annotations. The images include RGB, thermal, and height information. We compare state-of-the-art models with and without pretraining from five different neural network architectures: MaskRCNN R50, Swin-T transformer, TridentNet, FSAF, and a MaskRCNN R18 baseline. We find promising results, especially for pretrained models, scoring an Average Recall above for detecting large thermal bridges with a pretrained Swin-T Transformer model.",
+  "year": 2023,
+  "modalities": ["Thermal images"],
+  "tasks": ["Object detection"],
+  "applications": ["Building energy management"],
+  "license": "BSD 3-Clause",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2022.104690",
+  "code_url": "https://github.com/Helmholtz-AI-Energy/TBBRDet",
+  "thumbnail": "assets/img/models/TBBRDet.gif",
+  "added_date": "2025-09-28"
 }
 ]
