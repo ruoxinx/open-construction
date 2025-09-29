@@ -2205,7 +2205,7 @@
   "classes": [
     "Thermal Bridges"
   ],
-  "resolution": "4000 × 3000", "640 × 512"
+  "resolution": "4000 × 3000, 640 × 512",
   "annotation_types": [
     "Pixel-level masks"
   ],
