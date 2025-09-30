@@ -2207,11 +2207,13 @@
   ],
   "resolution": "4000 × 3000, 640 × 512",
   "annotation_types": [
-    "Pixel-level masks"
+    "Bounding boxes",
+	"Pixel-level masks"
   ],
   "geographical_location": "Germany",
   "potential_tasks": [
-    "Bounding boxes"
+    "Object detection",
+	"Semantic segmentation"
   ],
   "license": "CC BY 4.0",
   "paper": "Deep learning approaches to building rooftop thermal bridge detection from aerial images",
@@ -2219,5 +2221,29 @@
   "id": "TBBR",
   "image_url": "assets/img/datasets/TBBR.gif",
   "added_date": "2025-09-28"
+},
+"PID": {
+  "name": "PID dataset: Piping and Instrumentation Drawings",
+  "authors": "Mohit Gupta, Chialing Wei, Thomas Czerniawski",
+  "doi": "https://doi.org/10.1016/j.autcon.2023.105260",
+  "year": 2024,
+  "data_modality": "Rasterized CAD images",
+  "num_images": 765,
+  "num_classes": null,
+  "classes": null,
+  "resolution": "416 × 416",
+  "annotation_types": [
+    "Bounding boxes"
+  ],
+  "geographical_location": "Not specified",
+  "potential_tasks": [
+    "Object detection"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "Semi-supervised symbol detection for piping and instrumentation drawings",
+  "access": "https://doi.org/10.5281/zenodo.8028570",
+  "id": "PID",
+  "image_url": "assets/img/datasets/PID.png",
 }
+
 }
