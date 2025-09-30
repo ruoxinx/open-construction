@@ -643,7 +643,7 @@
   "paper_url": "https://doi.org/10.1080/01431161.2024.2391589",
   "code_url": "https://github.com/yueyisui/OccFacade",
   "thumbnail": "assets/img/models/OccFaçade.png",
-  "added_date": "2025-09-28"
+  "added_date": "2025-09-29"
 },
 {
     "id": "MultiWorker3DPose",
@@ -658,7 +658,7 @@
     "paper_url": "https://doi.org/10.1016/j.eswa.2025.128768",
     "code_url": "https://github.com/fyongl6/MultiWorker3DPose",
     "thumbnail": "assets/img/models/MultiWorker3DPose.png",
-	"added_date": "2025-09-26"
+	"added_date": "2025-09-29"
   },
 {
     "id": "SkeySpot",
@@ -673,7 +673,7 @@
     "paper_url": "https://doi.org/10.48550/arXiv.2508.10449",
     "code_url": "https://github.com/HAIx-Lab/SkeySpot",
     "thumbnail": "assets/img/models/SkeySpot.png",
-	"added_date": "2025-09-26"
+	"added_date": "2025-09-29"
   },
 {
     "id": "Vitruvio",
@@ -688,6 +688,6 @@
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105498",
     "code_url": "https://github.com/CDInstitute/Vitruvio",
     "thumbnail": "assets/img/models/Vitruvio.png",
-	"added_date": "2025-09-26"
+	"added_date": "2025-09-30"
   }
 ]
