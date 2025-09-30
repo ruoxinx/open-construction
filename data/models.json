@@ -674,5 +674,20 @@
     "code_url": "https://github.com/HAIx-Lab/SkeySpot",
     "thumbnail": "assets/img/models/SkeySpot.png",
 	"added_date": "2025-09-26"
+  },
+{
+    "id": "Vitruvio",
+    "title": "Vitruvio: Conditional variational autoencoder to generate building meshes via single perspective sketches",
+    "authors": ["Alberto Tono1", "Heyaojing Huang", "Ashwin Agrawal", "Martin Fischer"],
+    "abstract": "At the beginning of a project, architects convey design ideas via quick 2D diagrams, front views, floor plans, and sketches. Consequently, many stakeholders have difficulty visualizing the 3D representation of the building mass, leading to varied interpretations thus inhibiting a shared understanding of the design. To alleviate the challenge, this paper proposes a deep learning-based method, Vitruvio, for creating a 3D model from a single perspective sketch. This method allows designers to automatically generate 3D representations in real-time based on their initial sketches and thus communicate effectively and intuitively to the client. Vitruvio adapts the Occupancy Network to perform single view reconstruction (SVR), a technique for creating 3D representations from a single image. Vitruvio achieves: (1) an 18% increase in the reconstruction accuracy and (2) a 26% reduction in the inference time compared to the Occupancy Network on one thousand buildings provided by the New York municipality. This research investigates the effect that the building orientation has on the reconstruction quality, discovering that Vitruvio can capture fine-grain details in complex buildings when their native orientation is preserved during training, as opposed to the SVR's standard practice that aligns every building to its canonical pose. The code is available here https://github.com/CDInstitute/Vitruvio.",
+    "year": 2024,
+    "modalities": ["2D sketch", "3D mesh"],
+    "tasks": ["3D reconstruction"],
+	"applications": ["3D building mesh generation"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2024.105498",
+    "code_url": "https://github.com/CDInstitute/Vitruvio",
+    "thumbnail": "assets/img/models/Vitruvio.png",
+	"added_date": "2025-09-26"
   }
 ]
