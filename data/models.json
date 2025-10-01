@@ -11,8 +11,7 @@
     "license": "Apache-2.0",
     "paper_url": "https://doi.org/10.1016/j.autcon.2019.102894",
     "code_url": "https://github.com/wujixiu/helmet-detection",
-    "thumbnail": "assets/img/models/GDUT-HWD.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/GDUT-HWD.png"
   },
   {
     "id": "Construction-Activity-Scenes",
@@ -26,8 +25,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2020.103334",
     "code_url": "https://github.com/HannahHuanLIU/AEC-image-captioning",
-    "thumbnail": "assets/img/models/Construction-Activity-Scenes.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/Construction-Activity-Scenes.png"
   },
   {
     "id": "Kenki-Posi",
@@ -41,8 +39,7 @@
     "license": "GPL-3.0",
     "paper_url": "https://doi.org/10.1080/01691864.2020.1869586",
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
-    "thumbnail": "assets/img/models/Kenki-Posi.gif",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/Kenki-Posi.gif"
   },
   {
     "id": "CDE",
@@ -56,8 +53,7 @@
     "license": "MIT",
     "paper_url": "https://doi.org/10.1108/SASBE-04-2021-0066",
     "code_url": "https://github.com/ruoxinx/site-dust-detect",
-    "thumbnail": "assets/img/models/CDE.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/CDE.png"
   },
   {
     "id": "CPPE",
@@ -71,8 +67,7 @@
     "license": "MIT",
     "paper_url": "https://doi.org/10.1016/j.autcon.2021.103828",
     "code_url": "https://github.com/ruoxinx/PPE-Detection-Pose",
-    "thumbnail": "assets/img/models/CPPE.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/CPPE.png"
   },
    {
     "id": "ConSLAM",
@@ -86,8 +81,7 @@
     "license": "Academic Use Only",
     "paper_url": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
     "code_url": "https://github.com/mac137/ConSLAM",
-    "thumbnail": "assets/img/models/ConSLAM.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/ConSLAM.png"
   },
   {
     "id": "CMA",
@@ -101,8 +95,7 @@
     "license": "MIT",
     "paper_url": "https://doi.org/10.1016/j.autcon.2022.104703",
     "code_url": "https://github.com/S1mpleyang/ConstructionActionRecognition",
-    "thumbnail": "assets/img/models/CMA.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/CMA.png"
   },
   {
     "id": "VisualSiteDiary",
@@ -116,8 +109,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105483",
     "code_url": "https://github.com/joonv2/VisualSiteDiary",
-    "thumbnail": "assets/img/models/VisualSiteDiary.gif",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/VisualSiteDiary.gif"
   },
   {
     "id": "Small-Construction-Tools",
@@ -131,8 +123,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105415",
     "code_url": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
-    "thumbnail": "assets/img/models/Small-Construction-Tools.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/Small-Construction-Tools.png"
   },
   {
     "id": "OSHA-safety",
@@ -146,8 +137,7 @@
     "license": "Unspecified",
     "paper_url": "http://dx.doi.org/10.36680/j.itcon.2025.057",
     "code_url": "https://github.com/amr21006/PhD_Safety_Management_Object_Detection",
-    "thumbnail": "assets/img/models/OSHA-safety.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/OSHA-safety.png"
   },
     {
     "id": "repetitive-action",
@@ -161,8 +151,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105726",
     "code_url": "https://github.com/Chenxy875/Repetitive-Actions-Counting-Method-for-Construction-Workers-Ergonomic-Assessments",
-    "thumbnail": "assets/img/models/repetitive-action.gif",
-	"added_date": "2025-09-27"
+    "thumbnail": "assets/img/models/repetitive-action.gif"
   },
   {
     "id": "Pictor-v3",
@@ -176,8 +165,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2020.103085",
     "code_url": "https://github.com/ciber-lab/pictor-ppe",
-    "thumbnail": "assets/img/models/Pictor-v3.gif",
-	"added_date": "2025-09-27"
+    "thumbnail": "assets/img/models/Pictor-v3.gif"
   },
     {
     "id": "ABECIS",
@@ -191,8 +179,7 @@
     "license": "MIT",
     "paper_url": "https://doi.org/10.1109/ACCESS.2023.3296793",
     "code_url": "https://github.com/SMART-NYUAD/ABECIS",
-    "thumbnail": "assets/img/models/ABECIS.png",
-	"added_date": "2025-09-27"
+    "thumbnail": "assets/img/models/ABECIS.png"
   },
     {
     "id": "MGCAR",
@@ -206,8 +193,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106428",
     "code_url": "https://github.com/JimmyTsai-Yun/MGCAR",
-    "thumbnail": "assets/img/models/MGCAR.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/MGCAR.png"
   },
   {
     "id": "AID-AI-Infraction-Detection",
@@ -221,8 +207,7 @@
     "license": "Non-Commercial Use Only",
     "paper_url": "https://doi.org/10.3390/buildings15183352",
     "code_url": "https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection",
-    "thumbnail": "assets/img/models/AID-AI-Infraction-Detection.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/AID-AI-Infraction-Detection.png"
   },
     {
     "id": "ETHcavation",
@@ -266,8 +251,7 @@
     "license": "GNU",
     "paper_url": "https://doi.org/10.1016/j.autcon.2022.104430",
     "code_url": "https://github.com/eesd-epfl/LOD3_buildings",
-    "thumbnail": "assets/img/models/LOD3.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/LOD3.png"
   },
     {
     "id": "Open",
@@ -281,8 +265,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1007/978-3-031-25082-8_15",
     "code_url": "https://github.com/YUZ128pitt/OpenConstruction",
-    "thumbnail": "assets/img/models/Open.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/Open.png"
   },
   {
     "id": "Worker-Safety-Twin",
@@ -296,8 +279,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2023.105227",
     "code_url": "https://github.com/almosenja/Worker-Safety-Twin",
-    "thumbnail": "assets/img/models/Worker-Safety-Twin.gif",
-	"added_date": "2025-09-28"
+    "thumbnail": "assets/img/models/Worker-Safety-Twin.gif"
   },
   {
     "id": "compliance-checking",
@@ -311,8 +293,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105849",
     "code_url": "https://github.com/kakke14/Automated-inspection-and-compliance-checking",
-    "thumbnail": "assets/img/models/compliance-checking.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/compliance-checking.png"
   },
   {
     "id": "URRE-Net",
@@ -326,8 +307,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105404",
     "code_url": "https://github.com/Chenxy875/URRE-Net",
-    "thumbnail": "assets/img/models/URRE-Net.gif",
-	"added_date": "2025-09-27"
+    "thumbnail": "assets/img/models/URRE-Net.gif"
   },
   {
     "id": "LMs_ConstructionSafety",
@@ -341,8 +321,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105846",
     "code_url": "https://github.com/juuuungwon/LMs_ConstructionSafety",
-    "thumbnail": "assets/img/models/LMs_ConstructionSafety.png",
-	"added_date": "2025-09-27"
+    "thumbnail": "assets/img/models/LMs_ConstructionSafety.png"
   },
   {
     "id": "ego",
@@ -356,8 +335,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106048",
     "code_url": "https://github.com/JiuyiX/Tripping-Hazard-Detection-based-on-OVOD",
-    "thumbnail": "assets/img/models/ego.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/ego.png"
   },
   {
     "id": "YOLO-FAS",
@@ -371,8 +349,7 @@
     "license": "GNU",
     "paper_url": "https://doi.org/10.1016/j.neucom.2025.129485",
     "code_url": "https://github.com/5204338/yolov5_node",
-    "thumbnail": "assets/img/models/YOLO-FAS.gif",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/YOLO-FAS.gif"
   },
   {
     "id": "MTKF",
@@ -386,8 +363,7 @@
     "license": "GNU",
     "paper_url": "https://doi.org/10.1016/j.dibe.2024.100559",
     "code_url": "https://github.com/TJSG337/MTKF",
-    "thumbnail": "assets/img/models/MTKF.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/MTKF.png"
   },
   {
     "id": "SOC-YOLO",
@@ -401,8 +377,7 @@
     "license": "GNU",
     "paper_url": "https://doi.org/10.1016/j.autcon.2023.104856",
     "code_url": "https://github.com/pms5343/SOC-YOLO",
-    "thumbnail": "assets/img/models/SOC-YOLO.png",
-	"added_date": "2025-09-25"
+    "thumbnail": "assets/img/models/SOC-YOLO.png"
   },
   {
     "id": "SORD",
@@ -416,8 +391,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105953",
     "code_url": "https://github.com/HuangBugWei/DA-MaskRCNN",
-    "thumbnail": "assets/img/models/SORD.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/SORD.png"
   },
   {
     "id": "FLE-YOLO",
@@ -431,8 +405,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.3390/app15105364",
     "code_url": "https://github.com/sugar-fifty-doge/FLE-YOLO",
-    "thumbnail": "assets/img/models/FLE-YOLO.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/FLE-YOLO.png"
   },
   {
     "id": "VR-Point-Cloud-Analysis",
@@ -446,8 +419,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.3390/buildings14072127",
     "code_url": "https://github.com/3dcovim/VR-Point-Cloud-Analysis",
-    "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png",
-	"added_date": "2025-09-26"
+    "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png"
   },
   {
   "id": "structgan-v1",
@@ -461,8 +433,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.autcon.2021.103931",
   "code_url": "https://github.com/wenjie-liao/StructGAN_v1",
-  "thumbnail": "assets/img/models/structgan-v1.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/structgan-v1.png"
 },
 {
   "id": "structgan-phy",
@@ -476,8 +447,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1002/eqe.3632",
   "code_url": "https://github.com/wenjie-liao/StructGAN-PHY",
-  "thumbnail": "assets/img/models/structgan-phy.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/structgan-phy.png"
 },
 {
   "id": "structgan-txt-txtimg2img",
@@ -491,8 +461,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.eswa.2022.118530",
   "code_url": "https://github.com/wenjie-liao/StructGAN-TXT-TxtImg2Img",
-  "thumbnail": "assets/img/models/structgan-txt-txtimg2img.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/structgan-txt-txtimg2img.png"
 },
 {
   "id": "image2triplets",
@@ -506,8 +475,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.compind.2022.103610",
   "code_url": "https://github.com/CrossStyle/Image2Triplets",
-  "thumbnail": "assets/img/models/image2triplets.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/image2triplets.png"
 },
 {
   "id": "mr-visual-warning",
@@ -521,8 +489,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.autcon.2022.104252",
   "code_url": "https://github.com/Mercer-S/MR-visual-warning",
-  "thumbnail": "assets/img/models/mr-visual-warning.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/mr-visual-warning.png"
 },
 {
   "id": "synthetic-truss-bridges",
@@ -536,8 +503,7 @@
   "license": "GPL-3.0",
   "paper_url": "https://doi.org/10.1016/j.autcon.2023.105176",
   "code_url": "https://github.com/GeoTechUVigo/synthetic_truss_bridges",
-  "thumbnail": "assets/img/models/synthetic-truss-bridges.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/synthetic-truss-bridges.png"
 },
 {
   "id": "truss-bridge-pointcloud-segmentation",
@@ -551,8 +517,7 @@
   "license": "GPL-3.0",
   "paper_url": "https://doi.org/10.1016/j.autcon.2023.104659",
   "code_url": "https://github.com/GeoTechUVigo/truss_bridge_pointcloud_segmentation",
-  "thumbnail": "assets/img/models/truss-bridge-pointcloud-segmentation.gif",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/truss-bridge-pointcloud-segmentation.gif"
 },
 {
   "id": "floorplangan",
@@ -566,10 +531,8 @@
   "license": "MIT",
   "paper_url": "https://doi.org/10.1016/j.autcon.2022.104470",
   "code_url": "https://github.com/luozn15/FloorplanGAN",
-  "thumbnail": "assets/img/models/floorplangan.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/floorplangan.png"
 },
-
 {
   "id": "cloud2bim",
   "title": "Open-source automatic pipeline for efficient conversion of large-scale point clouds to IFC format",
@@ -582,8 +545,7 @@
   "license": "GPL-3.0",
   "paper_url": "https://doi.org/10.1016/j.autcon.2025.106303",
   "code_url": "https://github.com/VaclavNezerka/Cloud2BIM",
-  "thumbnail": "assets/img/models/cloud2bim.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/cloud2bim.png"
 },
 {
   "id": "bfa-yolo",
@@ -597,8 +559,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.aei.2025.103289",
   "code_url": "https://github.com/CVEO/BFA-YOLO",
-  "thumbnail": "assets/img/models/bfa-yolo.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/bfa-yolo.png"
 },
 {
   "id": "MLSTRUCT-FP_benchmarks",
@@ -612,8 +573,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.aei.2025.103289",
   "code_url": "https://github.com/MLSTRUCT/MLSTRUCT-FP_benchmarks",
-  "thumbnail": "assets/img/models/MLSTRUCT-FP_benchmarks.png",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/MLSTRUCT-FP_benchmarks.png"
 },
 {
   "id": "tbbrdet",
@@ -627,8 +587,7 @@
   "license": "BSD 3-Clause",
   "paper_url": "https://doi.org/10.1016/j.autcon.2022.104690",
   "code_url": "https://github.com/Helmholtz-AI-Energy/TBBRDet",
-  "thumbnail": "assets/img/models/TBBRDet.gif",
-  "added_date": "2025-09-28"
+  "thumbnail": "assets/img/models/TBBRDet.gif"
 },
 {
   "id": "OccFaçade",
@@ -642,8 +601,7 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1080/01431161.2024.2391589",
   "code_url": "https://github.com/yueyisui/OccFacade",
-  "thumbnail": "assets/img/models/OccFaçade.png",
-  "added_date": "2025-09-29"
+  "thumbnail": "assets/img/models/OccFaçade.png"
 },
 {
     "id": "MultiWorker3DPose",
@@ -657,8 +615,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.eswa.2025.128768",
     "code_url": "https://github.com/fyongl6/MultiWorker3DPose",
-    "thumbnail": "assets/img/models/MultiWorker3DPose.png",
-	"added_date": "2025-09-29"
+    "thumbnail": "assets/img/models/MultiWorker3DPose.png"
   },
 {
     "id": "SkeySpot",
@@ -672,8 +629,7 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.48550/arXiv.2508.10449",
     "code_url": "https://github.com/HAIx-Lab/SkeySpot",
-    "thumbnail": "assets/img/models/SkeySpot.png",
-	"added_date": "2025-09-29"
+    "thumbnail": "assets/img/models/SkeySpot.png"
   },
 {
     "id": "Vitruvio",
@@ -687,7 +643,6 @@
     "license": "MIT",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105498",
     "code_url": "https://github.com/CDInstitute/Vitruvio",
-    "thumbnail": "assets/img/models/Vitruvio.png",
-	"added_date": "2025-09-30"
+    "thumbnail": "assets/img/models/Vitruvio.png"
   }
 ]
