@@ -75,6 +75,8 @@ function canonicalizeModalityLabel(raw){
   const hasAerial  = has(/\baerial\b|\bdrone\b|\buav\b|\bauv\b/);
   const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
+  const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
+
 
   if (hasLidar)   return 'LiDAR';
   if (hasSAR)     return 'SAR';
@@ -87,6 +89,7 @@ function canonicalizeModalityLabel(raw){
   if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
   if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
+  if (hasRasterCAD) return 'Rasterized CAD images';
 
   // Only fallback to Synthetic if no primary modality matched
   if (hasSynthetic) return 'Synthetic';
