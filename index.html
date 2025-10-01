@@ -39,6 +39,7 @@
     .oc-nav{
       backdrop-filter:saturate(120%) blur(6px);
       border-bottom:1px solid var(--oc-border)!important;
+      z-index:1030 !important; /* below Bootstrap modal */
     }
     .brand-wordmark{
       display:inline-flex; gap:.25rem; align-items:baseline;
@@ -83,9 +84,7 @@
     }
     .btn-accent:hover{ background:#f7fbff; }
 
-    .hero-center {
-      display:flex; flex-direction:column; align-items:center; gap:1rem;
-    }
+    .hero-center { display:flex; flex-direction:column; align-items:center; gap:1rem; }
     .cta-group { display:inline-flex; gap:1rem; align-items:center; }
 
     /* Sections & cards */
@@ -135,25 +134,32 @@
     }
 
     .oc-timeline{
-      display:flex; gap:1.25rem;
-      overflow-x:auto; overflow-y:hidden;
+      display:flex;
+      gap:1.25rem;
+      overflow-x:auto;
+      overflow-y:hidden;
       scroll-snap-type:x mandatory;
       scroll-behavior:smooth;
       padding:.5rem 0 1rem;
       scrollbar-width:thin;
+      flex-wrap:nowrap;              /* never wrap to a new row */
+      align-items:flex-start;        /* keep all cards top-aligned */
     }
 
     .oc-tl-item{
       scroll-snap-align:center;
-      flex:0 0 auto;
-      width:280px; max-width:85vw;
+      flex:0 0 auto;                 /* don’t shrink */
+      width:280px;
+      max-width:85vw;
       background:linear-gradient(180deg, #ffffff, #fbfdff);
       border:1px solid var(--oc-border);
       border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);
       padding:1rem .95rem;
       position:relative;
+      margin:0;                      /* avoid offsets */
     }
+
     .oc-tl-date{
       display:inline-block;
       font-weight:800; letter-spacing:.02em;
@@ -204,7 +210,7 @@
     .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
     .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
     .metric .ring-val{
-      stroke:var(--oc-brand-accent); /* PRIMARY RING COLOR */
+      stroke:var(--oc-brand-accent);
       stroke-width:4; stroke-linecap:round;
       stroke-dasharray:0 999; stroke-dashoffset:0;
     }
@@ -213,7 +219,6 @@
     .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
     .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    /* Ensure Models ring matches Datasets ring exactly */
     .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
     .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
 
@@ -222,43 +227,30 @@
       .ring-ready .ring-val{ transition:none; }
     }
 
-	/* Keep sticky nav below Bootstrap modal (modal/backdrop are 1055/1050) */
-	.oc-nav { z-index: 1030 !important; }
+    /* Modal polish */
+    html, body, .oc-container { transform: none !important; }
+    .oc-modal-compact{ padding:16px 16px 14px; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.12); }
+    .oc-modal-compact .form-control{ height:40px; border-radius:10px; }
 
-	   Transforms create a new containing block that can break fixed modals. */
-	html, body, .oc-container { transform: none !important; }
+    /* Yellow bell only */
+    .btn-subscribe-icon{
+      color: var(--oc-brand-accent);
+      background: transparent; border: 0; padding: .25rem .4rem; line-height: 1;
+    }
+    .btn-subscribe-icon:hover{ filter: brightness(1.05); }
+    .btn-subscribe-icon:focus-visible{ outline: 2px solid var(--oc-focus); outline-offset: 2px; border-radius: 999px; }
+    .icon-bell{ fill: var(--oc-brand-accent); }
 
-	.oc-modal-compact{
-	  padding:16px 16px 14px;
-	  border-radius:12px;
-	  box-shadow:0 12px 32px rgba(0,0,0,.12);
-	}
-	.oc-modal-compact .form-control{
-	  height:40px;
-	  border-radius:10px;
-	}
-
-	/* Yellow bell only */
-	.btn-subscribe-icon{
-	  color: var(--oc-brand-accent);           /* makes the SVG (currentColor) yellow */
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon:hover{ filter: brightness(1.05); }
-	.btn-subscribe-icon:focus-visible{
-	  outline: 2px solid var(--oc-focus);
-	  outline-offset: 2px;
-	  border-radius: 999px;
-	}
-
-	.icon-bell{
-	  fill: var(--oc-brand-accent); /* your yellow */
-	}
-
-	
-	
+    /* On-brand highlight for the teaser card */
+    .oc-tl-item[data-title="New Features & Updates"]{
+      background: linear-gradient(180deg, var(--oc-card), #fff8f0);
+      border-color: var(--oc-border);
+    }
+    .oc-tl-item[data-title="New Features & Updates"] .oc-tl-date{
+      background: color-mix(in srgb, var(--oc-brand-accent) 12%, white);
+      border-color: color-mix(in srgb, var(--oc-brand-accent) 28%, white);
+      color: var(--oc-brand-ink);
+    }
   </style>
 </head>
 <body>
@@ -297,30 +289,23 @@
                        0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
-     </li>
-	 
-	         <!-- 🔔 Subscribe button -->
-<li class="nav-item">
-<button type="button"
-        class="nav-link px-2 icon-only btn-subscribe-icon"
-        data-bs-toggle="modal" data-bs-target="#subscribeModal"
-        aria-label="Subscribe for updates" title="Subscribe">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-       viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-             7 0 0 0 8.5 2z"/>
-  </svg>
-</button>
+        </li>
 
-
-</li>
-      </ul>
-    </div>
-  </div>
-</nav>
-	 
+        <!-- 🔔 Subscribe button -->
+        <li class="nav-item">
+          <button type="button"
+                  class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -457,14 +442,13 @@
             </button>
           </div>
 
-          <!-- Timeline -->
+          <!-- Timeline (all items in one row) -->
           <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
             <!-- Team Established -->
             <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
               <div class="oc-tl-date">2024.11</div>
               <div class="oc-tl-title-row">
                 <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- users/team -->
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
@@ -474,9 +458,7 @@
                 </span>
                 <div class="oc-tl-title">Project Team Established</div>
               </div>
-              <div class="oc-tl-content">
-                Core team formed to build the platform and roadmap.
-              </div>
+              <div class="oc-tl-content">Core team formed to build the platform and roadmap.</div>
             </div>
 
             <!-- First Paper Submitted -->
@@ -484,7 +466,6 @@
               <div class="oc-tl-date">2025.03</div>
               <div class="oc-tl-title-row">
                 <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- document/paper -->
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                     <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
@@ -493,9 +474,7 @@
                 </span>
                 <div class="oc-tl-title">First Paper Submitted</div>
               </div>
-              <div class="oc-tl-content">
-                Initial synthesis of open datasets completed and submitted.
-              </div>
+              <div class="oc-tl-content">Initial synthesis of open datasets completed and submitted.</div>
             </div>
 
             <!-- Dataset Catalog Online -->
@@ -503,7 +482,6 @@
               <div class="oc-tl-date">2025.09</div>
               <div class="oc-tl-title-row">
                 <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- globe/launch -->
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                     <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -511,9 +489,7 @@
                 </span>
                 <div class="oc-tl-title">Dataset Catalog Online</div>
               </div>
-              <div class="oc-tl-content">
-                Dataset Catalog officially launched for the community.
-              </div>
+              <div class="oc-tl-content">Dataset Catalog officially launched for the community.</div>
             </div>
 
             <!-- Model Catalog Online -->
@@ -521,7 +497,6 @@
               <div class="oc-tl-date">2025.10</div>
               <div class="oc-tl-title-row">
                 <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- chip/model -->
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
                     <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -529,9 +504,22 @@
                 </span>
                 <div class="oc-tl-title">Model Catalog Online</div>
               </div>
-              <div class="oc-tl-content">
-                Model Catalog released with curated AI models for construction tasks.
+              <div class="oc-tl-content">Model Catalog released with curated AI models for construction tasks.</div>
+            </div>
+
+            <!-- New Features & Updates -->
+            <div class="oc-tl-item" role="listitem" data-title="New Features & Updates">
+              <div class="oc-tl-date">Soon</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 11v2a2 2 0 0 0 2 2h2l6 4V5L7 9H5a2 2 0 0 0-2 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M19 7a5 5 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">New Features & Updates</div>
               </div>
+              <div class="oc-tl-content">Stay tuned! Fresh features are on the way—announcements coming soon.</div>
             </div>
           </div>
 
@@ -813,7 +801,7 @@
     })();
   })();
 
-  // Auto-highlight current nav)
+  // Auto-highlight current nav
   (function(){
     const path = (location.pathname || '').replace(/\/+$/, '');
     const file = path.split('/').pop() || 'index.html';
@@ -836,7 +824,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Subscribe Modal) -->
+<!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
     <div class="modal-content oc-modal-compact">
@@ -845,7 +833,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-	<form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
             method="post" target="_blank" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
         <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
@@ -853,19 +841,18 @@
 
         <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
 
-        <!-- Mailchimp anti-bot-->
+        <!-- Mailchimp anti-bot -->
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
         </div>
 
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+        <p class="small text-muted mt-2 mb-0">
+          We’ll email only when new datasets or models are added. Unsubscribe anytime.
+        </p>
       </form>
     </div>
   </div>
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
