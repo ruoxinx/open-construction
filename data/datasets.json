@@ -2134,7 +2134,7 @@
   "added_date": "2025-09-28"
 },
 "bfa-yolo-dataset": {
-  "name": "BFA-YOLO Construction Safety Dataset",
+  "name": "BFA-3D dataset",
   "authors": "Yangguang Chen, Tong Wang, Guanzhou Chen, Kun Zhu, Xiaoliang Tan, Jiaqi Wang, Wenchao Guo, Qing Wang, Xiaolong Luo, Xiaodong Zhang",
   "doi": "https://doi.org/10.1016/j.aei.2025.103289",
   "year": 2025,
