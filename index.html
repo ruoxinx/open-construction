@@ -116,9 +116,6 @@
     }
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
 
-    /* ==============================
-       Horizontal Timeline
-       ============================== */
     .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
     .oc-tl-wrap::before,
     .oc-tl-wrap::after{
@@ -142,13 +139,13 @@
       scroll-behavior:smooth;
       padding:.5rem 0 1rem;
       scrollbar-width:thin;
-      flex-wrap:nowrap;              /* never wrap to a new row */
-      align-items:flex-start;        /* keep all cards top-aligned */
+      flex-wrap:nowrap;              
+      align-items:flex-start;        
     }
 
     .oc-tl-item{
       scroll-snap-align:center;
-      flex:0 0 auto;                 /* don’t shrink */
+      flex:0 0 auto;                
       width:280px;
       max-width:85vw;
       background:linear-gradient(180deg, #ffffff, #fbfdff);
@@ -157,7 +154,7 @@
       box-shadow:var(--oc-shadow);
       padding:1rem .95rem;
       position:relative;
-      margin:0;                      /* avoid offsets */
+      margin:0;                      
     }
 
     .oc-tl-date{
@@ -227,7 +224,6 @@
       .ring-ready .ring-val{ transition:none; }
     }
 
-    /* Modal polish */
     html, body, .oc-container { transform: none !important; }
     .oc-modal-compact{ padding:16px 16px 14px; border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,.12); }
     .oc-modal-compact .form-control{ height:40px; border-radius:10px; }
@@ -442,99 +438,129 @@
             </button>
           </div>
 
-          <!-- Timeline (all items in one row) -->
-          <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
-            <!-- Team Established -->
-            <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
-              <div class="oc-tl-date">2024.11</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Project Team Established</div>
-              </div>
-              <div class="oc-tl-content">Core team formed to build the platform and roadmap.</div>
-            </div>
+		<!-- Timeline -->
+		<div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
 
-            <!-- First Paper Submitted -->
-            <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
-              <div class="oc-tl-date">2025.03</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M8 13h8M8 17h8M8 9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">First Paper Submitted</div>
-              </div>
-              <div class="oc-tl-content">Initial synthesis of open datasets completed and submitted.</div>
-            </div>
+		  <!-- Origin Story -->
+		  <div class="oc-tl-item" role="listitem" data-title="Origin Story">
+			<div class="oc-tl-date">2022.10</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<!-- spark/lightbulb -->
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <path d="M12 2a7 7 0 0 1 7 7c0 2.6-1.4 4.4-3 5.6V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.4C6.4 13.4 5 11.6 5 9a7 7 0 0 1 7-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				  <path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">A Rough Idea Takes Shape</div>
+			</div>
+			<div class="oc-tl-content">
+			  Sparked at ECCV’22, the idea of lifelong learning to a larger vision - <a href="https://doi.org/10.1007/978-3-031-25082-8_15" target="_blank" rel="noopener">sharing and reusing construction knowledge for community</a>.
+			</div>
+		  </div>
 
-            <!-- Dataset Catalog Online -->
-            <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
-              <div class="oc-tl-date">2025.09</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                    <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Dataset Catalog Online</div>
-              </div>
-              <div class="oc-tl-content">Dataset Catalog officially launched for the community.</div>
-            </div>
+		  <!-- Team Established -->
+		  <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
+			<div class="oc-tl-date">2024.11</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				  <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+				  <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				  <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">Project Team Established</div>
+			</div>
+			<div class="oc-tl-content">
+			  Two years later, the idea matured into action. A core team was assembled to turn the concept into a real platform for OpenConstruction.
+			</div>
+		  </div>
 
-            <!-- Model Catalog Online -->
-            <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
-              <div class="oc-tl-date">2025.10</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                    <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Model Catalog Online</div>
-              </div>
-              <div class="oc-tl-content">Model Catalog released with curated AI models for construction tasks.</div>
-            </div>
+		  <!-- First Paper Submitted -->
+		  <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
+			<div class="oc-tl-date">2025.03</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+				  <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+				  <path d="M8 13h8M8 17h8M8 9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">First Paper Submitted</div>
+			</div>
+			<div class="oc-tl-content">
+			  The first academic milestone: a synthesis of open construction datasets, submitted as a foundation for the wider community effort.
+			</div>
+		  </div>
 
-            <!-- New Features & Updates -->
-            <div class="oc-tl-item" role="listitem" data-title="New Features & Updates">
-              <div class="oc-tl-date">Soon</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 11v2a2 2 0 0 0 2 2h2l6 4V5L7 9H5a2 2 0 0 0-2 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M19 7a5 5 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">New Features & Updates</div>
-              </div>
-              <div class="oc-tl-content">Stay tuned! Fresh features are on the way—announcements coming soon.</div>
-            </div>
-          </div>
+		  <!-- Dataset Catalog Online -->
+		  <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
+			<div class="oc-tl-date">2025.09</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+				  <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">Dataset Catalog Online</div>
+			</div>
+			<div class="oc-tl-content">
+			  The first major resource went live: a catalog of open datasets designed for researchers, educators, and practitioners.
+			</div>
+		  </div>
 
-          <!-- Next -->
-          <div class="oc-tl-nav oc-tl-next">
-            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
+		  <!-- Model Catalog Online -->
+		  <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
+			<div class="oc-tl-date">2025.10</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+				  <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">Model Catalog Online</div>
+			</div>
+			<div class="oc-tl-content">
+			  Building on the datasets, a curated model catalog was launched, showcasing AI tools ready to transform construction workflows.
+			</div>
+		  </div>
 
-        <!-- dots -->
-        <div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
+		  <!-- New Features & Updates -->
+		  <div class="oc-tl-item" role="listitem" data-title="New Features & Updates">
+			<div class="oc-tl-date">Soon</div>
+			<div class="oc-tl-title-row">
+			  <span class="oc-tl-icon" aria-hidden="true">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+				  <path d="M3 11v2a2 2 0 0 0 2 2h2l6 4V5L7 9H5a2 2 0 0 0-2 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+				  <path d="M19 7a5 5 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			  </span>
+			  <div class="oc-tl-title">New Features & Updates</div>
+			</div>
+			<div class="oc-tl-content">
+			  The story continues. More features and collaborations are in the pipeline — stay tuned for the next chapter.
+			</div>
+		  </div>
+
+		</div>
+
+		<!-- Next -->
+		<div class="oc-tl-nav oc-tl-next">
+		  <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+			  <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		  </button>
+		</div>
+
+		<!-- dots -->
+		<div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
+
       </div>
     </div>
   </section>
