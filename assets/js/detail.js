@@ -127,7 +127,12 @@ async function initDetail(){
   const mainHero = `
     <style>
       .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
-      .ds-figure{ background:var(--oc-muted,#f7f9fc); border-radius:16px 0 0 16px; padding:.75rem; height:100%; }
+	.ds-figure{ 
+	  background:transparent;
+	  padding:0;
+	  border-radius:0;
+	  height:auto;
+	}
       .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
       .ds-cap{ line-height:1.25; }
       .ds-body{ padding:24px 28px; }
