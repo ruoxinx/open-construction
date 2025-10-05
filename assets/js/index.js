@@ -119,7 +119,7 @@ function canonicalizeModalityLabels(raw){
   return Array.from(labels);
 }
 
-// licenses: display formatting only (filter remains raw)
+// licenses
 function formatLicenseLabel(raw){
   if (raw == null) return '';
   let s = String(raw).trim();
@@ -166,7 +166,7 @@ function canonicalizeAllDatasets(){
       ds.num_classes = ds.classes.length;
     }
 
-    // Modalities (NOW MULTI)
+    // Modalities
     const arr = canonicalizeModalityLabels(ds.data_modality ?? ds.data_modalities ?? '');
     ds.data_modalities = arr;                // array of pretty labels
     ds._mod_keys = arr.map(m => normKey(m)); // normalized keys for filtering
@@ -382,14 +382,25 @@ function renderGrid(){
 
 // ---------- card UI (uniform thumbnails) ----------
 function cardHTML(ds){
-  const id = ds.id || ds.name, slug = encodeURIComponent(id);
-  const img = ds.image_url || 'assets/img/placeholder.png';
+  const id   = ds.id || ds.name;
+  const slug = encodeURIComponent(id);
+  const img  = ds.image_url || 'assets/img/placeholder.png';
+
+  // Build the overlay tag only when contributor info exists
+  const submittedByHTML = (ds.contributor || ds.contributor_url)
+    ? `<div class="submitted-by">
+         <a href="${ds.contributor_url || '#'}" target="_blank" rel="noopener">
+           Submitted by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
+         </a>
+       </div>`
+    : '';
 
   return `<div class="col-md-6 col-xl-4">
     <div class="card dataset-card h-100 shadow-sm">
       <div class="thumb">
         <img src="${img}" alt="${ds.name} preview" loading="lazy" decoding="async"
              onerror="this.onerror=null;this.src='assets/img/placeholder.png';">
+        ${submittedByHTML}
       </div>
       <div class="card-body d-flex flex-column">
         <div class="d-flex justify-content-between align-items-start">
@@ -404,20 +415,22 @@ function cardHTML(ds){
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
           <a class="btn btn-sm btn-primary" href="datasets/detail.html?id=${slug}">View details</a>
-		${ds.added_date ? `<span class="badge text-bg-light ms-auto fw-normal">Added ${ds.added_date}</span>` : ''}
+          ${ds.added_date ? `<span class="badge text-bg-light ms-auto fw-normal">Added ${ds.added_date}</span>` : ''}
         </div>
       </div>
     </div>
   </div>`;
 }
 
+
 // Inject CSS so all thumbnails share the same size/crop
 function injectThumbStyles(){
   if (document.getElementById('thumb-style')) return;
   const css = `
     .dataset-card .thumb{
+      position: relative;
       width:100%;
-      aspect-ratio: 16 / 9;        /* change to 4 / 3 if preferred */
+      aspect-ratio: 16 / 9;
       overflow:hidden;
       background:#f3f4f6;
       border-top-left-radius:.375rem;
@@ -428,12 +441,42 @@ function injectThumbStyles(){
       height:100%;
       object-fit:cover;
       display:block;
-    }`;
+    }
+    /* Submitted-by overlay (neutral style) */
+    .dataset-card .thumb .submitted-by{
+      position:absolute;
+      right:8px;
+      bottom:8px;
+      background:rgba(255,255,255,.96);
+      border:1px solid #e0e6ef;
+      border-radius:10px;
+      padding:2px 8px;
+      font-size:.75rem;
+      line-height:1.25;
+      color:#1e2a36;
+      font-weight:500;
+      box-shadow:0 2px 6px rgba(0,0,0,.06);
+      max-width:90%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .dataset-card .thumb .submitted-by a{
+      color:#1e2a36;
+      text-decoration:none;
+    }
+    .dataset-card .thumb .submitted-by a:hover{
+      text-decoration:underline;
+      color:#0f2e4b; /* subtle brand ink on hover */
+    }
+  `;
   const style = document.createElement('style');
   style.id = 'thumb-style';
   style.textContent = css;
   document.head.appendChild(style);
 }
+
+
 
 // ---------- init ----------
 async function init(){

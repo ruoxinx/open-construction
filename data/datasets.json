@@ -1593,7 +1593,9 @@
     "access": "https://huggingface.co/datasets/tsrobcvai/Synthetic_Dataset_for_Stirrup_Rebar_Segmentation",
     "id": "Stirrup-Rebar",
     "image_url": "assets/img/datasets/Stirrup-Rebar.png",
-	"added_date": "2025-09-18"
+	"added_date": "2025-09-18",
+	"contributor": "tsrobcvai",
+	"contributor_url": "https://github.com/tsrobcvai"
   },
     "ROI-1555": {
     "name": "ROI-1555: Rebar Detection and Instance Segmentation Dataset",
@@ -1622,7 +1624,9 @@
     "access": "https://huggingface.co/datasets/tsrobcvai/ROI-1555_Rebar_Detection_and_Instance_Segmentation_Dataset",
     "id": "ROI-1555",
     "image_url": "assets/img/datasets/ROI-1555.png",
-	"added_date": "2025-09-18"
+	"added_date": "2025-09-18",
+	"contributor": "tsrobcvai",
+	"contributor_url": "https://github.com/tsrobcvai"
   },
     "CDW-Seg": {
     "name": "CDW-Seg Dataset",
