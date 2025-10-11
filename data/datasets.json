@@ -2138,7 +2138,7 @@
   "added_date": "2025-09-28"
 },
 "bfa-yolo-dataset": {
-  "name": "BFA-3D dataset",
+  "name": "BFA-3D dataset: Building façade attachments",
   "authors": "Yangguang Chen, Tong Wang, Guanzhou Chen, Kun Zhu, Xiaoliang Tan, Jiaqi Wang, Wenchao Guo, Qing Wang, Xiaolong Luo, Xiaodong Zhang",
   "doi": "https://doi.org/10.1016/j.aei.2025.103289",
   "year": 2025,
@@ -2249,6 +2249,60 @@
   "id": "PID",
   "image_url": "assets/img/datasets/PID.png",
   "added_date": "2025-09-28"
+},
+"GPR": {
+  "name": "GPR dataset: Ground Penetrating Radar",
+  "authors": "Abdelaziz Mojahid, Driss El Ouai, Khalid El Amraoui, Khalil El-Hami, Hamou Aitbenamer",
+  "doi": "https://doi.org/10.1016/j.dib.2025.111338",
+  "year": 2025,
+  "data_modality": "GPR radargram",
+  "num_images": 2239,
+  "num_classes": 2,
+  "classes": [
+  "Utility",
+  "Cavity"
+  ],
+  "resolution": "Not specified",
+  "annotation_types": [
+    "Bounding boxes"
+  ],
+  "geographical_location": "Morocco",
+  "potential_tasks": [
+    "Object detection"
+  ],
+  "license": "Not specified",
+  "paper": "Intelligent recognition of subsurface utilities and voids: A ground penetrating radar dataset for deep learning applications",
+  "access": "https://github.com/LCSkhalid/GPR_Data",
+  "id": "GPR",
+  "image_url": "assets/img/datasets/GPR.png",
+  "added_date": "2025-10-5",
+  "contributor": "ruoxinx",
+  "contributor_url": "https://github.com/ruoxinx"
+},
+"PM-HMCW": {
+  "name": "Proximity Monitoring for Human-Machine Collision Warning Dataset",
+  "authors": "Yuexiong Ding, Qiong Liu, Ankang Ji, Heng Li, Xiaowei Luo",
+  "doi": "https://doi.org/10.1016/j.engappai.2025.111722",
+  "year": 2025,
+  "data_modality": "Ground RGB, Synthetic, Depth",
+  "num_images": 22000,
+  "num_classes": 52,
+  "classes": null,
+  "resolution": "1920 × 1080",
+  "annotation_types": [
+    "Bounding boxes"
+  ],
+  "geographical_location": "China",
+  "potential_tasks": [
+    "Object detection"
+  ],
+  "license": "Not specified",
+  "paper": "Monocular three-dimensional object detection for proximity monitoring in human-machine collision warning systems on construction sites",
+  "access": "https://github.com/dyxm/PM-HMCW",
+  "id": "PM-HMCW",
+  "image_url": "assets/img/datasets/PM-HMCW.gif",
+  "added_date": "2025-10-5",
+  "contributor": "ruoxinx",
+  "contributor_url": "https://github.com/ruoxinx"
 }
-
 }
