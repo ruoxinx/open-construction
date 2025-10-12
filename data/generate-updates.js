@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://github.com/ruoxinx/open-construction'; // no trailing slash
+const SITE = 'https://www.openconstruction.org/'; // no trailing slash
 const MAX_ITEMS = 10;
 
 // ---------- helpers ----------
