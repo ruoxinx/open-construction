@@ -494,15 +494,15 @@
       "provider": "DABBEL AI",
       "companies": [
         {
-          "name": "PATRIZIA AG (Treptower Owner)",
+          "name": "PATRIZIA AG",
           "url": "https://www.patrizia.ag"
         },
         {
-          "name": "DABBEL AI GmbH",
+          "name": "DABBEL",
           "url": "https://www.dabbel.eu"
         }
       ],
-      "organizations": ["PATRIZIA AG", "DABBEL AI"],
+      "organizations": ["PATRIZIA", "DABBEL"],
       "geography": "Germany",
       "year": 2023,
       "media": [{
@@ -527,10 +527,10 @@
       "applications": ["Design Assistance"],
       "deployment_stage": "Production",
       "evidence_level": "Owner report",
-      "provider": "STRABAG SE (in-house AI Lab)",
+      "provider": "STRABAG",
       "companies": [
         {
-          "name": "STRABAG SE",
+          "name": "STRABAG",
           "url": "https://www.strabag.com"
         }
       ],
@@ -716,7 +716,7 @@
 	  "provider": "Buildots",
 	  "companies": [
 		{
-		  "name": "NCC AB",
+		  "name": "NCC",
 		  "url": "https://www.ncc.group/"
 		},
 		{
