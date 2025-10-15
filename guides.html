@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Guides</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-link:#0b66c3; --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-accent:#f2a238;
+    }
+    html,body{background:var(--oc-bg); color:var(--oc-text)}
+    a{color:var(--oc-link)}
+
+    .oc-container{ max-width:1080px; }
+
+    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
+    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .oc-logo{height:44px;width:44px}
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:#0f2e4b;text-decoration:underline;text-underline-offset:3px}
+    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
+    .nav-link.icon-only svg{display:block; width:20px; height:20px; opacity:.9}
+    .nav-link.icon-only:hover svg{opacity:1}
+    .btn-subscribe-icon{background:transparent;border:0;padding:.25rem .4rem;line-height:1}
+    .btn-subscribe-icon svg{fill:var(--oc-accent)}
+    .btn-subscribe-icon:hover svg{filter:brightness(1.15)}
+    .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
+
+    header.hero{border-bottom:1px solid var(--oc-border); background:#fff}
+    header.hero .content{padding:56px 0 36px; text-align:center}
+    header.hero h1{font-weight:800; color:#0f2e4b; margin-bottom:.3rem}
+    header.hero p{color:var(--oc-sub); margin:0 auto; max-width:72ch}
+
+    .oc-section{ margin-top:24px }
+    .guide-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .guide-card .card-body{ padding:1.25rem 1.25rem }
+    .kicker{ font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-sub); margin-bottom:.25rem }
+    .title{ font-weight:800; color:#0f2e4b; margin-bottom:.2rem }
+    .subtitle{ color:var(--oc-sub); margin-bottom:.7rem }
+    .section-summary{ color:#2a3946; margin-bottom:.6rem }
+    .small-muted{ color:var(--oc-sub) }
+
+    .issue-btn{ position:fixed; bottom:20px; right:20px; z-index:1050; background:#0d6efd; color:#fff; padding:12px 20px; border-radius:999px; font-weight:600; font-size:.9rem; box-shadow:0 4px 12px rgba(0,0,0,.25); text-decoration:none; transition:background .2s, transform .2s}
+    .issue-btn:hover{ background:#0b5ed7; transform:translateY(-2px); color:#fff; text-decoration:none }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle active" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item active" href="guides.html">Guides</a></li>
+			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" aria-label="OpenConstruction on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+                       -.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07
+                       -1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                       0 0 .67-.21 2.2.82.59-.17 1.22-.27 2-.27s1.41.1 2 .27c1.53-1.04 2.2-.82 2.2-.82
+                       .44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+                       0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"></path>
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon" data-bs-toggle="modal" data-bs-target="#subscribeModal" aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0
+                       7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417
+                       c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <h1>Guides &amp; Frameworks</h1>
+    <p class="lead">Adopt established practices to ensure outputs <span class="hl">findable</span>, <span class="hl">reusable</span>, and <span class="hl">trustworthy</span>.</p>
+  </div>
+</header>
+
+<main class="container oc-container my-4" id="guides-root"></main>
+
+<a href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_guide.yml"
+   class="issue-btn" target="_blank" rel="noopener">Add New Guide</a>
+
+<footer class="border-top py-4 mt-5">
+  <div class="container oc-container small text-muted">© <span id="yearNow"></span> OpenConstruction</div>
+</footer>
+
+<script>document.getElementById('yearNow').textContent=new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true"><input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value=""></div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function(){
+  const root = document.getElementById('guides-root');
+
+  const link = (label, url) => url ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>` : '';
+  const guideCard = (g) => `
+    <section class="oc-section">
+      <div class="guide-card">
+        <div class="card-body">
+          ${g.kicker ? `<div class="kicker">${g.kicker}</div>` : ''}
+          <h3 class="title"><a href="${g.url}" target="_blank" rel="noopener">${g.name}</a></h3>
+          ${g.subtitle ? `<div class="subtitle">${g.subtitle}</div>` : ''}
+          <p class="section-summary">${g.summary||''}</p>
+
+          ${Array.isArray(g.when)&&g.when.length ? `<div class="mb-2"><strong>When to use:</strong><ul class="mb-0 mt-1">${g.when.map(x=>`<li class="small-muted">${x}</li>`).join('')}</ul></div>` : ''}
+
+          ${Array.isArray(g.practices)&&g.practices.length ? `<div class="mb-2"><strong>Core practices:</strong><ul class="mb-0 mt-1">${g.practices.map(x=>`<li class="small-muted">${x}</li>`).join('')}</ul></div>` : ''}
+
+          ${Array.isArray(g.apply)&&g.apply.length ? `<div class="mb-0"><strong>Apply now:</strong><ul class="mb-0 mt-1">${g.apply.map(x=>`<li class="small-muted">${x}</li>`).join('')}</ul></div>` : ''}
+
+          ${(g.docs||g.examples) ? `<div class="mt-2 small-muted">${g.docs?link('Docs',g.docs):''}${g.docs&&g.examples?' · ':''}${g.examples?link('Examples',g.examples):''}</div>` : ''}
+        </div>
+      </div>
+    </section>`;
+
+  try{
+    const res = await fetch('data/guides.json',{cache:'no-store'});
+    if(!res.ok) throw new Error('Failed to load guides.json');
+    const data = await res.json();
+    if(!data?.guides?.length){ root.innerHTML = `<div class="alert alert-warning">No guides listed yet.</div>`; return; }
+    root.innerHTML = data.guides.map(guideCard).join('');
+  }catch(err){
+    root.innerHTML = `<div class="alert alert-danger">Couldn’t load guides. Please check <code>assets/data/guides.json</code>.</div>`;
+  }
+})();
+</script>
+</body>
+</html>

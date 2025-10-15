@@ -667,5 +667,39 @@
 	"added_date": "2025-10-5",
 	"contributor": "ruoxinx",
 	"contributor_url": "https://github.com/ruoxinx"
+  },
+  {
+    "id": "DamageSegmentationXR",
+    "title": "Integrating extended reality and AI-based damage segmentation for near real-time, traceable bridge inspections",
+    "authors": ["B.G. Pantoja-Rosero", "S. Salamone"],
+    "abstract": "This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection", "Semantic segmentation", "Extended reality"],
+	"applications": ["Structural health monitoring"],
+    "license": "GPL-3.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106567",
+    "code_url": "https://github.com/bgpantojar/DamageSegmentationXR",
+    "thumbnail": "assets/img/models/DamageSegmentationXR.png",
+	"added_date": "2025-10-12",
+	"contributor": "ruoxinx",
+	"contributor_url": "https://github.com/ruoxinx"
+  },
+  {
+    "id": "client-to-bim",
+    "title": "Transformer-based framework for mapping client requirements to BIM",
+    "authors": ["Syed Haseeb Shah", "Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
+    "abstract": "Translating heterogeneous, client-authored textual requirements into constructible, information-rich models constitutes a primary impediment to digital transformation in early design phases. Legacy workflows demand high frequency client architect iteration, manual decoding of narrative requirements, and bespoke parametric modeling, introducing latency and inconsistency. This paper introduces an end-to-end automation pipeline that couples advanced Natural Language Processing (NLP) with Building Information Modeling (BIM) to dynamically interpret design intent from user inputs and instantiate corresponding BIM assemblies. A semantic translation layer maps parsed entities to a curated BIM model repository and propagates constraints into the authoring environment. On a multi project evaluation set the framework achieved 92 % mapping accuracy between client inputs and instantiated BIM elements. Embedding this capability enhances requirement traceability, clarifies intent for stakeholders, and enables scalable data driven design analytics. This contribution operationalizes AI assisted construction automation by unifying NLP and BIM within a single extensible workflow.",
+    "year": 2021,
+    "modalities": ["BIM"],
+    "tasks": ["Text-to-BIM mapping"],
+	"applications": ["Design brief automation"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106601",
+    "code_url": "https://huggingface.co/ZappyKirby/client-to-bim",
+    "thumbnail": "assets/img/models/client-to-bim.png",
+	"added_date": "2025-10-15",
+	"contributor": "Haseeb",
+	"contributor_url": "https://github.com/QuantumNovice"
   }
 ]

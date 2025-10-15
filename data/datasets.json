@@ -2304,5 +2304,32 @@
   "added_date": "2025-10-5",
   "contributor": "ruoxinx",
   "contributor_url": "https://github.com/ruoxinx"
+},
+"Scaffold_removal": {
+  "name": "Construction Scaffold Dataset",
+  "authors": "Yuexiong Ding, Muyang Liu, Ming Zhang, Xiaowei Luo",
+  "doi": "https://doi.org/10.1016/j.engappai.2024.109983",
+  "year": 2025,
+  "data_modality": "Ground RGB, Synthetic",
+  "num_images": 12000,
+  "num_classes": 1,
+  "classes": ["Scaffold"],
+  "resolution": "1920 × 1080",
+  "annotation_types": [
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Not specified",
+  "potential_tasks": [
+    "Semantic segmentation",
+	"Image inpainting"
+  ],
+  "license": "Not specified",
+  "paper": "Removing visual occlusion of construction scaffolds via a two-step method combining semantic segmentation and image inpainting",
+  "access": "https://github.com/dyxm/Scaffold_removal",
+  "id": "Scaffold_removal",
+  "image_url": "assets/img/datasets/Scaffold_removal.png",
+  "added_date": "2025-10-12",
+  "contributor": "ruoxinx",
+  "contributor_url": "https://github.com/ruoxinx"
 }
 }

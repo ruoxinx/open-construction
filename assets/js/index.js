@@ -67,7 +67,8 @@ function canonicalizeModalityLabel(raw){
   const hasPC      = has(/point\s*cloud/);
   const hasDepth   = has(/\bdepth\b|\brgb\s*-?\s*d\b|\brgbd\b|\bstereo\b|\bkinect\b/); // accepts "rgb-d" and "rgb d"
   const hasThermal = has(/\bthermal\b|\binfrared\b|\b(ir)\b/);
-  const hasSAR     = has(/\bsar\b|\bradar\b/);
+  const hasGPR     = has(/\bgpr\b|ground[-\s]?penetrating\s*radar|radargram|b[-\s]?scan|c[-\s]?scan/);
+
   const hasMulti   = has(/\bmultispectral\b/);
   const hasHyper   = has(/\bhyperspectral\b/);
   const hasVideo   = has(/\bvideo\b|\bsequence\b|\bstream\b/);
@@ -79,7 +80,7 @@ function canonicalizeModalityLabel(raw){
 
 
   if (hasLidar)   return 'LiDAR';
-  if (hasSAR)     return 'SAR';
+  if (hasGPR)     return 'GPR Radargram';
   if (hasDepth)   return 'RGB-D';
   if (hasThermal) return 'Thermal';
   if (hasMulti)   return 'Multispectral';
@@ -89,9 +90,7 @@ function canonicalizeModalityLabel(raw){
   if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
   if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
-  if (hasRasterCAD) return 'Rasterized CAD images';
-
-  // Only fallback to Synthetic if no primary modality matched
+  if (hasRasterCAD) return 'Rasterized CAD';
   if (hasSynthetic) return 'Synthetic';
   return 'Other';
 }
@@ -390,7 +389,7 @@ function cardHTML(ds){
   const submittedByHTML = (ds.contributor || ds.contributor_url)
     ? `<div class="submitted-by">
          <a href="${ds.contributor_url || '#'}" target="_blank" rel="noopener">
-           Submitted by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
+           Suggested by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
          </a>
        </div>`
     : '';

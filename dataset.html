@@ -27,7 +27,6 @@
     .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
     .oc-logo{height:44px;width:44px}
 
-    /* Clean, professional nav links (bold, no background/outline) */
     .navbar .nav-link.plain{
       font-weight:700;
       color:var(--oc-text);
@@ -60,7 +59,7 @@
     .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
     .nav-link.icon-only:hover svg{opacity:1}
 
-    /* ---------- Docked search (TOP bar only; smaller) ---------- */
+    /* ---------- Docked search ---------- */
     .navbar-search{
       display:none;
       width: clamp(200px, 24vw, 320px);
@@ -80,7 +79,7 @@
       .navbar .navbar-search{margin-left:.75rem}
     }
 
-    /* ---------- Hero (center search UNCHANGED) ---------- */
+    /* ---------- Hero ---------- */
     header.hero{
       border-bottom:1px solid var(--oc-border);
       background:#fff;
@@ -137,14 +136,35 @@
 	  line-height: 1;
 	}
 	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent); /* use your yellow accent */
+	  fill: var(--oc-accent);
 	}
 	.btn-subscribe-icon:hover svg{
 	  filter: brightness(1.15);
 	}
-
-	
-	
+	.submitted-tag {
+	  position: absolute;
+	  bottom: 8px;
+	  right: 8px;
+	  background: rgba(255, 255, 255, 0.92);
+	  border: 1px solid #e0e6ef;
+	  border-radius: 10px;
+	  font-size: 0.75rem;
+	  padding: 2px 8px;
+	  color: #1e2a36;
+	  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+	  z-index: 5;
+	}
+	.submitted-tag a {
+	  color: #0b66c3;
+	  text-decoration: none;
+	}
+	.submitted-tag a:hover {
+	  text-decoration: underline;
+	}
+	.dataset-card {
+	  position: relative;
+	  overflow: hidden;
+	}
   </style>
 </head>
 <body>
@@ -172,6 +192,15 @@
         <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
 		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
+		<li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
+		<li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
 		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
 
         <!-- GitHub icon-only link -->
@@ -199,23 +228,20 @@
           </a>
         </li>
 		<!-- Subscribe bell -->
-<li class="nav-item">
-<button type="button"
-        class="nav-link px-2 icon-only btn-subscribe-icon"
-        data-bs-toggle="modal" data-bs-target="#subscribeModal"
-        aria-label="Subscribe for updates" title="Subscribe">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-       viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-             7 0 0 0 8.5 2z"/>
-  </svg>
-</button>
-
-		
-		
-		
+		<li class="nav-item">
+		<button type="button"
+				class="nav-link px-2 icon-only btn-subscribe-icon"
+				data-bs-toggle="modal" data-bs-target="#subscribeModal"
+				aria-label="Subscribe for updates" title="Subscribe">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+					 7 0 0 0 8.5 2z"/>
+		  </svg>
+		</button>
+	
       </ul>
     </div>
   </div>

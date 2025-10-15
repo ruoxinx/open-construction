@@ -1,0 +1,47 @@
+{
+  "guides": [
+    {
+      "kicker": "Core Data Principles",
+      "name": "FAIR Principles",
+      "url": "https://www.go-fair.org/fair-principles/",
+      "docs": "https://www.go-fair.org/fair-principles/",
+      "subtitle": "Findable · Accessible · Interoperable · Reusable",
+      "summary": "Design datasets so people and machines can discover, access, combine, and reuse them. FAIR raises the baseline for quality by requiring persistent identifiers, rich metadata, interoperable formats, and explicit reuse conditions.",
+      "when": [
+        "Any dataset release (internal or public) that should be citable and maintainable.",
+        "Collaborations where multiple teams need consistent metadata and formats."
+      ],
+      "practices": [
+        "Assign a persistent identifier (DOI) and publish a machine-readable metadata record.",
+        "Use open, standard formats (CSV/JSON, GeoTIFF, LAS/LAZ, E57).",
+        "Provide a clear license and provenance: who collected, when, where, how; include contact."
+      ],
+      "apply": [
+        "Create a README and a metadata file; validate with an internal FAIR checklist.",
+        "Archive a versioned snapshot in a DOI-minting repository (e.g., Zenodo).",
+        "Cross-link the DOI in papers, model cards, and project pages."
+      ]
+    },
+    {
+      "kicker": "Transparency",
+      "name": "TOP Guidelines",
+      "url": "https://www.cos.io/initiatives/top-guidelines",
+      "docs": "https://www.cos.io/initiatives/top-guidelines",
+      "subtitle": "Transparency and Openness Promotion",
+      "summary": "Raise trust and reproducibility by openly sharing data, code, and research materials whenever possible. Include a short transparency statement with every publication or release.",
+      "when": [
+        "Publications and technical reports that rely on datasets and code.",
+        "Benchmarks and leaderboards where comparability matters."
+      ],
+      "practices": [
+        "State where the data and code are available, under what license, and how to access them.",
+        "Document provenance, known limits, and evaluation protocols to avoid misuse.",
+        "Encourage preregistration when appropriate (e.g., planned evaluation criteria)."
+      ],
+      "apply": [
+        "Add a transparency statement with links to datasets, code, and documentation.",
+        "Share evaluation scripts and configs so others can reproduce metrics."
+      ]
+    }
+  ]
+}

@@ -33,12 +33,13 @@
     /* Navbar */
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
     .brand-wordmark{
-      display:inline-flex; gap:.25rem; align-items:baseline;
-      color:var(--oc-ink); font-weight:800; letter-spacing:.1px;
-      font-size:clamp(1.1rem,1rem + .6vw,1.4rem);
+      display:inline-flex;gap:.25rem;align-items:baseline;
+      color:#0F2E4B;font-weight:700;letter-spacing:.1px;
+      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)
     }
-    .brand-wordmark .oc-open{ font-weight:700; opacity:.95; }
-    .brand-wordmark .oc-sep{ opacity:.35; margin:0 .15rem; }
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
     .oc-logo{ height:44px; width:44px; }
 
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
@@ -60,7 +61,7 @@
     }
     .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* Metrics (same visual language as Home) */
+    /* Metrics */
     .metrics{
       display:flex; gap:1.4rem; justify-content:center; align-items:center;
       flex-wrap:wrap; margin:1.15rem 0 .25rem;
@@ -75,7 +76,7 @@
       stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
       stroke-dasharray:0 999; stroke-dashoffset:0;
     }
-    /* If you want different colors per circle, uncomment:
+    /* Different colors per circle, uncomment:
       .metric[data-kind="contributors"] .ring-val{ stroke: var(--oc-accent); }
       .metric[data-kind="institutions"] .ring-val{ stroke: var(--oc-brand-model); }
     */
@@ -138,18 +139,18 @@
     }
 	
 	/* Yellow subscribe bell */
-.btn-subscribe-icon{
-  background: transparent;
-  border: 0;
-  padding: .25rem .4rem;
-  line-height: 1;
-}
-.btn-subscribe-icon svg{
-  fill: var(--oc-accent); /* use your yellow accent */
-}
-.btn-subscribe-icon:hover svg{
-  filter: brightness(1.15);
-}
+	.btn-subscribe-icon{
+	  background: transparent;
+	  border: 0;
+	  padding: .25rem .4rem;
+	  line-height: 1;
+	}
+	.btn-subscribe-icon svg{
+	  fill: var(--oc-accent); /* use your yellow accent */
+	}
+	.btn-subscribe-icon:hover svg{
+	  filter: brightness(1.15);
+	}
 
 	
   </style>
@@ -174,6 +175,16 @@
         <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
         <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+		<li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
+		<li class="nav-item dropdown">
+		<a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
+		   data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+		<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+		  <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+		  <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+		  <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+		</ul>
+		</li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
@@ -190,24 +201,20 @@
           </a>
         </li>
 		
-				<!-- Subscribe bell -->
-<li class="nav-item">
-<button type="button"
-        class="nav-link px-2 icon-only btn-subscribe-icon"
-        data-bs-toggle="modal" data-bs-target="#subscribeModal"
-        aria-label="Subscribe for updates" title="Subscribe">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-       viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-             7 0 0 0 8.5 2z"/>
-  </svg>
-</button>
-
-		
-		
-		
+		<!-- Subscribe bell -->
+		<li class="nav-item">
+		<button type="button"
+				class="nav-link px-2 icon-only btn-subscribe-icon"
+				data-bs-toggle="modal" data-bs-target="#subscribeModal"
+				aria-label="Subscribe for updates" title="Subscribe">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+					 7 0 0 0 8.5 2z"/>
+		  </svg>
+		</button>		
       </ul>
     </div>
   </div>
@@ -222,10 +229,10 @@
       connecting researchers, practitioners, and innovators to share knowledge.
     </p>
 
-    <!-- Metric circles (placed ABOVE the buttons) -->
+    <!-- Metric circles -->
     <div class="metrics" id="communityMetrics" role="group" aria-label="Community statistics">
       <!-- Contributors -->
-		<!-- Contributors (better icon) -->
+		<!-- Contributors -->
 		<div class="metric" data-kind="contributors">
 		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
 			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
@@ -252,7 +259,7 @@
 		  </span>
 		</div>
 
-		<!-- Institutions (better icon) -->
+		<!-- Institutions -->
 		<div class="metric" data-kind="institutions">
 		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
 			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
@@ -288,7 +295,8 @@
     <div class="cta-row">
       <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
       <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
-      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">Join Discussions</a>
+	  <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_use_case.yml" target="_blank" rel="noopener">Submit a Use-case</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">Join Discussions</a>
     </div>
 
   </div>
@@ -405,8 +413,8 @@
               <img class="headshot" src="https://github.com/tsrobcvai.png?size=160" alt="GitHub avatar of @tsrobcvai" loading="lazy" decoding="async">
               <div>
                 <h5 class="card-title mb-1">@tsrobcvai</h5>
-                <div class="role">Contributor</div>
-                <div class="affil">McGill University</div>
+                <div class="role">Dataset Contributor</div>
+                <div class="affil">McGill University (Canada)</div>
               </div>
             </div>
           </div>
@@ -420,8 +428,23 @@
             <img class="headshot" src="assets/img/contributors/avatar.png" alt="avatar" loading="lazy" decoding="async">
             <div>
               <h5 class="card-title mb-1">Abdirahman Bashir Ahmed</h5>
-              <div class="role">Contributor</div>
+              <div class="role">Feature Suggestion Contributor</div>
               <div class="affil">Benadir University (Somalia)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	  <div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/QuantumNovice" target="_blank" rel="noopener" aria-label="Visit Abdirahman Bashir Ahmed on LinkedIn">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/QuantumNovice.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Haseeb</h5>
+              <div class="role">Model Contributor</div>
+              <div class="affil">Kyung Hee University (South Korea)</div>
             </div>
           </div>
         </div>
@@ -443,6 +466,8 @@
       <img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async">
       <img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async">
       <img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async">
+	  <img src="assets/img/institutions/Benadir.png" alt="Benadir University" loading="lazy" decoding="async">
+	  <img src="assets/img/institutions/Kyung-Hee.png" alt="Kyung Hee University" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -523,15 +548,44 @@
   })();
 </script>
 
+<script>
+(function(){
+  const file = (location.pathname || '').split('/').pop() || 'index.html';
+  const isTools = /tools(\.html)?$/.test(file);
+  const isGuides = /guides(\.html)?$/.test(file);
+  if (isTools || isGuides) {
+    // highlight "Resources"
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.textContent.trim()==='Resources') a.classList.add('active');
+    });
+    // mark the chosen dropdown item
+    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(d=>{
+      if ((isTools && d.getAttribute('href')?.includes('tools')) ||
+          (isGuides && d.getAttribute('href')?.includes('guides'))) {
+        d.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
+
+
 <!-- Leaflet core -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 
 <!-- Heatmap plugin -->
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 
-<!-- Supabase client + your public keys -->
+<!-- Supabase client -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
+
+<style>
+  /* Optional: soft ocean background to avoid gray gaps */
+  #visitorMap.leaflet-container {
+    background: #cfe7ef;
+  }
+</style>
 
 <!-- Render homepage history as heatmap -->
 <script>
@@ -539,37 +593,45 @@
   const PAGE_TO_SHOW = 'index'; // showing homepage visits
 
   // Map
-  const map = L.map('visitorMap', { zoomControl:true });
+  const map = L.map('visitorMap', {
+    zoomControl: true,
+    maxBounds: L.latLngBounds([[-85, -180], [85, 180]]), // clamp to world bounds
+    maxBoundsViscosity: 1.0,                             // resist leaving bounds
+    worldCopyJump: false                                 // no duplicate jump
+  });
+
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
   }).addTo(map);
+
   map.setView([39.5, -98.35], 3);
-  setTimeout(()=>map.invalidateSize(), 0);
+  setTimeout(() => map.invalidateSize(), 0);
 
   // Supabase
   const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
   const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
   if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
 
-  try{
+  try {
     const pageSize = 1000;
     let from = 0, to = pageSize - 1;
     const bounds = L.latLngBounds();
     const heatPoints = [];
 
-    while (true){
+    while (true) {
       const { data: rows, error } = await sb
         .from('visits')
         .select('lat,lon')
         .eq('page', PAGE_TO_SHOW)
         .order('created_at', { ascending:false })
         .range(from, to);
-      if (error){ console.error(error); break; }
+
+      if (error) { console.error(error); break; }
       if (!rows || rows.length === 0) break;
 
-      for (const r of rows){
-        if (typeof r.lat === 'number' && typeof r.lon === 'number'){
+      for (const r of rows) {
+        if (typeof r.lat === 'number' && typeof r.lon === 'number') {
           heatPoints.push([r.lat, r.lon, 1]);
           bounds.extend([r.lat, r.lon]);
         }
@@ -579,20 +641,27 @@
     }
 
     L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2)); else map.setView([20,0], 2);
-  }catch(e){
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds.pad(0.2));
+    } else {
+      map.setView([20,0], 2);
+    }
+  } catch (e) {
     console.error('Heatmap render failed:', e);
   }
 })();
 </script>
 
-<!-- Community metric circles (manual inputs + simple load animation) -->
+
+
+<!-- Community metric circles-->
 <script>
 (function(){
   // ==== EDIT THESE NUMBERS ONLY ====
   const COMMUNITY_STATS = {
-    contributors: 9,   // <-- manual input
-    institutions: 9    // <-- manual input
+    contributors: 10,   // <-- manual input
+    institutions: 10    // <-- manual input
   };
   // =================================
 

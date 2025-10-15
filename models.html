@@ -1,4 +1,4 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -28,7 +28,7 @@
     html,body{background:var(--oc-bg); color:var(--oc-text)}
     a{color:var(--oc-link)}
 
-    /* ---------- Navbar (match index.html) ---------- */
+    /* ---------- Navbar ---------- */
     .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
     .oc-logo{height:44px;width:44px}
     .brand-wordmark{
@@ -47,7 +47,7 @@
     .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
     .nav-link.icon-only:hover svg{opacity:1}
 
-    /* ---------- Docked search (same as index) ---------- */
+    /* ---------- Docked search ---------- */
     .navbar-search{display:none;width:clamp(200px,24vw,320px)}
     .navbar-search .form-control{
       height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px
@@ -94,14 +94,15 @@
     }
     .paper-card .left{
       width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
-      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
+      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);
+      position: relative; /* for overlay */
     }
     .paper-card img{width:100%;height:100%;object-fit:cover}
 
     .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
     .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
-    /* Tag styling (compact) */
+    /* Tag styling */
     .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
     .badge-task{
       background:var(--tag-task-bg); border:1px solid var(--tag-task-border); color:var(--tag-task-text);
@@ -111,8 +112,8 @@
       background:var(--tag-app-bg); border:1px solid var(--tag-app-border); color:var(--tag-app-text);
       font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;
     }
-	
-	.hl{
+
+    .hl{
       background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
       padding:0 .06em;
       font-weight:700;
@@ -142,37 +143,35 @@
       align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
       font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
     }
-	
-	/* Yellow bell only */
-	.btn-subscribe-icon{
-	  color: var(--oc-brand-accent);           /* makes the SVG (currentColor) yellow */
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon:hover{ filter: brightness(1.05); }
-	.btn-subscribe-icon:focus-visible{
-	  outline: 2px solid var(--oc-focus);
-	  outline-offset: 2px;
-	  border-radius: 999px;
-	}
 
-		/* Yellow subscribe bell */
-	.btn-subscribe-icon{
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent); /* use your yellow accent */
-	}
-	.btn-subscribe-icon:hover svg{
-	  filter: brightness(1.15);
-	}
-	
-	
+    /* Yellow bell only */
+    .btn-subscribe-icon{
+      color: var(--oc-brand-accent);
+      background: transparent;
+      border: 0;
+      padding: .25rem .4rem;
+      line-height: 1;
+    }
+    .btn-subscribe-icon:hover{ filter: brightness(1.05); }
+    .btn-subscribe-icon:focus-visible{
+      outline: 2px solid var(--oc-focus);
+      outline-offset: 2px;
+      border-radius: 999px;
+    }
+    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
+    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
+
+    /* Submitted-by overlay */
+    .paper-card .left .submitted-by{
+      position:absolute; right:6px; bottom:6px;
+      background:rgba(255,255,255,.96);
+      border:1px solid #e0e6ef; border-radius:10px;
+      padding:2px 8px; font-size:.75rem; line-height:1.25;
+      color:#1e2a36; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,.06);
+      max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .paper-card .left .submitted-by a{ color:#1e2a36; text-decoration:none; }
+    .paper-card .left .submitted-by a:hover{ text-decoration:underline; color:#0f2e4b; }
   </style>
 </head>
 <body>
@@ -201,9 +200,21 @@
         <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain active" href="models.html" aria-current="page">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+
         <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+
+        <!-- GitHub -->
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Models" target="_blank" rel="noopener"
              aria-label="OpenConstruction GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
               2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
@@ -219,22 +230,21 @@
               8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
           </a>
         </li>
-		
-				<!-- Subscribe bell -->
-<li class="nav-item">
-<button type="button"
-        class="nav-link px-2 icon-only btn-subscribe-icon"
-        data-bs-toggle="modal" data-bs-target="#subscribeModal"
-        aria-label="Subscribe for updates" title="Subscribe">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-       viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-    <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-             0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-             1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-             7 0 0 0 8.5 2z"/>
-  </svg>
-</button>
-		
+
+        <!-- Subscribe bell -->
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -246,7 +256,6 @@
     <h1 class="display-6 fw-bold">OpenConstruction Model Catalog</h1>
     <p class="lead">Explore <span class="hl">open models</span> for construction research and practice</p>
     <div id="searchDock" class="mt-3">
-      <!-- CENTER search (large) -->
       <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search models, tasks, applications …" aria-label="Search models large">
     </div>
   </div>
@@ -270,7 +279,6 @@
             <div id="filter-task" class="facet-list"></div>
           </div>
 
-          <!-- Applications facet (after Tasks) -->
           <div class="mb-3">
             <label class="form-label" for="appSearch">Applications</label>
             <input id="appSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search applications…">
@@ -359,8 +367,7 @@ const byId = id => document.getElementById(id);
 function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
 function yearExtent(items){
   const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
-  if(!ys.length) return [2005, new Date().getFullYear()];
-  return [Math.min(...ys), Math.max(...ys)];
+  if(!ys.length) return [2005, new Date().getFullYear()];  return [Math.min(...ys), Math.max(...ys)];
 }
 function makeCheckbox(id, label, value){
   const wrap = document.createElement('div'); wrap.className = 'form-check';
@@ -381,25 +388,16 @@ function fmtDate(d){
 }
 /* Escape helper for safe innerHTML text insertion */
 function esc(s){
-  return String(s)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;');
+  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 }
 
 /* ===== Normalizers & splitters ===== */
-function normKey(s){
-  if (s == null) return '';
-  return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
-}
-/* Split comma/ slash/ pipe/ ampersand/ plus/ " and " into tokens; dedupe case-insensitively */
+function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
 /* Split by comma / slash / pipe / ampersand / plus — DO NOT split the word "and" */
 function splitTags(input){
   if (input == null) return [];
   const str = Array.isArray(input) ? input.join(',') : String(input);
-  // split on , / | & +
   const parts = str.split(/[,\/|&+]/g).map(p => p && p.trim()).filter(Boolean);
-  // de-dup by normalized key, but keep first-seen pretty label
   const seen = new Set(); const out = [];
   for (const p of parts){
     const k = normKey(p);
@@ -408,15 +406,12 @@ function splitTags(input){
   return out;
 }
 
-
-/* ===== Modalities canonicalization (already added earlier) ===== */
+/* ===== Modalities canonicalization ===== */
 function canonicalizeModalityLabel(raw){
   if (!raw) return 'Other';
   const s = normKey(raw);
   const has = re => re.test(s);
-
   const hasSynthetic = has(/\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/);
-
   const hasLidar   = has(/\blidar\b|li[\s-]?dar|\bvelodyne\b|\brplidar\b/);
   const hasPC      = has(/point\s*cloud/);
   const hasDepth   = has(/\bdepth\b|\brgb\s*-?\s*d\b|\brgbd\b|\bstereo\b|\bkinect\b/);
@@ -431,7 +426,6 @@ function canonicalizeModalityLabel(raw){
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
 
-
   if (hasLidar)   return 'LiDAR';
   if (hasSAR)     return 'SAR';
   if (hasDepth)   return 'RGB-D';
@@ -444,7 +438,7 @@ function canonicalizeModalityLabel(raw){
   if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
   if (hasSynthetic) return 'Synthetic';
-  if (hasRasterCAD) return 'Rasterized CAD images';
+  if (hasRasterCAD) return 'Rasterized CAD';
   return 'Other';
 }
 function canonicalizeModalityLabels(raw){
@@ -452,10 +446,8 @@ function canonicalizeModalityLabels(raw){
   let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
   parts = parts.map(p => p && p.trim()).filter(Boolean);
   if (!parts.length) parts = [String(raw)];
-
   const labels = new Set();
   const globalHasSynthetic = /\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/i.test(String(raw));
-
   for (const p of parts){ labels.add(canonicalizeModalityLabel(p)); }
   if (globalHasSynthetic) labels.add('Synthetic');
   if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
@@ -478,58 +470,40 @@ let TASK_MAP = new Map();     // normKey -> Pretty label
 let APP_MAP  = new Map();     // normKey -> Pretty label
 
 function buildFacets(){
-  /* ===== Modalities facet (from canonical labels) ===== */
+  // Modalities facet
   MODALITY_MAP = new Map();
-  MODELS.forEach(m=>{
-    (m.data_modalities || []).forEach(lbl=>{
-      const k = normKey(lbl);
-      if (!MODALITY_MAP.has(k)) MODALITY_MAP.set(k, lbl);
-    });
-  });
+  MODELS.forEach(m=>{ (m.data_modalities || []).forEach(lbl=>{ const k = normKey(lbl); if (!MODALITY_MAP.has(k)) MODALITY_MAP.set(k, lbl); }); });
   const modWrap = byId('filter-modality'); 
   if (modWrap) {
     modWrap.innerHTML='';
-    Array.from(MODALITY_MAP.entries())
-      .map(([k,lbl])=>({k,lbl}))
+    Array.from(MODALITY_MAP.entries()).map(([k,lbl])=>({k,lbl}))
       .sort((a,b)=> a.lbl.localeCompare(b.lbl))
       .forEach((it,i)=> modWrap.appendChild(makeCheckbox('m_'+i, it.lbl, it.k)));
   }
 
-  /* ===== Tasks facet (from split tags) — NEW ===== */
+  // Tasks facet
   TASK_MAP = new Map();
-  MODELS.forEach(m=>{
-    (m.tasks_pretty || []).forEach(lbl=>{
-      const k = normKey(lbl);
-      if (!TASK_MAP.has(k)) TASK_MAP.set(k, lbl);
-    });
-  });
+  MODELS.forEach(m=>{ (m.tasks_pretty || []).forEach(lbl=>{ const k = normKey(lbl); if (!TASK_MAP.has(k)) TASK_MAP.set(k, lbl); }); });
   const taskWrap = byId('filter-task'); 
   if (taskWrap) {
     taskWrap.innerHTML='';
-    Array.from(TASK_MAP.entries())
-      .map(([k,lbl])=>({k,lbl}))
+    Array.from(TASK_MAP.entries()).map(([k,lbl])=>({k,lbl}))
       .sort((a,b)=> a.lbl.localeCompare(b.lbl))
       .forEach((it,i)=> taskWrap.appendChild(makeCheckbox('t_'+i, it.lbl, it.k)));
   }
 
-  /* ===== Applications facet (from split tags) — NEW ===== */
+  // Applications facet
   APP_MAP = new Map();
-  MODELS.forEach(m=>{
-    (m.applications_pretty || []).forEach(lbl=>{
-      const k = normKey(lbl);
-      if (!APP_MAP.has(k)) APP_MAP.set(k, lbl);
-    });
-  });
+  MODELS.forEach(m=>{ (m.applications_pretty || []).forEach(lbl=>{ const k = normKey(lbl); if (!APP_MAP.has(k)) APP_MAP.set(k, lbl); }); });
   const appWrap = byId('filter-app'); 
   if (appWrap) {
     appWrap.innerHTML='';
-    Array.from(APP_MAP.entries())
-      .map(([k,lbl])=>({k,lbl}))
+    Array.from(APP_MAP.entries()).map(([k,lbl])=>({k,lbl}))
       .sort((a,b)=> a.lbl.localeCompare(b.lbl))
       .forEach((it,i)=> appWrap.appendChild(makeCheckbox('a_'+i, it.lbl, it.k)));
   }
 
-  // Licenses (unchanged)
+  // Licenses
   const licVals = uniqSorted(MODELS.map(m=>m.license).filter(Boolean));
   const licWrap = byId('filter-license'); 
   if (licWrap) {
@@ -558,25 +532,25 @@ function applyFilters(){
   let rows = MODELS.filter(m=>{
     const text = [
       m.title,
-      (m.tasks_pretty||[]).join(' '),        // UPDATED
-      (m.applications_pretty||[]).join(' '), // UPDATED
+      (m.tasks_pretty||[]).join(' '),
+      (m.applications_pretty||[]).join(' '),
       (m.data_modalities||[]).join(' '),
       m.license, (m.abstract||'')
     ].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
 
-    // Tasks = AND logic (unchanged behavior)
+    // Tasks = AND logic
     if(state.tasks.size){
       const keys = new Set(m._task_keys || []);
       for(const t of state.tasks){ if(!keys.has(t)) return false; }
     }
-    // Applications = AND logic (unchanged behavior)
+    // Applications = AND logic
     if(state.applications.size){
       const keys = new Set(m._app_keys || []);
       for(const a of state.applications){ if(!keys.has(a)) return false; }
     }
 
-    // Modalities = OR overlap on normalized keys (as previously updated)
+    // Modalities = OR overlap
     if(state.modalities.size){
       const keys = new Set(m._mod_keys || []);
       let hit = false;
@@ -628,10 +602,17 @@ function render(items){
     el.className = 'paper-card';
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
-        <div class="left">
+        <div class="left position-relative">
           <img src="${thumb}" alt="${m.title||'thumbnail'}"
                onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
+          ${m.contributor || m.contributor_url ? `
+            <div class="submitted-by">
+              <a href="${m.contributor_url || '#'}" target="_blank" rel="noopener">
+                Suggested by <strong>${m.contributor?.startsWith('@') ? m.contributor : '@' + m.contributor}</strong>
+              </a>
+            </div>` : ''}
         </div>
+
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
           <div class="meta mb-1">
@@ -717,11 +698,11 @@ function readFacet(containerId, setRef){
   root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
 }
 function attachFacetHandlers(){
-  // Modalities (store normalized keys)
+  // Modalities
   const modEl = byId('filter-modality');
   if (modEl) modEl.addEventListener('change', ()=>{ readFacet('filter-modality', state.modalities); applyFilters(); });
 
-  // Tasks (store normalized keys)
+  // Tasks
   const taskEl = byId('filter-task');
   if (taskEl) taskEl.addEventListener('change', ()=>{ readFacet('filter-task', state.tasks); applyFilters(); });
   const taskSearch = byId('taskSearch');
@@ -734,7 +715,7 @@ function attachFacetHandlers(){
     });
   }, 120));
 
-  // Applications (store normalized keys)
+  // Applications
   const appEl = byId('filter-app');
   if (appEl) appEl.addEventListener('change', ()=>{ readFacet('filter-app', state.applications); applyFilters(); });
   const appSearch = byId('appSearch');
@@ -827,18 +808,19 @@ async function loadModels(){
 
       // ----- Modalities -----
       const rawMods = Array.isArray(m.modalities) ? m.modalities
-                    : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim()) : (m.modality ? String(m.modality).split(',').map(s=>s.trim()) : []));
-      const prettyArr = canonicalizeModalityLabels(rawMods.join(', ')); // e.g., ['LiDAR','RGB-D','Synthetic']
+                    : (m.data_modality ? String(m.data_modality).split(',').map(s=>s.trim())
+                    : (m.modality ? String(m.modality).split(',').map(s=>s.trim()) : []));
+      const prettyArr = canonicalizeModalityLabels(rawMods.join(', '));
       const modKeys  = prettyArr.map(l => normKey(l));
 
-      // ----- Tasks (split + dedupe) -----
+      // ----- Tasks -----
       const rawTasks = Array.isArray(m.tasks) ? m.tasks
                      : (m.potential_tasks ? m.potential_tasks
                      : (m.task ? [m.task] : []));
-      const tasksPretty = splitTags(rawTasks);      // array of labels
-      const taskKeys    = tasksPretty.map(normKey); // normalized keys
+      const tasksPretty = splitTags(rawTasks);
+      const taskKeys    = tasksPretty.map(normKey);
 
-      // ----- Applications (split + dedupe) -----
+      // ----- Applications -----
       const rawApps = Array.isArray(m.applications) ? m.applications
                     : (m.application ? [m.application] : []);
       const appsPretty = splitTags(rawApps);
@@ -849,11 +831,11 @@ async function loadModels(){
         title: m.title || m.name || 'Untitled',
         year: (m.year!==undefined && m.year!==null) ? Number(m.year) : null,
 
-        data_modalities: prettyArr,  // display/search
-        _mod_keys: modKeys,          // filter (OR)
+        data_modalities: prettyArr,   // display/search
+        _mod_keys: modKeys,           // filter (OR)
 
-        tasks_pretty: tasksPretty,   // display/search (split)
-        _task_keys: taskKeys,        // filter (AND)
+        tasks_pretty: tasksPretty,    // display/search (split)
+        _task_keys: taskKeys,         // filter (AND)
 
         applications_pretty: appsPretty, // display/search (split)
         _app_keys: appKeys,              // filter (AND)
@@ -868,7 +850,11 @@ async function loadModels(){
         icon: m.icon || '',
         added_date: added || null,
         added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
-        added_date_fmt: added ? fmtDate(added) : null
+        added_date_fmt: added ? fmtDate(added) : null,
+
+        /* NEW: contributor passthrough for overlay */
+        contributor: m.contributor || '',
+        contributor_url: m.contributor_url || ''
       };
     });
 
@@ -920,7 +906,6 @@ if(document.readyState === 'loading'){
     </div>
   </div>
 </div>
-
 
 </body>
 </html>

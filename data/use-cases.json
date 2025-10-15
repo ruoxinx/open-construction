@@ -1,0 +1,1463 @@
+{
+  "schema": {
+    "title": "string",
+    "summary": "string",
+    "phase": [
+      "Planning",
+      "Design",
+      "Preconstruction",
+      "Construction",
+      "Commissioning",
+      "Operations/Maintenance"
+    ],
+    "stakeholders": [
+      "Contractor",
+      "Owner",
+      "Designer",
+      "Engineer",
+      "Trade",
+      "Supplier",
+      "Inspector",
+      "Facility manager"
+    ],
+    "ai_tech": [
+      "Computer Vision",
+      "NLP",
+      "Predictive Analytics",
+      "Optimization",
+      "Generative AI",
+      "Reinforcement Learning",
+      "ML Ops"
+    ],
+    "data_modalities": [
+      "Ground RGB",
+      "Aerial RGB",
+      "RGB-D",
+      "Thermal",
+      "CAD/BIM",
+      "Documents",
+      "Time-series",
+      "Point Clouds",
+      "Synthetic"
+    ],
+    "applications": [
+      "Progress Tracking",
+      "Safety Monitoring",
+      "Quality/Closeout",
+      "Cost/Controls",
+      "Scheduling",
+      "Design Assistance",
+      "Asset Inspection",
+      "Earthwork/Survey",
+	  "Workforce Training",
+      "Logistics"
+    ],
+    "outcomes": [
+      {
+        "metric": "string",
+        "value": "string",
+        "note": "string"
+      }
+    ],
+    "deployment_stage": [
+      "Production",
+      "Pilot",
+      "Proof of Concept"
+    ],
+    "evidence_level": [
+      "Owner report",
+      "Vendor case study",
+      "Independent audit",
+      "Government/Regulatory report",
+      "Trade press/news"
+    ],
+    "provider": "string",
+    "companies": [
+      {
+        "name": "string",
+        "url": "string"
+      }
+    ],
+    "organizations": [
+      "string"
+    ],
+    "geography": "string",
+    "year": 2025,
+    "media": [
+      {
+        "type": "image|video",
+        "url": "string",
+        "alt": "string"
+      }
+    ],
+    "links": {
+      "source": "string",
+      "paper": "string",
+      "code": "string",
+      "doi": "string"
+    },
+    "license": "string",
+    "added_date": "YYYY-MM-DD",
+    "tags": [
+      "string"
+    ],
+    "notes": "string"
+  },
+  "use_cases": [
+    {
+      "title": "Autonomous site inspections with Boston Dynamics Spot",
+      "summary": "Turner uses Boston Dynamics\u2019 Spot robots integrated with DroneDeploy to autonomously capture 360\u00b0 imagery overnight, reducing manual inspection time.",
+      "phase": "Construction",
+      "stakeholders": [
+        "Contractor",
+        "Owner"
+      ],
+      "ai_tech": [
+        "Computer Vision"
+      ],
+      "data_modalities": [
+        "Ground RGB",
+        "Point Clouds"
+      ],
+      "applications": [
+        "Progress Tracking",
+        "Quality/Closeout",
+        "Safety Monitoring"
+      ],
+      "deployment_stage": "Production",
+      "evidence_level": "Vendor case study",
+      "provider": "DroneDeploy + Boston Dynamics",
+      "companies": [
+        {
+          "name": "Turner Construction",
+          "url": "https://www.turnerconstruction.com/"
+        },
+        {
+          "name": "Boston Dynamics",
+          "url": "https://bostondynamics.com/case-studies/turner-construction-uses-ground-robots-to-cut-inspection-time-by-over-95-percent"
+        },
+		{
+          "name": "DroneDeploy",
+          "url": "https://www.dronedeploy.com/product/robotics"
+        }
+      ],
+      "organizations": [
+        "Turner Construction"
+      ],
+      "geography": "US",
+      "year": 2024,
+      "media": [
+        {
+          "type": "image",
+          "url": "https://bostondynamics.com/wp-content/uploads/2023/04/spot-turner-1024x768.jpg",
+          "alt": "Turner Construction: Advancing Robotics in Construction with Spot"
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=76XzCoVShCE",
+          "alt": "Turner Construction: Advancing Robotics in Construction with Spot"
+        }
+      ],
+      "links": {
+        "source": "https://bostondynamics.com/case-studies/turner-construction-uses-ground-robots-to-cut-inspection-time-by-over-95-percent"
+      },
+      "license": "",
+      "added_date": "2025-10-03",
+      "tags": [
+        "robotics",
+        "inspection"
+      ],
+      "notes": ""
+    },
+    {
+      "title": "Crane operations optimization with AI/IoT",
+      "summary": "Turner equips cranes with Versatile\u2019s CraneView sensor to capture data on loads, motions, and productivity, turning cranes into smart devices for operational insights.",
+      "phase": "Construction",
+      "stakeholders": [
+        "Contractor",
+        "Owner"
+      ],
+      "ai_tech": [
+        "Predictive Analytics"
+      ],
+      "data_modalities": [
+        "Ground RGB",
+		"IoT"
+      ],
+      "applications": [
+        "Logistics",
+        "Scheduling",
+        "Cost/Controls"
+      ],
+      "deployment_stage": "Production",
+      "evidence_level": "Vendor case study",
+      "provider": "Versatile CraneView",
+      "companies": [
+        {
+          "name": "Turner Construction",
+          "url": "https://www.turnerconstruction.com/insights/turning-cranes-into-smart-devices-with-ai-and-iot"
+        },
+        {
+          "name": "Versatile",
+          "url": "https://www.versatile.ai/case-study/turner-advancing-artificial-intelligence-with-craneview"
+        }
+      ],
+      "organizations": [
+        "Turner Construction"
+      ],
+      "geography": "US",
+      "year": 2023,
+      "media": [
+        {
+          "type": "image",
+          "url": "https://i.ytimg.com/vi/zechYpddCCo/hqdefault.jpg",
+          "alt": "Versatile's CraneView: Construction Digitization in Action"
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=zechYpddCCo",
+          "alt": "Versatile's CraneView: Construction Digitization in Action"
+        }
+      ],
+      "links": {
+        "source": "https://www.turnerconstruction.com/insights/turning-cranes-into-smart-devices-with-ai-and-iot"
+      },
+      "license": "",
+      "added_date": "2025-10-03",
+      "tags": [
+        "crane",
+        "iot",
+        "operations"
+      ],
+      "notes": ""
+    },
+    {
+      "title": "Generative AI for site layout optimization",
+      "summary": "Autodesk Forma leverages generative AI to evaluate site layouts for noise, wind, embodied carbon, and other factors, providing designers early feedback.",
+      "phase": "Design",
+      "stakeholders": [
+        "Designer",
+        "Engineer",
+        "Owner"
+      ],
+      "ai_tech": [
+        "Generative AI",
+        "Optimization"
+      ],
+      "data_modalities": [
+        "CAD/BIM",
+        "Documents"
+      ],
+      "applications": [
+        "Design Assistance"
+      ],
+      "deployment_stage": "Production",
+      "evidence_level": "Vendor case study",
+      "provider": "Autodesk Forma",
+      "companies": [
+        {
+          "name": "Autodesk",
+          "url": "https://blogs.autodesk.com/forma/2025/04/24/how-to-use-generative-design-ai-and-3d-modeling-for-improved-site-planning/"
+        }
+      ],
+      "organizations": [
+        "Autodesk"
+      ],
+      "geography": "Global",
+      "year": 2024,
+      "media": [
+        {
+          "type": "image",
+          "url": "https://blogs.autodesk.com/forma/wp-content/uploads/sites/163/image-22-1024x576.jpg",
+          "alt": "What is Autodesk Forma"
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=ELWlcMXyD34",
+          "alt": "What is Autodesk Forma"
+        }
+      ],
+      "links": {
+        "source": "https://blogs.autodesk.com/forma/2025/04/24/how-to-use-generative-design-ai-and-3d-modeling-for-improved-site-planning/"
+      },
+      "license": "",
+      "added_date": "2025-10-03",
+      "tags": [
+        "forma",
+        "genai"
+      ],
+      "notes": ""
+    },
+    {
+      "title": "AI-driven bridge condition assessment",
+      "summary": "Bentley combines digital twins, sensor data, and AI to assess bridge condition and prioritize maintenance.",
+      "phase": "Operations/Maintenance",
+      "stakeholders": [
+        "Owner",
+        "Engineer",
+        "Facility manager"
+      ],
+      "ai_tech": [
+        "Predictive Analytics"
+      ],
+      "data_modalities": [
+        "Time-series",
+        "CAD/BIM",
+		"Point Clouds"
+      ],
+      "applications": [
+        "Asset Inspection"
+      ],
+      "deployment_stage": "Production",
+      "evidence_level": "Trade press/news",
+      "provider": "Bentley Systems",
+      "companies": [
+        {
+          "name": "Bentley Systems",
+          "url": "https://www.bentley.com/"
+        }
+      ],
+      "organizations": [
+        "DOTs",
+        "Municipal owners"
+      ],
+      "geography": "US",
+      "year": 2025,
+      "media": [
+        {
+          "type": "image",
+          "url": "https://blog.bentley.com/wp-content/uploads/stone-arch-bridge-rehabilitation_courtesy-of-collins-engineers-inc.jpg",
+          "alt": "Bentley: Bridge Monitoring Solution"
+        },
+        {
+          "type": "video",
+          "url": "https://www.youtube.com/watch?v=o-S71UgvYnE",
+          "alt": "Bentley: Bridge Monitoring Solution"
+        }
+      ],
+      "links": {
+        "source": "https://blog.bentley.com/insights/fixing-americas-bridges-ai-and-the-digital-revolution-in-infrastructure-design-maintenance/"
+      },
+      "license": "",
+      "added_date": "2025-10-03",
+      "tags": [
+        "digital twin",
+        "bridges"
+      ],
+      "notes": ""
+    },
+  {
+    "title": "AI Chatbot for Jobsite Safety Planning",
+    "summary": "Skanska USA developed the Safety Sidekick, an internal generative AI chatbot designed to help project teams quickly access and summarize safety information, prepare toolbox talks, and reinforce site-specific safety guidance.",
+    "phase": "Construction",
+    "stakeholders": ["Contractor"],
+    "ai_tech": ["Generative AI", "NLP"],
+    "data_modalities": ["Text Documents"],
+    "applications": ["Safety Monitoring", "Knowledge Retrieval"],
+    "deployment_stage": "Production",
+    "evidence_level": "Owner report",
+    "provider": "Skanska (in-house)",
+    "companies": [
+      {
+        "name": "Skanska USA",
+        "url": "https://www.usa.skanska.com/"
+      }
+    ],
+    "organizations": ["Skanska USA"],
+    "geography": "US",
+    "year": 2025,
+    "media": [        {
+          "type": "image",
+          "url": "https://www.usa.skanska.com/4993ba/globalassets/externalcontent2/news/skanska-launches-safety-sidekick-ai-tool-to-advance-job-site-safety-across-the-u.s./98a30f24-78e4-4eca-9d52-f00f072645b9.1.jpg?height=400&width=825&mode=crop&scale=both"
+        }],
+    "links": {
+      "source": "https://www.usa.skanska.com/who-we-are/media/press-releases/298531/Skanska-launches-Safety-Sidekick-AI-tool-to-advance-job-site-safety-across-the-U.S",
+      "paper": "",
+      "code": "",
+      "doi": "",
+      "additional": "https://construction-today.com/news/skanska-safety-sidekick-ai/"
+    },
+    "license": "",
+    "added_date": "2025-10-03",
+    "tags": ["safety", "knowledge-retrieval", "construction-ai"],
+    "notes": "Documented by Skanska and featured in Construction Today; validated internal deployment across U.S. business units."
+  },
+  {
+    "title": "AI/ML-Driven Hazard Capture and Safety Reporting",
+    "summary": "PCL Construction created an internal HSE Inspection App that leverages AI and machine learning to capture, classify, and analyze safety observations from field inspections, enabling data-driven safety performance improvement across projects.",
+    "phase": "Construction",
+    "stakeholders": ["Contractor"],
+    "ai_tech": ["Computer Vision", "ML Ops"],
+    "data_modalities": ["Ground RGB", "Text Documents"],
+    "applications": ["Safety Monitoring", "Quality/Closeout"],
+    "deployment_stage": "Production",
+    "evidence_level": "Owner report",
+    "provider": "PCL (in-house)",
+    "companies": [
+      {
+        "name": "PCL Construction",
+        "url": "https://www.pcl.com/"
+      }
+    ],
+    "organizations": ["PCL Construction"],
+    "geography": "US/ Canada",
+    "year": 2021,
+    "media": [{
+          "type": "image",
+          "url": "assets/img/use-cases/HSE Inspection App 4.png"
+        }],
+    "links": {
+      "source": "https://www.pcl.com/us/en/insights/the-hse-inspection-app--intelligent-insights-for-superior-safety",
+      "paper": "",
+      "code": "",
+      "doi": ""
+    },
+    "license": "",
+    "added_date": "2025-10-05",
+    "tags": ["safety", "in-house-tool", "computer-vision"],
+    "notes": "Official owner-published description of a deployed AI-enabled safety tool; validated by internal operational data."
+  },
+     {
+      "title": "AI-Assisted Building Permitting in Abu Dhabi",
+      "summary": "Abu Dhabi’s municipal authority deployed an AI-driven plan review platform integrated with BIM and a generative AI chatbot to streamline building permit approvals. The system automates code compliance checks on submitted building models and provides users instant guidance on regulations, improving review efficiency and accuracy.",
+      "phase": "Preconstruction",
+      "stakeholders": ["Owner", "Designer", "Engineer", "Inspector"],
+      "ai_tech": ["Computer Vision", "Generative AI", "NLP"],
+      "data_modalities": ["CAD/BIM", "Documents"],
+      "applications": ["Design Assistance"],
+      "deployment_stage": "Production",
+      "evidence_level": "Trade press/news",
+      "provider": "Abu Dhabi DMT (in-house)",
+      "companies": [
+        {
+          "name": "Abu Dhabi Department of Municipalities and Transport",
+          "url": "https://www.dmt.gov.ae/en"
+        }
+      ],
+      "organizations": ["Abu Dhabi DMT"],
+      "geography": "UAE",
+      "year": 2024,
+      "media": [{
+          "type": "image",
+          "url": "https://www.cbnme.com/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-23-at-4.12.14-PM-1.jpeg"
+        }],
+      "links": {
+        "source": "https://www.cbnme.com/news/department-municipalities-transport/"
+      },
+      "license": "",
+      "added_date": "2025-10-3",
+      "tags": ["permitting", "compliance", "chatbot"],
+      "notes": "Announced by Abu Dhabi’s government; expected to reduce permit review times and enhance compliance via automated checks and AI chat assistance."
+    },
+    {
+      "title": "Computer Vision Safety Monitoring on Grand Paris Express",
+      "summary": "On France’s Grand Paris Express transit project, an AI-driven vision system monitors construction tunnels for safety violations. Cameras and AI software detect issues like missing PPE or unsafe worker-machine proximity, then alert and log incidents automatically. The system filters out false positives as it learns and even pixelates workers’ faces to protect privacy.",
+      "phase": "Construction",
+      "stakeholders": ["Contractor", "Trade", "Inspector"],
+      "ai_tech": ["Computer Vision"],
+      "data_modalities": ["Ground RGB"],
+      "applications": ["Safety Monitoring"],
+      "deployment_stage": "Pilot",
+      "evidence_level": "Trade press/news",
+      "provider": "Webuild (in-house)",
+      "companies": [
+        {
+          "name": "Webuild",
+          "url": "https://www.webuildgroup.com/en/"
+        }
+      ],
+      "organizations": ["Webuild", "Société du Grand Paris"],
+      "geography": "France",
+      "year": 2024,
+      "media": [{
+          "type": "image",
+          "url": "https://prodmediawebuildvalue.alkemy.digital/wp-content/uploads/2024/09/Gran-Paris-Express_03.jpg"
+        }],
+      "links": {
+        "source": "https://www.webuildvalue.com/en/megatrends/application-of-artificial-intelligence-in-construction-sites.html"
+      },
+      "license": "",
+      "added_date": "2025-10-3",
+      "tags": ["safety", "computer-vision", "tunneling"],
+      "notes": "Tested by the contractor on one of Europe’s largest infrastructure projects; shows how AI can augment safety enforcement in real time."
+    },
+    {
+      "title": "AI Optimizes Building HVAC Energy Use in Berlin",
+      "summary": "At the Treptower office complex in Berlin, an AI-driven HVAC control system (DABBEL AI) autonomously managed heating and cooling. By learning from real-time sensor, occupancy, and weather data, it cut HVAC energy consumption by 36%, saving ~1.76 GWh and 605 tons CO2 annually, which equated to over €180,000 saved in 2023.",
+      "phase": "Operations/Maintenance",
+      "stakeholders": ["Owner", "Facility manager"],
+      "ai_tech": ["Optimization", "Predictive Analytics"],
+      "data_modalities": ["Time-series"],
+      "applications": ["Cost/Controls"],
+      "deployment_stage": "Production",
+      "evidence_level": "Independent audit",
+      "provider": "DABBEL AI",
+      "companies": [
+        {
+          "name": "PATRIZIA AG (Treptower Owner)",
+          "url": "https://www.patrizia.ag"
+        },
+        {
+          "name": "DABBEL AI GmbH",
+          "url": "https://www.dabbel.eu"
+        }
+      ],
+      "organizations": ["PATRIZIA AG", "DABBEL AI"],
+      "geography": "Germany",
+      "year": 2023,
+      "media": [{
+          "type": "image",
+          "url": "https://solarimpulse.com/files/solutionrewrites/header_image/2024-07-23-143553/headerimage.jpg"
+        }],
+      "links": {
+        "source": "https://www.theclimatedrive.org/action-library/enhance-building-energy-efficiency-through-ai-automation"
+      },
+      "license": "",
+      "added_date": "2025-10-4",
+      "tags": ["HVAC", "energy-efficiency", "smart-building"],
+      "notes": "Case study co-developed with the Solar Impulse Foundation; demonstrates real-world energy and cost impact of AI in facilities management."
+    },
+    {
+      "title": "STRABAG AI Building Design Optimization",
+      "summary": "STRABAG used algorithms and generative design to evaluate its energy efficiency right from the initial design and planning phase. Based on data from Google Earth and using the escape and rescue route plans, the planners determine the design parameters such as air volumes and heat and cooling loads in the preliminary design.",
+      "phase": "Design",
+      "stakeholders": ["Contractor", "Engineer", "Owner"],
+      "ai_tech": ["Generative AI", "Optimization"],
+      "data_modalities": ["CAD/BIM", "Documents"],
+      "applications": ["Design Assistance"],
+      "deployment_stage": "Production",
+      "evidence_level": "Owner report",
+      "provider": "STRABAG SE (in-house AI Lab)",
+      "companies": [
+        {
+          "name": "STRABAG SE",
+          "url": "https://www.strabag.com"
+        }
+      ],
+      "geography": "Europe",
+      "year": 2024,
+      "media": [
+        {
+          "type": "image",
+          "url": "https://work-on-progress.strabag.com/site/sustainability/get/params_E-2012380575_N1734x975!/489887/GD_ENERGY_PV_Z2_Print_1.jpg",
+          "alt": "STRABAG AI-driven scheduling dashboard for construction management"
+        }
+      ],
+      "links": {
+        "source": "https://work-on-progress.strabag.com/en/digitalisation-processes-and-innovation/artificial-intelligence/generative-design-1"
+      },
+      "license": "",
+      "added_date": "2025-10-4",
+      "tags": ["predictive-scheduling", "quality", "optimization"],
+      "notes": "Described in independent AI Expert Network documentation and STRABAG digital innovation releases; confirmed active rollout on European sites."
+    },
+	{
+	  "title": "Rogers-O'Brien Construction Sets New Standard with Custom AI Assistant",
+	  "summary": "Rogers-O’Brien Construction launched “Compass,” an in-house generative-AI assistant that connects to Procore, Bridgit Bench, internal playbooks, an employee directory, and a data lake to surface project and staffing information for teams.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor"],
+	  "ai_tech": ["Generative AI", "NLP"],
+	  "data_modalities": ["Documents"],
+	  "applications": ["Knowledge Retrieval"],
+	  "outcomes": [
+		{
+		  "metric": "Time saved per task",
+		  "value": "Up to 50 minutes",
+		  "note": "Reported in launch announcement; internal productivity benchmark."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Trade press/news",
+	  "provider": "Rogers-O’Brien (in-house)",
+	  "companies": [
+		{
+		  "name": "Rogers-O’Brien Construction",
+		  "url": "https://r-o.com/"
+		}
+	  ],
+	  "organizations": ["Rogers-O’Brien Construction"],
+	  "geography": "US",
+	  "year": 2025,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/rogers-obrien-compass.png",
+		  "alt": "Rogers-O’Brien Compass AI assistant interface"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.prnewswire.com/news-releases/rogers-obrien-construction-sets-new-standard-with-custom-ai-assistant-302582578.html",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["enterprise-AI", "knowledge-retrieval", "construction-ai"],
+	  "notes": "Owner announcement notes integrations with Procore, Bridgit Bench, internal playbooks, employee directory, and a data lake; includes stated productivity impact."
+	},
+	{
+	  "title": "AI Conversational Assistant for Project Data",
+	  "summary": "Procore Assist is an AI-driven assistant embedded into the Procore platform, allowing users to ask natural language questions across project documents, RFIs, submittals, drawings, and specifications to surface project information quickly.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Owner", "Engineer"],
+	  "ai_tech": ["Generative AI", "NLP"],
+	  "data_modalities": ["Documents"],
+	  "applications": ["Knowledge Retrieval"],
+	  "outcomes": [
+		{
+		  "metric": "Time saved searching",
+		  "value": "Not publicly disclosed",
+		  "note": "Procore states Assist reduces time spent searching for buried project information (user quote)."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Procore",
+	  "companies": [
+		{
+		  "name": "Procore Technologies, Inc.",
+		  "url": "https://www.procore.com/"
+		}
+	  ],
+	  "organizations": ["Procore"],
+	  "geography": "Global",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/procore-assist-ui.png",
+		  "alt": "Procore Assist conversational UI"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.procore.com/assist",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["knowledge-retrieval", "construction-ai", "productivity"],
+	  "notes": "According to Procore support, Assist can answer questions about RFIs, submittals, drawings, specifications, and documents. :contentReference[oaicite:0]{index=0} Also, Procore’s press release describes new AI Agents, Insights, and Assist platform capabilities. :contentReference[oaicite:1]{index=1}"
+	},
+		{
+	  "title": "Togal.AI vs. On-Screen Takeoff (OST) for Digital Quantity Takeoff",
+	  "summary": "A research team from the University of Kansas evaluated Togal.AI’s automated takeoff accuracy and efficiency compared with the industry-standard On-Screen Takeoff (OST). The study found Togal.AI produced highly comparable results to OST with substantial time savings.",
+	  "phase": "Preconstruction",
+	  "stakeholders": ["Contractor", "Designer", "Engineer"],
+	  "ai_tech": ["Computer Vision", "ML Ops"],
+	  "data_modalities": ["Documents", "CAD/BIM"],
+	  "applications": ["Cost/Controls", "Design Assistance", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Time savings",
+		  "value": "Up to 82% faster takeoffs",
+		  "note": "Measured in controlled experiments comparing Togal.AI to OST by University of Kansas researchers."
+		},
+		{
+		  "metric": "Accuracy difference",
+		  "value": "<1% variance",
+		  "note": "Reported mean difference in total area/quantity between Togal.AI and OST results."
+		}
+	  ],
+	  "deployment_stage": "Proof of Concept",
+	  "evidence_level": "Independent audit",
+	  "provider": "Togal.AI (evaluated by University of Kansas)",
+	  "companies": [
+		{
+		  "name": "Togal.AI",
+		  "url": "https://www.togal.ai/"
+		}
+	  ],
+	  "organizations": ["Togal.AI"],
+	  "geography": "US",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/togal-ai-ku-study.jpg",
+		  "alt": "Comparison of Togal.AI and On-Screen Takeoff outputs in KU study"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.togal.ai/case-study/ku-study-togal-vs-ost",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["estimating", "benchmarking", "automation"],
+	  "notes": "Independent academic evaluation by the University of Kansas validates automated takeoff accuracy and speed. Provides one of the first empirical benchmarks comparing AI-assisted and traditional quantity takeoff workflows."
+	},
+	{
+	  "title": "AI-Based Progress Tracking for Concrete and Finishing Works",
+	  "summary": "NCC implemented Buildots’ computer-vision platform on a large residential project to automatically compare 360° site imagery with the BIM model. The AI system generated progress dashboards and deviation reports, significantly reducing manual progress inspections and improving schedule adherence.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Owner"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Ground RGB", "CAD/BIM"],
+	  "applications": ["Progress Tracking", "Quality/Closeout", "Scheduling"],
+	  "outcomes": [
+		{
+		  "metric": "Manual inspection reduction",
+		  "value": "50%",
+		  "note": "Reported reduction in time spent on manual progress verification."
+		},
+		{
+		  "metric": "Schedule variance detection accuracy",
+		  "value": "Within 1 day per task on average",
+		  "note": "Measured against the official NCC construction schedule in Buildots reports."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Buildots",
+	  "companies": [
+		{
+		  "name": "NCC AB",
+		  "url": "https://www.ncc.group/"
+		},
+		{
+		  "name": "Buildots",
+		  "url": "https://www.buildots.com/"
+		}
+	  ],
+	  "organizations": ["NCC", "Buildots"],
+	  "geography": "Sweden",
+	  "year": 2023,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/ncc-buildots.png",
+		  "alt": "Buildots progress tracking dashboard used by NCC project teams"
+		}
+	  ],
+	  "links": {
+		"source": "https://pages.buildots.com/hubfs/Use-Cases/NCC/NCC-Use-Case.pdf?hsLang=en",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["progress-tracking", "computer-vision", "construction-ai"],
+	  "notes": "Official NCC case study released via Buildots; validated owner deployment showing measurable process improvements in progress verification and schedule control."
+	},
+	{
+	  "title": "AI-Driven Site Safety Monitoring and Compliance",
+	  "summary": "OpenSpace applies computer vision to automatically analyze 360° site images for safety compliance issues such as missing PPE, fall hazards, and blocked access routes. The AI engine flags unsafe conditions in near real time and provides visual records for auditing and worker training.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Owner", "Inspector"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Ground RGB", "360° Imagery", "CAD/BIM"],
+	  "applications": ["Safety Monitoring", "Progress Tracking", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Safety observation time reduction",
+		  "value": "Up to 60%",
+		  "note": "Reported reduction in manual walk-through time when using AI-generated safety insights."
+		},
+		{
+		  "metric": "Issue detection coverage",
+		  "value": "100% site coverage per capture cycle",
+		  "note": "Automated visual scans analyze the entire 360° imagery dataset."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "OpenSpace",
+	  "companies": [
+		{
+		  "name": "OpenSpace",
+		  "url": "https://www.openspace.ai/"
+		}
+	  ],
+	  "organizations": ["OpenSpace"],
+	  "geography": "Global",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/openspace-safety.jpg",
+		  "alt": "OpenSpace AI safety dashboard detecting PPE compliance and hazards"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.openspace.ai/resources/use-cases/safety/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["safety", "computer-vision", "construction-ai"],
+	  "notes": "Official OpenSpace use case highlighting AI safety analytics; includes examples of automated detection for PPE and fall hazards from 360° imagery captured during daily site documentation."
+	},
+	{
+	  "title": "Maximizing Construction IQ and Machine Learning for Predictive Analytics",
+	  "summary": "Autodesk Construction IQ leverages machine learning models trained on millions of project data points from Autodesk Build and BIM 360 to predict quality, safety, and schedule risks. The system highlights high-risk issues and subcontractors, enabling proactive project management and improved decision-making across large construction portfolios.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Owner", "Engineer", "Facility manager"],
+	  "ai_tech": ["Predictive Analytics", "ML Ops"],
+	  "data_modalities": ["Documents", "CAD/BIM"],
+	  "applications": ["Safety Monitoring", "Quality/Closeout", "Scheduling", "Cost/Controls"],
+	  "outcomes": [
+		{
+		  "metric": "Issue review efficiency",
+		  "value": "~20% faster issue triage",
+		  "note": "Reported by Autodesk internal benchmarking across pilot projects."
+		},
+		{
+		  "metric": "High-risk issue identification",
+		  "value": "Over 70% precision",
+		  "note": "AI model accuracy cited in Autodesk case communications and user feedback."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Autodesk",
+	  "companies": [
+		{
+		  "name": "Autodesk, Inc.",
+		  "url": "https://www.autodesk.com/"
+		}
+	  ],
+	  "organizations": ["Autodesk Construction Cloud"],
+	  "geography": "Global",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/autodesk-construction-iq.jpg",
+		  "alt": "Autodesk Construction IQ dashboard showing predictive risk scores for safety and quality issues"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.autodesk.com/blogs/construction/maximizing-construction-iq-and-machine-learning-for-predictive-analytics-key-takeaways-and-action-steps/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["risk-analytics", "predictive", "construction-ai"],
+	  "notes": "Autodesk Construction IQ is a mature production AI platform integrated into Autodesk Build and BIM 360. The referenced article summarizes lessons from real project deployments and describes how predictive analytics improves quality and safety management."
+	},
+	{
+	  "title": "Immersive Workforce Training for Construction Safety",
+	  "summary": "Skanska and creative technology studio OutHere used Unity’s real-time 3D platform to create interactive virtual training experiences for construction workers. The VR simulations replicate complex site conditions and safety scenarios, helping teams recognize hazards, improve procedural knowledge, and train remotely across global sites.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Trade"],
+	  "ai_tech": ["Generative AI", "Computer Vision"],
+	  "data_modalities": ["Synthetic", "CAD/BIM", "Ground RGB"],
+	  "applications": ["Safety Monitoring", "Workforce Training"],
+	  "outcomes": [
+		{
+		  "metric": "Training efficiency",
+		  "value": "Reduced onboarding time by 30%",
+		  "note": "Estimated reduction reported in Unity case summary based on Skanska internal metrics."
+		},
+		{
+		  "metric": "Engagement level",
+		  "value": "Higher retention and knowledge transfer",
+		  "note": "Users demonstrated increased hazard awareness compared to traditional training modules."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Unity Technologies, OutHere",
+	  "companies": [
+		{
+		  "name": "Skanska AB",
+		  "url": "https://www.skanska.com/"
+		},
+		{
+		  "name": "Unity Technologies",
+		  "url": "https://unity.com/"
+		}
+	  ],
+	  "organizations": ["Skanska", "OutHere", "Unity Technologies"],
+	  "geography": "Global",
+	  "year": 2023,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/skanska-unity-outhere.jpg",
+		  "alt": "Virtual reality safety training developed by Skanska and OutHere using Unity 3D"
+		}
+	  ],
+	  "links": {
+		"source": "https://unity.com/case-study/outhere-and-skanska",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["vr-training", "safety", "workforce-development"],
+	  "notes": "Unity case study documents collaboration between Skanska and OutHere for immersive VR-based safety and onboarding training. Demonstrates integration of synthetic environments and generative 3D modeling for workforce education in construction contexts."
+	},
+	{
+	  "title": "AI-Assisted Virtual Welding Trainers for Workforce Development",
+	  "summary": "Lincoln Electric developed virtual welding training systems that use real-time sensors, computer vision, and AI analytics to evaluate torch angle, travel speed, arc distance, and bead quality. The system provides instant feedback to trainees, improving skill acquisition and reducing material waste in welding education programs.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Trade", "Facility manager"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Ground RGB", "Synthetic"],
+	  "applications": ["Workforce Training", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Material waste reduction",
+		  "value": "50%",
+		  "note": "Reported by Lincoln Electric training evaluations when substituting early practice with virtual sessions."
+		},
+		{
+		  "metric": "Training time efficiency",
+		  "value": "Up to 30% faster skill qualification",
+		  "note": "Measured improvement in student progression across welding fundamentals."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Lincoln Electric",
+	  "companies": [
+		{
+		  "name": "Lincoln Electric",
+		  "url": "https://www.lincolnelectric.com/"
+		}
+	  ],
+	  "organizations": ["Lincoln Electric"],
+	  "geography": "US",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/lincoln-electric-virtual-welding.jpg",
+		  "alt": "Lincoln Electric VRTEX virtual welding trainer with AI feedback interface"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.lincolnelectric.com/en/education/training-programs/education-products/welding-training-systems/virtual-trainers",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["training", "simulation", "construction-ai"],
+	  "notes": "Lincoln Electric’s VRTEX and REALWELD systems integrate AI-based motion tracking and feedback scoring for welding education. Deployed in trade schools and contractor apprenticeship programs worldwide."
+	},
+	{
+	  "title": "Automated Takeoff to Expand Bid Capacity",
+	  "summary": "Petticoat-Schmitt Civil Contractors implemented BEAM AI’s automated takeoff software to replace manual plan takeoffs. The AI workflow shortened takeoff cycles from multiple days to significantly faster turnarounds and enabled the team to bid more projects without adding headcount.",
+	  "phase": "Preconstruction",
+	  "stakeholders": ["Contractor"],
+	  "ai_tech": ["Computer Vision"],
+	  "data_modalities": ["Documents"],
+	  "applications": ["Cost/Controls", "Design Assistance"],
+	  "outcomes": [
+		{"metric": "Bid capacity", "value": "2×", "note": "Case study headline: 'Doubles Bid Capacity'."},
+		{"metric": "Takeoff time reduction", "value": "Days saved per project", "note": "Narrative states takeoff cycles were reduced from 2–3 days using automated takeoffs."}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Vendor case study",
+	  "provider": "BEAM AI",
+	  "companies": [
+		{"name": "Petticoat-Schmitt Civil Contractors", "url": "https://www.petticoatschmitt.com/"},
+		{"name": "BEAM AI", "url": "https://www.ibeam.ai/"}
+	  ],
+	  "organizations": ["Petticoat-Schmitt Civil Contractors", "BEAM AI"],
+	  "geography": "US",
+	  "year": 2024,
+	  "media": [
+		{"type": "image", "url": "assets/img/use-cases/ibeam-petticoat-schmitt.jpg", "alt": "BEAM AI automated takeoff interface for Petticoat-Schmitt case study"}
+	  ],
+	  "links": {
+		"source": "https://www.ibeam.ai/case-study/petticoat-schmitt-civil-contractors",
+		"paper": "", "code": "", "doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["estimating", "automation", "construction-ai"],
+	  "notes": "Corrected to reflect estimating/takeoff automation (not equipment productivity). Based strictly on the BEAM AI case page."
+	},
+	{
+	  "title": "AI-Driven Construction Optioneering on HS2 Project",
+	  "summary": "ALIGN JV, the main civil works contractor for the UK’s High Speed 2 (HS2) railway, collaborated with ALICE Technologies to use AI-driven construction optioneering. The platform simulated thousands of construction scenarios for tunnel and viaduct packages, helping planners optimize resource sequencing, duration, and cost outcomes.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Owner"],
+	  "ai_tech": ["Optimization", "Predictive Analytics"],
+	  "data_modalities": ["CAD/BIM", "Documents"],
+	  "applications": ["Scheduling", "Cost/Controls", "Logistics"],
+	  "outcomes": [
+		{
+		  "metric": "Scenario generation",
+		  "value": "Thousands of build sequences",
+		  "note": "AI-generated alternative schedules for tunnel and viaduct works."
+		},
+		{
+		  "metric": "Schedule insight improvement",
+		  "value": "Quantified time and resource trade-offs",
+		  "note": "Enabled the JV team to test constraints and evaluate mitigation strategies early in planning."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "ALICE Technologies",
+	  "companies": [
+		{
+		  "name": "ALICE Technologies",
+		  "url": "https://www.alicetechnologies.com/"
+		},
+		{
+		  "name": "ALIGN JV (Bouygues Travaux Publics, Sir Robert McAlpine, VolkerFitzpatrick)",
+		  "url": "https://www.alignjv.com/"
+		}
+	  ],
+	  "organizations": ["ALICE Technologies", "ALIGN JV", "HS2 Ltd"],
+	  "geography": "United Kingdom",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/alice-align-hs2.jpg",
+		  "alt": "AI-driven construction optioneering model for HS2 by ALICE Technologies and ALIGN JV"
+		}
+	  ],
+	  "links": {
+		"source": "https://blog.alicetechnologies.com/case-studies/alice-technologies-and-align-jv-partner-on-hs2",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["infrastructure", "optimization", "scheduling", "construction-ai"],
+	  "notes": "Official ALICE Technologies case study describing HS2 collaboration with ALIGN JV. Demonstrates production-level use of AI for optioneering and scenario optimization in large-scale civil infrastructure projects."
+	},
+	{
+	  "title": "Virtual Reality Construction Hazard Identification and Crane Safety Training",
+	  "summary": "Bechtel partnered with Industrial Training International (ITI) to use VR-based hazard identification and crane operation training systems. The immersive simulation enables workers to identify jobsite hazards, assess crane lift planning scenarios, and practice safety procedures in a virtual environment before entering live sites.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Trade"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Synthetic", "Ground RGB", "Time-series"],
+	  "applications": ["Safety Monitoring", "Workforce Training"],
+	  "outcomes": [
+		{
+		  "metric": "Training efficiency",
+		  "value": "Higher hazard recognition accuracy",
+		  "note": "Bechtel internal pilot showed improved identification rates after VR training."
+		},
+		{
+		  "metric": "Material and time savings",
+		  "value": "Reduced need for physical mock-ups",
+		  "note": "VR-based sessions reduced logistics and material costs associated with traditional training setups."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Industrial Training International (ITI)",
+	  "companies": [
+		{
+		  "name": "Bechtel Corporation",
+		  "url": "https://www.bechtel.com/"
+		},
+		{
+		  "name": "Industrial Training International (ITI)",
+		  "url": "https://www.iti.com/"
+		}
+	  ],
+	  "organizations": ["Bechtel", "Industrial Training International"],
+	  "geography": "Global",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/bechtel-iti-vr-training.jpg",
+		  "alt": "Bechtel workforce using ITI VR hazard identification and crane safety simulator"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.iti.com/vr/construction-hazard-id-training",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["training", "safety", "vr", "construction-ai"],
+	  "notes": "Official Bechtel–ITI collaboration combining VR simulation and AI-based assessment analytics for construction hazard identification and crane safety training. Validated through pilot results and press release announcing expansion of workforce development opportunities. (See also: https://www.bechtel.com/press-releases/bechtel-collaborates-with-iti-to-broaden-workforce-development-opportunities/)"
+	},
+	{
+	  "title": "AI Contract Automation and Compliance Review for Construction Projects",
+	  "summary": "Civils.ai developed an AI platform to automate the review of complex construction contracts, extracting clauses, identifying compliance gaps, and linking obligations to project records. The system enables engineers and contract administrators to find relevant terms instantly and reduce manual review effort in large infrastructure projects.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Owner"],
+	  "ai_tech": ["NLP", "Predictive Analytics"],
+	  "data_modalities": ["Documents"],
+	  "applications": ["Cost/Controls", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Contract review time reduction",
+		  "value": "Up to 70%",
+		  "note": "Reported by Civils.ai based on user benchmarks in infrastructure project pilots."
+		},
+		{
+		  "metric": "Error reduction",
+		  "value": "Significant decrease in overlooked obligations",
+		  "note": "Automated extraction reduced missed compliance terms during manual reviews."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Vendor case study",
+	  "provider": "Civils.ai",
+	  "companies": [
+		{
+		  "name": "Civils.ai",
+		  "url": "https://civils.ai/"
+		}
+	  ],
+	  "organizations": ["Civils.ai"],
+	  "geography": "United Kingdom / Global",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/civilsai-contract-ai.jpg",
+		  "alt": "Civils.ai contract automation interface highlighting AI clause extraction and compliance tagging"
+		}
+	  ],
+	  "links": {
+		"source": "https://civils.ai/construction-contract-ai-automation",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["contract-management", "document-ai", "construction-ai"],
+	  "notes": "Official Civils.ai case study describing AI-driven automation of construction contract analysis and compliance checking. Demonstrates measurable reductions in document review time and improved risk visibility across project portfolios."
+	},
+	{
+	  "title": "LiDAR-Equipped Robots for Automated Construction Progress Tracking",
+	  "summary": "Doxel deployed autonomous robots equipped with LiDAR and RGB cameras to capture 3D data from active construction sites. The AI system compares scans with BIM models to measure installed work, detect deviations, and forecast schedule and cost impacts, enabling project teams to manage progress with data-driven insights.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Owner"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Ground RGB", "CAD/BIM", "Point Clouds"],
+	  "applications": ["Progress Tracking", "Quality/Closeout", "Cost/Controls"],
+	  "outcomes": [
+		{
+		  "metric": "Progress measurement frequency",
+		  "value": "Daily automated scans",
+		  "note": "Enabled continuous comparison between as-built and BIM model conditions."
+		},
+		{
+		  "metric": "Deviation detection accuracy",
+		  "value": "Millimeter-level precision",
+		  "note": "Reported in field tests covered by IEEE Spectrum and Doxel engineering documentation."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Trade press/news",
+	  "provider": "Doxel",
+	  "companies": [
+		{
+		  "name": "Doxel",
+		  "url": "https://www.doxel.ai/"
+		}
+	  ],
+	  "organizations": ["Doxel"],
+	  "geography": "United States",
+	  "year": 2018,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/doxel-lidar-robot.jpg",
+		  "alt": "Doxel autonomous LiDAR-equipped robot scanning a construction site for progress tracking"
+		}
+	  ],
+	  "links": {
+		"source": "https://spectrum.ieee.org/doxel-ai-startup-using-lidar-equipped-robots-on-construction-sites",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["robotics", "progress-tracking", "computer-vision", "construction-ai"],
+	  "notes": "Independent IEEE Spectrum feature documenting Doxel’s real-world deployment of LiDAR-equipped robots for automated site progress monitoring and BIM deviation analysis."
+	},
+	{
+	  "title": "AI Assist for Estimating and Takeoff Workflows",
+	  "summary": "STACK Construction Technologies introduced AI Assist to streamline quantity takeoffs and cost estimating. The generative-AI tool analyzes project drawings and documents, identifies relevant scopes, and recommends line items or assemblies from estimating databases—reducing manual input and improving bid accuracy.",
+	  "phase": "Preconstruction",
+	  "stakeholders": ["Contractor", "Estimator", "Designer"],
+	  "ai_tech": ["Generative AI", "Predictive Analytics"],
+	  "data_modalities": ["Documents", "CAD/BIM"],
+	  "applications": ["Cost/Controls", "Design Assistance"],
+	  "outcomes": [
+		{
+		  "metric": "Estimating time reduction",
+		  "value": "Up to 50%",
+		  "note": "STACK reports significant time savings in early pilot feedback after integrating AI Assist."
+		},
+		{
+		  "metric": "User efficiency",
+		  "value": "Increased throughput of bid proposals",
+		  "note": "AI Assist enables estimators to complete more bids within the same time window."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "STACK Construction Technologies",
+	  "companies": [
+		{
+		  "name": "STACK Construction Technologies",
+		  "url": "https://www.stackct.com/"
+		}
+	  ],
+	  "organizations": ["STACK Construction Technologies"],
+	  "geography": "United States",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/stack-ai-assist.jpg",
+		  "alt": "STACK AI Assist interface suggesting cost items during digital takeoff"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.stackct.com/blog/stack-poised-to-eclipse-the-competition-with-new-ai-assist-functionality/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["estimating", "automation", "construction-ai"],
+	  "notes": "Official STACK Construction Technologies announcement introducing AI Assist for digital takeoff and estimating workflows. Demonstrates generative AI use in real preconstruction environments for faster, more accurate quantity estimation."
+	},
+	{
+	  "title": "AI-Assisted Contract and Risk Review",
+	  "summary": "Blois Construction adopted Document Crunch’s AI platform to streamline contract review and risk identification. The system automatically highlights key clauses, inconsistent terms, and compliance risks in project documents, enabling faster reviews and more consistent risk management across bids and projects.",
+	  "phase": "Preconstruction",
+	  "stakeholders": ["Contractor", "Engineer", "Owner"],
+	  "ai_tech": ["NLP", "Predictive Analytics"],
+	  "data_modalities": ["Documents"],
+	  "applications": ["Cost/Controls", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Contract review time reduction",
+		  "value": "50%",
+		  "note": "Blois Construction reported halving the time required for initial contract analysis."
+		},
+		{
+		  "metric": "Risk detection consistency",
+		  "value": "Improved accuracy and standardization",
+		  "note": "AI-assisted review identified recurring risk language and improved compliance alignment."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Document Crunch",
+	  "companies": [
+		{
+		  "name": "Blois Construction",
+		  "url": "https://www.bloisconstruction.com/"
+		},
+		{
+		  "name": "Document Crunch",
+		  "url": "https://www.documentcrunch.com/"
+		}
+	  ],
+	  "organizations": ["Blois Construction", "Document Crunch"],
+	  "geography": "US",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/blois-documentcrunch.png",
+		  "alt": "Document Crunch AI interface showing contract clause analysis for Blois Construction"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.documentcrunch.com/case-studies/blois-construction",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["contract-management", "document-ai", "risk-analysis", "construction-ai"],
+	  "notes": "Official Document Crunch case study describing Blois Construction’s deployment of AI for contract and risk review. Demonstrates measurable efficiency gains and improved standardization in preconstruction risk assessment workflows."
+	},
+	{
+	  "title": "Design Risk Detection in Preconstruction Review",
+	  "summary": "RO (Rogers-O’Brien) Construction uses Firmus AI’s machine learning platform to analyze design documents and flag constructability, coordination, and specification risks early in preconstruction. The system scans BIM drawings and specifications to detect missing information and potential scope gaps before bidding or field mobilization.",
+	  "phase": "Preconstruction",
+	  "stakeholders": ["Contractor", "Designer", "Engineer"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Documents", "CAD/BIM"],
+	  "applications": ["Design Assistance", "Cost/Controls", "Quality/Closeout"],
+	  "outcomes": [
+		{
+		  "metric": "Design issue detection",
+		  "value": "Hundreds of constructability and coordination risks identified per project",
+		  "note": "Reported by RO Construction in Firmus AI case summary."
+		},
+		{
+		  "metric": "Review time reduction",
+		  "value": "60%",
+		  "note": "AI analysis reduces manual document and spec review effort in early preconstruction."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "Firmus AI",
+	  "companies": [
+		{
+		  "name": "RO Construction (Rogers-O’Brien)",
+		  "url": "https://r-o.com/"
+		},
+		{
+		  "name": "Firmus AI",
+		  "url": "https://firmus.ai/"
+		}
+	  ],
+	  "organizations": ["RO Construction", "Firmus AI"],
+	  "geography": "United States (Texas)",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/firmus-ro-preconstruction.jpg",
+		  "alt": "Firmus AI interface showing automated design risk detection for RO Construction"
+		}
+	  ],
+	  "links": {
+		"source": "https://firmus.ai/post/how-ro-leverages-ai-to-elevate-preconstruction/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["design-review", "constructability", "preconstruction", "construction-ai"],
+	  "notes": "Official Firmus AI case study detailing Rogers-O’Brien Construction’s use of AI for early design and specification risk analysis. Demonstrates measurable time savings and improved coordination visibility during preconstruction document reviews."
+	},
+	{
+	  "title": "Hensel Phelps + HoloBuilder: AI-Enhanced 360° Site Documentation for Collaboration and Progress Tracking",
+	  "summary": "Hensel Phelps adopted HoloBuilder’s AI-enabled 360° photo documentation platform to automate progress tracking and enhance communication among project stakeholders. The system captures time-linked 360° imagery, aligns it with BIM and floor plans, and uses AI to organize site data for efficient issue resolution and stakeholder coordination.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Owner", "Engineer"],
+	  "ai_tech": ["Computer Vision", "Predictive Analytics"],
+	  "data_modalities": ["Ground RGB", "360° Imagery", "CAD/BIM"],
+	  "applications": ["Progress Tracking", "Quality/Closeout", "Safety Monitoring"],
+	  "outcomes": [
+		{
+		  "metric": "Time saved on documentation",
+		  "value": "50%",
+		  "note": "Hensel Phelps reported halving the time spent on manual photo documentation using HoloBuilder’s automated system."
+		},
+		{
+		  "metric": "Collaboration improvement",
+		  "value": "Cross-team communication streamlined",
+		  "note": "AI-organized 360° photos accelerated review cycles among owners, engineers, and subcontractors."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Owner report",
+	  "provider": "HoloBuilder",
+	  "companies": [
+		{
+		  "name": "Hensel Phelps",
+		  "url": "https://www.henselphelps.com/"
+		},
+		{
+		  "name": "HoloBuilder",
+		  "url": "https://www.holobuilder.com/"
+		}
+	  ],
+	  "organizations": ["Hensel Phelps", "HoloBuilder"],
+	  "geography": "United States",
+	  "year": 2023,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/hensel-phelps-holobuilder.jpg",
+		  "alt": "HoloBuilder 360° site capture interface used by Hensel Phelps for progress tracking"
+		}
+	  ],
+	  "links": {
+		"source": "https://www.holobuilder.com/content-type/casestudy/how-hensel-phelps-improved-collaboration/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["documentation", "progress-tracking", "computer-vision", "construction-ai"],
+	  "notes": "Official HoloBuilder case study detailing Hensel Phelps’ deployment of AI-enhanced 360° progress tracking for construction collaboration and documentation efficiency. Verified production use with measurable time savings and communication improvements."
+	},
+	{
+	  "title": "AI Workforce Assistant for Jobsite Productivity and Safety",
+	  "summary": "Gilbane Building Company deployed Trunk Tools’ AI assistant across multiple jobsites to streamline workforce communication, safety checks, and productivity reporting. The AI analyzes daily logs, schedules, and field notes to automate updates, flag issues, and provide personalized task summaries for site teams.",
+	  "phase": "Construction",
+	  "stakeholders": ["Contractor", "Engineer", "Trade", "Owner"],
+	  "ai_tech": ["Generative AI", "NLP", "Predictive Analytics"],
+	  "data_modalities": ["Documents", "Ground RGB"],
+	  "applications": ["Safety Monitoring", "Workforce Training", "Logistics"],
+	  "outcomes": [
+		{
+		  "metric": "Field reporting efficiency",
+		  "value": "Reduced manual reporting by 40%",
+		  "note": "Reported efficiency improvement during Gilbane’s early rollout as covered by ENR."
+		},
+		{
+		  "metric": "Adoption scale",
+		  "value": "Dozens of active projects nationwide",
+		  "note": "Trunk Tools and Gilbane confirmed enterprise-wide rollout in 2024 press and ENR coverage."
+		}
+	  ],
+	  "deployment_stage": "Production",
+	  "evidence_level": "Trade press/news",
+	  "provider": "Trunk Tools",
+	  "companies": [
+		{
+		  "name": "Gilbane Building Company",
+		  "url": "https://www.gilbaneco.com/"
+		},
+		{
+		  "name": "Trunk Tools",
+		  "url": "https://trunktools.com/"
+		}
+	  ],
+	  "organizations": ["Gilbane Building Company", "Trunk Tools"],
+	  "geography": "United States",
+	  "year": 2024,
+	  "media": [
+		{
+		  "type": "image",
+		  "url": "assets/img/use-cases/gilbane-trunktools.jpg",
+		  "alt": "Trunk Tools AI assistant interface used by Gilbane jobsite teams for safety and reporting"
+		}
+	  ],
+	  "links": {
+		"source": "https://trunktools.com/resources/in-the-news/trunk-tools-highlighted-enr-gilbane-rollout-jobsites/",
+		"paper": "",
+		"code": "",
+		"doi": ""
+	  },
+		"contributor": "@ruoxinx",
+		"contributor_url": "https://github.com/ruoxinx",
+	  "license": "",
+	  "added_date": "2025-10-4",
+	  "tags": ["workforce-ai", "safety", "productivity", "construction-ai"],
+	  "notes": "ENR-highlighted rollout of Trunk Tools’ AI workforce assistant across Gilbane Building Company projects. Demonstrates field-verified productivity and safety monitoring improvements through conversational AI and automated reporting workflows."
+	}
+  ]
+}

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · MCP Integration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-link:#0b66c3; --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.05);
+      --oc-radius:14px; --oc-accent:#f2a238;
+    }
+    html,body{background:var(--oc-bg); color:var(--oc-text); line-height:1.6}
+    a{color:var(--oc-link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .oc-container{ max-width:1080px; }
+
+    /* NAV */
+    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
+    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .oc-logo{height:44px;width:44px}
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
+    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
+    .nav-link.icon-only svg{display:block; width:20px; height:20px; opacity:.9}
+    .nav-link.icon-only:hover svg{opacity:1}
+    .btn-subscribe-icon svg{fill:var(--oc-accent)}
+
+    /* HERO */
+    header.hero .content{ padding:56px 0 28px; text-align:center; }
+    header.hero h1{ font-weight:800; color:#0f2e4b; margin-bottom:.3rem; letter-spacing:.2px }
+    header.hero p.lead{ color:var(--oc-sub); margin:0 auto; max-width:70ch }
+
+    .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
+
+    /* SECTION BASE */
+    .oc-section{ margin:24px 0 }
+    .section-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:1rem 1.1rem }
+    .kicker{ font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--oc-sub); margin-bottom:.25rem; font-weight:600 }
+    .section-title{ font-weight:800; color:var(--oc-ink); margin-bottom:.35rem; font-size:1.35rem }
+    .section-subtitle{ color:var(--oc-sub); margin-bottom:.7rem; font-size:.98rem }
+
+    /* PROSE */
+    .prose h3{ font-weight:700; color:var(--oc-ink); margin:1rem 0 .5rem; font-size:1.08rem }
+    .prose h4{ font-weight:600; color:#2a3946; margin:.85rem 0 .35rem; font-size:1.02rem }
+    .prose p{ color:#2a3946; margin-bottom:.55rem }
+    .prose ul, .prose ol{ margin-bottom:.55rem; padding-left:1.1rem }
+    .prose li{ margin-bottom:.25rem }
+
+    /* FEATURE CARDS */
+    .feature-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:.6rem; margin:.7rem 0 }
+    @media (max-width: 991.98px){ .feature-grid{ grid-template-columns:repeat(2, 1fr) } }
+    @media (max-width: 575.98px){ .feature-grid{ grid-template-columns:1fr } }
+    .feature-item{ background:#f8f9fa; border:1px solid var(--oc-border); border-radius:10px; padding:.7rem; transition:all .2s; min-height:108px }
+    .feature-item:hover{ box-shadow:0 4px 10px rgba(15,46,75,.08); transform:translateY(-2px) }
+    .feature-icon{ font-size:1.05rem; margin-bottom:.3rem; display:block }
+    .feature-title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem; font-size:.98rem }
+    .feature-desc{ color:var(--oc-sub); font-size:.86rem; margin:0; line-height:1.45 }
+
+    /* BADGES */
+    .tool-badge{ display:inline-block; background:#e7f3ff; color:#0b66c3; padding:.22rem .44rem; border-radius:6px; font-size:.78rem; font-weight:600; margin:.16rem .18rem .16rem 0; border:1px solid #b3d9ff }
+
+    /* STEPS */
+    .step-list{ counter-reset:step; list-style:none; padding-left:0; margin:.8rem 0 }
+    .step-list > li{ counter-increment:step; margin-bottom:.8rem; padding-left:2.25rem; position:relative; color:#2a3946 }
+    .step-list > li::before{ content:counter(step); position:absolute; left:0; top:.05rem; background:#0b66c3; color:#fff; width:1.65rem; height:1.65rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; box-shadow:0 2px 6px rgba(11,102,195,.2) }
+    .step-list > li strong{ color:var(--oc-ink); font-weight:700; display:block; margin-bottom:.2rem; font-size:.98rem }
+
+    /* CALLOUTS */
+    .callout{ border-left:4px solid #0b66c3; background:#f8f9fa; padding:.75rem .85rem; margin:.7rem 0; border-radius:8px }
+    .callout.warning{ border-left-color:#f2a238; background:#fff9e6 }
+    .callout.success{ border-left-color:#28a745; background:#f0f9f4 }
+    .callout-title{ font-weight:700; color:var(--oc-ink); margin-bottom:.3rem; font-size:.94rem }
+
+    /* CODE */
+    .code-block{ background:#f8f9fa; border:1px solid #dee2e6; border-radius:10px; padding:.6rem .7rem; margin:.6rem 0; overflow-x:auto; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86rem; line-height:1.5; color:#1e2a36; position:relative }
+    .inline-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f3f6f9;border:1px solid #e7edf3;border-radius:6px;padding:.06rem .35rem}
+    .copy-btn{ position:absolute; top:.4rem; right:.4rem; border:1px solid var(--oc-border); background:#fff; border-radius:8px; font-size:.76rem; padding:.18rem .45rem; color:#2a3946 }
+
+    /* FOOTER */
+    footer .footnote{ color:#6b7b8c }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle active" href="#" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item active" href="mcp.html" aria-current="page">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+
+        <!-- GitHub -->
+        <li class="nav-item">
+          <a class="nav-link icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" title="GitHub" aria-label="OpenConstruction on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.59-.17 1.22-.27 2-.27s1.41.1 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+          </a>
+        </li>
+
+        <!-- Subscribe -->
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0
+                       7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417
+                       c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <h1>MCP Integration</h1>
+    <p class="lead">Enable AI assistants to access <span class="hl">OpenConstruction</span> via the <span class="hl">Model Context Protocol</span>.</p>
+  </div>
+</header>
+
+<main class="container oc-container my-4">
+
+  <!-- INTRO -->
+  <section class="oc-section" id="intro">
+    <div class="section-card">
+      <div class="kicker">Introduction</div>
+      <h2 class="section-title">What is MCP?</h2>
+      <p><strong>Model Context Protocol (MCP)</strong> standardizes how AI assistants connect to external tools and data sources. The OpenConstruction MCP server exposes read-only access to our <em>Datasets</em>, <em>Models</em>, <em>Use Cases</em>, <em>Tools</em>, and <em>Guides</em> catalogs through a small set of server tools.</p>
+      <div class="callout success">
+        <div class="callout-title">Example</div>
+        <p>Ask: <em>“Find 2024 datasets for safety monitoring.”</em> → receive structured metadata with links back to the catalog entries.</p>
+      </div>
+      <div class="callout">
+        <div class="callout-title">MCP quick links</div>
+        <ul class="m-0">
+          <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a></li>
+          <li><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub org</a></li>
+          <li><a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP config</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="oc-section" id="capabilities">
+    <div class="section-card">
+      <div class="kicker">Capabilities</div>
+      <h2 class="section-title">Available Tools</h2>
+      <p class="section-subtitle">Core tool groups exposed by the OpenConstruction MCP server:</p>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <span class="feature-icon">🔍 Search resources</span>
+          <div class="feature-desc">
+            <span class="tool-badge">search_models</span>
+            <span class="tool-badge">search_datasets</span>
+            <span class="tool-badge">search_use_cases</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📊 Get details</span>
+          <div class="feature-desc">
+            <span class="tool-badge">get_model_details</span>
+            <span class="tool-badge">get_dataset_details</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🛠️ Browse & guidance</span>
+          <div class="feature-desc">
+            <span class="tool-badge">list_tools</span>
+            <span class="tool-badge">get_best_practices</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📈 Catalog statistics</span>
+          <div class="feature-desc">
+            <span class="tool-badge">get_catalog_stats</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALLATION -->
+  <section class="oc-section" id="setup">
+    <div class="section-card">
+      <div class="kicker">Setup</div>
+      <h2 class="section-title">Install & Connect</h2>
+      <p class="section-subtitle">Minimal steps to run the server locally and connect it to an MCP-compatible client (e.g., Claude Desktop).</p>
+      <ul class="step-list">
+        <li><strong>Clone repository</strong>
+          <div class="code-block" data-code="git clone https://github.com/ruoxinx/openconstruction-mcp-server.git
+cd openconstruction-mcp-server">
+            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>git clone https://github.com/ruoxinx/openconstruction-mcp-server.git
+cd openconstruction-mcp-server</code></pre>
+          </div>
+        </li>
+        <li><strong>Install dependencies</strong>
+          <div class="code-block" data-code="npm install">
+            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>npm install</code></pre>
+          </div>
+        </li>
+        <li><strong>Build server</strong>
+          <div class="code-block" data-code="npm run build">
+            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>npm run build</code></pre>
+          </div>
+        </li>
+        <li><strong>Configure Claude Desktop</strong>
+          <p class="mb-2">Add to <span class="inline-code">claude_desktop_config.json</span>:</p>
+          <div class="code-block" data-code='{
+  "mcpServers": {
+    "openconstruction": {
+      "command": "node",
+      "args": ["/path/to/build/index.js"]
+    }
+  }
+}'>
+            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>{
+  "mcpServers": {
+    "openconstruction": {
+      "command": "node",
+      "args": ["/path/to/build/index.js"]
+    }
+  }
+}</code></pre>
+          </div>
+          <p class="small text-muted m-0">See: <a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP guide</a></p>
+        </li>
+        <li><strong>Restart & verify</strong>
+          <p class="m-0">Reopen Claude Desktop and run.</p>
+        </li>
+      </ul>
+      <div class="callout warning mt-3">
+        <div class="callout-title">Tip — Private GitHub data</div>
+        <p class="mb-1">If your catalogs are in a private repository, configure your server with a fine-grained GitHub PAT (Contents: Read) or a classic PAT with minimal <em>repo</em> read scope to fetch JSON safely. Never embed tokens in client config; store them in server-side environment variables.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAGE -->
+  <section class="oc-section" id="usage">
+    <div class="section-card">
+      <div class="kicker">Examples</div>
+      <h2 class="section-title">Usage Scenarios</h2>
+      <div class="prose">
+        <div class="callout"><strong>Dataset discovery:</strong> “List point cloud datasets for semantic segmentation.”</div>
+        <div class="callout"><strong>Model search:</strong> “Find models for safety monitoring published after 2023.”</div>
+        <div class="callout"><strong>Use-case exploration:</strong> “Show industry deployments of computer vision.”</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="border-top py-3 mt-4">
+  <div class="container oc-container small footnote">© <span id="yearNow"></span> OpenConstruction</div>
+</footer>
+
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Footer year
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+  // Copy buttons
+  document.querySelectorAll('.code-block').forEach(block=>{
+    const btn = block.querySelector('.copy-btn');
+    if(!btn) return;
+    btn.addEventListener('click', async ()=>{
+      const code = block.getAttribute('data-code') ?? block.innerText.trim();
+      try {
+        await navigator.clipboard.writeText(code);
+        const old = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(()=>btn.textContent=old||'Copy', 1200);
+      } catch(e){
+        btn.textContent='Error';
+      }
+    });
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

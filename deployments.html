@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Use Cases</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
+      --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
+      --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc;
+      --oc-brand:#0f2e4b; --oc-accent:#f2a238;
+
+      --tag-phase-bg:#eef5ff;      --tag-phase-border:#cfe2ff;  --tag-phase-text:#0b4ea2;
+      --tag-tech-bg:#edf8f2;       --tag-tech-border:#cfe9db;   --tag-tech-text:#106946;
+      --tag-app-bg:#fff7e9;        --tag-app-border:#f7dfb4;    --tag-app-text:#84550f;
+      --tag-stakeholder-bg:#f1eefc;--tag-stakeholder-border:#d7cff8; --tag-stakeholder-text:#3c2b8a;
+    }
+    html,body{background:var(--oc-bg); color:var(--oc-text)}
+    a{color:var(--oc-link)}
+
+    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
+    .oc-logo{height:44px;width:44px}
+    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
+    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
+    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
+    .nav-link.icon-only:hover svg{opacity:1}
+
+    .navbar-search{display:none;width:clamp(200px,24vw,320px)}
+    .navbar-search .form-control{height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px}
+    body.docked .navbar-search{display:flex}
+    body.docked #searchDock{display:none}
+    @media (min-width: 992px){
+      .navbar .container{display:flex;align-items:center}
+      .navbar .navbar-collapse{flex-grow:0}
+      .navbar .navbar-search{margin-left:.75rem}
+    }
+
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:56px 0 36px;text-align:center}
+    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
+    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
+    .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
+    .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
+
+    .filters{position:sticky;top:86px}
+    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
+    .card .form-label{font-weight:700}
+
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+
+    #usecaseGrid{ display:grid; grid-template-columns:1fr; gap:1rem; }
+    @media (min-width:992px){ #usecaseGrid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+    .usecase-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:1rem;height:100%}
+    .usecase-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
+    .meta{font-size:.85rem;color:var(--oc-sub)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin:.35rem 0 .25rem}
+
+    .badge-phase,.badge-tech,.badge-app,.badge-stake{
+      font-weight:600;border-radius:999px;padding:.18rem .55rem;font-size:.78rem;border:1px solid transparent;
+    }
+    .badge-phase{background:var(--tag-phase-bg);border-color:var(--tag-phase-border);color:var(--tag-phase-text)}
+    .badge-tech{background:var(--tag-tech-bg);border-color:var(--tag-tech-border);color:var(--tag-tech-text)}
+    .badge-app{background:var(--tag-app-bg);border-color:var(--tag-app-border);color:var(--tag-app-text)}
+    .badge-stake{background:var(--tag-stakeholder-bg);border-color:var(--tag-stakeholder-border);color:var(--tag-stakeholder-text)}
+
+    .added-note{align-self:center;color:#5f6b77;background:#eff3f6;border:1px solid var(--oc-border);font-weight:600;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;white-space:nowrap}
+
+    .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
+    .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:200px}
+    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
+    @keyframes shimmer{to{transform:translateX(100%)}}
+
+    /* Media wrapper */
+    .thumb-wrap{
+      width:100%;
+      aspect-ratio:16/9;
+      border-radius:12px;
+      overflow:hidden;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      max-height:360px;
+      position: relative;
+    }
+    @media (max-width:768px){ .thumb-wrap{ max-height:220px; } }
+    .thumb-link{ position:relative; display:block; width:100%; height:100%; }
+    .thumb-wrap img,
+    .thumb-wrap video,
+    .thumb-wrap iframe{
+      width:100%;
+      height:100%;
+      object-fit:contain !important;
+      object-position:center;
+      display:block;
+      background:transparent;
+      border:0;
+    }
+
+    /* Submitted Tag Style*/
+    .submitted-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #e0e6ef;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      color: #1e2a36;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+      z-index: 5;
+      white-space: nowrap;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .submitted-tag a {
+      color: #0b66c3;
+      text-decoration: none;
+    }
+    .submitted-tag a:hover {
+      text-decoration: underline;
+    }
+
+    .btn-subscribe-icon{
+      background: transparent;
+      border: 0;
+      padding: .25rem .4rem;
+      line-height: 1;
+    }
+    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
+    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
+
+    .actions{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
+    @media (min-width:768px){ .actions{flex-wrap:nowrap;} }
+    .actions .btn{white-space:nowrap;}
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
+    </a>
+
+    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
+      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search use cases, apps, stakeholders …" aria-label="Search">
+    </form>
+
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="deployments.html" aria-current="page">Use Cases</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+			      <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+
+        <!-- GitHub -->
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" aria-label="OpenConstruction GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+          </a>
+        </li>
+
+        <!-- Subscribe bell -->
+        <li class="nav-item">
+          <button type="button"
+                  class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container content">
+    <h1 class="display-6 fw-bold">OpenConstruction Use-Case Catalog</h1>
+    <p class="lead">Explore <span class="hl">practical AI use cases</span> across the construction lifecycle</p>
+    <div id="searchDock" class="mt-3">
+      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search use cases, apps, stakeholders …" aria-label="Search large">
+    </div>
+  </div>
+</header>
+
+<main class="container my-4">
+  <div class="row g-3">
+    <aside class="col-lg-3">
+      <div class="card shadow-sm filters">
+        <div class="card-header"><strong>Filters</strong></div>
+        <div class="card-body small">
+          <div class="mb-3">
+            <label class="form-label" for="filter-phase">Phase</label>
+            <div id="filter-phase" class="facet-list vstack gap-1"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="stakeSearch">Stakeholders</label>
+            <input id="stakeSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search stakeholders…">
+            <div id="filter-stakeholder" class="facet-list"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="techSearch">Technologies</label>
+            <input id="techSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search tech…">
+            <div id="filter-tech" class="facet-list"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="appSearch">Applications</label>
+            <input id="appSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search applications…">
+            <div id="filter-app" class="facet-list"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="modSearch">Data Modalities</label>
+            <input id="modSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search modalities…">
+            <div id="filter-modality" class="facet-list"></div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="evidenceSearch">Validation Types</label>
+            <input id="evidenceSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search types…">
+            <div id="filter-evidence" class="facet-list"></div>
+          </div>
+
+          <div class="mb-1">
+            <label class="form-label">Year</label>
+            <div class="range-container position-relative" style="height:36px;margin:.25rem 0 .5rem">
+              <div class="slider position-absolute" style="left:10px;right:10px;top:14px;height:8px;background:#e9ecef;border-radius:10px"></div>
+              <div class="range-selected" id="yearRangeSelected" style="position:absolute;top:14px;height:8px;background:#0d6efd;border-radius:10px"></div>
+              <input type="range" class="thumb" id="yearRangeMin" min="2005" max="2030" step="1" aria-label="Min year" style="pointer-events:none;position:absolute;height:0;width:100%;-webkit-appearance:none">
+              <input type="range" class="thumb" id="yearRangeMax" min="2005" max="2030" step="1" aria-label="Max year" style="pointer-events:none;position:absolute;height:0;width:100%;-webkit-appearance:none">
+            </div>
+            <div class="small text-muted">From <span id="yearRangeMinVal"></span> to <span id="yearRangeMaxVal"></span></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="col-lg-9">
+      <div class="toolbar mb-2">
+        <div><span id="resultCount" class="fw-semibold">0</span> use cases</div>
+        <div class="d-flex align-items-center gap-2">
+          <label for="sortBy" class="me-1 small">Sort by</label>
+          <select id="sortBy" class="form-select form-select-sm w-auto">
+            <option value="year-desc">Year ↓</option>
+            <option value="year-asc">Year ↑</option>
+            <option value="added-desc" selected>Added date ↓</option>
+            <option value="added-asc">Added date ↑</option>
+            <option value="name-asc">Title A→Z</option>
+            <option value="name-desc">Title Z→A</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="usecaseGrid" aria-live="polite" aria-busy="true">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+
+      <div id="emptyState" class="empty mt-3 d-none">No use cases match your filters. Try clearing some filters or changing the search.</div>
+      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load use-cases.json. Please check the file path and JSON format.</div>
+    </section>
+  </div>
+</main>
+
+<footer class="border-top py-4 mt-5">
+  <div class="container small text-muted">© <span id="yearNow"></span> OpenConstruction</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const DATA_URL = 'data/use-cases.json';
+let USECASES = [];
+
+const byId = id => document.getElementById(id);
+function normKey(s){ return (s==null?'':String(s)).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
+function yearExtent(items){
+  const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
+  if(!ys.length) return [2005, new Date().getFullYear()];
+  return [Math.min(...ys), Math.max(...ys)];
+}
+function fmtAdded(d){
+  try{ const dt = d? new Date(d): null; if(!dt||isNaN(+dt)) return null;
+    return dt.toISOString().slice(0,10);
+  }catch{ return null; }
+}
+function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m])); }
+
+const BRAND_URLS = {
+  "OpenSpace":"https://www.openspace.ai/","Buildots":"https://buildots.com/","Doxel":"https://doxel.ai/",
+  "Autodesk Construction Cloud":"https://construction.autodesk.com/","Autodesk":"https://www.autodesk.com/",
+  "DroneDeploy":"https://www.dronedeploy.com/","EarthCam":"https://www.earthcam.net/ai/",
+  "Komatsu Smart Construction":"https://smartconstruction.com/","nPlan":"https://www.nplan.io/",
+  "Procore":"https://www.procore.com/","Procore AI":"https://www.procore.com/assist","Sage":"https://www.sage.com/en-us/",
+  "Intel":"https://www.intel.com/"
+};
+function splitProviders(p){ if(!p) return []; return String(p).split(/[\/,|•]+/g).map(s=>s.trim()).filter(Boolean); }
+function companyLinks(u){
+  if(Array.isArray(u.companies) && u.companies.length){
+    return u.companies.map(c=>{
+      if(typeof c === 'string') return {name:c, url:BRAND_URLS[c] || null};
+      const nm = c.name || ''; return {name:nm, url: c.url || BRAND_URLS[nm] || null};
+    });
+  }
+  const names = splitProviders(u.provider);
+  const out = []; let srcOrigin = null;
+  try { if(u.links?.source) srcOrigin = new URL(u.links.source).origin + "/"; } catch {}
+  names.forEach(name=> out.push({name, url:BRAND_URLS[name] || srcOrigin || null}));
+  return out;
+}
+
+function ytId(u){
+  try{
+    const url = new URL(u); const h=url.hostname.replace('www.','');
+    if(h==='youtube.com' || h==='m.youtube.com'){
+      if(url.pathname==='/watch') return url.searchParams.get('v')||null;
+      if(url.pathname.startsWith('/shorts/')) return url.pathname.split('/')[2]||null;
+    }
+    if(h==='youtu.be'){ return url.pathname.slice(1)||null; }
+  }catch{}
+  return null;
+}
+function vimeoId(u){
+  try{
+    const url=new URL(u); const h=url.hostname.replace('www.','');
+    if(h==='vimeo.com'){ const p=url.pathname.split('/').filter(Boolean); if(p.length) return p[p.length-1]; }
+  }catch{}
+  return null;
+}
+
+function chooseMediaBlock(u){
+  const media = Array.isArray(u.media) ? u.media : [];
+  const img = media.find(m => m && String(m.type).toLowerCase()==='image' && m.url);
+  const vid = media.find(m => m && String(m.type).toLowerCase()==='video' && m.url);
+
+  if (img){
+    const href = u.links?.source || vid?.url || img.url;
+    const imgTag = `<img src="${img.url}" alt="${escapeHTML(img.alt || (u.title ? 'Image: '+u.title : 'Use case image'))}" width="720" height="405" loading="lazy" decoding="async">`;
+    return href ? `<a class="thumb-link" href="${href}" target="_blank" rel="noopener">${imgTag}</a>`
+                : `<div class="thumb-link">${imgTag}</div>`;
+  }
+  if (vid){
+    const ytid = ytId(vid.url);
+    const vimid = vimeoId(vid.url);
+    if(ytid){
+      const embed = `https://www.youtube.com/embed/${ytid}`;
+      return `<div class="thumb-link"><iframe src="${embed}" title="YouTube video" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
+    }
+    if(vimid){
+      const embed = `https://player.vimeo.com/video/${vimid}`;
+      return `<div class="thumb-link"><iframe src="${embed}" title="Vimeo video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+    if(/\.(mp4|webm|ogg)(\?|#|$)/i.test(vid.url)){
+      return `<div class="thumb-link"><video src="${vid.url}" controls playsinline preload="metadata"></video></div>`;
+    }
+    const thumb = vid.thumb ? `<img src="${vid.thumb}" alt="${escapeHTML(u.title ? 'Video: '+u.title : 'Use case video')}" loading="lazy" decoding="async">` : '';
+    return `<a class="thumb-link" href="${vid.url}" target="_blank" rel="noopener">${thumb}</a>`;
+  }
+  return `<div class="thumb-link" aria-hidden="true"></div>`;
+}
+
+function listHTML(arr, cls){
+  if(!Array.isArray(arr) || !arr.length) return '';
+  return `<ul class="${cls||'list-unstyled small m-0 ps-3'}">${arr.map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul>`;
+}
+function detailsSection(u, idx){
+  const compsArr = companyLinks(u);
+  const comps = compsArr.length
+    ? compsArr.map(c => c.url
+        ? `<a href="${c.url}" target="_blank" rel="noopener">${escapeHTML(c.name)}</a>`
+        : escapeHTML(c.name)).join(', ')
+    : '';
+
+  const left = `
+    <div class="mb-2"><span class="label"><strong>Deployment：</strong></span>${escapeHTML(u.deployment_stage||'—')}</div>
+    <div class="mb-2"><span class="label"><strong>Validation：</strong></span>${escapeHTML(u.evidence_level||'—')}</div>
+    ${comps ? `<div class="mb-2"><span class="label"><strong>Companies：</strong></span>${comps}</div>` : ''}
+  `;
+  const right = `
+    ${(u.stakeholders&&u.stakeholders.length)? `<div><strong>Stakeholders</strong>${listHTML(u.stakeholders)}</div>`:''}
+    ${(u.data_modalities&&u.data_modalities.length)? `<div class="mt-2"><strong>Data Modalities</strong>${listHTML(u.data_modalities)}</div>`:''}
+    <div class="mt-2 d-flex flex-wrap gap-2">
+      ${u.links?.paper? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.paper}" target="_blank" rel="noopener">Paper</a>`:''}
+      ${u.links?.code? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.code}" target="_blank" rel="noopener">Code</a>`:''}
+      ${u.links?.doi? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>`:''}
+    </div>
+  `;
+  return `
+    <div class="collapse mt-2" id="uc-${idx}">
+      <div class="row g-3 small">
+        <div class="col-md-6">${left}</div>
+        <div class="col-md-6">${right}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* State + facets + filtering */
+const state = {
+  q: '', sort: 'added-desc',
+  phases: new Set(), stakeholders: new Set(),
+  techs: new Set(), apps: new Set(), modalities: new Set(),
+  evidences: new Set(),
+  yMin: null, yMax: null
+};
+let PHASE_MAP=new Map(), STAKE_MAP=new Map(), TECH_MAP=new Map(), APP_MAP=new Map(), MOD_MAP=new Map(), EVID_MAP=new Map();
+
+function makeCheckbox(id, label, value){
+  const wrap=document.createElement('div'); wrap.className='form-check';
+  const input=document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
+  const lab=document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for',id); lab.textContent=label;
+  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
+}
+function buildFacets(){
+  PHASE_MAP=new Map(); STAKE_MAP=new Map(); TECH_MAP=new Map(); APP_MAP=new Map(); MOD_MAP=new Map(); EVID_MAP=new Map();
+
+  USECASES.forEach(u=>{
+    if(u.phase){ const k=normKey(u.phase); if(!PHASE_MAP.has(k)) PHASE_MAP.set(k,u.phase); }
+    (u.stakeholders||[]).forEach(s=>{ const k=normKey(s); if(!STAKE_MAP.has(k)) STAKE_MAP.set(k,s); });
+    (u.ai_tech||[]).forEach(t=>{ const k=normKey(t); if(!TECH_MAP.has(k)) TECH_MAP.set(k,t); });
+    (u.applications||[]).forEach(a=>{ const k=normKey(a); if(!APP_MAP.has(k)) APP_MAP.set(k,a); });
+    (u.data_modalities||[]).forEach(m=>{ const k=normKey(m); if(!MOD_MAP.has(k)) MOD_MAP.set(k,m); });
+    if(u.evidence_level){ const k=normKey(u.evidence_level); if(!EVID_MAP.has(k)) EVID_MAP.set(k,u.evidence_level); }
+  });
+
+  function fill(containerId, map){
+    const el = byId(containerId); if(!el) return;
+    el.innerHTML='';
+    Array.from(map.entries()).map(([k,l])=>({k,l})).sort((a,b)=> a.l.localeCompare(b.l))
+      .forEach((it,i)=> el.appendChild(makeCheckbox(`${containerId}_${i}`, it.l, it.k)));
+  }
+  fill('filter-phase', PHASE_MAP);
+  fill('filter-stakeholder', STAKE_MAP);
+  fill('filter-tech', TECH_MAP);
+  fill('filter-app', APP_MAP);
+  fill('filter-modality', MOD_MAP);
+  fill('filter-evidence', EVID_MAP);
+
+  const [minY,maxY]=yearExtent(USECASES);
+  const rmin=byId('yearRangeMin'), rmax=byId('yearRangeMax');
+  if(rmin && rmax){
+    rmin.min=rmax.min=String(minY); rmin.max=rmax.max=String(maxY);
+    rmin.value=String(minY); rmax.value=String(maxY);
+    state.yMin=minY; state.yMax=maxY; updateTrack();
+  }
+}
+
+function applyFilters(){
+  const q = state.q.trim().toLowerCase();
+  let rows = USECASES.filter(u=>{
+    const hay = [
+      u.title, u.summary, u.phase,
+      (u.stakeholders||[]).join(' '),
+      (u.ai_tech||[]).join(' '),
+      (u.data_modalities||[]).join(' '),
+      (u.applications||[]).join(' '),
+      (u.tags||[]).join(' '),
+      u.provider, (u.organizations||[]).join(' ')
+    ].join(' ').toLowerCase();
+    if(q && !hay.includes(q)) return false;
+
+    if(state.phases.size && (!u.phase || !state.phases.has(normKey(u.phase)))) return false;
+
+    function hasAll(set, arr){ if(!set.size) return true; const keys=new Set((arr||[]).map(normKey)); for(const k of set){ if(!keys.has(k)) return false; } return true; }
+    if(!hasAll(state.stakeholders, u.stakeholders)) return false;
+    if(!hasAll(state.techs,        u.ai_tech))      return false;
+    if(!hasAll(state.apps,         u.applications)) return false;
+    if(!hasAll(state.modalities,   u.data_modalities)) return false;
+    if(state.evidences.size && (!u.evidence_level || !state.evidences.has(normKey(u.evidence_level)))) return false;
+
+    if(typeof u.year === 'number'){
+      if((u.year||0) < state.yMin || (u.year||0) > state.yMax) return false;
+    }
+    return true;
+  });
+
+  switch(state.sort){
+    case 'name-asc':  rows.sort((a,b)=> (a.title||'').localeCompare(b.title||'')); break;
+    case 'name-desc': rows.sort((a,b)=> (b.title||'').localeCompare(a.title||'')); break;
+    case 'year-asc':  rows.sort((a,b)=> (a.year||0)-(b.year||0)); break;
+    case 'year-desc': rows.sort((a,b)=> (b.year||0)-(a.year||0)); break;
+    case 'added-asc': rows.sort((a,b)=> (Date.parse(a.added_date||0))-(Date.parse(b.added_date||0))); break;
+    default:           rows.sort((a,b)=> (Date.parse(b.added_date||0))-(Date.parse(a.added_date||0)));
+  }
+
+  render(rows);
+}
+
+/* ---------- Submitted-by helpers ---------- */
+function pickContributor(u){
+  // 1) legacy pair
+  if (u.contributor || u.contributor_url) {
+    return {
+      label: (u.contributor && u.contributor.trim()) ? u.contributor.trim() : '@contributor',
+      url: u.contributor_url || null
+    };
+  }
+  // 2) submitted_by / added_by can be string or object
+  const cand = u.submitted_by || u.added_by || null;
+  if (!cand) return null;
+
+  if (typeof cand === 'string') {
+    const label = cand.trim();
+    const handle = label.startsWith('@') ? label : '@' + label;
+    return { label: handle, url: null };
+  }
+  if (typeof cand === 'object') {
+    const handle = cand.handle || cand.name || cand.username || 'contributor';
+    const label = (handle.startsWith('@') ? handle : '@' + handle);
+    return { label, url: cand.url || cand.link || null };
+  }
+  return null;
+}
+
+function render(items){
+  const grid = byId('usecaseGrid');
+  grid.innerHTML = '';
+  byId('resultCount').textContent = items.length;
+
+  if(items.length===0){ byId('emptyState').classList.remove('d-none'); return; }
+  byId('emptyState').classList.add('d-none');
+
+  items.forEach((u, idx)=>{
+    const addedTxt = fmtAdded(u.added_date) ? `Added ${fmtAdded(u.added_date)}` : null;
+
+    const comps = companyLinks(u).map(c=>{
+      return c.url
+        ? `<a href="${c.url}" target="_blank" rel="noopener" title="${escapeHTML(c.name)}">${escapeHTML(c.name)}</a>`
+        : escapeHTML(c.name);
+    }).join(', ');
+
+    const mediaBlock = chooseMediaBlock(u);
+
+    const srcBtn   = u.links?.source ? `<a class="btn btn-sm btn-primary" href="${u.links.source}" target="_blank" rel="noopener">Source</a>` : '';
+    const paperBtn = u.links?.paper  ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.paper}" target="_blank" rel="noopener">Paper</a>` : '';
+    const codeBtn  = u.links?.code   ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.code}" target="_blank" rel="noopener">Code</a>` : '';
+    const doiBtn   = u.links?.doi    ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>` : '';
+
+    const detailId = `uc-${idx}`;
+    const detailsBtn = `<button class="btn btn-sm btn-link px-0 details-toggle" data-bs-toggle="collapse" data-bs-target="#${detailId}" aria-expanded="false" aria-controls="${detailId}">Show details</button>`;
+
+    const apps = (u.applications||[]).slice(0,2).map(a=>`<span class="badge-app">${escapeHTML(a)}</span>`).join('');
+    const tech = (u.ai_tech||[]).slice(0,1).map(t=>`<span class="badge-tech">${escapeHTML(t)}</span>`).join('');
+    const phase = u.phase ? `<span class="badge-phase">${escapeHTML(u.phase)}</span>` : '';
+
+    // NEW: submitted-by overlay
+    const c = pickContributor(u);
+    const subBy = c
+      ? `<div class="submitted-tag">Suggested by ${c.url
+          ? `<a href="${c.url}" target="_blank" rel="noopener">${escapeHTML(c.label)}</a>`
+          : `<span>${escapeHTML(c.label)}</span>`}</div>`
+      : '';
+
+    const el = document.createElement('div');
+    el.className = 'usecase-card';
+    el.innerHTML = `
+      <div class="d-flex flex-column gap-2 h-100">
+        <div class="thumb-wrap">
+          ${mediaBlock}
+          ${subBy}
+        </div>
+
+        <div class="d-flex flex-column gap-1">
+          <h3 class="h6 title mb-1">${escapeHTML(u.title || 'Untitled use case')}</h3>
+
+          <div class="meta">
+            ${typeof u.year==='number' ? u.year : '—'}${u.geography? (' • ' + escapeHTML(u.geography)):''}${comps? (' • ' + comps):''}
+          </div>
+
+          <div class="tag-row">
+            ${phase}${apps}${tech}
+          </div>
+
+          ${u.summary ? `<p class="small m-0">${escapeHTML(u.summary)}</p>` : ''}
+
+          <div class="actions mt-2">
+            ${srcBtn}${paperBtn}${codeBtn}${doiBtn}
+            ${detailsBtn}
+            ${addedTxt ? `<span class="added-note ms-md-auto">${addedTxt}</span>` : ''}
+          </div>
+
+          ${detailsSection(u, idx)}
+        </div>
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+
+  grid.querySelectorAll('.details-toggle').forEach(btn=>{
+    const targetSel = btn.getAttribute('data-bs-target');
+    const target = document.querySelector(targetSel);
+    if(!target) return;
+    target.addEventListener('show.bs.collapse', ()=> btn.textContent = 'Hide details');
+    target.addEventListener('hide.bs.collapse', ()=> btn.textContent = 'Show details');
+  });
+}
+
+function readFacet(containerId, setRef){
+  setRef.clear();
+  const root = byId(containerId);
+  if(!root) return;
+  root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
+}
+function attachFacetHandlers(){
+  [['filter-phase','phases'],['filter-stakeholder','stakeholders'],['filter-tech','techs'],
+   ['filter-app','apps'],['filter-modality','modalities'],['filter-evidence','evidences']].forEach(([id, key])=>{
+    const el = byId(id);
+    if(el) el.addEventListener('change', ()=>{ readFacet(id, state[key]); applyFilters(); });
+  });
+
+  function attachSearch(inputId, containerId){
+    const inp = byId(inputId);
+    if(!inp) return;
+    inp.addEventListener('input', debounce(e=>{
+      const q = e.target.value.toLowerCase();
+      const root = byId(containerId); if(!root) return;
+      root.querySelectorAll('.form-check').forEach(w=>{
+        const label = w.querySelector('label').textContent.toLowerCase();
+        w.style.display = label.includes(q)?'':'none';
+      });
+    }, 120));
+  }
+  attachSearch('stakeSearch','filter-stakeholder');
+  attachSearch('techSearch','filter-tech');
+  attachSearch('appSearch','filter-app');
+  attachSearch('modSearch','filter-modality');
+  attachSearch('evidenceSearch','filter-evidence');
+
+  const heroInput = byId('q'), dockInput = byId('qDock');
+  function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
+  const updateQ = debounce(()=>{ state.q = heroInput.value; if(!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
+  if (dockInput && heroInput){
+    dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
+    heroInput.addEventListener('input', updateQ);
+  }
+
+  (function(){
+    const SHOW_AT=220, HIDE_AT=160; let docked=false;
+    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
+    function onScroll(){ const y = window.scrollY||0; if(!docked && y>SHOW_AT) setDock(true); else if(docked && y<HIDE_AT) setDock(false); }
+    onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+  })();
+
+  const sortSel = byId('sortBy');
+  if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
+}
+
+const rmin = byId('yearRangeMin'), rmax = byId('yearRangeMax'), track = byId('yearRangeSelected'), minVal = byId('yearRangeMinVal'), maxVal = byId('yearRangeMaxVal');
+function updateTrack(){
+  if(!rmin || !rmax || !track || !minVal || !maxVal) return;
+  const minYear = +rmin.min || 2005, maxYear = +rmax.max || new Date().getFullYear();
+  const a = Math.min(+rmin.value || minYear, +rmax.value || maxYear);
+  const b = Math.max(+rmin.value || minYear, +rmax.value || maxYear);
+  const left = ((a - minYear) / (maxYear - minYear)) * 100;
+  const right = 100 - ((b - minYear) / (maxYear - minYear)) * 100;
+  track.style.left = `calc(${left}% + 10px)`; track.style.right = `calc(${right}% + 10px)`;
+  minVal.textContent = a; maxVal.textContent = b;
+  state.yMin = a; state.yMax = b;
+}
+['input','change'].forEach(ev=>{
+  if(rmin) rmin.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+  if(rmax) rmax.addEventListener(ev, ()=>{ updateTrack(); applyFilters(); });
+});
+
+async function loadUseCases(){
+  const grid = byId('usecaseGrid');
+  const errorBox = byId('errorState');
+  try{
+    const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    const raw = Array.isArray(payload) ? payload
+             : (Array.isArray(payload.use_cases) ? payload.use_cases
+             : (typeof payload==='object' ? Object.values(payload) : []));
+    USECASES = raw.map(u=>({ ...u, added_date: u.added_date || u.added || null }));
+    buildFacets();
+    applyFilters();
+  }catch(e){
+    console.error(e);
+    grid.innerHTML = '';
+    errorBox.classList.remove('d-none');
+  }
+}
+
+(function(){
+  byId('yearNow').textContent = new Date().getFullYear();
+  loadUseCases();
+  attachFacetHandlers();
+})();
+</script>
+
+<a href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_use_case.yml"
+   class="issue-btn position-fixed" style="bottom:20px;right:20px;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;"
+   target="_blank" rel="noopener">
+   Add New Use-Case
+</a>
+
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
+               placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

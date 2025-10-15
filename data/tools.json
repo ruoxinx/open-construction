@@ -1,0 +1,248 @@
+{
+  "sections": [
+    {
+      "kicker": "Labeling & Dataset Ops",
+      "title": "Annotation",
+      "subtitle": "Create, manage, and review annotations for images and video with clear QA flows and exportable formats.",
+      "items": [
+        {
+          "name": "LabelMe",
+          "url": "https://github.com/wkentaro/labelme",
+          "repo": "https://github.com/wkentaro/labelme",
+          "docs": "https://github.com/wkentaro/labelme#readme",
+          "summary": "Lightweight desktop tool for drawing polygons, boxes, and points on images. Ideal for small to medium projects that need speed and local control without deploying a server.",
+          "details": [
+            "Saves to readable JSON; easy to script conversions to COCO/Pascal.",
+            "Convenient for quick pilots, labeling policies prototyping, and classroom use.",
+            "Runs locally; no network dependency or user management overhead."
+          ]
+        },
+        {
+          "name": "CVAT",
+          "url": "https://cvat.ai/",
+          "repo": "https://github.com/opencv/cvat",
+          "docs": "https://docs.cvat.ai/",
+          "summary": "Browser-based platform for image and video annotation with task queues, review workflow, and assisted labeling. Good fit for team projects and longer-running efforts.",
+          "details": [
+            "Supports tracking, interpolation, and semi-automatic annotation for videos.",
+            "Role-based permissions and review/accept cycles for quality control.",
+            "Exports to common CV formats; integrates with on-prem or cloud storage."
+          ]
+        },
+        {
+          "name": "Label Studio",
+          "url": "https://labelstud.io/",
+          "repo": "https://github.com/HumanSignal/label-studio",
+          "docs": "https://labelstud.io/guide/",
+          "summary": "Configurable web tool for multi-modal labeling. Useful when tasks evolve over time and you need custom templates or active-learning hooks.",
+          "details": [
+            "Custom labeling configs; SDK and webhooks for automation.",
+            "Supports annotation review and simple agreement checks."
+          ]
+        }
+      ]
+    },
+    {
+      "kicker": "Reproducibility",
+      "title": "Versioning & Experiments",
+      "subtitle": "Track code, data, and results so experiments are repeatable and comparable across contributors.",
+      "items": [
+        {
+          "name": "GitHub",
+          "url": "https://github.com",
+          "docs": "https://docs.github.com/",
+          "summary": "Source control and collaboration with pull requests, issues, and project boards. The backbone for code reviews and open development in the community.",
+          "details": [
+            "Use Actions for continuous integration (CI) to run tests, lint, and build docs on every commit.",
+            "Discussions for proposals and governance; Projects for kanban tracking.",
+            "Publish documentation with GitHub Pages or MkDocs workflows."
+          ]
+        },
+        {
+          "name": "Git LFS",
+          "url": "https://git-lfs.com/",
+          "docs": "https://github.com/git-lfs/git-lfs/wiki",
+          "summary": "Store large files (images, labels, binaries) alongside your repository using pointer files so the repo stays lightweight for developers.",
+          "details": [
+            "Works with most major git forges; keeps clones small and fast.",
+            "Combine with Data Version Control (DVC) for dataset pipelines and cache management."
+          ]
+        },
+        {
+          "name": "DVC",
+          "url": "https://dvc.org/",
+          "repo": "https://github.com/iterative/dvc",
+          "docs": "https://dvc.org/doc",
+          "summary": "Version datasets and pipelines just like code. Capture parameters, metrics, and artifacts to make experiments auditable end-to-end.",
+          "details": [
+            "Backends: S3/GCS/Azure/SSH; lightweight metafiles live in git.",
+            "Plots and metrics comparison for runs; integrates with CI.",
+            "Pairs well with MLflow for run tracking."
+          ]
+        },
+        {
+          "name": "MLflow",
+          "url": "https://mlflow.org/",
+          "repo": "https://github.com/mlflow/mlflow",
+          "docs": "https://mlflow.org/docs/latest/index.html",
+          "summary": "Track runs, parameters, metrics, and artifacts. Add an optional model registry for promoting versions to staging/production.",
+          "details": [
+            "Web UI for comparing runs; log images, predictions, and notebooks.",
+            "Python APIs and CLI; storage can be file system or object store.",
+            "Complements DVC pipelines and GitHub Actions CI."
+          ]
+        }
+      ]
+    },
+    {
+      "kicker": "Open Hosting",
+      "title": "Open Repositories",
+      "subtitle": "Share datasets, models, and code snapshots with persistent identifiers so others can cite and reuse your work.",
+      "items": [
+        {
+          "name": "Hugging Face Hub",
+          "url": "https://huggingface.co",
+          "docs": "https://huggingface.co/docs/hub/index",
+          "summary": "Open hub for datasets and models with simple git-style versioning and model cards. Great for discoverability and quick demos via Spaces.",
+          "details": [
+            "Dataset viewers and diffing; automated README rendering.",
+            "Permissions and organizations for collaboration.",
+            "Good complement to a DOI-issuing archive (e.g., Zenodo)."
+          ]
+        },
+        {
+          "name": "Zenodo",
+          "url": "https://zenodo.org",
+          "docs": "https://help.zenodo.org/",
+          "summary": "Research archive that mints DOIs for datasets and software. Ensures long-term citation and preservation of the exact version used in a study.",
+          "details": [
+            "Versioned records; metadata for authors, affiliations, and grants.",
+            "Connect a GitHub repo to archive releases automatically.",
+            "Embargo options and community collections."
+          ]
+        },
+        {
+          "name": "Figshare",
+          "url": "https://figshare.com",
+          "docs": "https://help.figshare.com/",
+          "summary": "Citable repository for research artifacts with DOIs and rich previews. Useful when you need controlled access or institutional hosting.",
+          "details": [
+            "Built-in previews for many file types and large files.",
+            "Metadata export and analytics for downloads/views."
+          ]
+        },
+        {
+          "name": "OSF",
+          "url": "https://osf.io",
+          "docs": "https://help.osf.io/",
+          "summary": "Project-centric hub for components, registrations, and team permissions. Good for organizing multi-artifact studies end-to-end.",
+          "details": [
+            "Preregistration workflows; component structure and contributors.",
+            "Storage integrations; transparent version history."
+          ]
+        }
+      ]
+    },
+    {
+      "kicker": "Processing & Visualization",
+      "title": "3D / GIS / Web",
+      "subtitle": "Turn imagery into 3D, process point clouds and rasters, and publish interactive web visualizations.",
+      "items": [
+        {
+          "name": "CloudCompare",
+          "url": "https://www.cloudcompare.org/",
+          "docs": "https://www.cloudcompare.org/doc/wiki/index.php?title=Main_Page",
+          "summary": "Interactive desktop app for point-cloud editing, registration (ICP), and distance calculations. Well-suited to QC, manual clean-ups, and measurements.",
+          "details": [
+            "Segment/merge clouds and meshes; compute statistics and deviations.",
+            "Export subsets for training/validation splits or manual reports."
+          ]
+        },
+        {
+          "name": "Open3D",
+          "url": "http://www.open3d.org/",
+          "repo": "https://github.com/isl-org/Open3D",
+          "docs": "http://www.open3d.org/docs/release/",
+          "summary": "Modern 3D library in Python/C++ for meshing, registration, reconstruction, and visualization. Good foundation for custom pipelines and research.",
+          "details": [
+            "Geometry ops, voxel grids, TSDF, RGB-D integration; Jupyter widgets.",
+            "Works with NumPy/PyTorch; headless rendering for batch jobs."
+          ]
+        },
+        {
+          "name": "PDAL",
+          "url": "https://pdal.io",
+          "repo": "https://github.com/PDAL/PDAL",
+          "docs": "https://pdal.io/en/stable/stages/",
+          "summary": "Command-line and JSON pipeline framework for reading, filtering, transforming, and writing point clouds at scale.",
+          "details": [
+            "Support for LAS/LAZ/E57; reprojection; ground filtering; decimation.",
+            "Composable stages; easy to integrate in CI and reproducible pipelines."
+          ]
+        },
+        {
+          "name": "OpenDroneMap",
+          "url": "https://www.opendronemap.org/",
+          "repo": "https://github.com/OpenDroneMap/ODM",
+          "docs": "https://docs.opendronemap.org/",
+          "summary": "From drone imagery to dense point clouds, orthomosaics, and DEM/DSM. Useful for site documentation, progress tracking, and mapping.",
+          "details": [
+            "Docker images and NodeODM for distributed processing.",
+            "Orthos and 3D outputs can feed Potree/CesiumJS viewers."
+          ]
+        },
+        {
+          "name": "GDAL",
+          "url": "https://gdal.org",
+          "repo": "https://github.com/OSGeo/gdal",
+          "docs": "https://gdal.org/programs/index.html",
+          "summary": "Translator library for raster and vector geospatial data formats, essential for geospatial pipelines.",
+          "details": [
+            "CLI tools and programmatic APIs.",
+            "Build pyramids/overviews; convert heavy rasters to web-friendly Cloud Optimized GeoTIFFs (COGs)."
+          ]
+        },
+        {
+          "name": "QGIS",
+          "url": "https://qgis.org",
+          "docs": "https://docs.qgis.org/",
+          "summary": "Desktop GIS for styling, analysis, and map production with a rich plugin ecosystem. Great for exploratory analysis and cartography.",
+          "details": [
+            "Processing toolbox wraps many geospatial algorithms.",
+            "Print composer and atlas for professional map outputs."
+          ]
+        },
+        {
+          "name": "CesiumJS",
+          "url": "https://cesium.com/cesiumjs/",
+          "docs": "https://cesium.com/learn/cesiumjs-learn/",
+          "summary": "Web-native 3D globe for tiling and streaming large city/terrain datasets. Ideal for publishing interactive site or corridor visualizations.",
+          "details": [
+            "3D Tiles, terrain, imagery layers; timeline and camera controls.",
+            "Works with photogrammetry outputs and building models."
+          ]
+        },
+        {
+          "name": "kepler.gl",
+          "url": "https://kepler.gl/",
+          "docs": "https://docs.kepler.gl/docs/user-guides",
+          "summary": "No-code geospatial analytics in the browser for trajectories, heatmaps, and time-aware layers. Rapidly explore CSV/GeoJSON without custom code.",
+          "details": [
+            "Time sliders, filters, deck.gl rendering; export sharable configs.",
+            "Good companion for quick data sanity checks and presentations."
+          ]
+        },
+        {
+          "name": "Potree",
+          "url": "https://potree.github.io/",
+          "docs": "https://potree.github.io/documentation.html",
+          "summary": "Web viewer optimized for very large point clouds with measurement tools and level-of-detail rendering.",
+          "details": [
+            "Convert with PotreeConverter; host static files on any web server.",
+            "Annotate viewpoints and share interactive inspections with teams."
+          ]
+        }
+      ]
+    }
+  ]
+}

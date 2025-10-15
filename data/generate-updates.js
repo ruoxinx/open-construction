@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://www.openconstruction.org/'; // no trailing slash
+const SITE = 'https://www.openconstruction.org'; // no trailing slash
 const MAX_ITEMS = 10;
 
 // ---------- helpers ----------
@@ -36,7 +36,7 @@ function coerceToArray(x) {
 
   if (x && typeof x === 'object') {
     // common container keys
-    for (const k of ['datasets','models','items','data','records','results','list']) {
+    for (const k of ['datasets', 'models', 'items', 'data', 'records', 'results', 'list']) {
       if (Array.isArray(x[k])) return x[k];
     }
 
@@ -77,7 +77,7 @@ const toSlug = s =>
 const toUTC = d => new Date(d || Date.now()).toUTCString();
 const cdata = s => `<![CDATA[${String(s || '').trim()}]]>`;
 
-// Field helpers that tolerate multiple schemas
+// ---------- field helpers ----------
 function getTitle(x) {
   return x.title || x.name || 'Untitled';
 }
@@ -85,7 +85,6 @@ function getIdOrSlug(x, title) {
   return x.id || x.slug || toSlug(title);
 }
 function getAdded(x) {
-  // prefer explicit added_date/date/created_at; fall back to year or now
   if (x.added_date || x.date || x.created_at) return x.added_date || x.date || x.created_at;
   if (x.year) return `${x.year}-01-01`;
   return new Date().toISOString();
@@ -101,9 +100,19 @@ function getAbstract(x, type) {
   );
 }
 function getLink(x, type, idOrSlug) {
+  // Respect explicit link if provided
   if (x.link) return x.link;
-  const base = type === 'datasets' ? 'datasets' : 'models';
-  return `${SITE}/${base}/detail.html?id=${encodeURIComponent(idOrSlug)}`;
+
+  // ✅ Updated logic: models → catalog page (no detail view)
+  if (type === 'models') return `${SITE}/models.html`;
+
+  // Datasets → detailed view
+  if (type === 'datasets') {
+    return `${SITE}/datasets/detail.html?id=${encodeURIComponent(idOrSlug)}`;
+  }
+
+  // Fallback
+  return `${SITE}/`;
 }
 
 // ---------- load inputs ----------
@@ -114,7 +123,7 @@ if (!fs.existsSync(DS_JSON)) throw new Error(`Missing file: ${DS_JSON}`);
 if (!fs.existsSync(MD_JSON)) throw new Error(`Missing file: ${MD_JSON}`);
 
 const datasetsRaw = loadJSONArray(DS_JSON);
-const modelsRaw   = loadJSONArray(MD_JSON);
+const modelsRaw = loadJSONArray(MD_JSON);
 
 // ---------- normalize ----------
 function normalize(items, type) {
@@ -131,7 +140,7 @@ function normalize(items, type) {
       slug: slugOrId,
       link,
       pubDate: toUTC(added),
-      guid: x.guid || `${type}:${slugOrId}:${added}`,  // unique & stable
+      guid: x.guid || `${type}:${slugOrId}:${added}`,
       desc: abstract
     };
   });
@@ -139,7 +148,7 @@ function normalize(items, type) {
 
 const items = [
   ...normalize(datasetsRaw, 'datasets'),
-  ...normalize(modelsRaw,   'models'),
+  ...normalize(modelsRaw, 'models'),
 ]
   .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
   .slice(0, MAX_ITEMS);
