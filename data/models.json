@@ -690,7 +690,7 @@
     "title": "Transformer-based framework for mapping client requirements to BIM",
     "authors": ["Syed Haseeb Shah", "Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
     "abstract": "Translating heterogeneous, client-authored textual requirements into constructible, information-rich models constitutes a primary impediment to digital transformation in early design phases. Legacy workflows demand high frequency client architect iteration, manual decoding of narrative requirements, and bespoke parametric modeling, introducing latency and inconsistency. This paper introduces an end-to-end automation pipeline that couples advanced Natural Language Processing (NLP) with Building Information Modeling (BIM) to dynamically interpret design intent from user inputs and instantiate corresponding BIM assemblies. A semantic translation layer maps parsed entities to a curated BIM model repository and propagates constraints into the authoring environment. On a multi project evaluation set the framework achieved 92 % mapping accuracy between client inputs and instantiated BIM elements. Embedding this capability enhances requirement traceability, clarifies intent for stakeholders, and enables scalable data driven design analytics. This contribution operationalizes AI assisted construction automation by unifying NLP and BIM within a single extensible workflow.",
-    "year": 2021,
+    "year": 2025,
     "modalities": ["BIM"],
     "tasks": ["Text-to-BIM mapping"],
 	"applications": ["Design brief automation"],
