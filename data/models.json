@@ -650,9 +650,7 @@
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106562",
     "code_url": "https://github.com/SinaDavari/bcon",
     "thumbnail": "assets/img/models/BCon.png",
-	"added_date": "2025-10-5",
-	"contributor": "ruoxinx",
-	"contributor_url": "https://github.com/ruoxinx"
+	"added_date": "2025-10-5"
   },
   {
     "id": "client-to-bim",

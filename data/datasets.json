@@ -2248,9 +2248,7 @@
   "access": "https://github.com/LCSkhalid/GPR_Data",
   "id": "GPR",
   "image_url": "assets/img/datasets/GPR.png",
-  "added_date": "2025-10-5",
-  "contributor": "ruoxinx",
-  "contributor_url": "https://github.com/ruoxinx"
+  "added_date": "2025-10-5"
 },
 "PM-HMCW": {
   "name": "Proximity Monitoring for Human-Machine Collision Warning Dataset",
@@ -2274,9 +2272,7 @@
   "access": "https://github.com/dyxm/PM-HMCW",
   "id": "PM-HMCW",
   "image_url": "assets/img/datasets/PM-HMCW.gif",
-  "added_date": "2025-10-5",
-  "contributor": "ruoxinx",
-  "contributor_url": "https://github.com/ruoxinx"
+  "added_date": "2025-10-5"
 },
 "Scaffold_removal": {
   "name": "Construction Scaffold Dataset",
@@ -2301,8 +2297,6 @@
   "access": "https://github.com/dyxm/Scaffold_removal",
   "id": "Scaffold_removal",
   "image_url": "assets/img/datasets/Scaffold_removal.png",
-  "added_date": "2025-10-12",
-  "contributor": "ruoxinx",
-  "contributor_url": "https://github.com/ruoxinx"
+  "added_date": "2025-10-12"
 }
 }
