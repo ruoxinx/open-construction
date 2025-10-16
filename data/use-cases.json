@@ -378,7 +378,7 @@
       "additional": "https://construction-today.com/news/skanska-safety-sidekick-ai/"
     },
     "license": "",
-    "added_date": "2025-10-03",
+    "added_date": "2025-10-05",
     "tags": ["safety", "knowledge-retrieval", "construction-ai"],
     "notes": "Documented by Skanska and featured in Construction Today; validated internal deployment across U.S. business units."
   },
@@ -1291,7 +1291,7 @@
 		"doi": ""
 	  },
 	  "license": "",
-	  "added_date": "2025-10-4",
+	  "added_date": "2025-10-5",
 	  "tags": ["contract-management", "document-ai", "risk-analysis", "construction-ai"],
 	  "notes": "Official Document Crunch case study describing Blois Construction’s deployment of AI for contract and risk review. Demonstrates measurable efficiency gains and improved standardization in preconstruction risk assessment workflows."
 	},
@@ -1350,7 +1350,7 @@
 	  "notes": "Official Firmus AI case study detailing Rogers-O’Brien Construction’s use of AI for early design and specification risk analysis. Demonstrates measurable time savings and improved coordination visibility during preconstruction document reviews."
 	},
 	{
-	  "title": "Hensel Phelps + HoloBuilder: AI-Enhanced 360° Site Documentation for Collaboration and Progress Tracking",
+	  "title": "AI-Enhanced 360° Site Documentation for Collaboration and Progress Tracking",
 	  "summary": "Hensel Phelps adopted HoloBuilder’s AI-enabled 360° photo documentation platform to automate progress tracking and enhance communication among project stakeholders. The system captures time-linked 360° imagery, aligns it with BIM and floor plans, and uses AI to organize site data for efficient issue resolution and stakeholder coordination.",
 	  "phase": "Construction",
 	  "stakeholders": ["Contractor", "Owner", "Engineer"],
