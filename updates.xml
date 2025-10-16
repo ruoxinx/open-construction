@@ -23,14 +23,6 @@
   </item>
 
   <item>
-    <title><![CDATA[Model: Integrating extended reality and AI-based damage segmentation for near real-time, traceable bridge inspections]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:DamageSegmentationXR:2025-10-12</guid>
-    <pubDate>Sun, 12 Oct 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.]]></description>
-  </item>
-
-  <item>
     <title><![CDATA[Dataset: GPR dataset: Ground Penetrating Radar]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=GPR</link>
     <guid isPermaLink="false">datasets:GPR:2025-10-5</guid>
@@ -82,6 +74,14 @@
     <title><![CDATA[Dataset: MLSTRUCT-FP: Machine Learning STRUCTural Floor Plan Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=mlstruct-fp</link>
     <guid isPermaLink="false">datasets:mlstruct-fp:2025-09-28</guid>
+    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: TBBR dataset: Thermal Bridges on Building Rooftops]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=TBBR</link>
+    <guid isPermaLink="false">datasets:TBBR:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
