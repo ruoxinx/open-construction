@@ -42,6 +42,32 @@
         "Add a transparency statement with links to datasets, code, and documentation.",
         "Share evaluation scripts and configs so others can reproduce metrics."
       ]
-    }
+    },
+	{
+	  "kicker": "Licensing",
+	  "name": "Open-Source Licenses (Choose a License)",
+	  "subtitle": "Summaries of widely used open-source licenses.",
+	  "url": "https://choosealicense.com/",
+	  "summary": "Quick reference for comparing common licenses (permissions, conditions, and limitations). Useful when selecting licenses for your datasets, models, code, and documentation.",
+	  "when": [
+		"You’re selecting a license for a new dataset, model, or code release",
+		"You need a side-by-side sense of allowed uses, obligations, and restrictions",
+		"You’re checking edge cases (e.g., combining licenses, derivative works)"
+	  ],
+	  "practices": [
+		"Match license intent to your goals (reuse, attribution, copyleft, patents)",
+		"Document license choice in README/metadata and include a LICENSE file",
+		"Ensure third-party components are license-compatible before releasing"
+	  ],
+	  "apply": [
+		"Review the guide to shortlist candidate licenses",
+		"Open each candidate’s full text to verify obligations before publishing",
+		"Add the chosen license to your repo and metadata"
+	  ],
+	  "docs": "https://choosealicense.com/",
+	  "examples": "https://choosealicense.com/appendix/",
+	  "source_name": "Choose a License — Appendix",
+	  "source_url": "https://choosealicense.com/appendix/"
+	}	
   ]
 }
