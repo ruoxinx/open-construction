@@ -2023,7 +2023,7 @@
     "annotation_types": [
 	"Pixel-level masks"
     ],
-    "geographical_location": "Not specified",
+    "geographical_location": "Not Specified",
     "potential_tasks": [
 	"Semantic segmentation"
     ],
@@ -2067,7 +2067,7 @@
   "num_images": 250,
   "num_classes": null,
   "classes": null,
-  "resolution": "Not specified",
+  "resolution": "Not Specified",
   "annotation_types": [
     "Paired images (architectural and structural layout)",
     "Pixel-level layout maps"
@@ -2077,7 +2077,7 @@
     "Image-to-image translation",
     "Layout synthesis"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "Automated structural design of shear wall residential buildings using generative adversarial networks",
   "access": "https://github.com/wenjie-liao/StructGAN_v1",
   "id": "structgan",
@@ -2103,7 +2103,7 @@
     "Object detection",
     "Semantic segmentation"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "Recovering building information model from 2D drawings for mechanical, electrical and plumbing systems of ageing buildings",
   "access": "https://github.com/CrossStyle/MEP2BIM",
   "id": "mep2bim",
@@ -2137,7 +2137,7 @@
     "Object detection",
 	"Semantic segmentation"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "BFA-YOLO: An enhanced YOLO framework with balanced feature aggregation for intelligent construction site monitoring",
   "access": "https://github.com/CVEO/BFA-YOLO",
   "id": "bfa-yolo-dataset",
@@ -2243,7 +2243,7 @@
   "potential_tasks": [
     "Object detection"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "Intelligent recognition of subsurface utilities and voids: A ground penetrating radar dataset for deep learning applications",
   "access": "https://github.com/LCSkhalid/GPR_Data",
   "id": "GPR",
@@ -2267,7 +2267,7 @@
   "potential_tasks": [
     "Object detection"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "Monocular three-dimensional object detection for proximity monitoring in human-machine collision warning systems on construction sites",
   "access": "https://github.com/dyxm/PM-HMCW",
   "id": "PM-HMCW",
@@ -2292,7 +2292,7 @@
     "Semantic segmentation",
 	"Image inpainting"
   ],
-  "license": "Not specified",
+  "license": "Not Specified",
   "paper": "Removing visual occlusion of construction scaffolds via a two-step method combining semantic segmentation and image inpainting",
   "access": "https://github.com/dyxm/Scaffold_removal",
   "id": "Scaffold_removal",
@@ -2310,7 +2310,8 @@
   "classes": ["wheel-loader", "crusher", "human", "car", "pile", "road", "background"],
   "resolution": "1280 × 720",
   "annotation_types": [
-    "Pixel-level masks"
+    "Pixel-level masks",
+	"Depth maps"
   ],
   "geographical_location": "Sweden",
   "potential_tasks": [
