@@ -2298,5 +2298,31 @@
   "id": "Scaffold_removal",
   "image_url": "assets/img/datasets/Scaffold_removal.png",
   "added_date": "2025-10-12"
+},
+"ConstScene": {
+  "name": "ConstScene Dataset",
+  "authors": "Maghsood Salimi, Mohammad Loni, Sara Afshar, Antonio Cicchetti, Marjan Sirjani",
+  "doi": "https://doi.org/10.1007/978-981-97-8705-0_16",
+  "year": 2025,
+  "data_modality": "Ground RGB",
+  "num_images": 12000,
+  "num_classes": 7,
+  "classes": ["wheel-loader", "crusher", "human", "pile", "road", "background"],
+  "resolution": "1280 × 720",
+  "annotation_types": [
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Sweden",
+  "potential_tasks": [
+    "Semantic segmentation"
+  ],
+  "license": "CC BY-NC-ND 3.0",
+  "paper": "ConstScene: A Dataset and Model for Advancing Robust Semantic Segmentation in Construction Environment",
+  "access": "https://github.com/RobustInsight/ConstScene",
+  "id": "ConstScene",
+  "image_url": "assets/img/datasets/ConstScene.png",
+  "added_date": "2025-10-18",
+  "contributor": "RobustInsight",
+  "contributor_url": "https://github.com/RobustInsight"
 }
 }
