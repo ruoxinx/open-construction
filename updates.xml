@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: ConstScene Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=ConstScene</link>
+    <guid isPermaLink="false">datasets:ConstScene:2025-10-18</guid>
+    <pubDate>Sat, 18 Oct 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Transformer-based framework for mapping client requirements to BIM]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:client-to-bim:2025-10-15</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: MLSTRUCT-FP: Machine Learning STRUCTural Floor Plan Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=mlstruct-fp</link>
     <guid isPermaLink="false">datasets:mlstruct-fp:2025-09-28</guid>
-    <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: TBBR dataset: Thermal Bridges on Building Rooftops]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=TBBR</link>
-    <guid isPermaLink="false">datasets:TBBR:2025-09-28</guid>
     <pubDate>Sun, 28 Sep 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
