@@ -46,7 +46,7 @@
 	{
 	  "kicker": "Licensing",
 	  "name": "Open-Source Licenses (Choose a License)",
-	  "subtitle": "Summaries of widely used open-source licenses.",
+	  "subtitle": "Summaries of widely used open-source licenses",
 	  "url": "https://choosealicense.com/",
 	  "summary": "Quick reference for comparing common licenses (permissions, conditions, and limitations). Useful when selecting licenses for your datasets, models, code, and documentation.",
 	  "when": [
