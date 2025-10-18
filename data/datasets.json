@@ -2305,7 +2305,7 @@
   "doi": "https://doi.org/10.1007/978-981-97-8705-0_16",
   "year": 2025,
   "data_modality": "Ground RGB",
-  "num_images": 12000,
+  "num_images": 6240,
   "num_classes": 7,
   "classes": ["wheel-loader", "crusher", "human", "car", "pile", "road", "background"],
   "resolution": "1280 × 720",
