@@ -533,7 +533,9 @@
     "paper": "Machine learning using synthetic images for detecting dust emissions on construction sites",
     "access": "https://github.com/ruoxinx/site-dust-detect",
     "id": "CDE",
-    "image_url": "assets/img/datasets/CDE.png"
+    "image_url": "assets/img/datasets/CDE.png",
+	"contributor": "ruoxinx",
+	"contributor_url": "https://github.com/ruoxinx"
   },
   "CPPE": {
     "name": "CPPE: Construction Personal Protective Equipment Dataset",
@@ -560,7 +562,9 @@
     "paper": "Pose guided anchoring for detecting proper use of personal protective equipment",
     "access": "https://github.com/ruoxinx/PPE-Detection-Pose",
     "id": "CPPE",
-    "image_url": "assets/img/datasets/CPPE.png"
+    "image_url": "assets/img/datasets/CPPE.png",
+	"contributor": "ruoxinx",
+	"contributor_url": "https://github.com/ruoxinx"
   },
   "Safety-Harness": {
     "name": "Safety harness dataset",
