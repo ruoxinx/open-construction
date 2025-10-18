@@ -58,7 +58,8 @@ function formatLicense(licVal){
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
-	'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/'
+	'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+	'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/'
   };
   if (licenseMap[key]) {
     return `<a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a>`;
