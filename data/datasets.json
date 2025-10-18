@@ -2307,7 +2307,7 @@
   "data_modality": "Ground RGB",
   "num_images": 12000,
   "num_classes": 7,
-  "classes": ["wheel-loader", "crusher", "human", "pile", "road", "background"],
+  "classes": ["wheel-loader", "crusher", "human", "car", "pile", "road", "background"],
   "resolution": "1280 × 720",
   "annotation_types": [
     "Pixel-level masks"
