@@ -1963,7 +1963,9 @@
     "access": "https://github.com/yantaolab/VPM",
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.gif",
-	"added_date": "2025-09-23"
+	"added_date": "2025-09-23",
+	"contributor": "yantaolab",
+    "contributor_url": "https://github.com/yantaolab"
   },
     "UGD": {
     "name": "UGD: Underground Garage Point Cloud Dataset",
@@ -2112,7 +2114,9 @@
   "access": "https://github.com/CrossStyle/MEP2BIM",
   "id": "mep2bim",
   "image_url": "assets/img/datasets/mep2bim.png",
-  "added_date": "2025-09-28"
+  "added_date": "2025-09-28",
+  "contributor": "yantaolab",
+  "contributor_url": "https://github.com/yantaolab"
 },
 "bfa-yolo-dataset": {
   "name": "BFA-3D dataset: Building façade attachments",
