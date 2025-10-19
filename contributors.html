@@ -151,7 +151,7 @@
 	.btn-subscribe-icon:hover svg{
 	  filter: brightness(1.15);
 	}
-
+	
 	/* === Auto-scrolling logo marquee === */
 	.logo-marquee{
 	position: relative;
@@ -160,37 +160,57 @@
 	border-radius: var(--oc-radius);
 	background:#fff;
 	box-shadow: var(--oc-shadow);
+	padding: 8px 0; /* vertical breathing */
 	}
+	.logo-marquee.two-rows{ display:grid; gap: 2px; }
+	.row-marquee{ position: relative; overflow:hidden; }
+
+
 	.logo-track{
 	display: flex;
 	align-items: center;
 	gap: 28px; /* consistent spacing between logos */
-	padding: 10px 12px;
+	padding: 6px 12px;
 	width: max-content; /* track expands to fit children */
 	animation: oc-marquee 46s linear infinite;
 	will-change: transform;
 	}
-	/* Pause on hover for usability */
 	.logo-marquee:hover .logo-track{ animation-play-state: paused; }
 
 
-	/* Individual logo cell to normalize sizing */
+	/* Cell sizing to normalize */
 	.logo{
+	position: relative; /* for skeleton */
 	flex: 0 0 auto;
 	display: grid; /* centers both axes */
 	place-items: center;
 	height: 84px; /* cell height */
 	width: 168px; /* cell width; controls density */
+	overflow: hidden;
+	border-radius: 10px; /* soft corners for skeleton only */
 	}
+	/* lightweight skeleton while images load */
+	.logo::before{
+	content: "";
+	position:absolute; inset:0;
+	background: linear-gradient(90deg, #f6f8fb 0%, #eef3f8 50%, #f6f8fb 100%);
+	background-size: 200% 100%;
+	animation: oc-skeleton 1.2s ease-in-out infinite;
+	}
+	.logo.loaded::before{ opacity:0; transition: opacity .2s ease; }
+
+
 	.logo img{
 	max-height: 60px; /* unified icon height */
 	max-width: 150px; /* prevent super-wide logos from stretching */
 	width: auto; height: auto;
 	object-fit: contain;
 	filter: grayscale(8%);
-	transition: transform .16s ease;
+	transition: transform .16s ease, opacity .2s ease;
 	display:block;
+	opacity: 0; /* fade-in after load */
 	}
+	.logo.loaded img{ opacity: 1; }
 	.logo img:hover{ transform: scale(1.03); }
 
 
@@ -202,16 +222,13 @@
 
 
 	/* Continuous left->right loop (we move track to the left) */
-	@keyframes oc-marquee{
-	from{ transform: translateX(0); }
-	to { transform: translateX(-50%); } /* requires duplicated content */
-	}
+	@keyframes oc-marquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+	@keyframes oc-skeleton{ 0%{ background-position: 0% 0; } 100%{ background-position: 200% 0; } }
 
 
 	/* Respect users who prefer reduced motion */
-	@media (prefers-reduced-motion: reduce){
-	.logo-track{ animation: none; }
-	}
+	@media (prefers-reduced-motion: reduce){ .logo-track{ animation: none; } }
+
 	
   </style>
 </head>
@@ -560,27 +577,34 @@
     </div>
   </section>
 
-  <!-- Affiliations -->
 	<section class="oc-section">
-	<div class="oc-kicker mb-2">Affiliations</div>
-	<div class="logo-marquee" aria-label="Affiliated institutions and organizations">
-	<div class="logo-track" role="list">
-	<!-- One sequence of logos; JS will duplicate this sequence once for seamless loop -->
-	<div class="logo" role="listitem"><img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Benadir.png" alt="Benadir University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Kyung-Hee.png" alt="Kyung Hee University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Mälardalen.png" alt="Mälardalen University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Volvo-CE.png" alt="Volvo Construction Equipment" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/UST.png" alt="The Hong Kong University of Science and Technology" loading="lazy" decoding="async"></div>
-	</div>
-	</div>
+		<div class="oc-kicker mb-2">Affiliations</div>
+		<div class="logo-marquee two-rows" aria-label="Affiliated institutions and organizations">
+		<!-- Row 1 (will be filled by JS) -->
+		<div class="row-marquee">
+		<div class="logo-track" role="list" data-speed="46"></div>
+		</div>
+		<!-- Row 2 (will be filled by JS) -->
+		<div class="row-marquee">
+		<div class="logo-track" role="list" data-speed="52"></div>
+		</div>
+		</div>
+	  <!-- Affiliations -->
+		<template id="logo-seed">
+		<div class="logo" role="listitem"><img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="eager" fetchpriority="high" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="eager" fetchpriority="high" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="eager" fetchpriority="high" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/Benadir.png" alt="Benadir University" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/Kyung-Hee.png" alt="Kyung Hee University" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/Mälardalen.png" alt="Mälardalen University" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/Volvo-CE.png" alt="Volvo Construction Equipment" loading="lazy" decoding="async"></div>
+		<div class="logo" role="listitem"><img src="assets/img/institutions/UST.png" alt="The Hong Kong University of Science and Technology" loading="lazy" decoding="async"></div>
+		</template>
 	</section>
 
   <!-- Contribute & Policy -->
@@ -671,18 +695,69 @@
 
 <script>
 (function(){
-const track = document.querySelector('.logo-track');
-if(!track) return;
-// Duplicate the set of logos once so that the keyframes translating -50% loops seamlessly
-const items = Array.from(track.children);
-items.forEach(node => track.appendChild(node.cloneNode(true)));
+const marquee = document.querySelector('.logo-marquee.two-rows');
+if(!marquee) return;
 
 
-// Optional: adjust speed based on number of logos (more logos → longer loop)
-const base = 42; // seconds
-const n = items.length;
-const dur = Math.min(85, base + Math.max(0, n - 10) * 2);
+const [track1, track2] = marquee.querySelectorAll('.logo-track');
+const seed = document.getElementById('logo-seed');
+if(!track1 || !track2 || !seed) return;
+
+
+// Take all seed nodes once (single source of truth)
+const sources = Array.from(seed.content.children).map(n => n.cloneNode(true));
+
+
+// Distribute evenly without duplication. Option A: alternate; Option B: split halves.
+// We'll alternate to mix well visually.
+const row1Items = [];
+const row2Items = [];
+sources.forEach((node, idx) => (idx % 2 ? row2Items : row1Items).push(node));
+
+
+// Helper to initialize a track: append originals, then clone once for seamless loop
+const initTrack = (track, items) => {
+items.forEach(n => track.appendChild(n));
+// Duplicate within the SAME row only (required for infinite animation)
+items.forEach(n => track.appendChild(n.cloneNode(true)));
+
+
+// Duration tuning per row
+const base = Number(track.getAttribute('data-speed')) || 46;
+const dur = Math.min(90, base + Math.max(0, items.length - 8) * 1.5);
 track.style.animationDuration = dur + 's';
+};
+
+
+initTrack(track1, row1Items);
+initTrack(track2, row2Items);
+
+
+// Fade-in images when loaded and remove skeleton
+const allImgs = marquee.querySelectorAll('.logo img');
+allImgs.forEach(img => {
+const parent = img.closest('.logo');
+const onReady = () => parent && parent.classList.add('loaded');
+if(img.complete && img.naturalWidth > 0){ onReady(); }
+else{
+img.addEventListener('load', onReady, { once:true });
+img.addEventListener('error', () => parent && parent.classList.add('loaded'), { once:true });
+}
+});
+
+
+// Promote near-viewport cells to eager to avoid empty head on slow networks
+if('IntersectionObserver' in window){
+const io = new IntersectionObserver((entries)=>{
+entries.forEach(({isIntersecting, target})=>{
+if(isIntersecting){
+const img = target.querySelector('img');
+if(img && img.loading !== 'eager') img.loading = 'eager';
+}
+});
+}, { root:null, rootMargin:'600px' });
+marquee.querySelectorAll('.logo').forEach(cell=> io.observe(cell));
+}
 })();
 </script>
 
