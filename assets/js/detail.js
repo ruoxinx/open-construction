@@ -185,7 +185,7 @@ async function initDetail(){
 
             <dl class="meta">
               <div class="meta-row">
-                <dt class="meta-label">Images · Classes</dt>
+                <dt class="meta-label">Data · Classes</dt>
                 <dd class="meta-val ds-metrics">${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}</dd>
               </div>
 

@@ -410,7 +410,7 @@ function cardHTML(ds){
           <span>${ds.data_modalities?.join(', ') || ds.data_modality || '—'}</span>
         </div>
         <div class="small text-muted mb-2">
-          Images <strong>${formatInt(ds.num_images)}</strong> · Classes <strong>${formatInt(ds.num_classes)}</strong>
+          Data <strong>${formatInt(ds.num_images)}</strong> · Classes <strong>${formatInt(ds.num_classes)}</strong>
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
           <a class="btn btn-sm btn-primary" href="datasets/detail.html?id=${slug}">View details</a>

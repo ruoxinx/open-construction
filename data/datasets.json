@@ -2333,5 +2333,32 @@
   "added_date": "2025-10-18",
   "contributor": "RobustInsight",
   "contributor_url": "https://github.com/RobustInsight"
+},
+"ResBIM": {
+  "name": "ResBIM: Residential Unit BIM dataset",
+  "authors": "Xing Liang, Nobuyoshi Yabuki, Tomohiro Fukuda",
+  "doi": "https://doi.org/10.1016/j.autcon.2025.106584",
+  "year": 2026,
+  "data_modality": "CAD/BIM",
+  "num_images": "1029",
+  "num_classes": null,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": [
+    "2D floor plans",
+	"parametric 3D BIM"
+  ],
+  "geographical_location": "Not specified",
+  "potential_tasks": [
+    "2D-to-BIM Reconstruction"
+  ],
+  "license": "MIT",
+  "paper": "Fully automated synthetic BIM dataset generation using a deep learning-based framework",
+  "access": "https://github.com/RogerLiang0725/ResBIM",
+  "id": "ResBIM",
+  "image_url": "assets/img/datasets/ResBIM.png",
+  "added_date": "2025-10-20",
+  "contributor": "XingLiang",
+  "contributor_url": "https://github.com/RogerLiang0725"
 }
 }

@@ -672,5 +672,22 @@
 	"added_date": "2025-10-15",
 	"contributor": "Haseeb",
 	"contributor_url": "https://github.com/QuantumNovice"
+  },
+  {
+    "id": "ResBIM",
+    "title": "Fully automated synthetic BIM dataset generation using a deep learning-based framework",
+    "authors": ["Xing Liang", "Nobuyoshi Yabuki", "Tomohiro Fukuda"],
+    "abstract": "Building information models (BIMs) are essential for efficient building operation, yet most existing buildings only have two-dimensional (2D) drawings, leading to increased interest in 2D-to-BIM reconstruction. To address the data scarcity hindering automated BIM reconstruction and evaluation, this paper presents a deep learning-based fully automated framework for BIM dataset generation. The approach uses image processing to define polygonal boundaries, applies neural networks to generate geometric layouts, and augments semantic information with predefined data for BIM generation via software application programming interfaces (APIs). The resulting Residential unit BIM (ResBIM) is a synthetic dataset comprising over 1000 paired BIMs (RVT format) and their corresponding 2D floor plans automatically annotated via a toolbox, filling a critical gap in BIM data availability. This work provides a scalable automated BIM reconstruction solution and establishes the foundation for future AI-driven BIM automation research.",
+    "year": 2026,
+    "modalities": ["Rasterized CAD images"],
+    "tasks": ["2D-to-BIM reconstruction"],
+	"applications": ["BIM generation"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106584",
+    "code_url": "https://github.com/RogerLiang0725/ResBIM",
+    "thumbnail": "assets/img/models/ResBIM.png",
+	"added_date": "2025-10-20",
+	"contributor": "XingLiang",
+    "contributor_url": "https://github.com/RogerLiang0725"
   }
 ]
