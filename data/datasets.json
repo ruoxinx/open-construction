@@ -2340,7 +2340,7 @@
   "doi": "https://doi.org/10.1016/j.autcon.2025.106584",
   "year": 2026,
   "data_modality": "CAD/BIM",
-  "num_images": "1029",
+  "num_images": 1029,
   "num_classes": null,
   "classes": null,
   "resolution": null,
