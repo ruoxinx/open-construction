@@ -774,21 +774,6 @@ if(img.complete && img.naturalWidth>0) done();
 else img.addEventListener('load', done, {once:true});
 });
 })();
-
-
-// Promote near-viewport cells to eager to avoid empty head on slow networks
-if('IntersectionObserver' in window){
-const io = new IntersectionObserver((entries)=>{
-entries.forEach(({isIntersecting, target})=>{
-if(isIntersecting){
-const img = target.querySelector('img');
-if(img && img.loading !== 'eager') img.loading = 'eager';
-}
-});
-}, { root:null, rootMargin:'600px' });
-marquee.querySelectorAll('.logo').forEach(cell=> io.observe(cell));
-}
-})();
 </script>
 
 <!-- Auto-active current nav link -->
