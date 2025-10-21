@@ -1337,7 +1337,9 @@
     "paper": "AIDCON: An Aerial Image Dataset and Benchmark for Construction Machinery",
     "access": "https://www.ai2lab.org/aidcon/",
     "id": "AIDCON",
-    "image_url": "assets/img/datasets/AIDCON.png"
+    "image_url": "assets/img/datasets/AIDCON.png",
+	"contributor": "Ahmet Bahaddin Ersoz",
+    "contributor_url": "https://ahmetersoz.com/"
   },
   "Steel-Cross-Section": {
     "name": "Steel Cross-Section Image Dataset",
