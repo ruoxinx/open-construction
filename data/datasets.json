@@ -2362,5 +2362,31 @@
   "added_date": "2025-10-20",
   "contributor": "XingLiang",
   "contributor_url": "https://github.com/RogerLiang0725"
+},
+"BMKG": {
+  "name": "BMKG: Bridge Maintenance Knowledge Graph",
+  "authors": "Yuchen Wang, Yanjie Zhu, Wen Xiong, C.S. Cai",
+  "doi": "https://doi.org/10.1016/j.autcon.2025.106632",
+  "year": 2026,
+  "data_modality": "Knowledge Graph",
+  "num_images": 200,
+  "num_classes": null,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": ["Entity Types", "Relation Triples", "Question–Answer Pairs"],
+  "geographical_location": "China",
+  "potential_tasks": [
+    "Knowledge Graph Reasoning",
+	"Case-Based Retrieval",
+	"Question Answering"
+  ],
+  "license": "AGPL 3.0",
+  "paper": "Knowledge graph-driven bridge maintenance decision-making via integrating large language models and chain-of-thought reasoning",
+  "access": "https://github.com/YuchenWang1/BMKG-DCoT",
+  "id": "BMKG",
+  "image_url": "assets/img/datasets/BMKG.png",
+  "added_date": "2025-11-3",
+  "contributor": "Yuchen Wang",
+  "contributor_url": "https://github.com/YuchenWang1"
 }
 }
