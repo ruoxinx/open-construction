@@ -707,7 +707,41 @@
 	"contributor": "Cyberbuild Lab",
     "contributor_url": "https://github.com/CyberbuildLab"
   },
-  {
+    {
+    "id": "4PlCS",
+    "title": "4-Plane congruent sets for automatic registration of as-is 3D point clouds with 3D BIM models",
+    "authors": ["Martín Bueno", "Frédéric Bosché", "Higinio González-Jorge", "Joaquín Martínez-Sánchez", "Pedro Arias"],
+    "abstract": "Construction quality and progress control are demanding, yet critical construction activities. Building Information Models and as-built scanned data can be used in Scan-vs-BIM processes to effectively and comprehensively support these activities. This however requires accurate registration of scanned point clouds with 3D (BIM) models. Automating such registration remains a challenge in the context of the built environment, because as-built can be incomplete and/or contain data from non-model objects, and construction buildings and other structures often present symmetries and self-similarities that are very challenging to registration.  In this paper, we present a novel automatic coarse registration method that is an adaptation of the ‘4 Points Congruent Set’ algorithm to the use of planes; we call it the ‘4-Plane Congruent Set’ (4-PlCS) algorithm. The approach is further integrated in a software system that delivers not one but a ranked list of the most likely transformations, so to allow the user to quickly select the correct transformation, if need be. Two variants of the method are also considered, in particular one in the case when the vertical axis is known a priori; we call that method the 4.5-PlCS method. The proposed algorithm is tested using five different datasets, including three simulated and two real-life ones. The results show the effectiveness of the proposed method, where the correct transformation always ranks very high (in our experiments, first or second), and is extremely close to the ground-truth transformation. Experimental comparison of the proposed approach with a standard, more intuitive approach based on finding 3-plane congruent sets shows the discriminatory power of 4-plane bases over 3-plane bases, albeit at no clear benefits in terms of computational time. The experimental results for the 4.5-PlCS method show that it delivers a non-negligible reduction in computational time (approx. 20%), but at no additional benefit in terms of effectiveness in finding the correct transformation.",
+    "year": 2018,
+    "modalities": ["3D Point Cloud"],
+    "tasks": ["3D Point Cloud Registration", "BIM Alignment"],
+	"applications": ["Construction Progress Monitoring", "As-Built BIM Generation"],
+    "license": "Apache 2.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2018.01.014",
+    "code_url": "https://github.com/CyberbuildLab/4PlCS",
+    "thumbnail": "assets/img/models/4PlCS.png",
+	"added_date": "2025-11-2",
+	"contributor": "Cyberbuild Lab",
+    "contributor_url": "https://github.com/CyberbuildLab"
+  },
+    {
+    "id": "BE-OLS",
+    "title": "Development of a Built Environment Ontology Lookup Service (BE-OLS) with a New Ontology Evaluation",
+    "authors": ["Arghavan Akbarieh", "Iryna Osadcha", "Karim Farghaly", "Frédéric Bosché", "Rene Puust"],
+    "abstract": "Recent years have seen a surge in development of formal ontologies within the domain of built environment. Yet, experts like novices face difficulties in locating relevant ontologies, hampering the use of ontologies. Besides, these ontologies demonstrate a range of development maturity. This highlights a gap: the need for a continuously updated repository to help users in discovering, evaluating and (re)using ontologies. This paper presents the Ontology Lookup Service for the Built Environment: BE-OLS, which allows to easily find and consult existing ontologies. It also enables researchers to find gaps or redundancies to help bring some order to the current state of the field.",
+    "year": 2025,
+    "modalities": ["Ontology"],
+    "tasks": ["Ontology Search"],
+	"applications": ["Knowledge Management"],
+    "license": "Unspecified",
+    "paper_url": "http://www.doi.org/10.35490/EC3.2025.353",
+    "code_url": "https://github.com/CyberbuildLab/BE-OLS",
+    "thumbnail": "assets/img/models/BE-OLS.png",
+	"added_date": "2025-11-2",
+	"contributor": "Cyberbuild Lab",
+    "contributor_url": "https://github.com/CyberbuildLab"
+  },
+    {
     "id": "pcd-bim-matching-confidence",
     "title": "Evaluating confidence in geometric matching between 3D point clouds and BIM models by integrating coverage, distance, and distribution metrics",
     "authors": ["Ahmet Bahaddin Ersöz", "Frédéric Bosché"],
