@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Knowledge graph-driven bridge maintenance decision-making via integrating large language models and chain-of-thought reasoning]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:BMKG-DCoT:2025-11-03</guid>
+    <pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Bridge maintenance knowledge graphs (BMKGs) contain rich historical records of defects and corresponding maintenance actions, yet few studies exploit this data to guide decisions for new defects. Traditional case-based reasoning (CBR) methods can surface similar historical cases but suffer from high retrieval costs and struggle with ambiguous scenarios. To address these limitations, this paper introduces BMKG-DCoT, which integrates large language models (LLMs) with chain-of-thought (CoT) reasoning to mimic maintenance expert decision workflows. BMKG-DCoT follows a three-phase iterative process—Inference-Planning (formulating reasoning steps and retrieval plans), Interaction-Decision (targeted data extraction from the BMKG), and Observation-Judgment (evaluating and refining inferences). On some standard and ambiguous maintenance queries, BMKG-DCoT achieves F1 scores of 0.9529 and 0.9130, respectively, outperforming baselines. Explainability analyses further confirm that its reasoning paths are transparent and interpretable, underscoring its promise as an AI-driven decision-support tool for bridge maintenance.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Automatic segmentation of 3D point clouds of rubble masonry walls, and its application to building surveying, repair and maintenance]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:masonry-cc:2025-11-2</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=Scaffold_removal</link>
     <guid isPermaLink="false">datasets:Scaffold_removal:2025-10-12</guid>
     <pubDate>Sun, 12 Oct 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: GPR dataset: Ground Penetrating Radar]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=GPR</link>
-    <guid isPermaLink="false">datasets:GPR:2025-10-5</guid>
-    <pubDate>Sun, 05 Oct 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
