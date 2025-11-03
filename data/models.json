@@ -36,7 +36,7 @@
     "modalities": ["Ground RGB"],
     "tasks": ["Simultaneous localization and mapping"],
 	"applications": ["Site mapping and navigation"],
-    "license": "GPL-3.0",
+    "license": "GPL 3.0",
     "paper_url": "https://doi.org/10.1080/01691864.2020.1869586",
     "code_url": "https://github.com/RunqiuBao/kenki-positioning-vSLAM",
     "thumbnail": "assets/img/models/Kenki-Posi.gif"
