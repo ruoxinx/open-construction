@@ -8,7 +8,7 @@
     "modalities": ["Ground RGB"],
     "tasks": ["Object detection"],
 	"applications": ["Safety monitoring"],
-    "license": "Apache-2.0",
+    "license": "Apache 2.0",
     "paper_url": "https://doi.org/10.1016/j.autcon.2019.102894",
     "code_url": "https://github.com/wujixiu/helmet-detection",
     "thumbnail": "assets/img/models/GDUT-HWD.png"
