@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: BMKG: Bridge Maintenance Knowledge Graph]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BMKG</link>
+    <guid isPermaLink="false">datasets:BMKG:2025-11-3</guid>
+    <pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Knowledge graph-driven bridge maintenance decision-making via integrating large language models and chain-of-thought reasoning]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BMKG-DCoT:2025-11-03</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:client-to-bim:2025-10-15</guid>
     <pubDate>Wed, 15 Oct 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Translating heterogeneous, client-authored textual requirements into constructible, information-rich models constitutes a primary impediment to digital transformation in early design phases. Legacy workflows demand high frequency client architect iteration, manual decoding of narrative requirements, and bespoke parametric modeling, introducing latency and inconsistency. This paper introduces an end-to-end automation pipeline that couples advanced Natural Language Processing (NLP) with Building Information Modeling (BIM) to dynamically interpret design intent from user inputs and instantiate corresponding BIM assemblies. A semantic translation layer maps parsed entities to a curated BIM model repository and propagates constraints into the authoring environment. On a multi project evaluation set the framework achieved 92 % mapping accuracy between client inputs and instantiated BIM elements. Embedding this capability enhances requirement traceability, clarifies intent for stakeholders, and enables scalable data driven design analytics. This contribution operationalizes AI assisted construction automation by unifying NLP and BIM within a single extensible workflow.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Construction Scaffold Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Scaffold_removal</link>
-    <guid isPermaLink="false">datasets:Scaffold_removal:2025-10-12</guid>
-    <pubDate>Sun, 12 Oct 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
