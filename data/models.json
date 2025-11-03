@@ -757,5 +757,22 @@
 	"added_date": "2025-11-2",
 	"contributor": "Cyberbuild Lab",
     "contributor_url": "https://github.com/CyberbuildLab"
+  },
+{
+    "id": "BMKG-DCoT",
+    "title": "Knowledge graph-driven bridge maintenance decision-making via integrating large language models and chain-of-thought reasoning",
+    "authors": ["Yuchen Wang", "Wen Xiong", "Yanjie Zhu", "C.S. Cai"],
+    "abstract": "Bridge maintenance knowledge graphs (BMKGs) contain rich historical records of defects and corresponding maintenance actions, yet few studies exploit this data to guide decisions for new defects. Traditional case-based reasoning (CBR) methods can surface similar historical cases but suffer from high retrieval costs and struggle with ambiguous scenarios. To address these limitations, this paper introduces BMKG-DCoT, which integrates large language models (LLMs) with chain-of-thought (CoT) reasoning to mimic maintenance expert decision workflows. BMKG-DCoT follows a three-phase iterative process—Inference-Planning (formulating reasoning steps and retrieval plans), Interaction-Decision (targeted data extraction from the BMKG), and Observation-Judgment (evaluating and refining inferences). On some standard and ambiguous maintenance queries, BMKG-DCoT achieves F1 scores of 0.9529 and 0.9130, respectively, outperforming baselines. Explainability analyses further confirm that its reasoning paths are transparent and interpretable, underscoring its promise as an AI-driven decision-support tool for bridge maintenance.",
+    "year": 2026,
+    "modalities": ["Knowledge graph", "Question Answering"],
+    "tasks": ["Information Retrieval"],
+	"applications": ["Bridge maintenance"],
+    "license": "AGPL 3.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106632",
+    "code_url": "https://github.com/YuchenWang1/BMKG-DCoT",
+    "thumbnail": "assets/img/models/BMKG-DCoT.png",
+	"added_date": "2025-11-03",
+	"contributor": "Yuchen Wang",
+    "contributor_url": "https://github.com/YuchenWang1"
   }
 ]
