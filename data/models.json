@@ -673,6 +673,23 @@
 	"contributor": "Haseeb",
 	"contributor_url": "https://github.com/QuantumNovice"
   },
+   {
+    "id": "masonry-cc",
+    "title": "Automatic segmentation of 3D point clouds of rubble masonry walls, and its application to building surveying, repair and maintenance",
+    "authors": ["Enrique Valero", "Frédéric Bosché", "Alan Forster"],
+    "abstract": "Changing climatic conditions are contributing to faster deterioration of building fabric. Increasing number of heavy rainfall events can particularly affect historic and Cultural Heritage (CH) buildings. These evolving and uncertain circumstances demand more frequent survey of building fabric to ensure satisfactory repair and maintenance. However, traditional fabric surveys have been shown to lack efficiency, accuracy and objectivity, hindering essential repair operations. The recent development of reality capture technologies, together with the development of algorithms to effectively process the acquired data, offers the promise of transformation of surveying methods. This paper presents an original algorithm for automatic segmentation of individual masonry units and mortar regions in digitised rubble stone constructions, using geometrical and colour data acquired by Terrestrial Laser Scanning (TLS) devices. The algorithm is based on the 2D Continuous Wavelet Transform (CWT), and uniquely it does not require the wall to be flat or plumb. This characteristic is important because historic structures, in particular, commonly present non-negligible levels of bow, waviness and out-of-verticality. The method is validated through experiments undertaken using data from two relevant and highly significant Scottish CH buildings. The value of such segmentation to building surveying and maintenance regimes is also further demonstrated with application in automated and accurate measurement of mortar recess and pinning. Overall, the results demonstrate the value of the automatic segmentation of masonry units towards more comprehensive and accurate surveys.",
+    "year": 2018,
+    "modalities": ["3D point cloud"],
+    "tasks": ["Point cloud segmentation"],
+	"applications": ["Historic digital survey"],
+    "license": "GPL 2.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2018.08.018",
+    "code_url": "https://github.com/CyberbuildLab/masonry-cc",
+    "thumbnail": "assets/img/models/masonry-cc.png",
+	"added_date": "2025-11-2",
+	"contributor": "Cyberbuild Lab",
+    "contributor_url": "https://github.com/CyberbuildLab"
+  },
   {
     "id": "ResBIM",
     "title": "Fully automated synthetic BIM dataset generation using a deep learning-based framework",
@@ -689,22 +706,5 @@
 	"added_date": "2025-10-20",
 	"contributor": "XingLiang",
     "contributor_url": "https://github.com/RogerLiang0725"
-  },
-  {
-    "id": "pcd-bim-matching-confidence",
-    "title": "Evaluating confidence in geometric matching between 3D point clouds and BIM models by integrating coverage, distance, and distribution metrics",
-    "authors": ["Ahmet Bahaddin Ersöz", "Frédéric Bosché"],
-    "abstract": "Accurate and objective assessment of the matching of a Building Information Model (BIM) with 3D point cloud data (PCD) is critical to Scan-to-BIM and Scan-vs-BIM workflows. However, existing methods for PCD-BIM matching evaluation do not fully and robustly account for geometric accuracy and spatial completeness. This paper introduces a statistically-grounded method that combines three indices that complementarily assess matching Coverage, Distribution, and Distance. The proposed method also accounts for inter-element occlusions when calculating each element’s theoretically visible surface, which increases the metrics’ reliability. Validation is conducted across 46 PCD-BIM pairs, encompassing 4000+ elements from ISPRS, CV4AEC, BIMNET and custom datasets, as well as a residential building case study comparing manual and automated BIM model reconstructions, and demonstrating the applicability of the method to any type of element. Results show practical value for both Scan-to-BIM and Scan-vs-BIM practice and enable quantitative assessment of benchmark dataset quality via the proposed indices.",
-    "year": 2026,
-    "modalities": ["3D point cloud"],
-    "tasks": ["PCD-BIM matching"],
-	"applications": ["Scan-to-BIM"],
-    "license": "Apache 2.0",
-    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106636",
-    "code_url": "https://github.com/CyberbuildLab/pcd-bim-matching-confidence",
-    "thumbnail": "assets/img/models/pcd-bim-matching-confidence.png",
-	"added_date": "2025-11-2",
-	"contributor": "Cyberbuild Lab",
-    "contributor_url": "https://github.com/CyberbuildLab"
   }
 ]
