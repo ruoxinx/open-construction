@@ -673,7 +673,24 @@
 	"contributor": "Haseeb",
 	"contributor_url": "https://github.com/QuantumNovice"
   },
-   {
+  {
+    "id": "ResBIM",
+    "title": "Fully automated synthetic BIM dataset generation using a deep learning-based framework",
+    "authors": ["Xing Liang", "Nobuyoshi Yabuki", "Tomohiro Fukuda"],
+    "abstract": "Building information models (BIMs) are essential for efficient building operation, yet most existing buildings only have two-dimensional (2D) drawings, leading to increased interest in 2D-to-BIM reconstruction. To address the data scarcity hindering automated BIM reconstruction and evaluation, this paper presents a deep learning-based fully automated framework for BIM dataset generation. The approach uses image processing to define polygonal boundaries, applies neural networks to generate geometric layouts, and augments semantic information with predefined data for BIM generation via software application programming interfaces (APIs). The resulting Residential unit BIM (ResBIM) is a synthetic dataset comprising over 1000 paired BIMs (RVT format) and their corresponding 2D floor plans automatically annotated via a toolbox, filling a critical gap in BIM data availability. This work provides a scalable automated BIM reconstruction solution and establishes the foundation for future AI-driven BIM automation research.",
+    "year": 2026,
+    "modalities": ["Rasterized CAD images"],
+    "tasks": ["2D-to-BIM reconstruction"],
+	"applications": ["BIM generation"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106584",
+    "code_url": "https://github.com/RogerLiang0725/ResBIM",
+    "thumbnail": "assets/img/models/ResBIM.png",
+	"added_date": "2025-10-20",
+	"contributor": "XingLiang",
+    "contributor_url": "https://github.com/RogerLiang0725"
+  },
+  {
     "id": "masonry-cc",
     "title": "Automatic segmentation of 3D point clouds of rubble masonry walls, and its application to building surveying, repair and maintenance",
     "authors": ["Enrique Valero", "Frédéric Bosché", "Alan Forster"],
@@ -691,20 +708,20 @@
     "contributor_url": "https://github.com/CyberbuildLab"
   },
   {
-    "id": "ResBIM",
-    "title": "Fully automated synthetic BIM dataset generation using a deep learning-based framework",
-    "authors": ["Xing Liang", "Nobuyoshi Yabuki", "Tomohiro Fukuda"],
-    "abstract": "Building information models (BIMs) are essential for efficient building operation, yet most existing buildings only have two-dimensional (2D) drawings, leading to increased interest in 2D-to-BIM reconstruction. To address the data scarcity hindering automated BIM reconstruction and evaluation, this paper presents a deep learning-based fully automated framework for BIM dataset generation. The approach uses image processing to define polygonal boundaries, applies neural networks to generate geometric layouts, and augments semantic information with predefined data for BIM generation via software application programming interfaces (APIs). The resulting Residential unit BIM (ResBIM) is a synthetic dataset comprising over 1000 paired BIMs (RVT format) and their corresponding 2D floor plans automatically annotated via a toolbox, filling a critical gap in BIM data availability. This work provides a scalable automated BIM reconstruction solution and establishes the foundation for future AI-driven BIM automation research.",
+    "id": "pcd-bim-matching-confidence",
+    "title": "Evaluating confidence in geometric matching between 3D point clouds and BIM models by integrating coverage, distance, and distribution metrics",
+    "authors": ["Ahmet Bahaddin Ersöz", "Frédéric Bosché"],
+    "abstract": "Accurate and objective assessment of the matching of a Building Information Model (BIM) with 3D point cloud data (PCD) is critical to Scan-to-BIM and Scan-vs-BIM workflows. However, existing methods for PCD-BIM matching evaluation do not fully and robustly account for geometric accuracy and spatial completeness. This paper introduces a statistically-grounded method that combines three indices that complementarily assess matching Coverage, Distribution, and Distance. The proposed method also accounts for inter-element occlusions when calculating each element’s theoretically visible surface, which increases the metrics’ reliability. Validation is conducted across 46 PCD-BIM pairs, encompassing 4000+ elements from ISPRS, CV4AEC, BIMNET and custom datasets, as well as a residential building case study comparing manual and automated BIM model reconstructions, and demonstrating the applicability of the method to any type of element. Results show practical value for both Scan-to-BIM and Scan-vs-BIM practice and enable quantitative assessment of benchmark dataset quality via the proposed indices.",
     "year": 2026,
-    "modalities": ["Rasterized CAD images"],
-    "tasks": ["2D-to-BIM reconstruction"],
-	"applications": ["BIM generation"],
-    "license": "MIT",
-    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106584",
-    "code_url": "https://github.com/RogerLiang0725/ResBIM",
-    "thumbnail": "assets/img/models/ResBIM.png",
-	"added_date": "2025-10-20",
-	"contributor": "XingLiang",
-    "contributor_url": "https://github.com/RogerLiang0725"
+    "modalities": ["3D point cloud"],
+    "tasks": ["PCD-BIM matching"],
+	"applications": ["Scan-to-BIM"],
+    "license": "Apache 2.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106636",
+    "code_url": "https://github.com/CyberbuildLab/pcd-bim-matching-confidence",
+    "thumbnail": "assets/img/models/pcd-bim-matching-confidence.png",
+	"added_date": "2025-11-2",
+	"contributor": "Cyberbuild Lab",
+    "contributor_url": "https://github.com/CyberbuildLab"
   }
 ]
