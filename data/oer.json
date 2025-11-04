@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "about": "OpenConstruction OER catalog. Items primarily sourced from OER Commons and similar platforms.",
+  "resources": [
+    {
+      "id": "pmf-estimate-package-costs",
+      "title": "Estimate Package Costs (Project Management Fundamentals)",
+      "provider": "OER Commons",
+      "source": "https://oercommons.org/courseware/lesson/107819/overview",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Construction Estimating", "Budgeting", "Project Management"],
+      "license": "See source",
+      "media": ["Lesson", "Reading", "Activity"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "pmf-develop-schedule",
+      "title": "Develop Schedule (Critical Path, Gantt)",
+      "provider": "OER Commons",
+      "source": "https://oercommons.org/courseware/lesson/107818/overview",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Scheduling", "CPM", "Project Management"],
+      "license": "See source",
+      "media": ["Lesson", "Activity", "Assessment"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "pmf-estimate-activity-durations",
+      "title": "Estimate Activity Durations (Techniques & Bias)",
+      "provider": "OER Commons",
+      "source": "https://oercommons.org/courseware/lesson/107816/overview",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Time Estimation", "Scheduling", "Heuristics"],
+      "license": "See source",
+      "media": ["Lesson", "Video", "Reading"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "pmf-budget-metrics",
+      "title": "Calculate Budget & Schedule Metrics (EVM Basics)",
+      "provider": "OER Commons",
+      "source": "https://oercommons.org/courseware/lesson/107821/student/?section=11",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Earned Value", "Budget Metrics", "Scheduling"],
+      "license": "See source",
+      "media": ["Lesson", "Exercise"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "pm-course-budgeting",
+      "title": "Project Management: Project Budget (Overview)",
+      "provider": "OER Commons",
+      "source": "https://www.oercommons.org/courseware/lesson/59988/student/?section=6",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Budgeting", "Cost Control", "Project Management"],
+      "license": "See source",
+      "media": ["Lesson", "Reading"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "project-manager-manages-costs",
+      "title": "Project Manager Manages Costs",
+      "provider": "OER Commons",
+      "source": "https://www.oercommons.org/authoring/51472-project-manager-manages-costs/view",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Cost Estimating", "Profit", "Units of Measure"],
+      "license": "See source",
+      "media": ["Module", "Reading"],
+      "added": "2025-11-03"
+    },
+    {
+      "id": "textbook-cost-planning",
+      "title": "Cost Planning of Building Construction Projects (Textbook)",
+      "provider": "OER Commons",
+      "source": "https://www.oercommons.org/browse?f.general_subject=architecture-and-design&f.language=en&f.material_types=textbook&sort_by=title&view_mode=summary",
+      "image": "assets/img/oer/oercommons.png",
+      "language": ["English"],
+      "topics": ["Cost Planning", "Quantity Surveying", "Construction Economics"],
+      "license": "See source",
+      "media": ["Textbook", "PDF"],
+      "added": "2025-11-03"
+    }
+  ]
+}
