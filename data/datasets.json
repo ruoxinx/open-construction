@@ -2388,5 +2388,30 @@
   "added_date": "2025-11-3",
   "contributor": "Yuchen Wang",
   "contributor_url": "https://github.com/YuchenWang1"
+},
+"BIM_updating": {
+  "name": "BIM-Updating: Point Cloud Dataset for Piping Systems",
+  "authors": "Yu Zhang, Long Chen, Qiuchen Lu, Yang Zou, Xiaer Xiahou, Simon Sølvsten, Craig Hancock",
+  "doi": "https://doi.org/10.1016/j.autcon.2025.106609",
+  "year": 2026,
+  "data_modality": "3D Point Cloud",
+  "num_images": null,
+  "num_classes": null,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": ["Point cloud segmetation", "BIM model"],
+  "geographical_location": "China, Canada",
+  "potential_tasks": [
+    "Point cloud segmentation",
+	"Change detection"
+  ],
+  "license": "MIT",
+  "paper": "Semi-automated localised updating for as-built BIM of piping systems using point cloud data",
+  "access": "https://drive.google.com/drive/folders/1TeIIIhwvzoxTAuOJ_FBsLyX233vEgrwx?usp=sharing",
+  "id": "BIM_updating",
+  "image_url": "assets/img/datasets/BIM_updating.png",
+  "added_date": "2025-11-4",
+  "contributor": "Yu Zhang",
+  "contributor_url": "https://github.com/RainGo111"
 }
 }
