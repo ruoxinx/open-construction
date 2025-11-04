@@ -774,5 +774,20 @@
 	"added_date": "2025-11-03",
 	"contributor": "Yuchen Wang",
     "contributor_url": "https://github.com/YuchenWang1"
+  },
+  {
+    "id": "BIM_updating",
+    "title": "Semi-automated localised updating for as-built BIM of piping systems using point cloud data",
+    "authors": ["Yu Zhang", "Long Chen", "Qiuchen Lu", "Yang Zou", "Xiaer Xiahou", "Simon Sølvsten", "Craig Hancock"],
+    "abstract": "As-designed building information models (BIM) often diverge from as-built conditions, limiting their reliability during the operation and maintenance (O&M). Current research focuses on change detection but lacks a systematic workflow for reliable updates, especially for piping systems with frequent changes and complex geometries. The paper addresses how to establish a semi-automated, end-to-end workflow for localised updating as-designed BIM of piping systems from point cloud data. The workflow applies PointNet++ for segmentation, followed by iterative closest point, random sample consensus, and region-growing for geometry extraction. The proposed BIM updating taxonomy and dedicated pre-judgment updating requirements (PUR) and spatial and topological relationships up-dating (STRU) algorithms identify update requirements and automate parametric updates. Validation through case studies demonstrates the workflow's ability to accurately perform localised updates, reducing the manual workload by approximately 70 %. This practical, scalable solution strengthens O&M by maintaining accurate as-built models and inspires future automated BIM updating research.",
+    "year": 2026,
+    "modalities": ["3D Point Cloud"],
+    "tasks": ["Point cloud segmentation"],
+	"applications": ["Change detection", "As-Built BIM Updating"],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106609",
+    "code_url": "https://github.com/RainGo111/BIM_updating",
+    "thumbnail": "assets/img/datasets/BIM_updating.png",
+	"added_date": "2025-11-4"
   }
 ]
