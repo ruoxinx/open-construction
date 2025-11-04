@@ -4,39 +4,84 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OpenConstruction · Open Educational Resources</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
-    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#6b7b8c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-card:#fff;--oc-shadow:0 8px 24px rgba(15,46,75,.06);--oc-radius:14px;--oc-muted:#f6f9fc;--oc-brand:#0f2e4b}
+    :root{
+      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
+      --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
+      --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-brand:#0f2e4b;
+    }
     html,body{background:var(--oc-bg);color:var(--oc-text)}
     a{color:var(--oc-link)}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
+
+    /* NAV — mirrors dataset page structure */
+    .navbar{backdrop-filter:saturate(120%) blur(6px)}
+    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:var(--oc-brand);font-weight:800;letter-spacing:.15px}
     .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain.active,.navbar .nav-link.plain:hover{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--oc-border);border-radius:999px;background:#fff}
+    .icon-btn:hover{background:#f8fafc}
+    .icon{width:18px;height:18px;stroke:#0f2e4b}
+
+    /* HERO */
     header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
     header.hero .content{padding:56px 0 36px;text-align:center}
     header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
     header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
-    .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
+
+    /* search with button (dataset style) */
+    .search-wrap{max-width:760px;margin:0 auto}
+    .search-input{border-radius:999px 0 0 999px;padding:.9rem 1.1rem;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
+    .search-btn{border-radius:0 999px 999px 0}
+
+    /* LAYOUT */
     .filters{position:sticky;top:86px}
     .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
+
+    /* CARDS */
     .resource-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);height:100%;overflow:hidden}
     .resource-card .thumb{width:100%;height:160px;object-fit:cover;background:#fff;border-bottom:1px solid var(--oc-border)}
     .resource-card .title{font-weight:700;color:var(--oc-ink);margin-bottom:.15rem}
-    .chip-lane{display:flex;flex-wrap:wrap;gap:.4rem .4rem}
-    .chip{display:inline-flex;align-items:center;padding:.22rem .55rem;background:var(--oc-muted);border:1px solid var(--oc-border);border-radius:999px;font-weight:600;font-size:.78rem;line-height:1}
+    .meta{font-size:.87rem;color:var(--oc-sub)}
+
+    /* PROFESSIONAL TAGS (match dataset badges) */
+    .tag-lane{display:flex;flex-wrap:wrap;gap:.35rem}
+    .tag{display:inline-flex;align-items:center;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--oc-border);background:#fbfdff;font-weight:600;font-size:.78rem;color:#1f2937;letter-spacing:.1px}
+
     .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
   </style>
 </head>
 <body>
+
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction" height="44" width="44">
-      <span class="brand-wordmark"><span>Open</span><span>·</span><span>Construction</span></span>
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html" aria-label="OpenConstruction home">
+      <img src="assets/img/icon.png" alt="" height="44" width="44">
+      <span class="brand-wordmark">Open · Construction</span>
     </a>
-    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarsExample"><span class="navbar-toggler-icon"></span></button>
+
+    <div class="d-flex d-lg-none gap-2">
+      <a class="icon-btn" href="index.html" aria-label="Home">
+        <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5Z" stroke-width="1.6"/></svg>
+      </a>
+      <a class="icon-btn" href="https://github.com/openconstruction-org" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.9 9.6.5.1.7-.2.7-.5v-2c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.8-1 .8-1 .9-1.6 2.3-1.1 2.9-.8.1-.7.4-1.1.7-1.4-2.2-.3-4.4-1.1-4.4-4.9 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1a9.8 9.8 0 0 1 5.2 0c2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.7 0 3.8-2.3 4.5-4.4 4.8.4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5 4-1.3 6.9-5.1 6.9-9.6C22 6.6 17.5 2 12 2Z" stroke-width="0"/></svg>
+      </a>
+      <a class="icon-btn" href="subscribe.html" aria-label="Subscribe">
+        <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 5h18M3 12h18M3 19h18" stroke-width="1.8"/></svg>
+      </a>
+      <button class="navbar-toggler ms-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
     <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav ms-auto gap-2">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
@@ -48,24 +93,43 @@
             <li><a class="dropdown-item active" href="oer.html" aria-current="page">Open Educational Resources</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item d-none d-lg-inline">
+          <a class="icon-btn" href="index.html" aria-label="Home">
+            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5Z" stroke-width="1.6"/></svg>
+          </a>
+        </li>
+        <li class="nav-item d-none d-lg-inline">
+          <a class="icon-btn" href="https://github.com/openconstruction-org" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.9 9.6.5.1.7-.2.7-.5v-2c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.8-1 .8-1 .9-1.6 2.3-1.1 2.9-.8.1-.7.4-1.1.7-1.4-2.2-.3-4.4-1.1-4.4-4.9 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1a9.8 9.8 0 0 1 5.2 0c2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.6 1.1 2.7 0 3.8-2.3 4.5-4.4 4.8.4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5 4-1.3 6.9-5.1 6.9-9.6C22 6.6 17.5 2 12 2Z" stroke-width="0"/></svg>
+          </a>
+        </li>
+        <li class="nav-item d-none d-lg-inline">
+          <a class="icon-btn" href="subscribe.html" aria-label="Subscribe">
+            <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM4 7l8 6 8-6" stroke-width="1.6"/></svg>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
+<!-- HERO -->
 <header class="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">Open Educational Resources (OER)</h1>
-    <p class="lead">Curated free & openly-licensed materials for construction management teaching and learning</p>
-    <div class="mt-3">
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search titles, topics, providers …" aria-label="Search OER">
+    <p class="lead">Curated free & openly-licensed materials for construction management education</p>
+    <div class="search-wrap mt-3">
+      <div class="input-group input-group-lg">
+        <input id="q" type="text" class="form-control search-input" placeholder="Search titles, topics, providers …" aria-label="Search OER">
+        <button id="qBtn" class="btn btn-primary search-btn" type="button" aria-label="Search">Search</button>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="container my-4">
   <div class="row g-3">
+    <!-- FILTERS -->
     <aside class="col-lg-3">
       <div class="card shadow-sm filters">
         <div class="card-header"><strong>Filters</strong></div>
@@ -92,6 +156,7 @@
       </div>
     </aside>
 
+    <!-- RESULTS -->
     <section class="col-lg-9">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
@@ -112,15 +177,24 @@
   </div>
 </main>
 
+<!-- FOOTER (same disclaimer as dataset page) -->
 <footer class="py-4 mt-3 border-top">
   <div class="container small text-muted text-center">
     <div>© <span id="yearNow"></span> OpenConstruction</div>
-    <div class="mt-2"><small><strong>Disclaimer:</strong> We index metadata and link out to sources. Licenses vary by resource—see the source link.</small></div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code, or paywalled content.
+        All rights remain with the original authors, creators, and publishers.
+      </small>
+    </div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>document.getElementById('yearNow').textContent=new Date().getFullYear();</script>
+<script>
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+</script>
 <script src="assets/js/oer.js"></script>
 </body>
 </html>

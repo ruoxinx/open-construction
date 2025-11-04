@@ -1,10 +1,11 @@
-// Loads OER from data/oer.json and renders dataset-like cards + facets.
+// Loads OER from data/oer.json and renders cards with professional tags.
 (function () {
   const state = { all: [], filtered: [] };
   const els = {
     grid: document.getElementById('oerGrid'),
     empty: document.getElementById('emptyState'),
     q: document.getElementById('q'),
+    qBtn: document.getElementById('qBtn'),
     sort: document.getElementById('sortBy'),
     lang: document.getElementById('filter-language'),
     topics: document.getElementById('filter-topics'),
@@ -16,11 +17,10 @@
   };
   const placeholderImg = 'assets/img/placeholder.png';
 
-  // ---- utils
-  const uniq = a => [...new Set(a)];
+  const uniq   = a => [...new Set(a)];
   const tokens = v => (Array.isArray(v) ? v : [v]).map(x => String(x || '').trim()).filter(Boolean);
-  const cssId = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const has = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
+  const cssId  = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const has    = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
 
   function facetHtml(prefix, values){
     return values.map(v => `
@@ -48,11 +48,11 @@
     els.count.textContent = String(list.length);
 
     list.forEach(r=>{
-      const langs = tokens(r.language).map(x=>`<span class="chip">${x}</span>`).join('');
-      const tops  = tokens(r.topics).map(x=>`<span class="chip">${x}</span>`).join('');
-      const meds  = tokens(r.media).map(x=>`<span class="chip">${x}</span>`).join('');
-      const lic   = r.license || 'See source';
       const img   = r.image || placeholderImg;
+      const langs = tokens(r.language).map(x=>`<span class="tag">${x}</span>`).join('');
+      const tops  = tokens(r.topics).map(x=>`<span class="tag">${x}</span>`).join('');
+      const meds  = tokens(r.media).map(x=>`<span class="tag">${x}</span>`).join('');
+      const lic   = r.license || 'See source';
 
       els.grid.insertAdjacentHTML('beforeend', `
         <div class="col-md-6 col-xl-4">
@@ -61,10 +61,10 @@
             <div class="card-body">
               <div class="title">${r.title}</div>
               <div class="meta mb-2">${r.provider || ''}</div>
-              <div class="mb-2"><strong>Language:</strong> <div class="chip-lane mt-1">${langs || '—'}</div></div>
-              <div class="mb-2"><strong>Topics:</strong> <div class="chip-lane mt-1">${tops || '—'}</div></div>
-              <div class="mb-2"><strong>Media:</strong> <div class="chip-lane mt-1">${meds || '—'}</div></div>
-              <div class="mb-2"><strong>License:</strong> <span class="badge rounded-pill text-bg-light border">${lic}</span></div>
+              <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
+              <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
+              <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
+              <div class="mb-2"><strong>License:</strong> <span class="tag">${lic}</span></div>
               <a class="btn btn-primary btn-sm mt-1" href="${r.source}" target="_blank" rel="noopener">View resource</a>
             </div>
           </article>
@@ -79,8 +79,8 @@
     const licSel  = readChecked(els.license);
     const medSel  = readChecked(els.media);
     const topicSel = readChecked(els.topics);
-    const topicQuery = (els.topicSearch.value || '').trim().toLowerCase();
-    const licQuery   = (els.licenseSearch.value || '').trim().toLowerCase();
+    const topicQ = (els.topicSearch.value || '').trim().toLowerCase();
+    const licQ   = (els.licenseSearch.value || '').trim().toLowerCase();
 
     let list = state.all.slice();
 
@@ -101,11 +101,11 @@
     if(topicSel.length){
       list = list.filter(r => tokens(r.topics).some(x => topicSel.includes(x)));
     }
-    if(topicQuery){
-      list = list.filter(r => tokens(r.topics).some(t => has(t, topicQuery)));
+    if(topicQ){
+      list = list.filter(r => tokens(r.topics).some(t => has(t, topicQ)));
     }
-    if(licQuery){
-      list = list.filter(r => has(r.license, licQuery));
+    if(licQ){
+      list = list.filter(r => has(r.license, licQ));
     }
 
     // sort
@@ -129,6 +129,7 @@
     els.topicSearch.addEventListener('input', applyFilters);
     els.licenseSearch.addEventListener('input', applyFilters);
     els.q.addEventListener('input', applyFilters);
+    els.qBtn.addEventListener('click', applyFilters);
     els.sort.addEventListener('change', applyFilters);
   }
 
@@ -136,13 +137,12 @@
     try{
       const res = await fetch('data/oer.json', {cache:'no-store'});
       const json = await res.json();
-      // Support either {resources:[...]} or [...]
       state.all = Array.isArray(json) ? json : (json.resources || []);
       buildFacets();
       applyFilters();
     }catch(e){
       console.error('Failed to load data/oer.json', e);
-      els.grid.innerHTML = '<div class="col-12"><div class="empty">Could not load OER data. Ensure <code>data/oer.json</code> is present and valid.</div></div>';
+      els.grid.innerHTML = '<div class="col-12"><div class="empty">Could not load OER data. Ensure <code>data/oer.json</code> exists and is valid.</div></div>';
     }
   }
   init();
