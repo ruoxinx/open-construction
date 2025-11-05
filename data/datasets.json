@@ -2437,6 +2437,31 @@
   "added_date": "2025-11-4",
   "contributor": "ciber-lab",
   "contributor_url": "https://github.com/ciber-lab"
+},
+"DoriaNET": {
+  "name": "DoriaNET",
+  "authors": "Chih-Shen Cheng, Amir H. Behzadan, Arash Noshadravan",
+  "doi": "https://doi.org/10.17603/ds2-gqvg-qx37",
+  "year": 2020,
+  "data_modality": "Aerial RGB",
+  "num_images": 2409,
+  "num_classes": 6,
+  "classes": ["No Damage or Very Minor Damage", "Minor Damage", "Moderate Damage", "Severe Damage", "Destruction", "Buildings under Construction"],
+  "resolution": "1280 × 720",
+  "annotation_types": ["Bounding boxes"],
+  "geographical_location": "Bahamas",
+  "potential_tasks": [
+    "Object Detection"
+  ],
+  "license": "ODC-BY",
+  "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
+  "access": "https://www.designsafe-ci.org/data/browser/public/designsafe.storage.published/PRJ-3278/?version=2",
+  "id": "DoriaNET",
+  "image_url": "assets/img/datasets/DoriaNET.png",
+  "added_date": "2025-11-4",
+  "contributor": "ciber-lab",
+  "contributor_url": "https://github.com/ciber-lab"
 }
+
 
 }
