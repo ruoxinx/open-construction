@@ -2451,7 +2451,7 @@
   "annotation_types": ["Bounding boxes"],
   "geographical_location": "Bahamas",
   "potential_tasks": [
-    "Object Detection"
+    "Object Detection", "Semantic segmentation"
   ],
   "license": "ODC-BY",
   "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
