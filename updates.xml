@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: DoriaNET]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DoriaNET</link>
+    <guid isPermaLink="false">datasets:DoriaNET:2025-11-4</guid>
+    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Semi-automated localised updating for as-built BIM of piping systems using point cloud data]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM_updating:2025-11-4</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:pcd-bim-matching-confidence:2025-11-2</guid>
     <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Accurate and objective assessment of the matching of a Building Information Model (BIM) with 3D point cloud data (PCD) is critical to Scan-to-BIM and Scan-vs-BIM workflows. However, existing methods for PCD-BIM matching evaluation do not fully and robustly account for geometric accuracy and spatial completeness. This paper introduces a statistically-grounded method that combines three indices that complementarily assess matching Coverage, Distribution, and Distance. The proposed method also accounts for inter-element occlusions when calculating each element’s theoretically visible surface, which increases the metrics’ reliability. Validation is conducted across 46 PCD-BIM pairs, encompassing 4000+ elements from ISPRS, CV4AEC, BIMNET and custom datasets, as well as a residential building case study comparing manual and automated BIM model reconstructions, and demonstrating the applicability of the method to any type of element. Results show practical value for both Scan-to-BIM and Scan-vs-BIM practice and enable quantitative assessment of benchmark dataset quality via the proposed indices.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: ResBIM: Residential Unit BIM dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=ResBIM</link>
-    <guid isPermaLink="false">datasets:ResBIM:2025-10-20</guid>
-    <pubDate>Mon, 20 Oct 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
