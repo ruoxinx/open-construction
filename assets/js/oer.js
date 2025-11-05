@@ -37,12 +37,16 @@
     const d = new Date(v);
     return isNaN(d) ? (String(v).match(/\d{4}/)?.[0] || '') : String(d.getFullYear());
   }
-  function fmtAdded(v){
-    if(!v) return '';
-    const d = new Date(v);
-    if(isNaN(d)) return '';
-    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' }); // e.g., "Nov 04, 2025"
-  }
+	function fmtAdded(v) {
+	  if (!v) return '';
+	  const d = new Date(v);
+	  if (isNaN(d)) return '';
+	  const year = d.getFullYear();
+	  const month = d.getMonth() + 1; // months are zero-indexed
+	  const day = d.getDate();
+	  return `Added ${year}-${month}-${day}`;
+	}
+
 
   // --- Normalize one record from arbitrary field names to our internal schema ---
   function normalize(r){
