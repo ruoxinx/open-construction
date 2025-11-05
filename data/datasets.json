@@ -2179,7 +2179,9 @@
   "access": "https://github.com/MLSTRUCT/MLSTRUCT-FP",
   "id": "mlstruct-fp",
   "image_url": "assets/img/datasets/mlstruct-fp.png",
-  "added_date": "2025-09-28"
+  "added_date": "2025-09-28",
+  "contributor": "MLSTRUCT Research Group",
+  "contributor_url": "https://github.com/MLSTRUCT
 },
 "TBBR": {
   "name": "TBBR dataset: Thermal Bridges on Building Rooftops",
