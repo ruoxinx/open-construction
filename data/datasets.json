@@ -2441,7 +2441,7 @@
 "DoriaNET": {
   "name": "DoriaNET: A visual dataset for post-disaster building damage assessment",
   "authors": "Chih-Shen Cheng, Amir H. Behzadan, Arash Noshadravan",
-  "doi": "https://doi.org/10.17603/ds2-gqvg-qx37",
+  "doi": "https://doi.org/10.1111/mice.12658",
   "year": 2021,
   "data_modality": "Aerial RGB",
   "num_images": 2409,
@@ -2455,7 +2455,7 @@
   ],
   "license": "ODC-BY",
   "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
-  "access": "https://doi.org/10.1111/mice.12658",
+  "access": "https://doi.org/10.17603/ds2-gqvg-qx37",
   "id": "DoriaNET",
   "image_url": "assets/img/datasets/DoriaNET.png",
   "added_date": "2025-11-4",
