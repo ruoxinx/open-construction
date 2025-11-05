@@ -793,5 +793,22 @@
 	"added_date": "2025-11-4",
 	"contributor": "Yu Zhang",
     "contributor_url": "https://github.com/RainGo111"
+  },
+  {
+    "id": "DoriaNET",
+    "title": "Deep learning for post-hurricane aerial damage assessment of buildings",
+    "authors": ["Chih-Shen Cheng", "Amir H. Behzadan", "Arash Noshadravan"],
+    "abstract": "This study aims to improve post-disaster preliminary damage assessment (PDA) using artificial intelligence (AI) and unmanned aerial vehicle (UAV) imagery. In particular, a stacked convolutional neural network (CNN) architecture is introduced and trained on an in-house visual dataset from Hurricane Dorian. To account for the ordinality of damage level classes, the cross-entropy classification loss function is replaced with the square of earth mover's distance (EMD2) loss. The trained model achieves 65.6% building localization precision and 61% (90% considering ±1 class deviation from ground-truth) classification accuracy. It also exhibits a positive accuracy–confidence correlation, which is valuable for model assessment in situations where ground-truth information is not readily available. Finally, the outcome of damage assessment is compared with the literature by examining the relationship between building size and number of stories, and severity of induced disaster damage.",
+    "year": 2021,
+    "modalities": ["Aerial RGB"],
+    "tasks": ["Object detection", "Semantic segmentation"],
+	"applications": ["Post-disaster damage assessment"],
+    "license": "ODC-BY",
+    "paper_url": "https://doi.org/10.1111/mice.12658",
+    "code_url": "https://doi.org/10.17603/ds2-gqvg-qx37",
+    "thumbnail": "assets/img/models/DoriaNET.png",
+	"added_date": "2025-11-4",
+	"contributor": "ciber-lab",
+	"contributor_url": "https://github.com/ciber-lab"
   }
 ]
