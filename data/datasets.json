@@ -2218,8 +2218,8 @@
   "year": 2024,
   "data_modality": "Rasterized CAD images",
   "num_images": 765,
-  "num_classes": null,
-  "classes": null,
+  "num_classes": 1,
+  "classes": ["symbol"],
   "resolution": "416 × 416",
   "annotation_types": [
     "Bounding boxes"
