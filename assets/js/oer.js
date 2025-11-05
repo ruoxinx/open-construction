@@ -1,4 +1,4 @@
-// Loads OER from data/oer.json (with fallbacks) and renders cards with professional tags.
+// Loads OER from data/oer.json and renders cards matching Dataset card style.
 (function () {
   const state = { all: [], filtered: [] };
   const els = {
@@ -16,17 +16,17 @@
     count: document.getElementById('resultCount'),
     skeleton: document.getElementById('oerSkeleton')
   };
-  const placeholderImg = 'assets/img/placeholder.png';
 
-  const uniq   = a => [...new Set(a)];
+  const placeholderImg = 'assets/img/placeholder.png';
+  const uniq = a => [...new Set(a)];
   const tokens = v => (Array.isArray(v) ? v : [v]).map(x => String(x || '').trim()).filter(Boolean);
-  const cssId  = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const has    = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
+  const cssId = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const has = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
 
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
 
-  // Format year and date
+  // Format helpers
   function fmtYear(v){
     if(!v) return '';
     const d = new Date(v);
@@ -80,14 +80,16 @@
           <article class="resource-card h-100">
             <img class="thumb" src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
             <div class="card-body">
-              <div class="title">
-                ${r.title}
-                ${year ? `<span class="badge bg-light text-dark ms-1 border">${year}</span>` : ``}
+              <div class="title mb-1">${r.title}</div>
+
+              <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+                <div>
+                  ${r.provider ? `<span>${r.provider}</span>` : ``}
+                  ${year ? `<span class="badge bg-light text-dark border ms-1">${year}</span>` : ``}
+                </div>
+                ${added ? `<div class="text-end text-muted small"><time datetime="${r.added}">${added}</time></div>` : ``}
               </div>
-              <div class="meta mb-1">${r.provider || ''}</div>
-              ${added ? `<div class="meta small text-muted mb-2">
-                           Added: <time datetime="${r.added}">${added}</time>
-                         </div>` : ``}
+
               <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
               <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
               <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
