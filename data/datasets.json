@@ -2403,7 +2403,7 @@
   "geographical_location": "China, Canada",
   "potential_tasks": [
     "Point cloud segmentation",
-	"Change detection"
+  "Change detection"
   ],
   "license": "MIT",
   "paper": "Semi-automated localised updating for as-built BIM of piping systems using point cloud data",
@@ -2413,5 +2413,30 @@
   "added_date": "2025-11-4",
   "contributor": "Yu Zhang",
   "contributor_url": "https://github.com/RainGo111"
+},
+"pictor-ppe": {
+  "name": "Pictor-v3",
+  "authors": "Nipun D. Nath, Amir H. Behzadan, Stephanie G. Paal",
+  "doi": "https://doi.org/10.1016/j.autcon.2020.103085",
+  "year": 2020,
+  "data_modality": "Ground RGB",
+  "num_images": 1472,
+  "num_classes": 3,
+  "classes": ["worker", "hat", "vest"],
+  "resolution": null,
+  "annotation_types": ["Bounding boxes"],
+  "geographical_location": "Not Specified",
+  "potential_tasks": [
+    "Object Detection"
+  ],
+  "license": "CC BY-SA 4.0",
+  "paper": "Deep Learning for Site Safety: Real-Time Detection of Personal Protective Equipment",
+  "access": "https://github.com/ciber-lab/pictor-ppe",
+  "id": "pictor-ppe",
+  "image_url": "assets/img/datasets/pictor-ppe.gif",
+  "added_date": "2025-11-4",
+  "contributor": "ciber-lab",
+  "contributor_url": "https://github.com/ciber-lab"
 }
+
 }
