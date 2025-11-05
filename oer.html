@@ -94,7 +94,7 @@
 
     <!-- Docked search (shown when scrolling) -->
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control" placeholder="Search OER …" aria-label="Search OER">
+      <input id="qDock" type="text" class="form-control" placeholder="Search titles, topics, licenses …" aria-label="Search OER">
     </form>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
@@ -162,11 +162,11 @@
 <!-- HERO -->
 <header class="hero">
   <div class="container content">
-    <h1 class="display-6 fw-bold">OpenConstruction Open Educational Resources</h1>
+    <h1 class="display-6 fw-bold">OpenConstruction Educational Resources</h1>
     <p class="lead">Explore <span class="hl">open educational resources</span> for construction education</p>
     <div id="searchDock" class="mt-3">
       <input id="q" type="text" class="form-control form-control-lg search-input"
-             placeholder="Search OER titles, topics, licenses …" aria-label="Search OER large">
+             placeholder="Search titles, topics, licenses …" aria-label="Search OER large">
     </div>
   </div>
 </header>
@@ -207,8 +207,17 @@
 </main>
 
 <footer class="py-4 mt-3 border-top">
-  <div class="container small text-muted text-center">
-    © <span id="yearNow"></span> OpenConstruction · Educational Resources. All rights reserved.
+  <div class="container oc-container small text-muted text-center">
+    <div>
+      © <span id="yearNow"></span> OpenConstruction
+    </div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides 
+        links to original sources. We do not host or distribute datasets, models, code, or paywalled content. 
+        All rights remain with the original authors, creators, and publishers.
+      </small>
+    </div>
   </div>
 </footer>
 
