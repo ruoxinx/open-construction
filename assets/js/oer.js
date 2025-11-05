@@ -1,4 +1,4 @@
-// Robust OER loader: handles alternate JSON field names and renders cards like Dataset page.
+// OER loader & renderer — mirrors Models page layout (horizontal paper-card)
 (function () {
   const state = { all: [], filtered: [] };
   const els = {
@@ -19,6 +19,7 @@
 
   const placeholderImg = 'assets/img/placeholder.png';
 
+  // ---------- small helpers ----------
   const uniq   = a => [...new Set(a)];
   const arrify = v => (Array.isArray(v) ? v : (v == null ? [] : [v]));
   const tokens = v => arrify(v).map(x => String(x || '').trim()).filter(Boolean);
@@ -28,79 +29,55 @@
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
 
-  // --- Formatting helpers ---
+  // ---------- formatting ----------
   function fmtYear(v){
     if(!v) return '';
-    // If v is "2025" or similar
     const onlyYear = String(v).match(/^\s*(\d{4})\s*$/);
     if (onlyYear) return onlyYear[1];
     const d = new Date(v);
     return isNaN(d) ? (String(v).match(/\d{4}/)?.[0] || '') : String(d.getFullYear());
   }
-	function fmtAdded(v) {
-	  if (!v) return '';
-	  const d = new Date(v);
-	  if (isNaN(d)) return '';
-	  const year = d.getFullYear();
-	  const month = d.getMonth() + 1; // months are zero-indexed
-	  const day = d.getDate();
-	  return `${year}-${month}-${day}`;
-	}
+  // Matches “Added 2025-11-4” (no zero padding), per dataset cards
+  function fmtAdded(v) {
+    if (!v) return '';
+    const d = new Date(v);
+    if (isNaN(d)) return '';
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+    return `${year}-${month}-${day}`;
+  }
 
-
-  // --- Normalize one record from arbitrary field names to our internal schema ---
+  // ---------- normalization ----------
   function normalize(r){
-    // title/name
     const title = r.title || r.name || r.resource_title || '';
-
-    // provider/authors/author
     const provider = r.provider || r.authors || r.author || r.creator || r.publisher || '';
-
-    // image
     const image = r.image || r.image_url || r.thumbnail || r.thumb || '';
-
-    // source/link/url
     const source = r.source || r.url || r.link || r.href || '#';
-
-    // language(s)
     const language = r.language || r.languages || r.lang || [];
-
-    // topics/tags/keywords/subjects
     const topics = r.topics || r.topic || r.tags || r.keywords || r.subjects || [];
-
-    // media
     const media = r.media || r.media_format || r.format || r.formats || [];
-
-    // license/licence
     const license = r.license || r.licence || r.license_name || r.license_type || '';
 
-    // year/added/date
     const yearRaw  = r.year || r.publication_year || r.date || r.added || r.created_at || r.updated_at || '';
     const year     = fmtYear(yearRaw);
     const addedRaw = r.added || r.added_date || r.date_added || r.created_at || r.updated_at || r.date || '';
     const added    = addedRaw;
 
-    // contributor overlay
     const contributor     = r.contributor || r.submitted_by || r.submitter || r.user || '';
     const contributor_url = r.contributor_url || r.submitter_url || r.user_url || r.profile || '';
 
     return {
-      // normalized fields used by renderer
-      title,
-      provider,
-      image,
-      source,
+      title, provider, image, source,
       language: tokens(language),
       topics: tokens(topics),
       media: tokens(media),
-      license,
-      year,
-      added,
-      contributor,
-      contributor_url,
+      license, year, added,
+      contributor, contributor_url
     };
   }
 
+  // ---------- facets ----------
   function facetHtml(prefix, values){
     return values.map(v => `
       <div class="form-check">
@@ -117,6 +94,7 @@
     return uniq(list.flatMap(r => tokens(r[key]))).sort((a,b)=>a.localeCompare(b));
   }
 
+  // ---------- renderer (mirrors Models “paper-card”) ----------
   function render(list){
     if(!els.grid){ console.error('[OER] Missing #oerGrid element'); return; }
     els.grid.innerHTML = '';
@@ -134,46 +112,45 @@
       const tops  = r.topics.map(x=>`<span class="tag">${x}</span>`).join('');
       const meds  = r.media.map(x=>`<span class="tag">${x}</span>`).join('');
       const lic   = r.license || 'See source';
-      const added = fmtAdded(r.added);
+      const addedTxt = r.added ? `Added ${fmtAdded(r.added)}` : '';
       const year  = r.year;
 
-      // contributor overlay
       const submittedByHTML = (r.contributor || r.contributor_url)
-        ? `<div class="submitted-by position-absolute bottom-0 start-0 w-100 text-center small py-1 bg-white bg-opacity-75">
-             <a href="${r.contributor_url || '#'}" target="_blank" rel="noopener" class="text-muted text-decoration-none">
-               Submitted by <strong>${String(r.contributor || '').startsWith('@') ? r.contributor : '@' + (r.contributor || 'anonymous')}</strong>
+        ? `<div class="submitted-by">
+             <a href="${r.contributor_url || '#'}" target="_blank" rel="noopener">
+               Submitted by <strong>${String(r.contributor||'').startsWith('@') ? r.contributor : '@'+(r.contributor||'anonymous')}</strong>
              </a>
            </div>`
         : '';
 
       els.grid.insertAdjacentHTML('beforeend', `
-        <div class="col-md-6 col-xl-4">
-          <article class="resource-card h-100 position-relative">
-            <div class="position-relative">
-              <img class="thumb" src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
-              ${submittedByHTML}
-            </div>
-
-            <div class="card-body d-flex flex-column">
-              <div class="title mb-1">${r.title}</div>
-
-              <!-- Provider + Year -->
-              <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-                <div>
-                  ${r.provider ? `<span>${r.provider}</span>` : ``}
-                  ${year ? `<span class="badge bg-light text-dark border ms-1">${year}</span>` : ``}
-                </div>
+        <div class="col-12">
+          <article class="paper-card">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="left">
+                <img src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
+                ${submittedByHTML}
               </div>
 
-              <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
-              <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
-              <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
-              <div class="mb-2"><strong>License:</strong> <span class="tag">${lic}</span></div>
+              <div class="flex-grow-1">
+                <h3 class="h6 title mb-1">
+                  <a href="${r.source}" target="_blank" rel="noopener" class="text-decoration-none text-dark">
+                    ${r.title}
+                  </a>
+                </h3>
+                <div class="meta mb-2">
+                  ${r.provider ? `${r.provider}` : ''}${year ? ` • ${year}` : ''}
+                </div>
 
-              <!-- Bottom row: Button + Added date -->
-              <div class="mt-auto d-flex justify-content-between align-items-center">
-                <a class="btn btn-primary btn-sm" href="${r.source}" target="_blank" rel="noopener">View resource</a>
-                ${added ? `<div class="small text-muted ms-2">Added <time datetime="${r.added}">${added}</time></div>` : ``}
+                <div class="small mb-2"><strong>Language:</strong> <span class="tag-lane ms-1">${langs || '—'}</span></div>
+                <div class="small mb-2"><strong>Topics:</strong> <span class="tag-lane ms-1">${tops || '—'}</span></div>
+                <div class="small mb-2"><strong>Media:</strong> <span class="tag-lane ms-1">${meds || '—'}</span></div>
+                <div class="small mb-3"><strong>License:</strong> <span class="tag ms-1">${lic}</span></div>
+
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+                  <a class="btn btn-sm btn-primary" href="${r.source}" target="_blank" rel="noopener">View Resource</a>
+                  ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
+                </div>
               </div>
             </div>
           </article>
@@ -182,6 +159,7 @@
     });
   }
 
+  // ---------- filtering / sorting ----------
   function applyFilters(){
     const q = (els.q?.value || '').trim().toLowerCase();
     const langSel = readChecked(els.lang);
@@ -244,6 +222,7 @@
     els.sort?.addEventListener('change', applyFilters);
   }
 
+  // ---------- data loading ----------
   async function fetchWithFallback(paths){
     const errs = [];
     for(const p of paths){
@@ -271,7 +250,6 @@
       const arr = Array.isArray(raw) ? raw : (raw.resources || raw.items || raw.data || []);
       if (!Array.isArray(arr)) throw new Error('Unsupported JSON structure (expected array or {resources:[]}).');
 
-      // normalize everything
       state.all = arr.map(normalize);
 
       if (window.OER_ENABLE_DEBUG) {
