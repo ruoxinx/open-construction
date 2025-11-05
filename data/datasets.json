@@ -1497,29 +1497,6 @@
     "id": "Object-Detection-Construction",
     "image_url": "assets/img/datasets/Object-Detection-Construction.png"
   },
-  "SAFE": {
-    "name": "SAFE Dataset",
-	"authors": "Peichen Zhai, Junjie Wang, Lite Zhang",
-	"doi": "https://doi.org/10.1061/JCEMD4.COENG-12096",
-    "year": 2024,
-    "data_modality": "Ground RGB",
-    "num_images": 5659,
-    "num_classes": null,
-    "classes": null,
-    "resolution": "256×256",
-    "annotation_types": [
-      "Image captions"
-    ],
-    "geographical_location": "Not Specified",
-    "potential_tasks": [
-      "Image captioning"
-    ],
-    "license": "Not Specified",
-    "paper": "Extracting Worker Unsafe Behaviors from Construction Images Using Image Captioning with Deep Learning–Based Attention Mechanism",
-    "access": "Upon request",
-    "id": "SAFE",
-    "image_url": "assets/img/datasets/SAFE.png"
-  },
   "Small-Construction-Tools": {
     "name": "Small-sized construction tool dataset",
 	"authors": "Soeun Han, Wonjun Park, Kyumin Jeong, Taehoon Hong, Choongwan Koo",
@@ -2059,7 +2036,7 @@
     "potential_tasks": [
 	"Object detection"
     ],
-    "license": "CC BY-NC 4.0",
+    "license": "Not Specified",
     "paper": "FLE-YOLO: A Faster, Lighter, and More Efficient Strategy for Autonomous Tower Crane Hook Detection",
     "access": "https://github.com/sugar-fifty-doge/Tower-crane-dataset",
     "id": "hook",
