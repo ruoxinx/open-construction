@@ -6,6 +6,7 @@
       "id": "fundamentals-building-construction-management",
       "title": "Fundamentals of Building Construction Management",
       "provider": "John Messner",
+	  "year": 2022,
       "source": "https://psu.pb.unizin.org/buildingconstructionmanagement/",
       "image": "https://psu.pb.unizin.org/app/uploads/sites/310/2022/03/Building-Construction-Cover-2-768x998.png",
       "language": ["English"],
@@ -17,6 +18,7 @@
     {
       "id": "CMGT-40095-50095",
       "title": "Advanced-Tech-Applications-in-Construction",
+	  "year": 2024,
       "provider": "Ruoxin Xiong",
       "source": "https://github.com/ruoxinx/CMGT-40095-50095",
       "image": "assets/img/oer/CMGT-40095-50095.png",
@@ -36,6 +38,7 @@
 	  "id": "construction-contracts-and-project-administration",
 	  "title": "Construction Contracting: Business and Legal Principles",
 	  "provider": "Bartholomew, Stuart H.",
+	  "year": 2022,
 	  "source": "https://vtechworks.lib.vt.edu/items/173102d3-2246-4640-9e64-aa0ae0a1b282",
 	  "image": "assets/img/oer/contracts.png",
 	  "language": ["English"],
