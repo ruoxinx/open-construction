@@ -1,92 +1,52 @@
 {
   "schema_version": "1.0",
-  "about": "OpenConstruction OER catalog. Items primarily sourced from OER Commons and similar platforms.",
+  "about": "OpenConstruction OER catalog.",
   "resources": [
     {
-      "id": "pmf-estimate-package-costs",
-      "title": "Estimate Package Costs (Project Management Fundamentals)",
-      "provider": "OER Commons",
-      "source": "https://oercommons.org/courseware/lesson/107819/overview",
-      "image": "assets/img/oer/oercommons.png",
+      "id": "fundamentals-building-construction-management",
+      "title": "Fundamentals of Building Construction Management",
+      "provider": "John Messner",
+      "source": "https://psu.pb.unizin.org/buildingconstructionmanagement/",
+      "image": "https://psu.pb.unizin.org/app/uploads/sites/310/2022/03/Building-Construction-Cover-2-768x998.png",
       "language": ["English"],
-      "topics": ["Construction Estimating", "Budgeting", "Project Management"],
+      "topics": ["Construction Estimating", "Project Scheduling", "Risk and Contract Management", "Project Management"],
+      "license": "CC BY-NC-SA 4.0",
+      "media": ["Text/HTML"],
+      "added": "2025-11-05"
+    },
+    {
+      "id": "CMGT-40095-50095",
+      "title": "Advanced-Tech-Applications-in-Construction",
+      "provider": "Ruoxin Xiong",
+      "source": "https://github.com/ruoxinx/CMGT-40095-50095",
+      "image": "assets/img/oer/CMGT-40095-50095.png",
+      "language": ["English"],
+      "topics": ["Construction Technology",
+		"Digital Twins",
+		"AR/VR in Construction",
+		"Generative AI in AEC",
+		"Smart and Sustainable Construction"],
       "license": "See source",
-      "media": ["Lesson", "Reading", "Activity"],
-      "added": "2025-11-03",
+      "media": ["Text/HTML", "Slides", "Code", "Interactive Labs"],
+      "added": "2025-11-05",
 	  "contributor": "ruoxinx",
 	  "contributor_url": "https://github.com/ruoxinx"
     },
-    {
-      "id": "pmf-develop-schedule",
-      "title": "Develop Schedule (Critical Path, Gantt)",
-      "provider": "OER Commons",
-      "source": "https://oercommons.org/courseware/lesson/107818/overview",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Scheduling", "CPM", "Project Management"],
-      "license": "See source",
-      "media": ["Lesson", "Activity", "Assessment"],
-      "added": "2025-11-03"
-    },
-    {
-      "id": "pmf-estimate-activity-durations",
-      "title": "Estimate Activity Durations (Techniques & Bias)",
-      "provider": "OER Commons",
-      "source": "https://oercommons.org/courseware/lesson/107816/overview",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Time Estimation", "Scheduling", "Heuristics"],
-      "license": "See source",
-      "media": ["Lesson", "Video", "Reading"],
-      "added": "2025-11-03"
-    },
-    {
-      "id": "pmf-budget-metrics",
-      "title": "Calculate Budget & Schedule Metrics (EVM Basics)",
-      "provider": "OER Commons",
-      "source": "https://oercommons.org/courseware/lesson/107821/student/?section=11",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Earned Value", "Budget Metrics", "Scheduling"],
-      "license": "See source",
-      "media": ["Lesson", "Exercise"],
-      "added": "2025-11-03"
-    },
-    {
-      "id": "pm-course-budgeting",
-      "title": "Project Management: Project Budget (Overview)",
-      "provider": "OER Commons",
-      "source": "https://www.oercommons.org/courseware/lesson/59988/student/?section=6",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Budgeting", "Cost Control", "Project Management"],
-      "license": "See source",
-      "media": ["Lesson", "Reading"],
-      "added": "2025-11-03"
-    },
-    {
-      "id": "project-manager-manages-costs",
-      "title": "Project Manager Manages Costs",
-      "provider": "OER Commons",
-      "source": "https://www.oercommons.org/authoring/51472-project-manager-manages-costs/view",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Cost Estimating", "Profit", "Units of Measure"],
-      "license": "See source",
-      "media": ["Module", "Reading"],
-      "added": "2025-11-03"
-    },
-    {
-      "id": "textbook-cost-planning",
-      "title": "Cost Planning of Building Construction Projects (Textbook)",
-      "provider": "OER Commons",
-      "source": "https://www.oercommons.org/browse?f.general_subject=architecture-and-design&f.language=en&f.material_types=textbook&sort_by=title&view_mode=summary",
-      "image": "assets/img/oer/oercommons.png",
-      "language": ["English"],
-      "topics": ["Cost Planning", "Quantity Surveying", "Construction Economics"],
-      "license": "See source",
-      "media": ["Textbook", "PDF"],
-      "added": "2025-11-03"
-    }
+	{
+	  "id": "construction-contracts-and-project-administration",
+	  "title": "Construction Contracting: Business and Legal Principles",
+	  "provider": "Bartholomew, Stuart H.",
+	  "source": "https://vtechworks.lib.vt.edu/items/173102d3-2246-4640-9e64-aa0ae0a1b282",
+	  "image": "assets/img/oer/contracts.png",
+	  "language": ["English"],
+	  "topics": [
+		"Construction contracting",
+		"Legal issues in construction",
+		"Business principles"
+	  ],
+	  "license": "CC BY-NC-SA 4.0",
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-05"
+	}
   ]
 }
