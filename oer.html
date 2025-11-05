@@ -3,267 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Open Educational Resources</title>
+  <title>OpenConstruction · Education</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
     /* ---------- Design tokens (LIGHT ONLY) ---------- */
-    :root{
+    :root {
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
       --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
       --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
     }
-    html,body{background:var(--oc-bg); color:var(--oc-text)}
-    a{color:var(--oc-link)}
+    html,body { background:var(--oc-bg); color:var(--oc-text); }
+    a { color:var(--oc-link); }
 
     /* ---------- Navbar ---------- */
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
-    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
-    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
-    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
-    .oc-logo{height:44px;width:44px}
+    .oc-nav { backdrop-filter:saturate(120%) blur(6px); }
+    .brand-wordmark {
+      display:inline-flex; gap:.25rem; align-items:baseline;
+      color:#0F2E4B; font-weight:700; letter-spacing:.1px;
+      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem);
+    }
+    .brand-wordmark .oc-open { font-weight:600; opacity:.95; }
+    .brand-wordmark .oc-sep { opacity:.35; margin:0 .15rem; }
+    .brand-wordmark .oc-construction { font-weight:800; letter-spacing:.15px; }
+    .oc-logo { height:44px; width:44px; }
 
-    .navbar .nav-link.plain{
-      font-weight:700;
-      color:var(--oc-text);
+    .navbar .nav-link.plain {
+      font-weight:700; color:var(--oc-text);
       padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover{
+    .navbar .nav-link.plain:hover {
       color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
+      text-decoration:underline; text-underline-offset:3px;
     }
-    .navbar .nav-link.plain.active{
+    .navbar .nav-link.plain.active {
       color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-	
-	.hl{
-      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
-      padding:0 .06em;
-      font-weight:700;
+      text-decoration:underline; text-underline-offset:3px;
     }
 
-    .oc-btn{border-radius:999px;border-color:#d6dde6;color:#24384d}
-    .oc-btn:hover{background:#f4f7fb;border-color:#cbd6e3;color:#0f2e4b}
-    .oc-cta{border-radius:999px;box-shadow:0 4px 10px rgba(16,185,129,.15)}
-    .oc-cta:hover{box-shadow:0 6px 14px rgba(16,185,129,.22);transform:translateY(-1px)}
-
-    /* Minimal icon-only link (GitHub) */
-    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
-    .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    /* ---------- Docked search ---------- */
-    .navbar-search{
-      display:none;
-      width: clamp(200px, 24vw, 320px);
-    }
-    .navbar-search .form-control{
-      height:34px;
-      padding:.25rem .75rem;
-      font-size:.875rem;
-      line-height:1.2;
-      border-radius:999px;
-    }
-    body.docked .navbar-search{display:flex; flex:0 0 auto}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex; align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
+    .hl {
+      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700;
     }
 
     /* ---------- Hero ---------- */
-    header.hero{
+    header.hero {
       border-bottom:1px solid var(--oc-border);
       background:#fff;
     }
-    header.hero .content{ padding:56px 0 36px; text-align:center }
-    header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
-    header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
-    /* original big search size */
-    .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
-
-    /* ---------- Filters card ---------- */
-    .filters{ position:sticky; top:86px; }
-    .facet-list{ max-height: 280px; overflow:auto; border:1px solid var(--oc-border); border-radius:.5rem; padding:.55rem; background:var(--oc-card) }
-    .facet-list .form-check{ margin-bottom:.25rem }
-    .card .form-label{ font-weight:700 }
-    .facet-toggle{ font-size:.875rem; line-height:1.2 }
-
-    /* ---------- Year dual range with selected track ---------- */
-    .range-container{ position:relative; height:36px; margin:.25rem 0 .5rem }
-    .range-container .slider{ position:absolute; left:10px; right:10px; top:14px; height:8px; background:#e9ecef; border-radius:10px }
-    .range-container .range-selected{ position:absolute; top:14px; height:8px; background:#0d6efd; border-radius:10px }
-    .range-container .thumb{ pointer-events:none; position:absolute; height:0; width:100%; -webkit-appearance:none }
-    .range-container .thumb::-webkit-slider-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.12); -webkit-appearance:none
-    }
-    .range-container .thumb::-moz-range-thumb{
-      pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff
+    header.hero .content { padding:56px 0 36px; text-align:center; }
+    header.hero h1 { font-weight:800; color:var(--oc-brand); margin-bottom:.3rem; }
+    header.hero p { color:var(--oc-sub); margin:0 auto; max-width:72ch; }
+    .search-input {
+      border-radius:999px; padding:.9rem 1.1rem;
+      max-width:720px; margin:0 auto;
+      box-shadow:inset 0 1px 0 rgba(15,46,75,.05);
     }
 
-    /* ---------- Result toolbar ---------- */
-    .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap }
+    /* ---------- Cards and tags ---------- */
+    .resource-card {
+      background:var(--oc-card); border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius); box-shadow:var(--oc-shadow);
+      overflow:hidden; height:100%;
+    }
+    .resource-card .thumb {
+      width:100%; height:160px; object-fit:cover;
+      border-bottom:1px solid var(--oc-border);
+    }
+    .resource-card .card-body { padding:1rem; }
+    .title { font-weight:700; color:var(--oc-ink); margin-bottom:.15rem; }
+    .meta { font-size:.85rem; color:var(--oc-sub); }
+    .tag-lane { display:flex; flex-wrap:wrap; gap:.35rem; }
+    .tag {
+      display:inline-flex; align-items:center;
+      padding:.18rem .5rem; border-radius:999px;
+      border:1px solid var(--oc-border);
+      background:#fbfdff; font-weight:600;
+      font-size:.78rem; color:#1f2937;
+    }
 
-    /* ---------- Dataset cards ---------- */
-    .dataset-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); height:100% }
-    .dataset-card .card-body{ padding:1rem 1rem }
-    .dataset-card .title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem }
-    .dataset-card .meta{ font-size:.85rem; color:var(--oc-sub) }
-    .badge-soft{ background:var(--oc-muted); border:1px solid var(--oc-border); color:var(--oc-text); font-weight:600 }
+    /* ---------- Toolbar ---------- */
+    .toolbar { display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; }
 
-    /* ---------- Empty state & skeleton ---------- */
-    .empty{ border:1px dashed var(--oc-border); border-radius:12px; padding:24px; text-align:center; color:var(--oc-sub) }
-    .skeleton{ position:relative; overflow:hidden; background:var(--oc-muted); border-radius:10px; min-height:120px }
-    .skeleton::after{ content:""; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent); animation:shimmer 1.1s infinite; mix-blend-mode:overlay }
-    @keyframes shimmer{ to{ transform:translateX(100%) } }
-
-    /* Hide any legacy class-count spans inside labels */
-    #filter-classes .form-check-label .text-muted{ display:none !important }
-	
-	/* Yellow subscribe bell */
-	.btn-subscribe-icon{
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent);
-	}
-	.btn-subscribe-icon:hover svg{
-	  filter: brightness(1.15);
-	}
-	.submitted-tag {
-	  position: absolute;
-	  bottom: 8px;
-	  right: 8px;
-	  background: rgba(255, 255, 255, 0.92);
-	  border: 1px solid #e0e6ef;
-	  border-radius: 10px;
-	  font-size: 0.75rem;
-	  padding: 2px 8px;
-	  color: #1e2a36;
-	  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-	  z-index: 5;
-	}
-	.submitted-tag a {
-	  color: #0b66c3;
-	  text-decoration: none;
-	}
-	.submitted-tag a:hover {
-	  text-decoration: underline;
-	}
-	.dataset-card {
-	  position: relative;
-	  overflow: hidden;
-	}
+    /* ---------- Floating Add button ---------- */
+    .issue-btn {
+      position:fixed; bottom:20px; right:20px; z-index:1050;
+      background:#0d6efd; color:#fff;
+      padding:12px 20px; border-radius:999px;
+      font-weight:600; font-size:.9rem;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
+      text-decoration:none; transition:background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background:#0b5ed7; transform:translateY(-2px);
+      color:#fff; text-decoration:none;
+    }
   </style>
 </head>
-<body>
 
-<!-- NAVBAR -->
+<body>
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
       <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
     </a>
-
-    <!-- Docked search (shown when scrolling) -->
-    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search datasets, objects, tasks …" aria-label="Search datasets">
-    </form>
-
-    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <!-- Clean bold links -->
         <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" aria-current="page">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="oer.html">Education</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="oer.html" aria-current="page">Education</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
           </ul>
         </li>
-		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-
-        <!-- GitHub icon-only link -->
-        <li class="nav-item">
-          <a class="nav-link px-2 icon-only"
-             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
-             target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub"
-             title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
-                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
-                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-            </svg>
-          </a>
-        </li>
-		<!-- Subscribe bell -->
-		<li class="nav-item">
-		<button type="button"
-				class="nav-link px-2 icon-only btn-subscribe-icon"
-				data-bs-toggle="modal" data-bs-target="#subscribeModal"
-				aria-label="Subscribe for updates" title="Subscribe">
-		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-					 7 0 0 0 8.5 2z"/>
-		  </svg>
-		</button>
-	
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- Hero -->
 <!-- HERO -->
 <header class="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">OpenConstruction Open Educational Resources</h1>
     <p class="lead">Explore <span class="hl">open educational resources</span> for construction education</p>
     <div id="searchDock" class="mt-3">
-      <!-- CENTER search (kept original size) -->
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search OER titles, topics, licenses …" aria-label="Search OER large">
+      <input id="q" type="text" class="form-control form-control-lg search-input"
+             placeholder="Search OER titles, topics, licenses …" aria-label="Search OER large">
     </div>
   </div>
 </header>
 
 <main class="container my-4">
   <div class="row g-3">
-    <!-- FILTERS -->
     <aside class="col-lg-3">
       <div class="card shadow-sm filters">
         <div class="card-header"><strong>Filters</strong></div>
@@ -275,89 +160,62 @@
           <div class="mb-3">
             <label class="form-label">Topics</label>
             <input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…">
-            <div id="filter-topics" class="facet-list"></div>
+            <div id="filter-topics" class="facet-list vstack gap-1"></div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Licenses</label>
-            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
-            <div id="filter-license" class="facet-list"></div>
+            <label class="form-label">License</label>
+            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search license…">
+            <div id="filter-license" class="facet-list vstack gap-1"></div>
           </div>
-          <div class="mb-1">
-            <label class="form-label">Media type</label>
-            <div id="filter-media" class="facet-list"></div>
+          <div class="mb-3">
+            <label class="form-label">Media Format</label>
+            <div id="filter-media" class="facet-list vstack gap-1"></div>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- RESULTS -->
     <section class="col-lg-9">
-      <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="toolbar mb-2">
         <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
         <div class="d-flex align-items-center gap-2">
-          <label for="sortBy" class="me-1 small">Sort by</label>
+          <label for="sortBy" class="form-label mb-0 small text-muted">Sort by</label>
           <select id="sortBy" class="form-select form-select-sm w-auto">
-            <option value="added-desc" selected>Added date ↓</option>
-            <option value="added-asc">Added date ↑</option>
-            <option value="name-asc">Title A→Z</option>
-            <option value="name-desc">Title Z→A</option>
+            <option value="added-desc">Recently Added</option>
+            <option value="added-asc">Oldest First</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
           </select>
         </div>
       </div>
 
-      <div id="oerGrid" class="row g-3" aria-live="polite" aria-busy="true"></div>
-      <div id="emptyState" class="empty mt-3 d-none">No resources match your filters. Try clearing some filters or changing the search.</div>
+      <div id="oerSkeleton" class="row g-3 g-xl-4 mt-1" aria-hidden="true"></div>
+      <div id="oerGrid" class="row g-3 g-xl-4 mt-1"></div>
+      <div id="emptyState" class="empty d-none mt-4">No results found.</div>
     </section>
   </div>
 </main>
 
-<!-- FOOTER (same disclaimer as dataset page) -->
 <footer class="py-4 mt-3 border-top">
   <div class="container small text-muted text-center">
-    <div>© <span id="yearNow"></span> OpenConstruction</div>
-    <div class="mt-2">
-      <small>
-        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
-        links to original sources. We do not host or distribute datasets, models, code, or paywalled content.
-        All rights remain with the original authors, creators, and publishers.
-      </small>
-    </div>
+    © <span id="yearNow"></span> OpenConstruction · Educational Resources. All rights reserved.
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.getElementById('yearNow').textContent = new Date().getFullYear();
-</script>
-<script src="assets/js/oer.js"></script>
-
 <!-- Floating button: Add new dataset -->
 <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?title=New%20OER%20resource&body=**Title**:%0A**Provider/Author(s)**:%0A**Topics**:%0A**Language(s)**:%0A**Media**:%0A**License**:%0A**Source URL**:%0A**Image URL (optional)**:%0A%0A**Notes**:%0A"
-   class="issue-btn" target="_blank" rel="noopener">
-   Add New OER
-</a>
-<style>
-  .issue-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1050;
-    background: #0d6efd; /* Bootstrap blue */
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: .9rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25);
-    text-decoration: none;
-    transition: background .2s ease, transform .2s ease;
-  }
-  .issue-btn:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
-    color: #fff;
-    text-decoration: none;
-  }
-</style>
+   class="issue-btn" target="_blank" rel="noopener">Add New OER</a>
+
+<!-- JSON loader configuration -->
+<script>
+  window.OER_JSON_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
+  window.OER_ENABLE_DEBUG = true;
+</script>
+<script src="assets/js/oer.js" defer></script>
+<noscript>
+  <div class="container my-3"><div class="alert alert-warning">Please enable JavaScript to view OER resources.</div></div>
+</noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
