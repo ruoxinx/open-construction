@@ -2439,7 +2439,7 @@
   "contributor_url": "https://github.com/ciber-lab"
 },
 "DoriaNET": {
-  "name": "DoriaNET",
+  "name": "DoriaNET: A visual dataset from Hurricane Dorian for post-disaster building damage assessment",
   "authors": "Chih-Shen Cheng, Amir H. Behzadan, Arash Noshadravan",
   "doi": "https://doi.org/10.17603/ds2-gqvg-qx37",
   "year": 2020,
@@ -2455,7 +2455,7 @@
   ],
   "license": "ODC-BY",
   "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
-  "access": "https://www.designsafe-ci.org/data/browser/public/designsafe.storage.published/PRJ-3278/?version=2",
+  "access": "https://doi.org/10.1111/mice.12658",
   "id": "DoriaNET",
   "image_url": "assets/img/datasets/DoriaNET.png",
   "added_date": "2025-11-4",
