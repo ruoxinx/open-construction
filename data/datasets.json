@@ -2442,7 +2442,7 @@
   "name": "DoriaNET: A visual dataset for post-disaster building damage assessment",
   "authors": "Chih-Shen Cheng, Amir H. Behzadan, Arash Noshadravan",
   "doi": "https://doi.org/10.17603/ds2-gqvg-qx37",
-  "year": 2020,
+  "year": 2021,
   "data_modality": "Aerial RGB",
   "num_images": 2409,
   "num_classes": 6,
@@ -2462,6 +2462,4 @@
   "contributor": "ciber-lab",
   "contributor_url": "https://github.com/ciber-lab"
 }
-
-
 }
