@@ -5,7 +5,7 @@
     grid: document.getElementById('oerGrid'),
     empty: document.getElementById('emptyState'),
     q: document.getElementById('q'),
-    qBtn: document.getElementById('qBtn'), // may not exist
+    qBtn: document.getElementById('qBtn'),
     sort: document.getElementById('sortBy'),
     lang: document.getElementById('filter-language'),
     topics: document.getElementById('filter-topics'),
@@ -25,6 +25,21 @@
 
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
+
+  // Format year and date
+  function fmtYear(v){
+    if(!v) return '';
+    const d = new Date(v);
+    if (!isNaN(d)) return d.getFullYear();
+    const yr = String(v).match(/\d{4}/);
+    return yr ? yr[0] : '';
+  }
+  function fmtAdded(v){
+    if(!v) return '';
+    const d = new Date(v);
+    if(isNaN(d)) return '';
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+  }
 
   function facetHtml(prefix, values){
     return values.map(v => `
@@ -57,14 +72,22 @@
       const tops  = tokens(r.topics).map(x=>`<span class="tag">${x}</span>`).join('');
       const meds  = tokens(r.media).map(x=>`<span class="tag">${x}</span>`).join('');
       const lic   = r.license || 'See source';
+      const added = fmtAdded(r.added);
+      const year  = fmtYear(r.year || r.added);
 
       els.grid.insertAdjacentHTML('beforeend', `
         <div class="col-md-6 col-xl-4">
           <article class="resource-card h-100">
             <img class="thumb" src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
             <div class="card-body">
-              <div class="title">${r.title}</div>
-              <div class="meta mb-2">${r.provider || ''}</div>
+              <div class="title">
+                ${r.title}
+                ${year ? `<span class="badge bg-light text-dark ms-1 border">${year}</span>` : ``}
+              </div>
+              <div class="meta mb-1">${r.provider || ''}</div>
+              ${added ? `<div class="meta small text-muted mb-2">
+                           Added: <time datetime="${r.added}">${added}</time>
+                         </div>` : ``}
               <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
               <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
               <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
@@ -112,7 +135,6 @@
       list = list.filter(r => has(r.license, licQ));
     }
 
-    // sort
     const s = els.sort?.value || 'added-desc';
     if(s === 'name-asc') list.sort((a,b)=>a.title.localeCompare(b.title));
     if(s === 'name-desc') list.sort((a,b)=>b.title.localeCompare(a.title));
@@ -169,14 +191,13 @@
     }catch(e){
       console.error('Failed to load OER data', e);
       hideSkeleton();
-      const msg = `
+      els.grid.innerHTML = `
         <div class="col-12">
           <div class="empty">
             Could not load OER data. Ensure <code>data/oer.json</code> exists and is valid.
             <div class="small mt-2 text-muted">${String(e.message||e)}</div>
           </div>
         </div>`;
-      els.grid.innerHTML = msg;
     }
   }
 
