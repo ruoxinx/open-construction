@@ -785,7 +785,7 @@
     "year": 2026,
     "modalities": ["3D Point Cloud"],
     "tasks": ["Point cloud segmentation"],
-	"applications": ["Change detection", "As-Built BIM Updating"],
+	"applications": ["Change detection", "As-Built BIM generation"],
     "license": "MIT",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106609",
     "code_url": "https://github.com/RainGo111/BIM_updating",
