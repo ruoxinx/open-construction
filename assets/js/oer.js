@@ -1,11 +1,11 @@
-// Loads OER from data/oer.json and renders cards with professional tags.
+// Loads OER from data/oer.json (with fallbacks) and renders cards with professional tags.
 (function () {
   const state = { all: [], filtered: [] };
   const els = {
     grid: document.getElementById('oerGrid'),
     empty: document.getElementById('emptyState'),
     q: document.getElementById('q'),
-    qBtn: document.getElementById('qBtn'),
+    qBtn: document.getElementById('qBtn'), // may not exist
     sort: document.getElementById('sortBy'),
     lang: document.getElementById('filter-language'),
     topics: document.getElementById('filter-topics'),
@@ -13,7 +13,8 @@
     license: document.getElementById('filter-license'),
     licenseSearch: document.getElementById('licenseSearch'),
     media: document.getElementById('filter-media'),
-    count: document.getElementById('resultCount')
+    count: document.getElementById('resultCount'),
+    skeleton: document.getElementById('oerSkeleton')
   };
   const placeholderImg = 'assets/img/placeholder.png';
 
@@ -21,6 +22,9 @@
   const tokens = v => (Array.isArray(v) ? v : [v]).map(x => String(x || '').trim()).filter(Boolean);
   const cssId  = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const has    = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
+
+  function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
+  function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
 
   function facetHtml(prefix, values){
     return values.map(v => `
@@ -74,13 +78,13 @@
   }
 
   function applyFilters(){
-    const q = (els.q.value || '').trim().toLowerCase();
+    const q = (els.q?.value || '').trim().toLowerCase();
     const langSel = readChecked(els.lang);
     const licSel  = readChecked(els.license);
     const medSel  = readChecked(els.media);
     const topicSel = readChecked(els.topics);
-    const topicQ = (els.topicSearch.value || '').trim().toLowerCase();
-    const licQ   = (els.licenseSearch.value || '').trim().toLowerCase();
+    const topicQ = (els.topicSearch?.value || '').trim().toLowerCase();
+    const licQ   = (els.licenseSearch?.value || '').trim().toLowerCase();
 
     let list = state.all.slice();
 
@@ -109,7 +113,7 @@
     }
 
     // sort
-    const s = els.sort.value;
+    const s = els.sort?.value || 'added-desc';
     if(s === 'name-asc') list.sort((a,b)=>a.title.localeCompare(b.title));
     if(s === 'name-desc') list.sort((a,b)=>b.title.localeCompare(a.title));
     if(s === 'added-asc') list.sort((a,b)=>String(a.added||'').localeCompare(String(b.added||'')));
@@ -120,30 +124,61 @@
   }
 
   function buildFacets(){
-    els.lang.innerHTML   = facetHtml('lang',  allFacetValues(state.all,'language'));
-    els.license.innerHTML= facetHtml('lic',   uniq(state.all.map(r=>r.license || 'See source')));
-    els.media.innerHTML  = facetHtml('media', allFacetValues(state.all,'media'));
-    els.topics.innerHTML = facetHtml('topic', allFacetValues(state.all,'topics'));
+    els.lang.innerHTML    = facetHtml('lang',  allFacetValues(state.all,'language'));
+    els.license.innerHTML = facetHtml('lic',   uniq(state.all.map(r=>r.license || 'See source')));
+    els.media.innerHTML   = facetHtml('media', allFacetValues(state.all,'media'));
+    els.topics.innerHTML  = facetHtml('topic', allFacetValues(state.all,'topics'));
 
     [els.lang, els.license, els.media, els.topics].forEach(el => el.addEventListener('change', applyFilters));
-    els.topicSearch.addEventListener('input', applyFilters);
-    els.licenseSearch.addEventListener('input', applyFilters);
-    els.q.addEventListener('input', applyFilters);
-    els.qBtn.addEventListener('click', applyFilters);
-    els.sort.addEventListener('change', applyFilters);
+    els.topicSearch?.addEventListener('input', applyFilters);
+    els.licenseSearch?.addEventListener('input', applyFilters);
+    els.q?.addEventListener('input', applyFilters);
+    els.qBtn?.addEventListener('click', applyFilters);
+    els.sort?.addEventListener('change', applyFilters);
+  }
+
+  async function fetchWithFallback(paths){
+    const errs = [];
+    for(const p of paths){
+      const url = p + (p.includes('?') ? '' : ('?v=' + Date.now()));
+      try{
+        if (window.OER_ENABLE_DEBUG) console.log('[OER] fetching', url);
+        const res = await fetch(url, { cache: 'no-store' });
+        if(!res.ok) { errs.push(url + ' [' + res.status + ']'); continue; }
+        return await res.json();
+      }catch(e){
+        errs.push(url + ' [' + (e && e.message ? e.message : 'fetch error') + ']');
+      }
+    }
+    throw new Error('All OER fetch attempts failed: ' + errs.join(' | '));
   }
 
   async function init(){
+    showSkeleton();
     try{
-      const res = await fetch('data/oer.json', {cache:'no-store'});
-      const json = await res.json();
+      const paths = Array.isArray(window.OER_JSON_PATHS) && window.OER_JSON_PATHS.length
+        ? window.OER_JSON_PATHS
+        : ['data/oer.json','../data/oer.json','/data/oer.json'];
+
+      const json = await fetchWithFallback(paths);
       state.all = Array.isArray(json) ? json : (json.resources || []);
+
       buildFacets();
       applyFilters();
+      hideSkeleton();
     }catch(e){
-      console.error('Failed to load data/oer.json', e);
-      els.grid.innerHTML = '<div class="col-12"><div class="empty">Could not load OER data. Ensure <code>data/oer.json</code> exists and is valid.</div></div>';
+      console.error('Failed to load OER data', e);
+      hideSkeleton();
+      const msg = `
+        <div class="col-12">
+          <div class="empty">
+            Could not load OER data. Ensure <code>data/oer.json</code> exists and is valid.
+            <div class="small mt-2 text-muted">${String(e.message||e)}</div>
+          </div>
+        </div>`;
+      els.grid.innerHTML = msg;
     }
   }
+
   init();
 })();
