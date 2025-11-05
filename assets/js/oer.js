@@ -1,207 +1,63 @@
-// Loads OER from data/oer.json and renders cards matching Dataset card style.
-(function () {
-  const state = { all: [], filtered: [] };
-  const els = {
-    grid: document.getElementById('oerGrid'),
-    empty: document.getElementById('emptyState'),
-    q: document.getElementById('q'),
-    qBtn: document.getElementById('qBtn'),
-    sort: document.getElementById('sortBy'),
-    lang: document.getElementById('filter-language'),
-    topics: document.getElementById('filter-topics'),
-    topicSearch: document.getElementById('topicSearch'),
-    license: document.getElementById('filter-license'),
-    licenseSearch: document.getElementById('licenseSearch'),
-    media: document.getElementById('filter-media'),
-    count: document.getElementById('resultCount'),
-    skeleton: document.getElementById('oerSkeleton')
-  };
-
-  const placeholderImg = 'assets/img/placeholder.png';
-  const uniq = a => [...new Set(a)];
-  const tokens = v => (Array.isArray(v) ? v : [v]).map(x => String(x || '').trim()).filter(Boolean);
-  const cssId = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const has = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
-
-  function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
-  function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
-
-  // Format helpers
-  function fmtYear(v){
-    if(!v) return '';
-    const d = new Date(v);
-    if (!isNaN(d)) return d.getFullYear();
-    const yr = String(v).match(/\d{4}/);
-    return yr ? yr[0] : '';
+function render(list){
+  els.grid.innerHTML = '';
+  if(!list.length){
+    els.empty.classList.remove('d-none');
+    els.count.textContent = '0';
+    return;
   }
-  function fmtAdded(v){
-    if(!v) return '';
-    const d = new Date(v);
-    if(isNaN(d)) return '';
-    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
-  }
+  els.empty.classList.add('d-none');
+  els.count.textContent = String(list.length);
 
-  function facetHtml(prefix, values){
-    return values.map(v => `
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="${v}" id="${prefix}-${cssId(v)}">
-        <label class="form-check-label" for="${prefix}-${cssId(v)}">${v}</label>
-      </div>
-    `).join('');
-  }
-  function readChecked(container){
-    return Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(i=>i.value);
-  }
-  function allFacetValues(list, key){
-    return uniq(list.flatMap(r => tokens(r[key]))).sort((a,b)=>a.localeCompare(b));
-  }
+  list.forEach(r=>{
+    const img   = r.image || placeholderImg;
+    const langs = tokens(r.language).map(x=>`<span class="tag">${x}</span>`).join('');
+    const tops  = tokens(r.topics).map(x=>`<span class="tag">${x}</span>`).join('');
+    const meds  = tokens(r.media).map(x=>`<span class="tag">${x}</span>`).join('');
+    const lic   = r.license || 'See source';
+    const added = fmtAdded(r.added);
+    const year  = fmtYear(r.year || r.added);
 
-  function render(list){
-    els.grid.innerHTML = '';
-    if(!list.length){
-      els.empty.classList.remove('d-none');
-      els.count.textContent = '0';
-      return;
-    }
-    els.empty.classList.add('d-none');
-    els.count.textContent = String(list.length);
+    // ✅ Build contributor overlay (only if contributor or link provided)
+    const submittedByHTML = (r.contributor || r.contributor_url)
+      ? `<div class="submitted-by position-absolute bottom-0 start-0 w-100 text-center small py-1 bg-white bg-opacity-75">
+           <a href="${r.contributor_url || '#'}" target="_blank" rel="noopener" class="text-muted text-decoration-none">
+             Submitted by <strong>${r.contributor.startsWith('@') ? r.contributor : '@' + r.contributor}</strong>
+           </a>
+         </div>`
+      : '';
 
-    list.forEach(r=>{
-      const img   = r.image || placeholderImg;
-      const langs = tokens(r.language).map(x=>`<span class="tag">${x}</span>`).join('');
-      const tops  = tokens(r.topics).map(x=>`<span class="tag">${x}</span>`).join('');
-      const meds  = tokens(r.media).map(x=>`<span class="tag">${x}</span>`).join('');
-      const lic   = r.license || 'See source';
-      const added = fmtAdded(r.added);
-      const year  = fmtYear(r.year || r.added);
-
-      els.grid.insertAdjacentHTML('beforeend', `
-        <div class="col-md-6 col-xl-4">
-          <article class="resource-card h-100">
+    els.grid.insertAdjacentHTML('beforeend', `
+      <div class="col-md-6 col-xl-4">
+        <article class="resource-card h-100 position-relative">
+          <div class="position-relative">
             <img class="thumb" src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
-            <div class="card-body">
-              <div class="title mb-1">${r.title}</div>
-
-              <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-                <div>
-                  ${r.provider ? `<span>${r.provider}</span>` : ``}
-                  ${year ? `<span class="badge bg-light text-dark border ms-1">${year}</span>` : ``}
-                </div>
-                ${added ? `<div class="text-end text-muted small"><time datetime="${r.added}">${added}</time></div>` : ``}
-              </div>
-
-              <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
-              <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
-              <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
-              <div class="mb-2"><strong>License:</strong> <span class="tag">${lic}</span></div>
-              <a class="btn btn-primary btn-sm mt-1" href="${r.source}" target="_blank" rel="noopener">View resource</a>
-            </div>
-          </article>
-        </div>
-      `);
-    });
-  }
-
-  function applyFilters(){
-    const q = (els.q?.value || '').trim().toLowerCase();
-    const langSel = readChecked(els.lang);
-    const licSel  = readChecked(els.license);
-    const medSel  = readChecked(els.media);
-    const topicSel = readChecked(els.topics);
-    const topicQ = (els.topicSearch?.value || '').trim().toLowerCase();
-    const licQ   = (els.licenseSearch?.value || '').trim().toLowerCase();
-
-    let list = state.all.slice();
-
-    if(q){
-      list = list.filter(r =>
-        has(r.title, q) || has(r.provider, q) || tokens(r.topics).some(t => has(t, q))
-      );
-    }
-    if(langSel.length){
-      list = list.filter(r => tokens(r.language).some(x => langSel.includes(x)));
-    }
-    if(licSel.length){
-      list = list.filter(r => licSel.includes(r.license || 'See source'));
-    }
-    if(medSel.length){
-      list = list.filter(r => tokens(r.media).some(x => medSel.includes(x)));
-    }
-    if(topicSel.length){
-      list = list.filter(r => tokens(r.topics).some(x => topicSel.includes(x)));
-    }
-    if(topicQ){
-      list = list.filter(r => tokens(r.topics).some(t => has(t, topicQ)));
-    }
-    if(licQ){
-      list = list.filter(r => has(r.license, licQ));
-    }
-
-    const s = els.sort?.value || 'added-desc';
-    if(s === 'name-asc') list.sort((a,b)=>a.title.localeCompare(b.title));
-    if(s === 'name-desc') list.sort((a,b)=>b.title.localeCompare(a.title));
-    if(s === 'added-asc') list.sort((a,b)=>String(a.added||'').localeCompare(String(b.added||'')));
-    if(s === 'added-desc') list.sort((a,b)=>String(b.added||'').localeCompare(String(a.added||'')));
-
-    state.filtered = list;
-    render(list);
-  }
-
-  function buildFacets(){
-    els.lang.innerHTML    = facetHtml('lang',  allFacetValues(state.all,'language'));
-    els.license.innerHTML = facetHtml('lic',   uniq(state.all.map(r=>r.license || 'See source')));
-    els.media.innerHTML   = facetHtml('media', allFacetValues(state.all,'media'));
-    els.topics.innerHTML  = facetHtml('topic', allFacetValues(state.all,'topics'));
-
-    [els.lang, els.license, els.media, els.topics].forEach(el => el.addEventListener('change', applyFilters));
-    els.topicSearch?.addEventListener('input', applyFilters);
-    els.licenseSearch?.addEventListener('input', applyFilters);
-    els.q?.addEventListener('input', applyFilters);
-    els.qBtn?.addEventListener('click', applyFilters);
-    els.sort?.addEventListener('change', applyFilters);
-  }
-
-  async function fetchWithFallback(paths){
-    const errs = [];
-    for(const p of paths){
-      const url = p + (p.includes('?') ? '' : ('?v=' + Date.now()));
-      try{
-        if (window.OER_ENABLE_DEBUG) console.log('[OER] fetching', url);
-        const res = await fetch(url, { cache: 'no-store' });
-        if(!res.ok) { errs.push(url + ' [' + res.status + ']'); continue; }
-        return await res.json();
-      }catch(e){
-        errs.push(url + ' [' + (e && e.message ? e.message : 'fetch error') + ']');
-      }
-    }
-    throw new Error('All OER fetch attempts failed: ' + errs.join(' | '));
-  }
-
-  async function init(){
-    showSkeleton();
-    try{
-      const paths = Array.isArray(window.OER_JSON_PATHS) && window.OER_JSON_PATHS.length
-        ? window.OER_JSON_PATHS
-        : ['data/oer.json','../data/oer.json','/data/oer.json'];
-
-      const json = await fetchWithFallback(paths);
-      state.all = Array.isArray(json) ? json : (json.resources || []);
-
-      buildFacets();
-      applyFilters();
-      hideSkeleton();
-    }catch(e){
-      console.error('Failed to load OER data', e);
-      hideSkeleton();
-      els.grid.innerHTML = `
-        <div class="col-12">
-          <div class="empty">
-            Could not load OER data. Ensure <code>data/oer.json</code> exists and is valid.
-            <div class="small mt-2 text-muted">${String(e.message||e)}</div>
+            ${submittedByHTML}
           </div>
-        </div>`;
-    }
-  }
 
-  init();
-})();
+          <div class="card-body d-flex flex-column">
+            <div class="title mb-1">${r.title}</div>
+
+            <!-- Provider + Year -->
+            <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+              <div>
+                ${r.provider ? `<span>${r.provider}</span>` : ``}
+                ${year ? `<span class="badge bg-light text-dark border ms-1">${year}</span>` : ``}
+              </div>
+            </div>
+
+            <div class="mb-2"><strong>Language:</strong> <div class="tag-lane mt-1">${langs || '—'}</div></div>
+            <div class="mb-2"><strong>Topics:</strong> <div class="tag-lane mt-1">${tops || '—'}</div></div>
+            <div class="mb-2"><strong>Media:</strong> <div class="tag-lane mt-1">${meds || '—'}</div></div>
+            <div class="mb-2"><strong>License:</strong> <span class="tag">${lic}</span></div>
+
+            <!-- Bottom row: Button + Added date -->
+            <div class="mt-auto d-flex justify-content-between align-items-center">
+              <a class="btn btn-primary btn-sm" href="${r.source}" target="_blank" rel="noopener">View resource</a>
+              ${added ? `<div class="small text-muted ms-2">Added: <time datetime="${r.added}">${added}</time></div>` : ``}
+            </div>
+          </div>
+        </article>
+      </div>
+    `);
+  });
+}

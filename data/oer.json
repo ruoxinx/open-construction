@@ -12,7 +12,9 @@
       "topics": ["Construction Estimating", "Budgeting", "Project Management"],
       "license": "See source",
       "media": ["Lesson", "Reading", "Activity"],
-      "added": "2025-11-03"
+      "added": "2025-11-03",
+	  "contributor": "ruoxinx",
+	  "contributor_url": "https://github.com/ruoxinx"
     },
     {
       "id": "pmf-develop-schedule",
