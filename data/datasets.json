@@ -2253,7 +2253,7 @@
   "potential_tasks": [
     "Object detection"
   ],
-  "license": "Not Specified",
+  "license": "CC BY 4.0",
   "paper": "Intelligent recognition of subsurface utilities and voids: A ground penetrating radar dataset for deep learning applications",
   "access": "https://github.com/LCSkhalid/GPR_Data",
   "id": "GPR",
