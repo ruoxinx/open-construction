@@ -9,98 +9,67 @@
 
   <style>
     /* ---------- Design tokens (LIGHT ONLY) ---------- */
-    :root {
+    :root{
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
       --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
       --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
     }
-    html,body { background:var(--oc-bg); color:var(--oc-text); }
-    a { color:var(--oc-link); }
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
 
     /* ---------- Navbar ---------- */
-    .oc-nav { backdrop-filter:saturate(120%) blur(6px); }
-    .brand-wordmark {
-      display:inline-flex; gap:.25rem; align-items:baseline;
-      color:#0F2E4B; font-weight:700; letter-spacing:.1px;
-      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem);
-    }
-    .brand-wordmark .oc-open { font-weight:600; opacity:.95; }
-    .brand-wordmark .oc-sep { opacity:.35; margin:0 .15rem; }
-    .brand-wordmark .oc-construction { font-weight:800; letter-spacing:.15px; }
-    .oc-logo { height:44px; width:44px; }
+    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
+    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .oc-logo{height:44px;width:44px}
 
-    .navbar .nav-link.plain {
-      font-weight:700; color:var(--oc-text);
+    .navbar .nav-link.plain{
+      font-weight:700;color:var(--oc-text);
       padding:.5rem .6rem;
     }
-    .navbar .nav-link.plain:hover {
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{
       color:var(--oc-ink);
-      text-decoration:underline; text-underline-offset:3px;
-    }
-    .navbar .nav-link.plain.active {
-      color:var(--oc-ink);
-      text-decoration:underline; text-underline-offset:3px;
+      text-decoration:underline;
+      text-underline-offset:3px;
     }
 
-    .hl {
+    .hl{
       background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em; font-weight:700;
+      padding:0 .06em;font-weight:700;
     }
 
     /* ---------- Hero ---------- */
-    header.hero {
-      border-bottom:1px solid var(--oc-border);
-      background:#fff;
-    }
-    header.hero .content { padding:56px 0 36px; text-align:center; }
-    header.hero h1 { font-weight:800; color:var(--oc-brand); margin-bottom:.3rem; }
-    header.hero p { color:var(--oc-sub); margin:0 auto; max-width:72ch; }
-    .search-input {
-      border-radius:999px; padding:.9rem 1.1rem;
-      max-width:720px; margin:0 auto;
-      box-shadow:inset 0 1px 0 rgba(15,46,75,.05);
-    }
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff;}
+    header.hero .content{text-align:center;padding:56px 0 36px;}
+    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
+    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
+    .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
 
-    /* ---------- Cards and tags ---------- */
-    .resource-card {
-      background:var(--oc-card); border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius); box-shadow:var(--oc-shadow);
-      overflow:hidden; height:100%;
-    }
-    .resource-card .thumb {
-      width:100%; height:160px; object-fit:cover;
-      border-bottom:1px solid var(--oc-border);
-    }
-    .resource-card .card-body { padding:1rem; }
-    .title { font-weight:700; color:var(--oc-ink); margin-bottom:.15rem; }
-    .meta { font-size:.85rem; color:var(--oc-sub); }
-    .tag-lane { display:flex; flex-wrap:wrap; gap:.35rem; }
-    .tag {
-      display:inline-flex; align-items:center;
-      padding:.18rem .5rem; border-radius:999px;
-      border:1px solid var(--oc-border);
-      background:#fbfdff; font-weight:600;
-      font-size:.78rem; color:#1f2937;
-    }
+    /* ---------- Cards ---------- */
+    .resource-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);overflow:hidden;height:100%}
+    .resource-card .thumb{width:100%;height:160px;object-fit:cover;border-bottom:1px solid var(--oc-border)}
+    .resource-card .card-body{padding:1rem}
+    .title{font-weight:700;color:var(--oc-ink);margin-bottom:.15rem}
+    .meta{font-size:.85rem;color:var(--oc-sub)}
+    .tag-lane{display:flex;flex-wrap:wrap;gap:.35rem}
+    .tag{display:inline-flex;align-items:center;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--oc-border);background:#fbfdff;font-weight:600;font-size:.78rem;color:#1f2937}
 
     /* ---------- Toolbar ---------- */
-    .toolbar { display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap; }
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 
     /* ---------- Floating Add button ---------- */
-    .issue-btn {
-      position:fixed; bottom:20px; right:20px; z-index:1050;
-      background:#0d6efd; color:#fff;
-      padding:12px 20px; border-radius:999px;
-      font-weight:600; font-size:.9rem;
-      box-shadow:0 4px 12px rgba(0,0,0,.25);
-      text-decoration:none; transition:background .2s ease, transform .2s ease;
-    }
-    .issue-btn:hover {
-      background:#0b5ed7; transform:translateY(-2px);
-      color:#fff; text-decoration:none;
-    }
+    .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease;}
+    .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
+
+    /* ---------- Yellow subscribe bell ---------- */
+    .btn-subscribe-icon{background:transparent;border:0;padding:.25rem .4rem;line-height:1;}
+    .btn-subscribe-icon svg{fill:var(--oc-accent);}
+    .btn-subscribe-icon:hover svg{filter:brightness(1.15);}
   </style>
 </head>
 
@@ -109,7 +78,7 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
       <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
@@ -124,11 +93,49 @@
         <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
         <li class="nav-item"><a class="nav-link plain active" href="oer.html" aria-current="page">Education</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
           </ul>
+        </li>
+
+        <!-- GitHub icon-only link -->
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only"
+             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
+             target="_blank" rel="noopener" aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
+                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
+                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
+                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+
+        <!-- Subscribe bell -->
+        <li class="nav-item">
+          <button type="button"
+                  class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
         </li>
       </ul>
     </div>
@@ -202,21 +209,11 @@
   </div>
 </footer>
 
-<!-- Floating button: Add new dataset -->
+<!-- Floating button: Add new OER -->
 <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?title=New%20OER%20resource&body=**Title**:%0A**Provider/Author(s)**:%0A**Topics**:%0A**Language(s)**:%0A**Media**:%0A**License**:%0A**Source URL**:%0A**Image URL (optional)**:%0A%0A**Notes**:%0A"
    class="issue-btn" target="_blank" rel="noopener">Add New OER</a>
 
-<!-- JSON loader configuration -->
-<script>
-  window.OER_JSON_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
-  window.OER_ENABLE_DEBUG = true;
-</script>
-<script src="assets/js/oer.js" defer></script>
-<noscript>
-  <div class="container my-3"><div class="alert alert-warning">Please enable JavaScript to view OER resources.</div></div>
-</noscript>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
     <div class="modal-content p-3 rounded-3 shadow">
@@ -224,8 +221,7 @@
         <h6 class="m-0 fw-semibold">Subscribe</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
             method="post" target="_blank" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
         <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
@@ -239,5 +235,13 @@
     </div>
   </div>
 </div>
+
+<!-- JSON loader config -->
+<script>
+  window.OER_JSON_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
+  window.OER_ENABLE_DEBUG = true;
+</script>
+<script src="assets/js/oer.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
