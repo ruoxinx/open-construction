@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Pictor-v3]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=pictor-ppe</link>
+    <guid isPermaLink="false">datasets:pictor-ppe:2025-11-4</guid>
+    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Semi-automated localised updating for as-built BIM of piping systems using point cloud data]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM_updating:2025-11-4</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:ResBIM:2025-10-20</guid>
     <pubDate>Mon, 20 Oct 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Fully automated synthetic BIM dataset generation using a deep learning-based framework]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:ResBIM:2025-10-20</guid>
-    <pubDate>Mon, 20 Oct 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Building information models (BIMs) are essential for efficient building operation, yet most existing buildings only have two-dimensional (2D) drawings, leading to increased interest in 2D-to-BIM reconstruction. To address the data scarcity hindering automated BIM reconstruction and evaluation, this paper presents a deep learning-based fully automated framework for BIM dataset generation. The approach uses image processing to define polygonal boundaries, applies neural networks to generate geometric layouts, and augments semantic information with predefined data for BIM generation via software application programming interfaces (APIs). The resulting Residential unit BIM (ResBIM) is a synthetic dataset comprising over 1000 paired BIMs (RVT format) and their corresponding 2D floor plans automatically annotated via a toolbox, filling a critical gap in BIM data availability. This work provides a scalable automated BIM reconstruction solution and establishes the foundation for future AI-driven BIM automation research.]]></description>
   </item>
   </channel>
 </rss>
