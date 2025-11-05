@@ -2453,7 +2453,7 @@
   "potential_tasks": [
     "Object Detection", "Semantic segmentation"
   ],
-  "license": "ODC-BY",
+  "license": "ODC-By",
   "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
   "access": "https://doi.org/10.17603/ds2-gqvg-qx37",
   "id": "DoriaNET",
