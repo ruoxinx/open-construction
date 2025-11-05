@@ -44,7 +44,7 @@
 	  const year = d.getFullYear();
 	  const month = d.getMonth() + 1; // months are zero-indexed
 	  const day = d.getDate();
-	  return `Added ${year}-${month}-${day}`;
+	  return `${year}-${month}-${day}`;
 	}
 
 
@@ -173,7 +173,7 @@
               <!-- Bottom row: Button + Added date -->
               <div class="mt-auto d-flex justify-content-between align-items-center">
                 <a class="btn btn-primary btn-sm" href="${r.source}" target="_blank" rel="noopener">View resource</a>
-                ${added ? `<div class="small text-muted ms-2">Added: <time datetime="${r.added}">${added}</time></div>` : ``}
+                ${added ? `<div class="small text-muted ms-2">Added <time datetime="${r.added}">${added}</time></div>` : ``}
               </div>
             </div>
           </article>
