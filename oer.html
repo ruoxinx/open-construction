@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
+    /* ---------- Design tokens ---------- */
     :root{
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
       --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
@@ -26,22 +26,17 @@
     .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
     .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
     .oc-logo{height:44px;width:44px}
-
-    .navbar .nav-link.plain{
-      font-weight:700;color:var(--oc-text);
-      padding:.5rem .6rem;
-    }
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem;}
     .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
+    .navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px;}
 
-    .hl{
-      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em;font-weight:700;
+    /* Docked search */
+    .navbar-search{display:none;width:clamp(200px,24vw,320px);}
+    .navbar-search .form-control{
+      height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px;
     }
+    body.docked .navbar-search{display:flex}
+    body.docked #searchDock{display:none}
 
     /* ---------- Hero ---------- */
     header.hero{border-bottom:1px solid var(--oc-border);background:#fff;}
@@ -81,6 +76,12 @@
       <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
       <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
     </a>
+
+    <!-- Docked search (shown when scrolling) -->
+    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
+      <input id="qDock" type="text" class="form-control" placeholder="Search OER …" aria-label="Search OER">
+    </form>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -102,37 +103,36 @@
 
         <!-- GitHub icon-only link -->
         <li class="nav-item">
-          <a class="nav-link px-2 icon-only"
-             href="https://github.com/ruoxinx/OpenConstruction-Datasets"
-             target="_blank" rel="noopener" aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets"
+             target="_blank" rel="noopener" aria-label="GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 
-                       2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
-                       0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+              -.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 
+              1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+              0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
+              0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 
+              1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+              1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+              0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+              1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 
+              8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
             </svg>
           </a>
         </li>
 
         <!-- Subscribe bell -->
         <li class="nav-item">
-          <button type="button"
-                  class="nav-link px-2 icon-only btn-subscribe-icon"
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
                   data-bs-toggle="modal" data-bs-target="#subscribeModal"
-                  aria-label="Subscribe for updates" title="Subscribe">
+                  aria-label="Subscribe" title="Subscribe">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
               <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856
+                       -.356.617-.879 1.104-1.379 1.357V13h14v-1.417
+                       c-.5-.253-1.023-.74-1.379-1.357
+                       -.38-.652-.569-1.276-.653-1.856A7 
                        7 0 0 0 8.5 2z"/>
             </svg>
           </button>
@@ -160,24 +160,10 @@
       <div class="card shadow-sm filters">
         <div class="card-header"><strong>Filters</strong></div>
         <div class="card-body small">
-          <div class="mb-3">
-            <label class="form-label">Language</label>
-            <div id="filter-language" class="facet-list vstack gap-1"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Topics</label>
-            <input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…">
-            <div id="filter-topics" class="facet-list vstack gap-1"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">License</label>
-            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search license…">
-            <div id="filter-license" class="facet-list vstack gap-1"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Media Format</label>
-            <div id="filter-media" class="facet-list vstack gap-1"></div>
-          </div>
+          <div class="mb-3"><label class="form-label">Language</label><div id="filter-language" class="facet-list vstack gap-1"></div></div>
+          <div class="mb-3"><label class="form-label">Topics</label><input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…"><div id="filter-topics" class="facet-list vstack gap-1"></div></div>
+          <div class="mb-3"><label class="form-label">License</label><input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search license…"><div id="filter-license" class="facet-list vstack gap-1"></div></div>
+          <div class="mb-3"><label class="form-label">Media Format</label><div id="filter-media" class="facet-list vstack gap-1"></div></div>
         </div>
       </div>
     </aside>
@@ -224,8 +210,7 @@
       <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
             method="post" target="_blank" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
-        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
-               placeholder="you@university.edu" required>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
         <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
@@ -236,11 +221,38 @@
   </div>
 </div>
 
-<!-- JSON loader config -->
+<!-- JSON loader + docked search script -->
 <script>
   window.OER_JSON_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
   window.OER_ENABLE_DEBUG = true;
+
+  (function(){
+    // year now
+    const yr = document.getElementById('yearNow');
+    if (yr) yr.textContent = new Date().getFullYear();
+
+    // sync docked + hero search
+    const hero = document.getElementById('q');
+    const dock = document.getElementById('qDock');
+    function sync(to, from){
+      if(!to || !from) return;
+      to.value = from.value;
+      to.dispatchEvent(new Event('input', {bubbles:true}));
+    }
+    if (hero && dock){
+      dock.addEventListener('input', ()=>sync(hero, dock));
+      hero.addEventListener('input', ()=>{ if(!document.body.classList.contains('docked')) dock.value = hero.value; });
+    }
+
+    // toggle docked after scrolling past hero
+    const threshold = 220;
+    window.addEventListener('scroll', function(){
+      if (window.scrollY > threshold) document.body.classList.add('docked');
+      else document.body.classList.remove('docked');
+    }, {passive:true});
+  })();
 </script>
+
 <script src="assets/js/oer.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
