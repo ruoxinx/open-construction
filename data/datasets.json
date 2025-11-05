@@ -2442,7 +2442,7 @@
   "name": "DoriaNET: A visual dataset for post-disaster building damage assessment",
   "authors": "Chih-Shen Cheng, Amir H. Behzadan, Arash Noshadravan",
   "doi": "https://doi.org/10.17603/ds2-gqvg-qx37",
-  "year": 2020,
+  "year": 2021,
   "data_modality": "Aerial RGB",
   "num_images": 2409,
   "num_classes": 6,
@@ -2451,7 +2451,7 @@
   "annotation_types": ["Bounding boxes"],
   "geographical_location": "Bahamas",
   "potential_tasks": [
-    "Object Detection"
+    "Object Detection", "Semantic segmentation"
   ],
   "license": "ODC-BY",
   "paper": "Deep learning for post-hurricane aerial damage assessment of buildings",
