@@ -1103,7 +1103,7 @@
     "potential_tasks": [
       "Object detection"
     ],
-    "license": "Not Specified",
+    "license": "CC0",
     "paper": "Video-image based mobile scaffolding safety detection using deep learning and internet of things (IOT)",
     "access": "https://universe.roboflow.com/md-rakibul-islam/scaffolding-xxcds",
     "id": "Scaffolding",
