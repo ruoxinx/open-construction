@@ -2445,5 +2445,29 @@
   "added_date": "2025-11-4",
   "contributor": "ciber-lab",
   "contributor_url": "https://github.com/ciber-lab"
+},
+"BIMNet": {
+  "name": "BIMNet: Dataset and benchmark for as-built BIM reconstruction from real-world point cloud",
+  "authors": "Yudong Liu, Han Huang, Ge Gao, Ziyi Ke, Shengtao Li, Ming Gu",
+  "doi": "https://doi.org/10.1016/j.autcon.2025.106096",
+  "year": 2025,
+  "data_modality": "3D Point cloud",
+  "num_images": null,
+  "num_classes": 14,
+  "classes": ["Wall","Slab","Beam","Column","Door","Window","Stair","Railing","Lighting","Furniture", "Sanitary", "Appliance", "Object", "Other"],
+  "resolution": null,
+  "annotation_types": ["Semantically labeled point clouds", "BIM model"],
+  "geographical_location": "Not Specified",
+  "potential_tasks": [
+    "Point cloud segmentation", "BIM reconstruction"
+  ],
+  "license": "MIT",
+  "paper": "Dataset and benchmark for as-built BIM reconstruction from real-world point cloud",
+  "access": "https://thucbims.github.io/bimnet.thucbims.github.io/",
+  "id": "BIMNet",
+  "image_url": "assets/img/datasets/BIMNet.png",
+  "added_date": "2025-11-6",
+  "contributor": "BIMNet team",
+  "contributor_url": "https://thucbims.github.io/bimnet.thucbims.github.io/"
 }
 }
