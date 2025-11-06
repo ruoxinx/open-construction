@@ -201,7 +201,9 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106428",
     "code_url": "https://github.com/JimmyTsai-Yun/MGCAR",
-    "thumbnail": "assets/img/models/MGCAR.png"
+    "thumbnail": "assets/img/models/MGCAR.png",
+	"contributor": "Construction API Lab",
+    "contributor_url": "https://con-api.team/"
   },
   {
     "id": "AID-AI-Infraction-Detection",
@@ -389,7 +391,9 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105953",
     "code_url": "https://github.com/HuangBugWei/DA-MaskRCNN",
-    "thumbnail": "assets/img/models/SORD.png"
+    "thumbnail": "assets/img/models/SORD.png",
+	"contributor": "Construction API Lab",
+    "contributor_url": "https://con-api.team/"
   },
   {
     "id": "FLE-YOLO",

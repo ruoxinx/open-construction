@@ -2022,7 +2022,9 @@
     "access": "https://huggingface.co/datasets/bugwei/synthetic_on-site_rebar_data",
     "id": "SORD",
     "image_url": "assets/img/datasets/SORD.png",
-	"added_date": "2025-09-27"
+	"added_date": "2025-09-27",
+	"contributor": "Construction API Lab",
+    "contributor_url": "https://con-api.team/"
   },
     "hook": {
     "name": "Tower crane hook dataset",
