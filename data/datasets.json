@@ -753,7 +753,7 @@
     "potential_tasks": [
       "Semantic Segmentation"
     ],
-    "license": "Not Specified",
+    "license": "MIT",
     "paper": "Deep Semantic Segmentation for Visual Understanding on Construction Sites",
     "access": "https://github.com/RyanWangZf/construction-site-segmentation",
     "id": "Construction-Site-Segmentation",
