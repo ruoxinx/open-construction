@@ -1027,7 +1027,7 @@
     "potential_tasks": [
       "Action recognition"
     ],
-    "license": "Not Specified",
+    "license": "MIT",
     "paper": "Transformer-based deep learning model and video dataset for unsafe action identification in construction projects",
     "access": "https://github.com/S1mpleyang/ConstructionActionRecognition",
     "id": "CMA",
