@@ -907,7 +907,9 @@
     "paper": "Construction Instance Segmentation (CIS) Dataset for Deep Learning-Based Computer Vision",
     "access": "https://github.com/XZ-YAN/CIS-Dataset",
     "id": "CIS",
-    "image_url": "assets/img/datasets/CIS.png"
+    "image_url": "assets/img/datasets/CIS.png",
+	"contributor": "Xuzhong Yan",
+    "contributor_url": "https://github.com/XZ-YAN"
   },
   "Visible-Dust": {
     "name": "Visible-Dust-Dataset",
@@ -1709,7 +1711,9 @@
     "access": "https://github.com/XZ-YAN/CMOT-Dataset",
     "id": "CMOT",
     "image_url": "assets/img/datasets/CMOT.png",
-	"added_date": "2025-09-20"
+	"added_date": "2025-09-20",
+	"contributor": "Xuzhong Yan",
+    "contributor_url": "https://github.com/XZ-YAN"
   },
     "SODA-ktsh": {
     "name": "SODA-ktsh",
