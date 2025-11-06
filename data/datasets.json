@@ -1853,7 +1853,7 @@
     "potential_tasks": [
 	"Object Detection"
     ],
-    "license": "CC0",
+    "license": "CC BY-NC-SA 4.0",
     "paper": "Manually classified dataset of leaning and standing personnel images for construction site monitoring and neural network training",
     "access": "https://repositorio.ulima.edu.pe/handle/20.500.12724/19853",
     "id": "CPP-1214",
