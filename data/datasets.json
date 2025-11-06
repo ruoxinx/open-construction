@@ -1457,7 +1457,7 @@
     "potential_tasks": [
       "Image captioning"
     ],
-    "license": "Apache-2.",
+    "license": "Apache-2.0",
     "paper": "VL-Con: Vision-Language Dataset for Deep Learning-based Construction Monitoring Applications",
     "access": "https://github.com/huhuman/VL-Con",
     "id": "VL-Con",
@@ -1521,7 +1521,7 @@
     "potential_tasks": [
       "Object detection"
     ],
-    "license": "Not Specified",
+    "license": "CC BY-NC 4.0",
     "paper": "Utilizing synthetic images to enhance the automated recognition of small-sized construction tools",
     "access": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
     "id": "Small-Construction-Tools",
