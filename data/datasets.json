@@ -1798,7 +1798,7 @@
     "potential_tasks": [
 	"Object Detection"
     ],
-    "license": "Not Specified",
+    "license": "Apache-2.0",
     "paper": "Deep Learning Enabled Computer Vision Model for Automated Safety Compliance in Construction Environments",
     "access": "https://github.com/amr21006/PhD_Safety_Management_Object_Detection",
     "id": "OSHA-safety",
