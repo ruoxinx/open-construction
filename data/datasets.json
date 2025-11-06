@@ -1411,8 +1411,8 @@
     "image_url": "assets/img/datasets/Building-Characteristics.png"
   },
   "ConRebSeg": {
-    "name": "ConRebSeg Dataset",
-	"authors": "Segmentation dataset for reinforced concrete construction",
+    "name": "ConRebSeg Dataset: Segmentation dataset for reinforced concrete construction",
+	"authors": "Patrick Schmidt, Lazaros Nalpantidis",
 	"doi": "https://doi.org/10.1016/j.autcon.2025.105990",
     "year": 2024,
     "data_modality": "Ground RGB",
@@ -1429,7 +1429,7 @@
       "Bounding boxes",
       "Pixel-level masks"
     ],
-    "geographical_location": "Denmark",
+    "geographical_location": "Denmark, YouTube",
     "potential_tasks": [
       "Object detection",
       "Semantic segmentation"
