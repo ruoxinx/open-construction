@@ -1457,7 +1457,7 @@
     "potential_tasks": [
       "Image captioning"
     ],
-    "license": "Not Specified",
+    "license": "Apache-2.",
     "paper": "VL-Con: Vision-Language Dataset for Deep Learning-based Construction Monitoring Applications",
     "access": "https://github.com/huhuman/VL-Con",
     "id": "VL-Con",
