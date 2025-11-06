@@ -1647,7 +1647,9 @@
     "access": "https://huggingface.co/datasets/LouisChen15/ConstructionSite",
     "id": "ConstructionSite-10k",
     "image_url": "assets/img/datasets/ConstructionSite-10k.png",
-	"added_date": "2025-09-19"
+	"added_date": "2025-09-19",
+	"contributor": "ICON Lab",
+	"contributor_url": "https://intelconstructlab.github.io/"
   }, 
     "Rohbau3D": {
     "name": "Rohbau3D Dataset",
