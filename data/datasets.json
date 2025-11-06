@@ -1634,8 +1634,7 @@
     "annotation_types": [
 	"Image caption",
 	"Bounding boxes",
-	"Multiple choices",
-	"One or two sentences"
+	"Multiple choices and answers"
     ],
     "geographical_location": "Not Specified",
     "potential_tasks": [
