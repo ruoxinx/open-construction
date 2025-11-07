@@ -721,7 +721,9 @@
     "paper": "SHEL5K: An Extended Dataset and Benchmarking for Safety Helmet Detection",
     "access": "https://data.mendeley.com/datasets/9rcv8mm682/4",
     "id": "SHEL5K",
-    "image_url": "assets/img/datasets/SHEL5K.png"
+    "image_url": "assets/img/datasets/SHEL5K.png",
+	"contributor": "Munkhjargal Gochoo",
+	"contributor_url": "https://moyog.github.io/"
   },
   "Construction-Site-Segmentation": {
     "name": "construction-site-segmentation dataset",
