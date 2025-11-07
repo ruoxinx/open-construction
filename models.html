@@ -544,6 +544,7 @@ function applyFilters(){
   let rows = MODELS.filter(m=>{
     const text = [
       m.title,
+	  (m.authors || []).join(' '),
       (m.tasks_pretty||[]).join(' '),
       (m.applications_pretty||[]).join(' '),
       (m.data_modalities||[]).join(' '),
