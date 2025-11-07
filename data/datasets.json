@@ -1464,7 +1464,7 @@
     "image_url": "assets/img/datasets/VL-Con.png"
   },
   "Object-Detection-Construction": {
-    "name": "Object Detection at Construction Sites",
+    "name": "Object Detection for Earthwork Construction Sites",
 	"authors": "JongHo Na, JaeKang Lee, HyuSoung Shin, IlDong Yun",
 	"doi": "https://doi.org/10.3390/app15169000",
     "year": 2024,
