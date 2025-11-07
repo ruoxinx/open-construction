@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Concrete crack dataset for beam and column]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=concrete-crack</link>
+    <guid isPermaLink="false">datasets:concrete-crack:2025-11-7</guid>
+    <pubDate>Fri, 07 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BIMNet: Dataset and benchmark for as-built BIM reconstruction from real-world point cloud]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BIMNet</link>
     <guid isPermaLink="false">datasets:BIMNet:2025-11-6</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:masonry-cc:2025-11-2</guid>
     <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Changing climatic conditions are contributing to faster deterioration of building fabric. Increasing number of heavy rainfall events can particularly affect historic and Cultural Heritage (CH) buildings. These evolving and uncertain circumstances demand more frequent survey of building fabric to ensure satisfactory repair and maintenance. However, traditional fabric surveys have been shown to lack efficiency, accuracy and objectivity, hindering essential repair operations. The recent development of reality capture technologies, together with the development of algorithms to effectively process the acquired data, offers the promise of transformation of surveying methods. This paper presents an original algorithm for automatic segmentation of individual masonry units and mortar regions in digitised rubble stone constructions, using geometrical and colour data acquired by Terrestrial Laser Scanning (TLS) devices. The algorithm is based on the 2D Continuous Wavelet Transform (CWT), and uniquely it does not require the wall to be flat or plumb. This characteristic is important because historic structures, in particular, commonly present non-negligible levels of bow, waviness and out-of-verticality. The method is validated through experiments undertaken using data from two relevant and highly significant Scottish CH buildings. The value of such segmentation to building surveying and maintenance regimes is also further demonstrated with application in automated and accurate measurement of mortar recess and pinning. Overall, the results demonstrate the value of the automatic segmentation of masonry units towards more comprehensive and accurate surveys.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: 4-Plane congruent sets for automatic registration of as-is 3D point clouds with 3D BIM models]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:4PlCS:2025-11-2</guid>
-    <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Construction quality and progress control are demanding, yet critical construction activities. Building Information Models and as-built scanned data can be used in Scan-vs-BIM processes to effectively and comprehensively support these activities. This however requires accurate registration of scanned point clouds with 3D (BIM) models. Automating such registration remains a challenge in the context of the built environment, because as-built can be incomplete and/or contain data from non-model objects, and construction buildings and other structures often present symmetries and self-similarities that are very challenging to registration.  In this paper, we present a novel automatic coarse registration method that is an adaptation of the ‘4 Points Congruent Set’ algorithm to the use of planes; we call it the ‘4-Plane Congruent Set’ (4-PlCS) algorithm. The approach is further integrated in a software system that delivers not one but a ranked list of the most likely transformations, so to allow the user to quickly select the correct transformation, if need be. Two variants of the method are also considered, in particular one in the case when the vertical axis is known a priori; we call that method the 4.5-PlCS method. The proposed algorithm is tested using five different datasets, including three simulated and two real-life ones. The results show the effectiveness of the proposed method, where the correct transformation always ranks very high (in our experiments, first or second), and is extremely close to the ground-truth transformation. Experimental comparison of the proposed approach with a standard, more intuitive approach based on finding 3-plane congruent sets shows the discriminatory power of 4-plane bases over 3-plane bases, albeit at no clear benefits in terms of computational time. The experimental results for the 4.5-PlCS method show that it delivers a non-negligible reduction in computational time (approx. 20%), but at no additional benefit in terms of effectiveness in finding the correct transformation.]]></description>
   </item>
   </channel>
 </rss>
