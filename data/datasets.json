@@ -1531,7 +1531,9 @@
     "paper": "Utilizing synthetic images to enhance the automated recognition of small-sized construction tools",
     "access": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images",
     "id": "Small-Construction-Tools",
-    "image_url": "assets/img/datasets/Small-Construction-Tools.png"
+    "image_url": "assets/img/datasets/Small-Construction-Tools.png",
+	"contributor": "Choongwan Koo",
+	"contributor_url": "https://github.com/SenseableSpace/Detection-Small-Construction-Tools-Synthetic-Images"
   },
     "Stirrup-Rebar": {
     "name": "Stirrup Rebar Segmentation Dataset",
