@@ -241,5 +241,14 @@
     "link_url": "https://civil.seu.edu.cn/wq2/list.htm#20",
     "image": "https://civil.seu.edu.cn/_upload/article/images/d8/75/757f524e4c06898e924775bb63ac/70948c6b-8bb5-4a95-a91d-c2a2888d2ef4_s.jpg",
     "type": "person"
+  },
+   {
+    "id": "Alexandre-Almeida",
+    "name": "Alexandre Almeida Del Savio",
+    "role": "Dataset Contributor",
+    "affiliation": "Universidad de Lima (Peru)",
+    "link_url": "https://cris.ulima.edu.pe/en/persons/alexandre-almeida-del-savio/",
+    "image": "https://cris.ulima.edu.pe/files-asset/12789792/232438.jpg?w=320&f=webp",
+    "type": "person"
   }
 ]
