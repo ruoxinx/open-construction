@@ -2505,7 +2505,7 @@
   "license": "CC BY-NC-SA 4.0",
   "paper": "Dataset for training neural networks in concrete crack detection: laboratory-classified beam and column images",
   "access": "https://repositorio.ulima.edu.pe/handle/20.500.12724/19856",
-  "id": "concrete-crack",
+  "id": "concrete-crack-lab",
   "image_url": "assets/img/datasets/concrete-crack-lab.png",
   "added_date": "2025-11-7",
   "contributor": "Alexandre Almeida Del Savio",
