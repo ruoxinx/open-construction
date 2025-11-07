@@ -1,251 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Community</title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-
-  <style>
-    /* ---------- DESIGN TOKENS ---------- */
-    :root{
-      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
-      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
-      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-    }
-    html,body{background:var(--oc-bg);color:var(--oc-text);}
-    a{color:var(--oc-link);}
-    .oc-container{max-width:1080px;}
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px);border-bottom:1px solid var(--oc-border)!important;}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem);}
-    .brand-wordmark .oc-construction{font-weight:800;}
-    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);}
-    .navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px;}
-    .hero{background:#fff;border-bottom:1px solid var(--oc-border);}
-    .hero .content{padding:56px 0;text-align:center;}
-    .hero h1{font-weight:800;font-size:clamp(1.6rem,1.1rem + 2vw,2.2rem);}
-    .hero p.lead{max-width:70ch;margin:0 auto;color:var(--oc-subtle);}
-    .oc-section{margin-top:34px;}
-    .oc-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);}
-    .person-card .card-body{padding:1rem 1.1rem;}
-    .headshot{width:86px;height:86px;object-fit:cover;border-radius:50%;border:2px solid rgba(0,0,0,.03);box-shadow:0 4px 12px rgba(0,0,0,.06);}
-    .headshot.is-initials{display:grid;place-items:center;background:#eef3f8;color:var(--oc-ink);font-weight:800;}
-    .person-card .card-title{font-weight:700;}
-    .person-card .role{font-size:.82rem;color:var(--oc-subtle);}
-    .person-card .affil{font-size:.9rem;}
-    .oc-kicker{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--oc-subtle);}
-    footer{background:#fff;}
-
-    /* --- Carousel --- */
-    .occ-carousel{position:relative;background:#fff;border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:14px 44px;}
-    .occ-viewport{overflow:hidden;}
-    .occ-track{display:flex;gap:0;will-change:transform;}
-    .occ-slide{flex:0 0 100%;padding:2px;}
-    .occ-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:36px;height:36px;border-radius:999px;border:1px solid var(--oc-border);background:#fff;box-shadow:var(--oc-shadow);font-weight:800;color:var(--oc-ink);display:grid;place-items:center;}
-    .occ-btn:hover{filter:brightness(1.02);}
-    .occ-btn.prev{left:8px;} .occ-btn.next{right:8px;}
-    .occ-dots{display:flex;gap:8px;justify-content:center;}
-    .occ-dots button{width:10px;height:10px;border-radius:999px;border:0;background:#d9e3ee;}
-    .occ-dots button[aria-selected="true"]{background:var(--oc-accent);width:28px;border-radius:8px;}
-    .occ-progress{height:6px;background:#eef3f8;border-radius:999px;overflow:hidden;}
-    .occ-progress .bar{height:100%;width:0%;background:var(--oc-ink);opacity:.25;}
-
-    /* --- A–Z Toolbar --- */
-    .oc-az .btn{border:1px solid var(--oc-border);background:#fff;font-weight:700;padding:.25rem .5rem;}
-    .oc-az .btn.active,.oc-az .btn:hover{background:#f6f9fc;border-color:#dbe6ef;}
-    .oc-az .btn-muted{opacity:.45;pointer-events:none;}
-  </style>
-</head>
-
-<body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
-  <div class="container oc-container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" style="height:40px">
-      <span class="brand-wordmark"><span class="oc-open">Open</span>·<span class="oc-construction">Construction</span></span>
-    </a>
-    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMain"><span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navMain">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html" aria-current="page">Community</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero -->
-<header class="hero">
-  <div class="container oc-container content">
-    <h1>Community & Collaboration</h1>
-    <p class="lead">Building an <span class="hl">open-science</span> community for <span class="hl">AI in Construction</span>.</p>
-  </div>
-</header>
-
-<main class="container oc-container my-4">
-  <!-- Core Team -->
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Team</div>
-    <div class="row g-4">
-      <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100"><div class="card-body d-flex gap-3">
-          <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="">
-          <div><h5 class="card-title mb-1">Ruoxin Xiong</h5><div class="role">Assistant Professor</div><div class="affil">Kent State University</div></div>
-        </div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contributors -->
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Contributors</div>
-
-    <!-- A–Z toolbar -->
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <div class="btn-group oc-az" id="occAZ" role="tablist" aria-label="Jump by initial"></div>
-      <div class="small text-muted" id="occAZMeta" aria-live="polite"></div>
-    </div>
-
-    <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
-      <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
-      <div class="occ-viewport" aria-live="polite">
-        <div class="row g-4" id="contributorsGrid"></div>
-      </div>
-      <button class="occ-btn next" aria-label="Next page" title="Next">›</button>
-      <div class="occ-dots mt-2" id="occDots" role="tablist"></div>
-      <div class="occ-progress mt-1"><div class="bar" id="occBar"></div></div>
-    </div>
-  </section>
-</main>
-
-<footer class="py-4 mt-4 border-top text-center small text-muted">© <span id="yearNow"></span> OpenConstruction</footer>
-<script>document.getElementById('yearNow').textContent=new Date().getFullYear();</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- JSON + Carousel + A–Z -->
 <script>
 (async function(){
-  const JSON_URL='data/contributors.json';
-  const GRID_ID='contributorsGrid',WRAP_ID='occContrib',DOTS_ID='occDots',BAR_ID='occBar';
-  const AZ_ID='occAZ',AZ_META='occAZMeta',PAGE_SIZE=9;
+  // ===== Config (unchanged sizes/layout) =====
+  const JSON_URL = 'data/contributors.json';
+  const GRID_ID  = 'contributorsGrid';
+  const WRAP_ID  = 'occContrib';
+  const DOTS_ID  = 'occDots';
+  const BAR_ID   = 'occBar';
+  const AZ_ID    = 'occAZ';
+  const AZ_META  = 'occAZMeta';
 
-  const $wrap=document.getElementById(WRAP_ID),$grid=document.getElementById(GRID_ID),
-        $dots=document.getElementById(DOTS_ID),$bar=document.getElementById(BAR_ID),
-        $az=document.getElementById(AZ_ID),$meta=document.getElementById(AZ_META);
-  if(!$wrap||!$grid)return;
-  const viewport=$wrap.querySelector('.occ-viewport');
+  // Keep exactly 9 cards per page on desktop (3x3 look). No visual size changes.
+  const PAGE_SIZE = 9;
 
-  const byLast=n=>{if(!n)return'';const s=n.trim();if(s.includes(','))return s.toLowerCase();const p=s.split(/\s+/);return(p[p.length-1]+' '+s).toLowerCase();};
-  const chunk=(a,n)=>{const o=[];for(let i=0;i<a.length;i+=n)o.push(a.slice(i,i+n));return o;};
-  const initials=name=>(name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
+  // ===== DOM =====
+  const $wrap = document.getElementById(WRAP_ID);
+  const $grid = document.getElementById(GRID_ID);
+  const $dots = document.getElementById(DOTS_ID);
+  const $bar  = document.getElementById(BAR_ID);
+  const $az   = document.getElementById(AZ_ID);
+  const $meta = document.getElementById(AZ_META);
+  if(!$wrap || !$grid) return;
+  const viewport = $wrap.querySelector('.occ-viewport');
+
+  // ===== Helpers =====
+  const byLast = n => {
+    if(!n) return '';
+    const s=n.trim();
+    if(s.includes(',')) return s.toLowerCase();
+    const p=s.split(/\s+/), last=p[p.length-1]||'';
+    return (last+' '+s).toLowerCase();
+  };
+  const chunk = (a,n)=>{ const o=[]; for(let i=0;i<a.length;i+=n) o.push(a.slice(i,i+n)); return o; };
+  const initials = name => (name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
 
   function cardHTML(c){
-    const img=c.image?`<img class="headshot" src="${c.image}" alt="">`:`<div class="headshot is-initials">${initials(c.name)}</div>`;
-    const body=`<div class="card oc-card person-card h-100"><div class="card-body d-flex gap-3">${img}
-    <div><h5 class="card-title mb-1">${c.name||''}</h5><div class="role">${c.role||''}</div><div class="affil">${c.affiliation||''}</div></div></div></div>`;
-    return c.link_url?`<div class="col-md-6 col-xl-4"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${body}</a></div>`:`<div class="col-md-6 col-xl-4">${body}</div>`;
+    const img = c.image
+      ? `<img class="headshot" src="${c.image}" alt="">`
+      : `<div class="headshot is-initials">${initials(c.name)}</div>`;
+    const inner = `
+      <div class="card oc-card person-card h-100">
+        <div class="card-body d-flex gap-3">
+          ${img}
+          <div>
+            <h5 class="card-title mb-1">${c.name||''}</h5>
+            <div class="role">${c.role||''}</div>
+            <div class="affil">${c.affiliation||''}</div>
+          </div>
+        </div>
+      </div>`;
+    return c.link_url
+      ? `<div class="col-md-6 col-xl-4"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${inner}</a></div>`
+      : `<div class="col-md-6 col-xl-4">${inner}</div>`;
   }
 
-  // load data
+  // ===== Load JSON =====
   let rows=[];
-  try{const r=await fetch(JSON_URL,{cache:'no-store'});if(!r.ok)throw 0;rows=await r.json();}catch{ $grid.innerHTML='<p>Load error.</p>';return; }
+  try{
+    const r=await fetch(JSON_URL,{cache:'no-store'});
+    if(!r.ok) throw 0;
+    rows = await r.json();
+  }catch{
+    $grid.innerHTML='<p class="text-muted">Could not load contributors.</p>';
+    return;
+  }
 
-  const people=rows.filter(r=>(r.type||'person')!=='org').sort((a,b)=>byLast(a.name).localeCompare(byLast(b.name)));
-  const orgs=rows.filter(r=>(r.type||'person')==='org').sort((a,b)=>(a.name||'').localeCompare(b.name||'')); 
-  const DATA=people.concat(orgs);
+  // Sort: people (A→Z by last name) then orgs (A→Z)
+  const people = rows.filter(r => (r.type||'person') !== 'org').sort((a,b)=>byLast(a.name).localeCompare(byLast(b.name)));
+  const orgs   = rows.filter(r => (r.type||'person') === 'org').sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const DATA   = people.concat(orgs);
 
-  $grid.innerHTML=DATA.map(cardHTML).join('');
-  const ALL_NODES=Array.from($grid.children);$grid.remove();
+  // Initial render (DOM nodes we will reuse)
+  $grid.innerHTML = DATA.map(cardHTML).join('');
+  const ALL_NODES = Array.from($grid.children);
+  $grid.remove();
 
-  // build A–Z
-  const byLetter=new Map();
-  ALL_NODES.forEach(n=>{
-    const name=(n.querySelector('.card-title')?.textContent||'').trim();
-    const L=(name.match(/[A-Za-z]/)?name[0].toUpperCase():'#');
-    if(!byLetter.has(L))byLetter.set(L,[]);
-    byLetter.get(L).push(n);
+  // ===== Build A–Z from current names (Bootstrap buttons only) =====
+  const byLetter = new Map();
+  ALL_NODES.forEach(el=>{
+    const name=(el.querySelector('.card-title')?.textContent||'').trim();
+    const first = (name.match(/[A-Za-z]/)?.[0] || '#').toUpperCase();
+    if(!byLetter.has(first)) byLetter.set(first, []);
+    byLetter.get(first).push(el);
   });
 
   function buildAZ(){
-    const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    $az.innerHTML='';
-    const mk=(ch,en=true)=>{
-      const b=document.createElement('button');
-      b.type='button';b.className='btn btn-sm'+(en?'':' btn-muted');
-      b.textContent=ch;b.dataset.az=ch;
-      if(en)b.onclick=()=>setFilter(ch);
+    if(!$az) return;
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    $az.innerHTML = '';
+
+    // helper to add a button
+    const addBtn = (label, value, enabled=true) => {
+      const b = document.createElement('button');
+      b.type='button';
+      b.className = 'btn btn-sm btn-outline-secondary' + (enabled ? '' : ' disabled');
+      b.textContent = label;
+      b.dataset.az = value;
+      if(enabled) b.addEventListener('click',()=>setFilter(value));
       $az.appendChild(b);
     };
-    mk('All',true);
-    letters.forEach(ch=>mk(ch,byLetter.has(ch)));
-    if(byLetter.has('#'))mk('#',true);
-    $az.querySelector('[data-az="All"]').classList.add('active');
+
+    addBtn('All', '*', true);
+    letters.forEach(ch => addBtn(ch, ch, byLetter.has(ch)));
+    if(byLetter.has('#')) addBtn('#', '#', true);
+
+    // mark All active
+    $az.querySelector('[data-az="*"]').classList.add('active');
   }
 
-  const track=document.createElement('div');track.className='occ-track';viewport.appendChild(track);
-  let pool=ALL_NODES.slice(),slides=[],current=1;
+  // ===== Carousel (uses your existing .occ-track/.occ-slide CSS) =====
+  const track = document.createElement('div');
+  track.className = 'occ-track';
+  viewport.appendChild(track);
+
+  let pool = ALL_NODES.slice(); // current filtered set
+  let slides = [], current = 1;
 
   function updateMeta(){
-    if(!$meta)return;
-    const total=pool.length,start=(current-1)*PAGE_SIZE+1,end=Math.min(current*PAGE_SIZE,total);
-    $meta.textContent=total?`Showing ${start}–${end} of ${total}`:'No contributors';
+    if(!$meta) return;
+    const total = pool.length;
+    const start = (current-1)*PAGE_SIZE + 1;
+    const end   = Math.min(current*PAGE_SIZE, total);
+    $meta.textContent = total ? `Showing ${start}–${end} of ${total}` : 'No contributors';
   }
 
   function buildDots(){
-    $dots.innerHTML='';
+    if(!$dots) return; $dots.innerHTML='';
     slides.forEach((_,i)=>{
       const b=document.createElement('button');
-      b.type='button';b.setAttribute('role','tab');
+      b.type='button';
+      b.setAttribute('role','tab');
       b.setAttribute('aria-label',`Page ${i+1}`);
-      if(i+1===current)b.setAttribute('aria-selected','true');
-      b.onclick=()=>goTo(i+1,true);
+      if(i+1===current) b.setAttribute('aria-selected','true');
+      b.addEventListener('click',()=>goTo(i+1,true));
       $dots.appendChild(b);
     });
   }
   function updateDots(){
-    Array.from($dots.children).forEach((b,i)=>{if(i+1===current)b.setAttribute('aria-selected','true');else b.removeAttribute('aria-selected');});
+    if(!$dots) return;
+    Array.from($dots.children).forEach((b,i)=>{
+      if(i+1===current) b.setAttribute('aria-selected','true');
+      else b.removeAttribute('aria-selected');
+    });
   }
   function updateBar(){
-    const t=Math.max(1,slides.length),pct=((current-1)/(t-1||1))*100;
-    $bar.style.width=(t===1?'100%':pct+'%');
+    if(!$bar) return;
+    const total=Math.max(1,slides.length);
+    const pct=((current-1)/(total-1||1))*100;
+    $bar.style.width = (total===1 ? '100%' : pct+'%');
   }
-  function goTo(p,ani=true){
-    current=Math.max(1,Math.min(p,slides.length||1));
-    track.style.transition=ani?'transform .35s ease':'none';
-    track.style.transform=`translateX(${(current-1)*-100}%)`;
-    updateDots();updateBar();updateMeta();
+  function goTo(page, animate=true){
+    current = Math.max(1, Math.min(page, slides.length||1));
+    const xPct = (current-1) * -100;
+    track.style.transition = animate ? 'transform .35s ease' : 'none';
+    track.style.transform  = `translateX(${xPct}%)`;
+    updateDots(); updateBar(); updateMeta();
   }
   function buildSlides(){
-    track.innerHTML='';slides=[];
-    const groups=chunk(pool,PAGE_SIZE);
+    track.innerHTML=''; slides=[];
+    const groups = chunk(pool, PAGE_SIZE);
     groups.forEach(g=>{
-      const s=document.createElement('div');s.className='occ-slide';
-      const r=document.createElement('div');r.className='row g-4';
+      const s=document.createElement('div'); s.className='occ-slide';
+      const r=document.createElement('div'); r.className='row g-4';
       g.forEach(n=>r.appendChild(n));
-      s.appendChild(r);track.appendChild(s);slides.push(s);
+      s.appendChild(r); track.appendChild(s); slides.push(s);
     });
-    buildDots();goTo(1,false);
+    buildDots(); goTo(1,false);
   }
-  function setFilter(L){
-    $az.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
-    const btn=$az.querySelector(`[data-az="${L}"]`);if(btn)btn.classList.add('active');
-    pool=(L==='All')?ALL_NODES.slice():(byLetter.get(L)||[]);
-    current=1;buildSlides();
+  function setFilter(letter){
+    // update toolbar button states (Bootstrap only)
+    $az.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    const btn = $az.querySelector(`[data-az="${letter}"]`);
+    if(btn) btn.classList.add('active');
+
+    pool = (letter==='*') ? ALL_NODES.slice() : (byLetter.get(letter) || []);
+    current = 1;
+    buildSlides();
   }
 
+  // Buttons
   $wrap.querySelector('.occ-btn.prev')?.addEventListener('click',()=>goTo(current-1,true));
   $wrap.querySelector('.occ-btn.next')?.addEventListener('click',()=>goTo(current+1,true));
-  buildAZ();buildSlides();
+
+  // Init
+  buildAZ();
+  buildSlides();
 })();
 </script>
-</body>
-</html>
