@@ -221,7 +221,9 @@
     "paper": "Development of an image data set of construction machines for deep learning object detection",
     "access": "https://www.acidb.ca/",
     "id": "ACID",
-    "image_url": "assets/img/datasets/ACID.png"
+    "image_url": "assets/img/datasets/ACID.png",
+	"contributor": "ACID Group",
+	"contributor_url": "https://www.acidb.net/people"
   },
   "Construction-Equipment-Pose": {
     "name": "Construction equipment pose dataset",
