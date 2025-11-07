@@ -1009,13 +1009,64 @@ else img.addEventListener('load', done, {once:true});
   $wrap.querySelector('.occ-btn.next')?.addEventListener('click',()=>goTo(current+1,true));
 
   // drag/swipe
-  (function enableDrag(){
-    let down=false, startX=0, startTx=0;
-    const getTx=()=>{const m=(track.style.transform||'').match(/translateX\((-?\d+(?:\.\d+)?)%\)/);return m?parseFloat(m[1]):0;};
-    track.addEventListener('pointerdown',e=>{down=true;startX=e.clientX;startTx=getTx();track.setPointerCapture(e.pointerId);track.style.transition='none';});
-    track.addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-startX;const pct=(dx/viewport.clientWidth)*100;track.style.transform=`translateX(${startTx + pct}%)`;});
-    track.addEventListener('pointerup',()=>{if(!down)return;down=false;const idx=Math.round(-getTx()/100)+1;goTo(idx,true);});
-    track.addEventListener('pointercancel',()=>{down=false;});
+(function enableDrag(){
+    let down = false, startX = 0, startTx = 0, isDragging = false;
+
+    const viewport = document.querySelector('#occContrib .occ-viewport');
+    const track    = document.querySelector('#occContrib .occ-track');
+
+    if (!viewport || !track) return;
+
+    const getTx = () => {
+      const m = (track.style.transform || '').match(/translateX\((-?\d+(?:\.\d+)?)%\)/);
+      return m ? parseFloat(m[1]) : 0;
+    };
+
+    track.addEventListener('pointerdown', e => {
+      // Don’t hijack clicks on links, buttons, inputs, etc.
+      if (e.button !== 0) return; // left button only
+      if (e.target.closest('a, button, input, textarea, select, label')) return;
+
+      down = true;
+      isDragging = false;
+      startX = e.clientX;
+      startTx = getTx();
+      track.setPointerCapture(e.pointerId);
+      track.style.transition = 'none';
+    });
+
+    track.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+
+      // If the user moves more than a few pixels, treat it as a drag
+      if (Math.abs(dx) > 5) isDragging = true;
+
+      const pct = (dx / viewport.clientWidth) * 100;
+      track.style.transform = `translateX(${startTx + pct}%)`;
+    });
+
+    function endDrag(e){
+      if (!down) return;
+      down = false;
+
+      try { track.releasePointerCapture(e.pointerId); } catch {}
+
+      // Snap to the nearest slide only if it was actually a drag
+      if (isDragging) {
+        const tx = getTx();
+        const idx = Math.round(-tx / 100) + 1;
+        // goTo is already in scope from your script
+        window.requestAnimationFrame(() => goTo(idx, true));
+      } else {
+        // Let the click pass through (no snapping on simple taps)
+        // No preventDefault here, so anchor clicks work.
+      }
+    }
+
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('pointerleave', endDrag);
   })();
 
   window.addEventListener('resize', ()=>{ /* keep cards’ size; page size fixed */ goTo(current,false); });
