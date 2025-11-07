@@ -1,0 +1,263 @@
+[
+  {
+    "id": "tao-sun",
+    "name": "Tao Sun",
+    "role": "Dataset Contributor",
+    "affiliation": "McGill University (Canada)",
+    "link_url": "https://github.com/tsrobcvai",
+    "image": "https://github.com/tsrobcvai.png?size=160",
+    "type": "person"
+  },
+  {
+    "id": "abdirahman-bashir-ahmed",
+    "name": "Abdirahman Bashir Ahmed",
+    "role": "Feature Suggestion Contributor",
+    "affiliation": "Benadir University (Somalia)",
+    "link_url": "https://www.linkedin.com/in/abdirahman-bashir-ahmed-81544a296/",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+  {
+    "id": "syed-haseeb-shah",
+    "name": "Syed Haseeb Shah",
+    "role": "Model Contributor",
+    "affiliation": "Kyung Hee University (South Korea)",
+    "link_url": "https://github.com/QuantumNovice",
+    "image": "https://github.com/QuantumNovice.png?size=160",
+    "type": "person"
+  },
+  {
+    "id": "maghsood-salimi",
+    "name": "Maghsood Salimi",
+    "role": "Dataset Contributor",
+    "affiliation": "Mälardalen University (Sweden)",
+    "link_url": "https://github.com/MaghsoodSalimi",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+  {
+    "id": "mohammad-loni",
+    "name": "Mohammad Loni",
+    "role": "Dataset Contributor",
+    "affiliation": "Volvo Construction Equipment (Sweden)",
+    "link_url": "https://www.linkedin.com/in/mohammad-loni/?originalSubdomain=se",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+  {
+    "id": "hic-lab",
+    "name": "HIC Lab",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "The Hong Kong University of Science and Technology (HK)",
+    "link_url": "https://github.com/yantaolab",
+    "image": "https://github.com/yantaolab.png?size=160",
+    "type": "org"
+  },
+  {
+    "id": "xing-liang",
+    "name": "Xing Liang",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "The University of Osaka (Japan)",
+    "link_url": "https://github.com/RogerLiang0725",
+    "image": "https://github.com/RogerLiang0725.png?size=160",
+    "type": "person"
+  },
+  {
+    "id": "ahmet-bahaddin-ersoz",
+    "name": "Ahmet Bahaddin Ersoz",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Middle East Technical University (Türkiye)",
+    "link_url": "https://ahmetersoz.com/",
+    "image": "https://ahmetersoz.com/pp.jpeg",
+    "type": "person"
+  },
+  {
+    "id": "cyberbuild-lab",
+    "name": "CyberBuild Lab",
+    "role": "Model Contributor",
+    "affiliation": "University of Edinburgh (UK)",
+    "link_url": "https://github.com/CyberbuildLab",
+    "image": "https://github.com/CyberbuildLab.png?size=160",
+    "type": "org"
+  },
+  {
+    "id": "yucheng-wang",
+    "name": "Yucheng Wang",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "https://github.com/YuchenWang1",
+    "image": "https://github.com/YuchenWang1.png?size=160",
+    "type": "person"
+  },
+  {
+    "id": "yanjie-zhu",
+    "name": "Yanjie Zhu",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "https://tc.seu.edu.cn/zyj/main.psp",
+    "image": "https://tc.seu.edu.cn/_upload/article/images/cc/66/073c46bd484881bc8529bfd4822d/9beea999-145b-4e36-b4b0-0f69feb4608c.png",
+    "type": "person"
+  },
+  {
+    "id": "wen-xiong",
+    "name": "Wen Xiong",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "https://tc.seu.edu.cn/xw/main.psp",
+    "image": "https://tc.seu.edu.cn/_upload/article/images/23/0b/949bf0eb415ab9a4f2c87ceef028/dc3049ba-6724-4e11-8417-c4e602559d8d.jpg",
+    "type": "person"
+  },
+  {
+    "id": "cs-cai",
+    "name": "C.S. Cai",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "https://tc.seu.edu.cn/ccs/main.psp",
+    "image": "https://tc.seu.edu.cn/_upload/article/images/ae/eb/07488b374e63bc0341fe6fa1de9e/b173dd51-5776-4983-9e69-f06aab56b7a5.jpg",
+    "type": "person"
+  },
+  {
+    "id": "yu-zhang-lboro",
+    "name": "Yu Zhang",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Loughborough University (UK)",
+    "link_url": "https://github.com/RainGo111",
+    "image": "https://github.com/RainGo111.png?size=160",
+    "type": "person"
+  },
+  {
+    "id": "long-chen",
+    "name": "Long Chen",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "City University of Hong Kong (HK)",
+    "link_url": "https://scholars.cityu.edu.hk/en/persons/longchen/",
+    "image": "https://scholars.cityu.edu.hk/files-asset/307582002/CHEN_Long-2025.jpg?w=320&f=webp",
+    "type": "person"
+  },
+  {
+    "id": "ciber-lab",
+    "name": "CIBER Lab",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "University of Colorado Boulder (US)",
+    "link_url": "https://www.colorado.edu/ceae/amir-behzadan",
+    "image": "https://github.com/ciber-lab.png?size=160",
+    "type": "org"
+  },
+  {
+    "id": "mlstruct-research-group",
+    "name": "MLSTRUCT Research Group",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "University of Chile (Chile)",
+    "link_url": "https://mlstruct.ppizarror.com/",
+    "image": "https://github.com/MLSTRUCT.png?size=160",
+    "type": "org"
+  },
+  {
+    "id": "pablo-n-pizarro",
+    "name": "Pablo N. Pizarro",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "University of Chile (Chile)",
+    "link_url": "https://ppizarror.com/?lang=en",
+    "image": "https://avatars0.githubusercontent.com/u/12925256",
+    "type": "person"
+  },
+  {
+    "id": "xuzhong-yan",
+    "name": "Xuzhong Yan",
+    "role": "Dataset Contributor",
+    "affiliation": "Zhejiang University of Technology (China)",
+    "link_url": "http://www.homepage.zjut.edu.cn/yxz1/",
+    "image": "https://homepage.zjut.edu.cn/_upload/article/images/c3/da/240b1f154cbdb533c1905a072d4a/fa3ea3ed-80f8-4f01-962d-f0c816cbf1d2_s.jpg",
+    "type": "person"
+  },
+  {
+    "id": "icon-lab",
+    "name": "ICON Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "Columbia University (US)",
+    "link_url": "https://intelconstructlab.github.io/",
+    "image": "https://intelconstructlab.github.io/image/icons/favicon.png",
+    "type": "org"
+  },
+  {
+    "id": "bimnet-team",
+    "name": "BIMNet team",
+    "role": "Dataset Contributor",
+    "affiliation": "Tsinghua University (China)",
+    "link_url": "https://thucbims.github.io/bimnet.thucbims.github.io/",
+    "image": "https://thucbims.github.io/bimnet.thucbims.github.io/image/icon.png",
+    "type": "org"
+  },
+  {
+    "id": "construction-api-lab",
+    "name": "Construction API Lab",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "National Taiwan University (Taiwan)",
+    "link_url": "https://con-api.team/",
+    "image": "https://con-api.team/wp-content/uploads/2025/04/cropped-Web-Logo-150x150.png",
+    "type": "org"
+  },
+  {
+    "id": "munkhjargal-gochoo",
+    "name": "Munkhjargal Gochoo",
+    "role": "Dataset Contributor",
+    "affiliation": "United Arab Emirates University (UAE)",
+    "link_url": "https://moyog.github.io/index.html#home",
+    "image": "https://moyog.github.io/images/home/1.png",
+    "type": "person"
+  },
+  {
+    "id": "mingzhu-wang",
+    "name": "Mingzhu Wang",
+    "role": "Dataset Contributor",
+    "affiliation": "City University of Hong Kong (HK)",
+    "link_url": "https://scholars.cityu.edu.hk/en/persons/mwang489/",
+    "image": "https://scholars.cityu.edu.hk/files-asset/194141571/Mingzhu_smaller.jpeg?w=320&f=webp",
+    "type": "person"
+  },
+  {
+    "id": "bo-xiao",
+    "name": "Bo Xiao",
+    "role": "Dataset Contributor",
+    "affiliation": "Michigan Technological University (US)",
+    "link_url": "https://bxiao2.wixsite.com/my-site/",
+    "image": "https://static.wixstatic.com/media/ad503c_577c7a54ddd949058c21b583f217b7ae~mv2.jpg/v1/crop/x_0,y_183,w_4386,h_6214/fill/w_432,h_612,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Pic3.jpg",
+    "type": "person"
+  },
+  {
+    "id": "acid-group",
+    "name": "ACID Group",
+    "role": "Dataset Contributor",
+    "affiliation": "",
+    "link_url": "https://www.acidb.net/people",
+    "image": "assets/img/institutions/ACID.png",
+    "type": "org"
+  },
+  {
+    "id": "choongwan-koo",
+    "name": "Choongwan Koo",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Incheon National University (South Korea)",
+    "link_url": "https://archi.inu.ac.kr/profl/archi_eng/1503/6383/artclView.do",
+    "image": "https://archi.inu.ac.kr/sites/archi_eng/atchmnfl/profl/1503/temp_20200608_1591575873680100.tmp.jpg",
+    "type": "person"
+  },
+  {
+    "id": "hongzhe-yue",
+    "name": "Hongzhe Yue",
+    "role": "Dataset Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "mailto:230248218@seu.edu.cn",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+  {
+    "id": "qian-wang",
+    "name": "Qian Wang",
+    "role": "Dataset Contributor",
+    "affiliation": "Southeast University (China)",
+    "link_url": "https://civil.seu.edu.cn/wq2/list.htm#20",
+    "image": "https://civil.seu.edu.cn/_upload/article/images/d8/75/757f524e4c06898e924775bb63ac/70948c6b-8bb5-4a95-a91d-c2a2888d2ef4_s.jpg",
+    "type": "person"
+  }
+]
