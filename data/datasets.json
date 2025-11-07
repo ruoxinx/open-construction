@@ -1464,7 +1464,7 @@
     "image_url": "assets/img/datasets/VL-Con.png"
   },
   "Object-Detection-Construction": {
-    "name": "Object Detection for Earthwork Construction Sites",
+    "name": "Construction Earthwork Site Dataset",
 	"authors": "JongHo Na, JaeKang Lee, HyuSoung Shin, IlDong Yun",
 	"doi": "https://doi.org/10.3390/app15169000",
     "year": 2024,
@@ -1485,7 +1485,7 @@
 	"Tower crane",
 	"Mobile crane"
 	],
-    "resolution": "Not Specified",
+    "resolution": "1920×1080",
     "annotation_types": [
       "Bounding boxes"
     ],
