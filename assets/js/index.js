@@ -336,11 +336,32 @@ function applyFilters(){
     const dsModKeys = Array.isArray(ds._mod_keys) ? ds._mod_keys : (ds.data_modality ? [normKey(ds.data_modality)] : []);
 
     if (f.q){
-      const clsStr = dsClassKeys.join(' ');
-      const tskStr = dsTaskKeys.join(' ');
-      const licStr = dsLicenseRaw.toLowerCase();
-      if (!(dsName.toLowerCase().includes(f.q) || licStr.includes(f.q) || clsStr.includes(f.q) || tskStr.includes(f.q))) return false;
-    }
+	  
+	  const clsStr = dsClassKeys.join(' ');
+	  const tskStr = dsTaskKeys.join(' ');
+	  const licStr = dsLicenseRaw.toLowerCase();
+
+	  
+	  const authorsStr =
+		Array.isArray(ds.authors) ? ds.authors.join(' ')
+		: (typeof ds.authors === 'string' ? ds.authors : '');
+
+	  // NEW: common paper-title fields (safe if missing)
+	  const paperTitle = (ds.paper_title || ds.title || '');
+
+	  // Single haystack (lowercased once)
+	  const hay = [
+		dsName,
+		authorsStr,
+		paperTitle,
+		licStr,
+		clsStr,
+		tskStr
+	  ].join(' ').toLowerCase();
+
+	  if (!hay.includes(f.q)) return false;
+	}
+
     if (ds.year && (ds.year < f.yMin || ds.year > f.yMax)) return false;
 
     // MODALITIES: require any overlap
