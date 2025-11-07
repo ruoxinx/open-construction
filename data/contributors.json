@@ -216,24 +216,6 @@
     "type": "person"
   },
   {
-    "id": "bo-xiao",
-    "name": "Bo Xiao",
-    "role": "Dataset Contributor",
-    "affiliation": "Michigan Technological University (US)",
-    "link_url": "https://bxiao2.wixsite.com/my-site/",
-    "image": "https://static.wixstatic.com/media/ad503c_577c7a54ddd949058c21b583f217b7ae~mv2.jpg/v1/crop/x_0,y_183,w_4386,h_6214/fill/w_432,h_612,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Pic3.jpg",
-    "type": "person"
-  },
-  {
-    "id": "acid-group",
-    "name": "ACID Group",
-    "role": "Dataset Contributor",
-    "affiliation": "",
-    "link_url": "https://www.acidb.net/people",
-    "image": "assets/img/institutions/ACID.png",
-    "type": "org"
-  },
-  {
     "id": "choongwan-koo",
     "name": "Choongwan Koo",
     "role": "Dataset and Model Contributor",
