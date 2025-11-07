@@ -1,188 +1,1435 @@
-<script>
-(async function(){
-  // ===== Config (unchanged sizes/layout) =====
-  const JSON_URL = 'data/contributors.json';
-  const GRID_ID  = 'contributorsGrid';
-  const WRAP_ID  = 'occContrib';
-  const DOTS_ID  = 'occDots';
-  const BAR_ID   = 'occBar';
-  const AZ_ID    = 'occAZ';
-  const AZ_META  = 'occAZMeta';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Community</title>
 
-  // Keep exactly 9 cards per page on desktop (3x3 look). No visual size changes.
-  const PAGE_SIZE = 9;
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  // ===== DOM =====
-  const $wrap = document.getElementById(WRAP_ID);
-  const $grid = document.getElementById(GRID_ID);
-  const $dots = document.getElementById(DOTS_ID);
-  const $bar  = document.getElementById(BAR_ID);
-  const $az   = document.getElementById(AZ_ID);
-  const $meta = document.getElementById(AZ_META);
-  if(!$wrap || !$grid) return;
-  const viewport = $wrap.querySelector('.occ-viewport');
+  <!-- Leaflet core -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
-  // ===== Helpers =====
-  const byLast = n => {
-    if(!n) return '';
-    const s=n.trim();
-    if(s.includes(',')) return s.toLowerCase();
-    const p=s.split(/\s+/), last=p[p.length-1]||'';
-    return (last+' '+s).toLowerCase();
-  };
-  const chunk = (a,n)=>{ const o=[]; for(let i=0;i<a.length;i+=n) o.push(a.slice(i,i+n)); return o; };
-  const initials = name => (name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
+  <style>
+    /* ---------- Design tokens (LIGHT ONLY) ---------- */
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-brand-model:#4e6ce8; /* blue used on Home models ring—kept for consistency if needed */
+    }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
 
-  function cardHTML(c){
-    const img = c.image
-      ? `<img class="headshot" src="${c.image}" alt="">`
-      : `<div class="headshot is-initials">${initials(c.name)}</div>`;
-    const inner = `
-      <div class="card oc-card person-card h-100">
-        <div class="card-body d-flex gap-3">
-          ${img}
-          <div>
-            <h5 class="card-title mb-1">${c.name||''}</h5>
-            <div class="role">${c.role||''}</div>
-            <div class="affil">${c.affiliation||''}</div>
+    /* Utility highlight (subtle) */
+    .hl{
+      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700;
+    }
+
+    /* Navbar */
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    .brand-wordmark{
+      display:inline-flex;gap:.25rem;align-items:baseline;
+      color:#0F2E4B;font-weight:700;letter-spacing:.1px;
+      font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)
+    }
+    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
+    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
+    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+    .oc-logo{ height:44px; width:44px; }
+
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{
+      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
+    }
+    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
+    .nav-link.icon-only:hover svg{ opacity:1; }
+
+    /* Hero */
+    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
+      margin:.25rem 0 .35rem;
+    }
+    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
+
+    /* Metrics */
+    .metrics{
+      display:flex; gap:1.4rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1.15rem 0 .25rem;
+    }
+    .metric{
+      display:flex; align-items:center; gap:1rem;
+      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
+    }
+    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
+    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
+    .metric .ring-val{
+      stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
+      stroke-dasharray:0 999; stroke-dashoffset:0;
+    }
+    /* Different colors per circle, uncomment:
+      .metric[data-kind="contributors"] .ring-val{ stroke: var(--oc-accent); }
+      .metric[data-kind="institutions"] .ring-val{ stroke: var(--oc-brand-model); }
+    */
+    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
+    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
+    .metric .value{ font-weight:800; color:var(--oc-ink); font-size:1.28rem; }
+    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
+
+    /* CTAs */
+    .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+    .btn-ink{
+      background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700; text-decoration:none;
+    }
+    .btn-ink:hover{ filter:brightness(1.05); color:#fff; text-decoration:none; }
+    .btn-accent{
+      background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
+      padding:.55rem 1rem; font-weight:700; text-decoration:none;
+    }
+    .btn-accent:hover{ background:#f7fbff; text-decoration:none; }
+
+    /* Sections & Cards */
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+
+    /* People cards */
+    .person-card{ transition:transform .12s ease; }
+    .person-card:hover{ transform:translateY(-1px); }
+    .person-card .card-body{ padding:1rem 1.1rem; }
+    .headshot{
+      width:86px; height:86px; object-fit:cover; border-radius:50%;
+      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
+    }
+    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
+    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
+    .person-card .affil{ font-size:.92rem; }
+
+    /* Logo wall */
+    .logo-wall{
+      display:grid; gap:22px; align-items:center; justify-items:center;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
+    }
+    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
+    .logo-wall img:hover{ transform:scale(1.03); }
+
+    /* Map */
+    #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
+
+    /* Focus */
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
+
+
+    @media (max-width: 991.98px){
+      .navbar-brand .brand-wordmark{ font-size:1.15rem; }
+      .hero .content{ padding:40px 0 32px; }
+    }
+	
+	/* Yellow subscribe bell */
+	.btn-subscribe-icon{
+	  background: transparent;
+	  border: 0;
+	  padding: .25rem .4rem;
+	  line-height: 1;
+	}
+	.btn-subscribe-icon svg{
+	  fill: var(--oc-accent); /* use your yellow accent */
+	}
+	.btn-subscribe-icon:hover svg{
+	  filter: brightness(1.15);
+	}
+	
+	.logo-marquee {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--oc-border);
+	border-radius: var(--oc-radius);
+	background: #fff;
+	box-shadow: var(--oc-shadow);
+	display: grid;
+	gap: 4px;
+	padding: 8px 0;
+	}
+
+	.row-marquee { position: relative; overflow: hidden; }
+
+
+	.logo-track {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	padding: 6px 12px;
+	width: max-content;
+	will-change: transform;
+	}
+	.logo-marquee:hover .logo-track { animation-play-state: paused; }
+
+
+	.logo {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	height: 84px;
+	width: 168px;
+	overflow: hidden;
+	position: relative;
+	}
+	.logo::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, #f6f8fb 0%, #eef3f8 50%, #f6f8fb 100%);
+	background-size: 200% 100%;
+	animation: oc-skeleton 1.2s ease-in-out infinite;
+	}
+	.logo.loaded::before { opacity: 0; transition: opacity .2s ease; }
+
+
+	.logo img {
+	max-height: 60px;
+	max-width: 150px;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	filter: grayscale(8%);
+	transition: transform .16s ease, opacity .2s ease;
+	display: block;
+	opacity: 0;
+	}
+	.logo.loaded img { opacity: 1; }
+	.logo img:hover { transform: scale(1.03); }
+
+
+	@media (min-width: 992px) {
+	.logo { height: 92px; width: 184px; }
+	.logo img { max-height: 66px; max-width: 160px; }
+	}
+
+
+	@keyframes oc-marquee-left {
+	from { transform: translateX(0); }
+	to { transform: translateX(-50%); }
+	}
+	@keyframes oc-marquee-right {
+	from { transform: translateX(-50%); }
+	to { transform: translateX(0); }
+	}
+	@keyframes oc-skeleton {
+	0% { background-position: 0% 0; }
+	100% { background-position: 200% 0; }
+	}
+
+
+	@media (prefers-reduced-motion: reduce) {
+	.logo-track { animation: none; }
+	}
+
+	
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+		<li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
+		<li class="nav-item dropdown">
+		<a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
+		   data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+		<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+		  <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+		  <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+		  <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+		</ul>
+		</li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+		
+		<!-- Subscribe bell -->
+		<li class="nav-item">
+		<button type="button"
+				class="nav-link px-2 icon-only btn-subscribe-icon"
+				data-bs-toggle="modal" data-bs-target="#subscribeModal"
+				aria-label="Subscribe for updates" title="Subscribe">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+					 7 0 0 0 8.5 2z"/>
+		  </svg>
+		</button>		
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container oc-container content">
+    <h1>Community &amp; Collaboration</h1>
+    <p class="lead">
+      Together, we’re building an <span class="hl">open-science</span> community for <span class="hl">AI in construction</span>,
+      connecting researchers, practitioners, and innovators to share knowledge.
+    </p>
+
+    <!-- Metric circles -->
+    <div class="metrics" id="communityMetrics" role="group" aria-label="Community statistics">
+      <!-- Contributors -->
+		<!-- Contributors -->
+		<div class="metric" data-kind="contributors">
+		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+			<circle class="ring-val" id="ringContrib" cx="22" cy="22" r="17" fill="none"
+					transform="rotate(-90 22 22)"></circle>
+
+			<!-- Group of users -->
+			<g transform="translate(22 22) scale(0.85) translate(-12 -12)"
+			   fill="none" stroke="currentColor" stroke-width="1.2"
+			   stroke-linecap="round" stroke-linejoin="round">
+			  <!-- Heads -->
+			  <circle cx="12" cy="7"  r="3"></circle>
+			  <circle cx="6"  cy="9"  r="2.2"></circle>
+			  <circle cx="18" cy="9"  r="2.2"></circle>
+			  <!-- Shoulders -->
+			  <path d="M4 17c2.8-2.8 7-4 8-4s5.2 1.2 8 4"></path>
+			  <path d="M1.5 16.5c1.7-2 3.8-3 6-3"></path>
+			  <path d="M22.5 16.5c-1.7-2-3.8-3-6-3"></path>
+			</g>
+		  </svg>
+		  <span class="label">
+			<span class="value" id="countContrib">—</span>
+			<span class="name">Contributors</span>
+		  </span>
+		</div>
+
+		<!-- Institutions -->
+		<div class="metric" data-kind="institutions">
+		  <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+			<circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+			<circle class="ring-val" id="ringInst" cx="22" cy="22" r="17" fill="none"
+					transform="rotate(-90 22 22)"></circle>
+
+			<!-- Classical building -->
+			<g transform="translate(22 22) scale(0.85) translate(-12 -12)"
+			   fill="none" stroke="currentColor" stroke-width="1.2"
+			   stroke-linecap="round" stroke-linejoin="round">
+			  <!-- Roof / pediment -->
+			  <path d="M12 3 L22 7.5 H2 L12 3 Z"></path>
+			  <!-- Architrave -->
+			  <path d="M3 8 H21"></path>
+			  <!-- Columns -->
+			  <path d="M6 8 V17"></path>
+			  <path d="M12 8 V17"></path>
+			  <path d="M18 8 V17"></path>
+			  <!-- Base -->
+			  <path d="M1.5 18 H22.5"></path>
+			  <path d="M0.5 19.5 H23.5"></path>
+			</g>
+					  </svg>
+		  <span class="label">
+			<span class="value" id="countInst">—</span>
+			<span class="name">Institutions</span>
+		  </span>
+		</div>
+		</div>
+
+
+    <!-- CTA buttons -->
+    <div class="cta-row">
+      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Submit a Dataset</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_model.yml" target="_blank" rel="noopener">Submit a Model</a>
+	  <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Models/issues/new?template=new_use_case.yml" target="_blank" rel="noopener">Submit a Use-case</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">Join Discussions</a>
+    </div>
+
+  </div>
+</header>
+
+<main class="container oc-container">
+  <!-- Core Team -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Team</div>
+    <div class="row g-4">
+      <!-- 1 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong">
+            <div>
+              <h5 class="card-title">Ruoxin Xiong, Ph.D., M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (OH, USA)</div>
+            </div>
           </div>
         </div>
-      </div>`;
-    return c.link_url
-      ? `<div class="col-md-6 col-xl-4"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${inner}</a></div>`
-      : `<div class="col-md-6 col-xl-4">${inner}</div>`;
+      </div>
+      <!-- 2 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang">
+            <div>
+              <h5 class="card-title">Yanyu Wang, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University (LA, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 3 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai">
+            <div>
+              <h5 class="card-title">Jiannan Cai, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio (TX, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 4 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu">
+            <div>
+              <h5 class="card-title">Kaijian Liu, Ph.D., A.M.ASCE</h5>
+              <div class="role">Assistant Professor</div>
+              <div class="affil">Civil, Environmental &amp; Ocean Engineering, Stevens Institute of Technology (NJ, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 5 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu">
+            <div>
+              <h5 class="card-title">Yuansheng Zhu</h5>
+              <div class="role">Researcher</div>
+              <div class="affil">Computing &amp; Information Sciences, Rochester Institute of Technology (NY, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 6 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang">
+            <div>
+              <h5 class="card-title">Pingbo Tang, Ph.D., M.ASCE</h5>
+              <div class="role">Associate Professor</div>
+              <div class="affil">Civil &amp; Environmental Engineering, Carnegie Mellon University (PA, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 7 -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary">
+            <div>
+              <h5 class="card-title">Nora El-Gohary, Ph.D., A.M.ASCE</h5>
+              <div class="role">Professor</div>
+              <div class="affil">Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign (IL, USA)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Contributors -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Contributors</div>
+    <!-- A–Z jump toolbar (Bootstrap only) -->
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+    <div class="btn-group" id="occAZ" role="tablist" aria-label="Jump by initial"></div>
+    <div class="small text-muted" id="occAZMeta" aria-live="polite"></div>
+  </div>
+
+  <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
+    <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
+    <div class="occ-viewport" aria-live="polite">
+      <div class="row g-4" id="contributorsGrid"></div>
+    </div>
+    <button class="occ-btn next" aria-label="Next page" title="Next">›</button>
+    <div class="occ-dots mt-2" id="occDots" role="tablist"></div>
+    <div class="occ-progress mt-1"><div class="bar" id="occBar"></div></div>
+  </div>
+                <div class="affil">McGill University (Canada)</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+	  
+	  <div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://www.linkedin.com/in/abdirahman-bashir-ahmed-81544a296/" target="_blank" rel="noopener" aria-label="Visit Abdirahman Bashir Ahmed on LinkedIn">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/avatar.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Abdirahman Bashir Ahmed</h5>
+              <div class="role">Feature Suggestion Contributor</div>
+              <div class="affil">Benadir University (Somalia)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	  <div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/QuantumNovice" target="_blank" rel="noopener" aria-label="Syed Haseeb Shah">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/QuantumNovice.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Syed Haseeb Shah</h5>
+              <div class="role">Model Contributor</div>
+              <div class="affil">Kyung Hee University (South Korea)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/MaghsoodSalimi" target="_blank" rel="noopener" aria-label="Maghsood Salimi">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/avatar.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Maghsood Salimi</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Mälardalen University (Sweden)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://www.linkedin.com/in/mohammad-loni/?originalSubdomain=se" target="_blank" rel="noopener" aria-label="Mohammad Loni">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/avatar.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Mohammad Loni</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Volvo Construction Equipment (Sweden)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/yantaolab" target="_blank" rel="noopener" aria-label="Human-centered Intelligent Construction Lab">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/yantaolab.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">HIC Lab</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">The Hong Kong University of Science and Technology (HK)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/RogerLiang0725" target="_blank" rel="noopener" aria-label="Xing Liang">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/RogerLiang0725.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Xing Liang</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">The University of Osaka (Japan)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://ahmetersoz.com/" target="_blank" rel="noopener" aria-label="Ahmet Bahaddin Ersoz">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://ahmetersoz.com/pp.jpeg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Ahmet Bahaddin Ersoz</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Middle East Technical University (Türkiye)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/CyberbuildLab" target="_blank" rel="noopener" aria-label="CyberbuildLab">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/CyberbuildLab.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">CyberBuild Lab</h5>
+              <div class="role">Model Contributor</div>
+              <div class="affil">University of Edinburgh (UK)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/YuchenWang1" target="_blank" rel="noopener" aria-label="Yucheng Wang">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/YuchenWang1.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Yucheng Wang</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://tc.seu.edu.cn/zyj/main.psp" target="_blank" rel="noopener" aria-label="Yanjie Zhu">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://tc.seu.edu.cn/_upload/article/images/cc/66/073c46bd484881bc8529bfd4822d/9beea999-145b-4e36-b4b0-0f69feb4608c.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Yanjie Zhu</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://tc.seu.edu.cn/xw/main.psp" target="_blank" rel="noopener" aria-label="Wen Xiong">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://tc.seu.edu.cn/_upload/article/images/23/0b/949bf0eb415ab9a4f2c87ceef028/dc3049ba-6724-4e11-8417-c4e602559d8d.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Wen Xiong</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://tc.seu.edu.cn/ccs/main.psp" target="_blank" rel="noopener" aria-label="C.S. Cai">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://tc.seu.edu.cn/_upload/article/images/ae/eb/07488b374e63bc0341fe6fa1de9e/b173dd51-5776-4983-9e69-f06aab56b7a5.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">C.S. Cai</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://github.com/RainGo111" target="_blank" rel="noopener" aria-label="Yu Zhang">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/RainGo111.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Yu Zhang</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Loughborough University (UK)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://scholars.cityu.edu.hk/en/persons/longchen/" target="_blank" rel="noopener" aria-label="Yu Zhang">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://scholars.cityu.edu.hk/files-asset/307582002/CHEN_Long-2025.jpg?w=320&f=webp" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Long Chen</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">City University of Hong Kong (HK)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://www.colorado.edu/ceae/amir-behzadan" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/ciber-lab.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">CIBER Lab</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">University of Colorado Boulder (US)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://mlstruct.ppizarror.com/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://github.com/MLSTRUCT.png?size=160" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">MLSTRUCT Research Group</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">University of Chile (Chile)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://ppizarror.com/?lang=en" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://avatars0.githubusercontent.com/u/12925256" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Pablo N. Pizarro</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">University of Chile (Chile)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="http://www.homepage.zjut.edu.cn/yxz1/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://homepage.zjut.edu.cn/_upload/article/images/c3/da/240b1f154cbdb533c1905a072d4a/fa3ea3ed-80f8-4f01-962d-f0c816cbf1d2_s.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Xuzhong Yan</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Zhejiang University of Technology (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://intelconstructlab.github.io/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://intelconstructlab.github.io/image/icons/favicon.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">ICON Lab</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Columbia University (US)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://thucbims.github.io/bimnet.thucbims.github.io/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://thucbims.github.io/bimnet.thucbims.github.io/image/icon.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">BIMNet team</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Tsinghua University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://con-api.team/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://con-api.team/wp-content/uploads/2025/04/cropped-Web-Logo-150x150.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Construction API Lab</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">National Taiwan University (Taiwan)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://moyog.github.io/index.html#home" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://moyog.github.io/images/home/1.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Munkhjargal Gochoo</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">United Arab Emirates University (UAE)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://scholars.cityu.edu.hk/en/persons/mwang489/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://scholars.cityu.edu.hk/files-asset/194141571/Mingzhu_smaller.jpeg?w=320&f=webp" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Mingzhu Wang</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">City University of Hong Kong (HK)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://bxiao2.wixsite.com/my-site/" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://static.wixstatic.com/media/ad503c_577c7a54ddd949058c21b583f217b7ae~mv2.jpg/v1/crop/x_0,y_183,w_4386,h_6214/fill/w_432,h_612,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Pic3.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Bo Xiao</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Michigan Technological University (US)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://www.acidb.net/people" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/institutions/ACID.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">ACID Group</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil"></div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://archi.inu.ac.kr/profl/archi_eng/1503/6383/artclView.do" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://archi.inu.ac.kr/sites/archi_eng/atchmnfl/profl/1503/temp_20200608_1591575873680100.tmp.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Choongwan Koo</h5>
+              <div class="role">Dataset and Model Contributor</div>
+              <div class="affil">Incheon National University (South Korea)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="230248218@seu.edu.cn" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="assets/img/contributors/avatar.png" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Hongzhe Yue</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+	<div class="col-md-6 col-xl-4">
+      <a class="text-decoration-none" href="https://civil.seu.edu.cn/wq2/list.htm#20" target="_blank" rel="noopener" aria-label="">
+        <div class="card oc-card person-card h-100">
+          <div class="card-body d-flex gap-3">
+            <img class="headshot" src="https://civil.seu.edu.cn/_upload/article/images/d8/75/757f524e4c06898e924775bb63ac/70948c6b-8bb5-4a95-a91d-c2a2888d2ef4_s.jpg" alt="avatar" loading="lazy" decoding="async">
+            <div>
+              <h5 class="card-title mb-1">Qian Wang</h5>
+              <div class="role">Dataset Contributor</div>
+              <div class="affil">Southeast University (China)</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+	
+      <!-- (Add future community contributors as additional cards here) -->
+    </div>
+  </section>
+
+	<section class="oc-section">
+	<div class="oc-kicker mb-2">Affiliations</div>
+	<div class="logo-marquee two-rows" aria-label="Affiliated institutions and organizations">
+	<div class="row-marquee" data-direction="right">
+	<div class="logo-track" role="list" data-speed="50"></div>
+	</div>
+	<div class="row-marquee" data-direction="left">
+	<div class="logo-track" role="list" data-speed="50"></div>
+	</div>
+	</div>
+
+
+	<template id="logo-seed">
+	<div class="logo" role="listitem"><img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="eager" fetchpriority="high" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="eager" fetchpriority="high" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="eager" fetchpriority="high" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Benadir.png" alt="Benadir University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Kyung-Hee.png" alt="Kyung Hee University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Mälardalen.png" alt="Mälardalen University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Volvo-CE.png" alt="Volvo Construction Equipment" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/UST.png" alt="The Hong Kong University of Science and Technology" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Edinburgh.png" alt="University of Edinburgh" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/SEU.png" alt="Southeast University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Loughborough.png" alt="Loughborough University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/CityU.png" alt="City University of Hong Kong" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/UCB.png" alt="University of Colorado Boulder" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/chile.png" alt="Universidad de Chile" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/ZJUT.png" alt="Zhejiang Univ. of Technology" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Columbia.png" alt="Columbia University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Tsinghua.png" alt="Tsinghua University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/Taiwan.png" alt="National Taiwan University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/UAEU.png" alt="United Arab Emirates University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/MTU.png" alt="Michigan Technological University" loading="lazy" decoding="async"></div>
+	<div class="logo" role="listitem"><img src="assets/img/institutions/INU.png" alt="Incheon National University" loading="lazy" decoding="async"></div>
+	</template>
+	</section>
+
+  <!-- Contribute & Policy -->
+  <section class="oc-section">
+    <div class="row g-4">
+      <!-- Contributor Guidelines (full width) -->
+      <div class="col-12">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Contribute</div>
+            <h3 class="oc-card-title mb-2">Contributor Guidelines</h3>
+            <p class="mb-3">We welcome contributions that uphold <span class="hl">open-science</span> values:</p>
+            <ul class="mb-0">
+              <li><strong>Inclusive & accessible:</strong> Clear documentation for diverse audiences.</li>
+              <li><strong>Ethical sharing:</strong> Respect privacy, consent, and anonymization.</li>
+              <li><strong>Data management & sharing:</strong> Provide metadata, license, and repository links.</li>
+              <li><strong>Intellectual property & attribution:</strong> Cite sources and acknowledge creators.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connect + Metadata row -->
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Connect</div>
+            <h3 class="oc-card-title mb-2">Work with Us</h3>
+            <p class="mb-2">Have ideas, features, or <span class="hl">partnership opportunities</span>?</p>
+            <ul class="mb-3">
+              <li><strong>Create an issue:</strong> Use our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a> for feature requests and corrections.</li>
+              <li><strong>Join discussions:</strong> Participate on the <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank">Discussion Board</a>.</li>
+              <li><strong>General enquiries:</strong> Email <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a> for support or partnership discussions.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Policy</div>
+            <h3 class="oc-card-title mb-2">Request resource removal</h3>
+            <p class="mb-0">
+              OpenConstruction indexes publicly available metadata and provides links to original sources such as journals or repositories. 
+              We do <strong>not host or distribute</strong> any datasets, code, or proprietary materials. 
+              For removal or correction requests, contact 
+              <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visitors (heatmap) -->
+  <section class="oc-section mb-5" id="visitorMapSection">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+      <div>
+        <div class="oc-kicker">Visitors</div>
+        <h3 class="oc-card-title mb-0">Historical Visits</h3>
+      </div>
+    </div>
+    <div id="visitorMap" aria-label="Visitor map"></div>
+    <p class="text-muted small mt-2 mb-0">Aggregated locations for the homepage only. No raw IPs stored.</p>
+  </section>
+</main>
+
+<footer class="py-4 mt-3 border-top">
+  <div class="container oc-container small text-muted text-center">
+    <div>
+      © <span id="yearNow"></span> OpenConstruction
+    </div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides 
+        links to original sources. We do not host or distribute datasets, models, code, or paywalled content. 
+        All rights remain with the original authors, creators, and publishers.
+      </small>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Scripts -->
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(function(){
+const marquee = document.querySelector('.logo-marquee.two-rows');
+if(!marquee) return;
+const [row1, row2] = marquee.querySelectorAll('.row-marquee');
+const seed = document.getElementById('logo-seed');
+if(!row1 || !row2 || !seed) return;
+
+
+const logos = Array.from(seed.content.children).map(n => n.cloneNode(true));
+const half = Math.ceil(logos.length / 2);
+const logos1 = logos.slice(0, half);
+const logos2 = logos.slice(half);
+
+
+function initTrack(row, items, dir){
+const track = row.querySelector('.logo-track');
+if(!track) return;
+items.forEach(i => track.appendChild(i));
+items.forEach(i => track.appendChild(i.cloneNode(true)));
+
+
+const base = Number(track.getAttribute('data-speed')) || 46;
+const dur = Math.min(90, base + Math.max(0, items.length - 8) * 1.5);
+track.style.animationDuration = dur + 's';
+track.style.animationTimingFunction = 'linear';
+track.style.animationIterationCount = 'infinite';
+track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-left';
+}
+
+
+initTrack(row1, logos1, 'right');
+initTrack(row2, logos2, 'left');
+
+
+// Fade-in after load
+const imgs = marquee.querySelectorAll('.logo img');
+imgs.forEach(img => {
+const parent = img.closest('.logo');
+const done = () => parent && parent.classList.add('loaded');
+if(img.complete && img.naturalWidth>0) done();
+else img.addEventListener('load', done, {once:true});
+});
+})();
+</script>
+
+<!-- Auto-active current nav link -->
+<script>
+  (function(){
+    const path = (location.pathname || '').replace(/\/+$/,'');
+    const file = path.split('/').pop() || 'contributors.html';
+    const routeByFile = {
+      '': 'contributors',
+      'contributors': 'contributors', 'contributors.html': 'contributors',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models'
+    };
+    const route = routeByFile[file] || (file.includes('contributors') ? 'contributors' : '');
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+    });
+  })();
+</script>
+
+<script>
+(function(){
+  const file = (location.pathname || '').split('/').pop() || 'index.html';
+  const isTools = /tools(\.html)?$/.test(file);
+  const isGuides = /guides(\.html)?$/.test(file);
+  if (isTools || isGuides) {
+    // highlight "Resources"
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.textContent.trim()==='Resources') a.classList.add('active');
+    });
+    // mark the chosen dropdown item
+    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(d=>{
+      if ((isTools && d.getAttribute('href')?.includes('tools')) ||
+          (isGuides && d.getAttribute('href')?.includes('guides'))) {
+        d.classList.add('active');
+      }
+    });
+  }
+})();
+</script>
+
+
+<!-- Leaflet core -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
+<!-- Heatmap plugin -->
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+<!-- Supabase client -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+
+<style>
+  /* Optional: soft ocean background to avoid gray gaps */
+  #visitorMap.leaflet-container {
+    background: #cfe7ef;
+  }
+</style>
+
+<!-- Render homepage history as heatmap -->
+<script>
+(async function(){
+  const PAGE_TO_SHOW = 'index'; // showing homepage visits
+
+  // Map
+  const map = L.map('visitorMap', {
+    zoomControl: true,
+    maxBounds: L.latLngBounds([[-85, -180], [85, 180]]), // clamp to world bounds
+    maxBoundsViscosity: 1.0,                             // resist leaving bounds
+    worldCopyJump: false                                 // no duplicate jump
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+  }).addTo(map);
+
+  map.setView([39.5, -98.35], 3);
+  setTimeout(() => map.invalidateSize(), 0);
+
+  // Supabase
+  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
+  const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
+  if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
+
+  try {
+    const pageSize = 1000;
+    let from = 0, to = pageSize - 1;
+    const bounds = L.latLngBounds();
+    const heatPoints = [];
+
+    while (true) {
+      const { data: rows, error } = await sb
+        .from('visits')
+        .select('lat,lon')
+        .eq('page', PAGE_TO_SHOW)
+        .order('created_at', { ascending:false })
+        .range(from, to);
+
+      if (error) { console.error(error); break; }
+      if (!rows || rows.length === 0) break;
+
+      for (const r of rows) {
+        if (typeof r.lat === 'number' && typeof r.lon === 'number') {
+          heatPoints.push([r.lat, r.lon, 1]);
+          bounds.extend([r.lat, r.lon]);
+        }
+      }
+      if (rows.length < pageSize) break;
+      from += pageSize; to += pageSize;
+    }
+
+    L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds.pad(0.2));
+    } else {
+      map.setView([20,0], 2);
+    }
+  } catch (e) {
+    console.error('Heatmap render failed:', e);
+  }
+})();
+</script>
+
+
+
+<!-- Community metric circles-->
+<script>
+(function(){
+  // ==== EDIT THESE NUMBERS ONLY ====
+  const COMMUNITY_STATS = {
+    contributors: 35,   // <-- manual input
+    institutions: 28    // <-- manual input
+  };
+  // =================================
+
+  const countContribEl = document.getElementById('countContrib');
+  const countInstEl    = document.getElementById('countInst');
+  const ringContrib    = document.getElementById('ringContrib');
+  const ringInst       = document.getElementById('ringInst');
+
+  const R = 17, CIRC = 2 * Math.PI * R;
+
+  // Prepare rings
+  [ringContrib, ringInst].forEach(r => {
+    if(!r) return;
+    r.style.strokeDasharray = String(CIRC);
+    r.style.strokeDashoffset = String(CIRC);
+  });
+
+  // Count-up animation
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  function countUp(el, to, dur=900){
+    const start = performance.now();
+    function step(now){
+      const t = Math.min(1, (now - start)/dur);
+      el.textContent = String(Math.round(to * ease(t)));
+      if(t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
-  // ===== Load JSON =====
+  function playRings(){
+    document.body.classList.add('ring-ready');
+    requestAnimationFrame(() => {
+      if (ringContrib) ringContrib.style.strokeDashoffset = '0';
+      if (ringInst)    ringInst.style.strokeDashoffset    = '0';
+    });
+  }
+
+  // Initialize values & animate on load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (countContribEl) countContribEl.textContent = String(COMMUNITY_STATS.contributors);
+    if (countInstEl)    countInstEl.textContent    = String(COMMUNITY_STATS.institutions);
+
+    // Re-run with animation shortly after paint for a smooth effect
+    setTimeout(() => {
+      countUp(countContribEl, COMMUNITY_STATS.contributors);
+      countUp(countInstEl, COMMUNITY_STATS.institutions);
+      // reset then animate rings
+      if (ringContrib) ringContrib.style.strokeDashoffset = String(CIRC);
+      if (ringInst)    ringInst.style.strokeDashoffset    = String(CIRC);
+      requestAnimationFrame(playRings);
+    }, 60);
+  });
+})();
+</script>
+
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
+               placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+// Contributors JSON loader + carousel + A–Z (no layout/style changes)
+(async function(){
+  const JSON_URL='data/contributors.json';
+  const GRID_ID='contributorsGrid',WRAP_ID='occContrib',DOTS_ID='occDots',BAR_ID='occBar';
+  const AZ_ID='occAZ',AZ_META='occAZMeta',PAGE_SIZE=9;
+
+  const $wrap=document.getElementById(WRAP_ID),$grid=document.getElementById(GRID_ID),
+        $dots=document.getElementById(DOTS_ID),$bar=document.getElementById(BAR_ID),
+        $az=document.getElementById(AZ_ID),$meta=document.getElementById(AZ_META);
+  if(!$wrap||!$grid) return;
+  const viewport=$wrap.querySelector('.occ-viewport');
+
+  const byLast=n=>{if(!n)return'';const s=n.trim();if(s.includes(','))return s.toLowerCase();const p=s.split(/\s+/);return(p[p.length-1]+' '+s).toLowerCase();};
+  const chunk=(a,n)=>{const o=[];for(let i=0;i<a.length;i+=n)o.push(a.slice(i,i+n));return o;};
+  const initials=name=>(name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
+
+  function cardHTML(c){
+    const img=c.image?`<img class="headshot" src="${c.image}" alt="">`:`<div class="headshot is-initials">${initials(c.name)}</div>`;
+    const body=`<div class="card oc-card person-card h-100"><div class="card-body d-flex gap-3">${img}<div><h5 class="card-title mb-1">${c.name||''}</h5><div class="role">${c.role||''}</div><div class="affil">${c.affiliation||''}</div></div></div></div>`;
+    return c.link_url?`<div class="col-md-6 col-xl-4"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${body}</a></div>`:`<div class="col-md-6 col-xl-4">${body}</div>`;
+  }
+
   let rows=[];
-  try{
-    const r=await fetch(JSON_URL,{cache:'no-store'});
-    if(!r.ok) throw 0;
-    rows = await r.json();
-  }catch{
-    $grid.innerHTML='<p class="text-muted">Could not load contributors.</p>';
-    return;
-  }
+  try{const r=await fetch(JSON_URL,{cache:'no-store'});if(!r.ok)throw 0;rows=await r.json();}catch(e){console.error('contributors.json load failed',e);$grid.innerHTML='<p class="text-muted">Could not load contributors.</p>';return;}
 
-  // Sort: people (A→Z by last name) then orgs (A→Z)
-  const people = rows.filter(r => (r.type||'person') !== 'org').sort((a,b)=>byLast(a.name).localeCompare(byLast(b.name)));
-  const orgs   = rows.filter(r => (r.type||'person') === 'org').sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-  const DATA   = people.concat(orgs);
+  const people=rows.filter(r=>(r.type||'person')!=='org').sort((a,b)=>byLast(a.name).localeCompare(byLast(b.name)));
+  const orgs=rows.filter(r=>(r.type||'person')==='org').sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const DATA=people.concat(orgs);
 
-  // Initial render (DOM nodes we will reuse)
-  $grid.innerHTML = DATA.map(cardHTML).join('');
-  const ALL_NODES = Array.from($grid.children);
-  $grid.remove();
+  $grid.innerHTML=DATA.map(cardHTML).join('');
+  const ALL_NODES=Array.from($grid.children);$grid.remove();
 
-  // ===== Build A–Z from current names (Bootstrap buttons only) =====
-  const byLetter = new Map();
+  // Build A–Z (Bootstrap buttons)
+  const byLetter=new Map();
   ALL_NODES.forEach(el=>{
     const name=(el.querySelector('.card-title')?.textContent||'').trim();
-    const first = (name.match(/[A-Za-z]/)?.[0] || '#').toUpperCase();
-    if(!byLetter.has(first)) byLetter.set(first, []);
-    byLetter.get(first).push(el);
+    const L=(name.match(/[A-Za-z]/)?.[0]||'#').toUpperCase();
+    if(!byLetter.has(L)) byLetter.set(L,[]);
+    byLetter.get(L).push(el);
   });
 
   function buildAZ(){
     if(!$az) return;
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    $az.innerHTML = '';
-
-    // helper to add a button
-    const addBtn = (label, value, enabled=true) => {
-      const b = document.createElement('button');
-      b.type='button';
-      b.className = 'btn btn-sm btn-outline-secondary' + (enabled ? '' : ' disabled');
-      b.textContent = label;
-      b.dataset.az = value;
-      if(enabled) b.addEventListener('click',()=>setFilter(value));
+    $az.innerHTML='';
+    const add=(label,val,en=true)=>{
+      const b=document.createElement('button');
+      b.type='button'; b.className='btn btn-sm btn-outline-secondary'+(en?'':' disabled');
+      b.textContent=label; b.dataset.az=val;
+      if(en) b.addEventListener('click',()=>setFilter(val));
       $az.appendChild(b);
     };
-
-    addBtn('All', '*', true);
-    letters.forEach(ch => addBtn(ch, ch, byLetter.has(ch)));
-    if(byLetter.has('#')) addBtn('#', '#', true);
-
-    // mark All active
+    add('All','*',true);
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>add(ch,ch,byLetter.has(ch)));
+    if(byLetter.has('#')) add('#','#',true);
     $az.querySelector('[data-az="*"]').classList.add('active');
   }
 
-  // ===== Carousel (uses your existing .occ-track/.occ-slide CSS) =====
-  const track = document.createElement('div');
-  track.className = 'occ-track';
-  viewport.appendChild(track);
-
-  let pool = ALL_NODES.slice(); // current filtered set
-  let slides = [], current = 1;
+  const track=document.createElement('div'); track.className='occ-track'; viewport.appendChild(track);
+  let pool=ALL_NODES.slice(),slides=[],current=1;
 
   function updateMeta(){
     if(!$meta) return;
-    const total = pool.length;
-    const start = (current-1)*PAGE_SIZE + 1;
-    const end   = Math.min(current*PAGE_SIZE, total);
-    $meta.textContent = total ? `Showing ${start}–${end} of ${total}` : 'No contributors';
+    const total=pool.length,start=(current-1)*PAGE_SIZE+1,end=Math.min(current*PAGE_SIZE,total);
+    $meta.textContent= total?`Showing ${start}–${end} of ${total}`:'No contributors';
   }
-
   function buildDots(){
     if(!$dots) return; $dots.innerHTML='';
     slides.forEach((_,i)=>{
-      const b=document.createElement('button');
-      b.type='button';
-      b.setAttribute('role','tab');
-      b.setAttribute('aria-label',`Page ${i+1}`);
+      const b=document.createElement('button'); b.type='button'; b.setAttribute('role','tab'); b.setAttribute('aria-label',`Page ${i+1}`);
       if(i+1===current) b.setAttribute('aria-selected','true');
-      b.addEventListener('click',()=>goTo(i+1,true));
-      $dots.appendChild(b);
+      b.addEventListener('click',()=>goTo(i+1,true)); $dots.appendChild(b);
     });
   }
   function updateDots(){
     if(!$dots) return;
-    Array.from($dots.children).forEach((b,i)=>{
-      if(i+1===current) b.setAttribute('aria-selected','true');
-      else b.removeAttribute('aria-selected');
-    });
+    Array.from($dots.children).forEach((b,i)=>{ if(i+1===current) b.setAttribute('aria-selected','true'); else b.removeAttribute('aria-selected'); });
   }
   function updateBar(){
     if(!$bar) return;
-    const total=Math.max(1,slides.length);
-    const pct=((current-1)/(total-1||1))*100;
-    $bar.style.width = (total===1 ? '100%' : pct+'%');
+    const t=Math.max(1,slides.length),pct=((current-1)/(t-1||1))*100;
+    $bar.style.width=(t===1?'100%':pct+'%');
   }
-  function goTo(page, animate=true){
-    current = Math.max(1, Math.min(page, slides.length||1));
-    const xPct = (current-1) * -100;
-    track.style.transition = animate ? 'transform .35s ease' : 'none';
-    track.style.transform  = `translateX(${xPct}%)`;
+  function goTo(p,ani=true){
+    current=Math.max(1,Math.min(p,slides.length||1));
+    track.style.transition=ani?'transform .35s ease':'none';
+    track.style.transform=`translateX(${(current-1)*-100}%)`;
     updateDots(); updateBar(); updateMeta();
   }
   function buildSlides(){
     track.innerHTML=''; slides=[];
-    const groups = chunk(pool, PAGE_SIZE);
-    groups.forEach(g=>{
-      const s=document.createElement('div'); s.className='occ-slide';
-      const r=document.createElement('div'); r.className='row g-4';
-      g.forEach(n=>r.appendChild(n));
-      s.appendChild(r); track.appendChild(s); slides.push(s);
-    });
+    const groups=chunk(pool,PAGE_SIZE);
+    groups.forEach(g=>{ const s=document.createElement('div'); s.className='occ-slide'; const r=document.createElement('div'); r.className='row g-4'; g.forEach(n=>r.appendChild(n)); s.appendChild(r); track.appendChild(s); slides.push(s); });
     buildDots(); goTo(1,false);
   }
   function setFilter(letter){
-    // update toolbar button states (Bootstrap only)
     $az.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-    const btn = $az.querySelector(`[data-az="${letter}"]`);
-    if(btn) btn.classList.add('active');
-
-    pool = (letter==='*') ? ALL_NODES.slice() : (byLetter.get(letter) || []);
-    current = 1;
-    buildSlides();
+    const btn=$az.querySelector(`[data-az="${letter}"]`); if(btn) btn.classList.add('active');
+    pool=(letter==='*')?ALL_NODES.slice():(byLetter.get(letter)||[]);
+    current=1; buildSlides();
   }
 
-  // Buttons
   $wrap.querySelector('.occ-btn.prev')?.addEventListener('click',()=>goTo(current-1,true));
   $wrap.querySelector('.occ-btn.next')?.addEventListener('click',()=>goTo(current+1,true));
 
-  // Init
   buildAZ();
   buildSlides();
 })();
-</script>
+</script></body>
+</html>
