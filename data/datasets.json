@@ -1982,7 +1982,9 @@
     "access": "https://doi.org/10.5281/zenodo.15619435",
     "id": "UGD",
     "image_url": "assets/img/datasets/UGD.png",
-	"added_date": "2025-09-27"
+	"added_date": "2025-09-27",
+	"contributor": "Hongzhe Yue",
+    "contributor_url": "230248218@seu.edu.cn"
   },
     "GOOSE-Ex": {
     "name": "GOOSE-Ex Dataset",
