@@ -217,7 +217,7 @@
       "Semantic segmentation",
       "Image captioning"
     ],
-    "license": "CC BY-NC 4.0",
+    "license": "CC BY 4.0",
     "paper": "Development of an image data set of construction machines for deep learning object detection",
     "access": "https://www.acidb.ca/",
     "id": "ACID",
