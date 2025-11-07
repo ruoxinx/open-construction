@@ -251,7 +251,9 @@
     "paper": "Full body pose estimation of construction equipment using computer vision and deep learning techniques",
     "access": "https://data.mendeley.com/datasets/9zmr28dwg9/1",
     "id": "Construction-Equipment-Pose",
-    "image_url": "assets/img/datasets/Construction-Equipment-Pose.png"
+    "image_url": "assets/img/datasets/Construction-Equipment-Pose.png",
+	"contributor": "Mingzhu Wang",
+	"contributor_url": "https://scholars.cityu.edu.hk/en/persons/mwang489/"
   },
   "Hardhat-Wearing": {
     "name": "Hardhat-Wearing Dataset",
