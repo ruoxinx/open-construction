@@ -2511,28 +2511,4 @@
   "contributor": "Alexandre Almeida Del Savio",
   "contributor_url": "https://cris.ulima.edu.pe/en/persons/alexandre-almeida-del-savio/"
 }
-"concrete-crack-lab": {
-  "name": "Concrete crack dataset for beam and column",
-  "authors": "Alexandre Almeida Del Savio, Ana Luna Torres, Daniel Cárdenas-Salas, Mónica Vergara Olivera, Gianella Urday Ibarra",
-  "doi": "https://doi.org/10.1016/j.dib.2025.111516",
-  "year": 2025,
-  "data_modality": "Ground RGB",
-  "num_images": 1132,
-  "num_classes": 5,
-  "classes": ["Beam_bending_failure","Column_type2_failure", "Column_type3_failure", "Column_type4_failure", "Column_type5_failure"],
-  "resolution": "3840×2160",
-  "annotation_types": ["Bounding boxes"],
-  "geographical_location": "Peru",
-  "potential_tasks": [
-    "Concrete crack detection"
-  ],
-  "license": "CC BY-NC-SA 4.0",
-  "paper": "Dataset for training neural networks in concrete crack detection: laboratory-classified beam and column images",
-  "access": "https://repositorio.ulima.edu.pe/handle/20.500.12724/19856",
-  "id": "concrete-crack",
-  "image_url": "assets/img/datasets/concrete-crack-lab.png",
-  "added_date": "2025-11-7",
-  "contributor": "Alexandre Almeida Del Savio",
-  "contributor_url": "https://cris.ulima.edu.pe/en/persons/alexandre-almeida-del-savio/"
-}
 }
