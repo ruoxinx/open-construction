@@ -15,119 +15,91 @@
       --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
-
-      /* Tag hues to mirror Models */
-      --tag-task-bg:#eef5ff;        /* light blue for Topics */
-      --tag-task-border:#cfe2ff;
-      --tag-task-text:#0b4ea2;
-
-      --tag-app-bg:#edf8f2;         /* light green for Media */
-      --tag-app-border:#cfe9db;
-      --tag-app-text:#106946;
-
-      --tag-lic-bg:#fff7e6;         /* warm for License */
-      --tag-lic-border:#ffe1b3;
-      --tag-lic-text:#7a4b00;
-
-      --tag-lang-bg:#f3eefc;        /* purple-ish for Language */
-      --tag-lang-border:#e0d5fb;
-      --tag-lang-text:#4e3791;
     }
     html,body{background:var(--oc-bg);color:var(--oc-text)}
     a{color:var(--oc-link)}
 
-    /* ---------- Navbar (match Models) ---------- */
+    /* ---------- Navbar ---------- */
     .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .oc-logo{height:44px;width:44px}
     .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
     .brand-wordmark .oc-open{font-weight:600;opacity:.95}
     .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
     .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
-    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
-    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
-    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
+    .oc-logo{height:44px;width:44px}
+    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem;}
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px;}
 
-    /* Docked search (match Models) */
+    /* Docked search */
     .navbar-search{display:none;width:clamp(200px,24vw,320px);}
     .navbar-search .form-control{
       height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px;
     }
     body.docked .navbar-search{display:flex}
     body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex;align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
-    }
 
-    /* ---------- Hero (match Models) ---------- */
+    /* ---------- Hero ---------- */
     header.hero{border-bottom:1px solid var(--oc-border);background:#fff;}
-    header.hero .content{padding:56px 0 36px;text-align:center}
+    header.hero .content{text-align:center;padding:56px 0 36px;}
     header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
     header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
     .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
 
-    .hl{
+    /* ---------- Cards ---------- */
+    .resource-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);overflow:hidden;height:100%}
+    .resource-card .thumb{width:100%;height:160px;object-fit:cover;border-bottom:1px solid var(--oc-border)}
+    .resource-card .card-body{padding:1rem}
+    .title{font-weight:700;color:var(--oc-ink);margin-bottom:.15rem}
+    .meta{font-size:.85rem;color:var(--oc-sub)}
+    .tag-lane{display:flex;flex-wrap:wrap;gap:.35rem}
+    .tag{display:inline-flex;align-items:center;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--oc-border);background:#fbfdff;font-weight:600;font-size:.78rem;color:#1f2937}
+
+    /* ---------- Toolbar ---------- */
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+
+    /* ---------- Floating Add button ---------- */
+    .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease;}
+    .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
+
+    /* ---------- Yellow subscribe bell ---------- */
+    .btn-subscribe-icon{background:transparent;border:0;padding:.25rem .4rem;line-height:1;}
+    .btn-subscribe-icon svg{fill:var(--oc-accent);}
+    .btn-subscribe-icon:hover svg{filter:brightness(1.15);}
+	
+	.hl{
       background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
       padding:0 .06em;
       font-weight:700;
     }
+	
+	.submitted-by {
+	  font-size: 0.75rem;
+	  border-top: 1px solid rgba(0,0,0,.05);
+	}
+	.submitted-by a:hover strong {
+	  text-decoration: underline;
+	}
+	
+	.paper-card .left {
+	  width: 160px;
+	  height: 120px;
+	  flex: 0 0 160px;
+	  border-radius: 12px;
+	  background: #f4f7fb;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  overflow: hidden;
+	  border: 1px solid var(--oc-border);
+	  position: relative; /* for overlay */
+	}
 
-    /* ---------- Filters (match Models structure) ---------- */
-    .filters{position:sticky;top:86px}
-    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
-    .card .form-label{font-weight:700}
+	.paper-card img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	}
 
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
-
-    /* ---------- Paper-style card ---------- */
-    .paper-card{
-      background:var(--oc-card);
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow);
-      padding:12px;
-      height:100%;
-    }
-    .paper-card .left{
-      width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
-      display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border)
-    }
-    .paper-card img{width:100%;height:100%;object-fit:cover}
-
-    .paper-card .right .title{
-      margin:0;font-weight:800;line-height:1.25;font-size:1.05rem;color:var(--oc-ink);
-    }
-
-    .paper-meta{font-size:.85rem;color:var(--oc-sub);display:flex;gap:.5rem;flex-wrap:wrap}
-    .badge{
-      border:1px solid var(--oc-border);
-      border-radius:999px;padding:.18rem .6rem;font-size:.78rem;line-height:1.25;white-space:nowrap
-    }
-    .badge.license{background:#fff7e6;border-color:#ffe1b3;color:#7a4b00;font-weight:700}
-    .badge.lang{background:#f3eefc;border-color:#e0d5fb;color:#4e3791;font-weight:700}
-    .badge.topic{background:#eef5ff;border-color:#cfe2ff;color:#0b4ea2;font-weight:600}
-    .badge.media{background:#edf8f2;border-color:#cfe9db;color:#106946;font-weight:700}
-
-    .paper-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.25rem}
-    .paper-actions .btn{padding:.35rem .6rem;border-radius:10px}
-    .paper-actions .added{margin-left:auto;align-self:center;color:#5f6b77;background:#eff3f6;border:1px solid var(--oc-border);font-weight:600;border-radius:999px;padding:.2rem .6rem;font-size:.78rem}
-
-    .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
-
-    /* Skeleton */
-    .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
-    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
-    @keyframes shimmer{to{transform:translateX(100%)}}
-
-    /* Yellow subscribe bell (match Models) */
-    .btn-subscribe-icon{
-      background:transparent;border:0;padding:.25rem .4rem;line-height:1;
-    }
-    .btn-subscribe-icon svg{fill:var(--oc-accent);}
-    .btn-subscribe-icon:hover svg{filter:brightness(1.15);}
   </style>
 </head>
 
@@ -140,7 +112,7 @@
       <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
     </a>
 
-    <!-- Docked search -->
+    <!-- Docked search (shown when scrolling) -->
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
       <input id="qDock" type="text" class="form-control" placeholder="Search titles, topics, licenses …" aria-label="Search OER">
     </form>
@@ -156,9 +128,17 @@
         <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
         <li class="nav-item"><a class="nav-link plain active" href="oer.html" aria-current="page">Education</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+		<li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
 
-        <!-- GitHub -->
+        <!-- GitHub icon-only link -->
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets"
              target="_blank" rel="noopener" aria-label="GitHub" title="View on GitHub">
@@ -213,28 +193,18 @@
 
 <main class="container my-4">
   <div class="row g-3">
-    <!-- Filters -->
     <aside class="col-lg-3">
       <div class="card shadow-sm filters">
         <div class="card-header"><strong>Filters</strong></div>
         <div class="card-body small">
           <div class="mb-3"><label class="form-label">Language</label><div id="filter-language" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3">
-            <label class="form-label">Topics</label>
-            <input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…">
-            <div id="filter-topics" class="facet-list vstack gap-1"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">License</label>
-            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
-            <div id="filter-license" class="facet-list vstack gap-1"></div>
-          </div>
+          <div class="mb-3"><label class="form-label">Topics</label><input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…"><div id="filter-topics" class="facet-list vstack gap-1"></div></div>
+          <div class="mb-3"><label class="form-label">License</label><input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search license…"><div id="filter-license" class="facet-list vstack gap-1"></div></div>
           <div class="mb-3"><label class="form-label">Media Format</label><div id="filter-media" class="facet-list vstack gap-1"></div></div>
         </div>
       </div>
     </aside>
 
-    <!-- Results -->
     <section class="col-lg-9">
       <div class="toolbar mb-2">
         <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
@@ -243,26 +213,24 @@
           <select id="sortBy" class="form-select form-select-sm w-auto">
             <option value="added-desc">Added date ↓</option>
             <option value="added-asc">Added date ↑</option>
-            <option value="name-asc">Title A–Z</option>
-            <option value="name-desc">Title Z–A</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
           </select>
         </div>
       </div>
 
-      <div id="oerList" class="vstack gap-3" aria-live="polite" aria-busy="true">
-        <div class="skeleton" style="height:120px"></div>
-        <div class="skeleton" style="height:120px"></div>
-        <div class="skeleton" style="height:120px"></div>
-      </div>
+      <div id="oerSkeleton" class="row g-3 g-xl-4 mt-1" aria-hidden="true"></div>
+      <div id="oerGrid" class="row g-3 g-xl-4 mt-1"></div>
       <div id="emptyState" class="empty d-none mt-4">No results found.</div>
-      <div id="errorState" class="empty mt-3 d-none text-danger">Could not load OER data. Ensure data/oer.json exists and is valid.</div>
     </section>
   </div>
 </main>
 
 <footer class="py-4 mt-3 border-top">
   <div class="container oc-container small text-muted text-center">
-    <div>© <span id="yearNow"></span> OpenConstruction</div>
+    <div>
+      © <span id="yearNow"></span> OpenConstruction
+    </div>
     <div class="mt-2">
       <small>
         <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides 
@@ -299,352 +267,27 @@
   </div>
 </div>
 
+<!-- JSON loader + docked search script -->
 <script>
-/* ---------------------------
-   DATA SOURCE + PATHS
---------------------------- */
-const OER_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
-const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
-const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
-     <rect width="160" height="120" rx="12" fill="#f1f5f9"/>
-     <g fill="#0f2e4b" opacity=".6">
-       <rect x="24" y="76" width="112" height="8" rx="4"/>
-       <rect x="36" y="28" width="28" height="36" rx="6"/>
-       <rect x="88" y="44" width="36" height="20" rx="6"/>
-     </g>
-   </svg>`
-);
+  window.OER_JSON_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
+  window.OER_ENABLE_DEBUG = true;
 
-let OER = [];
-
-/* ---------------------------
-   Helpers (robust & aligned)
---------------------------- */
-const byId = id => document.getElementById(id);
-function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
-function makeCheckbox(id, label, value){
-  const wrap = document.createElement('div'); wrap.className = 'form-check';
-  const input = document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
-  const lab = document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for', id); lab.textContent=label;
-  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
-}
-function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
-function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
-function esc(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-/* YYYY-MM-DD exactly */
-function fmtDate(d){
-  try{
-    const dt = (d instanceof Date) ? d : new Date(d);
-    if (isNaN(+dt)) return null;
-    const y = dt.getFullYear();
-    const m = String(dt.getMonth()+1).padStart(2,'0');
-    const day = String(dt.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
-  }catch{return null;}
-}
-
-/* Split utility (commas/slashes/pipes/&/+) */
-function splitList(input){
-  if (input == null) return [];
-  const str = Array.isArray(input) ? input.join(',') : String(input);
-  const parts = str.split(/[,\/|&+]/g).map(p => p && p.trim()).filter(Boolean);
-  const seen = new Set(); const out = [];
-  for (const p of parts){
-    const k = normKey(p);
-    if (!seen.has(k)){ seen.add(k); out.push(p); }
-  }
-  return out;
-}
-
-/* ---------------------------
-   State
---------------------------- */
-const state = {
-  q: '', sort: 'added-desc',
-  langs: new Set(), topics: new Set(), licenses: new Set(), media: new Set()
-};
-
-/* ---------------------------
-   Build facets
---------------------------- */
-function buildFacets(){
-  const langVals = uniqSorted(OER.flatMap(o=> splitList(o.language)));
-  const topicVals = uniqSorted(OER.flatMap(o=> splitList(o.topics)));
-  const licVals = uniqSorted(OER.map(o=> o.license).filter(Boolean));
-  const mediaVals = uniqSorted(OER.flatMap(o=> splitList(o.media)));
-
-  const fLang = byId('filter-language'); if (fLang){ fLang.innerHTML=''; langVals.forEach((l,i)=> fLang.appendChild(makeCheckbox('lang_'+i,l,normKey(l)))); }
-  const fTop  = byId('filter-topics');   if (fTop){  fTop.innerHTML='';  topicVals.forEach((t,i)=> fTop.appendChild(makeCheckbox('top_'+i,t,normKey(t)))); }
-  const fLic  = byId('filter-license');  if (fLic){  fLic.innerHTML='';  licVals.forEach((l,i)=>  fLic.appendChild(makeCheckbox('lic_'+i,l,l))); }
-  const fMed  = byId('filter-media');    if (fMed){  fMed.innerHTML='';  mediaVals.forEach((m,i)=> fMed.appendChild(makeCheckbox('med_'+i,m,normKey(m)))); }
-}
-
-/* ---------------------------
-   Filter + sort + render
---------------------------- */
-function readFacet(containerId, setRef){
-  setRef.clear();
-  const root = byId(containerId);
-  if(!root) return;
-  root.querySelectorAll('input[type=checkbox]:checked').forEach(c=> setRef.add(c.value));
-}
-
-function applyFilters(){
-  const q = state.q.trim().toLowerCase();
-
-  let rows = OER.filter(o=>{
-    const hay = [
-      o.title, o.provider, (o.authors||[]).join(' '),
-      splitList(o.topics).join(' '),
-      splitList(o.language).join(' '),
-      splitList(o.media).join(' '),
-      o.license || ''
-    ].join(' ').toLowerCase();
-
-    if (q && !hay.includes(q)) return false;
-
-    if (state.langs.size){
-      const keys = new Set(splitList(o.language).map(normKey));
-      let hit = false; for(const k of state.langs){ if(keys.has(k)){ hit = true; break; } }
-      if(!hit) return false;
-    }
-    if (state.topics.size){
-      const keys = new Set(splitList(o.topics).map(normKey));
-      for(const k of state.topics){ if(!keys.has(k)) return false; }
-    }
-    if (state.media.size){
-      const keys = new Set(splitList(o.media).map(normKey));
-      let hit = false; for(const k of state.media){ if(keys.has(k)){ hit = true; break; } }
-      if(!hit) return false;
-    }
-    if (state.licenses.size && !state.licenses.has(o.license || '')) return false;
-
-    return true;
-  });
-
-  switch(state.sort){
-    case 'name-asc':  rows.sort((a,b)=> (a.title||'').localeCompare(b.title||'')); break;
-    case 'name-desc': rows.sort((a,b)=> (b.title||'').localeCompare(a.title||'')); break;
-    case 'added-asc': rows.sort((a,b)=> (a.added_ts||0)-(b.added_ts||0)); break;
-    default:          rows.sort((a,b)=> (b.added_ts||0)-(a.added_ts||0)); // added-desc
-  }
-
-  render(rows);
-}
-
-/* ---------- ORIGINAL CARD RENDER ---------- */
-function render(items){
-  const list = byId('oerList');
-  const empty = byId('emptyState');
-  const err = byId('errorState');
-  list.innerHTML = '';
-  byId('resultCount').textContent = items.length;
-  if (err) err.classList.add('d-none');
-
-  if (!items.length){
-    empty.classList.remove('d-none');
-    return;
-  }
-  empty.classList.add('d-none');
-
-  items.forEach(o=>{
-    const img = o.image || o.thumbnail || PLACEHOLDER_PNG;
-    const title = o.title || o.name || 'Untitled';
-    const prov  = o.provider || '';
-    const authors = Array.isArray(o.authors) ? o.authors : (o.authors ? String(o.authors).split(/,\s*/) : []);
-    const year = o.year || '';
-    const who = authors.length ? authors.join(', ') : prov;
-    const metaLeft = [who || null, year || null].filter(Boolean).join(' • ');
-    const addedTxt = o.added_date_fmt ? `Added ${o.added_date_fmt}` : '';
-    const licenseUrl = (o.license_url && /^https?:/.test(o.license_url)) ? o.license_url : '';
-    const sourceUrl  = (o.source && /^https?:/.test(o.source)) ? o.source : (o.url || '');
-
-    const topics = splitList(o.topics);
-    const langs  = splitList(o.language);
-    const media  = splitList(o.media);
-    const licenseBadge = o.license ? `<span class="badge license" title="License">${esc(o.license)}</span>` : '';
-
-    const el = document.createElement('div');
-    el.className = 'paper-card';
-    el.innerHTML = `
-      <div class="d-flex gap-3 align-items-start">
-        <div class="left">
-          <img src="${img}" alt="${esc(title)}"
-               onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
-        </div>
-
-        <div class="right flex-grow-1">
-          <h3 class="title">
-            ${sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" aria-label="Open resource: ${esc(title)}">${esc(title)}</a>` : esc(title)}
-          </h3>
-          <div class="paper-meta">${esc(metaLeft || '—')}</div>
-
-          <div class="mt-2 d-flex flex-wrap gap-1" aria-label="Resource tags">
-            ${topics.map(t=>`<span class="badge topic" title="Topic">${esc(t)}</span>`).join('')}
-            ${media.map(m=>`<span class="badge media" title="Media">${esc(m)}</span>`).join('')}
-            ${langs.map(l=>`<span class="badge lang" title="Language">${esc(l)}</span>`).join('')}
-            ${licenseBadge}
-          </div>
-
-          <div class="paper-actions">
-            ${sourceUrl ? `<a class="btn btn-sm btn-primary" href="${sourceUrl}" target="_blank" rel="noopener">View resource</a>` : ''}
-            ${licenseUrl ? `<a class="btn btn-sm btn-outline-secondary" href="${licenseUrl}" target="_blank" rel="noopener">License</a>` : ''}
-            ${addedTxt ? `<span class="added">${addedTxt}</span>` : ''}
-          </div>
-        </div>
-      </div>`;
-    list.appendChild(el);
-  });
-}
-
-/* ---------------------------
-   Wire up controls
---------------------------- */
-function attachHandlers(){
-  // Facets
-  const fLang = byId('filter-language');
-  const fTop  = byId('filter-topics');
-  const fLic  = byId('filter-license');
-  const fMed  = byId('filter-media');
-
-  if (fLang) fLang.addEventListener('change', ()=>{ readFacet('filter-language', state.langs); applyFilters(); });
-  if (fTop)  fTop .addEventListener('change', ()=>{ readFacet('filter-topics', state.topics); applyFilters(); });
-  if (fLic)  fLic .addEventListener('change', ()=>{ readFacet('filter-license', state.licenses); applyFilters(); });
-  if (fMed)  fMed .addEventListener('change', ()=>{ readFacet('filter-media', state.media); applyFilters(); });
-
-  // Small searchers in facet lists
-  const topicSearch = byId('topicSearch');
-  if (topicSearch) topicSearch.addEventListener('input', debounce(e=>{
-    const q = e.target.value.toLowerCase();
-    const root = byId('filter-topics'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{
-      const label = w.querySelector('label').textContent.toLowerCase();
-      w.style.display = label.includes(q)?'':'none';
-    });
-  }, 120));
-
-  const licenseSearch = byId('licenseSearch');
-  if (licenseSearch) licenseSearch.addEventListener('input', debounce(e=>{
-    const q = e.target.value.toLowerCase();
-    const root = byId('filter-license'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{
-      const label = w.querySelector('label').textContent.toLowerCase();
-      w.style.display = label.includes(q)?'':'none';
-    });
-  }, 120));
-
-  // Search (hero + docked) with sync (match Models)
-  const hero = byId('q'), dock = byId('qDock');
-  function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-  if (hero && dock){
-    const updateQ = debounce(()=>{ state.q = hero.value; if (!document.body.classList.contains('docked')) dock.value = hero.value; applyFilters(); }, 120);
-    dock.addEventListener('input', ()=>{ state.q = dock.value; sync(hero, dock); applyFilters(); });
-    hero.addEventListener('input', updateQ);
-  }
-
-  // Docked show/hide like Models
   (function(){
-    const SHOW_AT = 220, HIDE_AT = 160;
-    let docked = false;
-    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked', on); }
-    function onScroll(){
-      const y = window.scrollY || 0;
-      if(!docked && y > SHOW_AT) setDock(true);
-      else if(docked && y < HIDE_AT) setDock(false);
+    // year now
+    const yr = document.getElementById('yearNow');
+    if (yr) yr.textContent = new Date().getFullYear();
+
+    // sync docked + hero search
+    const hero = document.getElementById('q');
+    const dock = document.getElementById('qDock');
+    function sync(to, from){
+      if(!to || !from) return;
+      to.value = from.value;
+      to.dispatchEvent(new Event('input', {bubbles:true}));
     }
-    onScroll();
-    window.addEventListener('scroll', onScroll, {passive:true});
-  })();
-
-  // Sort
-  const sortSel = byId('sortBy');
-  if (sortSel) sortSel.addEventListener('change', (e)=>{ state.sort = e.target.value; applyFilters(); });
-}
-
-/* ---------------------------
-   Load JSON (with path fallbacks & tolerant keys)
---------------------------- */
-async function loadOER(){
-  const list = byId('oerList');
-  const err = byId('errorState');
-  const yr = byId('yearNow'); if (yr) yr.textContent = new Date().getFullYear();
-
-  for (const p of OER_PATHS){
-    try{
-      const res = await fetch(`${p}?v=${Date.now()}`, {cache:'no-store'});
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const payload = await res.json();
-
-      const raw = Array.isArray(payload) ? payload
-                : (Array.isArray(payload.oer) ? payload.oer
-                : (typeof payload==='object' ? Object.values(payload) : []));
-
-      OER = raw.map(o=>{
-        // keep original tolerant mapping used in your file
-        const title   = o.title || o.name || 'Untitled';
-        const authors = Array.isArray(o.authors) ? o.authors
-                        : (o.authors ? String(o.authors).split(/,\s*/) : []);
-        const provider= o.provider || o.publisher || o.organization || o.source_name || '';
-        const year    = o.year || o.publication_year || o.date_year || '';
-        const topics  = o.topics || o.tags || o.keywords || [];
-        const language= o.language || o.languages || o.lang || [];
-        const media   = o.media || o.media_formats || o.format || [];
-        const license = o.license || o.license_name || '';
-        const license_url = o.license_url || o.licenseLink || '';
-        const source  = o.source || o.url || o.link || o.href || o.website || '';
-        const image   = o.image || o.thumbnail || o.cover || (o.id ? `assets/img/oer/${o.id}.png` : '');
-        const addedRaw = o.added || o.added_date || o.date_added || o.addedTime || o.Added || null;
-        const added_ts = addedRaw ? Date.parse(addedRaw) : null;
-
-        return {
-          id: o.id || (crypto.randomUUID ? crypto.randomUUID() : (title || Math.random().toString(36).slice(2))),
-          title,
-          provider, authors, year,
-          topics, language, media,
-          license, license_url,
-          source, image,
-          added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
-          added_date_fmt: addedRaw ? fmtDate(addedRaw) : null
-        };
-      });
-
-      buildFacets();
-      attachHandlers();
-      applyFilters();
-      if (err) err.classList.add('d-none');
-      return; // success, stop trying paths
-    }catch(e){
-      // try next path
-    }
-  }
-
-  // If we got here, all paths failed
-  if (list) list.innerHTML = '';
-  if (err) err.classList.remove('d-none');
-}
-
-/* Kickoff */
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', loadOER);
-}else{
-  loadOER();
-}
-</script>
-
-<script>
-  // Keep Models-page behavior: dock search into navbar after scroll
-  (function(){
-    const heroInput = document.getElementById('q');
-    const dockInput = document.getElementById('qDock');
-    if (heroInput && dockInput){
-      // sync value both ways
-      const sync = (from, to) => {
-        to.value = from.value;
-      };
-      heroInput.addEventListener('input', ()=> sync(heroInput, dockInput));
-      dockInput.addEventListener('input', ()=> sync(dockInput, heroInput));
+    if (hero && dock){
+      dock.addEventListener('input', ()=>sync(hero, dock));
+      hero.addEventListener('input', ()=>{ if(!document.body.classList.contains('docked')) dock.value = hero.value; });
     }
 
     // toggle docked after scrolling past hero
