@@ -62,20 +62,22 @@
 
     /* ---------- OER "paper" cards (mirror models.html) ---------- */
     .oer-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:1rem;height:100%}
-    .oer-card .left{width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);position:relative}
-    .oer-card img{width:100%;height:100%;object-fit:cover}
+    .oer-card .left{width:160px;height:120px;flex:0 0 160px;aspect-ratio:4/3;border-radius:12px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);position:relative}
+    .oer-card img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;-webkit-user-drag:none;image-rendering:auto}
     .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
     .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
     /* Tag row */
-    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem 0}
-    .tag{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:999px;border:1px solid var(--oc-border);font-weight:600;font-size:.78rem;white-space:nowrap}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.3rem .35rem;margin:.35rem 0 .25rem}
+    .tag{display:inline-flex;align-items:center;padding:.16rem .5rem;border-radius:999px;border:1px solid var(--oc-border);font-weight:600;font-size:.78rem;line-height:1.15;white-space:nowrap}
     .tag.topic   {background:var(--tag-topic-bg);   border-color:var(--tag-topic-border);   color:var(--tag-topic-text)}
     .tag.media   {background:var(--tag-media-bg);   border-color:var(--tag-media-border);   color:var(--tag-media-text)}
     .tag.license {background:var(--tag-license-bg); border-color:var(--tag-license-border); color:var(--tag-license-text)}
     .tag.lang    {background:var(--tag-lang-bg);    border-color:var(--tag-lang-border);    color:var(--tag-lang-text)}
 
     /* Actions */
+    .tag.more{background:#f1f5f9;border-color:#e6edf3;color:#51606d}
+    .added-note{margin-left:auto;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;font-weight:600;color:#5f6b77;background:#eff3f6;border:1px solid #e7edf3}
     .added-note{margin-left:auto;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;font-weight:600;color:#5f6b77;background:#eff3f6;border:1px solid #e7edf3}
 
     /* Submitted-by overlay */
@@ -328,11 +330,26 @@ function render(items){
   byId('resultCount').textContent = items.length;
   if(!items.length){ empty.classList.remove('d-none'); return; } else { empty.classList.add('d-none'); }
 
+  // small helpers for tidy tags
+  const pill = (t,cls)=>`<span class='tag ${cls}'>${t}</span>`;
+  const pillset = (arr, cls, max)=>{
+    const vals = Array.isArray(arr)?arr.filter(Boolean):[];
+    const shown = vals.slice(0, max);
+    const more = Math.max(0, vals.length - shown.length);
+    const extra = more?`<span class='tag more' title="${vals.slice(max).join(', ')}">+${more} more</span>`:'';
+    return shown.map(t=>pill(t,cls)).join('') + extra;
+  };
+
   items.forEach(o=>{
     const img = o.image || o.thumbnail || PLACEHOLDER;
     const addedTxt = o._added_fmt ? `Added ${o._added_fmt}` : '';
     const authorsLine = Array.isArray(o.authors) ? o.authors.join(', ') : (o.authors || '');
     const providerOrAuthors = authorsLine || o.provider || '';
+
+    const topicTags = pillset(o.topics,'topic',4);
+    const mediaTags = pillset(o.media,'media',2);
+    const langTags  = pillset(o.language,'lang',1);
+    const licenseTag= o.license? pill(o.license,'license') : '';
 
     const el = document.createElement('div'); el.className='oer-card';
     el.innerHTML = `
@@ -353,10 +370,10 @@ function render(items){
           <div class="meta mb-1">${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${o.year || '—'}</div>
 
           <div class="tag-row">
-            ${(Array.isArray(o.topics)?o.topics:[]).map(t=>`<span class='tag topic'>${t}</span>`).join('')}
-            ${(Array.isArray(o.media)?o.media:[]).map(m=>`<span class='tag media'>${m}</span>`).join('')}
-            ${o.license?`<span class='tag license'>${o.license}</span>`:''}
-            ${(Array.isArray(o.language)?o.language:[]).map(l=>`<span class='tag lang'>${l}</span>`).join('')}
+            ${topicTags}
+            ${mediaTags}
+            ${licenseTag}
+            ${langTags}
           </div>
 
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
