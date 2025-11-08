@@ -61,6 +61,20 @@
 	  "license": "CC BY-NC-SA 4.0",
 	  "media": ["Text/HTML", "Lecture Notes", "Assignments"],
 	  "added": "2025-11-07"
+	},
+	{
+	  "id": "building-construction-materials-forehand-2025",
+	  "title": "Building Construction and Materials: An Open Educational Resource Textbook",
+	  "provider": "Leslie Forehand",
+	  "year": null,
+	  "source": "https://lbcc.pressbooks.pub/buildingconstruction/",
+	  "image": "https://lbcc.pressbooks.pub/app/uploads/sites/17/2023/10/Pressbooks-Cover-2.png",
+	  "language": ["English"],
+	  "topics": ["Materials in Architecture"],
+	  "license": "CC BY-NC-SA 4.0",
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-07"
 	}
+	
   ]
 }
