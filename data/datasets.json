@@ -2066,7 +2066,9 @@
   "access": "https://github.com/wenjie-liao/StructGAN_v1",
   "id": "structgan",
   "image_url": "assets/img/datasets/structgan.png",
-  "added_date": "2025-09-28"
+  "added_date": "2025-09-28",
+  "contributor": "Xinzheng Lu",
+  "contributor_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm"
 },
 "mep2bim": {
   "name": "MEP2BIM Dataset",

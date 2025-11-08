@@ -277,5 +277,14 @@
     "link_url": "https://github.com/RPM-Robotics-Lab",
     "image": "https://github.com/RPM-Robotics-Lab.png?size=160",
     "type": "org"
+  },
+   {
+    "id": "Xinzheng-Lu",
+    "name": "Xinzheng Lu",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Tsinghua University (China)",
+    "link_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm",
+    "image": "https://www.civil.tsinghua.edu.cn/__local/D/08/DD/09358DF0598E396EA6A3188CAC1_0BF401ED_E7D4.jpg?e=.jpg",
+    "type": "person"
   }
 ]

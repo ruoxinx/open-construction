@@ -441,7 +441,9 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.autcon.2021.103931",
   "code_url": "https://github.com/wenjie-liao/StructGAN_v1",
-  "thumbnail": "assets/img/models/structgan-v1.png"
+  "thumbnail": "assets/img/models/structgan-v1.png",
+  "contributor": "Xinzheng Lu",
+  "contributor_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm"
 },
 {
   "id": "structgan-phy",
@@ -455,7 +457,9 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1002/eqe.3632",
   "code_url": "https://github.com/wenjie-liao/StructGAN-PHY",
-  "thumbnail": "assets/img/models/structgan-phy.png"
+  "thumbnail": "assets/img/models/structgan-phy.png",
+  "contributor": "Xinzheng Lu",
+  "contributor_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm"
 },
 {
   "id": "structgan-txt-txtimg2img",
@@ -469,7 +473,9 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1016/j.eswa.2022.118530",
   "code_url": "https://github.com/wenjie-liao/StructGAN-TXT-TxtImg2Img",
-  "thumbnail": "assets/img/models/structgan-txt-txtimg2img.png"
+  "thumbnail": "assets/img/models/structgan-txt-txtimg2img.png",
+  "contributor": "Xinzheng Lu",
+  "contributor_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm"
 },
 {
   "id": "image2triplets",
