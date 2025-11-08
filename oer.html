@@ -62,8 +62,6 @@
     /* ---------- OER cards ---------- */
     .oer-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:1rem;height:100%}
     .oer-card img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-    .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
-    .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 	.oer-card .left{
 	  width:220px;          /* was 160px */
 	  height:180px;         /* was 120px */
@@ -74,9 +72,10 @@
 	  border:1px solid var(--oc-border);
 	  position:relative;
 	}
-	
 	.oer-card img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
 
+    .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
+    .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
     /* Submitted-by overlay */
     .oer-card .left .submitted-by{position:absolute;right:6px;bottom:6px;background:rgba(255,255,255,.96);border:1px solid #e0e6ef;border-radius:10px;padding:2px 8px;font-size:.75rem;line-height:1.25;color:#1e2a36;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.06);max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -377,20 +376,19 @@ function render(items){
     const card = document.createElement('div');
     card.className = 'oer-card';
     card.innerHTML = `
-		<div>
-		  <div class="left">
-			<img src="${img}" alt="${o.title||'thumbnail'}"
-				 onerror="this.onerror=null; this.src='${PLACEHOLDER}'; this.setAttribute('onerror', 'this.src=\\'${ICON_FALLBACK}\\'');">
-			${o.contributor || o.contributor_url ? `
-			  <div class="submitted-by">
-				<a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
-				  Submitted by <strong>${(o.contributor||'').startsWith('@') ? o.contributor : '@' + (o.contributor||'')}</strong>
-				</a>
-			  </div>` : ''}
-		  </div>
+      <div class="d-flex gap-3 align-items-start">
+        <div class="left">
+          <img src="${img}" alt="${o.title||'thumbnail'}"
+               onerror="this.onerror=null; this.src='${PLACEHOLDER}'; this.setAttribute('onerror', 'this.src=\\'${ICON_FALLBACK}\\'');">
+          ${o.contributor || o.contributor_url ? `
+            <div class="submitted-by">
+              <a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
+                Submitted by <strong>${(o.contributor||'').startsWith('@') ? o.contributor : '@' + (o.contributor||'')}</strong>
+              </a>
+            </div>` : ''}
+        </div>
 
-		  <div class="flex-grow-1">
-
+        <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
           <div class="meta mb-1">${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${o.year || '—'}</div>
 
