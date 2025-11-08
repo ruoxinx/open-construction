@@ -17,10 +17,10 @@
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
 
-      --tag-topic-bg:#eef5ff; --tag-topic-border:#cfe2ff; --tag-topic-text:#0b4ea2;
-      --tag-media-bg:#edf8f2; --tag-media-border:#cfe9db; --tag-media-text:#106946;
-      --tag-license-bg:#fef6e7; --tag-license-border:#fde8c2; --tag-license-text:#8a5b0a;
-      --tag-lang-bg:#f0ecff; --tag-lang-border:#e0d7ff; --tag-lang-text:#4f3aa7;
+      /* Tag palette (professional / subdued) */
+      --tag-text:#3b4b5a; --tag-bg:#fff; --tag-border:#dbe5ee;
+      --tag-quiet-bg:#f7fafc; --tag-quiet-border:#e7edf3; --tag-quiet-text:#51606d;
+      --tag-license-bg:#fbf5e9; --tag-license-border:#f3e2bd; --tag-license-text:#7a5a21;
     }
     html,body{background:var(--oc-bg);color:var(--oc-text)}
     a{color:var(--oc-link)}
@@ -68,15 +68,17 @@
     .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
     /* Tag row */
-    .tag-row{display:flex;flex-wrap:wrap;gap:.3rem .35rem;margin:.35rem 0 .25rem}
-    .tag{display:inline-flex;align-items:center;padding:.16rem .5rem;border-radius:999px;border:1px solid var(--oc-border);font-weight:600;font-size:.78rem;line-height:1.15;white-space:nowrap}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.25rem .35rem;margin:.3rem 0 .15rem}
+    .tag{display:inline-flex;align-items:center;padding:.14rem .48rem;border-radius:999px;border:1px solid var(--tag-border);background:var(--tag-bg);color:var(--tag-text);font-weight:500;font-size:.75rem;line-height:1.1;white-space:nowrap}
+    .tag.topic,.tag.media,.tag.lang{background:var(--tag-quiet-bg);border-color:var(--tag-quiet-border);color:var(--tag-quiet-text)}
+    .tag.license{background:var(--tag-license-bg);border-color:var(--tag-license-border);color:var(--tag-license-text);font-weight:600}
     .tag.topic   {background:var(--tag-topic-bg);   border-color:var(--tag-topic-border);   color:var(--tag-topic-text)}
     .tag.media   {background:var(--tag-media-bg);   border-color:var(--tag-media-border);   color:var(--tag-media-text)}
     .tag.license {background:var(--tag-license-bg); border-color:var(--tag-license-border); color:var(--tag-license-text)}
     .tag.lang    {background:var(--tag-lang-bg);    border-color:var(--tag-lang-border);    color:var(--tag-lang-text)}
 
     /* Actions */
-    .tag.more{background:#f1f5f9;border-color:#e6edf3;color:#51606d}
+    .tag.more{background:#fff;border-color:#e6edf3;color:#6a7783;font-weight:500}
     .added-note{margin-left:auto;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;font-weight:600;color:#5f6b77;background:#eff3f6;border:1px solid #e7edf3}
     .added-note{margin-left:auto;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;font-weight:600;color:#5f6b77;background:#eff3f6;border:1px solid #e7edf3}
 
@@ -346,8 +348,8 @@ function render(items){
     const authorsLine = Array.isArray(o.authors) ? o.authors.join(', ') : (o.authors || '');
     const providerOrAuthors = authorsLine || o.provider || '';
 
-    const topicTags = pillset(o.topics,'topic',4);
-    const mediaTags = pillset(o.media,'media',2);
+    const topicTags = pillset(o.topics,'topic',3);
+    const mediaTags = pillset(o.media,'media',1);
     const langTags  = pillset(o.language,'lang',1);
     const licenseTag= o.license? pill(o.license,'license') : '';
 
@@ -371,8 +373,8 @@ function render(items){
 
           <div class="tag-row">
             ${topicTags}
-            ${mediaTags}
             ${licenseTag}
+            ${mediaTags}
             ${langTags}
           </div>
 
