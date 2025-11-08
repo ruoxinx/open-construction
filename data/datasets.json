@@ -878,11 +878,13 @@
     "potential_tasks": [
       "Simultaneous Localization and Mapping"
     ],
-    "license": "Not Specified",
+    "license": "Academic Use Only",
     "paper": "ConSLAM: Construction Dataset for SLAM",
     "access": "https://github.com/mac137/ConSLAM",
     "id": "ConSLAM",
-    "image_url": "assets/img/datasets/ConSLAM.png"
+    "image_url": "assets/img/datasets/ConSLAM.png",
+	"contributor": "CIT Lab",
+	"contributor_url": "https://cit.eng.cam.ac.uk/about-cit"
   },
   "CIS": {
     "name": "CIS: Construction Instance Segmentation Dataset",

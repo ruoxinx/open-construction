@@ -85,7 +85,9 @@
     "license": "Academic Use Only",
     "paper_url": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
     "code_url": "https://github.com/mac137/ConSLAM",
-    "thumbnail": "assets/img/models/ConSLAM.png"
+    "thumbnail": "assets/img/models/ConSLAM.png",
+	"contributor": "CIT Lab",
+	"contributor_url": "https://cit.eng.cam.ac.uk/about-cit"
   },
   {
     "id": "CMA",
