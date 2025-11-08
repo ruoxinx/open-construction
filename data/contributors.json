@@ -268,5 +268,14 @@
     "link_url": "https://cit.eng.cam.ac.uk/about-cit",
     "image": "assets/img/contributors/avatar.png",
     "type": "org"
+  },
+    {
+    "id": "RPM",
+    "name": "RPM Robotics Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "Seoul National University (South Korea)",
+    "link_url": "https://github.com/RPM-Robotics-Lab",
+    "image": "https://github.com/RPM-Robotics-Lab.png?size=160",
+    "type": "org"
   }
 ]
