@@ -65,16 +65,17 @@
     .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
     .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 	.oer-card .left{
-	  width:100%;
-	  height:180px;             /* Taller image */
-	  flex:0 0 auto;
+	  width:220px;          /* was 160px */
+	  height:180px;         /* was 120px */
+	  flex:0 0 220px;       /* reserve width so it doesn’t shrink */
 	  border-radius:12px;
 	  overflow:hidden;
 	  background:#f4f7fb;
 	  border:1px solid var(--oc-border);
 	  position:relative;
-	  margin-bottom:0.75rem;    /* Adds space below the image */
 	}
+	
+	.oer-card img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
 
 
     /* Submitted-by overlay */
