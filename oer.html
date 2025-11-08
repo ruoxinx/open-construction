@@ -19,7 +19,6 @@
 
       /* Professional/subdued tag palette */
       --tag-text:#344454; --tag-bg:#f8fafc; --tag-border:#dce3eb;
-      --tag-license-bg:#fbf5e9; --tag-license-border:#f3e2bd; --tag-license-text:#7a5a21;
     }
     html,body{background:var(--oc-bg);color:var(--oc-text)}
     a{color:var(--oc-link)}
@@ -61,19 +60,17 @@
 
     /* ---------- OER cards ---------- */
     .oer-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:1rem;height:100%}
+    .oer-card .left{
+      width:220px;           /* wider */
+      height:200px;          /* taller */
+      flex:0 0 220px;        /* reserve width so it doesn’t shrink */
+      border-radius:12px;
+      overflow:hidden;
+      background:#f4f7fb;
+      border:1px solid var(--oc-border);
+      position:relative;
+    }
     .oer-card img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-	.oer-card .left{
-	  width:160px;          /* was 160px */
-	  height:200px;         /* was 120px */
-	  flex:0 0 220px;       /* reserve width so it doesn’t shrink */
-	  border-radius:12px;
-	  overflow:hidden;
-	  background:#f4f7fb;
-	  border:1px solid var(--oc-border);
-	  position:relative;
-	}
-	.oer-card img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-
     .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
     .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
@@ -89,7 +86,6 @@
     .tag{ display:inline-flex; align-items:center; padding:.14rem .48rem; border-radius:999px;
           border:1px solid var(--tag-border); background:var(--tag-bg); color:var(--tag-text);
           font-size:.75rem; line-height:1.1; white-space:nowrap; }
-    .tag.license{ background:var(--tag-license-bg); border-color:var(--tag-license-border); color:var(--tag-license-text); font-weight:600 }
 
     /* Actions */
     .added-note{margin-left:auto;border-radius:999px;padding:.2rem .6rem;font-size:.78rem;font-weight:600;color:#5f6b77;background:#eff3f6;border:1px solid #e7edf3}
@@ -103,12 +99,11 @@
     /* Floating Add button */
     .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease}
     .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
-	
-	/* Subscribe bell color */
-	.btn-subscribe-icon { background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
-	.btn-subscribe-icon svg { fill: var(--oc-accent); }          /* e.g., your orange */
-	.btn-subscribe-icon:hover svg { filter: brightness(1.15); }  /* subtle hover pop */
 
+    /* Subscribe bell color */
+    .btn-subscribe-icon { background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
+    .btn-subscribe-icon svg { fill: var(--oc-accent); }
+    .btn-subscribe-icon:hover svg { filter: brightness(1.15); }
   </style>
 </head>
 
@@ -193,7 +188,7 @@
       </div>
     </aside>
 
-    <!-- Results (2 cards per row) -->
+    <!-- Results: one card per row -->
     <section class="col-lg-9">
       <div class="toolbar mb-2">
         <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
@@ -208,11 +203,11 @@
         </div>
       </div>
 
-      <!-- NOTE: switched from vstack to row g-3 to get 2 cards/row -->
-      <div id="oerGrid" class="row g-3" aria-live="polite" aria-busy="true">
-        <div class="col-12"><div class="skeleton" style="height:120px"></div></div>
-        <div class="col-12"><div class="skeleton" style="height:120px"></div></div>
-        <div class="col-12"><div class="skeleton" style="height:120px"></div></div>
+      <!-- vstack = single column -->
+      <div id="oerGrid" class="vstack gap-3" aria-live="polite" aria-busy="true">
+        <div class="skeleton" style="height:120px"></div>
+        <div class="skeleton" style="height:120px"></div>
+        <div class="skeleton" style="height:120px"></div>
       </div>
 
       <div id="emptyState" class="empty d-none mt-4">No results found.</div>
@@ -343,7 +338,7 @@ function applyFilters(){
   render(rows);
 }
 
-/* Build a titled tag section (no +N more, wraps naturally) */
+/* Build a titled tag section (no license section) */
 const sec = (label, arr, cls='') =>
   (Array.isArray(arr) && arr.length)
     ? `<div class="tag-section">
@@ -367,9 +362,8 @@ function render(items){
     const providerOrAuthors = authorsLine || o.provider || '';
 
     const tagsHTML =
-        sec('Topics',   o.topics,   'topic')   +
-        sec('Media',    o.media,    'media')   +
-        sec('License',  o.license ? [o.license] : [], 'license') +
+        sec('Topics',   o.topics,   'topic') +
+        sec('Media',    o.media,    'media') +
         sec('Language', o.language, 'lang');
 
     // Build the card
@@ -401,11 +395,8 @@ function render(items){
         </div>
       </div>`;
 
-    // Wrap in Bootstrap column for 2-per-row on md+
-    const col = document.createElement('div');
-    col.className = 'col-md-6';
-    col.appendChild(card);
-    grid.appendChild(col);
+    // Append directly (single-column stack)
+    grid.appendChild(card);
   });
 }
 
