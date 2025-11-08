@@ -1142,7 +1142,7 @@
     "annotation_types": [
       "Not Specified"
     ],
-    "geographical_location": "Not Specified",
+    "geographical_location": "South Korea",
     "potential_tasks": [
       "Simultaneous Localization and Mapping"
     ],
@@ -1150,7 +1150,9 @@
     "paper": "ConPR: Ongoing Construction Site Dataset for Place Recognition",
     "access": "https://github.com/dongjae0107/ConPR",
     "id": "ConPR",
-    "image_url": "assets/img/datasets/ConPR.png"
+    "image_url": "assets/img/datasets/ConPR.png",
+	"contributor": "RPM Robotics Lab",
+	"contributor_url": "https://github.com/RPM-Robotics-Lab"
   },
   "Thermal-Workers": {
     "name": "Thermal image dataset of construction workers unsafe actions",
