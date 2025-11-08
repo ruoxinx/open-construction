@@ -374,19 +374,20 @@ function render(items){
     const card = document.createElement('div');
     card.className = 'oer-card';
     card.innerHTML = `
-      <div class="d-flex gap-3 align-items-start">
-        <div class="left">
-          <img src="${img}" alt="${o.title||'thumbnail'}"
-               onerror="this.onerror=null; this.src='${PLACEHOLDER}'; this.setAttribute('onerror', 'this.src=\\'${ICON_FALLBACK}\\'');">
-          ${o.contributor || o.contributor_url ? `
-            <div class="submitted-by">
-              <a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
-                Submitted by <strong>${(o.contributor||'').startsWith('@') ? o.contributor : '@' + (o.contributor||'')}</strong>
-              </a>
-            </div>` : ''}
-        </div>
+		<div>
+		  <div class="left">
+			<img src="${img}" alt="${o.title||'thumbnail'}"
+				 onerror="this.onerror=null; this.src='${PLACEHOLDER}'; this.setAttribute('onerror', 'this.src=\\'${ICON_FALLBACK}\\'');">
+			${o.contributor || o.contributor_url ? `
+			  <div class="submitted-by">
+				<a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
+				  Submitted by <strong>${(o.contributor||'').startsWith('@') ? o.contributor : '@' + (o.contributor||'')}</strong>
+				</a>
+			  </div>` : ''}
+		  </div>
 
-        <div class="flex-grow-1">
+		  <div class="flex-grow-1">
+
           <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
           <div class="meta mb-1">${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${o.year || '—'}</div>
 
