@@ -48,6 +48,19 @@
 	  "license": "CC BY-NC-SA 4.0",
 	  "media": ["Text/HTML"],
 	  "added": "2025-11-05"
+	},
+	{
+	  "id": "mit-project-management-2004",
+	  "title": "Project Management",
+	  "provider": "Dr. Nathaniel Osgood",
+	  "year": 2004,
+	  "source": "https://ocw.mit.edu/courses/1-040-project-management-spring-2004/",
+	  "image": "https://ocw.mit.edu/courses/1-040-project-management-spring-2004/ed78302ef0194f93b950119b5e7e24f5_1-040s04.jpg",
+	  "language": ["English"],
+	  "topics": ["Project Management", "Project Organization", "Project Planning", "Project Control"],
+	  "license": "CC BY-NC-SA 4.0",
+	  "media": ["Text/HTML", "Lecture Notes", "Assignments"],
+	  "added": "2025-11-07"
 	}
   ]
 }
