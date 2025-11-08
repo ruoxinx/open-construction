@@ -874,7 +874,7 @@
     "annotation_types": [
       "Ground-truth trajectories"
     ],
-    "geographical_location": "Not Specified",
+    "geographical_location": "UK",
     "potential_tasks": [
       "Simultaneous Localization and Mapping"
     ],
