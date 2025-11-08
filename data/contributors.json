@@ -259,5 +259,14 @@
     "link_url": "https://shiyangming.com/",
     "image": "assets/img/contributors/avatar.png",
     "type": "org"
+  },
+    {
+    "id": "CIT",
+    "name": "CIT Lab",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "University of Cambridge (UK)",
+    "link_url": "https://cit.eng.cam.ac.uk/about-cit",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "org"
   }
 ]
