@@ -1,223 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Education</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    :root{
-      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
-      --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
-      --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-muted:#f6f9fc;
-      --oc-brand:#0f2e4b; --oc-accent:#f2a238;
-
-      --tag-task-bg:#eef5ff; --tag-task-border:#cfe2ff; --tag-task-text:#0b4ea2; /* Topics */
-      --tag-app-bg:#edf8f2;  --tag-app-border:#cfe9db; --tag-app-text:#106946;   /* Media  */
-      --tag-lic-bg:#fff7e6;  --tag-lic-border:#ffe1b3; --tag-lic-text:#7a4b00;   /* License*/
-      --tag-lang-bg:#f3eefc; --tag-lang-border:#e0d5fb; --tag-lang-text:#4e3791; /* Lang   */
-    }
-    html,body{background:var(--oc-bg);color:var(--oc-text)}
-    a{color:var(--oc-link)}
-
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .oc-logo{height:44px;width:44px}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
-    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
-    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
-    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
-    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
-    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
-    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    .navbar-search{display:none;width:clamp(200px,24vw,320px);}
-    .navbar-search .form-control{height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px;}
-    body.docked .navbar-search{display:flex}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex;align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
-    }
-
-    header.hero{border-bottom:1px solid var(--oc-border);background:#fff;}
-    header.hero .content{padding:56px 0 36px;text-align:center}
-    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
-    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
-    .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
-    .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);padding:0 .06em;font-weight:700;}
-
-    .filters{position:sticky;top:86px}
-    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
-    .card .form-label{font-weight:700}
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
-
-    .paper-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:14px;height:100%}
-    .paper-card .left{width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);position:relative}
-    .paper-card img{width:100%;height:100%;object-fit:cover}
-    .pc-head{margin-bottom:.25rem}
-    .pc-title{margin:0;font-weight:800;line-height:1.25;font-size:1.05rem;color:var(--oc-ink)}
-    .pc-title a{color:inherit;text-decoration:none}
-    .pc-title a:hover{text-decoration:underline;text-underline-offset:2px}
-    .pc-meta{font-size:.85rem;color:var(--oc-sub);display:flex;gap:.5rem;flex-wrap:wrap}
-    .hr-ghost{height:1px;background:linear-gradient(90deg,transparent,rgba(15,46,75,.08),transparent);margin:.5rem 0 .6rem}
-    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;max-height:calc(2 * 1.9em);overflow:hidden;margin-bottom:.25rem}
-    .badge-topic,.badge-media,.badge-license,.badge-lang{border-radius:999px;padding:.18rem .55rem;font-size:.78rem;line-height:1.25;white-space:nowrap}
-    .badge-topic{background:var(--tag-task-bg);border:1px solid var(--tag-task-border);color:var(--tag-task-text);font-weight:600}
-    .badge-media{background:var(--tag-app-bg);border:1px solid var(--tag-app-border);color:var(--tag-app-text);font-weight:700}
-    .badge-license{background:var(--tag-lic-bg);border:1px solid var(--tag-lic-border);color:var(--tag-lic-text);font-weight:700}
-    .badge-lang{background:var(--tag-lang-bg);border:1px solid var(--tag-lang-border);color:var(--tag-lang-text);font-weight:700}
-    .pc-foot{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-    .pc-foot .btn{padding:.3rem .6rem;font-size:.78rem;border-radius:10px}
-    .added-note{margin-left:auto;align-self:center;color:#5f6b77;background:#eff3f6;border:1px solid var(--oc-border);font-weight:600;border-radius:999px;padding:.2rem .6rem;font-size:.78rem}
-
-    .paper-card .left .submitted-by{position:absolute;right:6px;bottom:6px;background:rgba(255,255,255,.96);border:1px solid #e0e6ef;border-radius:10px;padding:2px 8px;font-size:.75rem;line-height:1.25;color:#1e2a36;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.06);max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .paper-card .left .submitted-by a{color:#1e2a36;text-decoration:none}
-    .paper-card .left .submitted-by a:hover{text-decoration:underline;color:#0f2e4b}
-
-    .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
-    .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
-    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.1s infinite;mix-blend-mode:overlay}
-    @keyframes shimmer{to{transform:translateX(100%)}}
-
-    .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease}
-    .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
-
-    .btn-subscribe-icon{background:transparent;border:0;padding:.25rem .4rem;line-height:1}
-    .btn-subscribe-icon svg{fill:var(--oc-accent)}
-    .btn-subscribe-icon:hover svg{filter:brightness(1.15)}
-  </style>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" height="44" width="44" class="oc-logo">
-      <span class="brand-wordmark"><span class="oc-open">Open</span><span class="oc-sep">·</span><span class="oc-construction">Construction</span></span>
-    </a>
-    <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control" placeholder="Search titles, topics, licenses …" aria-label="Search OER">
-    </form>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
-        <li class="nav-item"><a class="nav-link plain active" href="oer.html" aria-current="page">Education</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
-        <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" aria-label="GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
-          </a>
-        </li>
-        <li class="nav-item">
-          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon" data-bs-toggle="modal" data-bs-target="#subscribeModal" aria-label="Subscribe" title="Subscribe">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="container content">
-    <h1 class="display-6 fw-bold">OpenConstruction Educational Resources</h1>
-    <p class="lead">Explore <span class="hl">open educational resources</span> for construction education</p>
-    <div id="searchDock" class="mt-3">
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search titles, topics, licenses …" aria-label="Search OER large">
-    </div>
-  </div>
-</header>
-
-<main class="container my-4">
-  <div class="row g-3">
-    <aside class="col-lg-3">
-      <div class="card shadow-sm filters">
-        <div class="card-header"><strong>Filters</strong></div>
-        <div class="card-body small">
-          <div class="mb-3"><label class="form-label">Language</label><div id="filter-language" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3"><label class="form-label">Topics</label><input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…"><div id="filter-topics" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3"><label class="form-label">License</label><input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…"><div id="filter-license" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3"><label class="form-label">Media Format</label><div id="filter-media" class="facet-list vstack gap-1"></div></div>
-        </div>
-      </div>
-    </aside>
-
-    <section class="col-lg-9">
-      <div class="toolbar mb-2">
-        <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
-        <div class="d-flex align-items-center gap-2">
-          <label for="sortBy" class="form-label mb-0 small text-muted">Sort by</label>
-          <select id="sortBy" class="form-select form-select-sm w-auto">
-            <option value="added-desc">Added date ↓</option>
-            <option value="added-asc">Added date ↑</option>
-            <option value="name-asc">Title A–Z</option>
-            <option value="name-desc">Title Z–A</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="oerList" class="vstack gap-3" aria-live="polite" aria-busy="true">
-        <div class="skeleton" style="height:120px"></div>
-        <div class="skeleton" style="height:120px"></div>
-        <div class="skeleton" style="height:120px"></div>
-      </div>
-      <div id="emptyState" class="empty d-none mt-4">No results found.</div>
-      <div id="errorState" class="empty mt-3 d-none text-danger">Could not load OER data. Ensure data/oer.json exists and is valid.</div>
-    </section>
-  </div>
-</main>
-
-<footer class="py-4 mt-3 border-top">
-  <div class="container oc-container small text-muted text-center">
-    <div>© <span id="yearNow"></span> OpenConstruction</div>
-    <div class="mt-2">
-      <small><strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides links to original sources. We do not host or distribute datasets, models, code, or paywalled content. All rights remain with the original authors, creators, and publishers.</small>
-    </div>
-  </div>
-</footer>
-
-<a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?title=New%20OER%20resource&body=**Title**:%0A**Provider/Author(s)**:%0A**Topics**:%0A**Language(s)**:%0A**Media**:%0A**License**:%0A**Source URL**:%0A**Image URL (optional)**:%0A%0A**Notes**:%0A" class="issue-btn" target="_blank" rel="noopener">Add New OER</a>
-
-<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
-    <div class="modal-content p-3 rounded-3 shadow">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <h6 class="m-0 fw-semibold">Subscribe</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" novalidate>
-        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
-        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
-        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
-        <div style="position:absolute;left:-5000px" aria-hidden="true">
-          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
-        </div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
-      </form>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Inline fallback data (use your real items here). Keep this even if you also have data/oer.json -->
+<script type="application/json" id="oerData">
+[
+  {
+    "id": "fundamentals-building-construction-management",
+    "title": "Fundamentals of Building Construction Management",
+    "provider": "John Messner",
+    "year": 2022,
+    "source": "https://psu.pb.unizin.org/buildingconstructionmanagement/",
+    "image": "https://psu.pb.unizin.org/app/uploads/sites/310/2022/03/Building-Construction-Cover-2-768x998.png",
+    "language": ["English"],
+    "topics": ["Construction Estimating", "Project Scheduling", "Risk and Contract Management", "Project Management"],
+    "license": "CC BY-NC-SA 4.0",
+    "media": ["Text/HTML"],
+    "added": "2025-11-05"
+  }
+]
+</script>
 
 <script>
+/* ---------------------------
+   “SAFE MODE” OER LOADER
+--------------------------- */
 const OER_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
 const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
-const ICON_FALLBACK = 'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120"><rect width="160" height="120" rx="12" fill="#f1f5f9"/><g fill="#0f2e4b" opacity=".6"><rect x="24" y="76" width="112" height="8" rx="4"/><rect x="36" y="28" width="28" height="36" rx="6"/><rect x="88" y="44" width="36" height="20" rx="6"/></g></svg>`);
+const ICON_FALLBACK = 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120"><rect width="160" height="120" rx="12" fill="#f1f5f9"/><g fill="#0f2e4b" opacity=".6"><rect x="24" y="76" width="112" height="8" rx="4"/><rect x="36" y="28" width="28" height="36" rx="6"/><rect x="88" y="44" width="36" height="20" rx="6"/></g></svg>');
 
 let OER = [];
 const byId = id => document.getElementById(id);
-function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
+
+/* tiny UI error bar so you SEE failures */
+function showError(msg){
+  let bar = document.getElementById('oerErrorBar');
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id = 'oerErrorBar';
+    bar.style.cssText = 'position:sticky;top:60px;z-index:1060;background:#ffe6e6;color:#7a1f1f;border:1px solid #f3b1b1;padding:8px 12px;margin:10px 0;border-radius:8px;font-weight:600';
+    const host = document.querySelector('main .container, main, body');
+    (host||document.body).prepend(bar);
+  }
+  bar.textContent = msg;
+}
+
 function esc(s){ return String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 function normKey(s){ if(s==null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
 function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
@@ -260,8 +83,15 @@ function canonize(raw){
   };
 }
 
+/* UI pieces reused later */
+function makeCheckbox(id,label,value){
+  const wrap=document.createElement('div'); wrap.className='form-check';
+  const input=document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
+  const lab=document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for',id); lab.textContent=label;
+  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
+}
 const state={q:'',sort:'added-desc',langs:new Set(),topics:new Set(),licenses:new Set(),media:new Set()};
-function makeCheckbox(id,label,value){ const wrap=document.createElement('div'); wrap.className='form-check'; const input=document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value; const lab=document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for',id); lab.textContent=label; wrap.appendChild(input); wrap.appendChild(lab); return wrap; }
+
 function buildFacets(){
   const langVals=uniqSorted(OER.flatMap(o=>o.language||[]));
   const topicVals=uniqSorted(OER.flatMap(o=>o.topics||[]));
@@ -272,15 +102,16 @@ function buildFacets(){
   const fLic=byId('filter-license'); if(fLic){ fLic.innerHTML=''; licVals.forEach((l,i)=>fLic.appendChild(makeCheckbox('lic_'+i,l,l))); }
   const fMed=byId('filter-media'); if(fMed){ fMed.innerHTML=''; mediaVals.forEach((m,i)=>fMed.appendChild(makeCheckbox('med_'+i,m,normKey(m)))); }
 }
+
 function readFacet(containerId,setRef){ setRef.clear(); const root=byId(containerId); if(!root) return; root.querySelectorAll('input[type=checkbox]:checked').forEach(c=>setRef.add(c.value)); }
 function applyFilters(){
   const q=state.q.trim().toLowerCase();
   let rows=OER.filter(o=>{
     const hay=[o.title,o.provider,(o.authors||[]).join(' '),(o.topics||[]).join(' '),(o.language||[]).join(' '),(o.media||[]).join(' '),o.license||''].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return false;
-    if(state.langs.size){ const keys=new Set((o.language||[]).map(normKey)); let hit=false; for(const k of state.langs){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
-    if(state.topics.size){ const keys=new Set((o.topics||[]).map(normKey)); for(const k of state.topics){ if(!keys.has(k)) return false; } }
-    if(state.media.size){ const keys=new Set((o.media||[]).map(normKey)); let hit=false; for(const k of state.media){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
+    if(state.langs.size){ const keys=new Set((o.language||[]).map(v=>v.toLowerCase())); let hit=false; for(const k of state.langs){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
+    if(state.topics.size){ const keys=new Set((o.topics||[]).map(v=>v.toLowerCase())); for(const k of state.topics){ if(!keys.has(k)) return false; } }
+    if(state.media.size){ const keys=new Set((o.media||[]).map(v=>v.toLowerCase())); let hit=false; for(const k of state.media){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
     if(state.licenses.size && !state.licenses.has(o.license||'')) return false;
     return true;
   });
@@ -292,22 +123,24 @@ function applyFilters(){
   }
   render(rows);
 }
+
 function render(items){
   const list=byId('oerList'), empty=byId('emptyState'), err=byId('errorState');
   list.innerHTML=''; byId('resultCount').textContent=items.length; if(err) err.classList.add('d-none');
   if(!items.length){ empty.classList.remove('d-none'); return; } empty.classList.add('d-none');
+
   items.forEach(o=>{
-    const img=o.image||PLACEHOLDER_PNG, title=o.title||'Untitled';
+    const title=o.title||'Untitled';
     const who=(o.authors&&o.authors.length)?o.authors.join(', '):(o.provider||'');
     const metaLeft=[who||null,o.year||null].filter(Boolean).join(' • ');
     const addedTxt=o.added_date_fmt?`Added ${o.added_date_fmt}`:'';
-    const licenseUrl=o.license_url||'', sourceUrl=o.source||'';
+    const img=o.image||PLACEHOLDER_PNG, licenseUrl=o.license_url||'', sourceUrl=o.source||'';
+
     const el=document.createElement('div'); el.className='paper-card';
     el.innerHTML=`
       <div class="d-flex gap-3 align-items-start">
         <div class="left position-relative">
           <img src="${img}" alt="${esc(title)}" onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
-          ${(o.contributor||o.contributor_url)?`<div class="submitted-by"><a href="${o.contributor_url||'#'}" target="_blank" rel="noopener">Submitted by <strong>${o.contributor?.startsWith('@')?o.contributor:'@'+o.contributor}</strong></a></div>`:''}
         </div>
         <div class="flex-grow-1">
           <div class="pc-head">
@@ -331,37 +164,85 @@ function render(items){
     list.appendChild(el);
   });
 }
+
+/* event wiring */
 function attachHandlers(){
   const fLang=byId('filter-language'), fTop=byId('filter-topics'), fLic=byId('filter-license'), fMed=byId('filter-media');
+  function readFacet(containerId,setRef){ setRef.clear(); const root=byId(containerId); if(!root) return; root.querySelectorAll('input[type=checkbox]:checked').forEach(c=>setRef.add(c.value)); }
   if(fLang) fLang.addEventListener('change',()=>{ readFacet('filter-language',state.langs); applyFilters(); });
   if(fTop)  fTop .addEventListener('change',()=>{ readFacet('filter-topics',state.topics); applyFilters(); });
   if(fLic)  fLic .addEventListener('change',()=>{ readFacet('filter-license',state.licenses); applyFilters(); });
   if(fMed)  fMed .addEventListener('change',()=>{ readFacet('filter-media',state.media); applyFilters(); });
-  function readFacet(containerId,setRef){ setRef.clear(); const root=byId(containerId); if(!root) return; root.querySelectorAll('input[type=checkbox]:checked').forEach(c=>setRef.add(c.value)); }
-  const topicSearch=byId('topicSearch'); if(topicSearch) topicSearch.addEventListener('input',debounce(e=>{ const q=e.target.value.toLowerCase(); const root=byId('filter-topics'); if(!root) return; root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; }); },120));
-  const licenseSearch=byId('licenseSearch'); if(licenseSearch) licenseSearch.addEventListener('input',debounce(e=>{ const q=e.target.value.toLowerCase(); const root=byId('filter-license'); if(!root) return; root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; }); },120));
+
+  const topicSearch=byId('topicSearch'); if(topicSearch) topicSearch.addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase(); const root=byId('filter-topics'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; });
+  });
+  const licenseSearch=byId('licenseSearch'); if(licenseSearch) licenseSearch.addEventListener('input',e=>{
+    const q=e.target.value.toLowerCase(); const root=byId('filter-license'); if(!root) return;
+    root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; });
+  });
+
   const hero=byId('q'), dock=byId('qDock'); function sync(to,from){ to.value=from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-  if(hero && dock){ const updateQ=debounce(()=>{ state.q=hero.value; if(!document.body.classList.contains('docked')) dock.value=hero.value; applyFilters(); },120); dock.addEventListener('input',()=>{ state.q=dock.value; sync(hero,dock); applyFilters(); }); hero.addEventListener('input',updateQ); }
-  (function(){ const SHOW_AT=220, HIDE_AT=160; let docked=false; function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked',on);} function onScroll(){ const y=window.scrollY||0; if(!docked&&y>SHOW_AT)setDock(true); else if(docked&&y<HIDE_AT)setDock(false);} onScroll(); window.addEventListener('scroll',onScroll,{passive:true}); })();
+  if(hero && dock){
+    const updateQ=()=>{ state.q=hero.value; if(!document.body.classList.contains('docked')) dock.value=hero.value; applyFilters(); };
+    dock.addEventListener('input',()=>{ state.q=dock.value; sync(hero,dock); applyFilters(); });
+    hero.addEventListener('input',updateQ);
+  }
+
+  (function(){ const SHOW_AT=220, HIDE_AT=160; let docked=false;
+    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked',on); }
+    function onScroll(){ const y=window.scrollY||0; if(!docked && y>SHOW_AT) setDock(true); else if(docked && y<HIDE_AT) setDock(false); }
+    onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  })();
+
   const sortSel=byId('sortBy'); if(sortSel) sortSel.addEventListener('change',e=>{ state.sort=e.target.value; applyFilters(); });
 }
+
+/* load order: try fetch -> if 0, use inline fallback */
 async function loadOER(){
   const err=byId('errorState'); const yr=byId('yearNow'); if(yr) yr.textContent=new Date().getFullYear();
+
+  let loaded = false; let lastErr = null;
   for(const p of OER_PATHS){
     try{
-      const res=await fetch(`${p}?v=${Date.now()}`,{cache:'no-store'}); if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const res=await fetch(`${p}?v=${Date.now()}`,{cache:'no-store'});
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
       const payload=await res.json();
       const raw=Array.isArray(payload)?payload:(Array.isArray(payload.oer)?payload.oer:(typeof payload==='object'?Object.values(payload):[]));
       OER = raw.map(canonize);
-      console.log('First OER mapped:', OER[0]);  // sanity check
-      buildFacets(); attachHandlers(); applyFilters();
-      if(err) err.classList.add('d-none');
-      return;
-    }catch(e){ /* try next path */ }
+      if(OER.length>0){ loaded=true; break; }
+    }catch(e){ lastErr=e; }
   }
-  if(err) err.classList.remove('d-none');
+
+  if(!loaded){
+    // fallback to inline script
+    const node = document.getElementById('oerData');
+    if(node && node.textContent.trim()){
+      try{
+        const payload = JSON.parse(node.textContent);
+        const raw=Array.isArray(payload)?payload:(Array.isArray(payload.oer)?payload.oer:(typeof payload==='object'?Object.values(payload):[]));
+        OER = raw.map(canonize);
+        loaded = OER.length>0;
+        if(!loaded) lastErr = new Error('Inline JSON parsed but no items');
+      }catch(e){
+        lastErr = e;
+      }
+    }
+  }
+
+  if(!loaded){
+    if(err) err.classList.remove('d-none');
+    showError('Could not load OER data. Using inline block is recommended. ' + (lastErr ? ('Error: '+ lastErr.message) : ''));
+    return;
+  }
+
+  console.log('First OER mapped:', OER[0]); // sanity check
+  buildFacets();
+  attachHandlers();
+  applyFilters();
+  if(err) err.classList.add('d-none');
 }
+
 if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',loadOER); } else { loadOER(); }
 </script>
-</body>
-</html>
