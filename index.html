@@ -41,28 +41,28 @@
       border-bottom:1px solid var(--oc-border)!important;
       z-index:1030 !important; /* below Bootstrap modal */
     }
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
+    .brand-wordmark{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+      gap:0;
+      align-items:flex-start;
+      color:#0F2E4B;
+    }
+    .brand-wordmark .oc-open{
+      font-size:0.75rem;
+      font-weight:400;
+      letter-spacing:0.15em;
+      text-transform:uppercase;
+      opacity:0.7;
+      margin-bottom:-0.1rem;
+    }
+    .brand-wordmark .oc-sep{display:none}
+    .brand-wordmark .oc-construction{
+      font-size:1.35rem;
+      font-weight:700;
+      letter-spacing:-0.01em;
+    }
     .oc-logo{ height:44px; width:44px; }
 
     .navbar .nav-link.plain{
@@ -233,7 +233,8 @@
 
     .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
     .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
-    .metric[data-kind="usecases"] .ring-val{ stroke: var(--oc-brand-accent); } /* same brand stroke */
+    .metric[data-kind="usecases"] .ring-val{ stroke: var(--oc-brand-accent); }
+    .metric[data-kind="oers"]    .ring-val{ stroke: var(--oc-brand-accent); } /* NEW */
 
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
@@ -287,15 +288,15 @@
         <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
         <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
         <li class="nav-item"><a class="nav-link plain" href="deployments.html" data-route="deployments">Use Cases</a></li>
-		<li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-			<li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
           </ul>
         </li>
-		
+
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
@@ -399,6 +400,24 @@
             <span class="name">Use&nbsp;Cases</span>
           </span>
         </div>
+
+        <!-- OERs metric (NEW) -->
+        <div class="metric" data-kind="oers">
+          <svg viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+            <circle class="ring-bg" cx="22" cy="22" r="17" fill="none"></circle>
+            <circle class="ring-val" id="ringOERs" cx="22" cy="22" r="17" fill="none"
+                    stroke-linecap="round" transform="rotate(-90 22 22)"></circle>
+            <!-- book-ish icon -->
+            <g transform="translate(12,13)" fill="none" stroke="currentColor" stroke-width="1.2">
+              <path d="M0 2h10a4 4 0 0 1 4 4v11H4a4 4 0 0 0-4 4V2Z"/>
+              <path d="M0 2h10a4 4 0 0 1 4 4H4a4 4 0 0 0-4 4"/>
+            </g>
+          </svg>
+          <span class="label">
+            <span class="value" id="countOERs">0</span>
+            <span class="name">OERs</span>
+          </span>
+        </div>
       </div><!-- /metrics -->
 
       <!-- buttons -->
@@ -406,7 +425,8 @@
         <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
         <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
         <a class="btn btn-ink btn-sm" href="deployments.html" aria-describedby="countUsecases">Explore Use&nbsp;Cases</a>
-        <a class="btn btn-accent btn-sm" href="contributors.html">Get&nbsp;Involved</a>
+		<a class="btn btn-accent btn-sm" href="oer.html" aria-describedby="countModels">Explore OERs</a>
+        <a class="btn btn-ink btn-sm" href="contributors.html">Get&nbsp;Involved</a>
       </div>
     </div><!-- /hero-center -->
   </div>
@@ -536,13 +556,13 @@
                 </span>
                 <div class="oc-tl-title">Work Documented</div>
               </div>
-				<div class="oc-tl-content">
-				  Our work is described in 
-				  <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
-					a synthesis of open construction datasets
-				  </a>, 
-				  shared to support and inspire ongoing community efforts.
-				</div>
+              <div class="oc-tl-content">
+                Our work is described in 
+                <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
+                  a synthesis of open construction datasets
+                </a>, 
+                shared to support and inspire ongoing community efforts.
+              </div>
             </div>
 
             <!-- Dataset Catalog Online -->
@@ -578,25 +598,25 @@
                 Building on the datasets, a curated model catalog was launched, showcasing AI tools ready to transform construction workflows.
               </div>
             </div>
-			
-			<div class="oc-tl-item" role="listitem" data-title="Use Cases Catalog Online">
-		  <div class="oc-tl-date">2025.10</div>
-		  <div class="oc-tl-title-row">
-			<span class="oc-tl-icon" aria-hidden="true">
-			  <!-- briefcase -->
-			  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-				<rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
-				<path d="M9 7V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-				<path d="M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-			  </svg>
-			</span>
-			<div class="oc-tl-title">Use Cases Catalog Online</div>
-		  </div>
-		  <div class="oc-tl-content">
-          Launched the curated catalog of <em>real-world use cases</em>, showcasing practical applications from stakeholders.
-		  </div>
-		</div>
-		
+
+            <div class="oc-tl-item" role="listitem" data-title="Use Cases Catalog Online">
+              <div class="oc-tl-date">2025.10</div>
+              <div class="oc-tl-title-row">
+                <span class="oc-tl-icon" aria-hidden="true">
+                  <!-- briefcase -->
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9 7V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <div class="oc-tl-title">Use Cases Catalog Online</div>
+              </div>
+              <div class="oc-tl-content">
+                Launched the curated catalog of <em>real-world use cases</em>, showcasing practical applications from stakeholders.
+              </div>
+            </div>
+
             <!-- New Features & Updates -->
             <div class="oc-tl-item" role="listitem" data-title="New Features & Updates">
               <div class="oc-tl-date">Soon</div>
@@ -632,46 +652,6 @@
     </div>
   </section>
 
-<!-- 
-  Reference section removed.
-  Originally contained the citation and BibTeX for:
-  "OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring"
--->
-<!--
-<section class="oc-section">
-  <div class="oc-card">
-    <div class="oc-card-body">
-      <div class="oc-kicker mb-2">Reference</div>
-      <h3 class="oc-card-title mb-2">Cite the catalog</h3>
-      <p class="mb-2">Our work is documented in:</p>
-      <p class="mb-3">
-        <strong>
-          <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
-            OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring
-          </a>
-        </strong><br>
-        Ruoxin Xiong, Yanyu Wang, Jiannan Cai, Kaijian Liu, Yuansheng Zhu, Pingbo Tang, Nora El-Gohary<br>
-        arXiv:2508.11482, 2025
-      </p>
-
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="text-muted small">BibTeX</span>
-        <button id="copyBib" class="btn btn-sm btn-outline-secondary" type="button" style="border-radius:999px;">Copy</button>
-      </div>
-      <pre class="oc-bib small" id="bibtex">@misc{xiong2025openconstructionsystematicsynthesisopen,
-  title={OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring},
-  author={Ruoxin Xiong and Yanyu Wang and Jiannan Cai and Kaijian Liu and Yuansheng Zhu and Pingbo Tang and Nora El-Gohary},
-  year={2025},
-  eprint={2508.11482},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
-  url={https://arxiv.org/abs/2508.11482}
-}</pre>
-    </div>
-  </div>
-</section>
--->
-
   <!-- Feedback / Policy -->
   <section class="oc-section">
     <div class="row g-4">
@@ -689,25 +669,25 @@
         </div>
       </div>
 
-		<div class="col-12 col-lg-6">
-		  <div class="oc-card h-100">
-			<div class="oc-card-body">
-			  <div class="oc-kicker mb-2">Policy</div>
-			  <h3 class="oc-card-title mb-2">Request resource removal</h3>
-			  <p class="mb-2">
-				OpenConstruction indexes <span class="hl">publicly available metadata and links</span> to original sources such as journals or repositories. 
-				We do <strong>not host or distribute</strong> any datasets, code, or proprietary materials. 
-			  </p>
-			  <p class="mb-0">
-				For <strong>removal or correction requests</strong>, please contact 
-				<a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>, and we’ll act quickly.
-			  </p>
-			</div>
-		  </div>
-		</div>
+      <div class="col-12 col-lg-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-kicker mb-2">Policy</div>
+            <h3 class="oc-card-title mb-2">Request resource removal</h3>
+            <p class="mb-2">
+              OpenConstruction indexes <span class="hl">publicly available metadata and links</span> to original sources such as journals or repositories. 
+              We do <strong>not host or distribute</strong> any datasets, code, or proprietary materials. 
+            </p>
+            <p class="mb-0">
+              For <strong>removal or correction requests</strong>, please contact 
+              <a href="mailto:rxiong3@kent.edu">rxiong3@kent.edu</a>, and we’ll act quickly.
+            </p>
+          </div>
+        </div>
+      </div>
   </section>
   
-    <!-- Acknowledgment -->
+  <!-- Acknowledgment -->
   <section class="oc-section">
     <div class="oc-card">
       <div class="oc-card-body">
@@ -724,8 +704,6 @@
   </section>
   
 </main>
-
-
 
 <footer class="py-4 mt-5" role="contentinfo" aria-label="Site footer">
   <div class="container oc-container small text-muted text-center">
@@ -844,11 +822,13 @@
     const metrics = document.getElementById('heroMetrics');
     const countElDatasets = document.getElementById('countDatasets');
     const countElModels   = document.getElementById('countModels');
-    const countElUsecases = document.getElementById('countUsecases'); // NEW
+    const countElUsecases = document.getElementById('countUsecases');
+    const countElOERs     = document.getElementById('countOERs');    // NEW
     const ringDatasets = document.getElementById('ringDatasets');
     const ringModels   = document.getElementById('ringModels');
-    const ringUsecases = document.getElementById('ringUsecases');     // NEW
-    const rings = [ringDatasets, ringModels, ringUsecases].filter(Boolean);
+    const ringUsecases = document.getElementById('ringUsecases');
+    const ringOERs     = document.getElementById('ringOERs');        // NEW
+    const rings = [ringDatasets, ringModels, ringUsecases, ringOERs].filter(Boolean); // UPDATED
     const R = 17, CIRC = 2 * Math.PI * R;
 
     rings.forEach(r => { r.style.strokeDasharray = `${CIRC}`; r.style.strokeDashoffset = `${CIRC}`; });
@@ -876,23 +856,22 @@
       }
       throw new Error('All JSON paths failed');
     }
-	function arrayishLength(json){
-	  if (Array.isArray(json)) return json.length;
+    function arrayishLength(json){
+      if (Array.isArray(json)) return json.length;
 
-	  if (json && typeof json === 'object'){
-		// explicit containers
-		if (Array.isArray(json.use_cases)) return json.use_cases.length; // use-cases schema
-		if (Array.isArray(json.items))     return json.items.length;
-		if (Array.isArray(json.data))      return json.data.length;
+      if (json && typeof json === 'object'){
+        // explicit containers
+        if (Array.isArray(json.use_cases)) return json.use_cases.length; // use-cases schema
+        if (Array.isArray(json.resources)) return json.resources.length; // OER schema (NEW)
+        if (Array.isArray(json.items))     return json.items.length;
+        if (Array.isArray(json.data))      return json.data.length;
 
-		// maps (e.g., datasetId -> datasetObject); ignore metadata keys
-		const ignore = new Set(['schema', '$schema', 'meta']);
-		return Object.keys(json).filter(k => !ignore.has(k)).length;
-	  }
-	  return 0;
-	}
-
-
+        // maps (e.g., datasetId -> datasetObject); ignore metadata keys
+        const ignore = new Set(['schema', '$schema', 'meta']);
+        return Object.keys(json).filter(k => !ignore.has(k)).length;
+      }
+      return 0;
+    }
 
     function setRings(offset){ rings.forEach(r => r && (r.style.strokeDashoffset = String(offset))); }
     function playRings(){
@@ -914,22 +893,25 @@
 
     (async function(){
       try{
-        const [datasetsJson, modelsJson, usecasesJson] = await Promise.all([
+        const [datasetsJson, modelsJson, usecasesJson, oersJson] = await Promise.all([
           fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
           fetchFirst(['data/models.json','assets/models.json','models.json']),
           // Robust fallbacks for the Use Cases schema
           fetchFirst([
             'data/use-cases.json','assets/deployments.json','deployments.json',
             'data/usecases.json','assets/usecases.json','usecases.json'
-          ])
+          ]),
+          fetchFirst(['data/oer.json','assets/oer.json','oer.json']) // NEW
         ]);
         const dCount = arrayishLength(datasetsJson);
         const mCount = arrayishLength(modelsJson);
         const uCount = arrayishLength(usecasesJson);
+        const oCount = arrayishLength(oersJson); // NEW
 
         countUp(countElDatasets, dCount);
         countUp(countElModels,   mCount);
         countUp(countElUsecases, uCount);
+        countUp(countElOERs,     oCount); // NEW
 
         const rect = metrics.getBoundingClientRect();
         const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
@@ -941,6 +923,7 @@
         if(countElDatasets) countElDatasets.textContent = '—';
         if(countElModels)   countElModels.textContent   = '—';
         if(countElUsecases) countElUsecases.textContent = '—';
+        if(countElOERs)     countElOERs.textContent     = '—'; // NEW
       }
     })();
   })();
@@ -955,7 +938,7 @@
       'dataset': 'dataset', 'dataset.html': 'dataset',
       'models': 'models', 'models.html': 'models',
       'contributors': 'contributors', 'contributors.html': 'contributors',
-      'deployments': 'deployments', 'deployments.html': 'deployments' // NEW
+      'deployments': 'deployments', 'deployments.html': 'deployments'
     };
     const route = routeByFile[file] || (file.includes('index') ? 'index' : '');
     document.querySelectorAll('.navbar .nav-link.plain').forEach(a => {
