@@ -61,10 +61,19 @@
 
     /* ---------- OER cards ---------- */
     .oer-card{background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);padding:1rem;height:100%}
-    .oer-card .left{width:160px;height:120px;flex:0 0 160px;aspect-ratio:4/3;border-radius:12px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);position:relative}
     .oer-card img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
     .oer-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .2rem}
     .oer-card .meta{font-size:.85rem;color:var(--oc-sub)}
+	.oer-card .left{
+	  width:200px;
+	  height:150px;
+	  flex:0 0 200px;
+	  border-radius:12px;
+	  overflow:hidden;
+	  background:#f4f7fb;
+	  border:1px solid var(--oc-border);
+	  position:relative;
+	}
 
     /* Submitted-by overlay */
     .oer-card .left .submitted-by{position:absolute;right:6px;bottom:6px;background:rgba(255,255,255,.96);border:1px solid #e0e6ef;border-radius:10px;padding:2px 8px;font-size:.75rem;line-height:1.25;color:#1e2a36;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.06);max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -92,6 +101,12 @@
     /* Floating Add button */
     .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease}
     .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
+	
+	/* Subscribe bell color */
+	.btn-subscribe-icon { background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
+	.btn-subscribe-icon svg { fill: var(--oc-accent); }          /* e.g., your orange */
+	.btn-subscribe-icon:hover svg { filter: brightness(1.15); }  /* subtle hover pop */
+
   </style>
 </head>
 
@@ -106,7 +121,7 @@
 
     <!-- Docked search -->
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control" placeholder="Search titles, topics, licenses …" aria-label="Search OER">
+      <input id="qDock" type="text" class="form-control" placeholder="Search titles, topics, authors …" aria-label="Search OER">
     </form>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
@@ -156,7 +171,7 @@
     <h1 class="display-6 fw-bold">OpenConstruction Educational Resources</h1>
     <p class="lead">Explore <span style="background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);padding:0 .06em;font-weight:700">open educational resources</span> for construction education</p>
     <div id="searchDock" class="mt-3">
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search titles, topics, licenses …" aria-label="Search OER large">
+      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search titles, topics, authors …" aria-label="Search OER large">
     </div>
   </div>
 </header>
