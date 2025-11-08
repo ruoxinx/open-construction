@@ -337,7 +337,9 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106048",
     "code_url": "https://github.com/JiuyiX/Tripping-Hazard-Detection-based-on-OVOD",
-    "thumbnail": "assets/img/models/ego.png"
+    "thumbnail": "assets/img/models/ego.png",
+	"contributor": "Yangming Research Group",
+    "contributor_url": "https://shiyangming.com/"
   },
   {
     "id": "YOLO-FAS",
