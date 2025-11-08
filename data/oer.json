@@ -27,7 +27,7 @@
 		"Generative AI in AEC",
 		"Smart Construction"],
       "license": "MIT",
-      "media": ["Text/HTML", "Slides", "Code", "Interactive Labs"],
+      "media": ["Slides", "Code", "Interactive Labs"],
       "added": "2025-11-05",
 	  "contributor": "ruoxinx",
 	  "contributor_url": "https://github.com/ruoxinx"
