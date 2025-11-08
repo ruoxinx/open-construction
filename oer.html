@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    /* ---------- Design tokens ---------- */
+    /* ---------- Design tokens (aligned with Models) ---------- */
     :root{
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c;
       --oc-border:#e7edf3; --oc-ink:#0f2e4b; --oc-link:#0b66c3;
@@ -82,13 +82,13 @@
 
     .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 
-    /* ---------- Paper-style card (exactly like Models) ---------- */
+    /* ---------- Paper-style card (professional layout) ---------- */
     .paper-card{
       background:var(--oc-card);
       border:1px solid var(--oc-border);
       border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);
-      padding:1rem;
+      padding:14px;
       height:100%;
     }
     .paper-card .left{
@@ -97,23 +97,44 @@
       position:relative;
     }
     .paper-card img{width:100%;height:100%;object-fit:cover}
-    .paper-card .title{font-weight:700;color:var(--oc-ink);margin:0 0 .25rem}
-    .paper-card .meta{font-size:.85rem;color:var(--oc-sub)}
 
-    /* Tag row + tag styles (mapped to OER facets) */
-    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
-    .badge-topic{background:var(--tag-task-bg); border:1px solid var(--tag-task-border); color:var(--tag-task-text); font-weight:600; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;}
-    .badge-media{background:var(--tag-app-bg);  border:1px solid var(--tag-app-border);  color:var(--tag-app-text);  font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;}
-    .badge-license{background:var(--tag-lic-bg); border:1px solid var(--tag-lic-border); color:var(--tag-lic-text); font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;}
-    .badge-lang{background:var(--tag-lang-bg);  border:1px solid var(--tag-lang-border);  color:var(--tag-lang-text);  font-weight:700; border-radius:999px; padding:.2rem .55rem; font-size:.78rem;}
+    /* header */
+    .pc-head{margin-bottom:.25rem}
+    .pc-title{
+      margin:0;font-weight:800;line-height:1.25;font-size:1.05rem;color:var(--oc-ink);
+    }
+    .pc-title a{color:inherit;text-decoration:none}
+    .pc-title a:hover{text-decoration:underline;text-underline-offset:2px}
+    .pc-meta{font-size:.85rem;color:var(--oc-sub);display:flex;gap:.5rem;flex-wrap:wrap}
 
-    /* Added date note (same look as Models) */
+    /* subtle divider */
+    .hr-ghost{
+      height:1px;background:linear-gradient(90deg,transparent,rgba(15,46,75,.08),transparent);
+      margin:.5rem 0 .6rem;
+    }
+
+    /* tags row (max 2 lines visually) */
+    .tag-row{
+      display:flex;flex-wrap:wrap;gap:.35rem;max-height:calc(2 * 1.9em);overflow:hidden;
+      margin-bottom:.25rem;
+    }
+    .badge-topic,.badge-media,.badge-license,.badge-lang{
+      border-radius:999px;padding:.18rem .55rem;font-size:.78rem;line-height:1.25;white-space:nowrap
+    }
+    .badge-topic{background:var(--tag-task-bg); border:1px solid var(--tag-task-border); color:var(--tag-task-text); font-weight:600;}
+    .badge-media{background:var(--tag-app-bg);  border:1px solid var(--tag-app-border);  color:var(--tag-app-text);  font-weight:700;}
+    .badge-license{background:var(--tag-lic-bg); border:1px solid var(--tag-lic-border); color:var(--tag-lic-text); font-weight:700;}
+    .badge-lang{background:var(--tag-lang-bg);  border:1px solid var(--tag-lang-border);  color:var(--tag-lang-text);  font-weight:700;}
+
+    /* footer */
+    .pc-foot{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+    .pc-foot .btn{padding:.3rem .6rem;font-size:.78rem;border-radius:10px}
     .added-note{
-      align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
+      margin-left:auto; align-self:center; color:#5f6b77; background:#eff3f6; border:1px solid var(--oc-border);
       font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
     }
 
-    /* Submitted-by overlay (same as Models) */
+    /* submitted-by overlay */
     .paper-card .left .submitted-by{
       position:absolute; right:6px; bottom:6px;
       background:rgba(255,255,255,.96);
@@ -125,13 +146,6 @@
     .paper-card .left .submitted-by a{ color:#1e2a36; text-decoration:none; }
     .paper-card .left .submitted-by a:hover{ text-decoration:underline; color:#0f2e4b; }
 
-    /* Yellow subscribe bell (match Models) */
-    .btn-subscribe-icon{
-      background:transparent;border:0;padding:.25rem .4rem;line-height:1;
-    }
-    .btn-subscribe-icon svg{fill:var(--oc-accent);}
-    .btn-subscribe-icon:hover svg{filter:brightness(1.15);}
-
     /* Skeleton / empty states */
     .empty{border:1px dashed var(--oc-border);border-radius:12px;padding:24px;text-align:center;color:var(--oc-sub)}
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:120px}
@@ -141,6 +155,13 @@
     /* Floating "Add" button */
     .issue-btn{position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s ease,transform .2s ease;}
     .issue-btn:hover{background:#0b5ed7;transform:translateY(-2px);color:#fff;text-decoration:none}
+
+    /* Yellow subscribe bell (match Models) */
+    .btn-subscribe-icon{
+      background:transparent;border:0;padding:.25rem .4rem;line-height:1;
+    }
+    .btn-subscribe-icon svg{fill:var(--oc-accent);}
+    .btn-subscribe-icon:hover svg{filter:brightness(1.15);}
   </style>
 </head>
 
@@ -240,14 +261,22 @@
         <div class="card-header"><strong>Filters</strong></div>
         <div class="card-body small">
           <div class="mb-3"><label class="form-label">Language</label><div id="filter-language" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3"><label class="form-label">Topics</label><input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…"><div id="filter-topics" class="facet-list vstack gap-1"></div></div>
-          <div class="mb-3"><label class="form-label">License</label><input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…"><div id="filter-license" class="facet-list vstack gap-1"></div></div>
+          <div class="mb-3">
+            <label class="form-label">Topics</label>
+            <input id="topicSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search topics…">
+            <div id="filter-topics" class="facet-list vstack gap-1"></div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">License</label>
+            <input id="licenseSearch" type="text" class="form-control form-control-sm mb-2" placeholder="Search licenses…">
+            <div id="filter-license" class="facet-list vstack gap-1"></div>
+          </div>
           <div class="mb-3"><label class="form-label">Media Format</label><div id="filter-media" class="facet-list vstack gap-1"></div></div>
         </div>
       </div>
     </aside>
 
-    <!-- Results: switch to vstack like Models -->
+    <!-- Results -->
     <section class="col-lg-9">
       <div class="toolbar mb-2">
         <div><span id="resultCount" class="fw-semibold">0</span> resources</div>
@@ -334,7 +363,7 @@ const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
 let OER = [];
 
 /* ---------------------------
-   Helpers (mirror Models)
+   Helpers (robust & aligned)
 --------------------------- */
 const byId = id => document.getElementById(id);
 function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
@@ -348,7 +377,17 @@ function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout
 function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
 function esc(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-/* YYYY-MM-DD exactly (requested style) */
+/* normalize URL and tolerant key picking */
+function normalizeUrl(u){
+  if(!u) return '';
+  let s = String(u).trim();
+  if(/^https?:\/\//i.test(s)) return s;
+  if(/^[\w.-]+\.[a-z]{2,}([/:?#].*)?$/i.test(s)) return 'https://' + s;
+  return '';
+}
+function pick(...vals){ for(const v of vals){ if(v!==undefined && v!==null && v!=='') return v; } return ''; }
+
+/* YYYY-MM-DD exactly */
 function fmtDate(d){
   try{
     const dt = (d instanceof Date) ? d : new Date(d);
@@ -449,6 +488,7 @@ function applyFilters(){
   render(rows);
 }
 
+/* ---------- PROFESSIONAL CARD RENDER ---------- */
 function render(items){
   const list = byId('oerList');
   const empty = byId('emptyState');
@@ -458,7 +498,7 @@ function render(items){
   if (err) err.classList.add('d-none');
 
   if (!items.length){
-    empty.classList.remove('d-none'); 
+    empty.classList.remove('d-none');
     return;
   }
   empty.classList.add('d-none');
@@ -468,7 +508,9 @@ function render(items){
     const title = o.title || o.name || 'Untitled';
     const prov  = o.provider || '';
     const authors = Array.isArray(o.authors) ? o.authors : (o.authors ? String(o.authors).split(/,\s*/) : []);
-    const year = o.year || ''; // optional
+    const year = o.year || '';
+    const who = authors.length ? authors.join(', ') : prov;
+    const metaLeft = [who || null, year || null].filter(Boolean).join(' • ');
     const addedTxt = o.added_date_fmt ? `Added ${o.added_date_fmt}` : '';
     const licenseUrl = (o.license_url && /^https?:/.test(o.license_url)) ? o.license_url : '';
     const sourceUrl  = (o.source && /^https?:/.test(o.source)) ? o.source : (o.url || '');
@@ -476,7 +518,7 @@ function render(items){
     const topics = splitList(o.topics);
     const langs  = splitList(o.language);
     const media  = splitList(o.media);
-    const licenseBadge = o.license ? `<span class="badge-license">${esc(o.license)}</span>` : '';
+    const licenseBadge = o.license ? `<span class="badge-license" title="License">${esc(o.license)}</span>` : '';
 
     const el = document.createElement('div');
     el.className = 'paper-card';
@@ -487,30 +529,33 @@ function render(items){
                onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
           ${(o.contributor || o.contributor_url) ? `
             <div class="submitted-by">
-              <a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
+              <a href="${o.contributor_url || '#'}" target="_blank" rel="noopener" aria-label="Contributor">
                 Submitted by <strong>${o.contributor?.startsWith('@') ? o.contributor : '@' + o.contributor}</strong>
               </a>
             </div>` : ''}
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1">${esc(title)}</h3>
-          <div class="meta mb-1">
-            ${authors.length ? `${esc(authors.join(', '))} • ` : (prov ? `${esc(prov)} • ` : '')}
-            ${year || '—'}
+          <div class="pc-head">
+            <h3 class="pc-title">
+              ${sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" aria-label="Open resource: ${esc(title)}">${esc(title)}</a>` : esc(title)}
+            </h3>
+            <div class="pc-meta">${esc(metaLeft || '—')}</div>
           </div>
 
-          <div class="tag-row">
-            ${topics.map(t=>`<span class="badge-topic">${esc(t)}</span>`).join('')}
-            ${media.map(m=>`<span class="badge-media">${esc(m)}</span>`).join('')}
-            ${langs.map(l=>`<span class="badge-lang">${esc(l)}</span>`).join('')}
+          <div class="hr-ghost"></div>
+
+          <div class="tag-row" aria-label="Resource tags">
+            ${topics.map(t=>`<span class="badge-topic" title="Topic">${esc(t)}</span>`).join('')}
+            ${media.map(m=>`<span class="badge-media" title="Media">${esc(m)}</span>`).join('')}
+            ${langs.map(l=>`<span class="badge-lang" title="Language">${esc(l)}</span>`).join('')}
             ${licenseBadge}
           </div>
 
-          <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+          <div class="pc-foot mt-2">
             ${sourceUrl ? `<a class="btn btn-sm btn-primary" href="${sourceUrl}" target="_blank" rel="noopener">View resource</a>` : ''}
             ${licenseUrl ? `<a class="btn btn-sm btn-outline-secondary" href="${licenseUrl}" target="_blank" rel="noopener">License</a>` : ''}
-            ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>` : ''}
+            ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
           </div>
         </div>
       </div>`;
@@ -583,7 +628,7 @@ function attachHandlers(){
 }
 
 /* ---------------------------
-   Load JSON (with path fallbacks)
+   Load JSON (with path fallbacks & tolerant keys)
 --------------------------- */
 async function loadOER(){
   const list = byId('oerList');
@@ -601,25 +646,36 @@ async function loadOER(){
                 : (typeof payload==='object' ? Object.values(payload) : []));
 
       OER = raw.map(o=>{
-        const added = o.added || o.added_date || null;
-        const added_ts = added ? Date.parse(added) : null;
+        const title   = pick(o.title, o.name);
+        const authors = Array.isArray(o.authors) ? o.authors
+                        : (o.authors ? String(o.authors).split(/,\s*/) : []);
+        const provider= pick(o.provider, o.publisher, o.organization, o.source_name);
+        const yearRaw = pick(o.year, o.publication_year, o.date_year);
+        const year    = yearRaw ? Number(yearRaw) : '';
+        const topics  = o.topics || o.tags || o.keywords || [];
+        const language= o.language || o.languages || o.lang || [];
+        const media   = o.media || o.media_formats || o.format || [];
+        const license = pick(o.license, o.license_name, (typeof o.license_url==='string' && !o.license) ? 'Custom' : '');
+        const license_url = normalizeUrl(pick(o.license_url, o.licenseLink));
+        const source  = normalizeUrl(pick(o.source, o.url, o.link, o.href, o.website));
+        const image   = pick(o.image, o.thumbnail, o.cover, (o.id ? `assets/img/oer/${o.id}.png` : ''));
+
+        const addedRaw = pick(o.added, o.added_date, o.date_added, o.addedTime, o.Added);
+        const added_ts = addedRaw ? Date.parse(addedRaw) : null;
+
+        const contributor = pick(o.contributor, o.submitter, o.added_by, o.author_github);
+        const contributor_url = normalizeUrl(pick(o.contributor_url, o.submitter_url, o.profile, o.author_url, o.github));
+
         return {
-          id: o.id || (crypto.randomUUID ? crypto.randomUUID() : (o.title || Math.random().toString(36).slice(2))),
-          title: o.title || o.name || 'Untitled',
-          provider: o.provider || o.publisher || '',
-          authors: Array.isArray(o.authors) ? o.authors : (o.authors ? String(o.authors).split(/,\s*/) : []),
-          year: (o.year!==undefined && o.year!==null) ? Number(o.year) : '',
-          topics: o.topics || [],
-          language: o.language || [],
-          media: o.media || [],
-          license: o.license || '',
-          license_url: o.license_url || '',
-          source: o.source || o.url || '',
-          image: o.image || o.thumbnail || (o.id ? `assets/img/oer/${o.id}.png` : ''),
-          contributor: o.contributor || '',
-          contributor_url: o.contributor_url || '',
+          id: o.id || (crypto.randomUUID ? crypto.randomUUID() : (title || Math.random().toString(36).slice(2))),
+          title: title || 'Untitled',
+          provider, authors, year,
+          topics, language, media,
+          license, license_url,
+          source, image,
+          contributor, contributor_url,
           added_ts: (typeof added_ts === 'number' && !isNaN(added_ts)) ? added_ts : null,
-          added_date_fmt: added ? fmtDate(added) : null
+          added_date_fmt: addedRaw ? fmtDate(addedRaw) : null
         };
       });
 
