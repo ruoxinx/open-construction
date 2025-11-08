@@ -953,33 +953,6 @@
     "id": "Visible-Dust",
     "image_url": "assets/img/datasets/Visible-Dust.png"
   },
-  "CWT": {
-    "name": "CWT: Complex Worksite terrain Dataset",
-	"authors": "Tianrui Guan, Zhenpeng He, Ruitao Song, Dinesh Manocha, Liangjun Zhang",
-	"doi": "https://doi.org/10.48550/arXiv.2109.06250",
-    "year": 2023,
-    "data_modality": "Ground RGB",
-    "num_images": null,
-    "num_classes": null,
-    "classes": null,
-    "resolution": "Not Specified",
-    "annotation_types": [
-      "Terrain information",
-      "Semantic information",
-      "Geometric information",
-      "Traversability score",
-      "Planned trajectory"
-    ],
-    "geographical_location": "Not Specified",
-    "potential_tasks": [
-      "Simultaneous Localization and Mapping"
-    ],
-    "license": "Not Specified",
-    "paper": "TNS: Terrain Traversability Mapping and Navigation System for Autonomous Excavators",
-    "access": "https://docs.google.com/forms/d/e/1FAIpQLSc7XuRzMP99xwDNka1t-jO7Qmek15LStjITfVIrFKdybvGRIA/viewform",
-    "id": "CWT",
-    "image_url": "assets/img/datasets/CWT.png"
-  },
   "Construction-Material-Textual": {
     "name": "Construction material textual dataset",
 	"authors": "Eyob Mengiste, Karunakar Reddy Mannem, Samuel A. Prieto, Borja Garcia de Soto",
