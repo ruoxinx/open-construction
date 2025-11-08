@@ -1,248 +1,73 @@
-<!-- Inline fallback data (use your real items here). Keep this even if you also have data/oer.json -->
-<script type="application/json" id="oerData">
-[
-  {
-    "id": "fundamentals-building-construction-management",
-    "title": "Fundamentals of Building Construction Management",
-    "provider": "John Messner",
-    "year": 2022,
-    "source": "https://psu.pb.unizin.org/buildingconstructionmanagement/",
-    "image": "https://psu.pb.unizin.org/app/uploads/sites/310/2022/03/Building-Construction-Cover-2-768x998.png",
-    "language": ["English"],
-    "topics": ["Construction Estimating", "Project Scheduling", "Risk and Contract Management", "Project Management"],
-    "license": "CC BY-NC-SA 4.0",
-    "media": ["Text/HTML"],
-    "added": "2025-11-05"
-  }
-]
-</script>
-
-<script>
-/* ---------------------------
-   “SAFE MODE” OER LOADER
---------------------------- */
-const OER_PATHS = ['data/oer.json','../data/oer.json','/data/oer.json'];
-const PLACEHOLDER_PNG = 'assets/img/models/_placeholder.png';
-const ICON_FALLBACK = 'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120"><rect width="160" height="120" rx="12" fill="#f1f5f9"/><g fill="#0f2e4b" opacity=".6"><rect x="24" y="76" width="112" height="8" rx="4"/><rect x="36" y="28" width="28" height="36" rx="6"/><rect x="88" y="44" width="36" height="20" rx="6"/></g></svg>');
-
-let OER = [];
-const byId = id => document.getElementById(id);
-
-/* tiny UI error bar so you SEE failures */
-function showError(msg){
-  let bar = document.getElementById('oerErrorBar');
-  if(!bar){
-    bar = document.createElement('div');
-    bar.id = 'oerErrorBar';
-    bar.style.cssText = 'position:sticky;top:60px;z-index:1060;background:#ffe6e6;color:#7a1f1f;border:1px solid #f3b1b1;padding:8px 12px;margin:10px 0;border-radius:8px;font-weight:600';
-    const host = document.querySelector('main .container, main, body');
-    (host||document.body).prepend(bar);
-  }
-  bar.textContent = msg;
-}
-
-function esc(s){ return String(s ?? '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-function normKey(s){ if(s==null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
-function uniqSorted(arr){ return Array.from(new Set(arr)).sort((a,b)=> a.localeCompare(b,undefined,{sensitivity:'base'})); }
-function pick(...vals){ for(const v of vals){ if(v!==undefined && v!==null && String(v).trim()!=='') return v; } return ''; }
-function normalizeUrl(u){ if(!u) return ''; let s=String(u).trim(); if(/^https?:\/\//i.test(s)) return s; if(/^[\w.-]+\.[a-z]{2,}([/:?#].*)?$/i.test(s)) return 'https://'+s; return ''; }
-function fmtDate(d){ try{ const dt=(d instanceof Date)?d:new Date(d); if(isNaN(+dt)) return null; const y=dt.getFullYear(), m=String(dt.getMonth()+1).padStart(2,'0'), day=String(dt.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }catch{return null;} }
-function splitList(input){ if(input==null) return []; const str=Array.isArray(input)?input.join(','):String(input); const parts=str.split(/[,\/|&+;]/g).map(p=>p&&p.trim()).filter(Boolean); const seen=new Set(), out=[]; for(const p of parts){ const k=normKey(p); if(!seen.has(k)){ seen.add(k); out.push(p);} } return out; }
-function flatten(o){ if(o&&typeof o==='object'){ if(o.metadata&&typeof o.metadata==='object') return {...o,...o.metadata}; if(o.data&&typeof o.data==='object') return {...o,...o.data}; } return o; }
-function lowerKeys(o){ const r={}; for(const k in o){ r[k.toLowerCase()]=o[k]; } return r; }
-function canonize(raw){
-  const o=lowerKeys(flatten(raw||{}));
-  const title = pick(o.title,o.name,o.course,o.resource_title);
-  let authors = Array.isArray(o.authors)?o.authors:(o.authors?String(o.authors).split(/,\s*/):[]);
-  if(!authors.length&&o.author){ authors=Array.isArray(o.author)?o.author:String(o.author).split(/,\s*/); }
-  const provider=pick(o.provider,o.publisher,o.organization,o.source_name,o.university,o.institution);
-  const yearRaw = pick(o.year,o.publication_year,o.date_year,(o.date||'').slice(0,4));
-  const year = yearRaw?Number(yearRaw):'';
-  const topics = splitList(o.topics||o.tags||o.keywords);
-  const language = splitList(o.language||o.languages||o.lang);
-  const media = splitList(o.media||o.media_formats||o.format||o.type);
-  const license = pick(o.license,o.license_name,o.licence);
-  const license_url = normalizeUrl(pick(o.license_url,o.licenselink,o.license_link));
-  const source = normalizeUrl(pick(o.source,o.url,o.link,o.href,o.website,o.page));
-  const image = pick(o.image,o.thumbnail,o.cover,o.banner);
-  const contributor = pick(o.contributor,o.submitter,o.added_by,o.author_github,o.maintainer);
-  const contributor_url = normalizeUrl(pick(o.contributor_url,o.submitter_url,o.profile,o.author_url,o.github));
-  const addedRaw = pick(o.added,o.added_date,o.date_added,o.addedtime,o.addedon,o.created_at);
-  const added_ts = addedRaw?Date.parse(addedRaw):null;
-
-  return {
-    id: o.id || (crypto.randomUUID ? crypto.randomUUID() : (title || Math.random().toString(36).slice(2))),
-    title: title || 'Untitled',
-    provider, authors, year,
-    topics, language, media,
-    license, license_url,
-    source, image,
-    contributor, contributor_url,
-    added_ts: (typeof added_ts==='number' && !isNaN(added_ts)) ? added_ts : null,
-    added_date_fmt: addedRaw ? fmtDate(addedRaw) : null
-  };
-}
-
-/* UI pieces reused later */
-function makeCheckbox(id,label,value){
-  const wrap=document.createElement('div'); wrap.className='form-check';
-  const input=document.createElement('input'); input.className='form-check-input'; input.type='checkbox'; input.id=id; input.value=value;
-  const lab=document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for',id); lab.textContent=label;
-  wrap.appendChild(input); wrap.appendChild(lab); return wrap;
-}
-const state={q:'',sort:'added-desc',langs:new Set(),topics:new Set(),licenses:new Set(),media:new Set()};
-
-function buildFacets(){
-  const langVals=uniqSorted(OER.flatMap(o=>o.language||[]));
-  const topicVals=uniqSorted(OER.flatMap(o=>o.topics||[]));
-  const licVals=uniqSorted(OER.map(o=>o.license).filter(Boolean));
-  const mediaVals=uniqSorted(OER.flatMap(o=>o.media||[]));
-  const fLang=byId('filter-language'); if(fLang){ fLang.innerHTML=''; langVals.forEach((l,i)=>fLang.appendChild(makeCheckbox('lang_'+i,l,normKey(l)))); }
-  const fTop=byId('filter-topics'); if(fTop){ fTop.innerHTML=''; topicVals.forEach((t,i)=>fTop.appendChild(makeCheckbox('top_'+i,t,normKey(t)))); }
-  const fLic=byId('filter-license'); if(fLic){ fLic.innerHTML=''; licVals.forEach((l,i)=>fLic.appendChild(makeCheckbox('lic_'+i,l,l))); }
-  const fMed=byId('filter-media'); if(fMed){ fMed.innerHTML=''; mediaVals.forEach((m,i)=>fMed.appendChild(makeCheckbox('med_'+i,m,normKey(m)))); }
-}
-
-function readFacet(containerId,setRef){ setRef.clear(); const root=byId(containerId); if(!root) return; root.querySelectorAll('input[type=checkbox]:checked').forEach(c=>setRef.add(c.value)); }
-function applyFilters(){
-  const q=state.q.trim().toLowerCase();
-  let rows=OER.filter(o=>{
-    const hay=[o.title,o.provider,(o.authors||[]).join(' '),(o.topics||[]).join(' '),(o.language||[]).join(' '),(o.media||[]).join(' '),o.license||''].join(' ').toLowerCase();
-    if(q && !hay.includes(q)) return false;
-    if(state.langs.size){ const keys=new Set((o.language||[]).map(v=>v.toLowerCase())); let hit=false; for(const k of state.langs){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
-    if(state.topics.size){ const keys=new Set((o.topics||[]).map(v=>v.toLowerCase())); for(const k of state.topics){ if(!keys.has(k)) return false; } }
-    if(state.media.size){ const keys=new Set((o.media||[]).map(v=>v.toLowerCase())); let hit=false; for(const k of state.media){ if(keys.has(k)){hit=true;break;} } if(!hit) return false; }
-    if(state.licenses.size && !state.licenses.has(o.license||'')) return false;
-    return true;
-  });
-  switch(state.sort){
-    case 'name-asc': rows.sort((a,b)=>(a.title||'').localeCompare(b.title||'')); break;
-    case 'name-desc': rows.sort((a,b)=>(b.title||'').localeCompare(a.title||'')); break;
-    case 'added-asc': rows.sort((a,b)=>(a.added_ts||0)-(b.added_ts||0)); break;
-    default: rows.sort((a,b)=>(b.added_ts||0)-(a.added_ts||0));
-  }
-  render(rows);
-}
-
 function render(items){
-  const list=byId('oerList'), empty=byId('emptyState'), err=byId('errorState');
-  list.innerHTML=''; byId('resultCount').textContent=items.length; if(err) err.classList.add('d-none');
-  if(!items.length){ empty.classList.remove('d-none'); return; } empty.classList.add('d-none');
+  const list = document.getElementById('oerList');
+  const empty = document.getElementById('emptyState');
+  const err = document.getElementById('errorState');
+  list.innerHTML = '';
+  document.getElementById('resultCount').textContent = items.length;
+  if (err) err.classList.add('d-none');
+
+  if (!items.length){
+    empty.classList.remove('d-none');
+    return;
+  }
+  empty.classList.add('d-none');
 
   items.forEach(o=>{
-    const title=o.title||'Untitled';
-    const who=(o.authors&&o.authors.length)?o.authors.join(', '):(o.provider||'');
-    const metaLeft=[who||null,o.year||null].filter(Boolean).join(' • ');
-    const addedTxt=o.added_date_fmt?`Added ${o.added_date_fmt}`:'';
-    const img=o.image||PLACEHOLDER_PNG, licenseUrl=o.license_url||'', sourceUrl=o.source||'';
+    // Use your existing fields; fallbacks avoid blanks but don't change your data
+    const title = o.title || o.name || 'Untitled';
+    const img   = o.image || o.thumbnail || 'assets/img/models/_placeholder.png';
+    const authors = Array.isArray(o.authors) ? o.authors
+                    : (o.authors ? String(o.authors).split(/,\s*/) : []);
+    const who   = authors.length ? authors.join(', ') : (o.provider || o.publisher || '');
+    const year  = (o.year!=null && o.year!=='') ? o.year : '';
+    const meta  = [who || null, year || null].filter(Boolean).join(' • ');
+    const topics = (Array.isArray(o.topics) ? o.topics : (o.topics ? [o.topics] : []));
+    const langs  = (Array.isArray(o.language) ? o.language : (o.language ? [o.language] : []));
+    const media  = (Array.isArray(o.media) ? o.media : (o.media ? [o.media] : []));
+    const license = o.license || '';
+    const licenseUrl = o.license_url && /^https?:/.test(o.license_url) ? o.license_url : '';
+    const sourceUrl  = o.source && /^https?:/.test(o.source) ? o.source : (o.url && /^https?:/.test(o.url) ? o.url : '');
+    const addedTxt = o.added_date_fmt ? `Added ${o.added_date_fmt}` : (o.added ? `Added ${o.added}` : '');
 
-    const el=document.createElement('div'); el.className='paper-card';
-    el.innerHTML=`
+    const el = document.createElement('div');
+    el.className = 'paper-card';
+    el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
         <div class="left position-relative">
-          <img src="${img}" alt="${esc(title)}" onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
+          <img src="${img}" alt="${title.replaceAll('"','&quot;')}"
+               onerror="this.onerror=null; this.src='assets/img/models/_placeholder.png'">
+          ${o.contributor || o.contributor_url ? `
+            <div class="submitted-by">
+              <a href="${o.contributor_url || '#'}" target="_blank" rel="noopener">
+                Submitted by <strong>${o.contributor?.startsWith('@') ? o.contributor : '@' + o.contributor}</strong>
+              </a>
+            </div>` : ``}
         </div>
+
         <div class="flex-grow-1">
           <div class="pc-head">
-            <h3 class="pc-title">${sourceUrl?`<a href="${sourceUrl}" target="_blank" rel="noopener">${esc(title)}</a>`:esc(title)}</h3>
-            <div class="pc-meta">${esc(metaLeft||'—')}</div>
+            <h3 class="pc-title">
+              ${sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener">${title.replaceAll('<','&lt;')}</a>` : title.replaceAll('<','&lt;')}
+            </h3>
+            <div class="pc-meta">${meta || '—'}</div>
           </div>
+
           <div class="hr-ghost"></div>
+
           <div class="tag-row" aria-label="Resource tags">
-            ${(o.topics||[]).map(t=>`<span class="badge-topic">${esc(t)}</span>`).join('')}
-            ${(o.media||[]).map(m=>`<span class="badge-media">${esc(m)}</span>`).join('')}
-            ${(o.language||[]).map(l=>`<span class="badge-lang">${esc(l)}</span>`).join('')}
-            ${o.license?`<span class="badge-license">${esc(o.license)}</span>`:''}
+            ${topics.map(t=>`<span class="badge-topic">${String(t)}</span>`).join('')}
+            ${media .map(m=>`<span class="badge-media">${String(m)}</span>`).join('')}
+            ${langs .map(l=>`<span class="badge-lang">${String(l)}</span>`).join('')}
+            ${license ? `<span class="badge-license">${license}</span>` : ``}
           </div>
+
           <div class="pc-foot mt-2">
-            ${sourceUrl?`<a class="btn btn-sm btn-primary" href="${sourceUrl}" target="_blank" rel="noopener">View resource</a>`:''}
-            ${licenseUrl?`<a class="btn btn-sm btn-outline-secondary" href="${licenseUrl}" target="_blank" rel="noopener">License</a>`:''}
-            ${addedTxt?`<span class="added-note">${addedTxt}</span>`:''}
+            ${sourceUrl ? `<a class="btn btn-sm btn-primary" href="${sourceUrl}" target="_blank" rel="noopener">View resource</a>` : ``}
+            ${licenseUrl ? `<a class="btn btn-sm btn-outline-secondary" href="${licenseUrl}" target="_blank" rel="noopener">License</a>` : ``}
+            ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ``}
           </div>
         </div>
       </div>`;
     list.appendChild(el);
   });
 }
-
-/* event wiring */
-function attachHandlers(){
-  const fLang=byId('filter-language'), fTop=byId('filter-topics'), fLic=byId('filter-license'), fMed=byId('filter-media');
-  function readFacet(containerId,setRef){ setRef.clear(); const root=byId(containerId); if(!root) return; root.querySelectorAll('input[type=checkbox]:checked').forEach(c=>setRef.add(c.value)); }
-  if(fLang) fLang.addEventListener('change',()=>{ readFacet('filter-language',state.langs); applyFilters(); });
-  if(fTop)  fTop .addEventListener('change',()=>{ readFacet('filter-topics',state.topics); applyFilters(); });
-  if(fLic)  fLic .addEventListener('change',()=>{ readFacet('filter-license',state.licenses); applyFilters(); });
-  if(fMed)  fMed .addEventListener('change',()=>{ readFacet('filter-media',state.media); applyFilters(); });
-
-  const topicSearch=byId('topicSearch'); if(topicSearch) topicSearch.addEventListener('input',e=>{
-    const q=e.target.value.toLowerCase(); const root=byId('filter-topics'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; });
-  });
-  const licenseSearch=byId('licenseSearch'); if(licenseSearch) licenseSearch.addEventListener('input',e=>{
-    const q=e.target.value.toLowerCase(); const root=byId('filter-license'); if(!root) return;
-    root.querySelectorAll('.form-check').forEach(w=>{ const label=w.querySelector('label').textContent.toLowerCase(); w.style.display=label.includes(q)?'':'none'; });
-  });
-
-  const hero=byId('q'), dock=byId('qDock'); function sync(to,from){ to.value=from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-  if(hero && dock){
-    const updateQ=()=>{ state.q=hero.value; if(!document.body.classList.contains('docked')) dock.value=hero.value; applyFilters(); };
-    dock.addEventListener('input',()=>{ state.q=dock.value; sync(hero,dock); applyFilters(); });
-    hero.addEventListener('input',updateQ);
-  }
-
-  (function(){ const SHOW_AT=220, HIDE_AT=160; let docked=false;
-    function setDock(on){ if(on===docked) return; docked=on; document.body.classList.toggle('docked',on); }
-    function onScroll(){ const y=window.scrollY||0; if(!docked && y>SHOW_AT) setDock(true); else if(docked && y<HIDE_AT) setDock(false); }
-    onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
-  })();
-
-  const sortSel=byId('sortBy'); if(sortSel) sortSel.addEventListener('change',e=>{ state.sort=e.target.value; applyFilters(); });
-}
-
-/* load order: try fetch -> if 0, use inline fallback */
-async function loadOER(){
-  const err=byId('errorState'); const yr=byId('yearNow'); if(yr) yr.textContent=new Date().getFullYear();
-
-  let loaded = false; let lastErr = null;
-  for(const p of OER_PATHS){
-    try{
-      const res=await fetch(`${p}?v=${Date.now()}`,{cache:'no-store'});
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const payload=await res.json();
-      const raw=Array.isArray(payload)?payload:(Array.isArray(payload.oer)?payload.oer:(typeof payload==='object'?Object.values(payload):[]));
-      OER = raw.map(canonize);
-      if(OER.length>0){ loaded=true; break; }
-    }catch(e){ lastErr=e; }
-  }
-
-  if(!loaded){
-    // fallback to inline script
-    const node = document.getElementById('oerData');
-    if(node && node.textContent.trim()){
-      try{
-        const payload = JSON.parse(node.textContent);
-        const raw=Array.isArray(payload)?payload:(Array.isArray(payload.oer)?payload.oer:(typeof payload==='object'?Object.values(payload):[]));
-        OER = raw.map(canonize);
-        loaded = OER.length>0;
-        if(!loaded) lastErr = new Error('Inline JSON parsed but no items');
-      }catch(e){
-        lastErr = e;
-      }
-    }
-  }
-
-  if(!loaded){
-    if(err) err.classList.remove('d-none');
-    showError('Could not load OER data. Using inline block is recommended. ' + (lastErr ? ('Error: '+ lastErr.message) : ''));
-    return;
-  }
-
-  console.log('First OER mapped:', OER[0]); // sanity check
-  buildFacets();
-  attachHandlers();
-  applyFilters();
-  if(err) err.classList.add('d-none');
-}
-
-if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',loadOER); } else { loadOER(); }
-</script>
