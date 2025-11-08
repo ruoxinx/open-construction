@@ -1091,5 +1091,85 @@ else img.addEventListener('load', done, {once:true});
 })();
 </script>
 
+<script>
+(function(){
+  // ==== CONFIG ====
+  const ID_CONTRIB = 'countContrib';
+  const ID_INST    = 'countInst';
+  const JSON_URL   = 'data/contributors.json';
+  // EITHER keep TEAM_LABEL, OR set TEAM_SELECTOR to your team container
+  const TEAM_LABEL   = 'team';                // matches .oc-kicker text (case-insensitive)
+  const TEAM_SELECTOR= '';                    // e.g., '#teamSection' (leave '' to use label)
+
+  function $id(id){ return document.getElementById(id); }
+
+  function readTeamFromDOM(){
+    if (TEAM_SELECTOR) {
+      const sec = document.querySelector(TEAM_SELECTOR);
+      return sec ? extractCards(sec) : [];
+    }
+    const sections = Array.from(document.querySelectorAll('main .oc-section'));
+    const teamSec = sections.find(sec =>
+      (sec.querySelector('.oc-kicker')?.textContent || '')
+        .trim().toLowerCase() === TEAM_LABEL.toLowerCase()
+    );
+    return teamSec ? extractCards(teamSec) : [];
+  }
+
+  function extractCards(root){
+    return Array.from(root.querySelectorAll('.person-card')).map(card => {
+      const name = card.querySelector('.card-title')?.textContent?.trim() || '';
+      const role = card.querySelector('.role')?.textContent?.trim() || '';
+      const affiliation = card.querySelector('.affil')?.textContent?.trim() || '';
+      const image = card.querySelector('.headshot')?.getAttribute('src') || '';
+      const link  = card.closest('a')?.getAttribute('href') || '';
+      return { name, role, affiliation, image, link_url: link, type: 'person' };
+    });
+  }
+
+  function normalizeInstitution(affil){
+    if(!affil) return '';
+    let s = affil.split(',').pop()?.trim() || affil.trim();
+    return s.replace(/\s*\([^()]*\)\s*$/,'').trim();
+  }
+
+  function mergeDedupe(teamRows, jsonRows){
+    const seenPerson = new Set(), seenOrg = new Set(), out = [];
+    function add(c){
+      const isOrg = (c.type||'person') === 'org';
+      const key = (c.name||'').trim().toLowerCase();
+      if(!key) return;
+      if(isOrg ? seenOrg.has(key) : seenPerson.has(key)) return;
+      (isOrg ? seenOrg : seenPerson).add(key);
+      out.push(c);
+    }
+    teamRows.forEach(add); jsonRows.forEach(add);
+    return out;
+  }
+
+  async function loadJSON(url){
+    try{ const r=await fetch(url,{cache:'no-store'}); return r.ok?await r.json():[]; }
+    catch{ return []; }
+  }
+
+  (async function run(){
+    const team = readTeamFromDOM();               // <-- Team INCLUDED
+    const json = await loadJSON(JSON_URL);
+    const merged = mergeDedupe(team, json);       // de-dup across both
+
+    const instSet = new Set();
+    for(const c of merged){
+      const inst = normalizeInstitution(c.affiliation||'');
+      if(inst) instSet.add(inst);
+    }
+
+    const elC = $id(ID_CONTRIB), elI = $id(ID_INST);
+    if(elC) elC.textContent = String(merged.length);     // contributors = Team + JSON (unique)
+    if(elI) elI.textContent = String(instSet.size);      // unique institutions
+  })();
+})();
+</script>
+
+
 </body>
 </html>
