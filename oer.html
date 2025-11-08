@@ -439,10 +439,23 @@ async function loadOER(){
   const grid=byId('oerGrid'), err=byId('errorState');
   try{
     const payload = await fetchFirst(OER_PATHS);
-    const raw = Array.isArray(payload) ? payload
-              : (Array.isArray(payload.oer) ? payload.oer
-              : (typeof payload==='object' ? Object.values(payload) : []));
-    OERS = raw.map(coerceRow);
+    // Accept a few shapes, but prefer the explicit resources[] field
+    let raw;
+    if (payload && Array.isArray(payload.resources)) {
+      raw = payload.resources;
+    } else if (Array.isArray(payload)) {
+      raw = payload;
+    } else if (payload && Array.isArray(payload.oer)) {
+      raw = payload.oer;
+    } else if (payload && Array.isArray(payload.items)) {
+      raw = payload.items;
+    } else {
+      raw = [];
+    }
+
+    // Coerce and drop invalid entries (e.g., strings like schema/about)
+    OERS = raw.map(coerceRow).filter(o => o && (o.title && o.title !== 'Untitled'));
+
     const yearNow=byId('yearNow'); if(yearNow) yearNow.textContent=new Date().getFullYear();
     buildFacets(); attachHandlers(); applyFilters();
   }catch(e){ console.error('OER load failed', e); if(grid) grid.innerHTML=''; if(err) err.classList.remove('d-none'); }
