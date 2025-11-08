@@ -17,10 +17,28 @@
     .oc-container{ max-width:1080px; }
 
     .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .brand-wordmark{display:inline-flex;gap:.25rem;align-items:baseline;color:#0F2E4B;font-weight:700;letter-spacing:.1px;font-size:clamp(1.1rem,1.1rem + .4vw,1.35rem)}
-    .brand-wordmark .oc-open{font-weight:600;opacity:.95}
-    .brand-wordmark .oc-sep{opacity:.35;margin:0 .15rem}
-    .brand-wordmark .oc-construction{font-weight:800;letter-spacing:.15px}
+	.brand-wordmark{
+	  display:flex;
+	  flex-direction:column;
+	  line-height:1;
+	  gap:0;
+	  align-items:flex-start;
+	  color:#0F2E4B;
+	}
+	.brand-wordmark .oc-open{
+	  font-size:0.75rem;
+	  font-weight:400;
+	  letter-spacing:0.15em;
+	  text-transform:uppercase;
+	  opacity:0.7;
+	  margin-bottom:-0.1rem;
+	}
+	.brand-wordmark .oc-sep{display:none}
+	.brand-wordmark .oc-construction{
+	  font-size:1.35rem;
+	  font-weight:700;
+	  letter-spacing:-0.01em;
+	}
     .oc-logo{height:44px;width:44px}
     .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
     .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:#0f2e4b;text-decoration:underline;text-underline-offset:3px}
