@@ -351,7 +351,28 @@
 	  "publisher": "",
 	  "institutions": [],
 	  "added": "2025-11-06"
+	},
+	{
+	  "id": "2025-innovation-in-the-construction-industry",
+	  "title": "2025 Innovation in the Construction Industry",
+	  "provider": "Prof. Dossick's CM515 Spring 2025 Class",
+	  "year": 2025,
+	  "source": "https://uw.pressbooks.pub/2025innovationcm/",
+	  "image": "https://uw.pressbooks.pub/app/uploads/sites/933/2025/08/ChatGPT-Image-Jun-9-2025-06_08_37-PM-683x1024.png",
+	  "language": ["English"],
+	  "topics": [
+		"Construction Automation",
+		"Sustainability in Construction",
+		"New Materials & Methods",
+		"Innovation in Design & Decision-making"
+	  ],
+	  "license": "CC BY-NC-ND 4.0",  
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": ["University of Washington"],
+	  "added": "2025-11-09"
 	}
+
 
   ]
 }
