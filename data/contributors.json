@@ -301,9 +301,8 @@
     "name": "Sk. Md. Masudul Ahsan",
     "role": "Dataset Contributor",
     "affiliation": "Khulna University of Engineering & Technology (Bangladesh)",
-    "link_url": "smahsan@cse.kuet.ac.bd",
-    "image": "assets/img/contributors/avatar.png",
+    "link_url": "https://www.kuet.ac.bd/cse/smmasudul",
+    "image": "https://www.kuet.ac.bd/images/faculty/335.jpg",
     "type": "person"
-  },
-  
+  }
 ]
