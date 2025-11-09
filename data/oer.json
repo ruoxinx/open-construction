@@ -331,8 +331,27 @@
 	  "license": "CC BY 4.0",
 	  "media": ["Text/HTML"],
 	  "publisher": "",
-	  "institutions": [""],
+	  "institutions": [],
 	  "added": "2025-11-05"
+	},
+	{
+	  "id": "construction-management-modernized",
+	  "title": "Construction Management from a Modernized Perspective",
+	  "provider": "Dr. Husam Alshareef",
+	  "year": 2021,
+	  "source": "https://pressbooks.pub/husamalshareef/",
+	  "image": "https://pressbooks.pub/husamalshareef/book-cover.jpg",
+	  "language": ["English"],
+	  "topics": [
+		"Construction Management",
+		"Construction Safety"
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": [],
+	  "added": "2025-11-06"
 	}
+
   ]
 }
