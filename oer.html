@@ -489,8 +489,6 @@ function coerceRow(r){
     source: r.source || r.url || '',
     contributor: r.contributor || '',
     contributor_url: r.contributor_url || '',
-
-    // ✅ NEW: map publisher & institutions from JSON
     publisher: r.publisher || r.published_by || '',
     institutions: Array.isArray(r.institutions)
       ? r.institutions
