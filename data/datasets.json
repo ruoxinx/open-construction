@@ -1544,7 +1544,7 @@
     "id": "Stirrup-Rebar",
     "image_url": "assets/img/datasets/Stirrup-Rebar.png",
 	"added_date": "2025-09-18",
-	"contributor": "tsrobcvai",
+	"contributor": "Tao Sun",
 	"contributor_url": "https://github.com/tsrobcvai"
   },
     "ROI-1555": {
@@ -1575,7 +1575,7 @@
     "id": "ROI-1555",
     "image_url": "assets/img/datasets/ROI-1555.png",
 	"added_date": "2025-09-18",
-	"contributor": "tsrobcvai",
+	"contributor": "Tao Sun",
 	"contributor_url": "https://github.com/tsrobcvai"
   },
     "CDW-Seg": {
