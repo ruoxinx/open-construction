@@ -382,15 +382,17 @@ function render(items){
     const authorsLine = Array.isArray(o.authors) ? o.authors.join(', ') : (o.authors || '');
     const providerOrAuthors = authorsLine || o.provider || '';
 
+    // Build tag sections (add publisher + institutions here)
     const tagsHTML =
-        sec('Topics',   o.topics,   'topic') +
-        sec('Media',    o.media,    'media') +
-        sec('Language', o.language, 'lang');
+      sec('Topics',        o.topics,        'topic') +
+      sec('Media',         o.media,         'media') +
+      sec('Language',      o.language,      'lang') +
+      (o.publisher ? sec('Publisher', [o.publisher], 'publisher') : '') +
+      (Array.isArray(o.institutions) && o.institutions.length
+        ? sec('Institution(s)', o.institutions, 'inst')
+        : '');
 
-    
-  
-  const publisherHTML = o.publisher ? sec('Publisher', [o.publisher], 'publisher') : '';
-  const institutionsHTML = (Array.isArray(o.institutions) && o.institutions.length) ? sec('Institution(s)', o.institutions, 'inst') : '';
+    // Build the card
     const card = document.createElement('div');
     card.className = 'oer-card';
     card.innerHTML = `
@@ -409,12 +411,7 @@ function render(items){
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
           <div class="meta mb-1">${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${o.year || '—'}</div>
-
           ${tagsHTML}
-      ${publisherHTML}
-      ${institutionsHTML}
-      ${institutionsHTML}
-
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
             ${o.source?`<a class="btn btn-sm btn-primary" href="${o.source}" target="_blank" rel="noopener">View resource</a>`:''}
             ${o._added_fmt?`<span class="added-note ms-auto">${addedTxt}</span>`:''}
@@ -422,7 +419,6 @@ function render(items){
         </div>
       </div>`;
 
-    // Append directly (single-column stack)
     grid.appendChild(card);
   });
 }
