@@ -325,8 +325,7 @@ function buildFacets(){
 function applyFilters(){
   const q = state.q.trim().toLowerCase();
   let rows = OERS.filter(o=>{
-    const text=[o.title,o.provider,o.authors, (o.topics||[]).join(' '), (o.language||[]).join(' '), (o.media||[]).join(' '), o.license
-  o.publisher,
+    const text=[o.title,o.provider,o.authors, (o.topics||[]).join(' '), (o.language||[]).join(' '), (o.media||[]).join(' '), o.license, o.publisher,
   (o.institutions||[]).join(' '),
 ].join(' ').toLowerCase();
     if(q && !text.includes(q)) return false;
