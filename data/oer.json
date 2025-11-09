@@ -239,7 +239,7 @@
 	  "id": "construction-robotics",
 	  "title": "Planning for Robotics in Construction",
 	  "provider": "John Messner, Nozomi James Hirata",
-	  "year": ,
+	  "year": null,
 	  "source": "https://psu.pb.unizin.org/constructionrobotics/",
 	  "image": "https://psu.pb.unizin.org/app/uploads/sites/454/2024/12/Planning-for-Robotics-in-Construction-Cover-768x996.png",
 	  "language": ["English"],
@@ -269,7 +269,27 @@
 	  "publisher": "",
 	  "institutions": ["Metropolitan State University of Denver"],
 	  "added": "2025-11-06"
+	},
+	{
+	  "id": "blueprint-reading-wtcs",
+	  "title": "Blueprint Reading",
+	  "provider": "Mark Lorier",
+	  "year": 2025,
+	  "source": "https://wtcs.pressbooks.pub/blueprintreading/",
+	  "image": "https://wtcs.pressbooks.pub/app/uploads/sites/63/2025/01/BP-cover-image-updated-1-768x1002.png",
+	  "language": ["English"],
+	  "topics": [
+		"Blueprint Reading",
+		"Construction Drawings",
+		"Engineering graphics and draughting"
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "publisher": "WisTech Open",
+	  "institutions": ["Chippewa Valley Technical College"],
+	  "added": "2025-11-09"
 	}
+
 
   ]
 }
