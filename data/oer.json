@@ -106,9 +106,29 @@
 		"Optimization and Decision-Making",
 	  ],
 	  "license": "CC BY-SA 4.0",
-	  "media": ["Text/HTML", "PDF"],
-	  "added": "2025-11-08"
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-05"
+	},
+	{
+	  "id": "building-information-representation-management-koutamanis-2022",
+	  "title": "Building Information – Representation and Management: Principles and Foundations for the Digital Era",
+	  "provider": "Alexander Koutamanis (Delft University of Technology)",
+	  "year": 2022,
+	  "source": "https://books.open.tudelft.nl/home/catalog/book/159",
+	  "image": "https://books.open.tudelft.nl/public/presses/1/67cef1cde2b0b-submission_47_64_coverImage_en_US_t.png",
+	  "language": ["English"],
+	  "topics": [
+		"Building Information Modelling (BIM)",
+		"Digital Representation of Buildings",
+		"Information Management in Construction",
+		"Decision-Making in Built Environment"
+	  ],
+	  "license": "CC BY-NC-SA 4.0",
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-05"
 	}
+
+	
 
 
 	
