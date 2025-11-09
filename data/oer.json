@@ -91,7 +91,25 @@
 	  "license": "CC BY 4.0",
 	  "media": ["Text/HTML"],
 	  "added": "2025-11-05"
+	},
+	{
+	  "id": "fundamentals-of-infrastructure-management-coffelt-hendrickson-2017",
+	  "title": "Fundamentals of Infrastructure Management",
+	  "provider": "Donald Coffelt & Chris Hendrickson (Carnegie Mellon University)",
+	  "year": 2019,
+	  "source": "https://kilthub.cmu.edu/articles/book/Fundamentals_of_Infrastructure_Management/5334379/2?file=14497190",
+	  "image": "assets/img/oer/fundamentals-of-infrastructure-management.png",
+	  "language": ["English"],
+	  "topics": [
+		"Infrastructure Asset Management",
+		"Inspection & Condition Assessment",
+		"Optimization and Decision-Making",
+	  ],
+	  "license": "CC BY-SA 4.0",
+	  "media": ["Text/HTML", "PDF"],
+	  "added": "2025-11-08"
 	}
+
 
 	
   ]
