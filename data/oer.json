@@ -288,7 +288,29 @@
 	  "publisher": "WisTech Open",
 	  "institutions": ["Chippewa Valley Technical College"],
 	  "added": "2025-11-09"
+	},
+	{
+	  "id": "civil-engineering-tools",
+	  "title": "Civil Engineering Tools: Concepts, Applications, and Question Bank",
+	  "provider": [
+		"Ramteja Sajja",
+		"Yusuf Sermet",
+		"Ibrahim Demir"
+	  ],
+	  "year": 2025,
+	  "source": "https://pressbooks.uiowa.edu/civil-engineering-tools/",
+	  "image": "https://pressbooks.uiowa.edu/app/uploads/sites/399/2025/07/Individual_chapters_new_version-1_page-0001-768x994.jpg",
+	  "language": ["English"],
+	  "topics": [
+		"Civil Engineering Software Tools"
+	  ],
+	  "license": "CC BY-NC 4.0",  
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": ["University of Iowa"],
+	  "added": "2025-11-06"
 	}
+
 
 
   ]
