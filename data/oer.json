@@ -259,10 +259,10 @@
 	  "image": "https://colorado.pressbooks.pub/app/uploads/sites/18/2024/04/Book-Cover-3.4.800p.png",
 	  "language": ["English"],
 	  "topics": [
-		"Project management",
-		"Risk assessment",
-		"Budgeting management",
-		"Construction planning"
+		"Project Management",
+		"Risk Assessment",
+		"Budgeting Management",
+		"Construction Planning"
 	  ],
 	  "license": "CC BY 4.0",
 	  "media": ["Text/HTML"],
@@ -363,8 +363,8 @@
 	  "topics": [
 		"Construction Automation",
 		"Sustainability in Construction",
-		"New Materials & Methods",
-		"Innovation in Design & Decision-making"
+		"Materials & Methods",
+		"Design & Decision-making"
 	  ],
 	  "license": "CC BY-NC-ND 4.0",  
 	  "media": ["Text/HTML"],
