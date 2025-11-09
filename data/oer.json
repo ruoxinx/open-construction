@@ -261,7 +261,7 @@
 	  "topics": [
 		"Project management",
 		"Risk assessment",
-		"Budgeting and financial management",
+		"Budgeting management",
 		"Construction planning"
 	  ],
 	  "license": "CC BY 4.0",
@@ -281,7 +281,7 @@
 	  "topics": [
 		"Blueprint Reading",
 		"Construction Drawings",
-		"Engineering graphics and draughting"
+		"Engineering Graphics"
 	  ],
 	  "license": "CC BY 4.0",
 	  "media": ["Text/HTML"],
@@ -309,9 +309,30 @@
 	  "publisher": "",
 	  "institutions": ["University of Iowa"],
 	  "added": "2025-11-06"
+	},
+	{
+	  "id": "excel-for-contractors",
+	  "title": "Excel for Contractors",
+	  "provider": [
+		"Barbara Lave",
+		"Nick Bredleau",
+		"Hallie Puncochar",
+		"Julie Romey",
+		"Mary Schatz",
+		"Art Schneider"
+	  ],
+	  "year": 2023,
+	  "source": "https://openoregon.pressbooks.pub/constructionexcel/",
+	  "image": "https://openoregon.pressbooks.pub/app/uploads/sites/211/2021/06/Book-Cover-Option-1.png",
+	  "language": ["English"],
+	  "topics": [
+		"Construction Spreadsheets"
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": [""],
+	  "added": "2025-11-05"
 	}
-
-
-
   ]
 }
