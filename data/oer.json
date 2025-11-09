@@ -100,7 +100,7 @@
       ],
       "added": "2025-11-05",
       "publisher": "",
-      "institutions": []
+      "institutions": ["Massachusetts Institute of Technology"]
     },
     {
       "id": "building-construction-materials-forehand-2025",
@@ -144,7 +144,7 @@
       ],
       "added": "2025-11-05",
       "publisher": "",
-      "institutions": []
+      "institutions": ["University of Hawai’i Maui College"]
     },
     {
       "id": "fundamentals-of-infrastructure-management-coffelt-hendrickson-2017",
@@ -167,7 +167,7 @@
       ],
       "added": "2025-11-05",
       "publisher": "",
-      "institutions": []
+      "institutions": ["Carnegie Mellon University"]
     },
     {
       "id": "building-information-representation-management-koutamanis-2022",
@@ -189,7 +189,7 @@
       ],
       "added": "2025-11-05",
       "publisher": "",
-      "institutions": []
+      "institutions": ["Delft University of Technology"]
     },
     {
       "id": "building-information-modeling-using-revit-makhmalbaf-2022",
@@ -210,7 +210,7 @@
         "Text/HTML"
       ],
       "added": "2025-11-05",
-      "publisher": "",
+      "publisher": "Mavs Open Press",
       "institutions": []
     },
     {
@@ -232,8 +232,8 @@
         "Text/HTML"
       ],
       "added": "2025-11-05",
-      "publisher": "",
-      "institutions": []
+      "publisher": "University of South Australia",
+      "institutions": ["University of South Australia", "Massey University"]
     }
   ]
 }
