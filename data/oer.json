@@ -126,7 +126,24 @@
 	  "license": "CC BY-NC-SA 4.0",
 	  "media": ["Text/HTML"],
 	  "added": "2025-11-05"
+	},
+	{
+	  "id": "building-information-modeling-using-revit-makhmalbaf-2022",
+	  "title": "Building Information Modeling using Revit for Architects and Engineers",
+	  "provider": "Atefe Makhmalbaf (Mavs Open Press, University of Texas at Arlington)",
+	  "year": 2022,
+	  "source": "https://uta.pressbooks.pub/buildinginformationmodeling/",
+	  "image": "https://uta.pressbooks.pub/app/uploads/sites/103/2022/08/Building-Information-Modeling-1-683x1024.jpg",
+	  "language": ["English"],
+	  "topics": [
+		"Building Information Modeling",
+		"Construction planning"
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-05"
 	}
+
 
 	
 
