@@ -295,7 +295,9 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.1016/j.autcon.2024.105849",
     "code_url": "https://github.com/kakke14/Automated-inspection-and-compliance-checking",
-    "thumbnail": "assets/img/models/compliance-checking.png"
+    "thumbnail": "assets/img/models/compliance-checking.png",
+	"contributor": "Construction Automation and Information Technologies Lab",
+	"contributor_url": "https://teizer.com/team/"
   },
   {
     "id": "URRE-Net",

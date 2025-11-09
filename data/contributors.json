@@ -313,5 +313,14 @@
     "link_url": "https://www.cs.cmu.edu/~ILIM/",
     "image": "assets/img/contributors/ilim.png",
     "type": "org"
+  },
+    {
+    "id": "CAIT",
+    "name": "Construction Automation and Information Technologies Lab",
+    "role": "Model Contributor",
+    "affiliation": "Technical University of Denmark (Denmark)",
+    "link_url": "https://teizer.com/home/",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "org"
   }
 ]
