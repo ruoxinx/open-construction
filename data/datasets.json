@@ -700,7 +700,7 @@
     "id": "CHVG",
     "image_url": "assets/img/datasets/CHVG.png",
 	"contributor": "Md. Ferdous",
-	"contributor_url": "ferdous2007512@stud.kuet.ac.bd"
+	"contributor_url": "https://scholar.google.com/citations?user=vCvU_SkAAAAJ&hl=en"
   },
   "SHEL5K": {
     "name": "SHEL5K",
@@ -1268,8 +1268,8 @@
   "ROADWork": {
     "name": "ROADWork: Learning to Recognize, Observe, Analyze and Drive Through Work Zones",
 	"authors": "Anurag Ghosh, Shen Zheng, Robert Tamburo, Khiem Vuong, Juan Alvarez-Padilla, Hailiang Zhu, Michael Cardei, Nicholas Dunn, Christoph Mertz, Srinivasa G. Narasimhan",
-	"doi": "https://arxiv.org/abs/2406.07661",
-    "year": 2024,
+	"doi": "https://openaccess.thecvf.com/content/ICCV2025/papers/Ghosh_ROADWork_A_Dataset_and_Benchmark_for_Learning_to_Recognize_Observe_ICCV_2025_paper.pdf",
+    "year": 2025,
     "data_modality": "Ground RGB",
     "num_images": 7416,
     "num_classes": null,
@@ -1292,7 +1292,9 @@
     "paper": "ROADWork Dataset: Recognize, Observe, Analyze and Drive Through Work Zones",
     "access": "https://github.com/anuragxel/roadwork-dataset",
     "id": "ROADWork",
-    "image_url": "assets/img/datasets/ROADWork.png"
+    "image_url": "assets/img/datasets/ROADWork.png",
+	"contributor": "ILIM Lab",
+    "contributor_url": "https://www.cs.cmu.edu/~ILIM/"
   },
   "AIDCON": {
     "name": "AIDCON: Aerial Image Dataset for Construction",

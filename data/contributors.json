@@ -304,5 +304,14 @@
     "link_url": "https://www.kuet.ac.bd/cse/smmasudul",
     "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=eQB2XDkAAAAJ&citpid=2",
     "type": "person"
+  },
+    {
+    "id": "ILIM",
+    "name": "ILIM Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "Carnegie Mellon University (US)",
+    "link_url": "https://www.cs.cmu.edu/~ILIM/",
+    "image": "assets/img/contributors/ilim.png",
+    "type": "org"
   }
 ]
