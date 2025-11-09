@@ -234,6 +234,42 @@
       "added": "2025-11-05",
       "publisher": "University of South Australia",
       "institutions": ["University of South Australia", "Massey University"]
-    }
+    },
+	{
+	  "id": "construction-robotics",
+	  "title": "Planning for Robotics in Construction",
+	  "provider": "John Messner, Nozomi James Hirata",
+	  "year": ,
+	  "source": "https://psu.pb.unizin.org/constructionrobotics/",
+	  "image": "https://psu.pb.unizin.org/app/uploads/sites/454/2024/12/Planning-for-Robotics-in-Construction-Cover-768x996.png",
+	  "language": ["English"],
+	  "topics": ["Construction Robotics", "Construction Planning"],
+	  "license": "CC BY-ND 4.0",
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": ["Pennsylvania State University"],
+	  "added": "2025-11-06"
+	},
+	{
+	  "id": "introduction-construction-management",
+	  "title": "Introduction to Construction Project Management",
+	  "provider": "Carolyn McGary",
+	  "year": 2024,
+	  "source": "https://colorado.pressbooks.pub/introconstructionmanagement/",
+	  "image": "https://colorado.pressbooks.pub/app/uploads/sites/18/2024/04/Book-Cover-3.4.800p.png",
+	  "language": ["English"],
+	  "topics": [
+		"Project management",
+		"Risk assessment",
+		"Budgeting and financial management",
+		"Construction planning"
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "publisher": "",
+	  "institutions": ["Metropolitan State University of Denver"],
+	  "added": "2025-11-06"
+	}
+
   ]
 }
