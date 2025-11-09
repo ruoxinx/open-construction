@@ -698,7 +698,9 @@
     "paper": "PPE detector: a YOLO-based architecture to detect personal protective equipment (PPE) for construction sites",
     "access": "https://figshare.com/articles/dataset/CHVG_Dataset/19625166/1?file=34858290",
     "id": "CHVG",
-    "image_url": "assets/img/datasets/CHVG.png"
+    "image_url": "assets/img/datasets/CHVG.png",
+	"contributor": "Md. Ferdous",
+	"contributor_url": "ferdous2007512@stud.kuet.ac.bd"
   },
   "SHEL5K": {
     "name": "SHEL5K",

@@ -286,5 +286,24 @@
     "link_url": "https://www.civil.tsinghua.edu.cn/ceen/info/1063/1221.htm",
     "image": "https://www.civil.tsinghua.edu.cn/__local/D/08/DD/09358DF0598E396EA6A3188CAC1_0BF401ED_E7D4.jpg?e=.jpg",
     "type": "person"
-  }
+  },
+    {
+    "id": "Ferdous",
+    "name": "Md. Ferdous",
+    "role": "Dataset Contributor",
+    "affiliation": "Gopalganj Science and Technology University (Bangladesh)",
+    "link_url": "ferdous2007512@stud.kuet.ac.bd",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+    {
+    "id": "Ahsan",
+    "name": "Sk. Md. Masudul Ahsan",
+    "role": "Dataset Contributor",
+    "affiliation": "Khulna University of Engineering & Technology (Bangladesh)",
+    "link_url": "smahsan@cse.kuet.ac.bd",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
+  },
+  
 ]
