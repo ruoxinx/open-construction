@@ -73,8 +73,26 @@
 	  "topics": ["Materials in Architecture"],
 	  "license": "CC BY-NC-SA 4.0",
 	  "media": ["Text/HTML"],
-	  "added": "2025-11-07"
+	  "added": "2025-11-05"
+	},
+	{
+	  "id": "building-maintenance-construction-rutherford-2018",
+	  "title": "Building Maintenance & Construction: Tools and Maintenance Tasks",
+	  "provider": "Clifford Rutherford (University of Hawaiʻi Maui College)",
+	  "year": 2018,
+	  "source": "https://pressbooks.oer.hawaii.edu/buildingmaint/",
+	  "image": "https://pressbooks.oer.hawaii.edu/buildingmaint/wp-content/uploads/sites/8/2018/08/CoverImageBuildingMaintenance2-768x994.jpg",
+	  "language": ["English"],
+	  "topics": [
+		"Building Maintenance",
+		"Maintenance Tools",
+		"Building construction and materials",
+	  ],
+	  "license": "CC BY 4.0",
+	  "media": ["Text/HTML"],
+	  "added": "2025-11-05"
 	}
+
 	
   ]
 }
