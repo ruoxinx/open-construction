@@ -9,11 +9,22 @@
       "year": 2022,
       "source": "https://psu.pb.unizin.org/buildingconstructionmanagement/",
       "image": "https://psu.pb.unizin.org/app/uploads/sites/310/2022/03/Building-Construction-Cover-2-768x998.png",
-      "language": ["English"],
-      "topics": ["Construction Estimating", "Project Scheduling", "Risk and Contract Management", "Project Management"],
+      "language": [
+        "English"
+      ],
+      "topics": [
+        "Construction Estimating",
+        "Project Scheduling",
+        "Risk and Contract Management",
+        "Project Management"
+      ],
       "license": "CC BY-NC-SA 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "CMGT-40095-50095",
@@ -22,17 +33,25 @@
       "provider": "Ruoxin Xiong",
       "source": "https://github.com/ruoxinx/CMGT-40095-50095",
       "image": "assets/img/oer/CMGT-40095-50095.png",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Construction Technology",
         "Generative AI in AEC",
         "Smart Construction"
       ],
       "license": "MIT",
-      "media": ["Slides", "Code", "Interactive Labs"],
+      "media": [
+        "Slides",
+        "Code",
+        "Interactive Labs"
+      ],
       "added": "2025-11-05",
       "contributor": "ruoxinx",
-      "contributor_url": "https://github.com/ruoxinx"
+      "contributor_url": "https://github.com/ruoxinx",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "construction-contracts-and-project-administration",
@@ -41,15 +60,21 @@
       "year": 2022,
       "source": "https://vtechworks.lib.vt.edu/items/173102d3-2246-4640-9e64-aa0ae0a1b282",
       "image": "assets/img/oer/contracts.png",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Construction contracting",
         "Legal issues in construction",
         "Business principles"
       ],
       "license": "CC BY-NC-SA 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "mit-project-management-2004",
@@ -58,11 +83,24 @@
       "year": 2004,
       "source": "https://ocw.mit.edu/courses/1-040-project-management-spring-2004/",
       "image": "https://ocw.mit.edu/courses/1-040-project-management-spring-2004/ed78302ef0194f93b950119b5e7e24f5_1-040s04.jpg",
-      "language": ["English"],
-      "topics": ["Project Management", "Project Organization", "Project Planning", "Project Control"],
+      "language": [
+        "English"
+      ],
+      "topics": [
+        "Project Management",
+        "Project Organization",
+        "Project Planning",
+        "Project Control"
+      ],
       "license": "CC BY-NC-SA 4.0",
-      "media": ["Text/HTML", "Lecture Notes", "Assignments"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML",
+        "Lecture Notes",
+        "Assignments"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "building-construction-materials-forehand-2025",
@@ -71,11 +109,19 @@
       "year": 2018,
       "source": "https://lbcc.pressbooks.pub/buildingconstruction/",
       "image": "https://lbcc.pressbooks.pub/app/uploads/sites/17/2023/10/Pressbooks-Cover-2.png",
-      "language": ["English"],
-      "topics": ["Materials in Architecture"],
+      "language": [
+        "English"
+      ],
+      "topics": [
+        "Materials in Architecture"
+      ],
       "license": "CC BY-NC-SA 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "building-maintenance-construction-rutherford-2018",
@@ -84,15 +130,21 @@
       "year": 2018,
       "source": "https://pressbooks.oer.hawaii.edu/buildingmaint/",
       "image": "https://pressbooks.oer.hawaii.edu/buildingmaint/wp-content/uploads/sites/8/2018/08/CoverImageBuildingMaintenance2-768x994.jpg",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Building Maintenance",
         "Maintenance Tools",
         "Building construction and materials"
       ],
       "license": "CC BY 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "fundamentals-of-infrastructure-management-coffelt-hendrickson-2017",
@@ -101,15 +153,21 @@
       "year": 2019,
       "source": "https://kilthub.cmu.edu/articles/book/Fundamentals_of_Infrastructure_Management/5334379/2?file=14497190",
       "image": "assets/img/oer/fundamentals-of-infrastructure-management.png",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Infrastructure Asset Management",
         "Inspection & Condition Assessment",
         "Optimization and Decision-Making"
       ],
       "license": "CC BY-SA 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "building-information-representation-management-koutamanis-2022",
@@ -118,14 +176,20 @@
       "year": 2022,
       "source": "https://books.open.tudelft.nl/home/catalog/book/159",
       "image": "https://books.open.tudelft.nl/public/presses/1/67cef1cde2b0b-submission_47_64_coverImage_en_US_t.png",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Building Information Modeling",
         "Digital Representation of Buildings"
       ],
       "license": "CC BY-NC-SA 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
     {
       "id": "building-information-modeling-using-revit-makhmalbaf-2022",
@@ -134,31 +198,42 @@
       "year": 2022,
       "source": "https://uta.pressbooks.pub/buildinginformationmodeling/",
       "image": "https://uta.pressbooks.pub/app/uploads/sites/103/2022/08/Building-Information-Modeling-1-683x1024.jpg",
-      "language": ["English"],
+      "language": [
+        "English"
+      ],
       "topics": [
         "Building Information Modeling",
         "Construction planning"
       ],
       "license": "CC BY 4.0",
-      "media": ["Text/HTML"],
-      "added": "2025-11-05"
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
     },
-	{
-	  "id": "building-cost-planning-best-practices-insights-2023",
-	  "title": "Building Cost Planning: Best Practices and Insights",
-	  "provider": "Thilini Jayawickrama, Ruchini Jayasinghe, Ravindu Kahandawa, Rameez Rameezdeen, Don Leelarathne & Inoka Withana Gamage",
-	  "year": 2023,
-	  "source": "https://oercollective.caul.edu.au/building-cost-planning/",
-	  "image": "https://oercollective.caul.edu.au/app/uploads/sites/19/2023/02/Building-Cost-Planning-Cover-Designs-4-768x1024.png",
-	  "language": ["English"],
-	  "topics": [
-		"Cost Planning",
-		"Cost Management"
-	  ],
-	  "license": "CC BY-NC 4.0",
-	  "media": ["Text/HTML"],
-	  "added": "2025-11-05"
-	}
-
+    {
+      "id": "building-cost-planning-best-practices-insights-2023",
+      "title": "Building Cost Planning: Best Practices and Insights",
+      "provider": "Thilini Jayawickrama, Ruchini Jayasinghe, Ravindu Kahandawa, Rameez Rameezdeen, Don Leelarathne & Inoka Withana Gamage",
+      "year": 2023,
+      "source": "https://oercollective.caul.edu.au/building-cost-planning/",
+      "image": "https://oercollective.caul.edu.au/app/uploads/sites/19/2023/02/Building-Cost-Planning-Cover-Designs-4-768x1024.png",
+      "language": [
+        "English"
+      ],
+      "topics": [
+        "Cost Planning",
+        "Cost Management"
+      ],
+      "license": "CC BY-NC 4.0",
+      "media": [
+        "Text/HTML"
+      ],
+      "added": "2025-11-05",
+      "publisher": "",
+      "institutions": []
+    }
   ]
 }
