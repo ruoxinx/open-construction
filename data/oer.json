@@ -24,7 +24,7 @@
       ],
       "added": "2025-11-05",
       "publisher": "",
-      "institutions": []
+      "institutions": ["Pennsylvania State University"]
     },
     {
       "id": "CMGT-40095-50095",
@@ -56,9 +56,9 @@
     {
       "id": "construction-contracts-and-project-administration",
       "title": "Construction Contracting: Business and Legal Principles",
-      "provider": "Bartholomew, Stuart H.",
+      "provider": "Stuart H. Bartholomew",
       "year": 2022,
-      "source": "https://vtechworks.lib.vt.edu/items/173102d3-2246-4640-9e64-aa0ae0a1b282",
+      "source": "https://pressbooks.lib.vt.edu/constructioncontracting/",
       "image": "assets/img/oer/contracts.png",
       "language": [
         "English"
@@ -73,8 +73,8 @@
         "Text/HTML"
       ],
       "added": "2025-11-05",
-      "publisher": "",
-      "institutions": []
+      "publisher": "University Libraries at Virginia Tech",
+      "institutions": ["Virginia Polytechnic Institute and State University"]
     },
     {
       "id": "mit-project-management-2004",
