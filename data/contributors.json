@@ -322,5 +322,14 @@
     "link_url": "https://teizer.com/home/",
     "image": "assets/img/contributors/avatar.png",
     "type": "org"
+  },
+     {
+    "id": "APL",
+    "name": "Applied Physics Laboratory (APL)",
+    "role": "Dataset Contributor",
+    "affiliation": "Johns Hopkins University (US)",
+    "link_url": "https://www.jhuapl.edu/",
+    "image": "assets/img/institutions/APL.png",
+    "type": "org"
   }
 ]

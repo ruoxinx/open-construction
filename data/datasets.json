@@ -825,7 +825,9 @@
     "paper": "Automated global-scale detection and characterization of anthropogenic activity using multi-source satellite-based remote sensing imagery",
     "access": "https://github.com/pubgeo/IARPA-SMART",
     "id": "SMART",
-    "image_url": "assets/img/datasets/SMART.png"
+    "image_url": "assets/img/datasets/SMART.png",
+	"contributor": "Applied Physics Laboratory (JHU/APL)",
+    "contributor_url": "https://www.jhuapl.edu/"
   },
   "CODD": {
     "name": "CODD: Construction and Demolition Waste Object Detection Dataset",
