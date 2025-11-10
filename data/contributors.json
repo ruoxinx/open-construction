@@ -331,5 +331,14 @@
     "link_url": "https://www.jhuapl.edu/",
     "image": "assets/img/institutions/APL.png",
     "type": "org"
+  },
+      {
+    "id": "RSL",
+    "name": "Robotic Systems Lab",
+    "role": "Model Contributor",
+    "affiliation": "ETH Zürich (Switzerland)",
+    "link_url": "https://rsl.ethz.ch/",
+    "image": "https://github.com/leggedrobotics.png?size=160",
+    "type": "org"
   }
 ]

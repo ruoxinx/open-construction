@@ -236,7 +236,9 @@
     "paper_url": "https://arxiv.org/abs/2410.04250",
     "code_url": "https://github.com/leggedrobotics/rsl_panoptic_mapping",
     "thumbnail": "assets/img/models/ETHcavation.gif",
-	"added_date": "2025-09-28"
+	"added_date": "2025-09-28",
+	"contributor": "Robotic Systems Lab",
+    "contributor_url": "https://rsl.ethz.ch/"
   },
   {
     "id": "Buildee",
