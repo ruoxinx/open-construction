@@ -99,29 +99,26 @@ function canonicalizeModalityLabel(raw){
 
 // Split and canonicalize to an ARRAY of modalities.
 // Adds a separate "Synthetic" tag if the overall text implies it.
-function canonicalizeModalityLabel(raw) {
-  if (!raw) return 'Other';
-  const s = raw.toLowerCase();
+function canonicalizeModalityLabels(raw){
+  if (raw == null) return ['Other'];
 
-  if (/\bsynthetic\b|simulat(?:e|ed|ion)|render|digital twin|unreal|unity|blender/.test(s))
-    return 'Synthetic';
-  if (/\blidar\b|li[\s-]?dar|\bvelodyne\b|\brplidar\b/.test(s))
-    return 'LiDAR';
-  if (/\bpoint\s*cloud\b/.test(s))
-    return 'Point Cloud';
-  if (/\brgb[-\s]*d\b|\bstereo\b|\bdepth\b|\bkinect\b/.test(s))
-    return 'RGB-D';
-  if (/\bthermal\b|\binfrared\b|\b(ir)\b/.test(s))
-    return 'Thermal';
-  if (/\brgb\b|camera|photo|orthomosaic|image|imagery|drone|uav\b/.test(s))
-    return 'RGB Image';
-  if (/\bgpr\b|radar\b|radargram\b|ground penetrating\b/.test(s))
-    return 'GPR';
-  if (/\bmesh(es)?\b|3d model|surface model/.test(s))
-    return '3D Mesh';
-  return 'Other';
+  let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
+  parts = parts.map(p => p && p.trim()).filter(Boolean);
+  if (!parts.length) parts = [String(raw)];
+
+  const labels = new Set();
+  const globalHasSynthetic = /\bsynthetic\b|simulat(?:e|ed|ion)|render(?:ed|ing)?|\bcg\b|\bcgi\b|computer[ -]?generated|virtual|digital\s*twin|sim[-\s]?to[-\s]?real|sim2real|unreal|unity|blender|gazebo|airsim|carla|\bgta\b/i.test(String(raw));
+
+  for (const p of parts){
+    labels.add(canonicalizeModalityLabel(p));
+  }
+  if (globalHasSynthetic) labels.add('Synthetic');
+
+  // Replace 'Other' if more meaningful labels present
+  if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
+
+  return Array.from(labels);
 }
-
 
 // licenses
 function formatLicenseLabel(raw){
