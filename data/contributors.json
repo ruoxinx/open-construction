@@ -371,6 +371,7 @@
     "id": "skyearth",
     "name": "Skyearth Team",
     "role": "Model Contributor",
+	"affiliation": "Wuhan University (China)",
     "link_url": "https://en.skyearth.org/team/",
     "image": "https://skyearth.org/img/logo.jpg",
     "type": "org"
@@ -379,6 +380,7 @@
     "id": "Co-ViM",
     "name": "3D Co-ViM Lab",
     "role": "Model Contributor",
+	"affiliation": "Universidad de Extremadura (Spain)",
     "link_url": "https://3dcovim.cms.unex.es/team/",
     "image": "https://3dcovim.cms.unex.es/wp-content/uploads/sites/2/2023/03/cropped-cropped-Imagen23-1-2.png",
     "type": "org"
