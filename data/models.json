@@ -431,7 +431,9 @@
     "license": "Unspecified",
     "paper_url": "https://doi.org/10.3390/buildings14072127",
     "code_url": "https://github.com/3dcovim/VR-Point-Cloud-Analysis",
-    "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png"
+    "thumbnail": "assets/img/models/VR-Point-Cloud-Analysis.png",
+	"contributor": "3D Co-ViM Lab",
+    "contributor_url": "https://3dcovim.cms.unex.es/team/"
   },
   {
   "id": "structgan-v1",
