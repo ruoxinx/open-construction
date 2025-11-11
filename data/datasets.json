@@ -2537,7 +2537,7 @@
     "GPR radargram",
 	"3D Messhes"
   ],
-  "num_images": "42.8 km of UK highways",
+  "num_images": null,
   "num_classes": 14,
   "classes": ["bleeding", "crack_alligator", "crack_block", "crack_corner", "crack_edge", "crack_longitudinal", "crack_transverse",
   "patch", "pothole", "ravelling", "rutting", "shoving", "spalling", "unknown"],
