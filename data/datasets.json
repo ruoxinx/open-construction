@@ -2523,6 +2523,38 @@
   "added_date": "2025-11-11",
   "contributor": "Accord Project Team",
   "contributor_url": "https://github.com/Accord-Project"
+},
+"camhighways":{
+  "id": "camhighways",
+  "name": "CAMHighways: The Cambridge Highways Dataset",
+  "authors": "Alix Marie d’Avigneau, Lilia Potseluyko, Nzebo Richard Anvo, Hussameldin M. Taha, Varun Kumar Reja, Diana Davletshina, Percy Lam, Lavindra de Silva, Abir Al-Tabbaa, Ioannis K. Brilakis",
+  "doi": "https://doi.org/10.1016/j.aei.2024.103036",
+  "year": 2025,
+  "modalities": [
+    "Textured meshes",
+    "Segmented and classified point clouds",
+    "Orthomosaics from pavement images",
+    "Defect label annotations and shapefiles",
+    "GPR"
+  ],
+  "num_images": null,
+  "num_classes": null,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": ["Defect labels", "Semantic segmentation", "Shapefiles"],
+  "geographical_location": "UK",
+  "potential_tasks": [
+    "Digital twin generation",
+    "Semantic segmentation",
+    "Defect detection",
+    "Asset inspection and maintenance"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "CAMHighways: The Cambridge Highways dataset",
+  "access": "https://drf.eng.cam.ac.uk/research/camhighways-dataset",
+  "image_url": "assets/img/datasets/camhighways.png",
+  "added_date": "2025-11-11",
+  "contributor": "DRF Team",
+  "contributor_url": "https://drf.eng.cam.ac.uk/"
 }
-
 }
