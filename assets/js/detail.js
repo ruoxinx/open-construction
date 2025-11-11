@@ -205,7 +205,7 @@ async function initDetail(){
           <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
           <div class="d-grid gap-2">
             ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
-            ${(ds.doi || ds.paper) ? `<a class="btn btn-outline-secondary btn-sm" href="${doiHref(ds.doi) || ds.paper}" target="_blank" rel="noopener">View paper</a>` : ''}
+            ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
           </div>
         </div>
       </div>
