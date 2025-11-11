@@ -507,7 +507,7 @@
     "annotation_types": [
       "Bounding boxes"
     ],
-    "geographical_location": "Not Specified",
+    "geographical_location": "Internet",
     "potential_tasks": [
       "Object detection"
     ],
