@@ -349,5 +349,22 @@
     "link_url": "https://zijianwang-zw.github.io/",
     "image": "https://zijianwang-zw.github.io/images/avatar_zj.JPG",
     "type": "person"
+  },
+      {
+    "id": "Hansi",
+    "name": "Hansi Hettiarachchi",
+    "role": "Dataset Contributor",
+    "affiliation": "Lancaster University (UK)",
+    "link_url": "https://www.lancaster.ac.uk/sci-tech/about-us/people/hansi-hettiarachchi",
+    "image": "https://www.lancaster.ac.uk/images/people/19680.jpg",
+    "type": "person"
+  },
+    {
+    "id": "ACCORD",
+    "name": "Accord Project Team",
+    "role": "Dataset Contributor",
+    "link_url": "https://github.com/Accord-Project",
+    "image": "https://accordproject.eu/wp-content/uploads/2022/08/accord_logo-e1662800862179.png",
+    "type": "org"
   }
 ]
