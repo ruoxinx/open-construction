@@ -340,5 +340,14 @@
     "link_url": "https://rsl.ethz.ch/",
     "image": "https://github.com/leggedrobotics.png?size=160",
     "type": "org"
+  },
+    {
+    "id": "Zijian-Wang",
+    "name": "Zijian Wang",
+    "role": "Dataset Contributor",
+    "affiliation": "Technical University of Munich (Germany)",
+    "link_url": "https://zijianwang-zw.github.io/",
+    "image": "https://zijianwang-zw.github.io/images/avatar_zj.JPG",
+    "type": "person"
   }
 ]
