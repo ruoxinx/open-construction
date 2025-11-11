@@ -2520,7 +2520,7 @@
   "paper": "CODE-ACCORD: A Corpus of building regulatory data for rule generation towards automatic compliance checking",
   "access": "https://doi.org/10.5281/zenodo.10210022",
   "image_url": "assets/img/datasets/code-accord.png",
-  "added_date": "2025-11-11",
+  "added_date": "2025-11-10",
   "contributor": "Accord Project Team",
   "contributor_url": "https://github.com/Accord-Project"
 },
