@@ -384,5 +384,14 @@
     "link_url": "https://3dcovim.cms.unex.es/team/",
     "image": "https://3dcovim.cms.unex.es/wp-content/uploads/sites/2/2023/03/cropped-cropped-Imagen23-1-2.png",
     "type": "org"
+  },
+     {
+    "id": "DR",
+    "name": "Digital Roads of the Future (DRF) Team",
+    "role": "Dataset Contributor",
+	"affiliation": "University of Cambridge (UK)",
+    "link_url": "https://drf.eng.cam.ac.uk/",
+    "image": "assets/img/contributors/DTR.png",
+    "type": "org"
   }
 ]
