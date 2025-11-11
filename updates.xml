@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: CODE-ACCORD: Automated Compliance Checks for Construction, Renovation or Demolition Works (ACCORD)]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=code-accord</link>
+    <guid isPermaLink="false">datasets:code-accord:2025-11-11</guid>
+    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Concrete crack dataset for beam and column]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=concrete-crack-lab</link>
     <guid isPermaLink="false">datasets:concrete-crack-lab:2025-11-7</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BMKG-DCoT:2025-11-03</guid>
     <pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Bridge maintenance knowledge graphs (BMKGs) contain rich historical records of defects and corresponding maintenance actions, yet few studies exploit this data to guide decisions for new defects. Traditional case-based reasoning (CBR) methods can surface similar historical cases but suffer from high retrieval costs and struggle with ambiguous scenarios. To address these limitations, this paper introduces BMKG-DCoT, which integrates large language models (LLMs) with chain-of-thought (CoT) reasoning to mimic maintenance expert decision workflows. BMKG-DCoT follows a three-phase iterative process—Inference-Planning (formulating reasoning steps and retrieval plans), Interaction-Decision (targeted data extraction from the BMKG), and Observation-Judgment (evaluating and refining inferences). On some standard and ambiguous maintenance queries, BMKG-DCoT achieves F1 scores of 0.9529 and 0.9130, respectively, outperforming baselines. Explainability analyses further confirm that its reasoning paths are transparent and interpretable, underscoring its promise as an AI-driven decision-support tool for bridge maintenance.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Automatic segmentation of 3D point clouds of rubble masonry walls, and its application to building surveying, repair and maintenance]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:masonry-cc:2025-11-2</guid>
-    <pubDate>Sun, 02 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Changing climatic conditions are contributing to faster deterioration of building fabric. Increasing number of heavy rainfall events can particularly affect historic and Cultural Heritage (CH) buildings. These evolving and uncertain circumstances demand more frequent survey of building fabric to ensure satisfactory repair and maintenance. However, traditional fabric surveys have been shown to lack efficiency, accuracy and objectivity, hindering essential repair operations. The recent development of reality capture technologies, together with the development of algorithms to effectively process the acquired data, offers the promise of transformation of surveying methods. This paper presents an original algorithm for automatic segmentation of individual masonry units and mortar regions in digitised rubble stone constructions, using geometrical and colour data acquired by Terrestrial Laser Scanning (TLS) devices. The algorithm is based on the 2D Continuous Wavelet Transform (CWT), and uniquely it does not require the wall to be flat or plumb. This characteristic is important because historic structures, in particular, commonly present non-negligible levels of bow, waviness and out-of-verticality. The method is validated through experiments undertaken using data from two relevant and highly significant Scottish CH buildings. The value of such segmentation to building surveying and maintenance regimes is also further demonstrated with application in automated and accurate measurement of mortar recess and pinning. Overall, the results demonstrate the value of the automatic segmentation of masonry units towards more comprehensive and accurate surveys.]]></description>
   </item>
   </channel>
 </rss>
