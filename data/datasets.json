@@ -2533,7 +2533,7 @@
   "modalities": [
     "3D Point Cloud",
     "Ground RGB",
-	"Pavement orthomosaics"
+	"Pavement orthomosaics",
     "GPR radargram",
 	"3D Messhes"
   ],
