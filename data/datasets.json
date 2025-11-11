@@ -2530,9 +2530,7 @@
   "authors": "Alix Marie d’Avigneau, Lilia Potseluyko, Nzebo Richard Anvo, Hussameldin M. Taha, Varun Kumar Reja, Diana Davletshina, Percy Lam, Lavindra de Silva, Abir Al-Tabbaa, Ioannis K. Brilakis",
   "doi": "https://doi.org/10.1016/j.aei.2024.103036",
   "year": 2025,
-  "modalities": 
-    "3D Point Cloud,Ground RGB,Pavement orthomosaics,GPR radargram,3D Messhes"
-  ,
+  "modalities": "3D Point Cloud, Ground RGB, Pavement orthomosaics, GPR radargram, 3D Meshes",
   "num_images": null,
   "num_classes": 14,
   "classes": ["bleeding", "crack_alligator", "crack_block", "crack_corner", "crack_edge", "crack_longitudinal", "crack_transverse",

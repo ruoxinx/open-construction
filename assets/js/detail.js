@@ -37,16 +37,16 @@ function safeText(val){
 
 function authorListHtml(val){
   const txt = safeText(val);
-  if (txt === '—') return '—';
+  if (txt === '—') return '';
   const names = Array.isArray(val) ? val : String(val).split(',');
   const clean = names.map(n => n.trim()).filter(Boolean);
-  if (!clean.length) return '—';
+  if (!clean.length) return '';
   return clean.map(n => `<div class="mb-1">${n}</div>`).join('');
 }
 
 function formatLicense(licVal){
   const norm = safeText(licVal);
-  if (norm === '—') return '—';
+  if (norm === '—') return '';
   const key = String(licVal).trim().toUpperCase();
   const licenseMap = {
     'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
@@ -58,9 +58,9 @@ function formatLicense(licVal){
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
-	'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-	'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
-	'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html'
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html'
   };
   if (licenseMap[key]) {
     return `<a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a>`;
@@ -68,7 +68,7 @@ function formatLicense(licVal){
   return norm;
 }
 
-/* ---------- chip helpers (treat "Not Specified" as empty) ---------- */
+/* ---------- chip helpers ---------- */
 function isNotSpecified(s){
   return typeof s === 'string' && /^not\s*specified$/i.test(s.trim());
 }
@@ -85,8 +85,19 @@ function tokenize(list){
 }
 function chipLane(list){
   const items = tokenize(list);
-  if (!items.length) return '—';
+  if (!items.length) return '';
   return `<div class="chip-lane">${items.map(x => `<span class="chip">${x}</span>`).join('')}</div>`;
+}
+
+/* ---------- conditional meta-row ---------- */
+function metaRow(label, valueHTML) {
+  if (!valueHTML || valueHTML === '—' || !valueHTML.trim()) return '';
+  return `
+    <div class="meta-row">
+      <dt class="meta-label">${label}</dt>
+      <dd class="meta-val">${valueHTML}</dd>
+    </div>
+  `;
 }
 
 /* ========== page ========== */
@@ -116,7 +127,7 @@ async function initDetail(){
 
   if (typeof incViews === 'function') incViews(id);
 
-  // Header badges (skip license if Not Specified)
+  // Header badges (skip null license)
   window.OC?.setBadges?.({
     modality: safeText(ds.data_modality) === '—' ? '' : ds.data_modality,
     tasks: (Array.isArray(ds.potential_tasks) ? ds.potential_tasks.join(', ') : String(ds.potential_tasks || '')).trim(),
@@ -126,106 +137,51 @@ async function initDetail(){
   const imgSrc = `../assets/img/datasets/${encodeURIComponent(id)}.png`;
   const captionText = ds.sample_caption || ds.caption || 'Sample from the dataset';
 
-  // ========= Unified, professional dataset card =========
   const mainHero = `
     <style>
       .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
-	.ds-figure{ 
-	  background:transparent;
-	  padding:0;
-	  border-radius:0;
-	  height:auto;
-	}
       .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
       .ds-cap{ line-height:1.25; }
       .ds-body{ padding:24px 28px; }
       .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
       .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
-
       .meta{ margin:0; }
       .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
       .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
       .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
       .meta-val{ font-weight:600; line-height:1.4; }
-      .ds-metrics{ font-feature-settings:"tnum" 1,"lnum" 1; letter-spacing:.2px; }
-
       .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
-      .chip{
-        display:inline-flex; align-items:center; padding:.28rem .6rem;
-        background:var(--oc-muted); border:1px solid var(--oc-border);
-        border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);
-        line-height:1;
-      }
-
-      @media (max-width: 991.98px){
-        .ds-figure{ border-radius:16px 16px 0 0; }
-        .ds-body{ padding:18px 18px 22px; }
-        .meta-row{ grid-template-columns: 140px 1fr; gap:10px; }
-      }
+      .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
     </style>
 
     <div class="ds-card mb-3 bg-white">
       <div class="row g-0">
         <div class="col-lg-6">
           <figure class="m-0 ds-figure">
-            <img
-              src="${imgSrc}"
-              alt="${ds.name} preview"
-              loading="lazy" decoding="async"
-              onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
-              class="ds-img"
-              data-zoom-src="${imgSrc}">
+            <img src="${imgSrc}" alt="${ds.name} preview"
+                 onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
+                 class="ds-img" data-zoom-src="${imgSrc}">
             <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
           </figure>
         </div>
-
         <div class="col-lg-6">
           <div class="ds-body">
             <h1 class="ds-title">${ds.name}</h1>
             <div class="ds-year">(${ds.year ?? '—'})</div>
-
             <dl class="meta">
-              <div class="meta-row">
-                <dt class="meta-label">Data · Classes</dt>
-                <dd class="meta-val ds-metrics">${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Modality</dt>
-                <dd class="meta-val">${chipLane(ds.data_modality)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Annotations</dt>
-                <dd class="meta-val">${chipLane(ds.annotation_types)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Resolution</dt>
-                <dd class="meta-val">${safeText(ds.resolution)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Location</dt>
-                <dd class="meta-val">${chipLane(ds.geographical_location)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Associated Tasks</dt>
-                <dd class="meta-val">${chipLane(ds.potential_tasks)}</dd>
-              </div>
-
-              <div class="meta-row">
-                <dt class="meta-label">Classes</dt>
-                <dd class="meta-val">${chipLane(ds.classes)}</dd>
-              </div>
+              ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}` : '')}
+              ${metaRow('Modality', chipLane(ds.data_modality))}
+              ${metaRow('Annotations', chipLane(ds.annotation_types))}
+              ${metaRow('Resolution', safeText(ds.resolution))}
+              ${metaRow('Location', chipLane(ds.geographical_location))}
+              ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
+              ${metaRow('Classes', chipLane(ds.classes))}
             </dl>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Lightbox Modal -->
     <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0">
@@ -237,9 +193,10 @@ async function initDetail(){
     </div>
   `;
 
-  // RIGHT: sidebar (Access, Reference, Authors)
-  const doiLink = doiHref(ds.doi);
-  const paperHref = doiLink || (typeof ds.paper === 'string' && ds.paper.trim() ? ds.paper : null);
+  // Sidebar (conditionally rendered)
+  const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
+  const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
+  const authorBlock = authorListHtml(ds.authors);
 
   const sidebar = `
     <div class="position-sticky" style="top:88px">
@@ -247,48 +204,37 @@ async function initDetail(){
         <div class="card-body">
           <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
           <div class="d-grid gap-2">
-            <a class="btn btn-primary btn-sm"
-               ${ds.access ? `href="${ds.access}" target="_blank" rel="noopener"` : 'tabindex="-1" aria-disabled="true"'}
-            >Download dataset</a>
-            ${paperHref ? `<a class="btn btn-outline-secondary btn-sm" href="${paperHref}" target="_blank" rel="noopener">View paper</a>` : ''}
+            ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
+            ${(ds.doi || ds.paper) ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.paper || doiHref(ds.doi)}" target="_blank" rel="noopener">View paper</a>` : ''}
           </div>
         </div>
       </div>
 
+      ${(doiBlock || licenseBlock) ? `
       <div class="card border-0 shadow-sm mb-3">
         <div class="card-body">
           <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
-          <div class="small">
-            <div class="mb-2"><span class="text-muted">DOI:</span> ${ds.doi ? formatDoi(ds.doi) : '—'}</div>
-            <div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>
-          </div>
+          <div class="small">${doiBlock}${licenseBlock}</div>
         </div>
-      </div>
+      </div>` : ''}
 
+      ${authorBlock ? `
       <div class="card border-0 shadow-sm">
         <div class="card-body">
           <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-          <div class="small">
-            ${authorListHtml(ds.authors)}
-          </div>
+          <div class="small">${authorBlock}</div>
         </div>
-      </div>
+      </div>` : ''}
     </div>
   `;
 
-  // Layout: 9/3 grid — main card (all fields) + sidebar
   root.innerHTML = `
     <div class="row g-3">
-      <div class="col-lg-9">
-        ${mainHero}
-      </div>
-      <div class="col-lg-3">
-        ${sidebar}
-      </div>
+      <div class="col-lg-9">${mainHero}</div>
+      <div class="col-lg-3">${sidebar}</div>
     </div>
   `;
 
-  // Wire up lightbox
   const imgEl = root.querySelector('.ds-img');
   const modalEl = root.querySelector('#imgModal');
   if (imgEl && modalEl) {
