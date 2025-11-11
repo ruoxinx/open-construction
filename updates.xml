@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: TLSynth: A Novel Blender Add-On for Real-Time Point Cloud Generation from 3D Models]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:TLSynth:2025-11-11</guid>
+    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Point clouds are a crucial element in the process of scanning and reconstructing 3D environments, such as buildings or heritage sites. They allow for the creation of 3D models that can be used in a wide range of applications. In some cases, however, only the 3D model of an environment is available, and it is necessary to obtain point clouds with the same characteristics as those captured by a laser scanner. For instance, point clouds may be required for surveys, performance optimization, site scan planning, or validation of point cloud processing algorithms. This paper presents a new terrestrial laser scanner (TLS) simulator, designed as a Blender add-on, that produces synthetic point clouds from 3D models in real time. The simulator allows users to adjust a set of parameters to replicate real-world scanning conditions, such as noise generation, ensuring the synthetic point clouds closely mirror those produced by actual laser scanners. The target meshes may be derived from either a real-world scan or 3D designs created using design software. By replicating the spatial distributions and attributes of real laser scanner outputs and supporting real-time generation, the simulator serves as a valuable tool for scan planning and the development of synthetic point cloud repositories, advancing research and practical applications in 3D computer vision.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Concrete crack dataset for beam and column]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=concrete-crack-lab</link>
     <guid isPermaLink="false">datasets:concrete-crack-lab:2025-11-7</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:BMKG:2025-11-3</guid>
     <pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Knowledge graph-driven bridge maintenance decision-making via integrating large language models and chain-of-thought reasoning]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:BMKG-DCoT:2025-11-03</guid>
-    <pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Bridge maintenance knowledge graphs (BMKGs) contain rich historical records of defects and corresponding maintenance actions, yet few studies exploit this data to guide decisions for new defects. Traditional case-based reasoning (CBR) methods can surface similar historical cases but suffer from high retrieval costs and struggle with ambiguous scenarios. To address these limitations, this paper introduces BMKG-DCoT, which integrates large language models (LLMs) with chain-of-thought (CoT) reasoning to mimic maintenance expert decision workflows. BMKG-DCoT follows a three-phase iterative process—Inference-Planning (formulating reasoning steps and retrieval plans), Interaction-Decision (targeted data extraction from the BMKG), and Observation-Judgment (evaluating and refining inferences). On some standard and ambiguous maintenance queries, BMKG-DCoT achieves F1 scores of 0.9529 and 0.9130, respectively, outperforming baselines. Explainability analyses further confirm that its reasoning paths are transparent and interpretable, underscoring its promise as an AI-driven decision-support tool for bridge maintenance.]]></description>
   </item>
   </channel>
 </rss>
