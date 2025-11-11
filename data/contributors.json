@@ -366,5 +366,13 @@
     "link_url": "https://github.com/Accord-Project",
     "image": "https://accordproject.eu/wp-content/uploads/2022/08/accord_logo-e1662800862179.png",
     "type": "org"
+  },
+    {
+    "id": "skyearth",
+    "name": "Skyearth Team",
+    "role": "Model Contributor",
+    "link_url": "https://en.skyearth.org/team/",
+    "image": "https://skyearth.org/img/logo.jpg",
+    "type": "org"
   }
 ]

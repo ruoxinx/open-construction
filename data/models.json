@@ -621,7 +621,9 @@
   "license": "Unspecified",
   "paper_url": "https://doi.org/10.1080/01431161.2024.2391589",
   "code_url": "https://github.com/yueyisui/OccFacade",
-  "thumbnail": "assets/img/models/OccFaçade.png"
+  "thumbnail": "assets/img/models/OccFaçade.png",
+  "contributor": "skyearth team",
+  "contributor_url": "https://en.skyearth.org/team/"
 },
 {
     "id": "MultiWorker3DPose",
