@@ -2356,7 +2356,7 @@
   "authors": "Yuchen Wang, Yanjie Zhu, Wen Xiong, C.S. Cai",
   "doi": "https://doi.org/10.1016/j.autcon.2025.106632",
   "year": 2026,
-  "data_modality": "Knowledge Graph",
+  "data_modality": "Text",
   "num_images": 200,
   "num_classes": null,
   "classes": null,
