@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: CAMHighways: The Cambridge Highways Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=camhighways</link>
+    <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
+    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: TLSynth: A Novel Blender Add-On for Real-Time Point Cloud Generation from 3D Models]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:TLSynth:2025-11-11</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BIM_updating:2025-11-4</guid>
     <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[As-designed building information models (BIM) often diverge from as-built conditions, limiting their reliability during the operation and maintenance (O&M). Current research focuses on change detection but lacks a systematic workflow for reliable updates, especially for piping systems with frequent changes and complex geometries. The paper addresses how to establish a semi-automated, end-to-end workflow for localised updating as-designed BIM of piping systems from point cloud data. The workflow applies PointNet++ for segmentation, followed by iterative closest point, random sample consensus, and region-growing for geometry extraction. The proposed BIM updating taxonomy and dedicated pre-judgment updating requirements (PUR) and spatial and topological relationships up-dating (STRU) algorithms identify update requirements and automate parametric updates. Validation through case studies demonstrates the workflow's ability to accurately perform localised updates, reducing the manual workload by approximately 70 %. This practical, scalable solution strengthens O&M by maintaining accurate as-built models and inspires future automated BIM updating research.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Deep learning for post-hurricane aerial damage assessment of buildings]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:DoriaNET:2025-11-4</guid>
-    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[This study aims to improve post-disaster preliminary damage assessment (PDA) using artificial intelligence (AI) and unmanned aerial vehicle (UAV) imagery. In particular, a stacked convolutional neural network (CNN) architecture is introduced and trained on an in-house visual dataset from Hurricane Dorian. To account for the ordinality of damage level classes, the cross-entropy classification loss function is replaced with the square of earth mover's distance (EMD2) loss. The trained model achieves 65.6% building localization precision and 61% (90% considering ±1 class deviation from ground-truth) classification accuracy. It also exhibits a positive accuracy–confidence correlation, which is valuable for model assessment in situations where ground-truth information is not readily available. Finally, the outcome of damage assessment is compared with the literature by examining the relationship between building size and number of stories, and severity of induced disaster damage.]]></description>
   </item>
   </channel>
 </rss>
