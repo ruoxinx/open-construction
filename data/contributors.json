@@ -393,5 +393,14 @@
     "link_url": "https://drf.eng.cam.ac.uk/",
     "image": "assets/img/contributors/DTR.png",
     "type": "org"
+  },
+     {
+    "id": "PCAS",
+    "name": "PCAS Group",
+    "role": "Dataset Contributor",
+	"affiliation": "Technical University of Denmark (Denmark)",
+    "link_url": "https://electro.dtu.dk/research/research-areas/electro-technology/perception-and-cognition-for-autonomous-systems",
+    "image": "https://github.com/DTU-PAS.png?size=160",
+    "type": "org"
   }
 ]

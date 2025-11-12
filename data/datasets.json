@@ -1432,7 +1432,9 @@
     "paper": "ConRebSeg: A Segmentation Dataset for Reinforced Concrete Construction",
     "access": "https://data.dtu.dk/articles/dataset/Self-collected_sequences_and_metadata_of_ConRebSeg/26213762",
     "id": "ConRebSeg",
-    "image_url": "assets/img/datasets/ConRebSeg.png"
+    "image_url": "assets/img/datasets/ConRebSeg.png",
+	"contributor": "DTU PCAS Group",
+    "contributor_url": "https://github.com/DTU-PAS"
   },
   "VL-Con": {
     "name": "VL-Con Dataset",
