@@ -1617,7 +1617,9 @@
     "access": "https://doi.org/10.6084/m9.figshare.28573229.v1",
     "id": "CDW-Seg",
     "image_url": "assets/img/datasets/CDW-Seg.png",
-	"added_date": "2025-09-19"
+	"added_date": "2025-09-19",
+	"contributor": "",
+    "contributor_url": ""
   },
     "ConstructionSite-10k": {
     "name": "ConstructionSite 10k Dataset",
@@ -1834,7 +1836,9 @@
     "access": "https://github.com/gilsujeong/HangCon",
     "id": "HangCon",
     "image_url": "assets/img/datasets/HangCon.png",
-	"added_date": "2025-09-20"
+	"added_date": "2025-09-20",
+	"contributor": "",
+    "contributor_url": ""
   },
     "CPP-1214": {
     "name": "Construction Personnel Pose",
