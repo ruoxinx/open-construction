@@ -7,14 +7,6 @@
     <language>en-US</language>
 
   <item>
-    <title><![CDATA[Dataset: CAMHighways: The Cambridge Highways Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=camhighways</link>
-    <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
-    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
     <title><![CDATA[Model: TLSynth: A Novel Blender Add-On for Real-Time Point Cloud Generation from 3D Models]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:TLSynth:2025-11-11</guid>
@@ -26,6 +18,14 @@
     <title><![CDATA[Dataset: CODE-ACCORD: Automated Compliance Checks for Construction, Renovation or Demolition Works (ACCORD)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=code-accord</link>
     <guid isPermaLink="false">datasets:code-accord:2025-11-10</guid>
+    <pubDate>Mon, 10 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=cubicasa5k</link>
+    <guid isPermaLink="false">datasets:cubicasa5k:2025-11-10</guid>
     <pubDate>Mon, 10 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
