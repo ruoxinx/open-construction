@@ -2529,7 +2529,7 @@
 "camhighways":{
   "id": "camhighways",
   "name": "CAMHighways: The Cambridge Highways Dataset",
-  "authors": "Alix Marie d’Avigneau, Lilia Potseluyko, Nzebo Richard Anvo, Hussameldin M. Taha, Varun Kumar Reja, Diana Davletshina, Percy Lam, Lavindra de Silva, Abir Al-Tabbaa, Ioannis K. Brilakis",
+  "authors": "Alix Marie d’Avigneau, Lilia Potseluyko, Nzebo Richard Anvo, Hussameldin M. Taha, Varun Kumar Reja, Diana Davletshina, Percy Lam, Lavindra de Silva, Abir Al-Tabbaa, Ioannis Brilakis",
   "doi": "https://doi.org/10.1016/j.aei.2024.103036",
   "year": 2025,
   "data_modality": "3D Point Cloud, Ground RGB, Pavement orthomosaics, GPR radargram, 3D Meshes",
