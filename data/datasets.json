@@ -2553,5 +2553,30 @@
   "added_date": "2025-11-11",
   "contributor": "DRF Team",
   "contributor_url": "https://drf.eng.cam.ac.uk/"
+},
+"camhighways":{
+  "id": "cubicasa5k",
+  "name": "CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis",
+  "authors": "Ahti Kalervo, Juha Ylioinas, Markus Häikiö, Antti Karhu, Juho Kannala",  
+  "doi": "https://doi.org/10.1007/978-3-030-20205-7_3",  
+  "year": 2019,
+  "data_modality": "Rasterized CAD images",
+  "num_images": 5000,
+  "num_classes": 83,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": ["Pixel-level mask"],
+  "geographical_location": null,
+  "potential_tasks": [
+    "Floorplan segmentation"
+  ],
+  "license": "CC BY-NC 4.0",
+  "paper": "CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis",
+  "access": "https://github.com/CubiCasa/CubiCasa5k",  
+  "image_url": "assets/img/datasets/cubicasa5k.png",
+  "added_date": "2025-11-10",
+  "contributor": "",
+  "contributor_url": ""
 }
+
 }
