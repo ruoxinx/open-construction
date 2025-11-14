@@ -402,5 +402,14 @@
     "link_url": "https://electro.dtu.dk/research/research-areas/electro-technology/perception-and-cognition-for-autonomous-systems",
     "image": "https://github.com/DTU-PAS.png?size=160",
     "type": "org"
+  },
+     {
+    "id": "DISC",
+    "name": "DISC Lab",
+    "role": "Dataset and Model Contributor",
+	"affiliation": "Nanyang Technological University (Singapore)",
+    "link_url": "Https://disclab.pantoja-rosero.com/ ",
+    "image": "Https://disclab.pantoja-rosero.com/logos/logo_disc_0001.png ",
+    "type": "org"
   }
 ]
