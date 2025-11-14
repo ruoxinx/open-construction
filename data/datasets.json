@@ -2583,7 +2583,7 @@
   "contributor_url": ""
 },
   "Opening-Segmentation": {
-    "name": "Opening segmentation and detection",
+    "name": "Dataset for generating LOD3 building models from SfM and semantic segmentation",
 	"authors": "Bryan German Pantoja Rosero, Radhakrishna Achanta, Mateusz Kozinski, Pascal Fua, Fernando Perez-Cruz, Katrin Beyer",
 	"doi": "https://doi.org/10.1016/j.autcon.2022.104430",
     "year": 2022,
