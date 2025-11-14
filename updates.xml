@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Opening segmentation and detection]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=Opening-Segmentation</link>
+    <guid isPermaLink="false">datasets:Opening-Segmentation:2025-11-13</guid>
+    <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CAMHighways: The Cambridge Highways Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=camhighways</link>
     <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:DoriaNET:2025-11-4</guid>
     <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Semi-automated localised updating for as-built BIM of piping systems using point cloud data]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:BIM_updating:2025-11-4</guid>
-    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[As-designed building information models (BIM) often diverge from as-built conditions, limiting their reliability during the operation and maintenance (O&M). Current research focuses on change detection but lacks a systematic workflow for reliable updates, especially for piping systems with frequent changes and complex geometries. The paper addresses how to establish a semi-automated, end-to-end workflow for localised updating as-designed BIM of piping systems from point cloud data. The workflow applies PointNet++ for segmentation, followed by iterative closest point, random sample consensus, and region-growing for geometry extraction. The proposed BIM updating taxonomy and dedicated pre-judgment updating requirements (PUR) and spatial and topological relationships up-dating (STRU) algorithms identify update requirements and automate parametric updates. Validation through case studies demonstrates the workflow's ability to accurately perform localised updates, reducing the manual workload by approximately 70 %. This practical, scalable solution strengthens O&M by maintaining accurate as-built models and inspires future automated BIM updating research.]]></description>
   </item>
   </channel>
 </rss>
