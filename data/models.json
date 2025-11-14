@@ -853,6 +853,40 @@
   "added_date": "2025-11-11",
   "contributor": "3D Co-ViM Lab",
   "contributor_url": "https://3dcovim.cms.unex.es/team/"
-}
+},
+    {
+    "id": "LOD3",
+    "title": "Generating LOD3 building models from structure-from-motion and semantic segmentation",
+    "authors": ["Bryan German Pantoja Rosero", "Radhakrishna Achanta", "Mateusz Kozinski", "Pascal Fua", "Fernando Perez-Cruz", "Katrin Beyer"],
+	"abstract": "This paper describes a pipeline for automatically generating level of detail (LOD) models (digital twins), specifically LOD2 and LOD3, from free-standing buildings. Our approach combines structure from motion (SfM) with deep-learning-based segmentation techniques. Given multiple-view images of a building, we compute a three-dimensional (3D) planar abstraction (LOD2 model) of its point cloud using SfM techniques. To obtain LOD3 models, we use deep learning to perform semantic segmentation of the openings in the two-dimensional (2D) images. Unlike existing approaches, we do not rely on complex input, pre-defined 3D shapes or manual intervention. To demonstrate the robustness of our method, we show that it can generate 3D building shapes from a collection of building images with no further input. For evaluating reconstructions, we also propose two novel metrics. The first is a Euclidean–distance-based correlation of the 3D building model with the point cloud. The second involves re-projecting 3D model facades onto source photos to determine dice scores with respect to the ground-truth masks. Finally, we make the code, the image datasets, SfM outputs, and digital twins reported in this work publicly available in github.com/eesd-epfl/LOD3_buildings and doi.org/10.5281/zenodo.6651663. With this work we aim to contribute research in applications such as construction management, city planning, and mechanical analysis, among others.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["3D reconstruction"],
+	"applications": ["Site understanding"],
+    "license": "GNU",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2022.104430",
+    "code_url": "https://github.com/eesd-epfl/LOD3_buildings",
+    "thumbnail": "assets/img/models/LOD3.png",
+	"added_date": "2025-11-13",
+	"contributor": "DISC Lab",
+    "contributor_url": "https://disclab.pantoja-rosero.com/"
+  },
+    {
+    "id": "DamageSegmentationXR",
+    "title": "Integrating extended reality and AI-based damage segmentation for near real-time, traceable bridge inspections",
+    "authors": ["B.G. Pantoja-Rosero", "S. Salamone"],
+    "abstract": "This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.",
+    "year": 2025,
+    "modalities": ["Ground RGB"],
+    "tasks": ["Object detection", "Semantic segmentation", "Extended reality"],
+	"applications": ["Structural health monitoring"],
+    "license": "GPL-3.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106567",
+    "code_url": "https://github.com/bgpantojar/DamageSegmentationXR",
+    "thumbnail": "assets/img/models/DamageSegmentationXR.png",
+	"added_date": "2025-11-13",
+	"contributor": "DISC Lab",
+    "contributor_url": "https://disclab.pantoja-rosero.com/"
+  }
 
 ]
