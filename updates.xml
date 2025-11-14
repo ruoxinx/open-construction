@@ -7,7 +7,7 @@
     <language>en-US</language>
 
   <item>
-    <title><![CDATA[Dataset: Opening segmentation and detection]]></title>
+    <title><![CDATA[Dataset: Dataset for generating LOD3 building models from SfM and semantic segmentation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=Opening-Segmentation</link>
     <guid isPermaLink="false">datasets:Opening-Segmentation:2025-11-13</guid>
     <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
