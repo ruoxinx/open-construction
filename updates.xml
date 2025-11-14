@@ -15,6 +15,22 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Generating LOD3 building models from structure-from-motion and semantic segmentation]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:LOD3:2025-11-13</guid>
+    <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[This paper describes a pipeline for automatically generating level of detail (LOD) models (digital twins), specifically LOD2 and LOD3, from free-standing buildings. Our approach combines structure from motion (SfM) with deep-learning-based segmentation techniques. Given multiple-view images of a building, we compute a three-dimensional (3D) planar abstraction (LOD2 model) of its point cloud using SfM techniques. To obtain LOD3 models, we use deep learning to perform semantic segmentation of the openings in the two-dimensional (2D) images. Unlike existing approaches, we do not rely on complex input, pre-defined 3D shapes or manual intervention. To demonstrate the robustness of our method, we show that it can generate 3D building shapes from a collection of building images with no further input. For evaluating reconstructions, we also propose two novel metrics. The first is a Euclidean–distance-based correlation of the 3D building model with the point cloud. The second involves re-projecting 3D model facades onto source photos to determine dice scores with respect to the ground-truth masks. Finally, we make the code, the image datasets, SfM outputs, and digital twins reported in this work publicly available in github.com/eesd-epfl/LOD3_buildings and doi.org/10.5281/zenodo.6651663. With this work we aim to contribute research in applications such as construction management, city planning, and mechanical analysis, among others.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: Integrating extended reality and AI-based damage segmentation for near real-time, traceable bridge inspections]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:DamageSegmentationXR:2025-11-13</guid>
+    <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CAMHighways: The Cambridge Highways Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=camhighways</link>
     <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
@@ -66,22 +82,6 @@
     <title><![CDATA[Dataset: Point Cloud Dataset for Piping Systems]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BIM_updating</link>
     <guid isPermaLink="false">datasets:BIM_updating:2025-11-4</guid>
-    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Pictor-v3]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=pictor-ppe</link>
-    <guid isPermaLink="false">datasets:pictor-ppe:2025-11-4</guid>
-    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: DoriaNET: A visual dataset for post-disaster building damage assessment]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=DoriaNET</link>
-    <guid isPermaLink="false">datasets:DoriaNET:2025-11-4</guid>
     <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
