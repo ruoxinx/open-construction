@@ -2581,6 +2581,39 @@
   "added_date": "2025-11-10",
   "contributor": "",
   "contributor_url": ""
-}
+},
+  "Opening-Segmentation": {
+    "name": "Opening segmentation and detection",
+	"authors": "Bryan German Pantoja Rosero, Radhakrishna Achanta, Mateusz Kozinski, Pascal Fua, Fernando Perez-Cruz, Katrin Beyer",
+	"doi": "https://doi.org/10.1016/j.autcon.2022.104430",
+    "year": 2022,
+    "data_modality": "Ground RGB",
+    "num_images": 270,
+    "num_classes": 3,
+    "classes": [
+      "facade",
+      "openings",
+      "opening corners"
+    ],
+    "resolution": "Not Specified",
+    "annotation_types": [
+      "Pixel-level masks",
+	  "LOD models",
+	  "SfM outputs"
+    ],
+    "geographical_location": "Not Specified",
+    "potential_tasks": [
+      "Semantic Segmentation",
+	  "Structure from motion"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Generating LOD3 building models from structure-from-motion and semantic segmentation",
+    "access": "https://zenodo.org/records/6651663",
+    "id": "Opening-Segmentation",
+    "image_url": "assets/img/datasets/Opening-Segmentation.png",
+	"added_date": "2025-11-13",
+	"contributor": "DISC Lab",
+    "contributor_url": "https://disclab.pantoja-rosero.com/"
+  }
 
 }
