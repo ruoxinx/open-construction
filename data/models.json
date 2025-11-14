@@ -876,7 +876,7 @@
     "title": "Integrating extended reality and AI-based damage segmentation for near real-time, traceable bridge inspections",
     "authors": ["B.G. Pantoja-Rosero", "S. Salamone"],
     "abstract": "This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.",
-    "year": 2025,
+    "year": 2022,
     "modalities": ["Ground RGB"],
     "tasks": ["Object detection", "Semantic segmentation", "Extended reality"],
 	"applications": ["Structural health monitoring"],
