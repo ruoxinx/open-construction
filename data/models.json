@@ -915,7 +915,25 @@
   "added_date": "2025-11-14",
   "contributor": "DISC Lab",
    "contributor_url": "https://disclab.pantoja-rosero.com/"
+},
+{
+  "id": "crack_kinematics",
+  "title": "Determining crack kinematics from imaged crack patterns",
+  "authors": ["B.G. Pantoja-Rosero", "K.R.M. dos Santos", "R. Achanta", "A. Rezaie", "K. Beyer"],
+  "abstract":"Determining the relationship between the cause of damage and the subsequent structural behavior of infrastructure systems requires an accurate characterization of the propagation of cracks, which represents the evolution of the damage state. When no information about the cause of damage is available, kinematic approaches can be used to describe the motion of crack contours. Current image-based approaches to derive crack kinematics use digital image correlation (DIC) on a set of sequential images as the crack propagates. However, DIC is invasive in that the structure surfaces must be painted with random speckle patterns, limiting its use primarily to controlled experiments. In this paper, we propose a novel image-based methodology for computing crack opening in Mode I or Mode II. As an input, this method takes a binary image from a semantic segmentation of an image of a crack pattern. This binary image is used to detect the opposite edges along the crack, which are then registered using an optimization algorithm based on the Euclidean transformation model and non-linear least squares. As a final output, this method produces displacement maps in the tangential and normal directions to the crack skeleton. To demonstrate its performance, we validate our methodology first with synthetic crack patterns and then with real crack patterns. Because this methodology for determining crack openings requires only simple data (just a binary crack pattern image), it is straightforward, robust, and adaptable, thus contributing to the development of structural image-based damage assessments. The computational codes and datasets are available to the public for future research and benchmarking on ",
+  "year": 2022,
+  "modalities": ["Ground RGB"],
+  "tasks": ["Semantic segmentation", "Image-based kinematics"],
+  "applications": ["Structural damage assessment", "Crack kinematics"],
+  "license": "GPL-3.0", 
+  "paper_url": "https://doi.org/10.1016/j.conbuildmat.2022.128054",
+  "code_url": "https://github.com/eesd-epfl/crack_kinematics",
+  "thumbnail": "assets/img/models/crack_kinematics.png",
+  "added_date": "2025-11-15",
+  "contributor": "DISC Lab",
+  "contributor_url": "https://disclab.pantoja-rosero.com/"
 }
+
 
 
 ]
