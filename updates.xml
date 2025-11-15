@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Determining crack kinematics from imaged crack patterns]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:crack_kinematics:2025-11-15</guid>
+    <pubDate>Sat, 15 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Determining the relationship between the cause of damage and the subsequent structural behavior of infrastructure systems requires an accurate characterization of the propagation of cracks, which represents the evolution of the damage state. When no information about the cause of damage is available, kinematic approaches can be used to describe the motion of crack contours. Current image-based approaches to derive crack kinematics use digital image correlation (DIC) on a set of sequential images as the crack propagates. However, DIC is invasive in that the structure surfaces must be painted with random speckle patterns, limiting its use primarily to controlled experiments. In this paper, we propose a novel image-based methodology for computing crack opening in Mode I or Mode II. As an input, this method takes a binary image from a semantic segmentation of an image of a crack pattern. This binary image is used to detect the opposite edges along the crack, which are then registered using an optimization algorithm based on the Euclidean transformation model and non-linear least squares. As a final output, this method produces displacement maps in the tangential and normal directions to the crack skeleton. To demonstrate its performance, we validate our methodology first with synthetic crack patterns and then with real crack patterns. Because this methodology for determining crack openings requires only simple data (just a binary crack pattern image), it is straightforward, robust, and adaptable, thus contributing to the development of structural image-based damage assessments. The computational codes and datasets are available to the public for future research and benchmarking on]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Damage-augmented digital twins towards the automated inspection of buildings]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:dadt-buildings-model:2025-11-14</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=concrete-crack-lab</link>
     <guid isPermaLink="false">datasets:concrete-crack-lab:2025-11-7</guid>
     <pubDate>Fri, 07 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BIMNet: Dataset and benchmark for as-built BIM reconstruction from real-world point cloud]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BIMNet</link>
-    <guid isPermaLink="false">datasets:BIMNet:2025-11-6</guid>
-    <pubDate>Thu, 06 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
