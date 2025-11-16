@@ -941,7 +941,7 @@
   "year": 2022,
   "modalities": ["Ground RGB"],
   "tasks": ["Semantic segmentation"],
-  "applications": ["structural damage assessment", "crack detection"],
+  "applications": ["Damage assessment", "Crack detection"],
   "license": "GPL-3.0", 
   "paper_url": "https://doi.org/10.1016/j.conbuildmat.2022.128264",
   "code_url": "https://github.com/eesd-epfl/topo_crack_detection",
