@@ -932,8 +932,23 @@
   "added_date": "2025-11-15",
   "contributor": "DISC Lab",
   "contributor_url": "https://disclab.pantoja-rosero.com/"
+},
+{
+  "id": "topo_crack_detection",
+  "title": "TOPO-Loss for continuity-preserving crack detection using deep learning",
+  "authors": ["B.G. Pantoja-Rosero", "D. Oner", "M. Kozinski", "R. Achanta", "P. Fua", "F. Perez-Cruz", "K. Beyer"],
+  "abstract":"We present a method for segmenting cracks in images of masonry buildings damaged by earthquakes. Existing methods of crack detection fail to preserve the continuity of cracks, and their performance deteriorates with imprecise training labels. We address these problems by adapting an approach previously proposed for reconstructing roads in aerial images, in which a Convolutional Neural Network is trained with a loss function specifically designed to encourage the continuity of thin structures and to accommodate imprecise annotations. We evaluate combinations of three loss functions (the Mean Squared Error, the Dice loss and the new connectivity-oriented loss) on two datasets using TernausNet, a deep network shown to attain state-of-the-art accuracy in crack detection. We herein show that combining these three losses significantly improves the topology of the predictions quantitatively and qualitatively. We also propose a new continuity metric, named Cracks Per Patch (CPP), and share a new dataset of images of earthquake-affected urban scenes accompanied by crack annotations. The dataset and implementations are publicly available for future studies and benchmarking (https://github.com/eesd-epfl/topo_crack_detection and https://doi.org/10.5281/zenodo.6769028).",
+  "year": 2022,
+  "modalities": ["Ground RGB"],
+  "tasks": ["Semantic segmentation"],
+  "applications": ["structural damage assessment", "crack detection"],
+  "license": "GPL-3.0", 
+  "paper_url": "https://doi.org/10.1016/j.conbuildmat.2022.128264",
+  "code_url": "https://github.com/eesd-epfl/topo_crack_detection",
+  "thumbnail": "assets/img/models/topo_crack_detection.png",
+  "added_date": "2025-11-16",
+   "contributor": "DISC Lab",
+  "contributor_url": "https://disclab.pantoja-rosero.com/"
 }
-
-
 
 ]
