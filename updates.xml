@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: TOPO-Loss for continuity-preserving crack detection using deep learning]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:topo_crack_detection:2025-11-16</guid>
+    <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[We present a method for segmenting cracks in images of masonry buildings damaged by earthquakes. Existing methods of crack detection fail to preserve the continuity of cracks, and their performance deteriorates with imprecise training labels. We address these problems by adapting an approach previously proposed for reconstructing roads in aerial images, in which a Convolutional Neural Network is trained with a loss function specifically designed to encourage the continuity of thin structures and to accommodate imprecise annotations. We evaluate combinations of three loss functions (the Mean Squared Error, the Dice loss and the new connectivity-oriented loss) on two datasets using TernausNet, a deep network shown to attain state-of-the-art accuracy in crack detection. We herein show that combining these three losses significantly improves the topology of the predictions quantitatively and qualitatively. We also propose a new continuity metric, named Cracks Per Patch (CPP), and share a new dataset of images of earthquake-affected urban scenes accompanied by crack annotations. The dataset and implementations are publicly available for future studies and benchmarking (https://github.com/eesd-epfl/topo_crack_detection and https://doi.org/10.5281/zenodo.6769028).]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Determining crack kinematics from imaged crack patterns]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:crack_kinematics:2025-11-15</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=cubicasa5k</link>
     <guid isPermaLink="false">datasets:cubicasa5k:2025-11-10</guid>
     <pubDate>Mon, 10 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Concrete crack dataset for beam and column]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=concrete-crack-lab</link>
-    <guid isPermaLink="false">datasets:concrete-crack-lab:2025-11-7</guid>
-    <pubDate>Fri, 07 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
