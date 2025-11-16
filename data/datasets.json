@@ -2614,6 +2614,35 @@
 	"added_date": "2025-11-13",
 	"contributor": "DISC Lab",
     "contributor_url": "https://disclab.pantoja-rosero.com/"
-  }
-
+  },
+  "TOPO-Loss-Crack": {
+  "name": "Dataset for continuity-preserving crack detection",
+  "authors": "Bryan German Pantoja-Rosero, Doruk Oner, Mateusz Kozinski, Radhakrishna Achanta, Pascal Fua, Fernando Perez-Cruz, Katrin Beyer",
+  "doi": "https://doi.org/10.1016/j.conbuildmat.2022.128264",
+  "year": 2022,
+  "data_modality": "Ground RGB",
+  "num_images": 7710,
+  "num_classes": 2,
+  "classes": [
+    "Crack",
+    "Background"
+  ],
+  "resolution": "256×256",
+  "annotation_types": [
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Switzerland",
+  "potential_tasks": [
+    "Crack segmentation",
+    "Damage detection"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "https://doi.org/10.1016/j.conbuildmat.2022.128264",
+  "access": "https://zenodo.org/records/6769028)",
+  "id": "TOPO-Loss-Crack",
+  "image_url": "assets/img/datasets/TOPO-Loss-Crack.png",
+  "added_date": "2025-11-16",
+	"contributor": "DISC Lab",
+    "contributor_url": "https://disclab.pantoja-rosero.com/"
+}
 }
