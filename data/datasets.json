@@ -2644,5 +2644,32 @@
   "added_date": "2025-11-16",
 	"contributor": "DISC Lab",
     "contributor_url": "https://disclab.pantoja-rosero.com/"
+},
+"LOD4-Building-Image-Modeling": {
+  "name": "Dataset for generation of LOD4 models for buildings",
+  "authors": "B.G. Pantoja-Rosero, A. Rusnak, F. Kaplan, K. Beyer",
+  "doi": "https://doi.org/10.1016/j.autcon.2024.105822",
+  "year": 2024,
+  "data_modality": "Ground RGB", "Aerial RGB",
+  "num_images": 995,
+  "num_classes": null,
+  "classes": null,
+  "resolution": null,
+  "annotation_types": null,
+  "geographical_location": "Switzerland",
+  "potential_tasks": [
+    "LOD4 building model generation",
+    "3D reconstruction",
+    "Structure from Motion"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "https://doi.org/10.1016/j.autcon.2024.105822",
+  "access": "https://zenodo.org/records/13647228",
+  "id": "LOD4-Building-Image-Modeling",
+  "image_url": "assets/img/datasets/LOD4-Building-Image-Modeling.png",
+  "added_date": "2025-11-17",
+	"contributor": "DISC Lab",
+    "contributor_url": "https://disclab.pantoja-rosero.com/"
 }
+
 }
