@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Automated image-based generation of finite element models for masonry buildings]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:FEM_buildings:2025-11-17</guid>
+    <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[To predict the response of masonry buildings to various types of loads, engineers use finite element models, specifically solid-element and macro-element models. For predicting masonry responses to seismic events in particular, equivalent frame models—a subcategory of macro-element models—are a common choice because of their low computational cost. However, an existing bottleneck in modeling pipelines is generating the geometry of the model, which is currently a slow and laborious process that is done manually using computer-aided design tools. In this paper, we address this by automating the modelling process using recent advancements in computer vision and machine learning. We present an image-based end-to-end pipeline that automatically generates finite element meshes for solid-element and equivalent-frame models of the outer walls of free-standing historical masonry buildings. As the input, our framework requires RGB images of the buildings that are processed using structure-from-motion algorithms, which create 3D geometries, and convolutional neural networks, which segment the openings and their corners. These layers are then combined to generate level of detail models. We tested our pipeline on structures with irregular surface geometries and opening layouts. While generating the solid element mesh from the level of detail model is straightforward, generating equivalent frame models required algorithms for segmenting the façade and the meshing. Experts in the field analyzed the generated equivalent frame models and determined them to be useful for numerical modeling. These finite element geometries will be invaluable for future predictions of the seismic response of damaged and undamaged buildings. The codes and dataset are publicly available for future studies and benchmarking (https://github.com/eesd-epfl/FEM_buildings and https://doi.org/10.5281/zenodo.8094306).]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Dataset for continuity-preserving crack detection]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=TOPO-Loss-Crack</link>
     <guid isPermaLink="false">datasets:TOPO-Loss-Crack:2025-11-16</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:TLSynth:2025-11-11</guid>
     <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Point clouds are a crucial element in the process of scanning and reconstructing 3D environments, such as buildings or heritage sites. They allow for the creation of 3D models that can be used in a wide range of applications. In some cases, however, only the 3D model of an environment is available, and it is necessary to obtain point clouds with the same characteristics as those captured by a laser scanner. For instance, point clouds may be required for surveys, performance optimization, site scan planning, or validation of point cloud processing algorithms. This paper presents a new terrestrial laser scanner (TLS) simulator, designed as a Blender add-on, that produces synthetic point clouds from 3D models in real time. The simulator allows users to adjust a set of parameters to replicate real-world scanning conditions, such as noise generation, ensuring the synthetic point clouds closely mirror those produced by actual laser scanners. The target meshes may be derived from either a real-world scan or 3D designs created using design software. By replicating the spatial distributions and attributes of real laser scanner outputs and supporting real-time generation, the simulator serves as a valuable tool for scan planning and the development of synthetic point cloud repositories, advancing research and practical applications in 3D computer vision.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CODE-ACCORD: Automated Compliance Checks for Construction, Renovation or Demolition Works (ACCORD)]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=code-accord</link>
-    <guid isPermaLink="false">datasets:code-accord:2025-11-10</guid>
-    <pubDate>Mon, 10 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
