@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Image-based geometric digital twinning for stone masonry elements]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:stone_masonry_GDT:2025-11-17</guid>
+    <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[We present an image-based pipeline for generating geometrical digital twins (GDTs) of stone masonry elements with detail down to the stone level. For this purpose, we acquire RGB images of the individual stones and of the wall during the construction phase. In our framework, we use structure from motion (SfM) to first generate 3D source and destination models, which are then registered to form the GDT through non-linear least squares and 2D point feature correspondences detected on the SfM images. This method contrasts with traditional techniques that register point clouds using 3D point descriptors. Because of the robustness of image feature descriptors, we found that using 2D instead of 3D point features facilitates the automation of the GDT generation. To benchmark our algorithm, we compared the results through an Euclidean–distance-based proposed metric with a known 3D textured model from which images were synthetically generated. We show the robustness and feasibility of our method for full size elements, wherein GDTs were generated for dry-stone and stone-mortar systems. This study allows researchers to produce accurate representations of the 3D geometry of walls built for experimental research, reducing therefore uncertainties related to the stone size, shape and arrangement to a minimum when comparing 3D numerical simulations of these walls to experimental results. Codes and data sets are publicly available (https://github.com/eesd-epfl/stone_masonry_GDT and https://doi.org/10.5281/zenodo.7266587).]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Dataset for continuity-preserving crack detection]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=TOPO-Loss-Crack</link>
     <guid isPermaLink="false">datasets:TOPO-Loss-Crack:2025-11-16</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
     <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: TLSynth: A Novel Blender Add-On for Real-Time Point Cloud Generation from 3D Models]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:TLSynth:2025-11-11</guid>
-    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Point clouds are a crucial element in the process of scanning and reconstructing 3D environments, such as buildings or heritage sites. They allow for the creation of 3D models that can be used in a wide range of applications. In some cases, however, only the 3D model of an environment is available, and it is necessary to obtain point clouds with the same characteristics as those captured by a laser scanner. For instance, point clouds may be required for surveys, performance optimization, site scan planning, or validation of point cloud processing algorithms. This paper presents a new terrestrial laser scanner (TLS) simulator, designed as a Blender add-on, that produces synthetic point clouds from 3D models in real time. The simulator allows users to adjust a set of parameters to replicate real-world scanning conditions, such as noise generation, ensuring the synthetic point clouds closely mirror those produced by actual laser scanners. The target meshes may be derived from either a real-world scan or 3D designs created using design software. By replicating the spatial distributions and attributes of real laser scanner outputs and supporting real-time generation, the simulator serves as a valuable tool for scan planning and the development of synthetic point cloud repositories, advancing research and practical applications in 3D computer vision.]]></description>
   </item>
   </channel>
 </rss>
