@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Dataset for generation of LOD4 models for buildings]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=LOD4-Building-Image-Modeling</link>
+    <guid isPermaLink="false">datasets:LOD4-Building-Image-Modeling:2025-11-17</guid>
+    <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Automated image-based generation of finite element models for masonry buildings]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:FEM_buildings:2025-11-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:DamageSegmentationXR:2025-11-13</guid>
     <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[This paper presents a framework for interactive and traceable visual bridge inspections by integrating AI-driven image processing models with extended reality. The framework addresses the subjectivity, labor intensity, and documentation challenges of traditional visual inspections. It employs YOLO11-seg models on a mixed reality device to perform multi-class damage instance detection and segmentation in near real-time, identifying cracks, spalling, rust, efflorescence, and exposed rebar. Unlike existing methods, this approach supports automated operation and local processing without cloud computing reliance. AI predictions are embedded in the 3D extended reality environment, enhancing efficiency and accuracy while enabling inspectors to visualize and interact with damage data, improving decision-making and traceability throughout the bridge life-cycle. Beyond model’s accuracy, inference time was evaluated to verify near real-time feasibility. Tests in three real-world scenarios demonstrated practical applicability. Future work will incorporate damage characterization and decision-support tools to advance digital inspection practices and foster efficient, resilient bridge monitoring.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CAMHighways: The Cambridge Highways Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=camhighways</link>
-    <guid isPermaLink="false">datasets:camhighways:2025-11-11</guid>
-    <pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
