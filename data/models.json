@@ -966,8 +966,23 @@
   "added_date": "2025-11-17",
   "contributor": "DISC Lab",
   "contributor_url": "https://disclab.pantoja-rosero.com/"
+},
+{
+  "id": "stone_masonry_GDT",
+  "title": "Image-based geometric digital twinning for stone masonry elements",
+  "authors": ["Bryan German Pantoja-Rosero", "Savvas Saloustros", "Radhakrishna Achanta", "Katrin Beyer"],
+  "abstract":"We present an image-based pipeline for generating geometrical digital twins (GDTs) of stone masonry elements with detail down to the stone level. For this purpose, we acquire RGB images of the individual stones and of the wall during the construction phase. In our framework, we use structure from motion (SfM) to first generate 3D source and destination models, which are then registered to form the GDT through non-linear least squares and 2D point feature correspondences detected on the SfM images. This method contrasts with traditional techniques that register point clouds using 3D point descriptors. Because of the robustness of image feature descriptors, we found that using 2D instead of 3D point features facilitates the automation of the GDT generation. To benchmark our algorithm, we compared the results through an Euclidean–distance-based proposed metric with a known 3D textured model from which images were synthetically generated. We show the robustness and feasibility of our method for full size elements, wherein GDTs were generated for dry-stone and stone-mortar systems. This study allows researchers to produce accurate representations of the 3D geometry of walls built for experimental research, reducing therefore uncertainties related to the stone size, shape and arrangement to a minimum when comparing 3D numerical simulations of these walls to experimental results. Codes and data sets are publicly available (https://github.com/eesd-epfl/stone_masonry_GDT and https://doi.org/10.5281/zenodo.7266587).",
+  "year": 2023,
+  "modalities": ["Ground RGB"],
+  "tasks": ["3D registration", "Structure from motion"],
+  "applications": ["Digital twin generation"],
+  "license": "GPL-3.0",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2022.104632",
+  "code_url": "https://github.com/eesd-epfl/stone_masonry_GDT",
+  "thumbnail": "assets/img/models/stone_masonry_GDT.gif",
+  "added_date": "2025-11-17",
+  "contributor": "DISC Lab",
+  "contributor_url": "https://disclab.pantoja-rosero.com/"
 }
-
-
 
 ]
