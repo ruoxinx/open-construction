@@ -2650,7 +2650,7 @@
   "authors": "B.G. Pantoja-Rosero, A. Rusnak, F. Kaplan, K. Beyer",
   "doi": "https://doi.org/10.1016/j.autcon.2024.105822",
   "year": 2024,
-  "data_modality": "Ground RGB", "Aerial RGB",
+  "data_modality": "Ground RGB, Aerial RGB",
   "num_images": 995,
   "num_classes": null,
   "classes": null,
