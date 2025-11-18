@@ -411,5 +411,14 @@
     "link_url": "Https://disclab.pantoja-rosero.com/ ",
     "image": "Https://disclab.pantoja-rosero.com/logos/logo_disc_0001.png ",
     "type": "org"
+  },
+  {
+    "id": "Satu-Marja",
+    "name": "Satu-Marja Mäkelä",
+    "role": "Dataset Contributor",
+    "affiliation": "VTT Technical Research Centre of Finland (Finland)",
+    "link_url": "https://cris.vtt.fi/en/persons/satu-marja-m%C3%A4kel%C3%A4/",
+    "image": "assets/img/contributors/avatar.png",
+    "type": "person"
   }
 ]
