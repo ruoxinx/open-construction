@@ -2670,6 +2670,30 @@
   "added_date": "2025-11-17",
 	"contributor": "DISC Lab",
     "contributor_url": "https://disclab.pantoja-rosero.com/"
+},
+"vtt-coniot": 
+{
+  "id": "vtt-coniot",
+  "name": "VTT-ConIoT: A Realistic IMU Dataset for Activity Recognition of Construction Workers",
+  "authors": "Satu-Marja Mäkela, Arttu Lämsä, Janne S. Keränen, Jussi Liikka, Jussi Ronkainen, Johannes Peltola, Juha Häikiö, Sari Järvinen, Miguel Bordallo López",
+  "doi": "https://doi.org/10.3390/su14010220",
+  "year": 2022,
+  "data_modality": "IMU",
+  "num_images": 13,
+  "num_classes": 16,
+  "annotation_types": ["Activity label"],
+  "classes": ["Roll painting", "Spraying paint", "Levelling paint", "Vacuum cleaning", "Picking objects", "Climbing stairs", "Jumping down", "Laying back", "HandsUp high", "HandsUp low", "Crouch floor", "Kneel floor", "Pushing cart", "Walk straight", "Walk winding", "Stairs up-down"],
+  "geographical_location": "Finland",
+  "potential_tasks": [
+    "Activity recognition",
+    "Safety monitoring"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "Introducing VTT-ConIot: A Realistic Dataset for Activity Recognition of Construction Workers Using IMU Devices",
+  "access": "https://zenodo.org/records/4683703",
+  "image_url": "assets/img/datasets/vtt-coniot.png",
+  "added_date": "2025-11-18",
+  "contributor": "Satu-Marja Mäkelä",
+  "contributor_url": "https://cris.vtt.fi/en/persons/satu-marja-m%C3%A4kel%C3%A4/"
 }
-
 }
