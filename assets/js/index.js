@@ -78,10 +78,13 @@ function canonicalizeModalityLabel(raw){
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
   const hasText    = has(/\btext\b|\bdocument\b|\bpdf\b|\bcode\b|\bnlp\b|\btextual\b/);
+  const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
+
 
 
   if (hasLidar)   return 'LiDAR';
   if (hasGPR)     return 'GPR Radargram';
+  if (hasIMU)       return 'IMU';
   if (hasDepth)   return 'RGB-D';
   if (hasThermal) return 'Thermal';
   if (hasMulti)   return 'Multispectral';
