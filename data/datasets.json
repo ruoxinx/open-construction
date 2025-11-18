@@ -2679,7 +2679,7 @@
   "doi": "https://doi.org/10.3390/su14010220",
   "year": 2022,
   "data_modality": "IMU",
-  "num_images": 13,
+  "num_images": null,
   "num_classes": 16,
   "annotation_types": ["Activity label"],
   "classes": ["Roll painting", "Spraying paint", "Levelling paint", "Vacuum cleaning", "Picking objects", "Climbing stairs", "Jumping down", "Laying back", "HandsUp high", "HandsUp low", "Crouch floor", "Kneel floor", "Pushing cart", "Walk straight", "Walk winding", "Stairs up-down"],
