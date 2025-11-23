@@ -408,8 +408,8 @@
     "name": "DISC Lab",
     "role": "Dataset and Model Contributor",
 	"affiliation": "Nanyang Technological University (Singapore)",
-    "link_url": "Https://disclab.pantoja-rosero.com/ ",
-    "image": "Https://disclab.pantoja-rosero.com/logos/logo_disc_0001.png ",
+    "link_url": "https://disclab.pantoja-rosero.com/",
+    "image": "https://disclab.pantoja-rosero.com/logos/logo_disc_0001.png",
     "type": "org"
   },
   {
@@ -420,5 +420,14 @@
     "link_url": "https://cris.vtt.fi/en/persons/satu-marja-m%C3%A4kel%C3%A4/",
     "image": "assets/img/contributors/avatar.png",
     "type": "person"
-  }
+  },
+    {
+    "id": "RATE@UM",
+    "name": "RATE@UM",
+    "role": "Dataset Contributor",
+	"affiliation": "University of Macau (Macau)",
+    "link_url": "https://www.rategroup.cn/",
+    "image": "https://www.rategroup.cn/img/logo.jpg",
+    "type": "org"
+  },
 ]
