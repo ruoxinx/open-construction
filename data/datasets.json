@@ -1903,7 +1903,7 @@
 	"added_date": "2025-09-22"
   },
     "MHC": {
-    "name": "MHC Dataset: Aerial Imagery-Derived Dataset of Manufactured Housing Communities",
+    "name": "MHC Dataset: Aerial Image Dataset of Manufactured Housing Communities",
 	"authors": "Armin Yeganeh, Maria Marshall, Noah Durst",
 	"doi": "https://doi.org/10.1038/s41597-025-05875-z",
     "year": 2025,
@@ -2457,7 +2457,7 @@
   "contributor_url": "https://github.com/ciber-lab"
 },
 "BIMNet": {
-  "name": "BIMNet: Dataset and benchmark for as-built BIM reconstruction from real-world point cloud",
+  "name": "BIMNet: Dataset and benchmark for as-built BIM reconstruction",
   "authors": "Yudong Liu, Han Huang, Ge Gao, Ziyi Ke, Shengtao Li, Ming Gu",
   "doi": "https://doi.org/10.1016/j.autcon.2025.106096",
   "year": 2025,
