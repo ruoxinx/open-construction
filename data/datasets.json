@@ -2695,5 +2695,30 @@
   "added_date": "2025-11-18",
   "contributor": "Satu-Marja Mäkelä",
   "contributor_url": "https://cris.vtt.fi/en/persons/satu-marja-m%C3%A4kel%C3%A4/"
+},
+"Fire-ART": 
+{
+  "id": "Fire-ART",
+  "name": "Fire-ART",
+  "authors": "Ya Wen, Yutong Qiao, Chi Chiu Lam, Ioannis Brilakis, Sanghoon Lee, Mun On Wong",
+  "doi": "https://doi.org/10.3390/su14010220",
+  "year": 2025,
+  "data_modality": "Ground RGB",
+  "num_images": 2626,
+  "num_classes": 15,
+  "annotation_types": ["Pixel-level masks"],
+  "classes": ["fire extinguisher", "fire exit sign", "fire door sign", "fire alarm", "emergency light", "smoke detector", "fire hose reel", "piping system", "sprinkler", 
+  "fire call point", "emergency door release", "fire blanket", "fire equipment sign", "firefighting lift switch", "hidden fire equipment"],
+  "geographical_location": "UK, US, China, Macau, France, Greece",
+  "potential_tasks": [
+    "Semantic segmentation"
+  ],
+  "license": "CC BY 4.0",
+  "paper": "Semantic BIM enrichment for firefighting assets: Fire-ART dataset and panoramic image-based 3D reconstruction",
+  "access": "https://zenodo.org/records/17102363",
+  "image_url": "assets/img/datasets/Fire-ART.png",
+  "added_date": "2025-11-22",
+  "contributor": "RATE@UM",
+  "contributor_url": "https://www.rategroup.cn/"
 }
 }
