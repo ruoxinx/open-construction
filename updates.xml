@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Fire-ART]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=Fire-ART</link>
+    <guid isPermaLink="false">datasets:Fire-ART:2025-11-22</guid>
+    <pubDate>Sat, 22 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: VTT-ConIoT: A Realistic IMU Dataset for Activity Recognition of Construction Workers]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=vtt-coniot</link>
     <guid isPermaLink="false">datasets:vtt-coniot:2025-11-18</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:Opening-Segmentation:2025-11-13</guid>
     <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Generating LOD3 building models from structure-from-motion and semantic segmentation]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:LOD3:2025-11-13</guid>
-    <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[This paper describes a pipeline for automatically generating level of detail (LOD) models (digital twins), specifically LOD2 and LOD3, from free-standing buildings. Our approach combines structure from motion (SfM) with deep-learning-based segmentation techniques. Given multiple-view images of a building, we compute a three-dimensional (3D) planar abstraction (LOD2 model) of its point cloud using SfM techniques. To obtain LOD3 models, we use deep learning to perform semantic segmentation of the openings in the two-dimensional (2D) images. Unlike existing approaches, we do not rely on complex input, pre-defined 3D shapes or manual intervention. To demonstrate the robustness of our method, we show that it can generate 3D building shapes from a collection of building images with no further input. For evaluating reconstructions, we also propose two novel metrics. The first is a Euclidean–distance-based correlation of the 3D building model with the point cloud. The second involves re-projecting 3D model facades onto source photos to determine dice scores with respect to the ground-truth masks. Finally, we make the code, the image datasets, SfM outputs, and digital twins reported in this work publicly available in github.com/eesd-epfl/LOD3_buildings and doi.org/10.5281/zenodo.6651663. With this work we aim to contribute research in applications such as construction management, city planning, and mechanical analysis, among others.]]></description>
   </item>
   </channel>
 </rss>
