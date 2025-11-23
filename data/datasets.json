@@ -2699,7 +2699,7 @@
 "Fire-ART": 
 {
   "id": "Fire-ART",
-  "name": "Fire-ART",
+  "name": "Fire-ART: Firefighting asset recognition dataset",
   "authors": "Ya Wen, Yutong Qiao, Chi Chiu Lam, Ioannis Brilakis, Sanghoon Lee, Mun On Wong",
   "doi": "https://doi.org/10.3390/su14010220",
   "year": 2025,
