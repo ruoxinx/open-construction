@@ -2674,7 +2674,7 @@
 "vtt-coniot": 
 {
   "id": "vtt-coniot",
-  "name": "VTT-ConIoT: A Realistic IMU Dataset for Activity Recognition of Construction Workers",
+  "name": "VTT-ConIoT: IMU Dataset for Activity Recognition of Construction Workers",
   "authors": "Satu-Marja Mäkela, Arttu Lämsä, Janne S. Keränen, Jussi Liikka, Jussi Ronkainen, Johannes Peltola, Juha Häikiö, Sari Järvinen, Miguel Bordallo López",
   "doi": "https://doi.org/10.3390/su14010220",
   "year": 2022,
