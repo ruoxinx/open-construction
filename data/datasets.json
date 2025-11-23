@@ -2701,7 +2701,7 @@
   "id": "Fire-ART",
   "name": "Fire-ART: Firefighting asset recognition dataset",
   "authors": "Ya Wen, Yutong Qiao, Chi Chiu Lam, Ioannis Brilakis, Sanghoon Lee, Mun On Wong",
-  "doi": "https://doi.org/10.3390/su14010220",
+  "doi": "https://doi.org/10.1016/j.isprsjprs.2025.11.015",
   "year": 2025,
   "data_modality": "Ground RGB",
   "num_images": 2626,
