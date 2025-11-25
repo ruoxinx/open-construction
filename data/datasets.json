@@ -817,11 +817,13 @@
     ],
     "resolution": "Not Specified",
     "annotation_types": [
-      "Bounding boxes"
+      "Bounding polygons",
+	  "Activity classes"
     ],
     "geographical_location": "Not Specified",
     "potential_tasks": [
-      "Object detection"
+      "Activity Detection",
+	  "Activity Characterization"
     ],
     "license": "MIT",
     "paper": "Automated global-scale detection and characterization of anthropogenic activity using multi-source satellite-based remote sensing imagery",
