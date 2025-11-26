@@ -2755,9 +2755,7 @@
   "authors": "Yunshun Zhong, Sebastian D. Goodfellow",
   "abstract":"The rising demand for automated methods in the Construction Management Systems (CMS) sector highlights opportunities for the Transformer architecture, which enables pre-training Deep Learning models on large, unlabeled datasets for Natural Language Processing (NLP) tasks, outperforming traditional Recurrent Neural Network models. However, their potential in the CMS domain remains underexplored. Therefore, this research produced the first CMS domain corpora from academic papers and introduced an end-to-end pipeline for pre-training and fine-tuning domain-specific Pre-trained Language Models. Four corpora were constructed and transfer learning was employed to pre-train BERT and RoBERTa using the corpora. The best-performing models were then fine-tuned and outperformed models pre-trained on general corpora. In two key NLP tasks, text classification using an infrastructure condition prediction dataset and named entity recognition using an automatic construction control dataset, domain-specific pre-training improved F1 scores by 5.9% and 8.5%, respectively. These promising results demonstrate extended applicability beyond CMS to the Architecture, Engineering, and Construction sectors.",
   "year": 2024,
-  "data_modality": [
-    "Text"
-  ],
+  "data_modality": "Text",
   "annotation_types": ["Text classification", "Part-of-speech tags"],
   "potential_tasks": [
     "Text classification",
