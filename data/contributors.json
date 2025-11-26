@@ -429,5 +429,14 @@
     "link_url": "https://www.rategroup.cn/",
     "image": "https://www.rategroup.cn/img/logo.jpg",
     "type": "org"
+  },
+      {
+    "id": "DeCoDE",
+    "name": "DeCoDE Lab",
+    "role": "Dataset Contributor",
+  "affiliation": "Massachusetts Institute of Technology",
+    "link_url": "https://decode.mit.edu/",
+    "image": "https://decode.mit.edu/assets/images/logo/decode_logo.png",
+    "type": "org"
   }
 ]

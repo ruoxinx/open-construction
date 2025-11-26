@@ -983,6 +983,20 @@
   "added_date": "2025-11-17",
   "contributor": "DISC Lab",
   "contributor_url": "https://disclab.pantoja-rosero.com/"
-}
+},
+  {
+    "id": "VideoCAD",
+    "title": "VideoCAD: A Dataset and Model for Learning Long‑Horizon 3D CAD UI Interactions from Video",
+    "authors": ["Brandon Man", "Ghadi Nehme", "Md Ferdous Alam", "Faez Ahmed"],
+    "abstract": "VideoCAD is a large-scale synthetic dataset consisting of over 41K annotated video recordings of CAD operations, generated using an automated framework for collecting high-fidelity UI action data from human-made CAD designs. Comparison with existing datasets shows that VideoCAD offers an order of magnitude higher complexity in UI interaction learning for real-world engineering tasks, having a 20x longer time horizon than other datasets",
+    "year": 2025,
+    "modalities": ["Video clips"],
+    "tasks": ["Action recognition"],
+  "applications": ["Intelligent Design"],
+    "license": "Unspecified",
+    "paper_url": "https://arxiv.org/pdf/2505.24838",
+    "code_url": "https://github.com/ghadinehme/VideoCAD",
+    "thumbnail": "assets/img/models/VideoCAD.gif"
+  }
 
 ]

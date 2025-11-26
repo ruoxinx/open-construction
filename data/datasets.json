@@ -2722,5 +2722,30 @@
   "added_date": "2025-11-22",
   "contributor": "RATE@UM",
   "contributor_url": "https://www.rategroup.cn/"
+},
+"VideoCAD":
+{
+  "id": "VideoCAD",
+  "name": "VideoCAD: Learning Long‑Horizon 3D CAD UI Interactions from Video",
+  "authors": "Brandon Man, Ghadi Nehme, Md Ferdous Alam, Faez Ahmed",
+  "doi": "https://arxiv.org/abs/2505.24838",
+  "year": 2025,
+  "data_modality": "Video clips",
+  "num_images": 41000,
+  "num_classes": 7,
+  "annotation_types": ["Action recognition"],
+  "classes": ["command index", "pointer location x", "pointer location y", "key index", "press count", "scroll amount", "typed value", "left mouse click"],
+  "geographical_location": "N/A",
+  "potential_tasks": [
+    "Intelligent Design"
+  ],
+  "license": " CC0 1.0",
+  "paper": "VideoCAD: A Dataset and Model for Learning Long-Horizon 3D CAD UI Interactions from Video",
+  "access": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/WX8PCK",
+  "image_url": "assets/img/datasets/VideoCAD.png",
+  "added_date": "2025-11-26",
+  "contributor": "DeCoDE",
+  "contributor_url": "https://decode.mit.edu/"
 }
+
 }
