@@ -2758,15 +2758,16 @@
   "data_modality": [
     "Text"
   ],
+  "annotation_types": ["Text classification", "Part-of-speech tags"],
   "potential_tasks": [
     "Text classification",
     "Named entity recognition"
   ],
   "license": "GPL-3.0",
   "paper": "Domain-specific language models pre-trained on construction management systems corpora",
-  "paper_url": "https://doi.org/10.1016/j.autcon.2024.105316",
-  "code_url": "https://github.com/zhongyunshun/domain-corpora",
-  "thumbnail": "assets/img/models/cms-domain-corpora.png",
+  "doi": "https://doi.org/10.1016/j.autcon.2024.105316",
+  "access": "https://github.com/zhongyunshun/domain-corpora",
+  "image_url": "assets/img/models/cms-domain-corpora.png",
   "added_date": "2025-11-26",
   "contributor": "Yunshun Zhong",
   "contributor_url": "https://github.com/zhongyunshun"
