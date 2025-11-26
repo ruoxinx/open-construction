@@ -2735,13 +2735,12 @@
   "num_classes": 7,
   "annotation_types": ["UI interactions"],
   "classes": ["mouse", "keyboard", "typed input", "extrude", "sketch"],
-  "geographical_location": "N/A",
   "potential_tasks": [
     "CAD Generation",
-	"behavior cloning",
+	"Behavior cloning",
 	"Autocomplete", "Video QA", "Spatial reasoning"
   ],
-  "license": "CC0 1.0",
+  "license": "CC0",
   "paper": "VideoCAD: A Dataset and Model for Learning Long-Horizon 3D CAD UI Interactions from Video",
   "access": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/WX8PCK",
   "image_url": "assets/img/datasets/VideoCAD.gif",
