@@ -438,5 +438,14 @@
     "link_url": "https://decode.mit.edu/",
     "image": "https://decode.mit.edu/assets/images/logo/decode_logo.png",
     "type": "org"
+  },
+    {
+    "id": "Yunshun-Zhong",
+    "name": "Yunshun Zhong",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Toronto (Canada)",
+    "link_url": "https://github.com/zhongyunshun",
+    "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=c24JNuUAAAAJ&citpid=1",
+    "type": "person"
   }
 ]
