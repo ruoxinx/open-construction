@@ -2734,7 +2734,7 @@
   "num_images": 41000,
   "num_classes": 7,
   "annotation_types": ["Action recognition"],
-  "classes": ["command index", "pointer location x", "pointer location y", "key index", "press count", "scroll amount", "typed value", "left mouse click"],
+  "classes": ["pointer location x", "pointer location y", "key index", "press count", "scroll amount", "typed value", "left mouse click"],
   "geographical_location": "N/A",
   "potential_tasks": [
     "Intelligent Design"

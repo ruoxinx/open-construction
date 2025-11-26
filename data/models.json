@@ -994,9 +994,12 @@
     "tasks": ["Action recognition"],
   "applications": ["Intelligent Design"],
     "license": "Unspecified",
-    "paper_url": "https://arxiv.org/pdf/2505.24838",
+    "paper_url": "https://arxiv.org/abs/2505.24838",
     "code_url": "https://github.com/ghadinehme/VideoCAD",
-    "thumbnail": "assets/img/models/VideoCAD.gif"
+    "thumbnail": "assets/img/models/VideoCAD.gif",
+    "added_date": "2025-11-26",
+  "contributor": "DeCoDE",
+  "contributor_url": "https://decode.mit.edu/"
   }
 
 ]
