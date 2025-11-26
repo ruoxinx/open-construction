@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: VideoCAD: Learning Long‑Horizon 3D CAD UI Interactions from Video]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=VideoCAD</link>
+    <guid isPermaLink="false">datasets:VideoCAD:2025-11-26</guid>
+    <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Fire-ART: Firefighting asset recognition dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=Fire-ART</link>
     <guid isPermaLink="false">datasets:Fire-ART:2025-11-22</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:dadt-buildings-model:2025-11-14</guid>
     <pubDate>Fri, 14 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Current procedures for the rapid inspection of buildings and infrastructure are subjective, time-consuming, and cumbersome to document, necessitating new technologies to automate the process and eliminate these shortcomings. Fortunately, recent developments in imaging devices and artificial intelligence, such as computer vision, provide the necessary tools for this, though they are not yet integrated into infrastructure applications. In this paper, we propose an end-to-end pipeline that generates damage-augmented digital twins for buildings at LOD3, including geometrical information as well as data pertaining to damage condition and its characterization. Our framework incorporates multiple-view images to (1) create a level of detail model, (2) segment damage information, and (3) characterize damage. The core of the method is the structure from motion, which is used to reconstruct the building scene, and machine-learning models that segment and characterize damage. In contrast to current practices, our method does not require manual intervention, generates lightweight models, and can be applied to a wide range of assets. The results generated with our pipeline represent a significant step towards an automated infrastructure damage assessment. We intend to expand our work in the future to include real-time applications and applications to other types of infrastructure. Codes and data sets are publicly available (https://github.com/eesd-epfl/DADT_buildings and https://doi.org/10.5281/zenodo.7767478).]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Dataset for generating LOD3 building models from SfM and semantic segmentation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Opening-Segmentation</link>
-    <guid isPermaLink="false">datasets:Opening-Segmentation:2025-11-13</guid>
-    <pubDate>Thu, 13 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
