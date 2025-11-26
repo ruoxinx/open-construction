@@ -2765,7 +2765,7 @@
   "paper": "Domain-specific language models pre-trained on construction management systems corpora",
   "doi": "https://doi.org/10.1016/j.autcon.2024.105316",
   "access": "https://github.com/zhongyunshun/domain-corpora",
-  "image_url": "assets/img/models/cms-domain-corpora.png",
+  "image_url": "assets/img/datasets/cms-domain-corpora.png",
   "added_date": "2025-11-26",
   "contributor": "Yunshun Zhong",
   "contributor_url": "https://github.com/zhongyunshun"
