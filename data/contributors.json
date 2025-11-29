@@ -447,5 +447,23 @@
     "link_url": "https://github.com/zhongyunshun",
     "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=c24JNuUAAAAJ&citpid=1",
     "type": "person"
+  },
+    {
+    "id": "Sadhana Nirandjan",
+    "name": "Sadhana Nirandjan",
+    "role": "Dataset Contributor",
+    "affiliation": "Vrije Universiteit Amsterdam (Netherlands)",
+    "link_url": "https://infrastructure-risk.eu/members/nirandjan",
+    "image": "https://infrastructure-risk.eu/assets/img/nirandjan-profile.jpg",
+    "type": "person"
+  },
+      {
+    "id": "Elco Koks",
+    "name": "Elco Koks",
+    "role": "Dataset Contributor",
+    "affiliation": "Vrije Universiteit Amsterdam (Netherlands)",
+    "link_url": "https://infrastructure-risk.eu/members/koks",
+    "image": "https://infrastructure-risk.eu/assets/img/koks-profile.jpg",
+    "type": "person"
   }
 ]
