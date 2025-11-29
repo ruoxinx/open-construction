@@ -465,5 +465,14 @@
     "link_url": "https://infrastructure-risk.eu/members/koks",
     "image": "https://infrastructure-risk.eu/assets/img/koks-profile.jpg",
     "type": "person"
+  },
+      {
+    "id": "Vincent LEPETIT",
+    "name": "Vincent Lepetit",
+    "role": "Dataset Contributor",
+    "affiliation": "École nationale des ponts et chaussées (France)",
+    "link_url": "https://vincentlepetit.github.io/",
+    "image": "https://vincentlepetit.github.io/images/vincent_lepetit.png?size=160",
+    "type": "person"
   }
 ]
