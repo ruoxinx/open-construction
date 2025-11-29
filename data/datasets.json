@@ -2783,7 +2783,7 @@
   ],
   "license": "MIT",
   "geographical_location":"Global",
-  "resolution": "0.10 ×0.10 and 0.25×0.25 degrees"
+  "resolution": "0.10 ×0.10, 0.25×0.25"
   "paper": "A spatially-explicit harmonized global dataset of critical infrastructure",
   "doi": "https://doi.org/10.1038/s41597-022-01218-4",
   "access": "https://github.com/snirandjan/CISI",
