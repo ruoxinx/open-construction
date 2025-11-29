@@ -2781,9 +2781,11 @@
   "potential_tasks": [
     "Risk assessment"
   ],
+  "num_classes": 7,
+  "classes": ["transportation", "energy", "telecommunication", "waste", "water", "education", "health"],
   "license": "MIT",
   "geographical_location":"Global",
-  "resolution": "0.10 × 0.10, 0.25 × 0.25",
+  "resolution": "0.10 × 0.10 degrees, 0.25 × 0.25 degrees",
   "paper": "A spatially-explicit harmonized global dataset of critical infrastructure",
   "doi": "https://doi.org/10.1038/s41597-022-01218-4",
   "access": "https://github.com/snirandjan/CISI",
