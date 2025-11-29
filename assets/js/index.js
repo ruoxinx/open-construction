@@ -79,6 +79,7 @@ function canonicalizeModalityLabel(raw){
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
   const hasText    = has(/\btext\b|\bdocument\b|\bpdf\b|\bcode\b|\bnlp\b|\btextual\b/);
   const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
+  const hasGeospatial = has(/\bgeospatial\b|\bgis\b|shapefile|geojson|geodatabase|geopackage|orthomosaic|orthophoto|dem\b|dsm\b|dtm\b|georeferenc(?:e|ed)|topograph(?:y|ic)|cartograph(?:y|ic)/);
 
 
 
@@ -97,6 +98,7 @@ function canonicalizeModalityLabel(raw){
   if (hasRasterCAD) return 'Rasterized CAD';
   if (hasSynthetic) return 'Synthetic';
   if (hasText)    return 'Text';
+  if (hasGeospatial) return 'Geospatial Data';
   return 'Other';
 }
 
