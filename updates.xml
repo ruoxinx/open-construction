@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Global dataset of critical infrastructure]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=CISI</link>
+    <guid isPermaLink="false">datasets:CISI:2025-11-28</guid>
+    <pubDate>Fri, 28 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: VideoCAD: Learning Long-Horizon 3D CAD UI Interactions from Video]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=VideoCAD</link>
     <guid isPermaLink="false">datasets:VideoCAD:2025-11-26</guid>
@@ -19,7 +27,7 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=cms-domain-corpora</link>
     <guid isPermaLink="false">datasets:cms-domain-corpora:2025-11-26</guid>
     <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[The rising demand for automated methods in the Construction Management Systems (CMS) sector highlights opportunities for the Transformer architecture, which enables pre-training Deep Learning models on large, unlabeled datasets for Natural Language Processing (NLP) tasks, outperforming traditional Recurrent Neural Network models. However, their potential in the CMS domain remains underexplored. Therefore, this research produced the first CMS domain corpora from academic papers and introduced an end-to-end pipeline for pre-training and fine-tuning domain-specific Pre-trained Language Models. Four corpora were constructed and transfer learning was employed to pre-train BERT and RoBERTa using the corpora. The best-performing models were then fine-tuned and outperformed models pre-trained on general corpora. In two key NLP tasks, text classification using an infrastructure condition prediction dataset and named entity recognition using an automatic construction control dataset, domain-specific pre-training improved F1 scores by 5.9% and 8.5%, respectively. These promising results demonstrate extended applicability beyond CMS to the Architecture, Engineering, and Construction sectors.]]></description>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
 
   <item>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:TOPO-Loss-Crack:2025-11-16</guid>
     <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: TOPO-Loss for continuity-preserving crack detection using deep learning]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:topo_crack_detection:2025-11-16</guid>
-    <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[We present a method for segmenting cracks in images of masonry buildings damaged by earthquakes. Existing methods of crack detection fail to preserve the continuity of cracks, and their performance deteriorates with imprecise training labels. We address these problems by adapting an approach previously proposed for reconstructing roads in aerial images, in which a Convolutional Neural Network is trained with a loss function specifically designed to encourage the continuity of thin structures and to accommodate imprecise annotations. We evaluate combinations of three loss functions (the Mean Squared Error, the Dice loss and the new connectivity-oriented loss) on two datasets using TernausNet, a deep network shown to attain state-of-the-art accuracy in crack detection. We herein show that combining these three losses significantly improves the topology of the predictions quantitatively and qualitatively. We also propose a new continuity metric, named Cracks Per Patch (CPP), and share a new dataset of images of earthquake-affected urban scenes accompanied by crack annotations. The dataset and implementations are publicly available for future studies and benchmarking (https://github.com/eesd-epfl/topo_crack_detection and https://doi.org/10.5281/zenodo.6769028).]]></description>
   </item>
   </channel>
 </rss>
