@@ -253,7 +253,9 @@
     "paper_url": "https://openreview.net/pdf?id=1LmsiOaMTy",
     "code_url": "https://github.com/clementinboittiaux/buildee",
     "thumbnail": "assets/img/models/Buildee.gif",
-	"added_date": "2025-09-28"
+	"added_date": "2025-09-28",
+  "contributor": "Laboratoire d'Informatique Gaspard-Monge",
+    "contributor_url": "https://ligm.univ-eiffel.fr/"
   },
     {
     "id": "Open",
