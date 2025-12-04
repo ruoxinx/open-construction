@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: A KG-LLM-Enabled Inspection Work Packaging Approach in Module Prefabrication]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:KG-LLM-inspection-work-packaging:2025-12-05</guid>
+    <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Quality inspection during the production of modular construction (MC) is critical to the success of MC projects because defects such as geometric errors can severely impact installation. Therefore, the effective organization and management of quality inspection is essential. Although work packaging has proven to be an effective method for project planning, automatically and accurately generating inspection work packages remains a challenge, particularly in mass production. To this end, this study aims to develop a knowledge graph-large language model (KG-LLM)-enabled inspection work packaging approach in MC production. First, a KG is constructed to represent inspection knowledge, encompassing inspection tasks, target MC products, inspectors, inspection tools, inspection frequencies, and corresponding production processes, which can enrich LLM in product2inspection mapping and can help identify features of inspection tasks for inspection2package clustering. Second, a prompt-based product2inspection mapping approach leveraging LLM is developed. Next, inspection2package clustering is completed through hierarchical agglomerative clustering, with parameters optimized by particle swarm optimization (PSO). Finally, the effectiveness of the proposed approach is validated through controlled experiments on an MC case project. This study demonstrates how leveraging KG and LLMs can enhance collaboration in quality inspection during module prefabrication and highlights the potential of LLMs in the construction domain.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Global dataset of critical infrastructure]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CISI</link>
     <guid isPermaLink="false">datasets:CISI:2025-11-28</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:stone_masonry_GDT:2025-11-17</guid>
     <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[We present an image-based pipeline for generating geometrical digital twins (GDTs) of stone masonry elements with detail down to the stone level. For this purpose, we acquire RGB images of the individual stones and of the wall during the construction phase. In our framework, we use structure from motion (SfM) to first generate 3D source and destination models, which are then registered to form the GDT through non-linear least squares and 2D point feature correspondences detected on the SfM images. This method contrasts with traditional techniques that register point clouds using 3D point descriptors. Because of the robustness of image feature descriptors, we found that using 2D instead of 3D point features facilitates the automation of the GDT generation. To benchmark our algorithm, we compared the results through an Euclidean–distance-based proposed metric with a known 3D textured model from which images were synthetically generated. We show the robustness and feasibility of our method for full size elements, wherein GDTs were generated for dry-stone and stone-mortar systems. This study allows researchers to produce accurate representations of the 3D geometry of walls built for experimental research, reducing therefore uncertainties related to the stone size, shape and arrangement to a minimum when comparing 3D numerical simulations of these walls to experimental results. Codes and data sets are publicly available (https://github.com/eesd-epfl/stone_masonry_GDT and https://doi.org/10.5281/zenodo.7266587).]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Dataset for continuity-preserving crack detection]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=TOPO-Loss-Crack</link>
-    <guid isPermaLink="false">datasets:TOPO-Loss-Crack:2025-11-16</guid>
-    <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
