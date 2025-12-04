@@ -474,5 +474,14 @@
     "link_url": "https://vincentlepetit.github.io/",
     "image": "https://vincentlepetit.github.io/images/vincent_lepetit.png?size=160",
     "type": "person"
+  },
+      {
+    "id": "CI3LAB",
+    "name": "CI3 LAB",
+    "role": "Model Contributor",
+    "affiliation": "University of Hong Kong",
+    "link_url": "https://cicubelab.civil.hku.hk/people/",
+    "image": "assets/img/contributors/ci3lab.png",
+    "type": "org"
   }
 ]
