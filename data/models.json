@@ -1004,5 +1004,22 @@
     "added_date": "2025-11-26",
   "contributor": "DeCoDE",
   "contributor_url": "https://decode.mit.edu/"
+  },
+  {
+    "id": "KG-LLM-inspection-work-packaging",
+    "title": "A KG-LLM-Enabled Inspection Work Packaging Approach in Module Prefabrication",
+    "authors": ["Qing Dong", "Xiao Li", "Guohao Liu", "Chengke Wu", "Taicong Chen"],
+  "abstract":"Quality inspection during the production of modular construction (MC) is critical to the success of MC projects because defects such as geometric errors can severely impact installation. Therefore, the effective organization and management of quality inspection is essential. Although work packaging has proven to be an effective method for project planning, automatically and accurately generating inspection work packages remains a challenge, particularly in mass production. To this end, this study aims to develop a knowledge graph-large language model (KG-LLM)-enabled inspection work packaging approach in MC production. First, a KG is constructed to represent inspection knowledge, encompassing inspection tasks, target MC products, inspectors, inspection tools, inspection frequencies, and corresponding production processes, which can enrich LLM in product2inspection mapping and can help identify features of inspection tasks for inspection2package clustering. Second, a prompt-based product2inspection mapping approach leveraging LLM is developed. Next, inspection2package clustering is completed through hierarchical agglomerative clustering, with parameters optimized by particle swarm optimization (PSO). Finally, the effectiveness of the proposed approach is validated through controlled experiments on an MC case project. This study demonstrates how leveraging KG and LLMs can enhance collaboration in quality inspection during module prefabrication and highlights the potential of LLMs in the construction domain.",
+    "year": 2025,
+    "modalities": ["Text"],
+    "tasks": ["knowledge graph construction", "Semantic mapping"],
+    "applications": ["Work Package Generation", "Quality inspection"],
+    "license": "Unspecified",
+    "paper_url": "https://doi.org/10.1061/JCCEE5.CPENG-6595",
+    "code_url": "https://github.com/CI3LAB/KG-LLM-inspection-work-packaging",
+    "thumbnail": "assets/img/models/KG-LLM-inspection-work-packaging.png",
+    "added_date": "2025-12-05",
+  "contributor": "CI3Lab",
+  "contributor_url": "https://cicubelab.civil.hku.hk/"
   }
 ]
