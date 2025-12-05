@@ -25,7 +25,7 @@
       },
       "num_images": {
         "type": [
-          "integer",
+          "string",
           "null"
         ]
       },

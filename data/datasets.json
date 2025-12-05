@@ -2793,5 +2793,31 @@
   "added_date": "2025-11-28",
   "contributor": "Infrastructure Risk & Resilience Group",
   "contributor_url": "https://infrastructure-risk.eu/"
+},
+"GlobalBuildingAtlas":
+{
+  "id": "GlobalBuildingAtlas",
+  "name": "GlobalBuildingAtlas",
+  "authors": "Xiao Xiang Zhu, Sining Chen, Fahong Zhang, Yilei Shi, Yuanyuan Wang",
+  "year": 2025,
+  "num_images": "2.75B",
+  "data_modality": "Raster, Vector",
+  "annotation_types": ["Building polygons", "Building height", "LoD1 building model"],
+  "potential_tasks": [
+    "Geospatial analysis"
+  ],
+  "num_classes": 1,
+  "classes": ["Building"],
+  "license": "MIT License with Commons Clause Restriction",
+  "geographical_location":"Global",
+  "resolution": "3m × 3m",
+  "paper": "GlobalBuildingAtlas: an open global and complete dataset of building polygons, heights and LoD1 3D models",
+  "doi": "https://doi.org/10.5194/essd-17-6647-2025",
+  "access": "https://github.com/zhu-xlab/GlobalBuildingAtlas",
+  "image_url": "assets/img/datasets/GlobalBuildingAtlas.png",
+  "added_date": "2025-12-4",
+  "contributor": "Zhu Lab",
+  "contributor_url": "https://www.lrg.tum.de/sipeo"
 }
+
 }
