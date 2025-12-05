@@ -2539,7 +2539,7 @@
   "doi": "https://doi.org/10.1016/j.aei.2024.103036",
   "year": 2025,
   "data_modality": "3D Point Cloud, Ground RGB, Pavement orthomosaics, GPR radargram, 3D Meshes",
-  "num_images": "Over 40km of UK Highways",
+  "num_images": "Over 40km of Highways",
   "num_classes": 14,
   "classes": ["bleeding", "crack_alligator", "crack_block", "crack_corner", "crack_edge", "crack_longitudinal", "crack_transverse",
   "patch", "pothole", "ravelling", "rutting", "shoving", "spalling", "unknown"],
