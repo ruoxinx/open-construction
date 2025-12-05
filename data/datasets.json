@@ -2513,7 +2513,7 @@
   "doi": "https://doi.org/10.1038/s41597-024-04320-x",
   "year": 2025,
   "data_modality": "Text",
-  "num_images": "4,297 entities and 4,329 relations",
+  "num_images": "862 sentences",
   "num_classes": null,
   "classes": null,
   "resolution": null,
