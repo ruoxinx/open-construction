@@ -2464,7 +2464,7 @@
   "doi": "https://doi.org/10.1016/j.autcon.2025.106096",
   "year": 2025,
   "data_modality": "3D Point cloud",
-  "num_images": null,
+  "num_images": "25 scans",
   "num_classes": 14,
   "classes": ["Wall","Slab","Beam","Column","Door","Window","Stair","Railing","Lighting","Furniture", "Sanitary", "Appliance", "Object", "Other"],
   "resolution": null,
