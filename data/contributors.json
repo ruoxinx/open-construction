@@ -479,9 +479,18 @@
     "id": "CI3LAB",
     "name": "CI3 LAB",
     "role": "Model Contributor",
-    "affiliation": "University of Hong Kong",
+    "affiliation": "University of Hong Kong (HK)",
     "link_url": "https://cicubelab.civil.hku.hk/",
     "image": "assets/img/contributors/ci3lab.jpg",
+    "type": "org"
+  },
+        {
+    "id": "Zhu-lab",
+    "name": "Zhu Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "Technical University of Munich (Germany)",
+    "link_url": "https://www.asg.ed.tum.de/sipeo/home/",
+    "image": "https://avatars.githubusercontent.com/u/69273984?s=200&v=4",
     "type": "org"
   }
 ]
