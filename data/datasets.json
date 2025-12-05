@@ -2801,7 +2801,7 @@
   "authors": "Xiao Xiang Zhu, Sining Chen, Fahong Zhang, Yilei Shi, Yuanyuan Wang",
   "year": 2025,
   "num_images": "2.75B",
-  "data_modality": "Raster, Vector",
+  "data_modality": "Geospatial data",
   "annotation_types": ["Building polygons", "Building height", "LoD1 building model"],
   "potential_tasks": [
     "Geospatial analysis"
