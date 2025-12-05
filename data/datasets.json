@@ -1963,7 +1963,7 @@
 	"doi": "https://doi.org/10.1111/mice.70020",
     "year": 2025,
 	"data_modality": "Point Cloud",
-    "num_images": null,
+    "num_images": "443 million",
     "num_classes": 10,
     "classes": ["airduct", "ceiling", "door", "floor", "pillar", "pipe", "wall", "cabletray", "firehydrant", "lamp"],
     "resolution": "Not Specified",
