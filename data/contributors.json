@@ -492,5 +492,23 @@
     "link_url": "https://www.asg.ed.tum.de/sipeo/home/",
     "image": "https://avatars.githubusercontent.com/u/69273984?s=200&v=4",
     "type": "org"
+  },
+        {
+    "id": "Tianzhen Hong",
+    "name": "Tianzhen Hong",
+    "role": "Model Contributor",
+    "affiliation": "Lawrence Berkeley National Laboratory",
+    "link_url": "https://eta.lbl.gov/people/tianzhen-hong",
+    "image": "https://profiles.lbl.gov/20853-tianzhen-hong/thumbnail",
+    "type": "person"
+  },
+        {
+    "id": "Han Li",
+    "name": "Han Li",
+    "role": "Model Contributor",
+    "affiliation": "Lawrence Berkeley National Laboratory",
+    "link_url": "https://buildings.lbl.gov/people/han-li",
+    "image": "assets/img/contributors/hanli_lnl.png",
+    "type": "person"
   }
 ]

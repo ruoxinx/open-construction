@@ -1021,5 +1021,22 @@
     "added_date": "2025-12-05",
   "contributor": "CI3Lab",
   "contributor_url": "https://cicubelab.civil.hku.hk/"
+  },
+  {
+    "id": "EnergyPlus-MCP",
+    "title": "EnergyPlus-MCP: A model-context-protocol server for AI-driven building energy modeling",
+    "authors": ["Han Li", "Yujie Xu", "Tianzhen Hong"],
+  "abstract":"Traditional building energy modeling with the EnergyPlus building performance simulation engine requires domain expertise, programming skills, and intensive manual efforts limiting its effective adoption. This paper introduces EnergyPlus-MCP, the first open-source Model Context Protocol (MCP) server specifically designed for EnergyPlus simulation workflows, establishing a new foundational infrastructure for AI-driven building energy modeling. The MCP server implements a layered architecture with 35 specialized tools spanning model management, editing and analysis, HVAC and other systems configuration inspection, and simulation execution, enabling Large Language Models to interact with EnergyPlus through conversational interfaces. The server addresses critical workflow barriers by automating model validation, streamlining energy efficiency measures modification, and providing intelligent output management with interactive visualization. Through practical demonstrations using a multi-zone building retrofit analysis, we show how the EnergyPlus-MCP server significantly reduces manual efforts while maintaining full simulation rigor. By providing accessible natural language interfaces to sophisticated building energy analysis, this approach enables scalable deployment of simulation expertise across public and private organizations, educational institutions, and research teams, fundamentally transforming traditional building energy modeling practices.",
+    "year": 2025,
+    "modalities": ["Text"],
+    "tasks": ["Model Context Protocol"],
+    "applications": ["Building Energy Analysis"],
+    "license": "Author-defined license: https://github.com/LBNL-ETA/EnergyPlus-MCP?tab=License-1-ov-file",
+    "paper_url": "https://doi.org/10.1016/j.softx.2025.102367",
+    "code_url": "https://github.com/LBNL-ETA/EnergyPlus-MCP",
+    "thumbnail": "assets/img/models/EnergyPlus-MCP.png",
+    "added_date": "2025-12-08",
+  "contributor": "Lawrence Berkeley National Laboratory",
+  "contributor_url": "https://www.lbl.gov/"
   }
 ]
