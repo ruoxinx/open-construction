@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: EnergyPlus-MCP: A model-context-protocol server for AI-driven building energy modeling]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:EnergyPlus-MCP:2025-12-08</guid>
+    <pubDate>Mon, 08 Dec 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[Traditional building energy modeling with the EnergyPlus building performance simulation engine requires domain expertise, programming skills, and intensive manual efforts limiting its effective adoption. This paper introduces EnergyPlus-MCP, the first open-source Model Context Protocol (MCP) server specifically designed for EnergyPlus simulation workflows, establishing a new foundational infrastructure for AI-driven building energy modeling. The MCP server implements a layered architecture with 35 specialized tools spanning model management, editing and analysis, HVAC and other systems configuration inspection, and simulation execution, enabling Large Language Models to interact with EnergyPlus through conversational interfaces. The server addresses critical workflow barriers by automating model validation, streamlining energy efficiency measures modification, and providing intelligent output management with interactive visualization. Through practical demonstrations using a multi-zone building retrofit analysis, we show how the EnergyPlus-MCP server significantly reduces manual efforts while maintaining full simulation rigor. By providing accessible natural language interfaces to sophisticated building energy analysis, this approach enables scalable deployment of simulation expertise across public and private organizations, educational institutions, and research teams, fundamentally transforming traditional building energy modeling practices.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: A KG-LLM-Enabled Inspection Work Packaging Approach in Module Prefabrication]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:KG-LLM-inspection-work-packaging:2025-12-05</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:LOD4-Building-Image-Modeling:2025-11-17</guid>
     <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Automated image-based generation of finite element models for masonry buildings]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:FEM_buildings:2025-11-17</guid>
-    <pubDate>Mon, 17 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[To predict the response of masonry buildings to various types of loads, engineers use finite element models, specifically solid-element and macro-element models. For predicting masonry responses to seismic events in particular, equivalent frame models—a subcategory of macro-element models—are a common choice because of their low computational cost. However, an existing bottleneck in modeling pipelines is generating the geometry of the model, which is currently a slow and laborious process that is done manually using computer-aided design tools. In this paper, we address this by automating the modelling process using recent advancements in computer vision and machine learning. We present an image-based end-to-end pipeline that automatically generates finite element meshes for solid-element and equivalent-frame models of the outer walls of free-standing historical masonry buildings. As the input, our framework requires RGB images of the buildings that are processed using structure-from-motion algorithms, which create 3D geometries, and convolutional neural networks, which segment the openings and their corners. These layers are then combined to generate level of detail models. We tested our pipeline on structures with irregular surface geometries and opening layouts. While generating the solid element mesh from the level of detail model is straightforward, generating equivalent frame models required algorithms for segmenting the façade and the meshing. Experts in the field analyzed the generated equivalent frame models and determined them to be useful for numerical modeling. These finite element geometries will be invaluable for future predictions of the seismic response of damaged and undamaged buildings. The codes and dataset are publicly available for future studies and benchmarking (https://github.com/eesd-epfl/FEM_buildings and https://doi.org/10.5281/zenodo.8094306).]]></description>
   </item>
   </channel>
 </rss>
