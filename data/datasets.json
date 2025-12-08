@@ -2810,7 +2810,7 @@
   ],
   "num_classes": 1,
   "classes": ["Building"],
-  "license": "MIT License with Commons Clause Restriction",
+  "license": "CC-BY-NC",
   "geographical_location":"Global",
   "resolution": "3m × 3m",
   "paper": "GlobalBuildingAtlas: an open global and complete dataset of building polygons, heights and LoD1 3D models",
