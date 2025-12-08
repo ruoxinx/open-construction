@@ -1031,7 +1031,7 @@
     "modalities": ["Text"],
     "tasks": ["Model Context Protocol"],
     "applications": ["Building Energy Analysis"],
-    "license": "Author-defined license: https://github.com/LBNL-ETA/EnergyPlus-MCP?tab=License-1-ov-file",
+    "license": "Modified BSD",
     "paper_url": "https://doi.org/10.1016/j.softx.2025.102367",
     "code_url": "https://github.com/LBNL-ETA/EnergyPlus-MCP",
     "thumbnail": "assets/img/models/EnergyPlus-MCP.png",
