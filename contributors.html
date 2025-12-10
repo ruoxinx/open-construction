@@ -544,16 +544,21 @@
   </section>
 
 	<div class="logo-marquee three-rows" aria-label="Affiliated institutions and organizations">
+
 	  <div class="row-marquee" data-direction="right">
 	    <div class="logo-track" role="list" data-speed="50"></div>
 	  </div>
+
 	  <div class="row-marquee" data-direction="left">
 	    <div class="logo-track" role="list" data-speed="50"></div>
 	  </div>
+
 	  <div class="row-marquee" data-direction="right">
 	    <div class="logo-track" role="list" data-speed="50"></div>
 	  </div>
+
 	</div>
+
 
 
 	<template id="logo-seed">
@@ -693,46 +698,57 @@
 
 <script>
 (function(){
-const marquee = document.querySelector('.logo-marquee.two-rows');
-if(!marquee) return;
+const marquee = document.querySelector('.logo-marquee.three-rows');
+if (!marquee) return;
+
 const rows = marquee.querySelectorAll('.row-marquee');
-if (rows.length !== 3) return;
-
-const [row1, row2, row3] = rows;
-
-// Split logos into 3 groups
-const size = Math.ceil(logos.length / 3);
-const logos1 = logos.slice(0, size);
-const logos2 = logos.slice(size, size * 2);
-const logos3 = logos.slice(size * 2);
-
-
-function initTrack(row, items, dir){
-const track = row.querySelector('.logo-track');
-if(!track) return;
-items.forEach(i => track.appendChild(i));
-items.forEach(i => track.appendChild(i.cloneNode(true)));
-
-const base = Number(track.getAttribute('data-speed')) || 46;
-const dur = Math.min(90, base + Math.max(0, items.length - 8) * 1.5);
-track.style.animationDuration = dur + 's';
-track.style.animationTimingFunction = 'linear';
-track.style.animationIterationCount = 'infinite';
-track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-left';
+if (rows.length !== 3) {
+  console.error("Expected 3 marquee rows, found:", rows.length);
+  return;
 }
 
-initTrack(row1, logos1, 'right');
-initTrack(row2, logos2, 'left');
-initTrack(row3, logos3, 'right');
+const seed = document.getElementById('logo-seed');
+if (!seed) return;
 
+// Clone all logos
+const logos = Array.from(seed.content.children).map(n => n.cloneNode(true));
 
-// Fade-in after load
-const imgs = marquee.querySelectorAll('.logo img');
-imgs.forEach(img => {
-const parent = img.closest('.logo');
-const done = () => parent && parent.classList.add('loaded');
-if(img.complete && img.naturalWidth>0) done();
-else img.addEventListener('load', done, {once:true});
+// Split logos into 3 equal groups
+const groupSize = Math.ceil(logos.length / 3);
+const group1 = logos.slice(0, groupSize);
+const group2 = logos.slice(groupSize, groupSize * 2);
+const group3 = logos.slice(groupSize * 2);
+
+// Helper: initialize marquee for each row
+function initTrack(row, items, dir) {
+  const track = row.querySelector('.logo-track');
+  if (!track) return;
+
+  // Populate track
+  items.forEach(i => track.appendChild(i));
+  items.forEach(i => track.appendChild(i.cloneNode(true))); // double for infinite scroll
+
+  const speed = Number(track.getAttribute('data-speed')) || 46;
+  const duration = Math.min(90, speed + Math.max(0, items.length - 8) * 1.5);
+
+  track.style.animationDuration = duration + 's';
+  track.style.animationTimingFunction = 'linear';
+  track.style.animationIterationCount = 'infinite';
+  track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-left';
+}
+
+// Initialize rows
+initTrack(rows[0], group1, 'right');
+initTrack(rows[1], group2, 'left');
+initTrack(rows[2], group3, 'right');
+
+// Fade-in loading
+marquee.querySelectorAll('.logo img').forEach(img => {
+  const parent = img.closest('.logo');
+  const done = () => parent && parent.classList.add('loaded');
+
+  if (img.complete && img.naturalWidth > 0) done();
+  else img.addEventListener('load', done, { once: true });
 });
 })();
 </script>
