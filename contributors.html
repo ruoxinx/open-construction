@@ -543,16 +543,18 @@
     </div>
   </section>
 
-	<section class="oc-section">
-	<div class="oc-kicker mb-2">Affiliations</div>
-	<div class="logo-marquee two-rows" aria-label="Affiliated institutions and organizations">
-	<div class="row-marquee" data-direction="right">
-	<div class="logo-track" role="list" data-speed="50"></div>
+	<div class="logo-marquee three-rows" aria-label="Affiliated institutions and organizations">
+	  <div class="row-marquee" data-direction="right">
+	    <div class="logo-track" role="list" data-speed="50"></div>
+	  </div>
+	  <div class="row-marquee" data-direction="left">
+	    <div class="logo-track" role="list" data-speed="50"></div>
+	  </div>
+	  <div class="row-marquee" data-direction="right">
+	    <div class="logo-track" role="list" data-speed="50"></div>
+	  </div>
 	</div>
-	<div class="row-marquee" data-direction="left">
-	<div class="logo-track" role="list" data-speed="50"></div>
-	</div>
-	</div>
+
 
 	<template id="logo-seed">
 	<div class="logo" role="listitem"><img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="eager" fetchpriority="high" decoding="async"></div>
@@ -693,14 +695,17 @@
 (function(){
 const marquee = document.querySelector('.logo-marquee.two-rows');
 if(!marquee) return;
-const [row1, row2] = marquee.querySelectorAll('.row-marquee');
-const seed = document.getElementById('logo-seed');
-if(!row1 || !row2 || !seed) return;
+const rows = marquee.querySelectorAll('.row-marquee');
+if (rows.length !== 3) return;
 
-const logos = Array.from(seed.content.children).map(n => n.cloneNode(true));
-const half = Math.ceil(logos.length / 2);
-const logos1 = logos.slice(0, half);
-const logos2 = logos.slice(half);
+const [row1, row2, row3] = rows;
+
+// Split logos into 3 groups
+const size = Math.ceil(logos.length / 3);
+const logos1 = logos.slice(0, size);
+const logos2 = logos.slice(size, size * 2);
+const logos3 = logos.slice(size * 2);
+
 
 function initTrack(row, items, dir){
 const track = row.querySelector('.logo-track');
@@ -718,6 +723,8 @@ track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-l
 
 initTrack(row1, logos1, 'right');
 initTrack(row2, logos2, 'left');
+initTrack(row3, logos3, 'right');
+
 
 // Fade-in after load
 const imgs = marquee.querySelectorAll('.logo img');
