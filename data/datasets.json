@@ -1620,8 +1620,8 @@
     "id": "CDW-Seg",
     "image_url": "assets/img/datasets/CDW-Seg.png",
 	"added_date": "2025-09-19",
-	"contributor": "",
-    "contributor_url": ""
+	"contributor": "Diani Sirimewan",
+    "contributor_url": "https://www.qut.edu.au/about/our-people/academic-profiles/diani.sirimewan"
   },
     "ConstructionSite-10k": {
     "name": "ConstructionSite 10k Dataset",
