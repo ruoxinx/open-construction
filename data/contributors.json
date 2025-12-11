@@ -510,5 +510,14 @@
     "link_url": "https://buildings.lbl.gov/people/han-li",
     "image": "assets/img/contributors/hanli_LNL.png",
     "type": "person"
+  },
+    {
+    "id": "Diani Sirimewan",
+    "name": "Diani Sirimewan",
+    "role": "Dataset Contributor",
+    "affiliation": "Queensland University of Technology",
+    "link_url": "https://www.qut.edu.au/about/our-people/academic-profiles/diani.sirimewan",
+    "image": "https://scholar.googleusercontent.com/citations?view_op=view_photo&user=atDTpgEAAAAJ&citpid=2",
+    "type": "person"
   }
 ]
