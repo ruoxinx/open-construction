@@ -2820,6 +2820,28 @@
   "added_date": "2025-12-4",
   "contributor": "Zhu Lab",
   "contributor_url": "https://www.lrg.tum.de/sipeo"
-}
+},
+"IFR_Dataset":
+{
+  "id": "IFR_Dataset",
+  "name": "IFR_Dataset",
+  "authors": "Kangkang Duan, Zehao Zhu, Zhengbo Zou",
+  "year": 2025,
+  "num_images": "27000",
+  "data_modality": "Ground RGB, Point Cloud",
+  "annotation_types": ["3D bounding box"],
+  "potential_tasks": ["3D Object Detection"],
+  "num_classes": 7,
+  "classes": ["Door", "Waste Container", "Desk & Chair", "Cabinet", "Fire Hydrant", "People", "Elevator"],
+  "license": "CC-BY-NC",
+  "geographical_location":"Canada",
+  "resolution": "1920 × 1080",
+  "paper": "Indoor FireRescue Radar: 4D Indoor Millimeter Wave Dataset and Analysis for Hazardous Environment Perception",
+  "doi": "https://doi.org/10.1109/IROS60139.2025.11246924",
+  "access": "https://huggingface.co/datasets/yysd123/indoor_mmwave#data-description",
+  "image_url": "assets/img/datasets/IFR_Dataset.png",
+  "added_date": "2025-12-29",
+  "contributor": "ICON Lab",
+  "contributor_url": "https://intelconstructlab.github.io/"}
 
 }
