@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: IFR_Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=IFR_Dataset</link>
+    <guid isPermaLink="false">datasets:IFR_Dataset:2025-12-29</guid>
+    <pubDate>Mon, 29 Dec 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: DUSt3R: Geometric 3D Vision Made Easy]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:DUSt3R:2025-12-09</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=Fire-ART</link>
     <guid isPermaLink="false">datasets:Fire-ART:2025-11-22</guid>
     <pubDate>Sat, 22 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: VTT-ConIoT: IMU Dataset for Activity Recognition of Construction Workers]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=vtt-coniot</link>
-    <guid isPermaLink="false">datasets:vtt-coniot:2025-11-18</guid>
-    <pubDate>Tue, 18 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
