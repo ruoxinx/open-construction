@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Indoor FireRescue Rada (IFR) dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=IFR_Dataset</link>
+    <guid isPermaLink="false">datasets:IFR_Dataset:2025-12-29</guid>
+    <pubDate>Mon, 29 Dec 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: DUSt3R: Geometric 3D Vision Made Easy]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:DUSt3R:2025-12-09</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:VideoCAD:2025-11-26</guid>
     <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Computer-Aided Design (CAD) is a time-consuming and complex process, requiring precise, long-horizon user interactions with intricate 3D interfaces. While recent advances in AI-driven user interface (UI) agents show promise, most existing datasets and methods focus on short, low-complexity tasks in mobile or web applications, failing to capture the demands of professional engineering tools. In this work, we introduce VideoCAD, the first attempt to model UI interactions for precision engineering tasks. Specifically, VideoCAD is a large-scale synthetic dataset consisting of over 41K annotated video recordings of CAD operations, generated using an automated framework for collecting high-fidelity UI action data from human-made CAD designs. Compared to existing datasets, VideoCAD offers an order-of-magnitude increase in complexity for real-world engineering UI tasks, with time horizons up to 20x longer than those in other datasets. We show two important downstream applications of VideoCAD: (1) learning UI interactions from professional 3D CAD tools for precision tasks and (2) a visual question-answering (VQA) benchmark designed to evaluate multimodal large language models (LLMs) on spatial reasoning and video understanding. To learn the UI interactions, we propose VideoCADFormer, a state-of-the-art model for learning CAD interactions directly from video, which outperforms existing behavior cloning baselines. Both VideoCADFormer and the VQA benchmark derived from VideoCAD reveal key challenges in the current state of video-based UI understanding, including the need for precise action grounding, multi-modal and spatial reasoning, and long-horizon dependencies.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Fire-ART: Firefighting asset recognition dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Fire-ART</link>
-    <guid isPermaLink="false">datasets:Fire-ART:2025-11-22</guid>
-    <pubDate>Sat, 22 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
