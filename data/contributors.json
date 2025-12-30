@@ -519,5 +519,14 @@
     "link_url": "https://www.qut.edu.au/about/our-people/academic-profiles/diani.sirimewan",
     "image": "https://scholar.googleusercontent.com/citations?view_op=view_photo&user=atDTpgEAAAAJ&citpid=2",
     "type": "person"
+  },
+    {
+    "id": "AUTOIC Lab",
+    "name": "AUTOIC Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "Purdue University",
+    "link_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab",
+    "image": "assets/img/contributors/AUTOIC_lab.png",
+    "type": "org"
   }
 ]

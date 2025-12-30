@@ -2842,6 +2842,28 @@
   "image_url": "assets/img/datasets/IFR_Dataset.png",
   "added_date": "2025-12-29",
   "contributor": "ICON Lab",
-  "contributor_url": "https://intelconstructlab.github.io/"}
+  "contributor_url": "https://intelconstructlab.github.io/"},
+"IFR_Dataset":
+{
+  "id": "AEC_Objects_in_IFC-based_BIM",
+  "name": "AEC Objects in IFC-based BIM Dataset",
+  "authors": "Jin Wu, Temitope Akanbi, Jiansong Zhang",
+  "year": 2022,
+  "num_images": "1,900 AEC objects",
+  "data_modality": "IFC-based BIM",
+  "annotation_types": ["BIM objects"],
+  "potential_tasks": ["Object Detection"],
+  "num_classes": 5,
+  "classes": ["Beam", "Column", "Footing","Slab","Wall"],
+  "license": "CC-BY-NC",
+  "geographical_location":"",
+  "resolution": "",
+  "paper": "Constructing Invariant Signatures for AEC Objects to Support BIM-Based Analysis Automation through Object Classification",
+  "doi": "https://doi.org/10.1061/(ASCE)CP.1943-5487.0001012",
+  "access": "https://purr.purdue.edu/publications/3832/supportingdocs?v=1",
+  "image_url": "assets/img/datasets/AEC_Objects_in_IFC-based_BIM.png",
+  "added_date": "2025-12-30",
+  "contributor": "AUTOIC Lab",
+  "contributor_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab"}
 
 }
