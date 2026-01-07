@@ -528,5 +528,14 @@
     "link_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab",
     "image": "assets/img/contributors/AUTOIC_lab.png",
     "type": "org"
+  },
+    {
+    "id": "Urban Analytics Lab",
+    "name": "Urban Analytics Lab",
+    "role": "Model Contributor",
+    "affiliation": "National University of Singapore (Singapore)",
+    "link_url": "https://ual.sg/",
+    "image": "https://avatars.githubusercontent.com/u/52310604?s=200&v=4",
+    "type": "org"
   }
 ]

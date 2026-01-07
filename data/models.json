@@ -1053,5 +1053,20 @@
     "code_url": "https://github.com/naver/dust3r",
     "thumbnail": "assets/img/models/DUSt3R.png",
     "added_date": "2025-12-09"
+  },
+  {
+    "id": "VoxCity",
+    "title": "VoxCity: Grid-based semantic 3D city model generation, and urban environment simulation",
+    "authors": ["Kunihiko Fujiwara","Ryuta Tsurumi","Tomoki Kiyono","Zicheng Fan","Xiucheng Liang","Binyu Lei","Winston Yap","Koichi Ito","Filip Biljecki"],
+  "abstract":"Three-dimensional urban environment simulation is a powerful tool for informed urban planning. However, the intensive manual effort required to prepare input 3D city models has hindered its widespread adoption. To address this challenge, we present VoxCity, an open-source Python package that provides a one-stop solution for grid-based 3D city model generation and urban environment simulation for cities worldwide. VoxCity’s ‘generator’ subpackage automatically downloads building heights, tree canopy heights, land cover, and terrain elevation within a specified target area, and voxelizes buildings, trees, land cover, and terrain to generate an integrated voxel city model. The ‘simulator’ subpackage enables users to conduct environmental simulations, including solar radiation and view index analyses. Users can export the generated models using several file formats compatible with external software, such as ENVI-met (INX), Blender, and Rhino (OBJ). We generated 3D city models for eight global cities, and demonstrated the calculation of solar irradiance, sky view index, and green view index. We also showcased microclimate simulation and 3D rendering visualization through ENVI-met and Rhino, respectively, through the file export function. Additionally, we reviewed openly available geospatial data to create guidelines to help users choose appropriate data sources depending on their target areas and purposes. VoxCity can significantly reduce the effort and time required for 3D city model preparation and promote the utilization of urban environment simulations. This contributes to more informed urban and architectural design that considers environmental impacts, and in turn, fosters sustainable and livable cities. VoxCity is released openly at https://github.com/kunifujiwara/VoxCity",
+    "year": 2026,
+    "modalities": ["Point cloud", "3D model"],
+    "tasks": ["3D reconstruction", "3D rendering"],
+    "applications": ["City Model Generation", "City Model Simulation"],
+    "license": "MIT License",
+    "paper_url": "https://doi.org/10.1016/j.compenvurbsys.2025.102366",
+    "code_url": "https://github.com/kunifujiwara/VoxCity",
+    "thumbnail": "https://raw.githubusercontent.com/kunifujiwara/VoxCity/main/images/concept.png",
+    "added_date": "2026-01-07"
   }
 ]
