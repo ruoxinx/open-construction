@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: VoxCity: Grid-based semantic 3D city model generation, and urban environment simulation]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:VoxCity:2026-01-07</guid>
+    <pubDate>Wed, 07 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Three-dimensional urban environment simulation is a powerful tool for informed urban planning. However, the intensive manual effort required to prepare input 3D city models has hindered its widespread adoption. To address this challenge, we present VoxCity, an open-source Python package that provides a one-stop solution for grid-based 3D city model generation and urban environment simulation for cities worldwide. VoxCity’s ‘generator’ subpackage automatically downloads building heights, tree canopy heights, land cover, and terrain elevation within a specified target area, and voxelizes buildings, trees, land cover, and terrain to generate an integrated voxel city model. The ‘simulator’ subpackage enables users to conduct environmental simulations, including solar radiation and view index analyses. Users can export the generated models using several file formats compatible with external software, such as ENVI-met (INX), Blender, and Rhino (OBJ). We generated 3D city models for eight global cities, and demonstrated the calculation of solar irradiance, sky view index, and green view index. We also showcased microclimate simulation and 3D rendering visualization through ENVI-met and Rhino, respectively, through the file export function. Additionally, we reviewed openly available geospatial data to create guidelines to help users choose appropriate data sources depending on their target areas and purposes. VoxCity can significantly reduce the effort and time required for 3D city model preparation and promote the utilization of urban environment simulations. This contributes to more informed urban and architectural design that considers environmental impacts, and in turn, fosters sustainable and livable cities. VoxCity is released openly at https://github.com/kunifujiwara/VoxCity]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: AEC Objects in IFC-based BIM Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=AEC_Objects_in_IFC-based_BIM</link>
     <guid isPermaLink="false">datasets:AEC_Objects_in_IFC-based_BIM:2025-12-30</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:cms-domain-corpora:2025-11-26</guid>
     <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: VideoCADFormer: A Model for Learning Long-Horizon 3D CAD UI Interactions from Video]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:VideoCAD:2025-11-26</guid>
-    <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[Computer-Aided Design (CAD) is a time-consuming and complex process, requiring precise, long-horizon user interactions with intricate 3D interfaces. While recent advances in AI-driven user interface (UI) agents show promise, most existing datasets and methods focus on short, low-complexity tasks in mobile or web applications, failing to capture the demands of professional engineering tools. In this work, we introduce VideoCAD, the first attempt to model UI interactions for precision engineering tasks. Specifically, VideoCAD is a large-scale synthetic dataset consisting of over 41K annotated video recordings of CAD operations, generated using an automated framework for collecting high-fidelity UI action data from human-made CAD designs. Compared to existing datasets, VideoCAD offers an order-of-magnitude increase in complexity for real-world engineering UI tasks, with time horizons up to 20x longer than those in other datasets. We show two important downstream applications of VideoCAD: (1) learning UI interactions from professional 3D CAD tools for precision tasks and (2) a visual question-answering (VQA) benchmark designed to evaluate multimodal large language models (LLMs) on spatial reasoning and video understanding. To learn the UI interactions, we propose VideoCADFormer, a state-of-the-art model for learning CAD interactions directly from video, which outperforms existing behavior cloning baselines. Both VideoCADFormer and the VQA benchmark derived from VideoCAD reveal key challenges in the current state of video-based UI understanding, including the need for precise action grounding, multi-modal and spatial reasoning, and long-horizon dependencies.]]></description>
   </item>
   </channel>
 </rss>
