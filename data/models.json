@@ -1067,6 +1067,8 @@
     "paper_url": "https://doi.org/10.1016/j.compenvurbsys.2025.102366",
     "code_url": "https://github.com/kunifujiwara/VoxCity",
     "thumbnail": "https://raw.githubusercontent.com/kunifujiwara/VoxCity/main/images/concept.png",
-    "added_date": "2026-01-07"
+    "added_date": "2026-01-07",
+    "contributor": "Urban Analytics Lab",
+  "contributor_url": "https://ual.sg/"
   }
 ]
