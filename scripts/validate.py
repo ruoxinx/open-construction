@@ -2,8 +2,8 @@
 import json, sys, os
 from jsonschema import Draft202012Validator
 
-schema_path = os.path.join('data','dataset.schema.json')
-data_path = os.path.join('data','datasets.json')
+schema_path = os.path.join('site/data','dataset.schema.json')
+data_path = os.path.join('site/data','datasets.json')
 
 with open(schema_path, 'r', encoding='utf-8') as f:
     schema = json.load(f)
