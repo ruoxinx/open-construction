@@ -216,49 +216,106 @@
 </nav>
 
 <header class="hero">
-  <div class="container oc-container content">
+  <div class="container content">
     <h1>OpenConstruction AEC Benchmarks</h1>
+
     <p class="lead">
-      Browse <span class="hl">tasks</span> and <span class="hl">applications</span> in OpenConstruction.
+      Browse <span class="hl">tasks</span> and <span class="hl">applications</span> across AEC datasets and models.
     </p>
 
+    <!-- Search -->
     <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
       <div class="d-flex align-items-center gap-2 px-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+             viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
         <input id="globalSearch" class="form-control" type="search"
-               placeholder="Search tasks, applications, datasets, models..."
+               placeholder="Search tasks, applications, datasets, models…"
                aria-label="Search benchmarks">
       </div>
+    </div>
+
+    <!-- Quick filters (outside search bar) -->
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-3"
+         aria-label="Quick filters">
+      <button class="btn btn-sm btn-outline-dark" type="button" data-q="Object detection">
+        Object detection
+      </button>
+      <button class="btn btn-sm btn-outline-dark" type="button" data-q="Segmentation">
+        Segmentation
+      </button>
+      <button class="btn btn-sm btn-outline-dark" type="button" data-q="SLAM">
+        SLAM
+      </button>
+      <button class="btn btn-sm btn-outline-dark" type="button" data-q="Safety">
+        Safety
+      </button>
+      <button class="btn btn-sm btn-outline-dark" type="button" data-q="Progress monitoring">
+        Progress monitoring
+      </button>
+    </div>
+
+    <div class="text-center text-muted small mt-2">
+      Tip: quick filters prefill the search box and update both indices.
     </div>
   </div>
 </header>
 
+
+<!-- Add this small JS once (anywhere after your existing scripts load) -->
+<script>
+  // Quick filter buttons fill the search box and trigger your existing filtering
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-q]');
+    if (!btn) return;
+    const q = btn.getAttribute('data-q') || '';
+    const input = document.getElementById('globalSearch');
+    if (!input) return;
+    input.value = q;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+</script>
+
+
 <main class="container oc-container">
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Overview</div>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="oc-card h-100"><div class="oc-card-body">
-          <div class="oc-card-title">Tasks</div>
-          <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="oc-card h-100"><div class="oc-card-body">
-          <div class="oc-card-title">Applications</div>
-          <div class="display-6 fw-bold mb-1" id="statApps">—</div>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="oc-card h-100"><div class="oc-card-body">
-          <div class="oc-card-title">Datasets / Models</div>
-          <div class="display-6 fw-bold mb-1"><span id="statDatasets">—</span> / <span id="statModels">—</span></div>
-        </div></div>
-      </div>
-    </div>
-  </section>
+	<section class="oc-section">
+	  <div class="oc-kicker mb-2">Overview</div>
+	  <p class="text-muted mb-3">
+		Summary statistics across all benchmarkable tasks, applications, datasets, and models in OpenConstruction.
+	  </p>
+
+	  <div class="row g-3">
+		<div class="col-md-4">
+		  <div class="oc-card h-100">
+			<div class="oc-card-body">
+			  <div class="oc-card-title">Tasks</div>
+			  <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
+			</div>
+		  </div>
+		</div>
+
+		<div class="col-md-4">
+		  <div class="oc-card h-100">
+			<div class="oc-card-body">
+			  <div class="oc-card-title">Applications</div>
+			  <div class="display-6 fw-bold mb-1" id="statApps">—</div>
+			</div>
+		  </div>
+		</div>
+
+		<div class="col-md-4">
+		  <div class="oc-card h-100">
+			<div class="oc-card-body">
+			  <div class="oc-card-title">Datasets / Models</div>
+			  <div class="display-6 fw-bold mb-1">
+				<span id="statDatasets">—</span> / <span id="statModels">—</span>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
 
   <section class="oc-section">
     <div class="oc-kicker mb-2">Browse</div>
@@ -561,7 +618,7 @@
           </button>
         </div>
       `);
-      note.textContent = `Showing ${state.shown} of ${total}. Use search to find the rest.`;
+      note.textContent = `Showing ${state.shown} of ${total}.`;
     } else {
       note.textContent = '';
     }
