@@ -952,32 +952,35 @@ marquee.querySelectorAll('.logo img').forEach(img => {
   }
 
   /* ------------------ run ------------------ */
-  document.addEventListener("DOMContentLoaded", async () => {
-    initRing(ringContrib);
-    initRing(ringInst);
+	document.addEventListener("DOMContentLoaded", async () => {
+	  initRing(ringContrib);
+	  initRing(ringInst);
 
-    const institutions = countInstitutionsFromTemplate();
+	  const institutions = countInstitutionsFromTemplate();
 
-    let contributors = 0;
-    try {
-      contributors = await countContributorsFromJSON();
-    } catch (e) {
-      console.warn("[stats] contributors.json error:", e);
-    }
+	  let contributors = 0;
+	  try {
+		contributors = await countContributorsFromJSON();
+	  } catch (e) {
+		console.warn("[stats] contributors.json error:", e);
+	  }
 
-    // Set immediately (no flicker)
-    if (countContribEl) countContribEl.textContent = contributors;
-    if (countInstEl)    countInstEl.textContent    = institutions;
+	  // Set immediately (no flicker)
+	  if (countContribEl) countContribEl.textContent = contributors;
+	  if (countInstEl)    countInstEl.textContent    = institutions;
 
-    // Animate
-    setTimeout(() => {
-      countUp(countContribEl, contributors);
-      countUp(countInstEl, institutions);
-      playRing(ringContrib);
-      playRing(ringInst);
-    }, 60);
-  });
-})();
+	  // ring transition
+	  document.getElementById("communityMetrics")?.classList.add("ring-ready");
+
+	  // Animate
+	  setTimeout(() => {
+		countUp(countContribEl, contributors, 1400);     // slower number count (optional)
+		countUp(countInstEl, institutions, 1400);        // slower number count (optional)
+		playRing(ringContrib);
+		playRing(ringInst);
+	  }, 60);
+	});
+
 </script>
 
 
