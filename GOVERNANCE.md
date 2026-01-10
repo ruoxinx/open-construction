@@ -4,7 +4,6 @@ OpenConstruction is governed as a **distributed, community-driven open-source ec
 Authority and responsibility are role-based, transparent, and designed to evolve
 with the community.
 
----
 
 ## Governance Principles
 
@@ -14,7 +13,6 @@ with the community.
 - Rotating leadership and stewardship
 - Sustainability beyond any single institution or individual
 
----
 
 ## Roles & Responsibilities
 
@@ -43,7 +41,6 @@ with the community.
 - Participate in discussions and roadmap planning
 - May be nominated into stewardship roles over time
 
----
 
 ## Decision-Making
 
@@ -51,7 +48,6 @@ with the community.
 - Consensus is preferred; maintainers facilitate resolution
 - Significant changes are documented and versioned
 
----
 
 ## Role Rotation & Succession
 
@@ -62,7 +58,6 @@ All leadership roles are:
 
 This structure supports long-term ecosystem resilience.
 
----
 
 ## Amendments
 

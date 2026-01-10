@@ -2,7 +2,6 @@ OpenConstruction is a **community-governed, open-source platform**.
 We welcome contributions that improve both **the cataloged resources**
 and **the platform infrastructure**.
 
----
 
 ## Ways to Contribute
 
@@ -13,7 +12,7 @@ You may contribute by:
 - Developing community-maintained modules (ingestion, evaluators, benchmarks)
 - Improving documentation, onboarding, or tooling
 
----
+
 
 ## Contribution Workflow
 
@@ -25,7 +24,7 @@ You may contribute by:
 
 All contributions undergo **peer review** and **automated CI checks**.
 
----
+
 
 ## Quality & Review Criteria
 
@@ -38,27 +37,24 @@ Contributions are evaluated for:
 
 Breaking changes must be clearly labeled and discussed in advance.
 
----
+
 
 ## Platform Modules
 
 Contributors may develop **platform modules**, such as:
 
-- Dataset ingestion helpers
-- Model evaluation scaffolds
 - Benchmark definitions
 - Validation and enrichment utilities
 
-Modules are registered in `modules/registry.json` and maintained by the community.
+Modules are registered and maintained by the community.
 
----
+
 
 ## Code of Conduct
 
 By participating, you agree to follow the project’s Code of Conduct.
 We are committed to a respectful, inclusive, and collaborative community.
 
----
 
 ## Getting Help
 
