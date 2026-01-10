@@ -105,6 +105,29 @@
       .hero .content{ padding:40px 0 24px; }
       .search-wrap{ top:64px; }
     }
+	
+	/* ---- Floating Suggestion Button ---- */
+    .issue-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: #fff;
+      text-decoration: none;
+    }
   </style>
 </head>
 
@@ -179,10 +202,9 @@
 
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Benchmarks</h1>
+    <h1>OpenConstruction AEC Benchmarks</h1>
     <p class="lead">
-      Browse <span class="hl">tasks</span> and <span class="hl">applications</span>.
-      Click any item to open its benchmark tables.
+      Browse <span class="hl">tasks</span> and <span class="hl">applications</span> in OpenConstruction.
     </p>
 
     <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
@@ -191,13 +213,9 @@
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
         <input id="globalSearch" class="form-control" type="search"
-               placeholder="Search tasks and applications..."
+               placeholder="Search tasks, applications, datasets, models..."
                aria-label="Search benchmarks">
       </div>
-    </div>
-    <div class="search-hint">
-      Tasks/applications are merged case-insensitively (e.g., “Object Detection” = “object detection”).
-    </div>
   </div>
 </header>
 
@@ -256,6 +274,12 @@
     </div>
   </div>
 </footer>
+
+<!-- Floating button -->
+<a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml"
+   class="issue-btn" target="_blank" rel="noopener">
+  Issue or Suggestion?
+</a>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
@@ -330,12 +354,14 @@
       <path d="M5.5 9.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5z"/>
     </svg>`;
   }
-  function iconCount(){
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Z"/>
-      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-    </svg>`;
-  }
+	function iconModel(){
+	  // Cube icon (reads as "model/artifact" better than person icon)
+	  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+		<path d="M8.186.113a1 1 0 0 0-.372 0L2.5 1.385a1 1 0 0 0-.7.957v3.316a1 1 0 0 0 .553.894l5.314 2.657a1 1 0 0 0 .894 0l5.314-2.657a1 1 0 0 0 .553-.894V2.342a1 1 0 0 0-.7-.957L8.186.113zM3 2.9 8 1.65l5 1.25L8 4.15 3 2.9z"/>
+		<path d="M2.8 6.42v3.06c0 .379.214.725.553.894l4.947 2.474V9.79L2.8 6.42zm10.4 0L7.7 9.79v5.058l4.947-2.474a1 1 0 0 0 .553-.894V6.42z"/>
+	  </svg>`;
+	}
+
 
   // ---------- Field normalizers ----------
   function getDatasetTasks(ds){
@@ -427,7 +453,7 @@
             <div class="index-title">${esc(label)}</div>
             <div class="index-meta">
               <div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
-              <div class="dotline"><span>${iconCount()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+              <div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
             </div>
           </div>
         </a>`;
