@@ -607,7 +607,7 @@
   "year": 2023,
   "modalities": ["Thermal images"],
   "tasks": ["Object detection"],
-  "applications": ["Building energy management"],
+  "applications": ["Building energy analysis"],
   "license": "BSD 3-Clause",
   "paper_url": "https://doi.org/10.1016/j.autcon.2022.104690",
   "code_url": "https://github.com/Helmholtz-AI-Energy/TBBRDet",

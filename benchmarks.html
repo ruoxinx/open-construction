@@ -524,21 +524,33 @@
     const shownItems = state.all.slice(0, nextShown);
     state.shown = nextShown;
 
-    el.innerHTML = shownItems.map(x=>{
-      const label = x.label || x.canon;
-      const href = hrefBuilder(x);
-      return `
-        <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
-          ${thumbHtml(x)}
-          <div>
-            <div class="index-title">${esc(label)}</div>
-            <div class="index-meta">
-              <div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
-              <div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
-            </div>
-          </div>
-        </a>`;
-    }).join('');
+	el.innerHTML = shownItems.map(x=>{
+	  const label = x.label || x.canon;
+	  const href = hrefBuilder(x);
+
+	  const metaHtml = (kind === 'app')
+		? `
+		  <div class="index-meta">
+			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+		  </div>
+		`
+		: `
+		  <div class="index-meta">
+			<div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
+			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+		  </div>
+		`;
+
+	  return `
+		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
+		  ${thumbHtml(x)}
+		  <div>
+			<div class="index-title">${esc(label)}</div>
+			${metaHtml}
+		  </div>
+		</a>`;
+	}).join('');
+
 
     const remaining = total - state.shown;
     if(remaining > 0){
@@ -575,21 +587,33 @@
         return;
       }
 
-      el.innerHTML = filtered.map(x=>{
-        const label = x.label || x.canon;
-        const href = hrefBuilder(x);
-        return `
-          <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
-            ${thumbHtml(x)}
-            <div>
-              <div class="index-title">${esc(label)}</div>
-              <div class="index-meta">
-                <div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
-                <div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
-              </div>
-            </div>
-          </a>`;
-      }).join('');
+	el.innerHTML = filtered.map(x=>{
+	  const label = x.label || x.canon;
+	  const href = hrefBuilder(x);
+
+	  const metaHtml = (kind === 'app')
+		? `
+		  <div class="index-meta">
+			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+		  </div>
+		`
+		: `
+		  <div class="index-meta">
+			<div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
+			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+		  </div>
+		`;
+
+	  return `
+		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
+		  ${thumbHtml(x)}
+		  <div>
+			<div class="index-title">${esc(label)}</div>
+			${metaHtml}
+		  </div>
+		</a>`;
+	}).join('');
+
       note.textContent = `Search results: ${filtered.length}.`;
     }
 
