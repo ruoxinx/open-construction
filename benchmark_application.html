@@ -79,8 +79,8 @@
     .search-mini input:focus{ box-shadow:none; }
 
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-	
-		    /* ---- Floating Suggestion Button ---- */
+
+    /* ---- Floating Suggestion Button ---- */
     .issue-btn {
       position: fixed;
       bottom: 20px;
@@ -232,12 +232,11 @@
               <th style="min-width: 320px;">Model</th>
               <th style="width: 90px;">Year</th>
               <th style="min-width: 220px;">Modalities</th>
-              <th style="width: 90px;">Paper</th>
               <th style="width: 90px;">Code</th>
             </tr>
           </thead>
           <tbody id="mBody">
-            <tr><td colspan="5" class="text-muted">Loading…</td></tr>
+            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -358,22 +357,23 @@
       .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
       || '<span class="text-muted">—</span>';
 
+    // IMPORTANT: no model detail page -> link to DOI (fallback to paper_url/paper, then code)
+    const doiUrl  = normStr(m.doi || '');
     const paperUrl = normStr(m.paper_url || m.paper || m.publication_url || '');
     const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
-    const paper = paperUrl ? `<a href="${esc(paperUrl)}" target="_blank" rel="noopener">Paper</a>` : '<span class="text-muted">—</span>';
-    const code  = codeUrl  ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
 
-    const href = m.id ? `models/detail.html?id=${encodeURIComponent(m.id)}` : (paperUrl || codeUrl || '#');
+    const href = doiUrl || paperUrl || codeUrl || '#';
     const link = href && href !== '#'
-      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(title)}</a>`
       : esc(title);
+
+    const code  = codeUrl ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
 
     return `
       <tr data-row="model">
         <td class="fw-semibold">${link}</td>
         <td>${year || '<span class="text-muted">—</span>'}</td>
         <td>${mods}</td>
-        <td class="text-nowrap">${paper}</td>
         <td class="text-nowrap">${code}</td>
       </tr>`;
   }
@@ -412,7 +412,7 @@
 
     document.getElementById('mBody').innerHTML = mMatched.length
       ? mMatched.map(modelRow).join('')
-      : `<tr><td colspan="5" class="text-muted">No models linked to this application yet.</td></tr>`;
+      : `<tr><td colspan="4" class="text-muted">No models linked to this application yet.</td></tr>`;
 
     const input = document.getElementById('tableSearch');
     input.addEventListener('input', (e)=> applyRowFilter(e.target.value));
