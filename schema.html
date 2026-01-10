@@ -264,6 +264,29 @@
     .oc-callout{
       border-radius: 16px;
     }
+	    /* ---- Floating Suggestion Button ---- */
+    .issue-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: #fff;
+      text-decoration: none;
+    }
+	
 </style>
 
   <!-- ✨ Minimal carousel CSS (added; does not change your sizes) -->
@@ -590,54 +613,6 @@
       and provides structured-data guidance aligned with <a href="https://schema.org/" target="_blank" rel="noopener">schema.org</a> where applicable.
     </p>
 
-    <div class="row g-3 mt-2">
-      <div class="col-md-6 col-xl-3">
-        <a class="text-decoration-none" href="#datasets">
-          <div class="card oc-card h-100">
-            <div class="card-body">
-              <div class="oc-kicker">Datasets</div>
-              <div class="h5 mb-1">20 fields</div>
-              <div class="text-muted small">From <code>datasets.json</code></div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <a class="text-decoration-none" href="#models">
-          <div class="card oc-card h-100">
-            <div class="card-body">
-              <div class="oc-kicker">Models</div>
-              <div class="h5 mb-1">15 fields</div>
-              <div class="text-muted small">From <code>models.json</code></div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <a class="text-decoration-none" href="#use-cases">
-          <div class="card oc-card h-100">
-            <div class="card-body">
-              <div class="oc-kicker">Use Cases</div>
-              <div class="h5 mb-1">18 fields</div>
-              <div class="text-muted small">From <code>use-cases.json</code></div>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <a class="text-decoration-none" href="#oer">
-          <div class="card oc-card h-100">
-            <div class="card-body">
-              <div class="oc-kicker">OER</div>
-              <div class="h5 mb-1">15 fields</div>
-              <div class="text-muted small">From <code>oer.json</code></div>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-	<div style="padding: 30px;">
-
     <div class="row g-4">
       <div class="col-12 col-lg-3">
         <div class="card oc-card h-100">
@@ -827,6 +802,12 @@
     </div>
   </div>
 </footer>
+
+<!-- Floating button -->
+<a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml"
+   class="issue-btn" target="_blank" rel="noopener">
+  Issue or Suggestion?
+</a>
 
 <!-- Scripts -->
 <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
@@ -1351,9 +1332,6 @@ marquee.querySelectorAll('.logo img').forEach(img => {
               </thead>
               <tbody>${rows}</tbody>
             </table>
-          </div>
-          <div class="small text-muted mt-2">
-            Note: types and samples are inferred from the catalog; adjust normalization rules if you want strict typing.
           </div>
         </div>
       </div>`;

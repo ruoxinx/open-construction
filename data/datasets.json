@@ -132,7 +132,6 @@
 	"doi": "https://doi.org/10.1016/j.autcon.2019.04.006",
     "year": 2019,
     "data_modality": "Video clips",
-    "num_images": null,
     "num_classes": 7,
     "classes": [
       "Excavators-Idle",
@@ -162,7 +161,6 @@
   "SHWD": {
     "name": "SHWD: SafetyHelmetWearing-Dataset",
 	"authors": "https://github.com/njvisionpower",
-	"doi": null,
     "year": 2019,
     "data_modality": "Ground RGB",
     "num_images": 7581,
@@ -180,7 +178,6 @@
       "Object detection"
     ],
     "license": "MIT",
-    "paper": null,
     "access": "https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset",
     "id": "SHWD",
     "image_url": "assets/img/datasets/SHWD.png"
@@ -290,7 +287,6 @@
     "year": 2020,
     "data_modality": "Aerial RGB",
     "num_images": 1431,
-    "num_classes": null,
     "classes": [
       "position",
       "status",
@@ -421,7 +417,6 @@
 	"doi": "http://dx.doi.org/10.1109/ACCESS.2021.3062547",
     "year": 2021,
     "data_modality": "Point Cloud",
-    "num_images": null,
     "num_classes": 25,
     "classes": [
       "car",
@@ -470,9 +465,6 @@
 	"doi": "https://doi.org/10.1080/01691864.2020.1869586",
     "year": 2021,
     "data_modality": "Ground RGB",
-    "num_images": null,
-    "num_classes": null,
-    "classes": null,
     "resolution": "960×540",
     "annotation_types": [
       "Camera pose"
@@ -780,7 +772,6 @@
     "data_modality": "Ground RGB",
     "num_images": 212000,
     "num_classes": 61,
-    "classes": null,
     "resolution": [
       "128×128",
       "256×256",
@@ -875,9 +866,6 @@
 	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
     "year": 2023,
     "data_modality": "Ground RGB, Point Cloud",
-    "num_images": null,
-    "num_classes": null,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
       "Ground-truth trajectories"
@@ -1143,9 +1131,6 @@
 	"doi": "https://arxiv.org/abs/2407.03684",
     "year": 2023,
     "data_modality": "Ground RGB,Point Cloud",
-    "num_images": null,
-    "num_classes": null,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
       "Not Specified"
@@ -1278,9 +1263,6 @@
     "year": 2025,
     "data_modality": "Ground RGB",
     "num_images": 7416,
-    "num_classes": null,
-    "classes": null,
-    "resolution": null,
     "annotation_types": [
       "object annotations",
       "scene tags",
@@ -1446,7 +1428,6 @@
     "data_modality": "Ground RGB",
     "num_images": 4073,
     "num_classes": 641,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
       "Image-text pairs"
@@ -1630,8 +1611,6 @@
     "year": 2025,
 	"data_modality": "Ground RGB",
     "num_images": 10013,
-    "num_classes": null,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
 	"Image caption",
@@ -1660,8 +1639,6 @@
     "year": 2025,
 	"data_modality": "3D point clouds",
     "num_images": 504,
-    "num_classes": null,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
 	"RGB color",
@@ -1938,8 +1915,6 @@
     "year": 2025,
 	"data_modality": "Ground RGB",
     "num_images": 14000,
-    "num_classes": null,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
 	"2D/3D Human Joints"
@@ -1992,7 +1967,6 @@
 	"data_modality": "Ground RGB, Point Cloud, Thermal",
     "num_images": 5000,
     "num_classes": 64,
-    "classes": null,
     "resolution": "Not Specified",
     "annotation_types": [
 	"Pixel-level masks",
@@ -2065,8 +2039,6 @@
   "year": 2021,
   "data_modality": "Rasterized CAD images",
   "num_images": 250,
-  "num_classes": null,
-  "classes": null,
   "resolution": "Not Specified",
   "annotation_types": [
     "Paired images (architectural and structural layout)",
@@ -2264,7 +2236,6 @@
   "data_modality": "Ground RGB, Synthetic, Depth",
   "num_images": 22000,
   "num_classes": 52,
-  "classes": null,
   "resolution": "1920 × 1080",
   "annotation_types": [
     "Bounding boxes"
@@ -2339,9 +2310,6 @@
   "year": 2026,
   "data_modality": "CAD/BIM",
   "num_images": 1029,
-  "num_classes": null,
-  "classes": null,
-  "resolution": null,
   "annotation_types": [
     "2D floor plans",
 	"parametric 3D BIM"
@@ -2366,9 +2334,6 @@
   "year": 2026,
   "data_modality": "Text",
   "num_images": 200,
-  "num_classes": null,
-  "classes": null,
-  "resolution": null,
   "annotation_types": ["Entity Types", "Relation Triples", "Question–Answer Pairs"],
   "geographical_location": "China",
   "potential_tasks": [
@@ -2391,10 +2356,8 @@
   "doi": "https://doi.org/10.1016/j.autcon.2025.106609",
   "year": 2026,
   "data_modality": "3D Point Cloud",
-  "num_images": null,
   "num_classes": 1,
   "classes": ["piping systems"],
-  "resolution": null,
   "annotation_types": ["Point cloud segmetation", "BIM model"],
   "geographical_location": "China, Canada",
   "potential_tasks": [
@@ -2419,7 +2382,6 @@
   "num_images": 1472,
   "num_classes": 3,
   "classes": ["worker", "hat", "vest"],
-  "resolution": null,
   "annotation_types": ["Bounding boxes"],
   "geographical_location": "Not Specified",
   "potential_tasks": [
@@ -2467,7 +2429,6 @@
   "num_images": "25 scans",
   "num_classes": 14,
   "classes": ["Wall","Slab","Beam","Column","Door","Window","Stair","Railing","Lighting","Furniture", "Sanitary", "Appliance", "Object", "Other"],
-  "resolution": null,
   "annotation_types": ["Semantically labeled point clouds", "BIM model"],
   "geographical_location": "Not Specified",
   "potential_tasks": [
@@ -2514,9 +2475,6 @@
   "year": 2025,
   "data_modality": "Text",
   "num_images": "862 sentences",
-  "num_classes": null,
-  "classes": null,
-  "resolution": null,
   "annotation_types": ["Named entities","Relations"],
   "geographical_location": "England & Finland",
   "potential_tasks": [
@@ -2543,7 +2501,6 @@
   "num_classes": 14,
   "classes": ["bleeding", "crack_alligator", "crack_block", "crack_corner", "crack_edge", "crack_longitudinal", "crack_transverse",
   "patch", "pothole", "ravelling", "rutting", "shoving", "spalling", "unknown"],
-  "resolution": null,
   "annotation_types": ["Defect labels", "Semantic segmentation", "Shapefiles"],
   "geographical_location": "UK",
   "potential_tasks": [
@@ -2569,10 +2526,7 @@
   "data_modality": "Rasterized CAD images",
   "num_images": 5000,
   "num_classes": 83,
-  "classes": null,
-  "resolution": null,
   "annotation_types": ["Pixel-level mask"],
-  "geographical_location": null,
   "potential_tasks": [
     "Floorplan segmentation"
   ],
@@ -2654,10 +2608,6 @@
   "year": 2024,
   "data_modality": "Ground RGB, Aerial RGB",
   "num_images": 995,
-  "num_classes": null,
-  "classes": null,
-  "resolution": null,
-  "annotation_types": null,
   "geographical_location": "Switzerland",
   "potential_tasks": [
     "LOD4 building model generation",
