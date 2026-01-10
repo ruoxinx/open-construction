@@ -1,8 +1,7 @@
-<p align="center">
-  <img src="assets/img/icon.png" alt="OpenConstruction Logo" width="160">
-</p>
-
-# OpenConstruction Open Science Platform
+<h1 align="center">
+  <img src="assets/img/icon.png" alt="OpenConstruction Logo" width="44" style="vertical-align: middle;" />
+  <span style="vertical-align: middle; margin-left: 10px;">OpenConstruction Open Science Platform</span>
+</h1>
 
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
 **distributed development, validation, and discovery** of datasets, AI models,
