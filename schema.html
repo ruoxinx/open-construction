@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="shortcut icon" href="/favicon.ico">
-	<meta name="theme-color" content="#0f2e4b">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,255 +14,73 @@
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Leaflet core -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-
   <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-      --oc-brand-model:#4e6ce8; /* blue used on Home models ring—kept for consistency if needed */
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
 
-    /* Utility highlight (subtle) */
-    .hl{
-      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em; font-weight:700;
-    }
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700; }
 
-    /* Navbar */
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
+    .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
+    .brand-wordmark .oc-open{ font-size:0.75rem; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; margin-bottom:-0.1rem; }
+    .brand-wordmark .oc-construction{ font-size:1.35rem; font-weight:700; letter-spacing:-0.01em; }
     .oc-logo{ height:44px; width:44px; }
-
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
-    .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
-    }
-    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
     .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
     .nav-link.icon-only:hover svg{ opacity:1; }
 
-    /* Hero */
+    .btn-subscribe-icon{ background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
+    .btn-subscribe-icon svg{ fill:var(--oc-accent); }
+
     .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
     .hero .content{ padding:56px 0 44px; text-align:center; }
-    .hero h1{
-      font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
-      margin:.25rem 0 .35rem;
-    }
-    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
+    .hero h1{ font-weight:800; letter-spacing:.2px; line-height:1.12; font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem); margin:.25rem 0 .35rem; }
+    .hero p.lead{ max-width:80ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* Metrics */
-    .metrics{
-      display:flex; gap:1.4rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.15rem 0 .25rem;
-    }
-    .metric{
-      display:flex; align-items:center; gap:1rem;
-      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
-    }
-    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
-    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
-    .metric .ring-val{
-      stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
-      stroke-dasharray:0 999; stroke-dashoffset:0;
-    }
-    /* Different colors per circle, uncomment:
-      .metric[data-kind="contributors"] .ring-val{ stroke: var(--oc-accent); }
-      .metric[data-kind="institutions"] .ring-val{ stroke: var(--oc-brand-model); }
-    */
-    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
-    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
-    .metric .value{ font-weight:800; color:var(--oc-ink); font-size:1.28rem; }
-    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
-
-    /* CTAs */
-    .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
-    .btn-ink{
-      background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
-    }
-    .btn-ink:hover{ filter:brightness(1.05); color:#fff; text-decoration:none; }
-    .btn-accent{
-      background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
-    }
-    .btn-accent:hover{ background:#f7fbff; text-decoration:none; }
-
-    /* Sections & Cards */
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
-    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
 
-    /* People cards */
-    .person-card{ transition:transform .12s ease; }
-    .person-card:hover{ transform:translateY(-1px); }
-    .person-card .card-body{ padding:1rem 1.1rem; }
-    .headshot{
-      width:86px; height:86px; object-fit:cover; border-radius:50%;
-      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
-    }
-    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
-    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
-    .person-card .affil{ font-size:.92rem; }
+    .note{ background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:12px; padding:12px 14px; color:var(--oc-subtle); }
+    .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:.92em; background:#fff; border:1px solid var(--oc-border); border-radius:10px; padding:.2rem .45rem; color:var(--oc-ink); white-space:nowrap; }
+    pre.code{ background:#0b1726; color:#eaf2ff; border-radius:12px; padding:12px 12px; overflow:auto; border:1px solid rgba(255,255,255,.08); box-shadow:0 8px 18px rgba(15,46,75,.08); margin:0; }
 
-    /* Logo wall */
-    .logo-wall{
-      display:grid; gap:22px; align-items:center; justify-items:center;
-      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
-    }
-    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
-    .logo-wall img:hover{ transform:scale(1.03); }
-
-    /* Map */
-    #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
-
-    /* Focus */
+    footer{ border-top:1px solid var(--oc-border); margin-top:44px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-
-    @media (max-width: 991.98px){
-      .navbar-brand .brand-wordmark{ font-size:1.15rem; }
-      .hero .content{ padding:40px 0 32px; }
-    }
-	
-	/* Yellow subscribe bell */
-	.btn-subscribe-icon{
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent); /* use your yellow accent */
-	}
-	.btn-subscribe-icon:hover svg{
-	  filter: brightness(1.15);
-	}
-	
-	.logo-marquee {
-	position: relative;
-	overflow: hidden;
-	border: 1px solid var(--oc-border);
-	border-radius: var(--oc-radius);
-	background: #fff;
-	box-shadow: var(--oc-shadow);
-	display: grid;
-	gap: 4px;
-	padding: 8px 0;
-	}
-
-	.row-marquee { position: relative; overflow: hidden; }
-
-	.logo-track {
-	display: flex;
-	align-items: center;
-	gap: 28px;
-	padding: 6px 12px;
-	width: max-content;
-	will-change: transform;
-	}
-	.logo-marquee:hover .logo-track { animation-play-state: paused; }
-
-	.logo {
-	flex: 0 0 auto;
-	display: grid;
-	place-items: center;
-	height: 84px;
-	width: 168px;
-	overflow: hidden;
-	position: relative;
-	}
-	.logo::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(90deg, #f6f8fb 0%, #eef3f8 50%, #f6f8fb 100%);
-	background-size: 200% 100%;
-	animation: oc-skeleton 1.2s ease-in-out infinite;
-	}
-	.logo.loaded::before { opacity: 0; transition: opacity .2s ease; }
-
-	.logo img {
-	max-height: 60px;
-	max-width: 150px;
-	width: auto;
-	height: auto;
-	object-fit: contain;
-	filter: grayscale(8%);
-	transition: transform .16s ease, opacity .2s ease;
-	display: block;
-	opacity: 0;
-	}
-	.logo.loaded img { opacity: 1; }
-	.logo img:hover { transform: scale(1.03); }
-
-	@media (min-width: 992px) {
-	.logo { height: 92px; width: 184px; }
-	.logo img { max-height: 66px; max-width: 160px; }
-	}
-
-	@keyframes oc-marquee-left {
-	from { transform: translateX(0); }
-	to { transform: translateX(-50%); }
-	}
-	@keyframes oc-marquee-right {
-	from { transform: translateX(-50%); }
-	to { transform: translateX(0); }
-	}
-	@keyframes oc-skeleton {
-	0% { background-position: 0% 0; }
-	100% { background-position: 200% 0; }
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-	.logo-track { animation: none; }
-	}
+    @media (max-width: 991.98px){ .hero .content{ padding:40px 0 32px; } }
   
 
-    /* --- Metadata schema helpers --- */
+    /* --- schema page additions --- */
     .oc-pre{
-      background: rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.08);
+      background: #0f172a;
+      color: #e5e7eb;
       border-radius: 14px;
-      padding: 12px 14px;
-      overflow-x: auto;
-      margin: 0;
+      padding: 14px 14px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      overflow: auto;
+      border: 1px solid rgba(15,23,42,.18);
     }
-    .oc-callout{
-      border-radius: 16px;
+    .oc-pre code{ color: inherit; }
+    .oc-table thead th{
+      background: rgba(16, 185, 129, 0.06);
+      border-bottom: 1px solid rgba(30,41,59,.12);
+      font-weight: 700;
     }
+    .oc-table td, .oc-table th{
+      border-color: rgba(30,41,59,.10);
+    }
+	
 	    /* ---- Floating Suggestion Button ---- */
     .issue-btn {
       position: fixed;
@@ -286,507 +103,544 @@
       color: #fff;
       text-decoration: none;
     }
-	
-</style>
 
-  <!-- ✨ Minimal carousel CSS (added; does not change your sizes) -->
-  <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
-    :root{
-      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
-      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
-      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-      --oc-brand-model:#4e6ce8; /* blue used on Home models ring—kept for consistency if needed */
-    }
-    html,body{ background:var(--oc-bg); color:var(--oc-text); }
-    a{ color:var(--oc-link); }
-    .oc-container{ max-width:1080px; }
-
-    /* Utility highlight (subtle) */
-    .hl{
-      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em; font-weight:700;
-    }
-
-    /* Navbar */
-    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
-    .oc-logo{ height:44px; width:44px; }
-
-    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
-    .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
-    }
-    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
-    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
-    .nav-link.icon-only:hover svg{ opacity:1; }
-
-    /* Hero */
-    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
-    .hero .content{ padding:56px 0 44px; text-align:center; }
-    .hero h1{
-      font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
-      margin:.25rem 0 .35rem;
-    }
-    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
-
-    /* Metrics */
-    .metrics{
-      display:flex; gap:1.4rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.15rem 0 .25rem;
-    }
-    .metric{
-      display:flex; align-items:center; gap:1rem;
-      background:transparent; border:none; border-radius:0; padding:0; box-shadow:none;
-    }
-    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
-    .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
-    .metric .ring-val{
-      stroke:var(--oc-accent); stroke-width:4; stroke-linecap:round;
-      stroke-dasharray:0 999; stroke-dashoffset:0;
-    }
-    /* Different colors per circle, uncomment:
-      .metric[data-kind="contributors"] .ring-val{ stroke: var(--oc-accent); }
-      .metric[data-kind="institutions"] .ring-val{ stroke: var(--oc-brand-model); }
-    */
-    .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
-    .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
-    .metric .value{ font-weight:800; color:var(--oc-ink); font-size:1.28rem; }
-    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
-
-    /* CTAs */
-    .cta-row{ display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
-    .btn-ink{
-      background:var(--oc-ink); color:#fff; border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
-    }
-    .btn-ink:hover{ filter:brightness(1.05); color:#fff; text-decoration:none; }
-    .btn-accent{
-      background:#fff; color:var(--oc-ink); border:1px solid var(--oc-ink); border-radius:999px;
-      padding:.55rem 1rem; font-weight:700; text-decoration:none;
-    }
-    .btn-accent:hover{ background:#f7fbff; text-decoration:none; }
-
-    /* Sections & Cards */
-    .oc-section{ margin-top:34px; }
-    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
-    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
-    .oc-card-body{ padding:1.25rem; }
-    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
-
-    /* People cards */
-    .person-card{ transition:transform .12s ease; }
-    .person-card:hover{ transform:translateY(-1px); }
-    .person-card .card-body{ padding:1rem 1.1rem; }
-    .headshot{
-      width:86px; height:86px; object-fit:cover; border-radius:50%;
-      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
-    }
-    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
-    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
-    .person-card .affil{ font-size:.92rem; }
-
-    /* Logo wall */
-    .logo-wall{
-      display:grid; gap:22px; align-items:center; justify-items:center;
-      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      padding:8px 6px; border:1px solid var(--oc-border); border-radius:var(--oc-radius); background:#fff;
-    }
-    .logo-wall img{ max-height:60px; width:auto; display:block; object-fit:contain; filter:grayscale(8%); transition:transform .16s ease; }
-    .logo-wall img:hover{ transform:scale(1.03); }
-
-    /* Map */
-    #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
-
-    /* Focus */
-    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-
-    @media (max-width: 991.98px){
-      .navbar-brand .brand-wordmark{ font-size:1.15rem; }
-      .hero .content{ padding:40px 0 32px; }
-    }
-	
-	/* Yellow subscribe bell */
-	.btn-subscribe-icon{
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent); /* use your yellow accent */
-	}
-	.btn-subscribe-icon:hover svg{
-	  filter: brightness(1.15);
-	}
-	
-	.logo-marquee {
-	position: relative;
-	overflow: hidden;
-	border: 1px solid var(--oc-border);
-	border-radius: var(--oc-radius);
-	background: #fff;
-	box-shadow: var(--oc-shadow);
-	display: grid;
-	gap: 4px;
-	padding: 8px 0;
-	}
-
-	.row-marquee { position: relative; overflow: hidden; }
-
-	.logo-track {
-	display: flex;
-	align-items: center;
-	gap: 28px;
-	padding: 6px 12px;
-	width: max-content;
-	will-change: transform;
-	}
-	.logo-marquee:hover .logo-track { animation-play-state: paused; }
-
-	.logo {
-	flex: 0 0 auto;
-	display: grid;
-	place-items: center;
-	height: 84px;
-	width: 168px;
-	overflow: hidden;
-	position: relative;
-	}
-	.logo::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(90deg, #f6f8fb 0%, #eef3f8 50%, #f6f8fb 100%);
-	background-size: 200% 100%;
-	animation: oc-skeleton 1.2s ease-in-out infinite;
-	}
-	.logo.loaded::before { opacity: 0; transition: opacity .2s ease; }
-
-	.logo img {
-	max-height: 60px;
-	max-width: 150px;
-	width: auto;
-	height: auto;
-	object-fit: contain;
-	filter: grayscale(8%);
-	transition: transform .16s ease, opacity .2s ease;
-	display: block;
-	opacity: 0;
-	}
-	.logo.loaded img { opacity: 1; }
-	.logo img:hover { transform: scale(1.03); }
-
-	@media (min-width: 992px) {
-	.logo { height: 92px; width: 184px; }
-	.logo img { max-height: 66px; max-width: 160px; }
-	}
-
-	@keyframes oc-marquee-left {
-	from { transform: translateX(0); }
-	to { transform: translateX(-50%); }
-	}
-	@keyframes oc-marquee-right {
-	from { transform: translateX(-50%); }
-	to { transform: translateX(0); }
-	}
-	@keyframes oc-skeleton {
-	0% { background-position: 0% 0; }
-	100% { background-position: 200% 0; }
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-	.logo-track { animation: none; }
-	}
-  
-
-    /* --- Metadata schema helpers --- */
-    .oc-pre{
-      background: rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 14px;
-      padding: 12px 14px;
-      overflow-x: auto;
-      margin: 0;
-    }
-    .oc-callout{
-      border-radius: 16px;
-    }
-</style>
-
+  </style>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
-  <div class="container oc-container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
-    <span class="brand-wordmark">
-      <span class="oc-open">OpenConstruction</span>
-      <span class="oc-construction">Open Science</span>
-    </span>
+  <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+    <div class="container oc-container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+        <span class="brand-wordmark">
+          <span class="oc-open">OpenConstruction</span>
+          <span class="oc-construction">Open Science</span>
+        </span>
+      </a>
 
-    </a>
-    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="deployments.html" aria-current="page">Use Cases</a></li>
-		<li class="nav-item"><a class="nav-link plain" href="oer.html" data-route="deployments">OERs</a></li>
-		<li class="nav-item dropdown">
-		<a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
-		   data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
-		<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
-		  <li><a class="dropdown-item" href="tools.html">Tools</a></li>
-		  <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-		  <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
-		</ul>
-		</li>
-        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
-        <li class="nav-item">
-          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
-             aria-label="OpenConstruction Datasets on GitHub" title="View on GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
-                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
-                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-            </svg>
-          </a>
-        </li>
-		
-		<!-- Subscribe bell -->
-		<li class="nav-item">
-		<button type="button"
-				class="nav-link px-2 icon-only btn-subscribe-icon"
-				data-bs-toggle="modal" data-bs-target="#subscribeModal"
-				aria-label="Subscribe for updates" title="Subscribe">
-		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-					 7 0 0 0 8.5 2z"/>
-		  </svg>
-		</button>		
-      </ul>
+      <div class="collapse navbar-collapse" id="navbarsExample">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+		  <li class="nav-item"><a class="nav-link plain" href="schema.html">Schema</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="deployments.html">Use Cases</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="oer.html">OERs</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link plain dropdown-toggle active" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+              <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+              <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+              <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+
+          <li class="nav-item">
+            <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" aria-label="OpenConstruction on GitHub" title="View on GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                         0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                         0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                         0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                         1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                         0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                         8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              </svg>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon" data-bs-toggle="modal" data-bs-target="#subscribeModal" aria-label="Subscribe for updates" title="Subscribe">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+                <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
+                         0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
+                         1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
+                         7 0 0 0 8.5 2z"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-  <main class="container my-4">
+
+
+  <main class="container oc-container">
+
+  <section class="oc-section">
     <div class="oc-kicker mb-2">Metadata Schema</div>
-    <h1 class="mb-3">OpenConstruction Metadata Schema</h1>
-    <p class="text-muted mb-4">
-      This page documents the metadata fields used by OpenConstruction catalogs (datasets, models, use cases, and open educational resources),
-      and provides structured-data guidance aligned with <a href="https://schema.org/" target="_blank" rel="noopener">schema.org</a> where applicable.
+    <h1 class="oc-title">OpenConstruction metadata fields</h1>
+    <p class="oc-lead">
+      This page documents the complete metadata fields currently used in OpenConstruction catalogs:
+      <strong>Datasets</strong>, <strong>Models</strong>, <strong>Use Cases</strong>, and <strong>Open Educational Resources (OER)</strong>.
+      It also shows how to publish structured data (JSON-LD) that aligns with
+      <a href="https://schema.org/" target="_blank" rel="noopener">schema.org</a>.
     </p>
 
-    <div class="row g-4">
-      <div class="col-12 col-lg-3">
+    <div class="alert oc-alert mt-3">
+      <div class="small">
+        <strong>Note:</strong> Some OpenConstruction fields (e.g., <code>added_date</code>, <code>contributor</code>, <code>num_images</code>)
+        do not have a single dedicated schema.org property. For structured data, publish them via
+        <code>additionalProperty</code> (PropertyValue) or <code>variableMeasured</code>, and keep the raw fields in your JSON catalog.
+      </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+      <div class="col-md-6 col-xl-3">
+        <a class="text-decoration-none" href="#datasets">
+          <div class="card oc-card h-100">
+            <div class="card-body">
+              <div class="oc-kicker">Datasets</div>
+              <div class="h5 mb-1">20 fields</div>
+              <div class="text-muted small">From <code>datasets.json</code></div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <a class="text-decoration-none" href="#models">
+          <div class="card oc-card h-100">
+            <div class="card-body">
+              <div class="oc-kicker">Models</div>
+              <div class="h5 mb-1">15 fields</div>
+              <div class="text-muted small">From <code>models.json</code></div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <a class="text-decoration-none" href="#use-cases">
+          <div class="card oc-card h-100">
+            <div class="card-body">
+              <div class="oc-kicker">Use Cases</div>
+              <div class="h5 mb-1">36 fields</div>
+              <div class="text-muted small">From <code>use-cases.json</code></div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <a class="text-decoration-none" href="#oer">
+          <div class="card oc-card h-100">
+            <div class="card-body">
+              <div class="oc-kicker">OER</div>
+              <div class="h5 mb-1">15 fields</div>
+              <div class="text-muted small">From <code>oer.json</code></div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="datasets" class="oc-section">
+    <div class="oc-kicker mb-2">Datasets</div>
+    <h2 class="oc-h2">Dataset fields in <code>datasets.json</code></h2>
+    <p class="text-muted mb-3">Structured data recommendation: <code>@type: Dataset</code> with <code>creator</code>, <code>license</code>, <code>keywords</code>, <code>identifier</code>, and <code>distribution</code> where applicable.</p>
+    
+<div class="table-responsive">
+<table class="table table-sm align-middle oc-table">
+  <thead>
+    <tr>
+      <th style="width: 22%">Field</th>
+      <th style="width: 10%">Required</th>
+      <th style="width: 28%">Schema.org mapping</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td><code>access</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Direct download URL or access page.</td></tr>
+<tr><td><code>added_date</code></td><td>No</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
+<tr><td><code>annotation_types</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Label/annotation types (e.g., bbox, segmentation).</td></tr>
+<tr><td><code>authors</code></td><td>No</td><td><span class='text-muted'>schema.org:creator</span></td><td>Creators/authors of the dataset (string or list).</td></tr>
+<tr><td><code>classes</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>List of class names.</td></tr>
+<tr><td><code>contributor</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>GitHub handle or name of submitter.</td></tr>
+<tr><td><code>contributor_url</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Profile/org URL for submitter.</td></tr>
+<tr><td><code>data_modality</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Primary modality (e.g., images, point clouds).</td></tr>
+<tr><td><code>doi</code></td><td>No</td><td><span class='text-muted'>schema.org:identifier</span></td><td>DOI if available.</td></tr>
+<tr><td><code>geographical_location</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>Location/region covered (if relevant).</td></tr>
+<tr><td><code>id</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Stable short identifier used in URLs and JSON key.</td></tr>
+<tr><td><code>image_url</code></td><td>No</td><td><span class='text-muted'>schema.org:image</span></td><td>Preview/thumbnail URL.</td></tr>
+<tr><td><code>license</code></td><td>Yes</td><td><span class='text-muted'>schema.org:license</span></td><td>License name or SPDX-like identifier.</td></tr>
+<tr><td><code>name</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Human-readable dataset name.</td></tr>
+<tr><td><code>num_classes</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>Number of classes/labels.</td></tr>
+<tr><td><code>num_images</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>Number of images (if applicable).</td></tr>
+<tr><td><code>paper</code></td><td>Yes</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Primary paper or landing page URL for the dataset.</td></tr>
+<tr><td><code>potential_tasks</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Supported tasks (e.g., detection, segmentation).</td></tr>
+<tr><td><code>resolution</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>Spatial/image resolution info (free text).</td></tr>
+<tr><td><code>year</code></td><td>Yes</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Publication/release year.</td></tr></tbody></table></div>
+
+    <div class="row g-3 mt-3">
+      <div class="col-lg-6">
         <div class="card oc-card h-100">
           <div class="card-body">
-            <div class="fw-semibold mb-2">On this page</div>
-            <div class="d-grid gap-2">
-              <a class="btn btn-outline-secondary btn-sm" href="#datasets">Datasets</a>
-              <a class="btn btn-outline-secondary btn-sm" href="#models">Models</a>
-              <a class="btn btn-outline-secondary btn-sm" href="#usecases">Use Cases</a>
-              <a class="btn btn-outline-secondary btn-sm" href="#oer">Open Educational Resources</a>
-              <a class="btn btn-outline-secondary btn-sm" href="#jsonld">JSON-LD Examples</a>
-            </div>
-            <hr class="my-3"/>
-            <div class="small text-muted">
-              Tip: fields with <code>[]</code> indicate arrays. Nested fields use dot-notation (e.g., <code>organizations[].name</code>).
-            </div>
+            <div class="oc-kicker mb-2">Example catalog record</div>
+            <pre class="oc-pre"><code>{
+  &quot;id&quot;: &quot;CISI&quot;,
+  &quot;name&quot;: &quot;Critical Infrastructure Sensor Imagery (CISI)&quot;,
+  &quot;year&quot;: 2025,
+  &quot;authors&quot;: [
+    &quot;First Last&quot;
+  ],
+  &quot;doi&quot;: &quot;10.xxxx/xxxx&quot;,
+  &quot;paper&quot;: &quot;https://example.org/paper&quot;,
+  &quot;license&quot;: &quot;CC BY 4.0&quot;,
+  &quot;access&quot;: &quot;https://example.org/download&quot;,
+  &quot;data_modality&quot;: [&quot;image&quot;],
+  &quot;annotation_types&quot;: [&quot;bbox&quot;],
+  &quot;potential_tasks&quot;: [&quot;detection&quot;],
+  &quot;geographical_location&quot;: &quot;United States&quot;,
+  &quot;resolution&quot;: &quot;1024x768&quot;,
+  &quot;num_images&quot;: 12345,
+  &quot;num_classes&quot;: 5,
+  &quot;classes&quot;: [&quot;bridge&quot],
+  &quot;image_url&quot;: &quot;https://example.org/preview.png&quot;,
+  &quot;added_date&quot;: &quot;2026-01-09&quot;,
+  &quot;contributor&quot;: &quot;@someone&quot;,
+  &quot;contributor_url&quot;: &quot;https://github.com/someone&quot;
+}</code></pre>
           </div>
         </div>
       </div>
-
-      <div class="col-12 col-lg-9">
-        <section id="datasets" class="mb-4">
-          <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
-            <h2 class="h4 mb-0">Datasets</h2>
-            <span id="dsCount" class="badge text-bg-secondary">Loading…</span>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Recommended structured-data type: <code>Dataset</code> (schema.org). Use JSON-LD in the dataset detail page.
-          </p>
-          <div id="datasetsTable"></div>
-        </section>
-
-        <section id="models" class="mb-4">
-          <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
-            <h2 class="h4 mb-0">Models</h2>
-            <span id="modelCount" class="badge text-bg-secondary">Loading…</span>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Recommended structured-data type: <code>SoftwareSourceCode</code> (or <code>SoftwareApplication</code> when appropriate).
-          </p>
-          <div id="modelsTable"></div>
-        </section>
-
-        <section id="usecases" class="mb-4">
-          <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
-            <h2 class="h4 mb-0">Use Cases</h2>
-            <span id="ucCount" class="badge text-bg-secondary">Loading…</span>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Recommended structured-data type: <code>CreativeWork</code> (or <code>Article</code>) with links to <code>Dataset</code> and/or <code>SoftwareSourceCode</code>.
-          </p>
-          <div id="usecasesTable"></div>
-        </section>
-
-        <section id="oer" class="mb-4">
-          <div class="d-flex align-items-baseline justify-content-between flex-wrap gap-2">
-            <h2 class="h4 mb-0">Open Educational Resources</h2>
-            <span id="oerCount" class="badge text-bg-secondary">Loading…</span>
-          </div>
-          <p class="text-muted mt-2 mb-3">
-            Recommended structured-data type: <code>LearningResource</code> (schema.org), optionally with <code>CreativeWork</code> properties.
-          </p>
-          <div id="oerTable"></div>
-        </section>
-
-        <section id="jsonld" class="mb-2">
-          <h2 class="h4">JSON-LD Examples</h2>
-          <p class="text-muted mb-3">
-            Replace values with your record metadata.
-          </p>
-
-          <div class="accordion" id="jsonldExamples">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="hDs">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cDs" aria-expanded="true" aria-controls="cDs">
-                  Dataset (schema.org/Dataset)
-                </button>
-              </h2>
-              <div id="cDs" class="accordion-collapse collapse show" aria-labelledby="hDs" data-bs-parent="#jsonldExamples">
-                <div class="accordion-body">
-                  <pre class="oc-pre"><code>{
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "…",
-  "description": "…",
-  "url": "…",
-  "identifier": "…",
-  "license": "…",
-  "creator": [{"@type": "Person", "name": "…"}],
-  "keywords": ["…"],
-  "datePublished": "YYYY",
-  "citation": "…",
-  "isAccessibleForFree": true
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example JSON-LD (Dataset)</div>
+            <pre class="oc-pre"><code>{
+  &quot;@context&quot;: &quot;https://schema.org&quot;,
+  &quot;@type&quot;: &quot;Dataset&quot;,
+  &quot;name&quot;: &quot;Critical Infrastructure Sensor Imagery (CISI)&quot;,
+  &quot;description&quot;: &quot;OpenConstruction dataset catalog entry.&quot;,
+  &quot;identifier&quot;: &quot;CISI&quot;,
+  &quot;creator&quot;: [{&quot;@type&quot;:&quot;Person&quot;,&quot;name&quot;:&quot;First Last&quot;}],
+  &quot;datePublished&quot;: &quot;2025&quot;,
+  &quot;license&quot;: &quot;CC BY 4.0&quot;,
+  &quot;url&quot;: &quot;https://www.openconstruction.org/datasets/detail.html?id=CISI&quot;,
+  &quot;sameAs&quot;: &quot;https://example.org/paper&quot;,
+  &quot;keywords&quot;: [&quot;image&quot;,&quot;detection&quot;,&quot;bbox&quot;],
+  &quot;distribution&quot;: [{
+    &quot;@type&quot;: &quot;DataDownload&quot;,
+    &quot;contentUrl&quot;: &quot;https://example.org/download&quot;
+  }],
+  &quot;additionalProperty&quot;: [
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;num_images&quot;,&quot;value&quot;:&quot;12345&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;num_classes&quot;,&quot;value&quot;:&quot;5&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;classes&quot;,&quot;value&quot;:&quot;bridge, road, rail, pipeline, powerline&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added_date&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
+  ]
 }</code></pre>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="hModel">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cModel" aria-expanded="false" aria-controls="cModel">
-                  Model (schema.org/SoftwareSourceCode)
-                </button>
-              </h2>
-              <div id="cModel" class="accordion-collapse collapse" aria-labelledby="hModel" data-bs-parent="#jsonldExamples">
-                <div class="accordion-body">
-                  <pre class="oc-pre"><code>{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "…",
-  "description": "…",
-  "codeRepository": "…",
-  "programmingLanguage": "…",
-  "license": "…",
-  "creator": [{"@type": "Person", "name": "…"}],
-  "keywords": ["…"],
-  "datePublished": "YYYY"
-}</code></pre>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="hUC">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cUC" aria-expanded="false" aria-controls="cUC">
-                  Use case (schema.org/CreativeWork)
-                </button>
-              </h2>
-              <div id="cUC" class="accordion-collapse collapse" aria-labelledby="hUC" data-bs-parent="#jsonldExamples">
-                <div class="accordion-body">
-                  <pre class="oc-pre"><code>{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "…",
-  "description": "…",
-  "url": "…",
-  "keywords": ["…"],
-  "about": [{"@type": "Thing", "name": "…"}],
-  "isBasedOn": ["… (dataset/model URL) …"],
-  "datePublished": "YYYY-MM-DD"
-}</code></pre>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="hOER">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cOER" aria-expanded="false" aria-controls="cOER">
-                  OER (schema.org/LearningResource)
-                </button>
-              </h2>
-              <div id="cOER" class="accordion-collapse collapse" aria-labelledby="hOER" data-bs-parent="#jsonldExamples">
-                <div class="accordion-body">
-                  <pre class="oc-pre"><code>{
-  "@context": "https://schema.org",
-  "@type": "LearningResource",
-  "name": "…",
-  "description": "…",
-  "url": "…",
-  "license": "…",
-  "inLanguage": "…",
-  "learningResourceType": "…",
-  "keywords": ["…"],
-  "creator": [{"@type": "Organization", "name": "…"}]
-}</code></pre>
-                </div>
-              </div>
-            </div>
-
+            <div class="text-muted small">Tip: embed this JSON-LD in the dataset detail page <code>&lt;head&gt;</code>.</div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <section id="models" class="oc-section">
+    <div class="oc-kicker mb-2">Models</div>
+    <h2 class="oc-h2">Model fields in <code>models.json</code></h2>
+    <p class="text-muted mb-3">Structured data recommendation: treat a model as <code>SoftwareSourceCode</code> (if code-first) or <code>CreativeWork</code> (if publication-first). Use <code>keywords</code> for modalities/tasks.</p>
+    
+<div class="table-responsive">
+<table class="table table-sm align-middle oc-table">
+  <thead>
+    <tr>
+      <th style="width: 22%">Field</th>
+      <th style="width: 10%">Required</th>
+      <th style="width: 28%">Schema.org mapping</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td><code>abstract</code></td><td>No</td><td><span class='text-muted'>schema.org:description</span></td><td>Short description/summary.</td></tr>
+<tr><td><code>added_date</code></td><td>No</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
+<tr><td><code>applications</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Application domains/use cases.</td></tr>
+<tr><td><code>authors</code></td><td>No</td><td><span class='text-muted'>schema.org:creator</span></td><td>Creators/authors of the model.</td></tr>
+<tr><td><code>code_url</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Code repository URL.</td></tr>
+<tr><td><code>contributor</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>GitHub handle or name of submitter.</td></tr>
+<tr><td><code>contributor_url</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Profile/org URL for submitter.</td></tr>
+<tr><td><code>id</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Stable short identifier used in URLs.</td></tr>
+<tr><td><code>license</code></td><td>Yes</td><td><span class='text-muted'>schema.org:license</span></td><td>Model/license terms.</td></tr>
+<tr><td><code>modalities</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Input modalities (e.g., image, text, point cloud).</td></tr>
+<tr><td><code>paper_url</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Paper or preprint URL.</td></tr>
+<tr><td><code>tasks</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Supported tasks (e.g., segmentation, QA).</td></tr>
+<tr><td><code>thumbnail</code></td><td>No</td><td><span class='text-muted'>schema.org:image</span></td><td>Preview image URL.</td></tr>
+<tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Model name/title.</td></tr>
+<tr><td><code>year</code></td><td>Yes</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Release/publication year.</td></tr></tbody></table></div>
+
+    <div class="row g-3 mt-3">
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example catalog record</div>
+            <pre class="oc-pre"><code>{
+  &quot;id&quot;: &quot;bim-llm&quot;,
+  &quot;title&quot;: &quot;BIM-QA LLM&quot;,
+  &quot;year&quot;: 2025,
+  &quot;authors&quot;: [&quot;First Last&quot;],
+  &quot;abstract&quot;: &quot;A language model fine-tuned for BIM question answering.&quot;,
+  &quot;paper_url&quot;: &quot;https://example.org/paper&quot;,
+  &quot;code_url&quot;: &quot;https://github.com/org/repo&quot;,
+  &quot;license&quot;: &quot;Apache-2.0&quot;,
+  &quot;modalities&quot;: [&quot;text&quot;],
+  &quot;tasks&quot;: [&quot;question answering&quot;],
+  &quot;applications&quot;: [&quot;BIM compliance checking&quot;],
+  &quot;thumbnail&quot;: &quot;https://example.org/thumb.png&quot;,
+  &quot;added_date&quot;: &quot;2026-01-09&quot;,
+  &quot;contributor&quot;: &quot;@someone&quot;,
+  &quot;contributor_url&quot;: &quot;https://github.com/someone&quot;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example JSON-LD (SoftwareSourceCode)</div>
+            <pre class="oc-pre"><code>{
+  &quot;@context&quot;:&quot;https://schema.org&quot;,
+  &quot;@type&quot;:&quot;SoftwareSourceCode&quot;,
+  &quot;name&quot;:&quot;BIM-QA LLM&quot;,
+  &quot;description&quot;:&quot;A language model fine-tuned for BIM question answering.&quot;,
+  &quot;codeRepository&quot;:&quot;https://github.com/org/repo&quot;,
+  &quot;license&quot;:&quot;Apache-2.0&quot;,
+  &quot;datePublished&quot;:&quot;2025&quot;,
+  &quot;url&quot;:&quot;https://www.openconstruction.org/models/detail.html?id=bim-llm&quot;,
+  &quot;sameAs&quot;:&quot;https://example.org/paper&quot;,
+  &quot;keywords&quot;:[&quot;LLM&quot;,&quot;text&quot;,&quot;question answering&quot;,&quot;BIM compliance checking&quot;],
+  &quot;additionalProperty&quot;:[
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added_date&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="use-cases" class="oc-section">
+    <div class="oc-kicker mb-2">Use Cases</div>
+    <h2 class="oc-h2">Use case fields in <code>use-cases.json</code></h2>
+    <p class="text-muted mb-3">Structured data recommendation: use <code>CreativeWork</code> (or <code>CaseStudy</code> when appropriate) and attach evidence links, organizations, and outcomes via <code>additionalProperty</code>.</p>
+    
+<div class="table-responsive">
+<table class="table table-sm align-middle oc-table">
+  <thead>
+    <tr>
+      <th style="width: 22%">Field</th>
+      <th style="width: 10%">Required</th>
+      <th style="width: 28%">Schema.org mapping</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td><code>added_date</code></td><td>Yes</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
+<tr><td><code>ai_tech</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>AI techniques used (e.g., CV, LLMs).</td></tr>
+<tr><td><code>applications</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Application areas (e.g., safety monitoring).</td></tr>
+<tr><td><code>companies</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company list (name/url).</td></tr>
+<tr><td><code>companies[].name</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company name.</td></tr>
+<tr><td><code>companies[].url</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company website URL.</td></tr>
+<tr><td><code>contributor</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>GitHub handle or name of submitter.</td></tr>
+<tr><td><code>contributor_url</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Profile/org URL for submitter.</td></tr>
+<tr><td><code>data_modalities</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Data types/modalities used.</td></tr>
+<tr><td><code>deployment_stage</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Stage of deployment (pilot, production).</td></tr>
+<tr><td><code>evidence_level</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Strength of evidence (case study, peer-reviewed, etc.).</td></tr>
+<tr><td><code>geography</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Geographic scope/region.</td></tr>
+<tr><td><code>license</code></td><td>No</td><td><span class='text-muted'>schema.org:license</span></td><td>License/terms for linked assets (if applicable).</td></tr>
+<tr><td><code>links</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>External links (paper, code, demo, etc.).</td></tr>
+<tr><td><code>links.additional</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Other relevant URL(s).</td></tr>
+<tr><td><code>links.code</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Code repository URL(s).</td></tr>
+<tr><td><code>links.doi</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>—</td></tr>
+<tr><td><code>links.paper</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Paper URL(s).</td></tr>
+<tr><td><code>links.source</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>—</td></tr>
+<tr><td><code>media</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>Media assets (type/url).</td></tr>
+<tr><td><code>media[].alt</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>—</td></tr>
+<tr><td><code>media[].type</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>Media type (image, video, etc.).</td></tr>
+<tr><td><code>media[].url</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>Media URL.</td></tr>
+<tr><td><code>notes</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Curator notes.</td></tr>
+<tr><td><code>organizations</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Organizations involved.</td></tr>
+<tr><td><code>outcomes</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Outcome metrics (value/metric/note).</td></tr>
+<tr><td><code>outcomes[].metric</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Outcome metric name.</td></tr>
+<tr><td><code>outcomes[].note</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Notes/assumptions for the metric.</td></tr>
+<tr><td><code>outcomes[].value</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Outcome value.</td></tr>
+<tr><td><code>phase</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Project lifecycle phase (e.g., design, construction).</td></tr>
+<tr><td><code>provider</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Technology provider (if applicable).</td></tr>
+<tr><td><code>stakeholders</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Primary stakeholder groups.</td></tr>
+<tr><td><code>summary</code></td><td>Yes</td><td><span class='text-muted'>schema.org:description</span></td><td>Short description of the use case.</td></tr>
+<tr><td><code>tags</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Tag list.</td></tr>
+<tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Use case title.</td></tr>
+<tr><td><code>year</code></td><td>No</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Year of the referenced deployment/publication.</td></tr></tbody></table></div>
+
+    <div class="row g-3 mt-3">
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example catalog record</div>
+            <pre class="oc-pre"><code>{
+  &quot;title&quot;: &quot;Jobsite PPE compliance monitoring&quot;,
+  &quot;summary&quot;: &quot;Computer vision detects PPE compliance on live site cameras.&quot;,
+  &quot;phase&quot;: &quot;Construction&quot;,
+  &quot;stakeholders&quot;: [&quot;General contractor&quot;],
+  &quot;ai_tech&quot;: [&quot;Computer vision&quot;],
+  &quot;applications&quot;: [&quot;Safety monitoring&quot;],
+  &quot;data_modalities&quot;: [&quot;Video&quot;],
+  &quot;deployment_stage&quot;: &quot;Pilot&quot;,
+  &quot;evidence_level&quot;: &quot;Case study&quot;,
+  &quot;geography&quot;: &quot;United States&quot;,
+  &quot;companies&quot;: [
+    {
+      &quot;name&quot;: &quot;Example Co.&quot;,
+      &quot;url&quot;: &quot;https://example.com&quot;
+    }
+  ],
+  &quot;provider&quot;: &quot;Example CV Vendor&quot;,
+  &quot;outcomes&quot;: [
+    {
+      &quot;metric&quot;: &quot;Recordable incidents&quot;,
+    }
+  ],
+  &quot;media&quot;: [
+    {
+      &quot;type&quot;: &quot;image&quot;,
+      &quot;url&quot;: &quot;https://example.org/fig1.png&quot;
+    }
+  ],
+  &quot;links&quot;: {&quot;code&quot;: &quot;https://github.com/org/repo&quot;,},
+  &quot;license&quot;: &quot;CC BY 4.0&quot;,
+  &quot;tags&quot;: [&quot;Safety&quot;],
+  &quot;notes&quot;: &quot;Curated from public case study.&quot;,
+  &quot;added_date&quot;: &quot;2026-01-09&quot;,
+  &quot;contributor&quot;: &quot;@someone&quot;,
+  &quot;contributor_url&quot;: &quot;https://github.com/someone&quot;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example JSON-LD (CreativeWork)</div>
+            <pre class="oc-pre"><code>{
+  &quot;@context&quot;:&quot;https://schema.org&quot;,
+  &quot;@type&quot;:&quot;CreativeWork&quot;,
+  &quot;name&quot;:&quot;Jobsite PPE compliance monitoring&quot;,
+  &quot;description&quot;:&quot;Computer vision detects PPE compliance on live site cameras.&quot;,
+  &quot;datePublished&quot;:&quot;2025&quot;,
+  &quot;keywords&quot;:[&quot;Construction&quot;,&quot;Safety monitoring&quot;,&quot;Computer vision&quot;,&quot;Video&quot;],
+  &quot;url&quot;:&quot;https://www.openconstruction.org/use-cases/detail.html?id=jobsite-ppe&quot;,
+  &quot;publisher&quot;:[{&quot;@type&quot;:&quot;Organization&quot;,&quot;name&quot;:&quot;Example Co.&quot;,&quot;url&quot;:&quot;https://example.com&quot;}],
+  &quot;sameAs&quot;:[&quot;https://example.org/paper&quot;,&quot;https://example.org/demo&quot;],
+  &quot;associatedMedia&quot;:[{&quot;@type&quot;:&quot;MediaObject&quot;,&quot;contentUrl&quot;:&quot;https://example.org/fig1.png&quot;}],
+  &quot;additionalProperty&quot;:[
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;deployment_stage&quot;,&quot;value&quot;:&quot;Pilot&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;evidence_level&quot;,&quot;value&quot;:&quot;Case study&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;outcome_recordable_incidents&quot;,&quot;value&quot;:&quot;-12% (over 6 months)&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added_date&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="oer" class="oc-section">
+    <div class="oc-kicker mb-2">Open Educational Resources</div>
+    <h2 class="oc-h2">OER fields in <code>oer.json</code></h2>
+    <p class="text-muted mb-3">Structured data recommendation: use <code>LearningResource</code> (or <code>CreativeWork</code>) and publish <code>keywords</code>, <code>inLanguage</code>, <code>license</code>, and <code>url</code>.</p>
+    
+<div class="table-responsive">
+<table class="table table-sm align-middle oc-table">
+  <thead>
+    <tr>
+      <th style="width: 22%">Field</th>
+      <th style="width: 10%">Required</th>
+      <th style="width: 28%">Schema.org mapping</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<tr><td><code>added</code></td><td>No</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
+<tr><td><code>contributor</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>GitHub handle or name of submitter.</td></tr>
+<tr><td><code>contributor_url</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Profile/org URL for submitter.</td></tr>
+<tr><td><code>id</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Stable short identifier used in URLs.</td></tr>
+<tr><td><code>image</code></td><td>No</td><td><span class='text-muted'>schema.org:image</span></td><td>Preview image URL.</td></tr>
+<tr><td><code>institutions</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Associated institutions.</td></tr>
+<tr><td><code>language</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Language code or name.</td></tr>
+<tr><td><code>license</code></td><td>Yes</td><td><span class='text-muted'>schema.org:license</span></td><td>License (e.g., CC BY).</td></tr>
+<tr><td><code>media</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>Media formats (video, pdf, interactive, etc.).</td></tr>
+<tr><td><code>provider</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Provider/host organization.</td></tr>
+<tr><td><code>publisher</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Publisher (if different from provider).</td></tr>
+<tr><td><code>source</code></td><td>Yes</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Canonical source URL.</td></tr>
+<tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Resource title.</td></tr>
+<tr><td><code>topics</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Topic tags (professional phrasing).</td></tr>
+<tr><td><code>year</code></td><td>No</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Publication year (if known).</td></tr></tbody></table></div>
+
+    <div class="row g-3 mt-3">
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example catalog record</div>
+            <pre class="oc-pre"><code>{
+  &quot;id&quot;: &quot;bluebeam-takeoff-basics&quot;,
+  &quot;title&quot;: &quot;Quantity Takeoff Basics in Bluebeam&quot;,
+  &quot;year&quot;: 2024,
+  &quot;language&quot;: &quot;English&quot;,
+  &quot;topics&quot;: [&quot;Construction estimating&quot;],
+  &quot;media&quot;: [&quot;Video&quot;],
+  &quot;license&quot;: &quot;CC BY-NC 4.0&quot;,
+  &quot;provider&quot;: &quot;OER Commons&quot;,
+  &quot;publisher&quot;: &quot;OER Commons&quot;,
+  &quot;institutions&quot;: [
+    &quot;Kent State University&quot;
+  ],
+  &quot;source&quot;: &quot;https://oercommons.org/...&quot;,
+  &quot;image&quot;: &quot;https://example.org/oer.png&quot;,
+  &quot;added&quot;: &quot;2026-01-09&quot;,
+  &quot;contributor&quot;: &quot;@someone&quot;,
+  &quot;contributor_url&quot;: &quot;https://github.com/someone&quot;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card oc-card h-100">
+          <div class="card-body">
+            <div class="oc-kicker mb-2">Example JSON-LD (LearningResource)</div>
+            <pre class="oc-pre"><code>{
+  &quot;@context&quot;:&quot;https://schema.org&quot;,
+  &quot;@type&quot;:&quot;LearningResource&quot;,
+  &quot;name&quot;:&quot;Quantity Takeoff Basics in Bluebeam&quot;,
+  &quot;description&quot;:&quot;OpenConstruction OER catalog entry.&quot;,
+  &quot;inLanguage&quot;:&quot;en&quot;,
+  &quot;datePublished&quot;:&quot;2024&quot;,
+  &quot;license&quot;:&quot;CC BY-NC 4.0&quot;,
+  &quot;url&quot;:&quot;https://oercommons.org/...&quot;,
+  &quot;image&quot;:&quot;https://example.org/oer.png&quot;,
+  &quot;keywords&quot;:[&quot;Construction estimating&quot;,&quot;Quantity takeoff&quot;,&quot;Bluebeam&quot;],
+  &quot;publisher&quot;:{&quot;@type&quot;:&quot;Organization&quot;,&quot;name&quot;:&quot;OER Commons&quot;},
+  &quot;additionalProperty&quot;:[
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;media&quot;,&quot;value&quot;:&quot;Video, PDF&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;institutions&quot;,&quot;value&quot;:&quot;Kent State University&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer class="py-4 mt-3 border-top">
   <div class="container oc-container small text-muted text-center">
@@ -809,595 +663,27 @@
   Issue or Suggestion?
 </a>
 
-<!-- Scripts -->
-<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
-<!-- Scripts -->
-<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-(function(){
-const marquee = document.querySelector('.logo-marquee.three-rows');
-if (!marquee) return;
-
-const rows = marquee.querySelectorAll('.row-marquee');
-if (rows.length !== 3) {
-  console.error("Expected 3 marquee rows, found:", rows.length);
-  return;
-}
-
-const seed = document.getElementById('logo-seed');
-if (!seed) return;
-
-// Clone all logos
-const logos = Array.from(seed.content.children).map(n => n.cloneNode(true));
-
-// Split logos into 3 equal groups
-const groupSize = Math.ceil(logos.length / 3);
-const group1 = logos.slice(0, groupSize);
-const group2 = logos.slice(groupSize, groupSize * 2);
-const group3 = logos.slice(groupSize * 2);
-
-// Helper: initialize marquee for each row
-function initTrack(row, items, dir) {
-  const track = row.querySelector('.logo-track');
-  if (!track) return;
-
-  // Populate track
-  items.forEach(i => track.appendChild(i));
-  items.forEach(i => track.appendChild(i.cloneNode(true))); // double for infinite scroll
-
-  const speed = Number(track.getAttribute('data-speed')) || 46;
-  const duration = Math.min(90, speed + Math.max(0, items.length - 8) * 1.5);
-
-  track.style.animationDuration = duration + 's';
-  track.style.animationTimingFunction = 'linear';
-  track.style.animationIterationCount = 'infinite';
-  track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-left';
-}
-
-// Initialize rows
-initTrack(rows[0], group1, 'right');
-initTrack(rows[1], group2, 'left');
-initTrack(rows[2], group3, 'right');
-
-// Fade-in loading
-marquee.querySelectorAll('.logo img').forEach(img => {
-  const parent = img.closest('.logo');
-  const done = () => parent && parent.classList.add('loaded');
-
-  if (img.complete && img.naturalWidth > 0) done();
-  else img.addEventListener('load', done, { once: true });
-});
-})();
-</script>
-
-<!-- Auto-active current nav link -->
-<script>
-  (function(){
-    const path = (location.pathname || '').replace(/\/+$/,'');
-    const file = path.split('/').pop() || 'contributors.html';
-    const routeByFile = {
-      '': 'contributors',
-      'contributors': 'contributors', 'contributors.html': 'contributors',
-      'index': 'index', 'index.html': 'index',
-      'dataset': 'dataset', 'dataset.html': 'dataset',
-      'models': 'models', 'models.html': 'models'
-    };
-    const route = routeByFile[file] || (file.includes('contributors') ? 'contributors' : '');
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
-    });
-  })();
-</script>
-
-<script>
-(function(){
-  const file = (location.pathname || '').split('/').pop() || 'index.html';
-  const isTools = /tools(\.html)?$/.test(file);
-  const isGuides = /guides(\.html)?$/.test(file);
-  if (isTools || isGuides) {
-    // highlight "Resources"
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.textContent.trim()==='Resources') a.classList.add('active');
-    });
-    // mark the chosen dropdown item
-    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(d=>{
-      if ((isTools && d.getAttribute('href')?.includes('tools')) ||
-          (isGuides && d.getAttribute('href')?.includes('guides'))) {
-        d.classList.add('active');
-      }
-    });
-  }
-})();
-</script>
-
-<!-- Leaflet core -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
-
-<!-- Heatmap plugin -->
-<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-
-<!-- Supabase client -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="assets/js/config.js"></script>
-
-<style>
-  /* Optional: soft ocean background to avoid gray gaps */
-  #visitorMap.leaflet-container {
-    background: #cfe7ef;
-  }
-</style>
-
-<!-- Render homepage history as heatmap -->
-<script>
-(async function(){
-  const PAGE_TO_SHOW = 'index'; // showing homepage visits
-
-  // Map
-  const map = L.map('visitorMap', {
-    zoomControl: true,
-    maxBounds: L.latLngBounds([[-85, -180], [85, 180]]), // clamp to world bounds
-    maxBoundsViscosity: 1.0,                             // resist leaving bounds
-    worldCopyJump: false                                 // no duplicate jump
-  });
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-  }).addTo(map);
-
-  map.setView([39.5, -98.35], 3);
-  setTimeout(() => map.invalidateSize(), 0);
-
-  // Supabase
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  const sb = hasSB ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY) : null;
-  if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
-
-  try {
-    const pageSize = 1000;
-    let from = 0, to = pageSize - 1;
-    const bounds = L.latLngBounds();
-    const heatPoints = [];
-
-    while (true) {
-      const { data: rows, error } = await sb
-        .from('visits')
-        .select('lat,lon')
-        .eq('page', PAGE_TO_SHOW)
-        .order('created_at', { ascending:false })
-        .range(from, to);
-
-      if (error) { console.error(error); break; }
-      if (!rows || rows.length === 0) break;
-
-      for (const r of rows) {
-        if (typeof r.lat === 'number' && typeof r.lon === 'number') {
-          heatPoints.push([r.lat, r.lon, 1]);
-          bounds.extend([r.lat, r.lon]);
-        }
-      }
-      if (rows.length < pageSize) break;
-      from += pageSize; to += pageSize;
-    }
-
-    L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
-
-    if (bounds.isValid()) {
-      map.fitBounds(bounds.pad(0.2));
-    } else {
-      map.setView([20,0], 2);
-    }
-  } catch (e) {
-    console.error('Heatmap render failed:', e);
-  }
-})();
-</script>
-
-<!-- Community metric circles-->
-<script>
-(function(){
-  // ==== EDIT THESE NUMBERS ONLY ====
-  const COMMUNITY_STATS = {
-    contributors: 70,   // <-- manual input
-    institutions: 49    // <-- manual input
-  };
-  // =================================
-
-  const countContribEl = document.getElementById('countContrib');
-  const countInstEl    = document.getElementById('countInst');
-  const ringContrib    = document.getElementById('ringContrib');
-  const ringInst       = document.getElementById('ringInst');
-
-  const R = 17, CIRC = 2 * Math.PI * R;
-
-  // Prepare rings
-  [ringContrib, ringInst].forEach(r => {
-    if(!r) return;
-    r.style.strokeDasharray = String(CIRC);
-    r.style.strokeDashoffset = String(CIRC);
-  });
-
-  // Count-up animation
-  const ease = t => 1 - Math.pow(1 - t, 3);
-  function countUp(el, to, dur=900){
-    const start = performance.now();
-    function step(now){
-      const t = Math.min(1, (now - start)/dur);
-      el.textContent = String(Math.round(to * ease(t)));
-      if(t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function playRings(){
-    document.body.classList.add('ring-ready');
-    requestAnimationFrame(() => {
-      if (ringContrib) ringContrib.style.strokeDashoffset = '0';
-      if (ringInst)    ringInst.style.strokeDashoffset    = '0';
-    });
-  }
-
-  // Initialize values & animate on load
-  document.addEventListener('DOMContentLoaded', () => {
-    if (countContribEl) countContribEl.textContent = String(COMMUNITY_STATS.contributors);
-    if (countInstEl)    countInstEl.textContent    = String(COMMUNITY_STATS.institutions);
-
-    // Re-run with animation shortly after paint for a smooth effect
-    setTimeout(() => {
-      countUp(countContribEl, COMMUNITY_STATS.contributors);
-      countUp(countInstEl, COMMUNITY_STATS.institutions);
-      // reset then animate rings
-      if (ringContrib) ringContrib.style.strokeDashoffset = String(CIRC);
-      if (ringInst)    ringInst.style.strokeDashoffset    = String(CIRC);
-      requestAnimationFrame(playRings);
-    }, 60);
-  });
-})();
-</script>
-
-<!-- Subscribe Modal -->
-<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
-    <div class="modal-content p-3 rounded-3 shadow">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <h6 class="m-0 fw-semibold">Subscribe</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
-            method="post" target="_blank" novalidate>
-        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
-        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
-               placeholder="you@university.edu" required>
-        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
-        <div style="position:absolute; left:-5000px" aria-hidden="true">
-          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+  <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:14px;border:1px solid var(--oc-border);box-shadow:var(--oc-shadow);">
+        <div class="modal-header" style="border-bottom:1px solid var(--oc-border);">
+          <h5 class="modal-title" id="subscribeModalLabel" style="color:var(--oc-ink);font-weight:800;">Subscribe for updates</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
-      </form>
+        <div class="modal-body">
+          <p class="mb-2" style="color:var(--oc-subtle);">We currently manage updates via our GitHub repository. Please “Watch” the repo to receive notifications.</p>
+          <a class="btn btn-outline-dark" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener" style="border-radius:999px;font-weight:800;">Open GitHub</a>
+        </div>
+        <div class="modal-footer" style="border-top:1px solid var(--oc-border);">
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal" style="border-radius:999px;font-weight:800;background:var(--oc-ink);border-color:var(--oc-ink);">Done</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- 🔁 Contributors JSON loader + carousel (added) -->
-<script>
-(async function(){
-  const JSON_URL = 'data/contributors.json';
-  const GRID_ID  = 'contributorsGrid';
-  const WRAP_ID  = 'occContrib';
-  const DOTS_ID  = 'occDots';
-  const BAR_ID   = 'occBar';
-  const URL_PARAM= 'cpage';
-
-  // Page size here means how many cards per slide (not visual size).
-  // Using 9 => up to a 3x3 grid per page on desktop, preserving your card sizing/layout.
-  const PAGE_SIZE_DESKTOP = 9;
-
-  const $wrap = document.getElementById(WRAP_ID);
-  const $grid = document.getElementById(GRID_ID);
-  const $dots = document.getElementById(DOTS_ID);
-  const $bar  = document.getElementById(BAR_ID);
-  if(!$wrap || !$grid) return;
-  const viewport = $wrap.querySelector('.occ-viewport');
-
-  const byLastKey = n => {
-    if(!n) return ''; const s = n.trim();
-    if(s.includes(',')) return s.toLowerCase();
-    const parts = s.split(/\s+/); return (parts[parts.length-1] + ' ' + s).toLowerCase();
-  };
-  const chunk = (a,n)=>{ const o=[]; for(let i=0;i<a.length;i+=n) o.push(a.slice(i,i+n)); return o; };
-  const urlPage = ()=>{ const u=new URL(location.href); const p=parseInt(u.searchParams.get(URL_PARAM),10); return (isFinite(p)&&p>=1)?p:1; };
-  const setUrlPage = p=>{ const u=new URL(location.href); u.searchParams.set(URL_PARAM,String(p)); history.replaceState(null,'',u); };
-  const initials = name => (name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
-
-  function cardHTML(c){
-    const img = c.image ? `<img class="headshot" src="${c.image}" alt="">`
-                        : `<div class="headshot is-initials">${initials(c.name)}</div>`;
-    const body = `<div class="card oc-card person-card h-100">
-        <div class="card-body d-flex gap-3">${img}
-          <div><h5 class="card-title mb-1">${c.name||''}</h5>
-          <div class="role">${c.role||''}</div>
-          <div class="affil">${c.affiliation||''}</div></div></div></div>`;
-    return c.link_url
-      ? `<div class="col-md-6 col-xl-4"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${body}</a></div>`
-      : `<div class="col-md-6 col-xl-4">${body}</div>`;
-  }
-
-  let rows=[];
-  try{
-    const res=await fetch(JSON_URL,{cache:'no-store'});
-    if(!res.ok) throw new Error('Failed to fetch contributors.json');
-    rows = await res.json();
-  }catch(e){
-    console.error(e);
-    $grid.innerHTML = '<p class="text-muted">Could not load contributors.</p>';
-    return;
-  }
-
-  const people = rows.filter(r=>(r.type||'person')!=='org').sort((a,b)=>byLastKey(a.name).localeCompare(byLastKey(b.name)));
-  const orgs   = rows.filter(r=>(r.type||'person')==='org').sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-  const DATA   = people.concat(orgs);
-
-  $grid.innerHTML = DATA.map(cardHTML).join('');
-  const nodes = Array.from($grid.children);
-  $grid.remove();
-
-  const track = document.createElement('div'); track.className='occ-track'; viewport.appendChild(track);
-  let slides=[], current=Math.max(1, urlPage());
-
-  function buildDots(){
-    if(!$dots) return; $dots.innerHTML='';
-    slides.forEach((_,i)=>{
-      const b=document.createElement('button');
-      b.type='button'; b.setAttribute('role','tab'); b.setAttribute('aria-label',`Page ${i+1}`);
-      if(i+1===current) b.setAttribute('aria-selected','true');
-      b.addEventListener('click',()=>goTo(i+1,true));
-      $dots.appendChild(b);
-    });
-  }
-  function updateDots(){
-    if(!$dots) return;
-    Array.from($dots.children).forEach((b,i)=>{
-      if(i+1===current) b.setAttribute('aria-selected','true'); else b.removeAttribute('aria-selected');
-    });
-  }
-  function updateBar(){
-    if(!$bar) return;
-    const total=Math.max(1,slides.length);
-    const pct=((current-1)/(total-1||1))*100;
-    $bar.style.width = (total===1 ? '100%' : pct + '%');
-  }
-  function goTo(page, animate=true){
-    current = Math.max(1, Math.min(page, slides.length||1));
-    const xPct = (current-1) * -100;
-    track.style.transition = animate ? 'transform .35s ease' : 'none';
-    track.style.transform  = `translateX(${xPct}%)`;
-    setUrlPage(current); updateDots(); updateBar();
-  }
-
-  function buildSlides(){
-    track.innerHTML=''; slides=[];
-    // Fixed desktop page size 9 to keep your 3x3 feel; Bootstrap will handle smaller screens naturally.
-    const groups = chunk(nodes, PAGE_SIZE_DESKTOP);
-    groups.forEach(g=>{
-      const s=document.createElement('div'); s.className='occ-slide';
-      const r=document.createElement('div'); r.className='row g-4';
-      g.forEach(n=>r.appendChild(n)); s.appendChild(r); track.appendChild(s); slides.push(s);
-    });
-    buildDots(); goTo(Math.min(current, slides.length) || 1, false);
-  }
-
-  $wrap.querySelector('.occ-btn.prev')?.addEventListener('click',()=>goTo(current-1,true));
-  $wrap.querySelector('.occ-btn.next')?.addEventListener('click',()=>goTo(current+1,true));
-
-  // drag/swipe
-(function enableDrag(){
-    let down = false, startX = 0, startTx = 0, isDragging = false;
-
-    const viewport = document.querySelector('#occContrib .occ-viewport');
-    const track    = document.querySelector('#occContrib .occ-track');
-
-    if (!viewport || !track) return;
-
-    const getTx = () => {
-      const m = (track.style.transform || '').match(/translateX\((-?\d+(?:\.\d+)?)%\)/);
-      return m ? parseFloat(m[1]) : 0;
-    };
-
-    track.addEventListener('pointerdown', e => {
-      // Don’t hijack clicks on links, buttons, inputs, etc.
-      if (e.button !== 0) return; // left button only
-      if (e.target.closest('a, button, input, textarea, select, label')) return;
-
-      down = true;
-      isDragging = false;
-      startX = e.clientX;
-      startTx = getTx();
-      track.setPointerCapture(e.pointerId);
-      track.style.transition = 'none';
-    });
-
-    track.addEventListener('pointermove', e => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-
-      // If the user moves more than a few pixels, treat it as a drag
-      if (Math.abs(dx) > 5) isDragging = true;
-
-      const pct = (dx / viewport.clientWidth) * 100;
-      track.style.transform = `translateX(${startTx + pct}%)`;
-    });
-
-    function endDrag(e){
-      if (!down) return;
-      down = false;
-
-      try { track.releasePointerCapture(e.pointerId); } catch {}
-
-      // Snap to the nearest slide only if it was actually a drag
-      if (isDragging) {
-        const tx = getTx();
-        const idx = Math.round(-tx / 100) + 1;
-        // goTo is already in scope from your script
-        window.requestAnimationFrame(() => goTo(idx, true));
-      } else {
-        // Let the click pass through (no snapping on simple taps)
-        // No preventDefault here, so anchor clicks work.
-      }
-    }
-
-    track.addEventListener('pointerup', endDrag);
-    track.addEventListener('pointercancel', endDrag);
-    track.addEventListener('pointerleave', endDrag);
-  })();
-
-  window.addEventListener('resize', ()=>{ /* keep cards’ size; page size fixed */ goTo(current,false); });
-  buildSlides();
-})();
-</script>
-
-</body>
-</html>
-
-
-<script>
-  // -------- Field inventory builder (auto-generated from JSON catalogs) --------
-  function inferType(v){
-    if (v === null) return "null";
-    if (Array.isArray(v)) return "array";
-    if (typeof v === "string") return "string";
-    if (typeof v === "number") return "number";
-    if (typeof v === "boolean") return "boolean";
-    if (typeof v === "object") return "object";
-    return typeof v;
-  }
-
-  function addInfo(map, key, v){
-    const t = inferType(v);
-    if(!map[key]) map[key] = { types: new Set(), samples: new Set() };
-    map[key].types.add(t);
-    if ((t === "string" || t === "number" || t === "boolean") && map[key].samples.size < 3){
-      map[key].samples.add(String(v).slice(0, 60));
-    }
-  }
-
-  function walk(map, obj, prefix=""){
-    if (obj && typeof obj === "object" && !Array.isArray(obj)){
-      for (const [k,v] of Object.entries(obj)){
-        const path = prefix ? `${prefix}.${k}` : k;
-        addInfo(map, path, v);
-        walk(map, v, path);
-      }
-    } else if (Array.isArray(obj)){
-      const path = prefix ? `${prefix}[]` : "[]";
-      addInfo(map, path, obj);
-      for (const item of obj.slice(0, 20)){
-        walk(map, item, path);
-      }
-    }
-  }
-
-  function mergeInto(target, src){
-    for (const [k,v] of Object.entries(src)){
-      if(!target[k]) target[k] = { types: new Set(), samples: new Set() };
-      v.types.forEach(t => target[k].types.add(t));
-      v.samples.forEach(s => { if (target[k].samples.size < 3) target[k].samples.add(s); });
-    }
-  }
-
-  function renderTable(containerId, info){
-    const rows = Object.keys(info).sort().map(k => {
-      const types = Array.from(info[k].types).sort().join(", ");
-      const samples = Array.from(info[k].samples).slice(0,3).join(" · ");
-      return `<tr>
-        <td><code>${k}</code></td>
-        <td class="text-muted small">${types || "-"}</td>
-        <td class="text-muted small">${samples || "-"}</td>
-      </tr>`;
-    }).join("");
-
-    document.getElementById(containerId).innerHTML = `
-      <div class="card oc-card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-sm align-middle">
-              <thead>
-                <tr>
-                  <th style="width:38%">Field</th>
-                  <th style="width:22%">Observed type(s)</th>
-                  <th>Example value(s)</th>
-                </tr>
-              </thead>
-              <tbody>${rows}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>`;
-  }
-
-  async function loadJson(url){
-    const res = await fetch(url, { cache: "no-store" });
-    if(!res.ok) throw new Error(`Failed to load ${url} (${res.status})`);
-    return res.json();
-  }
-
-  async function init(){
-    try{
-      const [dsJson, modelJson, ucJson, oerJson] = await Promise.all([
-        loadJson("data/datasets.json"),
-        loadJson("data/models.json"),
-        loadJson("data/use-cases.json"),
-        loadJson("data/oer.json")
-      ]);
-
-      // Datasets: object keyed by id
-      const dsInfo = {};
-      const dsVals = Object.values(dsJson || {});
-      dsVals.forEach(r => walk(dsInfo, r));
-      document.getElementById("dsCount").textContent = `${dsVals.length} records · ${Object.keys(dsInfo).length} fields`;
-      renderTable("datasetsTable", dsInfo);
-
-      // Models: array
-      const mInfo = {};
-      (modelJson || []).forEach(r => walk(mInfo, r));
-      document.getElementById("modelCount").textContent = `${(modelJson||[]).length} records · ${Object.keys(mInfo).length} fields`;
-      renderTable("modelsTable", mInfo);
-
-      // Use cases: object with use_cases array
-      const ucArr = (ucJson && ucJson.use_cases) ? ucJson.use_cases : [];
-      const ucInfo = {};
-      ucArr.forEach(r => walk(ucInfo, r));
-      document.getElementById("ucCount").textContent = `${ucArr.length} records · ${Object.keys(ucInfo).length} fields`;
-      renderTable("usecasesTable", ucInfo);
-
-      // OER: object with resources array
-      const oerArr = (oerJson && oerJson.resources) ? oerJson.resources : [];
-      const oerInfo = {};
-      oerArr.forEach(r => walk(oerInfo, r));
-      document.getElementById("oerCount").textContent = `${oerArr.length} records · ${Object.keys(oerInfo).length} fields`;
-      renderTable("oerTable", oerInfo);
-
-    } catch (e){
-      console.error(e);
-      const msg = `<div class="alert alert-warning border">
-        <div class="fw-semibold mb-1">Could not load one or more catalog files.</div>
-        <div class="small">Make sure <code>data/datasets.json</code>, <code>data/models.json</code>, <code>data/use-cases.json</code>, and <code>data/oer.json</code> exist and are valid JSON.</div>
-      </div>`;
-      ["datasetsTable","modelsTable","usecasesTable","oerTable"].forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.innerHTML = msg;
-      });
-      ["dsCount","modelCount","ucCount","oerCount"].forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.textContent = "Unavailable";
-      });
-    }
-  }
-
-  init();
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
