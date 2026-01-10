@@ -72,7 +72,11 @@
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
 
     /* Index cards */
-    .index-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+	.index-grid{
+	  display:grid;
+	  gap:16px;
+	  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 per row */
+	}
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
       padding:14px 14px 12px; text-decoration:none; color:inherit;
@@ -100,11 +104,14 @@
 
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
-    @media (max-width: 991.98px){
-      .hero .content{ padding:40px 0 24px; }
-      .search-wrap{ top:64px; }
-      .index-thumb{ width:52px; height:52px; }
-    }
+	@media (max-width: 991.98px){
+	  .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+
+	/* Mobile: 1 per row */
+	@media (max-width: 575.98px){
+	  .index-grid{ grid-template-columns: 1fr; }
+	}
 
     /* ---- Floating Suggestion Button ---- */
     .issue-btn {
