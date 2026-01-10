@@ -32,7 +32,7 @@
     "role": "Dataset Contributor",
     "affiliation": "Mälardalen University (Sweden)",
     "link_url": "https://github.com/MaghsoodSalimi",
-    "image": "assets/img/contributors/avatar.png",
+    "image": "https://www.es.mdu.se/img/staff/4117-staff.jpg?time=1768087202",
     "type": "person"
   },
   {
@@ -41,7 +41,7 @@
     "role": "Dataset Contributor",
     "affiliation": "Volvo Construction Equipment (Sweden)",
     "link_url": "https://www.linkedin.com/in/mohammad-loni/?originalSubdomain=se",
-    "image": "assets/img/contributors/avatar.png",
+    "image": "https://media.licdn.com/dms/image/v2/D4D03AQFY19zRMyj-qg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1718216173873?e=1769644800&v=beta&t=xMGv3METKAsH0d8-QzyCVCJzaPpIpqluOjz-fcMY9Nw",
     "type": "person"
   },
   {
@@ -311,7 +311,7 @@
     "role": "Dataset Contributor",
     "affiliation": "Carnegie Mellon University (US)",
     "link_url": "https://www.cs.cmu.edu/~ILIM/",
-    "image": "assets/img/contributors/ilim.png",
+    "image": "assets/img/institutions/ilim.png",
     "type": "org"
   },
     {
@@ -391,7 +391,7 @@
     "role": "Dataset Contributor",
 	"affiliation": "University of Cambridge (UK)",
     "link_url": "https://drf.eng.cam.ac.uk/",
-    "image": "assets/img/contributors/DTR.png",
+    "image": "assets/img/institutions/DTR.png",
     "type": "org"
   },
      {
@@ -481,7 +481,7 @@
     "role": "Model Contributor",
     "affiliation": "University of Hong Kong (HK)",
     "link_url": "https://cicubelab.civil.hku.hk/",
-    "image": "assets/img/contributors/ci3lab.jpg",
+    "image": "assets/img/institutions/ci3lab.jpg",
     "type": "org"
   },
         {
@@ -526,7 +526,7 @@
     "role": "Dataset Contributor",
     "affiliation": "Purdue University (U.S)",
     "link_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab",
-    "image": "assets/img/contributors/AUTOIC_lab.png",
+    "image": "assets/img/institutions/AUTOIC_lab.png",
     "type": "org"
   },
     {
