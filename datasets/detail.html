@@ -152,21 +152,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-        <li class="nav-item"><a class="nav-link plain" href="../index.html">Home</a></li>
-		<li class="nav-item"><a class="nav-link plain active" href="../dataset.html">Datasets</a></li>
-        <li class="nav-item"><a class="nav-link plain" href="../models.html" aria-current="page">Models</a></li>
-	    <li class="nav-item"><a class="nav-link plain" href="../deployments.html" aria-current="page">Use Cases</a></li>
-      <li class="nav-item"><a class="nav-link plain active" href="../oer.html" aria-current="page">OERs</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="../index.html" data-route="index">Home</a></li>
 		<li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle active" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <a class="nav-link plain dropdown-toggle active" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
-            <li><a class="dropdown-item active" href="../tools.html">Tools</a></li>
-            <li><a class="dropdown-item" href="../guides.html">Guides</a></li>
-			<li><a class="dropdown-item" href="../mcp.html">MCP Docs</a></li>
+            <li><a class="dropdown-item active" href="../dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="../models.html">Models</a></li>
+            <li><a class="dropdown-item" href="../deployments.html">Workflows</a></li>
+			<li><a class="dropdown-item" href="../oer.html">OERs</a></li>
           </ul>
         </li>
+        <li class="nav-item"><a class="nav-link plain" href="../schema.html" data-route="dataset">Schema</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="../benchmarks.html" data-route="models">Benchmarks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="../tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="../guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="../mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="../contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="../contributors.html" data-route="contributors">Community</a></li>
 		
-		<li class="nav-item"><a class="nav-link plain" href="../contributors.html">Community</a></li>
         <li class="nav-item">
           <a class="nav-link px-2 icon-only"
              href="https://github.com/ruoxinx/OpenConstruction-Datasets"
