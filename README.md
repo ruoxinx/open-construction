@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/img/icon.png" alt="OpenConstruction Logo" width="160">
+</p>
+
 # OpenConstruction Open Science Platform
 
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
