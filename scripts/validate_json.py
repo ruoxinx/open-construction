@@ -28,11 +28,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # ✅ Canonical validation targets (NOT site/)
 DEFAULT_PAIRS: List[Tuple[str, str]] = [
-    ("data/datasets.json", "schemas/datasets.schema.json"),
-    ("data/models.json", "schemas/models.schema.json"),
-    ("data/use-cases.json", "schemas/use-cases.schema.json"),
-    ("data/oer.json", "schemas/oer.schema.json"),
-    ("modules/registry.json", "schemas/modules.registry.schema.json"),
+    ("site/data/datasets.json", "schemas/datasets.schema.json"),
+    ("site/data/models.json", "schemas/models.schema.json"),
+    ("site/data/use-cases.json", "schemas/use-cases.schema.json"),
+    ("site/data/oer.json", "schemas/oer.schema.json"),
 ]
 
 
