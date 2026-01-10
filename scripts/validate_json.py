@@ -16,20 +16,23 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
+from referencing.jsonschema import DRAFT202012
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
+# ✅ Canonical validation targets (NOT site/)
 DEFAULT_PAIRS: List[Tuple[str, str]] = [
-    ("site/data/datasets.json", "schemas/datasets.schema.json"),
-    ("site/data/models.json", "schemas/models.schema.json"),
-    ("site/data/use-cases.json", "schemas/use-cases.schema.json"),
-    ("site/data/oer.json", "schemas/oer.schema.json"),
+    ("data/datasets.json", "schemas/datasets.schema.json"),
+    ("data/models.json", "schemas/models.schema.json"),
+    ("data/use-cases.json", "schemas/use-cases.schema.json"),
+    ("data/oer.json", "schemas/oer.schema.json"),
+    ("modules/registry.json", "schemas/modules.registry.schema.json"),
 ]
 
 
@@ -51,50 +54,54 @@ def _format_path(parts: List[Any]) -> str:
         return "$"
     out = "$"
     for p in parts:
-        if isinstance(p, int):
-            out += f"[{p}]"
-        else:
-            out += f".{p}"
+        out += f"[{p}]" if isinstance(p, int) else f".{p}"
     return out
 
 
-def validate_one(data_path: Path, schema_path: Path) -> List[Issue]:
+# ✅ Build registry so schema.common.json resolves correctly
+def build_schema_registry(schemas_dir: Path) -> Registry:
+    registry: Registry = Registry()
+
+    for schema_file in schemas_dir.glob("*.json"):
+        schema = _load_json(schema_file)
+
+        schema_id = schema.get("$id", schema_file.name)
+        resource = Resource.from_contents(schema, default_specification=DRAFT202012)
+
+        # Register by $id (preferred)
+        registry = registry.with_resource(schema_id, resource)
+        # Register by filename (supports relative refs)
+        registry = registry.with_resource(schema_file.name, resource)
+
+    return registry
+
+
+def validate_one(data_path: Path, schema_path: Path, registry: Registry) -> List[Issue]:
     data = _load_json(data_path)
     schema = _load_json(schema_path)
 
-    validator = Draft202012Validator(schema)
+    validator = Draft202012Validator(schema, registry=registry)
     errors = sorted(validator.iter_errors(data), key=lambda e: list(e.path))
 
-    issues: List[Issue] = []
-    for e in errors:
-        issues.append(
-            Issue(
-                file=str(data_path.relative_to(REPO_ROOT)),
-                schema=str(schema_path.relative_to(REPO_ROOT)),
-                path=_format_path(list(e.path)),
-                message=e.message,
-            )
+    return [
+        Issue(
+            file=str(data_path.relative_to(REPO_ROOT)),
+            schema=str(schema_path.relative_to(REPO_ROOT)),
+            path=_format_path(list(e.path)),
+            message=e.message,
         )
-    return issues
+        for e in errors
+    ]
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", help="Validate only this data file (relative to repo root)")
     ap.add_argument("--schema", help="Schema file for --data (relative to repo root)")
-    ap.add_argument(
-        "--report",
-        help="Write JSON report to this path (relative to repo root unless absolute)",
-    )
-    ap.add_argument(
-        "--max-errors",
-        type=int,
-        default=50,
-        help="Maximum errors printed per file (default: 50)",
-    )
+    ap.add_argument("--report", help="Write JSON report")
+    ap.add_argument("--max-errors", type=int, default=50)
     args = ap.parse_args()
 
-    pairs: List[Tuple[str, str]]
     if args.data or args.schema:
         if not (args.data and args.schema):
             raise SystemExit("ERROR: --data and --schema must be provided together.")
@@ -102,12 +109,14 @@ def main() -> None:
     else:
         pairs = DEFAULT_PAIRS
 
+    registry = build_schema_registry(REPO_ROOT / "schemas")
+
     all_issues: List[Issue] = []
     missing: List[str] = []
 
     for d_rel, s_rel in pairs:
-        data_path = (REPO_ROOT / d_rel).resolve()
-        schema_path = (REPO_ROOT / s_rel).resolve()
+        data_path = REPO_ROOT / d_rel
+        schema_path = REPO_ROOT / s_rel
 
         if not data_path.exists():
             missing.append(f"Missing data file: {d_rel}")
@@ -116,19 +125,15 @@ def main() -> None:
             missing.append(f"Missing schema file: {s_rel}")
             continue
 
-        issues = validate_one(data_path, schema_path)
-        if issues:
-            all_issues.extend(issues)
+        all_issues.extend(validate_one(data_path, schema_path, registry))
 
-    ok = (not missing) and (not all_issues)
+    ok = not missing and not all_issues
 
-    # Print summary
     if missing:
         print("\n❌ Missing required files:")
         for m in missing:
             print(f" - {m}")
 
-    # Group issues by file
     if all_issues:
         print("\n❌ Schema validation errors:")
         by_file: Dict[str, List[Issue]] = {}
@@ -137,40 +142,29 @@ def main() -> None:
 
         for f, items in by_file.items():
             print(f"\nFile: {f}")
-            # show corresponding schema (first)
             print(f"Schema: {items[0].schema}")
             for it in items[: args.max_errors]:
                 print(f" - {it.path}: {it.message}")
-            if len(items) > args.max_errors:
-                print(f"   … ({len(items) - args.max_errors} more)")
 
-    # Write report if requested
     if args.report:
         report_path = Path(args.report)
         if not report_path.is_absolute():
             report_path = REPO_ROOT / report_path
         report_path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {
-            "ok": ok,
-            "missing": missing,
-            "issues": [
+        report_path.write_text(
+            json.dumps(
                 {
-                    "file": i.file,
-                    "schema": i.schema,
-                    "path": i.path,
-                    "message": i.message,
-                }
-                for i in all_issues
-            ],
-        }
-        report_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+                    "ok": ok,
+                    "missing": missing,
+                    "issues": [i.__dict__ for i in all_issues],
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
         print(f"\n📝 Wrote report: {report_path}")
 
-    if ok:
-        print("\n✅ JSON schema validation passed.")
-        raise SystemExit(0)
-    else:
-        raise SystemExit(1)
+    raise SystemExit(0 if ok else 1)
 
 
 if __name__ == "__main__":
