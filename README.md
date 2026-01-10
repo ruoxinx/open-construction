@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="site/assets/img/icon.png" alt="OpenConstruction Logo" width="44" style="vertical-align: bottom;" />
+  <img src="site/assets/img/icon.png" alt="OpenConstruction Logo" width="44" style="vertical-align: top;" />
   <span style="vertical-align: top; margin-left: 10px;">OpenConstruction Open Science Platform</span>
 </h1>
 
