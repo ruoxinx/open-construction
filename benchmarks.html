@@ -80,11 +80,14 @@
       display:flex; gap:12px; align-items:flex-start;
     }
     .index-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
-    .index-icon{
-      width:42px; height:42px; border-radius:12px; background:var(--oc-muted);
-      display:grid; place-items:center; flex:0 0 auto; border:1px solid var(--oc-border);
-      color:var(--oc-ink); font-weight:900;
+
+    /* NEW: thumbnail (PNG-first) */
+    .index-thumb{
+      width:56px; height:56px; border-radius:12px; border:1px solid var(--oc-border);
+      object-fit:cover; background:var(--oc-muted); flex:0 0 auto;
+      box-shadow:0 6px 16px rgba(15,46,75,.08);
     }
+
     .index-title{ font-weight:800; color:var(--oc-ink); line-height:1.15; margin:0; }
     .index-meta{ color:var(--oc-subtle); font-size:.88rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; }
     .index-meta .dotline{ display:flex; gap:8px; align-items:center; }
@@ -100,6 +103,7 @@
     @media (max-width: 991.98px){
       .hero .content{ padding:40px 0 24px; }
       .search-wrap{ top:64px; }
+      .index-thumb{ width:52px; height:52px; }
     }
 
     /* ---- Floating Suggestion Button ---- */
@@ -349,11 +353,33 @@
     </svg>`;
   }
   function iconModel(){
-    // Cube icon (reads as "model/artifact")
     return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
       <path d="M8.186.113a1 1 0 0 0-.372 0L2.5 1.385a1 1 0 0 0-.7.957v3.316a1 1 0 0 0 .553.894l5.314 2.657a1 1 0 0 0 .894 0l5.314-2.657a1 1 0 0 0 .553-.894V2.342a1 1 0 0 0-.7-.957L8.186.113zM3 2.9 8 1.65l5 1.25L8 4.15 3 2.9z"/>
       <path d="M2.8 6.42v3.06c0 .379.214.725.553.894l4.947 2.474V9.79L2.8 6.42zm10.4 0L7.7 9.79v5.058l4.947-2.474a1 1 0 0 0 .553-.894V6.42z"/>
     </svg>`;
+  }
+
+  // Prefer PNG; fallback to original (e.g., GIF) if PNG fails
+  function toPngFirst(url){
+    const u = normStr(url);
+    if(!u) return { primary:'', fallback:'' };
+    if (/\.png(\?|#|$)/i.test(u)) return { primary:u, fallback:'' };
+    if (/\.gif(\?|#|$)/i.test(u)) {
+      const png = u.replace(/\.gif(\?|#|$)/i, '.png$1');
+      return { primary: png, fallback: u };
+    }
+    return { primary:u, fallback:'' };
+  }
+  function isPng(u){ return /\.png(\?|#|$)/i.test(normStr(u)); }
+
+  function betterImage(currentPrimary, candidatePrimary){
+    const c = normStr(currentPrimary);
+    const n = normStr(candidatePrimary);
+    if(!c) return n;
+    if(!n) return c;
+    if(isPng(c)) return c;
+    if(isPng(n)) return n;
+    return c;
   }
 
   // ---------- Field normalizers ----------
@@ -389,8 +415,8 @@
     }
   }
 
-  function buildMergedIndex({datasets, models, extractor}){
-    // canonical -> { label, canon, dsCount, modelCount }
+  function buildMergedIndex({datasets, models, extractor, imageGetter}){
+    // canonical -> { label, canon, dsCount, modelCount, imgPrimary, imgFallback }
     const map = new Map();
 
     function touch(raw){
@@ -398,21 +424,40 @@
       if(!canon) return null;
       if(!map.has(canon)){
         const label = niceLabel(raw);
-        map.set(canon, { canon, label, idSlug: slugifyKey(label || canon), dsCount:0, modelCount:0 });
+        map.set(canon, {
+          canon,
+          label,
+          idSlug: slugifyKey(label || canon),
+          dsCount:0,
+          modelCount:0,
+          imgPrimary:'',
+          imgFallback:''
+        });
       }
       return map.get(canon);
     }
 
     datasets.forEach(ds=>{
+      const img = toPngFirst(imageGetter(ds, 'dataset'));
       extractor(ds, 'dataset').forEach(k=>{
         const node = touch(k);
-        if(node) node.dsCount += 1;
+        if(node){
+          node.dsCount += 1;
+          node.imgPrimary = betterImage(node.imgPrimary, img.primary);
+          if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+        }
       });
     });
+
     models.forEach(m=>{
+      const img = toPngFirst(imageGetter(m, 'model'));
       extractor(m, 'model').forEach(k=>{
         const node = touch(k);
-        if(node) node.modelCount += 1;
+        if(node){
+          node.modelCount += 1;
+          node.imgPrimary = betterImage(node.imgPrimary, img.primary);
+          if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+        }
       });
     });
 
@@ -421,11 +466,20 @@
     return arr;
   }
 
-  // -------- Progressive reveal (no style changes) --------
+  // -------- Progressive reveal --------
   const gridState = {
     task: { all: [], shown: 0, batch: 20 },
     app:  { all: [], shown: 0, batch: 20 }
   };
+
+  function thumbHtml(x){
+    const src = normStr(x.imgPrimary) || 'assets/img/icon.png';
+    const fb  = normStr(x.imgFallback);
+    const onerr = fb
+      ? `this.onerror=null;this.src='${esc(fb)}';`
+      : `this.onerror=null;`;
+    return `<img class="index-thumb" src="${esc(src)}" alt="${esc(x.label || x.canon)}" onerror="${onerr}">`;
+  }
 
   function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
     const el = document.getElementById(elId);
@@ -435,7 +489,6 @@
       gridState[kind].all = items.slice();
       gridState[kind].shown = 0;
     } else {
-      // keep all (do not reset shown) unless items reference changed
       gridState[kind].all = items.slice();
     }
 
@@ -461,7 +514,7 @@
       const href = hrefBuilder(x);
       return `
         <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
-          <div class="index-icon" aria-hidden="true">${esc(label.slice(0,1).toUpperCase())}</div>
+          ${thumbHtml(x)}
           <div>
             <div class="index-title">${esc(label)}</div>
             <div class="index-meta">
@@ -512,7 +565,7 @@
         const href = hrefBuilder(x);
         return `
           <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
-            <div class="index-icon" aria-hidden="true">${esc(label.slice(0,1).toUpperCase())}</div>
+            ${thumbHtml(x)}
             <div>
               <div class="index-title">${esc(label)}</div>
               <div class="index-meta">
@@ -526,36 +579,45 @@
     }
 
     if(isSearching){
-      // show ALL matches (not paginated) so search always finds everything
       renderAllMatches('task', 'taskGrid', 'taskGridNote', taskBuilder);
       renderAllMatches('app',  'appGrid',  'appGridNote',  appBuilder);
     } else {
-      // reset to paginated view
       renderIndexGrid({ items: gridState.task.all, elId:'taskGrid', noteId:'taskGridNote', hrefBuilder: taskBuilder, kind:'task', reset:true });
       renderIndexGrid({ items: gridState.app.all,  elId:'appGrid',  noteId:'appGridNote',  hrefBuilder: appBuilder,  kind:'app',  reset:true });
     }
   }
 
   async function init(){
+    // Keep your existing site paths:
+    // - data/datasets.json is an object keyed by id (we read Object.values)
+    // - data/models.json is an array
     const datasets = await loadJsonSafe('data/datasets.json');
     const models   = await loadJsonSafe('data/models.json');
 
     document.getElementById('statDatasets').textContent = String(datasets.length || 0);
     document.getElementById('statModels').textContent   = String(models.length || 0);
 
+    // Build PNG-first index for TASKS
     const tasks = buildMergedIndex({
       datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj)
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj),
+      imageGetter: (obj, kind) => kind === 'dataset'
+        ? (obj.image_url || obj.thumbnail || '')
+        : (obj.thumbnail || obj.image_url || '')
     });
+
+    // Build PNG-first index for APPLICATIONS
     const apps = buildMergedIndex({
       datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj)
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj),
+      imageGetter: (obj, kind) => kind === 'dataset'
+        ? (obj.image_url || obj.thumbnail || '')
+        : (obj.thumbnail || obj.image_url || '')
     });
 
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
     document.getElementById('statApps').textContent  = String(apps.length || 0);
 
-    // store state and render limited cards
     gridState.task.all = tasks.slice();
     gridState.app.all  = apps.slice();
 
