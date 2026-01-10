@@ -1,10 +1,5 @@
 # OpenConstruction Open Science Platform
 
-![CI](https://github.com/ruoxinx/OpenConstruction-Datasets/actions/workflows/ci.yml/badge.svg)
-![License](https://img.shields.io/github/license/ruoxinx/OpenConstruction-Datasets)
-![Contributors](https://img.shields.io/github/contributors/ruoxinx/OpenConstruction-Datasets)
-![Issues](https://img.shields.io/github/issues/ruoxinx/OpenConstruction-Datasets)
-
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
 **distributed development, validation, and discovery** of datasets, AI models,
 workflows, and open educational resources (OERs) for the
@@ -19,7 +14,7 @@ Architecture, Engineering, and Construction (AEC) domain.
 ## Purpose
 
 AI-ready resources in the AEC domain are often fragmented, inconsistently documented,
-and difficult to reuse. OpenConstruction addresses this challenge by providing
+and difficult to reuse. OpenConstruction provides
 **shared infrastructure, standards, and workflows** that support:
 
 - Discoverability and comparison of AEC AI resources  
@@ -31,34 +26,9 @@ OpenConstruction **does not host datasets or models**. It indexes publicly avail
 resources and focuses on the **platform and standards** that make them reusable,
 interoperable, and sustainable.
 
----
 
-## Repository Structure
-
-```text
-.
-├── data/                 # Catalog entries (datasets, models, workflows, OERs)
-├── schemas/              # Versioned JSON metadata schemas
-├── scripts/              # Validation and QA utilities
-├── modules/              # Community-maintained platform extensions
-│   ├── dataset_ingestion/
-│   ├── model_evaluators/
-│   ├── usecase_templates/
-│   └── registry.json
-├── .github/
-│   ├── ISSUE_TEMPLATE/   # Structured contribution templates
-│   └── workflows/        # CI/CD pipelines
-└── README.md
-```
-
----
-
-## Contribution Model (Distributed Development)
-
-OpenConstruction follows a **distributed development model** aligned with open-source
-best practices and NSF POSE principles.
-
-Anyone may participate by proposing contributions, reviewing changes, and helping
+## Contribution Model
+OpenConstruction follows a **distributed development model**. Anyone may participate by proposing contributions, reviewing changes, and helping
 maintain both **the cataloged resources** and **the platform infrastructure**.
 
 ### Ways to Contribute
