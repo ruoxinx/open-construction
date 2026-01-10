@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="theme-color" content="#0f2e4b">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenConstruction · Contribute</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Leaflet core (unused here but kept for consistency) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+
+    <style>
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+    }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
+    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
+    .nav-link.icon-only:hover svg{ opacity:1; }
+    /* Hero styling */
+    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
+    .hero .content{ padding:56px 0 44px; text-align:center; }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
+      margin:.25rem 0 .35rem;
+    }
+    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
+    /* Sections & cards */
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+    /* Footer */
+    footer{ border-top:1px solid var(--oc-border); }
+	
+	/* Yellow subscribe bell */
+	.btn-subscribe-icon{
+	  background: transparent;
+	  border: 0;
+	  padding: .25rem .4rem;
+	  line-height: 1;
+	}
+	.btn-subscribe-icon svg{
+	  fill: var(--oc-accent); /* use your yellow accent */
+	}
+	.btn-subscribe-icon:hover svg{
+	  filter: brightness(1.15);
+	}
+	
+	/* Utility highlight (subtle) */
+    .hl{
+      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700;
+    }
+
+	
+    </style>
+</head>
+
+<body>
+<!-- Navbar copied from main template -->
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html" data-route="usecases">Use Cases</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="oer.html" data-route="oers">OERs</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+		
+		<!-- Subscribe bell -->
+		<li class="nav-item">
+		<button type="button"
+				class="nav-link px-2 icon-only btn-subscribe-icon"
+				data-bs-toggle="modal" data-bs-target="#subscribeModal"
+				aria-label="Subscribe for updates" title="Subscribe">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+			   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+			<path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
+					 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
+					 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
+					 7 0 0 0 8.5 2z"/>
+		  </svg>
+		</button>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container oc-container content">
+    <h1>Contribute to OpenConstruction Ecosystem</h1>
+    <p class="lead">
+      Become a steward of the <span class="hl">open science ecosystem for AEC</span>: propose new resources, review contributions and help
+      maintain <span class="hl">digital assests and toolkit</span>.
+    </p>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <!-- Roles & Pathways -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Roles &amp; Pathways</div>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <h3 class="oc-card-title mb-2">Core Maintainers</h3>
+            <p>Provide strategic stewardship across all modules, uphold governance rules and facilitate consensus on major decisions. Core maintainers rotate on a fixed term.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <h3 class="oc-card-title mb-2">Module Maintainers</h3>
+            <p>Oversee a specific module (Datasets, Models, Use Cases, OERs, Tools, Guides). They review pull requests, update metadata and coordinate releases for their module.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <h3 class="oc-card-title mb-2">Stewards &amp; Reviewers</h3>
+            <p>Mentor new contributors and ensure submissions meet quality and licensing requirements. Review editors manage peer review for proposals and coordinate with maintainers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <h3 class="oc-card-title mb-2">Release Leads</h3>
+            <p>Organise regular releases of the catalog (quarterly or biannual), collate changelogs and recognise contributions from across the community.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <h3 class="oc-card-title mb-2">Community Contributors</h3>
+            <p>Everyone can contribute! Whether by proposing new resources, improving metadata, reviewing pull requests or suggesting roadmap items, community contributors sustain and grow the ecosystem. Active contributors may be nominated to become maintainers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contribution Process -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Contribution Process</div>
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <h3 class="oc-card-title mb-2">How to Contribute</h3>
+        <p>OpenConstruction uses a transparent, pull‑request based workflow. Follow these steps:</p>
+        <ol class="mb-3">
+          <li>Start by opening a GitHub issue using the appropriate template. Describe your proposal clearly and include links or examples.</li>
+          <li>Fork the relevant repository and prepare your addition or improvement. Use the provided metadata templates and validation scripts.</li>
+          <li>Submit a pull request. At least one other contributor will review your changes. Be ready to respond to comments and refine your submission.</li>
+          <li>After peer review, a module maintainer merges the PR. Your contribution will appear in the next catalog release and you will be credited.</li>
+        </ol>
+        <p class="mb-0">Need help? Join our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">discussion board</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Guidelines -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Technical Guidelines</div>
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <h3 class="oc-card-title mb-2">Metadata &amp; Licensing</h3>
+        <ul class="mb-3">
+          <li>Use the standardized metadata schemas. These templates ensure that resources are discoverable and interoperable.</li>
+          <li>Ensure your resource includes a clear license (e.g., CC BY 4.0 for datasets, MIT for code).</li>
+          <li>Provide descriptive titles, abstracts and keywords. Include file counts, modalities, tasks and object classes where applicable.</li>
+          <li>Cite sources and give proper attribution to original authors and institutions.</li>
+          <li>Respect privacy and ethical considerations; anonymize personal data and obtain necessary consents.</li>
+        </ul>
+        <p class="mb-0">Templates and validation scripts are available in our GitHub repository. </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Roadmap -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Community Roadmap</div>
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <h3 class="oc-card-title mb-2">Shape the Future</h3>
+        <p>The OpenConstruction roadmap is built by its community. Proposed features, module improvements and tooling enhancements are tracked publicly. Anyone can suggest an item or volunteer to lead an effort.</p>
+        <p>See our current roadmap and open issues on GitHub Projects or our <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/discussions" target="_blank" rel="noopener">discussion board</a>. Major roadmap milestones are ratified through our governance process and scheduled into quarterly or biannual releases.</p>
+        <p class="mb-0">To suggest a roadmap item or volunteer for an initiative, create a new discussion post or open an issue. Your ideas help guide where OpenConstruction goes next.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="py-4 mt-3">
+  <div class="container oc-container small text-muted text-center">
+    <div>
+      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+    </div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code or paywalled content.
+        All rights remain with the original authors, creators and publishers.
+      </small>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Auto-active current nav link -->
+<script>
+  (function(){
+    const path = (location.pathname || '').replace(/\/+\$/,'');
+    const file = path.split('/').pop() || 'contribute.html';
+    const routeByFile = {
+      '': 'index',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models',
+      'deployments': 'usecases', 'deployments.html': 'usecases',
+      'oer': 'oers', 'oer.html': 'oers',
+      'contribute': 'contribute', 'contribute.html': 'contribute',
+      'governance': 'governance', 'governance.html': 'governance',
+      'contributors': 'contributors', 'contributors.html': 'contributors'
+    };
+    const route = routeByFile[file] || '';
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+    });
+  })();
+</script>
+
+</body>
+</html>
