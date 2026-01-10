@@ -26,7 +26,7 @@ jobs:
       - name: Validate JSON against schemas
         run: |
           mkdir -p reports
-          python scripts/validate_json.py --report reports/validate.json
+          python scripts/validate.py --report reports/validate.json
 
       - name: Check links (sampled for speed)
         run: |
