@@ -2505,8 +2505,7 @@
   "potential_tasks": [
     "Digital twin generation",
     "Semantic segmentation",
-    "Defect detection",
-    "Asset inspection and maintenance"
+    "Defect detection"
   ],
   "license": "CC BY 4.0",
   "paper": "CAMHighways: The Cambridge Highways dataset",

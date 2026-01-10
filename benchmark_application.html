@@ -23,7 +23,10 @@
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
-    .oc-container{ max-width:1080px; }
+
+    /* ✅ Consistent width with dataset.html: do NOT constrain container */
+    /* .oc-container{ max-width:1080px; } */
+
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
     .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
     .brand-wordmark .oc-open{ font-size:.75rem; font-weight:400; letter-spacing:.15em; text-transform:uppercase; opacity:.7; margin-bottom:-.1rem; }
@@ -107,7 +110,7 @@
 
 <body>
 <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
-  <div class="container oc-container">
+  <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
       <span class="brand-wordmark">
@@ -175,15 +178,16 @@
 </nav>
 
 <header class="hero">
-  <div class="container oc-container content">
+  <div class="container content">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
       <div>
         <div class="oc-kicker">Benchmark</div>
         <h1 id="pageTitle">Application</h1>
-        <p class="lead">Datasets and models associated with this application label.</p>
+        <p class="lead">Models associated with this application label.</p>
       </div>
       <div class="pill-row">
         <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html" style="border-radius:999px;">← Back</a>
+        <!-- Dataset pill kept (shows count) but page is models-only -->
         <span class="badge badge-oc rounded-pill" id="pillDatasets">— datasets</span>
         <span class="badge badge-oc rounded-pill" id="pillModels">— models</span>
       </div>
@@ -191,18 +195,19 @@
 
     <div class="mt-3 search-mini" style="max-width: 520px;">
       <div class="d-flex align-items-center gap-2 px-1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+             viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
-        <input id="tableSearch" class="form-control" type="search" placeholder="Filter tables..." aria-label="Filter tables">
+        <input id="tableSearch" class="form-control" type="search" placeholder="Filter models..." aria-label="Filter models">
       </div>
     </div>
   </div>
 </header>
 
-<main class="container oc-container">
+<main class="container my-4">
 
-  <section class="oc-section">
+  <section class="oc-section" style="margin-top:0;">
     <div class="oc-kicker mb-2">Models</div>
     <div class="table-wrap">
       <div class="table-responsive" style="max-height: 520px;">
@@ -225,7 +230,7 @@
 </main>
 
 <footer class="py-4 mt-3">
-  <div class="container oc-container small text-muted text-center">
+  <div class="container small text-muted text-center">
     <div>© <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
     <div class="mt-2">
       <small>
@@ -237,13 +242,11 @@
   </div>
 </footer>
 
-<!-- Floating button -->
 <a href="https://github.com/ruoxinx/OpenConstruction-Datasets/issues/new?template=suggestion.yml"
    class="issue-btn" target="_blank" rel="noopener">
   Issue or Suggestion?
 </a>
 
-<!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
     <div class="modal-content p-3 rounded-3 shadow">
@@ -280,12 +283,6 @@
     return [...normArray(ds.applications), ...normArray(ds.application), ...normArray(ds.use_cases)]
       .map(normStr).filter(Boolean);
   }
-  function getDatasetModalities(ds){
-    const mods = [...normArray(ds.modalities), ...normArray(ds.modality)].map(normStr).filter(Boolean);
-    const dm = normStr(ds.data_modality);
-    if(dm) mods.push(dm);
-    return Array.from(new Set(mods));
-  }
   function getModelApps(m){
     return [...normArray(m.applications), ...normArray(m.application), ...normArray(m.use_cases)]
       .map(normStr).filter(Boolean);
@@ -310,29 +307,6 @@
     }
   }
 
-  function datasetRow(ds){
-    const title = normStr(ds.name || ds.title || ds.id || 'Untitled dataset');
-    const year = normStr(ds.year || '');
-    const authors = normStr(ds.authors || '');
-    const mods = getDatasetModalities(ds).slice(0,3)
-      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
-      || '<span class="text-muted">—</span>';
-    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
-
-    const href = ds.id ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}` : (ds.access || ds.doi || '#');
-    const link = href && href !== '#'
-      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
-      : esc(title);
-
-    return `
-      <tr data-row="dataset">
-        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
-        <td>${year || '<span class="text-muted">—</span>'}</td>
-        <td>${mods}</td>
-        <td>${lic}</td>
-      </tr>`;
-  }
-
   function modelRow(m){
     const title = normStr(m.title || m.name || m.id || 'Untitled model');
     const year = normStr(m.year || '');
@@ -340,8 +314,7 @@
       .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
       || '<span class="text-muted">—</span>';
 
-    // IMPORTANT: no model detail page -> link to DOI (fallback to paper_url/paper, then code)
-    const doiUrl  = normStr(m.doi || '');
+    const doiUrl   = normStr(m.doi || '');
     const paperUrl = normStr(m.paper_url || m.paper || m.publication_url || '');
     const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
 
@@ -361,9 +334,12 @@
       </tr>`;
   }
 
+  
   function applyRowFilter(q){
     const needle = q.trim().toLowerCase();
-    document.querySelectorAll('tbody tr').forEach(tr=>{
+    const tb = document.getElementById('mBody');
+    if(!tb) return;
+    tb.querySelectorAll('tr').forEach(tr=>{
       const ok = !needle || tr.textContent.toLowerCase().includes(needle);
       tr.style.display = ok ? '' : 'none';
     });
@@ -375,7 +351,8 @@
     const label = normStr(params.get('label') || '') || key || 'Application';
 
     document.title = `OpenConstruction · Application Benchmark · ${label}`;
-    document.getElementById('pageTitle').textContent = label;
+    const titleEl = document.getElementById('pageTitle');
+    if(titleEl) titleEl.textContent = label;
 
     const datasets = await loadJsonSafe('data/datasets.json');
     const models   = await loadJsonSafe('data/models.json');
@@ -383,25 +360,36 @@
     const dsMatched = datasets.filter(ds => getDatasetApps(ds).some(a => canonKey(a) === key));
     const mMatched  = models.filter(m => getModelApps(m).some(a => canonKey(a) === key));
 
-    dsMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
     mMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.title||a.name).localeCompare(normStr(b.title||b.name)));
 
-    document.getElementById('pillDatasets').textContent = `${dsMatched.length} dataset${dsMatched.length===1?'':'s'}`;
-    document.getElementById('pillModels').textContent = `${mMatched.length} model${mMatched.length===1?'':'s'}`;
+    const pillD = document.getElementById('pillDatasets');
+    if(pillD) pillD.textContent = `${dsMatched.length} dataset${dsMatched.length===1?'':'s'}`;
 
-    document.getElementById('dsBody').innerHTML = dsMatched.length
-      ? dsMatched.map(datasetRow).join('')
-      : `<tr><td colspan="4" class="text-muted">No datasets linked to this application yet.</td></tr>`;
+    const pillM = document.getElementById('pillModels');
+    if(pillM) pillM.textContent = `${mMatched.length} model${mMatched.length===1?'':'s'}`;
 
-    document.getElementById('mBody').innerHTML = mMatched.length
-      ? mMatched.map(modelRow).join('')
-      : `<tr><td colspan="4" class="text-muted">No models linked to this application yet.</td></tr>`;
+    
+    const dsEl = document.getElementById('dsBody');
+    if(dsEl){
+      dsEl.innerHTML = dsMatched.length
+        ? dsMatched.map(datasetRow).join('')
+        : `<tr><td colspan="4" class="text-muted">No datasets linked to this application yet.</td></tr>`;
+    }
+
+    const mEl = document.getElementById('mBody');
+    if(mEl){
+      mEl.innerHTML = mMatched.length
+        ? mMatched.map(modelRow).join('')
+        : `<tr><td colspan="4" class="text-muted">No models linked to this application yet.</td></tr>`;
+    }
 
     const input = document.getElementById('tableSearch');
-    input.addEventListener('input', (e)=> applyRowFilter(e.target.value));
+    if(input){
+      input.addEventListener('input', (e)=> applyRowFilter(e.target.value));
+    }
 
     const q = params.get('q');
-    if(q){ input.value = q; applyRowFilter(q); }
+    if(q && input){ input.value = q; applyRowFilter(q); }
   }
   init();
 </script>
