@@ -251,7 +251,6 @@
 	}
   </style>
 
-  <!-- ✨ Minimal carousel CSS (added; does not change your sizes) -->
   <style>
     .occ-carousel{ position:relative; background:#fff; border:1px solid var(--oc-border);
       border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:14px 44px; }
@@ -269,7 +268,6 @@
     .occ-dots button[aria-selected="true"]{ background:var(--oc-accent); width:28px; border-radius:8px; }
     .occ-progress{ height:6px; background:#eef3f8; border-radius:999px; overflow:hidden; }
     .occ-progress .bar{ height:100%; width:0%; background:var(--oc-ink); opacity:.25; }
-    /* Initials fallback (same headshot size) */
     .headshot.is-initials{
       display:grid; place-items:center; width:86px; height:86px; border-radius:50%;
       background:#eef3f8; color:var(--oc-ink); font-weight:800; font-size:1rem;
@@ -536,7 +534,6 @@
   <section class="oc-section">
     <div class="oc-kicker mb-2">Contributors</div>
 
-    <!-- 🔁 Carousel wrapper (ONLY change inside this section) -->
     <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
       <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
 
@@ -946,12 +943,12 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     return new Set(keys).size;
   }
 
-  // Contributors = length of data/contributors.json
+// Contributors = length of data/contributors.json + 7 (team members)
   async function countContributorsFromJSON() {
     const res = await fetch("data/contributors.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Cannot load contributors.json");
     const data = await res.json();
-    return Array.isArray(data) ? data.length : 0;
+    return Array.isArray(data) ? data.length + 7 : 7;
   }
 
   /* ------------------ run ------------------ */
@@ -969,7 +966,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     }
 
     // Set immediately (no flicker)
-    if (countContribEl) countContribEl.textContent = contributors + 7;
+    if (countContribEl) countContribEl.textContent = contributors;
     if (countInstEl)    countInstEl.textContent    = institutions;
 
     // Animate
