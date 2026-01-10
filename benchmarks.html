@@ -353,20 +353,22 @@
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius:16px; border:1px solid var(--oc-border);">
-      <div class="modal-header">
-        <h5 class="modal-title" style="color:var(--oc-ink); font-weight:800;">Subscribe for updates</h5>
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p class="text-muted mb-3">Get occasional updates when new datasets/models/tasks are added.</p>
-        <div class="d-flex gap-2">
-          <input class="form-control" type="email" placeholder="Email address" aria-label="Email address">
-          <button class="btn btn-dark" type="button">Subscribe</button>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
         </div>
-        <div class="text-muted small mt-2">No spam. Unsubscribe anytime.</div>
-      </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
     </div>
   </div>
 </div>
