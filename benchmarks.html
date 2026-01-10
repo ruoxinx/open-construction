@@ -1,7 +1,3 @@
-<!-- =========================
-     FILE 1: benchmarks.html
-     (Index-only page: Tasks + Applications)
-     ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,8 +101,8 @@
       .hero .content{ padding:40px 0 24px; }
       .search-wrap{ top:64px; }
     }
-	
-	/* ---- Floating Suggestion Button ---- */
+
+    /* ---- Floating Suggestion Button ---- */
     .issue-btn {
       position: fixed;
       bottom: 20px;
@@ -216,6 +212,7 @@
                placeholder="Search tasks, applications, datasets, models..."
                aria-label="Search benchmarks">
       </div>
+    </div>
   </div>
 </header>
 
@@ -351,14 +348,13 @@
       <path d="M5.5 9.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5z"/>
     </svg>`;
   }
-	function iconModel(){
-	  // Cube icon (reads as "model/artifact" better than person icon)
-	  return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-		<path d="M8.186.113a1 1 0 0 0-.372 0L2.5 1.385a1 1 0 0 0-.7.957v3.316a1 1 0 0 0 .553.894l5.314 2.657a1 1 0 0 0 .894 0l5.314-2.657a1 1 0 0 0 .553-.894V2.342a1 1 0 0 0-.7-.957L8.186.113zM3 2.9 8 1.65l5 1.25L8 4.15 3 2.9z"/>
-		<path d="M2.8 6.42v3.06c0 .379.214.725.553.894l4.947 2.474V9.79L2.8 6.42zm10.4 0L7.7 9.79v5.058l4.947-2.474a1 1 0 0 0 .553-.894V6.42z"/>
-	  </svg>`;
-	}
-
+  function iconModel(){
+    // Cube icon (reads as "model/artifact")
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8.186.113a1 1 0 0 0-.372 0L2.5 1.385a1 1 0 0 0-.7.957v3.316a1 1 0 0 0 .553.894l5.314 2.657a1 1 0 0 0 .894 0l5.314-2.657a1 1 0 0 0 .553-.894V2.342a1 1 0 0 0-.7-.957L8.186.113zM3 2.9 8 1.65l5 1.25L8 4.15 3 2.9z"/>
+      <path d="M2.8 6.42v3.06c0 .379.214.725.553.894l4.947 2.474V9.79L2.8 6.42zm10.4 0L7.7 9.79v5.058l4.947-2.474a1 1 0 0 0 .553-.894V6.42z"/>
+    </svg>`;
+  }
 
   // ---------- Field normalizers ----------
   function getDatasetTasks(ds){
@@ -425,11 +421,28 @@
     return arr;
   }
 
-  function renderIndexGrid({items, elId, noteId, hrefBuilder, maxCards=60}){
+  // -------- Progressive reveal (no style changes) --------
+  const gridState = {
+    task: { all: [], shown: 0, batch: 48 },
+    app:  { all: [], shown: 0, batch: 48 }
+  };
+
+  function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
     const el = document.getElementById(elId);
     const note = document.getElementById(noteId);
 
-    if(!items.length){
+    if(reset){
+      gridState[kind].all = items.slice();
+      gridState[kind].shown = 0;
+    } else {
+      // keep all (do not reset shown) unless items reference changed
+      gridState[kind].all = items.slice();
+    }
+
+    const state = gridState[kind];
+    const total = state.all.length;
+
+    if(!total){
       el.innerHTML = `
         <div class="oc-card"><div class="oc-card-body">
           <div class="oc-card-title mb-1">No entries found</div>
@@ -439,8 +452,11 @@
       return;
     }
 
-    const shown = items.slice(0, maxCards);
-    el.innerHTML = shown.map(x=>{
+    const nextShown = Math.min(total, state.shown + state.batch);
+    const shownItems = state.all.slice(0, nextShown);
+    state.shown = nextShown;
+
+    el.innerHTML = shownItems.map(x=>{
       const label = x.label || x.canon;
       const href = hrefBuilder(x);
       return `
@@ -456,16 +472,68 @@
         </a>`;
     }).join('');
 
-    const extra = items.length - shown.length;
-    note.textContent = extra > 0 ? `Showing top ${shown.length}. Use search to find the rest.` : '';
+    const remaining = total - state.shown;
+    if(remaining > 0){
+      el.insertAdjacentHTML('beforeend', `
+        <div class="d-grid" style="grid-column: 1 / -1;">
+          <button class="btn btn-outline-dark" type="button" data-show-more="${kind}">
+            Show more (${remaining} remaining)
+          </button>
+        </div>
+      `);
+      note.textContent = `Showing ${state.shown} of ${total}. Use search to find the rest.`;
+    } else {
+      note.textContent = '';
+    }
   }
 
   function applyFilter(q){
     const needle = q.trim().toLowerCase();
-    document.querySelectorAll('[data-index-card="1"]').forEach(card=>{
-      const label = (card.getAttribute('data-label') || '').toLowerCase();
-      card.style.display = (!needle || label.includes(needle)) ? '' : 'none';
-    });
+    const isSearching = needle.length > 0;
+
+    const taskBuilder = (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`;
+    const appBuilder  = (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`;
+
+    function renderAllMatches(kind, elId, noteId, hrefBuilder){
+      const all = gridState[kind].all || [];
+      const filtered = !needle ? all : all.filter(x => (x.label || x.canon || '').toLowerCase().includes(needle));
+
+      const el = document.getElementById(elId);
+      const note = document.getElementById(noteId);
+
+      if(!filtered.length){
+        el.innerHTML = `<div class="text-muted">No matches.</div>`;
+        note.textContent = '';
+        return;
+      }
+
+      el.innerHTML = filtered.map(x=>{
+        const label = x.label || x.canon;
+        const href = hrefBuilder(x);
+        return `
+          <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
+            <div class="index-icon" aria-hidden="true">${esc(label.slice(0,1).toUpperCase())}</div>
+            <div>
+              <div class="index-title">${esc(label)}</div>
+              <div class="index-meta">
+                <div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
+                <div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
+              </div>
+            </div>
+          </a>`;
+      }).join('');
+      note.textContent = `Search results: ${filtered.length}.`;
+    }
+
+    if(isSearching){
+      // show ALL matches (not paginated) so search always finds everything
+      renderAllMatches('task', 'taskGrid', 'taskGridNote', taskBuilder);
+      renderAllMatches('app',  'appGrid',  'appGridNote',  appBuilder);
+    } else {
+      // reset to paginated view
+      renderIndexGrid({ items: gridState.task.all, elId:'taskGrid', noteId:'taskGridNote', hrefBuilder: taskBuilder, kind:'task', reset:true });
+      renderIndexGrid({ items: gridState.app.all,  elId:'appGrid',  noteId:'appGridNote',  hrefBuilder: appBuilder,  kind:'app',  reset:true });
+    }
   }
 
   async function init(){
@@ -487,24 +555,59 @@
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
     document.getElementById('statApps').textContent  = String(apps.length || 0);
 
-    // Link to the detail page with canonical key
+    // store state and render limited cards
+    gridState.task.all = tasks.slice();
+    gridState.app.all  = apps.slice();
+
     renderIndexGrid({
       items: tasks,
       elId: 'taskGrid',
       noteId: 'taskGridNote',
-      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
+      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
+      kind: 'task',
+      reset: true
     });
 
     renderIndexGrid({
       items: apps,
       elId: 'appGrid',
       noteId: 'appGridNote',
-      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
+      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
+      kind: 'app',
+      reset: true
     });
 
+    // search
     const input = document.getElementById('globalSearch');
     input.addEventListener('input', (e)=> applyFilter(e.target.value));
 
+    // show more buttons
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-show-more]');
+      if(!btn) return;
+      const kind = btn.getAttribute('data-show-more');
+      if(kind === 'task'){
+        renderIndexGrid({
+          items: gridState.task.all,
+          elId: 'taskGrid',
+          noteId: 'taskGridNote',
+          hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
+          kind: 'task',
+          reset: false
+        });
+      } else if(kind === 'app'){
+        renderIndexGrid({
+          items: gridState.app.all,
+          elId: 'appGrid',
+          noteId: 'appGridNote',
+          hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
+          kind: 'app',
+          reset: false
+        });
+      }
+    });
+
+    // url preset query
     const params = new URLSearchParams(location.search);
     const q = params.get('q');
     if(q){ input.value = q; applyFilter(q); }
