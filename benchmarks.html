@@ -1,4 +1,7 @@
-```html
+<!-- =========================
+     FILE 1: benchmarks.html
+     (Index-only page: Tasks + Applications)
+     ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OpenConstruction · Benchmarks</title>
 
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Leaflet core (kept for consistency) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <style>
@@ -29,10 +29,7 @@
     a{ color:var(--oc-link); }
     .oc-container{ max-width:1080px; }
 
-    .hl{
-      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
-      padding:0 .06em; font-weight:700;
-    }
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700; }
 
     /* Navbar */
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
@@ -47,27 +44,18 @@
     .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
     .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
     .nav-link.icon-only:hover svg{ opacity:1; }
-
     .btn-subscribe-icon{ background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
     .btn-subscribe-icon svg{ fill:var(--oc-accent); }
-    .btn-subscribe-icon:hover svg{ filter:brightness(1.15); }
 
     /* Hero */
     .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
-    .hero .content{ padding:52px 0 36px; text-align:center; }
+    .hero .content{ padding:52px 0 30px; text-align:center; }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
       font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
       margin:.25rem 0 .35rem;
     }
     .hero p.lead{ max-width:78ch; margin:0 auto; color:var(--oc-subtle); }
-
-    .oc-section{ margin-top:34px; }
-    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
-
-    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
-    .oc-card-body{ padding:1.25rem; }
-    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
 
     /* Search bar */
     .search-wrap{
@@ -84,7 +72,10 @@
     .search-wrap .form-control:focus{ box-shadow:none; }
     .search-hint{ color:var(--oc-subtle); font-size:.9rem; margin-top:10px; text-align:center; }
 
-    /* Index cards (Tasks / Applications) */
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+
+    /* Index cards */
     .index-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
@@ -104,43 +95,14 @@
     .index-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
     .index-meta svg{ width:14px; height:14px; opacity:.85; }
 
-    /* Tables */
-    .table-wrap{
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      overflow:hidden;
-      background:#fff;
-      box-shadow:var(--oc-shadow);
-    }
-    .table thead th{
-      background:#f7fbff;
-      color:var(--oc-ink);
-      font-weight:800;
-      border-bottom:1px solid var(--oc-border);
-      position:sticky;
-      top:0;
-      z-index:1;
-    }
-    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
+    .oc-card-title{ font-weight:700; color:var(--oc-ink); }
 
-    /* Accordion */
-    .accordion-item{
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius) !important;
-      overflow:hidden;
-      box-shadow:var(--oc-shadow);
-      background:#fff;
-      margin-bottom:14px;
-    }
-    .accordion-button{ font-weight:800; color:var(--oc-ink); background:#fff; }
-    .accordion-button:not(.collapsed){
-      background:#fff7ea; color:var(--oc-ink); box-shadow:none; border-bottom:1px solid var(--oc-border);
-    }
-    .accordion-button:focus{ border-color:transparent; box-shadow:0 0 0 .2rem rgba(134,183,254,.35); }
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
     @media (max-width: 991.98px){
-      .hero .content{ padding:40px 0 28px; }
+      .hero .content{ padding:40px 0 24px; }
       .search-wrap{ top:64px; }
     }
   </style>
@@ -198,8 +160,7 @@
         </li>
 
         <li class="nav-item">
-          <button type="button"
-                  class="nav-link px-2 icon-only btn-subscribe-icon"
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
                   data-bs-toggle="modal" data-bs-target="#subscribeModal"
                   aria-label="Subscribe for updates" title="Subscribe">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -218,10 +179,10 @@
 
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Benchmarks by Task & Application</h1>
+    <h1>Benchmarks</h1>
     <p class="lead">
-      Browse <span class="hl">tasks</span> and <span class="hl">applications</span> to see linked
-      datasets and models in OpenConstruction.
+      Browse <span class="hl">tasks</span> and <span class="hl">applications</span>.
+      Click any item to open its benchmark tables.
     </p>
 
     <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
@@ -230,13 +191,12 @@
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
         <input id="globalSearch" class="form-control" type="search"
-               placeholder="Search tasks, applications, datasets, models..."
+               placeholder="Search tasks and applications..."
                aria-label="Search benchmarks">
       </div>
     </div>
     <div class="search-hint">
-      Loads from <code>data/datasets.json</code> and <code>data/models.json</code>.
-      Tasks are merged case-insensitively (e.g., “Object Detection” = “object detection”).
+      Tasks/applications are merged case-insensitively (e.g., “Object Detection” = “object detection”).
     </div>
   </div>
 </header>
@@ -245,81 +205,42 @@
   <section class="oc-section">
     <div class="oc-kicker mb-2">Overview</div>
     <div class="row g-3">
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="oc-card h-100"><div class="oc-card-body">
           <div class="oc-card-title">Tasks</div>
           <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
-          <div class="text-muted">Merged case-insensitively</div>
+          <div class="text-muted">Unique (merged) task labels</div>
         </div></div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="oc-card h-100"><div class="oc-card-body">
           <div class="oc-card-title">Applications</div>
           <div class="display-6 fw-bold mb-1" id="statApps">—</div>
-          <div class="text-muted">Index from datasets/models</div>
+          <div class="text-muted">Unique (merged) application labels</div>
         </div></div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="oc-card h-100"><div class="oc-card-body">
-          <div class="oc-card-title">Datasets</div>
-          <div class="display-6 fw-bold mb-1" id="statDatasets">—</div>
-          <div class="text-muted">All entries loaded</div>
-        </div></div>
-      </div>
-      <div class="col-md-3">
-        <div class="oc-card h-100"><div class="oc-card-body">
-          <div class="oc-card-title">Models</div>
-          <div class="display-6 fw-bold mb-1" id="statModels">—</div>
-          <div class="text-muted">All entries loaded</div>
+          <div class="oc-card-title">Catalog size</div>
+          <div class="display-6 fw-bold mb-1"><span id="statDatasets">—</span> / <span id="statModels">—</span></div>
+          <div class="text-muted">Datasets / Models loaded</div>
         </div></div>
       </div>
     </div>
   </section>
 
-  <!-- TASK INDEX -->
   <section class="oc-section">
-    <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
-      <div>
-        <div class="oc-kicker mb-2">Browse</div>
-        <h2 class="h4 fw-bold mb-0" style="color:var(--oc-ink);">Task index</h2>
-      </div>
-      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#taskTables" style="border-radius:999px;">
-        Jump to task tables
-      </a>
-    </div>
-
-    <div class="mt-3 index-grid" id="taskGrid"></div>
+    <div class="oc-kicker mb-2">Browse</div>
+    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Task index</h2>
+    <div class="index-grid" id="taskGrid"></div>
     <div class="mt-3 text-center text-muted small" id="taskGridNote"></div>
   </section>
 
-  <!-- APPLICATION INDEX -->
   <section class="oc-section">
-    <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
-      <div>
-        <div class="oc-kicker mb-2">Browse</div>
-        <h2 class="h4 fw-bold mb-0" style="color:var(--oc-ink);">Application index</h2>
-      </div>
-      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#appTables" style="border-radius:999px;">
-        Jump to application tables
-      </a>
-    </div>
-
-    <div class="mt-3 index-grid" id="appGrid"></div>
+    <div class="oc-kicker mb-2">Browse</div>
+    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Application index</h2>
+    <div class="index-grid" id="appGrid"></div>
     <div class="mt-3 text-center text-muted small" id="appGridNote"></div>
-  </section>
-
-  <!-- TASK TABLES -->
-  <section class="oc-section" id="taskTables">
-    <div class="oc-kicker mb-2">Benchmarks</div>
-    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Tables by task</h2>
-    <div class="accordion" id="taskAccordion"></div>
-  </section>
-
-  <!-- APPLICATION TABLES -->
-  <section class="oc-section" id="appTables">
-    <div class="oc-kicker mb-2">Benchmarks</div>
-    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Tables by application</h2>
-    <div class="accordion" id="appAccordion"></div>
   </section>
 </main>
 
@@ -391,103 +312,57 @@
   const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   const normStr = (v) => (v == null ? '' : String(v).trim());
 
-  function slugifyKey(t){
-    return normStr(t).toLowerCase()
-      .replace(/[^a-z0-9]+/g,'-')
-      .replace(/(^-|-$)/g,'')
-      .slice(0, 80) || 'key';
-  }
-
-  // Case-insensitive canonicalization (merges "Object Detection" and "object detection")
-  function canonKey(s){
-    return normStr(s).toLowerCase().replace(/\s+/g,' ').trim();
-  }
-
-  // Nice display: Title Case-ish (keeps acronyms reasonably)
+  function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
   function niceLabel(s){
     const raw = normStr(s);
     if(!raw) return '';
-    // If it already has internal capitals (e.g., "BIM"), keep it.
     const hasCaps = /[A-Z]/.test(raw);
-    if(hasCaps && raw.length <= 12) return raw;
+    if(hasCaps && raw.length <= 14) return raw;
     return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
   }
-
-  function iconCount(){
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Z"/>
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-      </svg>`;
+  function slugifyKey(s){
+    return normStr(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0, 90) || 'key';
   }
+
   function iconStack(){
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M8.974 1.5a1 1 0 0 0-1.948 0l-.3 1.2a1 1 0 0 1-.757.727l-1.22.29a1 1 0 0 0 0 1.946l1.22.29a1 1 0 0 1 .757.727l.3 1.2a1 1 0 0 0 1.948 0l.3-1.2a1 1 0 0 1 .757-.727l1.22-.29a1 1 0 0 0 0-1.946l-1.22-.29a1 1 0 0 1-.757-.727l-.3-1.2z"/>
-        <path d="M5.5 9.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5z"/>
-      </svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M8.974 1.5a1 1 0 0 0-1.948 0l-.3 1.2a1 1 0 0 1-.757.727l-1.22.29a1 1 0 0 0 0 1.946l1.22.29a1 1 0 0 1 .757.727l.3 1.2a1 1 0 0 0 1.948 0l.3-1.2a1 1 0 0 1 .757-.727l1.22-.29a1 1 0 0 0 0-1.946l-1.22-.29a1 1 0 0 1-.757-.727l-.3-1.2z"/>
+      <path d="M5.5 9.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5z"/>
+    </svg>`;
+  }
+  function iconCount(){
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Z"/>
+      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+    </svg>`;
   }
 
-  // ---------- Schema normalizers ----------
+  // ---------- Field normalizers ----------
   function getDatasetTasks(ds){
-    return [
-      ...normArray(ds.tasks),
-      ...normArray(ds.task),
-      ...normArray(ds.potential_tasks)
-    ].map(normStr).filter(Boolean);
+    return [...normArray(ds.tasks), ...normArray(ds.task), ...normArray(ds.potential_tasks)]
+      .map(normStr).filter(Boolean);
+  }
+  function getModelTasks(m){
+    return [...normArray(m.tasks), ...normArray(m.task)]
+      .map(normStr).filter(Boolean);
   }
   function getDatasetApps(ds){
-    // support: applications, application, use_cases (future-proof)
-    return [
-      ...normArray(ds.applications),
-      ...normArray(ds.application),
-      ...normArray(ds.use_cases)
-    ].map(normStr).filter(Boolean);
-  }
-  function getDatasetModalities(ds){
-    const mods = [
-      ...normArray(ds.modalities),
-      ...normArray(ds.modality)
-    ].map(normStr).filter(Boolean);
-    const dm = normStr(ds.data_modality);
-    if(dm) mods.push(dm);
-    return Array.from(new Set(mods));
-  }
-
-  function getModelTasks(m){
-    return [
-      ...normArray(m.tasks),
-      ...normArray(m.task)
-    ].map(normStr).filter(Boolean);
+    return [...normArray(ds.applications), ...normArray(ds.application), ...normArray(ds.use_cases)]
+      .map(normStr).filter(Boolean);
   }
   function getModelApps(m){
-    return [
-      ...normArray(m.applications),
-      ...normArray(m.application),
-      ...normArray(m.use_cases)
-    ].map(normStr).filter(Boolean);
-  }
-  function getModelModalities(m){
-    const mods = [
-      ...normArray(m.modalities),
-      ...normArray(m.modality)
-    ].map(normStr).filter(Boolean);
-    return Array.from(new Set(mods));
+    return [...normArray(m.applications), ...normArray(m.application), ...normArray(m.use_cases)]
+      .map(normStr).filter(Boolean);
   }
 
-  // ---------- Load ----------
   async function loadJsonSafe(url){
     try{
       const res = await fetch(url, {cache:'no-store'});
       if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const data = await res.json();
-
       if(Array.isArray(data)) return data;
       if(data?.items && Array.isArray(data.items)) return data.items;
-
-      if(data && typeof data === 'object'){
-        return Object.values(data).filter(v => v && typeof v === 'object');
-      }
+      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
       return [];
     }catch(err){
       console.warn('Could not load', url, err);
@@ -495,87 +370,64 @@
     }
   }
 
-  // ---------- Index builders (case-insensitive merge) ----------
-  function buildIndexByKey({datasets, models, extractor, sectionName}){
-    // Map canonical -> { label, idSlug, datasets[], models[] }
+  function buildMergedIndex({datasets, models, extractor}){
+    // canonical -> { label, canon, dsCount, modelCount }
     const map = new Map();
 
-    function touch(rawKey){
-      const keyCanon = canonKey(rawKey);
-      if(!keyCanon) return null;
-
-      if(!map.has(keyCanon)){
-        const display = niceLabel(rawKey);
-        map.set(keyCanon, {
-          canon: keyCanon,
-          label: display,
-          idSlug: slugifyKey(display || keyCanon),
-          datasets: [],
-          models: []
-        });
+    function touch(raw){
+      const canon = canonKey(raw);
+      if(!canon) return null;
+      if(!map.has(canon)){
+        const label = niceLabel(raw);
+        map.set(canon, { canon, label, idSlug: slugifyKey(label || canon), dsCount:0, modelCount:0 });
       }
-      return map.get(keyCanon);
+      return map.get(canon);
     }
 
     datasets.forEach(ds=>{
       extractor(ds, 'dataset').forEach(k=>{
         const node = touch(k);
-        if(node) node.datasets.push(ds);
+        if(node) node.dsCount += 1;
       });
     });
-
     models.forEach(m=>{
       extractor(m, 'model').forEach(k=>{
         const node = touch(k);
-        if(node) node.models.push(m);
+        if(node) node.modelCount += 1;
       });
     });
 
-    const arr = Array.from(map.values()).map(x=>{
-      x.datasets = x.datasets.slice().sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
-      x.models   = x.models.slice().sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.title||a.name).localeCompare(normStr(b.title||b.name)));
-      return x;
-    });
-
-    arr.sort((a,b)=>
-      (b.datasets.length + b.models.length) - (a.datasets.length + a.models.length) ||
-      a.label.localeCompare(b.label)
-    );
-
+    const arr = Array.from(map.values());
+    arr.sort((a,b)=> (b.dsCount+b.modelCount)-(a.dsCount+a.modelCount) || a.label.localeCompare(b.label));
     return arr;
   }
 
-  // ---------- Renderers ----------
-  function renderIndexGrid({items, elId, noteId, anchorPrefix, maxCards=60}){
+  function renderIndexGrid({items, elId, noteId, hrefBuilder, maxCards=60}){
     const el = document.getElementById(elId);
     const note = document.getElementById(noteId);
 
     if(!items.length){
       el.innerHTML = `
-        <div class="oc-card">
-          <div class="oc-card-body">
-            <div class="oc-card-title mb-1">No entries found</div>
-            <div class="text-muted">Ensure your JSON includes fields to build this index.</div>
-          </div>
-        </div>`;
+        <div class="oc-card"><div class="oc-card-body">
+          <div class="oc-card-title mb-1">No entries found</div>
+          <div class="text-muted">Add the corresponding fields in JSON to populate this index.</div>
+        </div></div>`;
       note.textContent = '';
       return;
     }
 
     const shown = items.slice(0, maxCards);
     el.innerHTML = shown.map(x=>{
-      const dsN = x.datasets.length;
-      const mN = x.models.length;
       const label = x.label || x.canon;
-
+      const href = hrefBuilder(x);
       return `
-        <a class="index-card" href="#${anchorPrefix}-${esc(x.idSlug)}" data-index-card="1" data-label="${esc(label)}">
+        <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
           <div class="index-icon" aria-hidden="true">${esc(label.slice(0,1).toUpperCase())}</div>
           <div>
             <div class="index-title">${esc(label)}</div>
             <div class="index-meta">
-              <div class="dotline"><span>${iconStack()} <strong>${dsN}</strong> dataset${dsN===1?'':'s'}</span></div>
-              <div class="dotline"><span>${iconCount()} <strong>${mN}</strong> model${mN===1?'':'s'}</span></div>
+              <div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
+              <div class="dotline"><span>${iconCount()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
             </div>
           </div>
         </a>`;
@@ -585,171 +437,14 @@
     note.textContent = extra > 0 ? `Showing top ${shown.length}. Use search to find the rest.` : '';
   }
 
-  function datasetRow(ds){
-    const title = normStr(ds.name || ds.title || ds.id || 'Untitled dataset');
-    const year = normStr(ds.year || '');
-    const authors = normStr(ds.authors || '');
-    const mods = getDatasetModalities(ds).slice(0,3)
-      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
-      || '<span class="text-muted">—</span>';
-    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
-
-    const detailHref = ds.id
-      ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}`
-      : (ds.access || ds.doi || '#');
-
-    const link = detailHref && detailHref !== '#'
-      ? `<a href="${esc(detailHref)}" ${detailHref.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
-      : esc(title);
-
-    return `
-      <tr data-row="dataset">
-        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
-        <td>${year || '<span class="text-muted">—</span>'}</td>
-        <td>${mods}</td>
-        <td>${lic}</td>
-      </tr>`;
-  }
-
-  function modelRow(m){
-    const title = normStr(m.title || m.name || m.id || 'Untitled model');
-    const year = normStr(m.year || '');
-    const mods = getModelModalities(m).slice(0,3)
-      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
-      || '<span class="text-muted">—</span>';
-
-    const paperUrl = normStr(m.paper_url || m.paper || m.publication_url || '');
-    const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
-    const paper = paperUrl ? `<a href="${esc(paperUrl)}" target="_blank" rel="noopener">Paper</a>` : '<span class="text-muted">—</span>';
-    const code  = codeUrl  ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
-
-    const detailHref = m.id
-      ? `models/detail.html?id=${encodeURIComponent(m.id)}`
-      : (paperUrl || codeUrl || '#');
-
-    const link = detailHref && detailHref !== '#'
-      ? `<a href="${esc(detailHref)}" ${detailHref.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
-      : esc(title);
-
-    return `
-      <tr data-row="model">
-        <td class="fw-semibold">${link}</td>
-        <td>${year || '<span class="text-muted">—</span>'}</td>
-        <td>${mods}</td>
-        <td class="text-nowrap">${paper}</td>
-        <td class="text-nowrap">${code}</td>
-      </tr>`;
-  }
-
-  function renderAccordion({items, elId, anchorPrefix, datasetHint, modelHint}){
-    const acc = document.getElementById(elId);
-    if(!items.length){ acc.innerHTML = ''; return; }
-
-    acc.innerHTML = items.map((x, idx)=>{
-      const dsRows = x.datasets.length ? x.datasets.map(datasetRow).join('') :
-        `<tr><td colspan="4" class="text-muted">No datasets linked here yet.</td></tr>`;
-      const mRows = x.models.length ? x.models.map(modelRow).join('') :
-        `<tr><td colspan="5" class="text-muted">No models linked here yet.</td></tr>`;
-
-      const open = idx === 0 ? '' : 'collapsed';
-      const show = idx === 0 ? 'show' : '';
-      const headingId = `heading-${anchorPrefix}-${x.idSlug}`;
-      const collapseId = `collapse-${anchorPrefix}-${x.idSlug}`;
-      const label = x.label || x.canon;
-
-      return `
-        <div class="accordion-item" id="${anchorPrefix}-${esc(x.idSlug)}" data-label="${esc(label)}">
-          <h2 class="accordion-header" id="${esc(headingId)}">
-            <button class="accordion-button ${open}" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#${esc(collapseId)}" aria-expanded="${idx===0?'true':'false'}"
-                    aria-controls="${esc(collapseId)}">
-              ${esc(label)}
-              <span class="ms-3 badge badge-oc rounded-pill">${x.datasets.length} dataset${x.datasets.length===1?'':'s'}</span>
-              <span class="ms-2 badge badge-oc rounded-pill">${x.models.length} model${x.models.length===1?'':'s'}</span>
-            </button>
-          </h2>
-
-          <div id="${esc(collapseId)}" class="accordion-collapse collapse ${show}"
-               aria-labelledby="${esc(headingId)}" data-bs-parent="#${esc(elId)}">
-            <div class="accordion-body">
-
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-                <div class="fw-bold" style="color:var(--oc-ink);">Datasets</div>
-                <div class="text-muted small">${datasetHint}</div>
-              </div>
-
-              <div class="table-wrap mb-4">
-                <div class="table-responsive" style="max-height: 420px;">
-                  <table class="table table-hover mb-0 align-middle">
-                    <thead>
-                      <tr>
-                        <th style="min-width: 320px;">Dataset</th>
-                        <th style="width: 90px;">Year</th>
-                        <th style="min-width: 220px;">Modality</th>
-                        <th style="min-width: 160px;">License</th>
-                      </tr>
-                    </thead>
-                    <tbody>${dsRows}</tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-                <div class="fw-bold" style="color:var(--oc-ink);">Models</div>
-                <div class="text-muted small">${modelHint}</div>
-              </div>
-
-              <div class="table-wrap">
-                <div class="table-responsive" style="max-height: 420px;">
-                  <table class="table table-hover mb-0 align-middle">
-                    <thead>
-                      <tr>
-                        <th style="min-width: 280px;">Model</th>
-                        <th style="width: 90px;">Year</th>
-                        <th style="min-width: 220px;">Modalities</th>
-                        <th style="width: 90px;">Paper</th>
-                        <th style="width: 90px;">Code</th>
-                      </tr>
-                    </thead>
-                    <tbody>${mRows}</tbody>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>`;
-    }).join('');
-  }
-
-  function applyGlobalFilter(q){
+  function applyFilter(q){
     const needle = q.trim().toLowerCase();
-
-    // Filter both index grids
     document.querySelectorAll('[data-index-card="1"]').forEach(card=>{
       const label = (card.getAttribute('data-label') || '').toLowerCase();
       card.style.display = (!needle || label.includes(needle)) ? '' : 'none';
     });
-
-    // Filter accordions by label or row text
-    ['taskAccordion','appAccordion'].forEach(accId=>{
-      document.querySelectorAll(`#${accId} .accordion-item`).forEach(item=>{
-        const label = (item.getAttribute('data-label') || '').toLowerCase();
-        const labelMatch = !needle || label.includes(needle);
-
-        let anyRow = false;
-        item.querySelectorAll('tbody tr').forEach(tr=>{
-          const ok = !needle || tr.textContent.toLowerCase().includes(needle);
-          tr.style.display = ok ? '' : 'none';
-          if(ok) anyRow = true;
-        });
-
-        item.style.display = (labelMatch || anyRow) ? '' : 'none';
-      });
-    });
   }
 
-  // ---------- Init ----------
   async function init(){
     const datasets = await loadJsonSafe('data/datasets.json');
     const models   = await loadJsonSafe('data/models.json');
@@ -757,54 +452,42 @@
     document.getElementById('statDatasets').textContent = String(datasets.length || 0);
     document.getElementById('statModels').textContent   = String(models.length || 0);
 
-    // TASK index (merged case-insensitively)
-    const tasks = buildIndexByKey({
+    const tasks = buildMergedIndex({
       datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj),
-      sectionName: 'tasks'
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj)
     });
+    const apps = buildMergedIndex({
+      datasets, models,
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj)
+    });
+
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
+    document.getElementById('statApps').textContent  = String(apps.length || 0);
 
-    // APPLICATION index (merged case-insensitively)
-    const apps = buildIndexByKey({
-      datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj),
-      sectionName: 'applications'
-    });
-    document.getElementById('statApps').textContent = String(apps.length || 0);
-
-    renderIndexGrid({ items: tasks, elId:'taskGrid', noteId:'taskGridNote', anchorPrefix:'task', maxCards:60 });
-    renderIndexGrid({ items: apps, elId:'appGrid', noteId:'appGridNote', anchorPrefix:'app', maxCards:60 });
-
-    renderAccordion({
+    // Link to the detail page with canonical key
+    renderIndexGrid({
       items: tasks,
-      elId: 'taskAccordion',
-      anchorPrefix: 'task',
-      datasetHint: 'Linked via <code>potential_tasks</code> (datasets)',
-      modelHint: 'Linked via <code>tasks</code> (models)'
+      elId: 'taskGrid',
+      noteId: 'taskGridNote',
+      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
 
-    renderAccordion({
+    renderIndexGrid({
       items: apps,
-      elId: 'appAccordion',
-      anchorPrefix: 'app',
-      datasetHint: 'Linked via <code>applications</code> (datasets) when available',
-      modelHint: 'Linked via <code>applications</code> (models) when available'
+      elId: 'appGrid',
+      noteId: 'appGridNote',
+      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
 
     const input = document.getElementById('globalSearch');
-    input.addEventListener('input', (e)=> applyGlobalFilter(e.target.value));
+    input.addEventListener('input', (e)=> applyFilter(e.target.value));
 
     const params = new URLSearchParams(location.search);
     const q = params.get('q');
-    if(q){
-      input.value = q;
-      applyGlobalFilter(q);
-    }
+    if(q){ input.value = q; applyFilter(q); }
   }
 
   init();
 </script>
 </body>
 </html>
-```
