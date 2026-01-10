@@ -9,7 +9,6 @@ Architecture, Engineering, and Construction (AEC) domain.
 💬 Community: https://github.com/ruoxinx/OpenConstruction-Datasets/discussions  
 📧 Contact: support@openconstruction.org  
 
----
 
 ## Purpose
 
@@ -39,7 +38,7 @@ You can contribute by:
 - Developing platform modules (ingestion helpers, evaluators, benchmarks)
 - Improving documentation, tooling, or onboarding materials
 
----
+👉 See **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed contribution instructions.
 
 ## How to Contribute
 
@@ -51,7 +50,6 @@ You can contribute by:
 
 All contributions undergo **peer review** and **automated CI checks**.
 
----
 
 ## Continuous Integration & Quality Assurance
 
@@ -64,7 +62,6 @@ All pull requests are validated through **CI/CD workflows**, including:
 These checks ensure that community contributions are
 **consistent, interoperable, and sustainable**.
 
----
 
 ## Modular Extension System
 
@@ -78,7 +75,6 @@ Example module types include:
 Modules are registered and maintained independently
 by contributors, enabling **co-development of platform capabilities**.
 
----
 
 ## Governance & Stewardship
 
@@ -91,17 +87,14 @@ community-driven roles**, including:
 - **Release Leads** – coordination of periodic releases and changelogs
 - **Community Contributors** – anyone participating in development or review
 
-Roles are **open, merit-based, and time-bound**, supporting long-term sustainability
-beyond any single institution or individual.
+👉 See **[GOVERNANCE.md](GOVERNANCE.md)** for full governance details.
 
----
 
 ## Licensing
 
 OpenConstruction respects all intellectual property and does not redistribute
 restricted or proprietary content.
 
----
 
 ## Acknowledgment
 
