@@ -1,0 +1,46 @@
+name: CI (Validate Metadata)
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jsonschema requests
+
+      - name: Validate JSON against schemas
+        run: |
+          mkdir -p reports
+          python scripts/validate_json.py --report reports/validate.json
+
+      - name: Check links (sampled for speed)
+        run: |
+          python scripts/check_links.py --report reports/links.json --max-urls 250 --fail-threshold 1
+
+      - name: Create Markdown CI summary
+        run: |
+          python scripts/format_validate_report.py \
+            --validate reports/validate.json \
+            --links reports/links.json \
+            --out reports/summary.md
+
+      - name: Upload CI report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-report
+          path: reports/summary.md

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/models.schema.json",
+  "title": "OpenConstruction Model Catalog Schema",
+  "type": "object",
+  "required": ["schema_version", "models"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "year", "license", "url"],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+
+          "year": { "$ref": "schema.common.json#/definitions/year" },
+          "license": { "$ref": "schema.common.json#/definitions/license" },
+          "url": { "$ref": "schema.common.json#/definitions/url" },
+
+          "paper": { "type": "string" },
+          "doi": { "type": "string" },
+
+          "framework": { "type": "string" },
+          "architecture": { "type": "string" },
+          "checkpoint_url": { "$ref": "schema.common.json#/definitions/url" },
+          "code_url": { "$ref": "schema.common.json#/definitions/url" },
+
+          "contributors": { "$ref": "schema.common.json#/definitions/contributors" },
+          "tasks": { "$ref": "schema.common.json#/definitions/tags" },
+          "modalities": { "$ref": "schema.common.json#/definitions/tags" },
+
+          "trained_on_datasets": {
+            "type": "array",
+            "items": { "$ref": "schema.common.json#/definitions/id" }
+          },
+
+          "benchmarks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": { "type": "string" },
+                "dataset_id": { "$ref": "schema.common.json#/definitions/id" },
+                "metrics": {
+                  "type": "object",
+                  "additionalProperties": { "type": ["number", "string", "null"] }
+                },
+                "notes": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/datasets.schema.json",
+  "title": "OpenConstruction Dataset Catalog Schema",
+  "type": "object",
+  "required": ["schema_version", "datasets"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "year", "license", "url"],
+        "properties": {
+          "id": {
+            "$ref": "schema.common.json#/definitions/id"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "year": {
+            "$ref": "schema.common.json#/definitions/year"
+          },
+          "license": {
+            "$ref": "schema.common.json#/definitions/license"
+          },
+          "url": {
+            "$ref": "schema.common.json#/definitions/url"
+          },
+          "doi": {
+            "type": "string"
+          },
+          "contributors": {
+            "$ref": "schema.common.json#/definitions/contributors"
+          },
+          "tasks": {
+            "$ref": "schema.common.json#/definitions/tags"
+          },
+          "modalities": {
+            "$ref": "schema.common.json#/definitions/tags"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

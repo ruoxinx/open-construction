@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/use-cases.schema.json",
+  "title": "OpenConstruction Use Case (Workflow) Catalog Schema",
+  "type": "object",
+  "required": ["schema_version", "use_cases"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "use_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "year", "license", "url"],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+
+          "year": { "$ref": "schema.common.json#/definitions/year" },
+          "license": { "$ref": "schema.common.json#/definitions/license" },
+          "url": { "$ref": "schema.common.json#/definitions/url" },
+
+          "contributors": { "$ref": "schema.common.json#/definitions/contributors" },
+
+          "applications": { "$ref": "schema.common.json#/definitions/tags" },
+          "tasks": { "$ref": "schema.common.json#/definitions/tags" },
+          "modalities": { "$ref": "schema.common.json#/definitions/tags" },
+
+          "inputs": { "$ref": "schema.common.json#/definitions/tags" },
+          "outputs": { "$ref": "schema.common.json#/definitions/tags" },
+
+          "related_datasets": {
+            "type": "array",
+            "items": { "$ref": "schema.common.json#/definitions/id" }
+          },
+          "related_models": {
+            "type": "array",
+            "items": { "$ref": "schema.common.json#/definitions/id" }
+          },
+
+          "reference": {
+            "type": "object",
+            "properties": {
+              "paper": { "type": "string" },
+              "doi": { "type": "string" },
+              "code_url": { "$ref": "schema.common.json#/definitions/url" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

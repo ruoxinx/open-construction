@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/schema.common.json",
+  "title": "OpenConstruction Common Schema Definitions",
+  "type": "object",
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9\\-_.]+$"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "license": {
+      "type": "string"
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

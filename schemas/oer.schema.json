@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/oer.schema.json",
+  "title": "OpenConstruction Open Educational Resources (OER) Catalog Schema",
+  "type": "object",
+  "required": ["schema_version", "oer"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "oer": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "year", "license", "url"],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+
+          "year": { "$ref": "schema.common.json#/definitions/year" },
+          "license": { "$ref": "schema.common.json#/definitions/license" },
+          "url": { "$ref": "schema.common.json#/definitions/url" },
+
+          "authors": { "type": "string" },
+          "publisher": { "type": "string" },
+          "language": { "type": "string" },
+
+          "topics": { "$ref": "schema.common.json#/definitions/tags" },
+          "formats": { "$ref": "schema.common.json#/definitions/tags" },
+          "keywords": { "$ref": "schema.common.json#/definitions/tags" },
+
+          "image_url": { "$ref": "schema.common.json#/definitions/url" },
+          "contributors": { "$ref": "schema.common.json#/definitions/contributors" },
+
+          "added": {
+            "type": "string",
+            "description": "Date added in YYYY-MM-DD format",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
