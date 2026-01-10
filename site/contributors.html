@@ -895,16 +895,16 @@ marquee.querySelectorAll('.logo img').forEach(img => {
   const countContribEl = document.getElementById("countContrib");
   const countInstEl    = document.getElementById("countInst");
 
-  // Optional SVG rings (safe if not present)
   const ringContrib = document.getElementById("ringContrib");
   const ringInst    = document.getElementById("ringInst");
+  const metricsWrap = document.getElementById("communityMetrics");
+
   const R = 17;
   const CIRC = 2 * Math.PI * R;
 
-  /* ------------------ helpers ------------------ */
   const easeOut = t => 1 - Math.pow(1 - t, 3);
 
-  function countUp(el, to, duration = 900) {
+  function countUp(el, to, duration = 1200) {
     if (!el) return;
     const start = performance.now();
     function step(now) {
@@ -917,71 +917,77 @@ marquee.querySelectorAll('.logo img').forEach(img => {
 
   function initRing(ring) {
     if (!ring) return;
-    ring.style.strokeDasharray = CIRC;
-    ring.style.strokeDashoffset = CIRC;
+    ring.style.strokeDasharray = String(CIRC);
+    ring.style.strokeDashoffset = String(CIRC);
   }
 
-  function playRing(ring) {
+  function playRing(ring, durationMs = 1400) {
     if (!ring) return;
-    requestAnimationFrame(() => ring.style.strokeDashoffset = "0");
+    // ensure transition is applied
+    ring.style.transition = `stroke-dashoffset ${durationMs}ms ease`;
+    requestAnimationFrame(() => {
+      ring.style.strokeDashoffset = "0";
+    });
   }
 
-  /* ------------------ counts ------------------ */
-
-  // Institutions = unique logos in <template id="logo-seed">
   function countInstitutionsFromTemplate() {
     const tpl = document.getElementById("logo-seed");
     if (!tpl || !tpl.content) return 0;
-
     const imgs = [...tpl.content.querySelectorAll("img")];
-
-    // dedupe by src (fallback to alt)
     const keys = imgs
       .map(img => img.getAttribute("src")?.trim() || img.getAttribute("alt")?.trim())
       .filter(Boolean);
-
     return new Set(keys).size;
   }
 
-// Contributors = length of data/contributors.json + 7 (team members)
   async function countContributorsFromJSON() {
-    const res = await fetch("data/contributors.json", { cache: "no-store" });
+    // Use absolute path so refresh in subpaths never breaks
+    const base = new URL('.', location.href);
+    const url = new URL('data/contributors.json', base).toString();
+
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("Cannot load contributors.json");
     const data = await res.json();
-    return Array.isArray(data) ? data.length + 7 : 7;
+    return Array.isArray(data) ? data.length + 7 : 7; // keep your +7 behavior
   }
 
-  /* ------------------ run ------------------ */
-	document.addEventListener("DOMContentLoaded", async () => {
-	  initRing(ringContrib);
-	  initRing(ringInst);
+  async function run() {
+    initRing(ringContrib);
+    initRing(ringInst);
 
-	  const institutions = countInstitutionsFromTemplate();
+    const institutions = countInstitutionsFromTemplate();
 
-	  let contributors = 0;
-	  try {
-		contributors = await countContributorsFromJSON();
-	  } catch (e) {
-		console.warn("[stats] contributors.json error:", e);
-	  }
+    let contributors = 0;
+    try {
+      contributors = await countContributorsFromJSON();
+    } catch (e) {
+      console.warn("[stats] contributors.json error:", e);
+    }
 
-	  // Set immediately (no flicker)
-	  if (countContribEl) countContribEl.textContent = contributors;
-	  if (countInstEl)    countInstEl.textContent    = institutions;
+    // Set numbers
+    if (countContribEl) countContribEl.textContent = String(contributors);
+    if (countInstEl)    countInstEl.textContent    = String(institutions);
 
-	  // ring transition
-	  document.getElementById("communityMetrics")?.classList.add("ring-ready");
+    // Make sure ring transition is enabled
+    metricsWrap?.classList.add("ring-ready");
 
-	  // Animate
-	  setTimeout(() => {
-		countUp(countContribEl, contributors, 1400);     // slower number count (optional)
-		countUp(countInstEl, institutions, 1400);        // slower number count (optional)
-		playRing(ringContrib);
-		playRing(ringInst);
-	  }, 60);
-	});
+    // Animate
+    setTimeout(() => {
+      countUp(countContribEl, contributors, 1400);
+      countUp(countInstEl, institutions, 1400);
+      playRing(ringContrib, 1400);
+      playRing(ringInst, 1400);
+    }, 60);
+  }
 
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run, { once: true });
+  } else {
+    run();
+  }
+})();
 </script>
+
 
 
 <!-- Subscribe Modal -->
