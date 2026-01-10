@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,13 +19,11 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <style>
-    /* ---------- Design tokens (LIGHT ONLY) ---------- */
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-      --oc-brand-model:#4e6ce8;
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
@@ -37,36 +36,21 @@
 
     /* Navbar */
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
-    .brand-wordmark{
-      display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B;
-    }
-    .brand-wordmark .oc-open{
-      font-size:0.75rem; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; margin-bottom:-0.1rem;
-    }
-    .brand-wordmark .oc-sep{display:none}
-    .brand-wordmark .oc-construction{
-      font-size:1.35rem; font-weight:700; letter-spacing:-0.01em;
-    }
+    .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
+    .brand-wordmark .oc-open{ font-size:.75rem; font-weight:400; letter-spacing:.15em; text-transform:uppercase; opacity:.7; margin-bottom:-.1rem; }
+    .brand-wordmark .oc-construction{ font-size:1.35rem; font-weight:700; letter-spacing:-.01em; }
     .oc-logo{ height:44px; width:44px; }
 
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
     .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
-    }
+    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
     .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
     .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
     .nav-link.icon-only:hover svg{ opacity:1; }
 
-    /* Yellow subscribe bell */
-    .btn-subscribe-icon{
-      background: transparent;
-      border: 0;
-      padding: .25rem .4rem;
-      line-height: 1;
-    }
-    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
-    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
+    .btn-subscribe-icon{ background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
+    .btn-subscribe-icon svg{ fill:var(--oc-accent); }
+    .btn-subscribe-icon:hover svg{ filter:brightness(1.15); }
 
     /* Hero */
     .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
@@ -78,32 +62,12 @@
     }
     .hero p.lead{ max-width:78ch; margin:0 auto; color:var(--oc-subtle); }
 
-    /* Sections & Cards */
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
-
-    /* Task cards */
-    .task-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
-    .task-card{
-      background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
-      padding:14px 14px 12px; text-decoration:none; color:inherit;
-      transition:transform .12s ease, border-color .12s ease;
-      display:flex; gap:12px; align-items:flex-start;
-    }
-    .task-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
-    .task-icon{
-      width:42px; height:42px; border-radius:12px; background:var(--oc-muted);
-      display:grid; place-items:center; flex:0 0 auto; border:1px solid var(--oc-border);
-      color:var(--oc-ink); font-weight:900;
-    }
-    .task-title{ font-weight:800; color:var(--oc-ink); line-height:1.15; margin:0; }
-    .task-meta{ color:var(--oc-subtle); font-size:.88rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; }
-    .task-meta .dotline{ display:flex; gap:8px; align-items:center; }
-    .task-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
-    .task-meta svg{ width:14px; height:14px; opacity:.85; }
 
     /* Search bar */
     .search-wrap{
@@ -116,12 +80,29 @@
       box-shadow:0 10px 24px rgba(15,46,75,.06);
       margin-top:18px;
     }
-    .search-wrap .form-control{
-      border:0; box-shadow:none; border-radius:999px;
-      background:transparent;
-    }
+    .search-wrap .form-control{ border:0; box-shadow:none; border-radius:999px; background:transparent; }
     .search-wrap .form-control:focus{ box-shadow:none; }
     .search-hint{ color:var(--oc-subtle); font-size:.9rem; margin-top:10px; text-align:center; }
+
+    /* Index cards (Tasks / Applications) */
+    .index-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+    .index-card{
+      background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
+      padding:14px 14px 12px; text-decoration:none; color:inherit;
+      transition:transform .12s ease, border-color .12s ease;
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .index-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
+    .index-icon{
+      width:42px; height:42px; border-radius:12px; background:var(--oc-muted);
+      display:grid; place-items:center; flex:0 0 auto; border:1px solid var(--oc-border);
+      color:var(--oc-ink); font-weight:900;
+    }
+    .index-title{ font-weight:800; color:var(--oc-ink); line-height:1.15; margin:0; }
+    .index-meta{ color:var(--oc-subtle); font-size:.88rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; }
+    .index-meta .dotline{ display:flex; gap:8px; align-items:center; }
+    .index-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
+    .index-meta svg{ width:14px; height:14px; opacity:.85; }
 
     /* Tables */
     .table-wrap{
@@ -140,14 +121,9 @@
       top:0;
       z-index:1;
     }
-    .badge-oc{
-      background:#eef3f8;
-      color:var(--oc-ink);
-      border:1px solid var(--oc-border);
-      font-weight:700;
-    }
+    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
 
-    /* Accordion polish */
+    /* Accordion */
     .accordion-item{
       border:1px solid var(--oc-border);
       border-radius:var(--oc-radius) !important;
@@ -156,22 +132,11 @@
       background:#fff;
       margin-bottom:14px;
     }
-    .accordion-button{
-      font-weight:800;
-      color:var(--oc-ink);
-      background:#fff;
-    }
+    .accordion-button{ font-weight:800; color:var(--oc-ink); background:#fff; }
     .accordion-button:not(.collapsed){
-      background:#fff7ea;
-      color:var(--oc-ink);
-      box-shadow:none;
-      border-bottom:1px solid var(--oc-border);
+      background:#fff7ea; color:var(--oc-ink); box-shadow:none; border-bottom:1px solid var(--oc-border);
     }
-    .accordion-button:focus{
-      border-color:transparent;
-      box-shadow:0 0 0 .2rem rgba(134,183,254,.35);
-    }
-
+    .accordion-button:focus{ border-color:transparent; box-shadow:0 0 0 .2rem rgba(134,183,254,.35); }
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
     @media (max-width: 991.98px){
@@ -182,7 +147,6 @@
 </head>
 
 <body>
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
@@ -233,7 +197,6 @@
           </a>
         </li>
 
-        <!-- Subscribe bell -->
         <li class="nav-item">
           <button type="button"
                   class="nav-link px-2 icon-only btn-subscribe-icon"
@@ -253,13 +216,12 @@
   </div>
 </nav>
 
-<!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Benchmarks by Task</h1>
+    <h1>Benchmarks by Task & Application</h1>
     <p class="lead">
-      Browse <span class="hl">tasks</span> and see the linked
-      <span class="hl">datasets</span> and <span class="hl">models</span> in OpenConstruction.
+      Browse <span class="hl">tasks</span> and <span class="hl">applications</span> to see linked
+      datasets and models in OpenConstruction.
     </p>
 
     <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
@@ -268,13 +230,13 @@
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
         <input id="globalSearch" class="form-control" type="search"
-               placeholder="Search tasks, datasets, models (e.g., image classification, bridge, point cloud)..."
+               placeholder="Search tasks, applications, datasets, models..."
                aria-label="Search benchmarks">
       </div>
     </div>
     <div class="search-hint">
       Loads from <code>data/datasets.json</code> and <code>data/models.json</code>.
-      (Datasets can be an array OR an object keyed by dataset ID.)
+      Tasks are merged case-insensitively (e.g., “Object Detection” = “object detection”).
     </div>
   </div>
 </header>
@@ -283,55 +245,81 @@
   <section class="oc-section">
     <div class="oc-kicker mb-2">Overview</div>
     <div class="row g-3">
-      <div class="col-md-4">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-card-title">Tasks</div>
-            <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
-            <div class="text-muted">Unique task labels found across datasets and models</div>
-          </div>
-        </div>
+      <div class="col-md-3">
+        <div class="oc-card h-100"><div class="oc-card-body">
+          <div class="oc-card-title">Tasks</div>
+          <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
+          <div class="text-muted">Merged case-insensitively</div>
+        </div></div>
       </div>
-      <div class="col-md-4">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-card-title">Datasets</div>
-            <div class="display-6 fw-bold mb-1" id="statDatasets">—</div>
-            <div class="text-muted">Catalog entries contributing to task benchmarks</div>
-          </div>
-        </div>
+      <div class="col-md-3">
+        <div class="oc-card h-100"><div class="oc-card-body">
+          <div class="oc-card-title">Applications</div>
+          <div class="display-6 fw-bold mb-1" id="statApps">—</div>
+          <div class="text-muted">Index from datasets/models</div>
+        </div></div>
       </div>
-      <div class="col-md-4">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-card-title">Models</div>
-            <div class="display-6 fw-bold mb-1" id="statModels">—</div>
-            <div class="text-muted">Models linked to at least one task label</div>
-          </div>
-        </div>
+      <div class="col-md-3">
+        <div class="oc-card h-100"><div class="oc-card-body">
+          <div class="oc-card-title">Datasets</div>
+          <div class="display-6 fw-bold mb-1" id="statDatasets">—</div>
+          <div class="text-muted">All entries loaded</div>
+        </div></div>
+      </div>
+      <div class="col-md-3">
+        <div class="oc-card h-100"><div class="oc-card-body">
+          <div class="oc-card-title">Models</div>
+          <div class="display-6 fw-bold mb-1" id="statModels">—</div>
+          <div class="text-muted">All entries loaded</div>
+        </div></div>
       </div>
     </div>
   </section>
 
+  <!-- TASK INDEX -->
   <section class="oc-section">
     <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
       <div>
-        <div class="oc-kicker mb-2">Browse tasks</div>
+        <div class="oc-kicker mb-2">Browse</div>
         <h2 class="h4 fw-bold mb-0" style="color:var(--oc-ink);">Task index</h2>
       </div>
-      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#allTasks" style="border-radius:999px;">
-        Jump to tables
+      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#taskTables" style="border-radius:999px;">
+        Jump to task tables
       </a>
     </div>
 
-    <div class="mt-3 task-grid" id="taskGrid"></div>
+    <div class="mt-3 index-grid" id="taskGrid"></div>
     <div class="mt-3 text-center text-muted small" id="taskGridNote"></div>
   </section>
 
-  <section class="oc-section" id="allTasks">
+  <!-- APPLICATION INDEX -->
+  <section class="oc-section">
+    <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+      <div>
+        <div class="oc-kicker mb-2">Browse</div>
+        <h2 class="h4 fw-bold mb-0" style="color:var(--oc-ink);">Application index</h2>
+      </div>
+      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#appTables" style="border-radius:999px;">
+        Jump to application tables
+      </a>
+    </div>
+
+    <div class="mt-3 index-grid" id="appGrid"></div>
+    <div class="mt-3 text-center text-muted small" id="appGridNote"></div>
+  </section>
+
+  <!-- TASK TABLES -->
+  <section class="oc-section" id="taskTables">
     <div class="oc-kicker mb-2">Benchmarks</div>
     <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Tables by task</h2>
     <div class="accordion" id="taskAccordion"></div>
+  </section>
+
+  <!-- APPLICATION TABLES -->
+  <section class="oc-section" id="appTables">
+    <div class="oc-kicker mb-2">Benchmarks</div>
+    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Tables by application</h2>
+    <div class="accordion" id="appAccordion"></div>
   </section>
 </main>
 
@@ -368,14 +356,11 @@
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  document.getElementById('yearNow').textContent = new Date().getFullYear();
-</script>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 
-<!-- Auto-active current nav link -->
 <script>
+  // Auto-active current nav link
   (function(){
     const path = (location.pathname || '').replace(/\/+$/,'');
     const file = path.split('/').pop() || 'benchmarks.html';
@@ -406,11 +391,26 @@
   const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   const normStr = (v) => (v == null ? '' : String(v).trim());
 
-  function slugifyTask(t){
+  function slugifyKey(t){
     return normStr(t).toLowerCase()
       .replace(/[^a-z0-9]+/g,'-')
       .replace(/(^-|-$)/g,'')
-      .slice(0, 80) || 'task';
+      .slice(0, 80) || 'key';
+  }
+
+  // Case-insensitive canonicalization (merges "Object Detection" and "object detection")
+  function canonKey(s){
+    return normStr(s).toLowerCase().replace(/\s+/g,' ').trim();
+  }
+
+  // Nice display: Title Case-ish (keeps acronyms reasonably)
+  function niceLabel(s){
+    const raw = normStr(s);
+    if(!raw) return '';
+    // If it already has internal capitals (e.g., "BIM"), keep it.
+    const hasCaps = /[A-Z]/.test(raw);
+    if(hasCaps && raw.length <= 12) return raw;
+    return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
   }
 
   function iconCount(){
@@ -420,7 +420,6 @@
         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
       </svg>`;
   }
-
   function iconStack(){
     return `
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -429,37 +428,45 @@
       </svg>`;
   }
 
-  // ---------- Schema normalizers (IMPORTANT for your datasets.json) ----------
+  // ---------- Schema normalizers ----------
   function getDatasetTasks(ds){
-    // supports: tasks, task, potential_tasks
     return [
       ...normArray(ds.tasks),
       ...normArray(ds.task),
       ...normArray(ds.potential_tasks)
     ].map(normStr).filter(Boolean);
   }
-
+  function getDatasetApps(ds){
+    // support: applications, application, use_cases (future-proof)
+    return [
+      ...normArray(ds.applications),
+      ...normArray(ds.application),
+      ...normArray(ds.use_cases)
+    ].map(normStr).filter(Boolean);
+  }
   function getDatasetModalities(ds){
-    // supports: modalities, modality, data_modality (string)
     const mods = [
       ...normArray(ds.modalities),
       ...normArray(ds.modality)
     ].map(normStr).filter(Boolean);
-
     const dm = normStr(ds.data_modality);
     if(dm) mods.push(dm);
-
     return Array.from(new Set(mods));
   }
 
   function getModelTasks(m){
-    // supports: tasks, task
     return [
       ...normArray(m.tasks),
       ...normArray(m.task)
     ].map(normStr).filter(Boolean);
   }
-
+  function getModelApps(m){
+    return [
+      ...normArray(m.applications),
+      ...normArray(m.application),
+      ...normArray(m.use_cases)
+    ].map(normStr).filter(Boolean);
+  }
   function getModelModalities(m){
     const mods = [
       ...normArray(m.modalities),
@@ -468,29 +475,19 @@
     return Array.from(new Set(mods));
   }
 
-  // ---------- Load + Build ----------
-  let ALL_TASKS = [];
-  let ALL_DATASETS = [];
-  let ALL_MODELS = [];
-  let LAST_QUERY = '';
-
+  // ---------- Load ----------
   async function loadJsonSafe(url){
     try{
       const res = await fetch(url, {cache:'no-store'});
       if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const data = await res.json();
 
-      // A) array
       if(Array.isArray(data)) return data;
-
-      // B) { items: [...] }
       if(data?.items && Array.isArray(data.items)) return data.items;
 
-      // C) keyed object { "ID": {..}, ... }
       if(data && typeof data === 'object'){
         return Object.values(data).filter(v => v && typeof v === 'object');
       }
-
       return [];
     }catch(err){
       console.warn('Could not load', url, err);
@@ -498,28 +495,38 @@
     }
   }
 
-  function indexByTask(datasets, models){
+  // ---------- Index builders (case-insensitive merge) ----------
+  function buildIndexByKey({datasets, models, extractor, sectionName}){
+    // Map canonical -> { label, idSlug, datasets[], models[] }
     const map = new Map();
 
-    function touch(task){
-      const t = normStr(task);
-      if(!t) return null;
-      if(!map.has(t)) map.set(t, { task: t, idSlug: slugifyTask(t), datasets: [], models: [] });
-      return map.get(t);
+    function touch(rawKey){
+      const keyCanon = canonKey(rawKey);
+      if(!keyCanon) return null;
+
+      if(!map.has(keyCanon)){
+        const display = niceLabel(rawKey);
+        map.set(keyCanon, {
+          canon: keyCanon,
+          label: display,
+          idSlug: slugifyKey(display || keyCanon),
+          datasets: [],
+          models: []
+        });
+      }
+      return map.get(keyCanon);
     }
 
     datasets.forEach(ds=>{
-      const tasks = getDatasetTasks(ds);
-      tasks.forEach(t=>{
-        const node = touch(t);
+      extractor(ds, 'dataset').forEach(k=>{
+        const node = touch(k);
         if(node) node.datasets.push(ds);
       });
     });
 
     models.forEach(m=>{
-      const tasks = getModelTasks(m);
-      tasks.forEach(t=>{
-        const node = touch(t);
+      extractor(m, 'model').forEach(k=>{
+        const node = touch(k);
         if(node) node.models.push(m);
       });
     });
@@ -530,42 +537,43 @@
       return x;
     });
 
-    arr.sort((a,b)=> (b.datasets.length + b.models.length) - (a.datasets.length + a.models.length) || a.task.localeCompare(b.task));
+    arr.sort((a,b)=>
+      (b.datasets.length + b.models.length) - (a.datasets.length + a.models.length) ||
+      a.label.localeCompare(b.label)
+    );
+
     return arr;
   }
 
-  function renderTaskGrid(tasks){
-    const el = document.getElementById('taskGrid');
-    const note = document.getElementById('taskGridNote');
+  // ---------- Renderers ----------
+  function renderIndexGrid({items, elId, noteId, anchorPrefix, maxCards=60}){
+    const el = document.getElementById(elId);
+    const note = document.getElementById(noteId);
 
-    if(!tasks.length){
+    if(!items.length){
       el.innerHTML = `
         <div class="oc-card">
           <div class="oc-card-body">
-            <div class="oc-card-title mb-1">No benchmark data found</div>
-            <div class="text-muted">
-              Ensure <code>data/datasets.json</code> and/or <code>data/models.json</code> exist and include task fields
-              (<code>potential_tasks</code> for datasets; <code>tasks</code> for models).
-            </div>
+            <div class="oc-card-title mb-1">No entries found</div>
+            <div class="text-muted">Ensure your JSON includes fields to build this index.</div>
           </div>
         </div>`;
       note.textContent = '';
       return;
     }
 
-    const maxCards = 60;
-    const shown = tasks.slice(0, maxCards);
-
-    el.innerHTML = shown.map(t=>{
-      const dsN = t.datasets.length;
-      const mN = t.models.length;
+    const shown = items.slice(0, maxCards);
+    el.innerHTML = shown.map(x=>{
+      const dsN = x.datasets.length;
+      const mN = x.models.length;
+      const label = x.label || x.canon;
 
       return `
-        <a class="task-card" href="#task-${esc(t.idSlug)}" data-task-card="1" data-task="${esc(t.task)}">
-          <div class="task-icon" aria-hidden="true">${esc(t.task.slice(0,1).toUpperCase())}</div>
+        <a class="index-card" href="#${anchorPrefix}-${esc(x.idSlug)}" data-index-card="1" data-label="${esc(label)}">
+          <div class="index-icon" aria-hidden="true">${esc(label.slice(0,1).toUpperCase())}</div>
           <div>
-            <div class="task-title">${esc(t.task)}</div>
-            <div class="task-meta">
+            <div class="index-title">${esc(label)}</div>
+            <div class="index-meta">
               <div class="dotline"><span>${iconStack()} <strong>${dsN}</strong> dataset${dsN===1?'':'s'}</span></div>
               <div class="dotline"><span>${iconCount()} <strong>${mN}</strong> model${mN===1?'':'s'}</span></div>
             </div>
@@ -573,8 +581,8 @@
         </a>`;
     }).join('');
 
-    const extra = tasks.length - shown.length;
-    note.textContent = extra > 0 ? `Showing top ${shown.length} tasks. Use search to find the rest.` : '';
+    const extra = items.length - shown.length;
+    note.textContent = extra > 0 ? `Showing top ${shown.length}. Use search to find the rest.` : '';
   }
 
   function datasetRow(ds){
@@ -582,11 +590,10 @@
     const year = normStr(ds.year || '');
     const authors = normStr(ds.authors || '');
     const mods = getDatasetModalities(ds).slice(0,3)
-      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`)
-      .join('') || '<span class="text-muted">—</span>';
+      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
     const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
 
-    // Prefer internal detail page if available, fallback to access/doi
     const detailHref = ds.id
       ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}`
       : (ds.access || ds.doi || '#');
@@ -597,10 +604,7 @@
 
     return `
       <tr data-row="dataset">
-        <td class="fw-semibold">
-          ${link}
-          ${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}
-        </td>
+        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
         <td>${year || '<span class="text-muted">—</span>'}</td>
         <td>${mods}</td>
         <td>${lic}</td>
@@ -611,12 +615,11 @@
     const title = normStr(m.title || m.name || m.id || 'Untitled model');
     const year = normStr(m.year || '');
     const mods = getModelModalities(m).slice(0,3)
-      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`)
-      .join('') || '<span class="text-muted">—</span>';
+      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
 
     const paperUrl = normStr(m.paper_url || m.paper || m.publication_url || '');
     const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
-
     const paper = paperUrl ? `<a href="${esc(paperUrl)}" target="_blank" rel="noopener">Paper</a>` : '<span class="text-muted">—</span>';
     const code  = codeUrl  ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
 
@@ -638,47 +641,41 @@
       </tr>`;
   }
 
-  function renderAccordion(tasks){
-    const acc = document.getElementById('taskAccordion');
+  function renderAccordion({items, elId, anchorPrefix, datasetHint, modelHint}){
+    const acc = document.getElementById(elId);
+    if(!items.length){ acc.innerHTML = ''; return; }
 
-    if(!tasks.length){
-      acc.innerHTML = '';
-      return;
-    }
-
-    acc.innerHTML = tasks.map((t, idx)=>{
-      const dsRows = t.datasets.length
-        ? t.datasets.map(datasetRow).join('')
-        : `<tr><td colspan="4" class="text-muted">No datasets linked to this task yet.</td></tr>`;
-
-      const mRows = t.models.length
-        ? t.models.map(modelRow).join('')
-        : `<tr><td colspan="5" class="text-muted">No models linked to this task yet.</td></tr>`;
+    acc.innerHTML = items.map((x, idx)=>{
+      const dsRows = x.datasets.length ? x.datasets.map(datasetRow).join('') :
+        `<tr><td colspan="4" class="text-muted">No datasets linked here yet.</td></tr>`;
+      const mRows = x.models.length ? x.models.map(modelRow).join('') :
+        `<tr><td colspan="5" class="text-muted">No models linked here yet.</td></tr>`;
 
       const open = idx === 0 ? '' : 'collapsed';
       const show = idx === 0 ? 'show' : '';
-      const headingId = `heading-${t.idSlug}`;
-      const collapseId = `collapse-${t.idSlug}`;
+      const headingId = `heading-${anchorPrefix}-${x.idSlug}`;
+      const collapseId = `collapse-${anchorPrefix}-${x.idSlug}`;
+      const label = x.label || x.canon;
 
       return `
-        <div class="accordion-item" id="task-${esc(t.idSlug)}" data-task="${esc(t.task)}">
+        <div class="accordion-item" id="${anchorPrefix}-${esc(x.idSlug)}" data-label="${esc(label)}">
           <h2 class="accordion-header" id="${esc(headingId)}">
             <button class="accordion-button ${open}" type="button" data-bs-toggle="collapse"
                     data-bs-target="#${esc(collapseId)}" aria-expanded="${idx===0?'true':'false'}"
                     aria-controls="${esc(collapseId)}">
-              ${esc(t.task)}
-              <span class="ms-3 badge badge-oc rounded-pill">${t.datasets.length} dataset${t.datasets.length===1?'':'s'}</span>
-              <span class="ms-2 badge badge-oc rounded-pill">${t.models.length} model${t.models.length===1?'':'s'}</span>
+              ${esc(label)}
+              <span class="ms-3 badge badge-oc rounded-pill">${x.datasets.length} dataset${x.datasets.length===1?'':'s'}</span>
+              <span class="ms-2 badge badge-oc rounded-pill">${x.models.length} model${x.models.length===1?'':'s'}</span>
             </button>
           </h2>
 
           <div id="${esc(collapseId)}" class="accordion-collapse collapse ${show}"
-               aria-labelledby="${esc(headingId)}" data-bs-parent="#taskAccordion">
+               aria-labelledby="${esc(headingId)}" data-bs-parent="#${esc(elId)}">
             <div class="accordion-body">
 
               <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                 <div class="fw-bold" style="color:var(--oc-ink);">Datasets</div>
-                <div class="text-muted small">Linked via <code>potential_tasks</code> (datasets)</div>
+                <div class="text-muted small">${datasetHint}</div>
               </div>
 
               <div class="table-wrap mb-4">
@@ -699,7 +696,7 @@
 
               <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                 <div class="fw-bold" style="color:var(--oc-ink);">Models</div>
-                <div class="text-muted small">Linked via <code>tasks</code> (models)</div>
+                <div class="text-muted small">${modelHint}</div>
               </div>
 
               <div class="table-wrap">
@@ -726,51 +723,77 @@
   }
 
   function applyGlobalFilter(q){
-    LAST_QUERY = q;
-    const needle = q.toLowerCase();
+    const needle = q.trim().toLowerCase();
 
-    // Filter task cards
-    document.querySelectorAll('[data-task-card="1"]').forEach(card=>{
-      const task = (card.getAttribute('data-task') || '').toLowerCase();
-      const ok = !q || task.includes(needle);
-      card.style.display = ok ? '' : 'none';
+    // Filter both index grids
+    document.querySelectorAll('[data-index-card="1"]').forEach(card=>{
+      const label = (card.getAttribute('data-label') || '').toLowerCase();
+      card.style.display = (!needle || label.includes(needle)) ? '' : 'none';
     });
 
-    // Filter accordion tasks + their rows by rendered text (simple + robust)
-    document.querySelectorAll('#taskAccordion .accordion-item').forEach(item=>{
-      const task = (item.getAttribute('data-task') || '').toLowerCase();
-      const taskMatch = !q || task.includes(needle);
+    // Filter accordions by label or row text
+    ['taskAccordion','appAccordion'].forEach(accId=>{
+      document.querySelectorAll(`#${accId} .accordion-item`).forEach(item=>{
+        const label = (item.getAttribute('data-label') || '').toLowerCase();
+        const labelMatch = !needle || label.includes(needle);
 
-      let anyRow = false;
-      item.querySelectorAll('tbody tr').forEach(tr=>{
-        const rowText = tr.textContent.toLowerCase();
-        const ok = !q || rowText.includes(needle);
-        tr.style.display = ok ? '' : 'none';
-        if(ok) anyRow = true;
+        let anyRow = false;
+        item.querySelectorAll('tbody tr').forEach(tr=>{
+          const ok = !needle || tr.textContent.toLowerCase().includes(needle);
+          tr.style.display = ok ? '' : 'none';
+          if(ok) anyRow = true;
+        });
+
+        item.style.display = (labelMatch || anyRow) ? '' : 'none';
       });
-
-      item.style.display = (taskMatch || anyRow) ? '' : 'none';
     });
   }
 
+  // ---------- Init ----------
   async function init(){
     const datasets = await loadJsonSafe('data/datasets.json');
     const models   = await loadJsonSafe('data/models.json');
 
-    ALL_DATASETS = datasets;
-    ALL_MODELS = models;
-
     document.getElementById('statDatasets').textContent = String(datasets.length || 0);
     document.getElementById('statModels').textContent   = String(models.length || 0);
 
-    ALL_TASKS = indexByTask(datasets, models);
-    document.getElementById('statTasks').textContent = String(ALL_TASKS.length || 0);
+    // TASK index (merged case-insensitively)
+    const tasks = buildIndexByKey({
+      datasets, models,
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj),
+      sectionName: 'tasks'
+    });
+    document.getElementById('statTasks').textContent = String(tasks.length || 0);
 
-    renderTaskGrid(ALL_TASKS);
-    renderAccordion(ALL_TASKS);
+    // APPLICATION index (merged case-insensitively)
+    const apps = buildIndexByKey({
+      datasets, models,
+      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj),
+      sectionName: 'applications'
+    });
+    document.getElementById('statApps').textContent = String(apps.length || 0);
+
+    renderIndexGrid({ items: tasks, elId:'taskGrid', noteId:'taskGridNote', anchorPrefix:'task', maxCards:60 });
+    renderIndexGrid({ items: apps, elId:'appGrid', noteId:'appGridNote', anchorPrefix:'app', maxCards:60 });
+
+    renderAccordion({
+      items: tasks,
+      elId: 'taskAccordion',
+      anchorPrefix: 'task',
+      datasetHint: 'Linked via <code>potential_tasks</code> (datasets)',
+      modelHint: 'Linked via <code>tasks</code> (models)'
+    });
+
+    renderAccordion({
+      items: apps,
+      elId: 'appAccordion',
+      anchorPrefix: 'app',
+      datasetHint: 'Linked via <code>applications</code> (datasets) when available',
+      modelHint: 'Linked via <code>applications</code> (models) when available'
+    });
 
     const input = document.getElementById('globalSearch');
-    input.addEventListener('input', (e)=> applyGlobalFilter(e.target.value.trim()));
+    input.addEventListener('input', (e)=> applyGlobalFilter(e.target.value));
 
     const params = new URLSearchParams(location.search);
     const q = params.get('q');
@@ -784,3 +807,4 @@
 </script>
 </body>
 </html>
+```
