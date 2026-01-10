@@ -1058,12 +1058,12 @@
     (async function(){
       try{
         const [datasetsJson, modelsJson, usecasesJson, oersJson] = await Promise.all([
-          fetchFirst(['../data/datasets.json','assets/datasets.json','datasets.json']),
-          fetchFirst(['../data/models.json','assets/models.json','models.json']),
+          fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
+          fetchFirst(['data/models.json','assets/models.json','models.json']),
           // Robust fallbacks for the Use Cases schema
           fetchFirst([
-            '../data/use-cases.json','assets/deployments.json','deployments.json',
-            '../data/usecases.json','assets/usecases.json','usecases.json'
+            'data/use-cases.json','assets/deployments.json','deployments.json',
+            'data/usecases.json','assets/usecases.json','usecases.json'
           ]),
           fetchFirst(['data/oer.json','assets/oer.json','oer.json']) // NEW
         ]);
