@@ -1,0 +1,401 @@
+<!-- =========================
+     FILE 3: benchmark_application.html
+     (Application detail page with tables)
+     ========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Application Benchmark</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+
+  <style>
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+    }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
+    .brand-wordmark .oc-open{ font-size:.75rem; font-weight:400; letter-spacing:.15em; text-transform:uppercase; opacity:.7; margin-bottom:-.1rem; }
+    .brand-wordmark .oc-construction{ font-size:1.35rem; font-weight:700; letter-spacing:-.01em; }
+    .oc-logo{ height:44px; width:44px; }
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
+    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
+    .btn-subscribe-icon{ background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
+    .btn-subscribe-icon svg{ fill:var(--oc-accent); }
+
+    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
+    .hero .content{ padding:44px 0 22px; }
+    .hero h1{
+      font-weight:900; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.45rem,1rem + 2.1vw,2.1rem);
+      margin:.15rem 0 .25rem;
+    }
+    .hero p.lead{ max-width:78ch; margin:0; color:var(--oc-subtle); }
+
+    .oc-section{ margin-top:28px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .pill-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
+
+    .table-wrap{
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      overflow:hidden;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(15,46,75,.06);
+    }
+    .table thead th{
+      background:#f7fbff;
+      color:var(--oc-ink);
+      font-weight:800;
+      border-bottom:1px solid var(--oc-border);
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    .search-mini{
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      padding:8px 12px;
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+      box-shadow:0 10px 24px rgba(15,46,75,.06);
+    }
+    .search-mini input{ border:0; box-shadow:none; background:transparent; }
+    .search-mini input:focus{ box-shadow:none; }
+
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
+  </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html" data-route="usecases">Use Cases</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="oer.html" data-route="oers">OERs</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <div class="oc-kicker">Benchmark</div>
+        <h1 id="pageTitle">Application</h1>
+        <p class="lead">Datasets and models associated with this application label.</p>
+      </div>
+      <div class="pill-row">
+        <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html" style="border-radius:999px;">← Back</a>
+        <span class="badge badge-oc rounded-pill" id="pillDatasets">— datasets</span>
+        <span class="badge badge-oc rounded-pill" id="pillModels">— models</span>
+      </div>
+    </div>
+
+    <div class="mt-3 search-mini" style="max-width: 520px;">
+      <div class="d-flex align-items-center gap-2 px-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+        <input id="tableSearch" class="form-control" type="search" placeholder="Filter tables..." aria-label="Filter tables">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Datasets</div>
+    <div class="table-wrap">
+      <div class="table-responsive" style="max-height: 520px;">
+        <table class="table table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th style="min-width: 340px;">Dataset</th>
+              <th style="width: 90px;">Year</th>
+              <th style="min-width: 220px;">Modality</th>
+              <th style="min-width: 160px;">License</th>
+            </tr>
+          </thead>
+          <tbody id="dsBody">
+            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Models</div>
+    <div class="table-wrap">
+      <div class="table-responsive" style="max-height: 520px;">
+        <table class="table table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th style="min-width: 320px;">Model</th>
+              <th style="width: 90px;">Year</th>
+              <th style="min-width: 220px;">Modalities</th>
+              <th style="width: 90px;">Paper</th>
+              <th style="width: 90px;">Code</th>
+            </tr>
+          </thead>
+          <tbody id="mBody">
+            <tr><td colspan="5" class="text-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="py-4 mt-3">
+  <div class="container oc-container small text-muted text-center">
+    <div>© <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code or paywalled content.
+        All rights remain with the original authors, creators and publishers.
+      </small>
+    </div>
+  </div>
+</footer>
+
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px; border:1px solid var(--oc-border);">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color:var(--oc-ink); font-weight:800;">Subscribe for updates</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">Get occasional updates when new datasets/models/tasks are added.</p>
+        <div class="d-flex gap-2">
+          <input class="form-control" type="email" placeholder="Email address" aria-label="Email address">
+          <button class="btn btn-dark" type="button">Subscribe</button>
+        </div>
+        <div class="text-muted small mt-2">No spam. Unsubscribe anytime.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+
+<script>
+  const esc = (s) => String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#39;");
+  const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
+  const normStr = (v) => (v == null ? '' : String(v).trim());
+  function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+
+  function getDatasetApps(ds){
+    return [...normArray(ds.applications), ...normArray(ds.application), ...normArray(ds.use_cases)]
+      .map(normStr).filter(Boolean);
+  }
+  function getDatasetModalities(ds){
+    const mods = [...normArray(ds.modalities), ...normArray(ds.modality)].map(normStr).filter(Boolean);
+    const dm = normStr(ds.data_modality);
+    if(dm) mods.push(dm);
+    return Array.from(new Set(mods));
+  }
+  function getModelApps(m){
+    return [...normArray(m.applications), ...normArray(m.application), ...normArray(m.use_cases)]
+      .map(normStr).filter(Boolean);
+  }
+  function getModelModalities(m){
+    const mods = [...normArray(m.modalities), ...normArray(m.modality)].map(normStr).filter(Boolean);
+    return Array.from(new Set(mods));
+  }
+
+  async function loadJsonSafe(url){
+    try{
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const data = await res.json();
+      if(Array.isArray(data)) return data;
+      if(data?.items && Array.isArray(data.items)) return data.items;
+      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
+      return [];
+    }catch(err){
+      console.warn('Could not load', url, err);
+      return [];
+    }
+  }
+
+  function datasetRow(ds){
+    const title = normStr(ds.name || ds.title || ds.id || 'Untitled dataset');
+    const year = normStr(ds.year || '');
+    const authors = normStr(ds.authors || '');
+    const mods = getDatasetModalities(ds).slice(0,3)
+      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
+    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
+
+    const href = ds.id ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}` : (ds.access || ds.doi || '#');
+    const link = href && href !== '#'
+      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="dataset">
+        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td>${lic}</td>
+      </tr>`;
+  }
+
+  function modelRow(m){
+    const title = normStr(m.title || m.name || m.id || 'Untitled model');
+    const year = normStr(m.year || '');
+    const mods = getModelModalities(m).slice(0,3)
+      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
+
+    const paperUrl = normStr(m.paper_url || m.paper || m.publication_url || '');
+    const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
+    const paper = paperUrl ? `<a href="${esc(paperUrl)}" target="_blank" rel="noopener">Paper</a>` : '<span class="text-muted">—</span>';
+    const code  = codeUrl  ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
+
+    const href = m.id ? `models/detail.html?id=${encodeURIComponent(m.id)}` : (paperUrl || codeUrl || '#');
+    const link = href && href !== '#'
+      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="model">
+        <td class="fw-semibold">${link}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td class="text-nowrap">${paper}</td>
+        <td class="text-nowrap">${code}</td>
+      </tr>`;
+  }
+
+  function applyRowFilter(q){
+    const needle = q.trim().toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(tr=>{
+      const ok = !needle || tr.textContent.toLowerCase().includes(needle);
+      tr.style.display = ok ? '' : 'none';
+    });
+  }
+
+  async function init(){
+    const params = new URLSearchParams(location.search);
+    const key = canonKey(params.get('key') || '');
+    const label = normStr(params.get('label') || '') || key || 'Application';
+
+    document.title = `OpenConstruction · Application Benchmark · ${label}`;
+    document.getElementById('pageTitle').textContent = label;
+
+    const datasets = await loadJsonSafe('data/datasets.json');
+    const models   = await loadJsonSafe('data/models.json');
+
+    const dsMatched = datasets.filter(ds => getDatasetApps(ds).some(a => canonKey(a) === key));
+    const mMatched  = models.filter(m => getModelApps(m).some(a => canonKey(a) === key));
+
+    dsMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
+    mMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.title||a.name).localeCompare(normStr(b.title||b.name)));
+
+    document.getElementById('pillDatasets').textContent = `${dsMatched.length} dataset${dsMatched.length===1?'':'s'}`;
+    document.getElementById('pillModels').textContent = `${mMatched.length} model${mMatched.length===1?'':'s'}`;
+
+    document.getElementById('dsBody').innerHTML = dsMatched.length
+      ? dsMatched.map(datasetRow).join('')
+      : `<tr><td colspan="4" class="text-muted">No datasets linked to this application yet.</td></tr>`;
+
+    document.getElementById('mBody').innerHTML = mMatched.length
+      ? mMatched.map(modelRow).join('')
+      : `<tr><td colspan="5" class="text-muted">No models linked to this application yet.</td></tr>`;
+
+    const input = document.getElementById('tableSearch');
+    input.addEventListener('input', (e)=> applyRowFilter(e.target.value));
+
+    const q = params.get('q');
+    if(q){ input.value = q; applyRowFilter(q); }
+  }
+  init();
+</script>
+</body>
+</html>
