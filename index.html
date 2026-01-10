@@ -307,6 +307,23 @@
       border-color: color-mix(in srgb, var(--oc-brand-accent) 28%, white);
       color: var(--oc-brand-ink);
     }
+	    .how-pill{
+      display:flex; gap:.85rem; align-items:flex-start;
+      border:1px solid var(--oc-border);
+      border-radius:12px;
+      background:linear-gradient(180deg, #fff, #fbfdff);
+      padding:1rem 1rem;
+      height:100%;
+    }
+    .how-ic{
+      flex:0 0 auto;
+      width:34px; height:34px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      background:#eef4fb; border:1px solid #dfe8f3;
+      color:var(--oc-brand-ink);
+    }
+    .how-title{ font-weight:800; margin:0 0 .15rem; color:var(--oc-brand-ink); }
+    .how-text{ margin:0; color:var(--oc-subtle); }
   </style>
 </head>
 <body>
@@ -391,10 +408,11 @@
 <header class="hero">
   <div class="container oc-container content">
     <h1 class="mb-1">OpenConstruction Open Science Initiative</h1>
-    <p class="lead mb-0">
-      An <span class="hl">open-science</span> platform advancing <span class="hl">AI for AEC</span> through
-      a curated catalog of datasets, models, use-cases and educational resources shared by the <span class="hl">community</span>.
-    </p>
+	<p class="lead mb-0">
+	  An <span class="hl">open-source platform</span> enabling
+	  <span class="hl">distributed development</span> of datasets, AI models,
+	  workflows, and educational resources for the AEC community.
+	</p>
 
     <!-- grouped metrics -->
     <div class="hero-center">
@@ -472,6 +490,7 @@
       </span>
     </div>
 
+
       </div><!-- /metrics -->
 
       <!-- buttons -->
@@ -487,6 +506,62 @@
 </header>
 
 <main class="container oc-container">
+  <section class="oc-section" aria-labelledby="how-heading">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">How it works</div>
+        <h3 id="how-heading" class="oc-card-title mb-3">From community contribution to reusable infrastructure</h3>
+        <div class="row g-3">
+          <div class="col-12 col-lg-4">
+            <div class="how-pill">
+              <div class="how-ic" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <div>
+                <p class="how-title">1) Contribute</p>
+                <p class="how-text">Submit assets or platform improvements via GitHub issues/PRs (schemas, validators, benchmarks, docs).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="how-pill">
+              <div class="how-ic" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20 12a8 8 0 1 1-8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="how-title">2) Validate</p>
+                <p class="how-text">Automated checks enforce schema completeness, link integrity, and benchmark metadata consistency.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="how-pill">
+              <div class="how-ic" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 9l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="how-title">3) Integrate & release</p>
+                <p class="how-text">Approved contributions land in versioned catalogs and power discoverability, reuse, and downstream tools.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 small text-muted">
+          Want to help maintain core infrastructure? Start with <a href="contribute.html">Contribute</a> or join our <a href="contributors.html">Community</a>.
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- About + Vision -->
   <section class="oc-section">
     <div class="row g-4">
@@ -496,9 +571,16 @@
             <div class="oc-kicker mb-2">About</div>
             <h3 class="oc-card-title mb-2">What is OpenConstruction Open-Science Initiative?</h3>
             <p class="mb-0">
-              A curated catalog of <span class="hl">open datasets</span>, <span class="hl">AI models</span>, <span class="hl">OERs</span>, and <span class="hl">workflows</span> for the AEC domain.
-              We standardize metadata and links to speed <span class="hl">discovery, reuse, and collaboration</span> across the project lifecycle.
+			Support the <span class="hl">collaborative development, validation, 
+			and dissemination</span> of <span class="hl">AI-ready knowledge assets</span> for the Architecture, Engineering, and Construction (AEC) domain.
             </p>
+			<ul class="oc-ul">
+			  <li>Open-source platform code and deployment infrastructure</li>
+			  <li>Versioned metadata schemas and validation rules</li>
+			  <li>Community-governed contribution and review workflows</li>
+			  <li>APIs and benchmarks enabling downstream tools and research</li>
+			</ul>
+
           </div>
         </div>
       </div>
@@ -508,14 +590,23 @@
           <div class="oc-card-body">
             <div class="oc-kicker mb-2">Vision</div>
             <h3 class="oc-card-title mb-2">Our Mission</h3>
-            <p class="mb-3">
-              We foster an <span class="hl">open-science ecosystem</span> by:
-            </p>
-            <ul class="oc-ul">
-              <li>Maintaining an <span class="hl">open catalog </span> of AEC AI resources.</li>
-              <li>Supporting <span class="hl">research, education, and deployment</span>.</li>
-              <li>Building a <span class="hl">community-driven</span> space for sharing and feedback.</li>
-            </ul>
+			<p class="mb-3">
+			  We foster an <span class="hl">open-science ecosystem</span> for AEC by:
+			</p>
+			<ul class="oc-ul">
+			  <li>
+				Maintaining an <span class="hl">open catalog</span> of AEC AI datasets, models, workflows, and OERs with standardized metadata.
+			  </li>
+			  <li>
+				Supporting <span class="hl">research, education, and deployment</span> by linking resources to benchmarks and real-world use cases.
+			  </li>
+			  <li>
+				Enabling <span class="hl">community stewardship</span> through shared curation, review, and long-term maintenance of resources.
+			  </li>
+			  <li>
+				Advancing <span class="hl">distributed platform development</span> via open governance, public roadmaps, and CI/CD-backed contributions.
+			  </li>
+			</ul>
           </div>
         </div>
       </div>
@@ -529,14 +620,15 @@
         <div class="oc-kicker mb-2">Get Involved</div>
         <h3 class="oc-card-title mb-3">Join the Community</h3>
         <p class="mb-3">
-          Open science thrives when diverse voices collaborate and work together. We invite you to participate in the <span class="hl">OpenConstruction community</span>. Here are a few ways to contribute:
+          Open science thrives when diverse voices collaborate and work together. Here are a few ways to contribute:
         </p>
-        <ul class="oc-ul">
-          <li><strong>Share resources:</strong> Submit new datasets or models or workflows to enrich the catalog.</li>
-          <li><strong>Discuss & collaborate:</strong> Participate in our public forums and discussion.</li>
-          <li><strong>Give feedback:</strong> Suggest features, report issues, and help prioritize.</li>
-          <li><strong>Spread the word:</strong> Share the catalog to grow the community.</li>
-        </ul>
+		<ul class="oc-ul">
+		  <li><strong>Platform contributors:</strong> Improve schemas, validation tools, UI components, and APIs.</li>
+		  <li><strong>Asset maintainers:</strong> Maintain dataset, model, and workflow entries over time.</li>
+		  <li><strong>Benchmark developers:</strong> Contribute evaluation tasks and performance metrics.</li>
+		  <li><strong>Governance participants:</strong> Help shape roadmap priorities and review standards.</li>
+		</ul>
+
       </div>
     </div>
   </section>
@@ -766,8 +858,8 @@
         <div class="oc-kicker mb-2">Acknowledgment</div>
         <h3 class="oc-card-title mb-2">Gratitude to Creators and Contributors</h3>
         <p class="mb-0">
-          We sincerely thank all <span class="hl">creators and contributors</span> who have shared your 
-          <span class="hl">datasets, models, and other resources</span> with the community. 
+          We sincerely thank all <span class="hl">creators and contributors</span> who have contributed your 
+          datasets, models, and other resources to the community. 
           Your willingness to share knowledge fuels innovation, collaboration, and progress 
           across the AEC research and practice ecosystem.
         </p>
