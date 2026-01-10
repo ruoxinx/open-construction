@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Benchmarks</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Leaflet core (kept for consistency) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+
+  <style>
+    /* ---------- Design tokens (LIGHT ONLY) ---------- */
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-brand-model:#4e6ce8;
+    }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:1080px; }
+
+    /* Utility highlight (subtle) */
+    .hl{
+      background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0);
+      padding:0 .06em; font-weight:700;
+    }
+
+    /* Navbar */
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    .brand-wordmark{
+      display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B;
+    }
+    .brand-wordmark .oc-open{
+      font-size:0.75rem; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; margin-bottom:-0.1rem;
+    }
+    .brand-wordmark .oc-sep{display:none}
+    .brand-wordmark .oc-construction{
+      font-size:1.35rem; font-weight:700; letter-spacing:-0.01em;
+    }
+    .oc-logo{ height:44px; width:44px; }
+
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{
+      color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px;
+    }
+    .nav-link.icon-only{ line-height:1; padding-top:.375rem; padding-bottom:.375rem; }
+    .nav-link.icon-only svg{ display:block; width:20px; height:20px; color:inherit; opacity:.9; }
+    .nav-link.icon-only:hover svg{ opacity:1; }
+
+    /* Yellow subscribe bell */
+    .btn-subscribe-icon{
+      background: transparent;
+      border: 0;
+      padding: .25rem .4rem;
+      line-height: 1;
+    }
+    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
+    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
+
+    /* Hero */
+    .hero{ background:#fff; color:var(--oc-ink); border-bottom:1px solid var(--oc-border); }
+    .hero .content{ padding:52px 0 36px; text-align:center; }
+    .hero h1{
+      font-weight:800; letter-spacing:.2px; line-height:1.12;
+      font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
+      margin:.25rem 0 .35rem;
+    }
+    .hero p.lead{ max-width:78ch; margin:0 auto; color:var(--oc-subtle); }
+
+    /* Sections & Cards */
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
+    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+
+    /* Task cards (like PapersWithCode-style tiles) */
+    .task-grid{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+    .task-card{
+      background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
+      padding:14px 14px 12px; text-decoration:none; color:inherit;
+      transition:transform .12s ease, border-color .12s ease;
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .task-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
+    .task-icon{
+      width:42px; height:42px; border-radius:12px; background:var(--oc-muted);
+      display:grid; place-items:center; flex:0 0 auto; border:1px solid var(--oc-border);
+      color:var(--oc-ink); font-weight:900;
+    }
+    .task-title{ font-weight:800; color:var(--oc-ink); line-height:1.15; margin:0; }
+    .task-meta{ color:var(--oc-subtle); font-size:.88rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; }
+    .task-meta .dotline{ display:flex; gap:8px; align-items:center; }
+    .task-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
+    .task-meta svg{ width:14px; height:14px; opacity:.85; }
+
+    /* Search bar (sticky like your dataset pages) */
+    .search-wrap{
+      position:sticky; top:72px; z-index:50;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
+      backdrop-filter:saturate(120%) blur(6px);
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      padding:10px 12px;
+      box-shadow:0 10px 24px rgba(15,46,75,.06);
+      margin-top:18px;
+    }
+    .search-wrap .form-control{
+      border:0; box-shadow:none; border-radius:999px;
+      background:transparent;
+    }
+    .search-wrap .form-control:focus{ box-shadow:none; }
+    .search-hint{ color:var(--oc-subtle); font-size:.9rem; margin-top:10px; text-align:center; }
+
+    /* Tables */
+    .table-wrap{
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      overflow:hidden;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+    }
+    .table thead th{
+      background:#f7fbff;
+      color:var(--oc-ink);
+      font-weight:800;
+      border-bottom:1px solid var(--oc-border);
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    .badge-oc{
+      background:#eef3f8;
+      color:var(--oc-ink);
+      border:1px solid var(--oc-border);
+      font-weight:700;
+    }
+
+    /* Accordion polish */
+    .accordion-item{
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius) !important;
+      overflow:hidden;
+      box-shadow:var(--oc-shadow);
+      background:#fff;
+      margin-bottom:14px;
+    }
+    .accordion-button{
+      font-weight:800;
+      color:var(--oc-ink);
+      background:#fff;
+    }
+    .accordion-button:not(.collapsed){
+      background:#fff7ea;
+      color:var(--oc-ink);
+      box-shadow:none;
+      border-bottom:1px solid var(--oc-border);
+    }
+    .accordion-button:focus{
+      border-color:transparent;
+      box-shadow:0 0 0 .2rem rgba(134,183,254,.35);
+    }
+
+    /* Focus */
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
+
+    @media (max-width: 991.98px){
+      .hero .content{ padding:40px 0 28px; }
+      .search-wrap{ top:64px; }
+    }
+  </style>
+</head>
+
+<body>
+<!-- Navbar (same structure as other pages) -->
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="dataset.html" data-route="dataset">Datasets</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="models.html" data-route="models">Models</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="deployments.html" data-route="usecases">Use Cases</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="oer.html" data-route="oers">OERs</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button"
+             data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/OpenConstruction-Datasets" target="_blank" rel="noopener"
+             aria-label="OpenConstruction on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+
+        <!-- Subscribe bell -->
+        <li class="nav-item">
+          <button type="button"
+                  class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="container oc-container content">
+    <h1>Benchmarks by Task</h1>
+    <p class="lead">
+      Browse <span class="hl">tasks</span> and instantly see the linked
+      <span class="hl">datasets</span> and <span class="hl">models</span> in the OpenConstruction catalog.
+    </p>
+
+    <!-- Sticky search below hero -->
+    <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
+      <div class="d-flex align-items-center gap-2 px-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+        <input id="globalSearch" class="form-control" type="search"
+               placeholder="Search tasks, datasets, models (e.g., semantic segmentation, bridge, point cloud)..."
+               aria-label="Search benchmarks">
+      </div>
+    </div>
+    <div class="search-hint">
+      Data loads from <code>data/datasets.json</code> and <code>data/models.json</code>.
+    </div>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <!-- Summary -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Overview</div>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-card-title">Tasks</div>
+            <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
+            <div class="text-muted">Unique task labels found across datasets and models</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-card-title">Datasets</div>
+            <div class="display-6 fw-bold mb-1" id="statDatasets">—</div>
+            <div class="text-muted">Catalog entries contributing to task benchmarks</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="oc-card h-100">
+          <div class="oc-card-body">
+            <div class="oc-card-title">Models</div>
+            <div class="display-6 fw-bold mb-1" id="statModels">—</div>
+            <div class="text-muted">Models linked to at least one task label</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task browser -->
+  <section class="oc-section">
+    <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+      <div>
+        <div class="oc-kicker mb-2">Browse tasks</div>
+        <h2 class="h4 fw-bold mb-0" style="color:var(--oc-ink);">Task index</h2>
+      </div>
+      <a class="btn btn-sm btn-outline-dark rounded-pill" href="#allTasks" style="border-radius:999px;">
+        Jump to tables
+      </a>
+    </div>
+
+    <div class="mt-3 task-grid" id="taskGrid">
+      <!-- JS renders task cards -->
+    </div>
+
+    <div class="mt-3 text-center text-muted small" id="taskGridNote"></div>
+  </section>
+
+  <!-- Tables by task -->
+  <section class="oc-section" id="allTasks">
+    <div class="oc-kicker mb-2">Benchmarks</div>
+    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Tables by task</h2>
+
+    <div class="accordion" id="taskAccordion">
+      <!-- JS renders accordion items -->
+    </div>
+  </section>
+</main>
+
+<footer class="py-4 mt-3">
+  <div class="container oc-container small text-muted text-center">
+    <div>
+      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+    </div>
+    <div class="mt-2">
+      <small>
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code or paywalled content.
+        All rights remain with the original authors, creators and publishers.
+      </small>
+    </div>
+  </div>
+</footer>
+
+<!-- Subscribe Modal (safe default; customize to your existing flow if you already have one globally) -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px; border:1px solid var(--oc-border);">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color:var(--oc-ink); font-weight:800;">Subscribe for updates</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">Get occasional updates when new datasets/models/tasks are added.</p>
+        <div class="d-flex gap-2">
+          <input class="form-control" type="email" placeholder="Email address" aria-label="Email address">
+          <button class="btn btn-dark" type="button">Subscribe</button>
+        </div>
+        <div class="text-muted small mt-2">No spam. Unsubscribe anytime.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+</script>
+
+<!-- Auto-active current nav link -->
+<script>
+  (function(){
+    const path = (location.pathname || '').replace(/\/+$/,'');
+    const file = path.split('/').pop() || 'benchmarks.html';
+    const routeByFile = {
+      '': 'index',
+      'index': 'index', 'index.html': 'index',
+      'dataset': 'dataset', 'dataset.html': 'dataset',
+      'models': 'models', 'models.html': 'models',
+      'deployments': 'usecases', 'deployments.html': 'usecases',
+      'oer': 'oers', 'oer.html': 'oers',
+      'benchmarks': 'benchmarks', 'benchmarks.html': 'benchmarks',
+      'contribute': 'contribute', 'contribute.html': 'contribute',
+      'contributors': 'contributors', 'contributors.html': 'contributors'
+    };
+    const route = routeByFile[file] || '';
+    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
+      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
+    });
+  })();
+</script>
+
+<script>
+  // ---------- Helpers ----------
+  const esc = (s) => String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#39;");
+
+  const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
+  const normStr = (v) => (v == null ? '' : String(v).trim());
+
+  function slugifyTask(t){
+    return normStr(t).toLowerCase()
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/(^-|-$)/g,'')
+      .slice(0, 80) || 'task';
+  }
+
+  function hasTextMatch(obj, q){
+    if(!q) return true;
+    const needle = q.toLowerCase();
+    const hay = [
+      obj.id, obj.name, obj.title,
+      ...(normArray(obj.tasks)),
+      ...(normArray(obj.modalities)),
+      ...(normArray(obj.applications)),
+      ...(normArray(obj.keywords)),
+      ...(normArray(obj.authors)),
+      obj.abstract
+    ].map(normStr).join(' ').toLowerCase();
+    return hay.includes(needle);
+  }
+
+  function iconCount(){
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Z"/>
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+      </svg>`;
+  }
+
+  function iconStack(){
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M8.974 1.5a1 1 0 0 0-1.948 0l-.3 1.2a1 1 0 0 1-.757.727l-1.22.29a1 1 0 0 0 0 1.946l1.22.29a1 1 0 0 1 .757.727l.3 1.2a1 1 0 0 0 1.948 0l.3-1.2a1 1 0 0 1 .757-.727l1.22-.29a1 1 0 0 0 0-1.946l-1.22-.29a1 1 0 0 1-.757-.727l-.3-1.2z"/>
+        <path d="M5.5 9.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5z"/>
+      </svg>`;
+  }
+
+  // ---------- Load + Build ----------
+  let ALL_TASKS = [];           // [{task, datasets[], models[], idSlug}]
+  let ALL_DATASETS = [];
+  let ALL_MODELS = [];
+  let LAST_QUERY = '';
+
+  async function loadJsonSafe(url){
+    try{
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const data = await res.json();
+      return Array.isArray(data) ? data : (data?.items && Array.isArray(data.items) ? data.items : []);
+    }catch(err){
+      console.warn('Could not load', url, err);
+      return [];
+    }
+  }
+
+  function indexByTask(datasets, models){
+    const map = new Map();
+
+    function touch(task){
+      const t = normStr(task);
+      if(!t) return null;
+      const key = t;
+      if(!map.has(key)) map.set(key, { task: key, idSlug: slugifyTask(key), datasets: [], models: [] });
+      return map.get(key);
+    }
+
+    // datasets: we support either `title` or `name`
+    datasets.forEach(ds=>{
+      const tasks = normArray(ds.tasks);
+      tasks.forEach(t=>{
+        const node = touch(t);
+        if(node) node.datasets.push(ds);
+      });
+    });
+
+    models.forEach(m=>{
+      const tasks = normArray(m.tasks);
+      tasks.forEach(t=>{
+        const node = touch(t);
+        if(node) node.models.push(m);
+      });
+    });
+
+    // sort items inside each task
+    const arr = Array.from(map.values()).map(x=>{
+      x.datasets = x.datasets.slice().sort((a,b)=> (b.year||0)-(a.year||0) || normStr(a.title||a.name).localeCompare(normStr(b.title||b.name)));
+      x.models   = x.models.slice().sort((a,b)=> (b.year||0)-(a.year||0) || normStr(a.title).localeCompare(normStr(b.title)));
+      return x;
+    });
+
+    // sort tasks by “importance”: total linked entries desc, then alpha
+    arr.sort((a,b)=> (b.datasets.length + b.models.length) - (a.datasets.length + a.models.length) || a.task.localeCompare(b.task));
+    return arr;
+  }
+
+  function renderTaskGrid(tasks){
+    const el = document.getElementById('taskGrid');
+    const note = document.getElementById('taskGridNote');
+    if(!tasks.length){
+      el.innerHTML = `
+        <div class="oc-card">
+          <div class="oc-card-body">
+            <div class="oc-card-title mb-1">No benchmark data found</div>
+            <div class="text-muted">
+              Ensure <code>data/datasets.json</code> and/or <code>data/models.json</code> exist and include a <code>tasks</code> field.
+            </div>
+          </div>
+        </div>`;
+      note.textContent = '';
+      return;
+    }
+
+    // show all tasks as cards, but keep it lightweight:
+    const maxCards = 60;
+    const shown = tasks.slice(0, maxCards);
+
+    el.innerHTML = shown.map(t=>{
+      const dsN = t.datasets.length;
+      const mN = t.models.length;
+
+      return `
+        <a class="task-card" href="#task-${esc(t.idSlug)}" data-task-card="1" data-task="${esc(t.task)}">
+          <div class="task-icon" aria-hidden="true">${esc(t.task.slice(0,1).toUpperCase())}</div>
+          <div>
+            <div class="task-title">${esc(t.task)}</div>
+            <div class="task-meta">
+              <div class="dotline"><span>${iconStack()} <strong>${dsN}</strong> dataset${dsN===1?'':'s'}</span></div>
+              <div class="dotline"><span>${iconCount()} <strong>${mN}</strong> model${mN===1?'':'s'}</span></div>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+
+    const extra = tasks.length - shown.length;
+    note.textContent = extra > 0 ? `Showing top ${shown.length} tasks. Use search to find the rest.` : '';
+  }
+
+  function datasetRow(ds){
+    const title = normStr(ds.title || ds.name || ds.id || 'Untitled dataset');
+    const year = normStr(ds.year || '');
+    const mods = normArray(ds.modalities).slice(0,3).map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('') || '<span class="text-muted">—</span>';
+    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
+
+    // Prefer detail page if you have it; fallback to url fields if present
+    const detailHref = ds.id ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}` : (ds.homepage_url || ds.dataset_url || ds.paper_url || '#');
+    const link = detailHref && detailHref !== '#'
+      ? `<a href="${esc(detailHref)}" ${detailHref.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="dataset">
+        <td class="fw-semibold">${link}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td>${lic}</td>
+      </tr>`;
+  }
+
+  function modelRow(m){
+    const title = normStr(m.title || m.id || 'Untitled model');
+    const year = normStr(m.year || '');
+    const mods = normArray(m.modalities).slice(0,3).map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('') || '<span class="text-muted">—</span>';
+
+    const paper = normStr(m.paper_url) ? `<a href="${esc(m.paper_url)}" target="_blank" rel="noopener">Paper</a>` : '<span class="text-muted">—</span>';
+    const code  = normStr(m.code_url)  ? `<a href="${esc(m.code_url)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
+
+    // Prefer your model detail page if exists
+    const detailHref = m.id ? `models/detail.html?id=${encodeURIComponent(m.id)}` : (m.paper_url || m.code_url || '#');
+    const link = detailHref && detailHref !== '#'
+      ? `<a href="${esc(detailHref)}" ${detailHref.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="model">
+        <td class="fw-semibold">${link}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td class="text-nowrap">${paper}</td>
+        <td class="text-nowrap">${code}</td>
+      </tr>`;
+  }
+
+  function renderAccordion(tasks){
+    const acc = document.getElementById('taskAccordion');
+    acc.innerHTML = tasks.map((t, idx)=>{
+      const dsRows = t.datasets.length
+        ? t.datasets.map(datasetRow).join('')
+        : `<tr><td colspan="4" class="text-muted">No datasets linked to this task yet.</td></tr>`;
+
+      const mRows = t.models.length
+        ? t.models.map(modelRow).join('')
+        : `<tr><td colspan="5" class="text-muted">No models linked to this task yet.</td></tr>`;
+
+      const open = idx === 0 ? '' : 'collapsed';
+      const show = idx === 0 ? 'show' : '';
+      const headingId = `heading-${t.idSlug}`;
+      const collapseId = `collapse-${t.idSlug}`;
+
+      return `
+        <div class="accordion-item" id="task-${esc(t.idSlug)}" data-task="${esc(t.task)}">
+          <h2 class="accordion-header" id="${esc(headingId)}">
+            <button class="accordion-button ${open}" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#${esc(collapseId)}" aria-expanded="${idx===0?'true':'false'}"
+                    aria-controls="${esc(collapseId)}">
+              ${esc(t.task)}
+              <span class="ms-3 badge badge-oc rounded-pill">${t.datasets.length} datasets</span>
+              <span class="ms-2 badge badge-oc rounded-pill">${t.models.length} models</span>
+            </button>
+          </h2>
+
+          <div id="${esc(collapseId)}" class="accordion-collapse collapse ${show}"
+               aria-labelledby="${esc(headingId)}" data-bs-parent="#taskAccordion">
+            <div class="accordion-body">
+
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                <div class="fw-bold" style="color:var(--oc-ink);">Datasets</div>
+                <div class="text-muted small">Entries with matching <code>tasks</code> labels</div>
+              </div>
+
+              <div class="table-wrap mb-4">
+                <div class="table-responsive" style="max-height: 420px;">
+                  <table class="table table-hover mb-0 align-middle">
+                    <thead>
+                      <tr>
+                        <th style="min-width: 260px;">Dataset</th>
+                        <th style="width: 90px;">Year</th>
+                        <th style="min-width: 200px;">Modalities</th>
+                        <th style="min-width: 160px;">License</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${dsRows}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                <div class="fw-bold" style="color:var(--oc-ink);">Models</div>
+                <div class="text-muted small">Linked via model <code>tasks</code> fields</div>
+              </div>
+
+              <div class="table-wrap">
+                <div class="table-responsive" style="max-height: 420px;">
+                  <table class="table table-hover mb-0 align-middle">
+                    <thead>
+                      <tr>
+                        <th style="min-width: 280px;">Model</th>
+                        <th style="width: 90px;">Year</th>
+                        <th style="min-width: 220px;">Modalities</th>
+                        <th style="width: 90px;">Paper</th>
+                        <th style="width: 90px;">Code</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${mRows}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function applyGlobalFilter(q){
+    LAST_QUERY = q;
+
+    // Filter grid cards
+    document.querySelectorAll('[data-task-card="1"]').forEach(card=>{
+      const task = (card.getAttribute('data-task') || '').toLowerCase();
+      const ok = !q || task.includes(q.toLowerCase());
+      card.style.display = ok ? '' : 'none';
+    });
+
+    // Filter accordion tasks + their rows
+    document.querySelectorAll('#taskAccordion .accordion-item').forEach(item=>{
+      const task = (item.getAttribute('data-task') || '').toLowerCase();
+      const taskMatch = !q || task.includes(q.toLowerCase());
+
+      // row filtering uses the already-rendered text content, so it works across title/authors/etc.
+      let anyRow = false;
+      item.querySelectorAll('tbody tr').forEach(tr=>{
+        const rowText = tr.textContent.toLowerCase();
+        const ok = !q || rowText.includes(q.toLowerCase());
+        tr.style.display = ok ? '' : 'none';
+        if(ok) anyRow = true;
+      });
+
+      // Show the task if task name matches OR any row matches
+      item.style.display = (taskMatch || anyRow) ? '' : 'none';
+    });
+  }
+
+  async function init(){
+    // Try both common filenames (use whichever exists)
+    const datasets = await loadJsonSafe('data/datasets.json');
+    const models   = await loadJsonSafe('data/models.json');
+
+    ALL_DATASETS = datasets;
+    ALL_MODELS = models;
+
+    // Stats
+    document.getElementById('statDatasets').textContent = datasets.length ? String(datasets.length) : '0';
+    document.getElementById('statModels').textContent   = models.length ? String(models.length) : '0';
+
+    // Index
+    ALL_TASKS = indexByTask(datasets, models);
+    document.getElementById('statTasks').textContent = String(ALL_TASKS.length);
+
+    renderTaskGrid(ALL_TASKS);
+    renderAccordion(ALL_TASKS);
+
+    // Hook search
+    const input = document.getElementById('globalSearch');
+    input.addEventListener('input', (e)=> applyGlobalFilter(e.target.value.trim()));
+
+    // If URL has ?q=... prefill
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q');
+    if(q){
+      input.value = q;
+      applyGlobalFilter(q);
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
