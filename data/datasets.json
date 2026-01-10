@@ -813,8 +813,7 @@
     ],
     "geographical_location": "Not Specified",
     "potential_tasks": [
-      "Activity Detection",
-	  "Activity Characterization"
+      "Activity Detection"
     ],
     "license": "MIT",
     "paper": "Automated global-scale detection and characterization of anthropogenic activity using multi-source satellite-based remote sensing imagery",
@@ -2456,7 +2455,7 @@
   "annotation_types": ["Bounding boxes"],
   "geographical_location": "Peru",
   "potential_tasks": [
-    "Concrete crack detection"
+    "Crack detection"
   ],
   "license": "CC BY-NC-SA 4.0",
   "paper": "Dataset for training neural networks in concrete crack detection: laboratory-classified beam and column images",
@@ -2589,8 +2588,7 @@
   ],
   "geographical_location": "Switzerland",
   "potential_tasks": [
-    "Crack segmentation",
-    "Damage detection"
+    "Crack detection"
   ],
   "license": "CC BY 4.0",
   "paper": "https://doi.org/10.1016/j.conbuildmat.2022.128264",
@@ -2637,8 +2635,7 @@
   "classes": ["Roll painting", "Spraying paint", "Levelling paint", "Vacuum cleaning", "Picking objects", "Climbing stairs", "Jumping down", "Laying back", "HandsUp high", "HandsUp low", "Crouch floor", "Kneel floor", "Pushing cart", "Walk straight", "Walk winding", "Stairs up-down"],
   "geographical_location": "Finland",
   "potential_tasks": [
-    "Activity recognition",
-    "Safety monitoring"
+    "Activity detection"
   ],
   "license": "CC BY 4.0",
   "paper": "Introducing VTT-ConIot: A Realistic Dataset for Activity Recognition of Construction Workers Using IMU Devices",
@@ -2688,7 +2685,7 @@
   "potential_tasks": [
     "CAD Generation",
 	"Behavior cloning",
-	"Autocomplete", "Video QA", "Spatial reasoning"
+	"Video QA"
   ],
   "license": "CC0",
   "paper": "VideoCAD: A Dataset and Model for Learning Long-Horizon 3D CAD UI Interactions from Video",

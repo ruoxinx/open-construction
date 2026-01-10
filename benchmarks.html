@@ -605,13 +605,18 @@
     document.getElementById('statModels').textContent   = String(models.length || 0);
 
     // Build PNG-first index for TASKS
-    const tasks = buildMergedIndex({
-      datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetTasks(obj) : getModelTasks(obj),
-      imageGetter: (obj, kind) => kind === 'dataset'
-        ? (obj.image_url || obj.thumbnail || '')
-        : (obj.thumbnail || obj.image_url || '')
-    });
+	const tasks = buildMergedIndex({
+	  datasets,
+	  models,
+	  extractor: (obj, kind) =>
+		kind === 'dataset'
+		  ? getDatasetTasks(obj)   // datasets.json → potential_tasks / tasks
+		  : getModelTasks(obj),    // models.json   → tasks ONLY
+	  imageGetter: (obj, kind) =>
+		kind === 'dataset'
+		  ? (obj.image_url || obj.thumbnail || '')
+		  : (obj.thumbnail || obj.image_url || '')
+	})
 
     // Build PNG-first index for APPLICATIONS
     const apps = buildMergedIndex({
