@@ -407,6 +407,7 @@ const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
 --------------------------- */
 const LICENSE_URLS = {
   'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+  'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
   'CC0': 'https://creativecommons.org/public-domain/cc0/',
   'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
   'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
@@ -419,16 +420,26 @@ const LICENSE_URLS = {
   'MIT': 'https://opensource.org/licenses/MIT',
   'ODC-BY': 'https://opendatacommons.org/licenses/by/',
   'MIT License with Commons Clause Restriction':
-    'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE'
+    'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+  'FI-NCALFI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+  'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+  'BSD 3-Clause': 'https://opensource.org/license/bsd-3-clause',
+  'Academic Use Only (University of Cambridge)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+  'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+  'Modified BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt'
 };
 
 function licenseLinkHTML(license){
   if (!license) return '';
-  const key = license.trim();
+
+  const key = String(license).trim();
+  if (!key || key.toLowerCase() === 'unspecified') return '';
+
   const url = LICENSE_URLS[key];
   if (!url) return esc(key); // unknown license → plain text
   return `<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a>`;
 }
+
 
 
 /* ---------------------------
