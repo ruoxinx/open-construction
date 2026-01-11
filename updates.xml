@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Open BIM exchange on Blockchain 3.0 virtual disk: A traceable semantic differential transaction approach]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:openBIMdisk:2026-01-10</guid>
+    <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Building information modeling (BIM) has become prevalent in construction engineering management. However, the efficiency of traditional file-based BIM exchange between multidisciplinary teams remains low due to the transmission of redundant data from mostly unchanged BIM objects. Additionally, the traceability of changes between BIM files is limited. This paper proposes a traceable semantic differential transaction (tSDT) approach for open BIM exchange, which minimizes data redundancy and enables semantic-level traceability of BIM changes. Furthermore, openBIMdisk implements the tSDT and provides a Blockchain 3.0 virtual disk to support efficient, traceable, and secure BIM exchanges across multiple blockchain services. A pilot study of a modular construction project demonstrated the effectiveness of tSDT and open-BIMdisk. Experimental results indicated that tSDT achieved minimal BIM redundancy for storing and restoring all BIM changes, using a sheer 0.007% of disk space on average. openBIMdisk facilitated BIM version management and object-level semantic traceability with a response time of 5.3 ms. The contributions of this paper are twofold. First, tSDT offers a novel and efficient approach for semantic BIM change traceability. Second, openBIMdisk provides BIM practitioners with a Blockchain 3.0 application featuring intuitive and user-friendly interfaces for BIM exchange.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: VoxCity: Grid-based semantic 3D city model generation, and urban environment simulation]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:VoxCity:2026-01-07</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:KG-LLM-inspection-work-packaging:2025-12-05</guid>
     <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[Quality inspection during the production of modular construction (MC) is critical to the success of MC projects because defects such as geometric errors can severely impact installation. Therefore, the effective organization and management of quality inspection is essential. Although work packaging has proven to be an effective method for project planning, automatically and accurately generating inspection work packages remains a challenge, particularly in mass production. To this end, this study aims to develop a knowledge graph-large language model (KG-LLM)-enabled inspection work packaging approach in MC production. First, a KG is constructed to represent inspection knowledge, encompassing inspection tasks, target MC products, inspectors, inspection tools, inspection frequencies, and corresponding production processes, which can enrich LLM in product2inspection mapping and can help identify features of inspection tasks for inspection2package clustering. Second, a prompt-based product2inspection mapping approach leveraging LLM is developed. Next, inspection2package clustering is completed through hierarchical agglomerative clustering, with parameters optimized by particle swarm optimization (PSO). Finally, the effectiveness of the proposed approach is validated through controlled experiments on an MC case project. This study demonstrates how leveraging KG and LLMs can enhance collaboration in quality inspection during module prefabrication and highlights the potential of LLMs in the construction domain.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: GlobalBuildingAtlas]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=GlobalBuildingAtlas</link>
-    <guid isPermaLink="false">datasets:GlobalBuildingAtlas:2025-12-4</guid>
-    <pubDate>Thu, 04 Dec 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
