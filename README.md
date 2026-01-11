@@ -69,7 +69,7 @@ These checks ensure that community contributions are
 ## Modular Extension System
 
 OpenConstruction supports **community-maintained modules** that extend platform
-capabilities without central bottlenecks.
+capabilities.
 
 Example module types include:
 - Benchmark definitions and task packs
