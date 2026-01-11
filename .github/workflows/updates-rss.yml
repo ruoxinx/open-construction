@@ -6,9 +6,9 @@ permissions:
 on:
   push:
     paths:
-      - data/datasets.json
-      - data/models.json
-      - data/generate-updates.js
+      - site/data/datasets.json
+      - site/data/models.json
+      - site/data/generate-updates.js
       - .github/workflows/updates-rss.yml
   workflow_dispatch:
 
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: node data/generate-updates.js
+      - run: node site/data/generate-updates.js
 
       - name: Commit updates.xml
         uses: stefanzweifel/git-auto-commit-action@v5
