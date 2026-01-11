@@ -171,6 +171,7 @@
       stroke-width: 2px;
     }
 
+    /* leaf labels (only when space permits) */
     .sb-label{
       font-size: 12px;
       font-weight: 850;
@@ -180,6 +181,18 @@
       stroke: rgba(255,255,255,.92);
       stroke-width: 4px;
       stroke-linejoin: round;
+    }
+
+    /* category labels along arc */
+    .cat-label{
+      fill: rgba(15,46,75,.94);
+      font-weight: 950;
+      letter-spacing: .02em;
+      paint-order: stroke;
+      stroke: rgba(255,255,255,.95);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+      pointer-events:none;
     }
 
     /* Tooltip */
@@ -201,6 +214,74 @@
     }
     .tip strong{ display:block; font-weight: 950; }
     .tip .sub{ color: var(--oc-subtle); font-size: .92rem; margin-top:2px; }
+
+    /* Names panel (always shows every node name in view) */
+    .names-panel{
+      margin-top: 12px;
+      border:1px solid var(--oc-border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 12px 26px rgba(15,46,75,.06);
+      overflow:hidden;
+    }
+    .names-head{
+      padding:10px 12px;
+      border-bottom:1px solid var(--oc-border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .names-title{
+      font-weight: 950;
+      color: var(--oc-ink);
+      display:flex; align-items:center; gap:10px;
+    }
+    .names-sub{ color: var(--oc-subtle); font-size:.9rem; }
+    .names-body{
+      padding: 10px 12px 12px;
+      max-height: 220px;
+      overflow:auto;
+    }
+    .name-grid{
+      column-count: 3;
+      column-gap: 16px;
+    }
+    @media (max-width: 991.98px){
+      .name-grid{ column-count: 2; }
+    }
+    @media (max-width: 575.98px){
+      .name-grid{ column-count: 1; }
+    }
+    .name-item{
+      break-inside: avoid;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 6px 8px;
+      border-radius: 12px;
+      border:1px solid rgba(231,237,243,.9);
+      background: rgba(246,249,252,.72);
+      margin: 0 0 8px 0;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .name-item:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.92);
+    }
+    .name-item .nm{
+      font-weight: 900;
+      color: var(--oc-ink);
+      font-size: .92rem;
+    }
+    .name-item .meta{
+      color: var(--oc-subtle);
+      font-size: .85rem;
+      white-space: nowrap;
+    }
 
     /* Inspector */
     .muted-box{
@@ -231,6 +312,30 @@
     }
     .chip a{ text-decoration:none; color: inherit; }
 
+    /* Permalink button (NOT a chip) */
+    .perm-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      width:100%;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      border: 1px solid rgba(11,102,195,.22);
+      color: #0b66c3;
+      background: rgba(11,102,195,.06);
+      text-decoration:none;
+      box-shadow: 0 12px 26px rgba(15,46,75,.06);
+      transition: transform .12s ease, background .12s ease;
+    }
+    .perm-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(11,102,195,.10);
+      color:#0b66c3;
+      text-decoration:none;
+    }
+
     .issue-btn{
       position:fixed; right:18px; bottom:18px;
       background:#0f2e4b; color:#fff;
@@ -250,6 +355,11 @@
       .viz-wrap{ height: 560px; }
       .kv{ grid-template-columns: 120px 1fr; }
     }
+
+    /* Make inspector footer stick to bottom visually */
+    .ins-wrap{ display:flex; flex-direction:column; height:100%; }
+    .ins-main{ flex: 1 1 auto; }
+    .ins-footer{ margin-top: 14px; }
   </style>
 </head>
 
@@ -332,7 +442,7 @@
       <h1>Object / Class Taxonomy Map</h1>
       <p class="lead">
         A <span class="hl">zoomable taxonomy</span> derived from dataset label spaces (<code>classes</code> in <code>data/datasets.json</code>).
-        All nodes are shown; labels appear when space permits, with hover + inspector for details.
+        Category names are always readable on the chart; all node names are always listed below for precise identification.
       </p>
     </div>
   </header>
@@ -346,10 +456,10 @@
                viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
           </svg>
-          <input id="q" type="search" placeholder="Search objects (e.g., worker, crane, crack, rebar, hard hat) and press Enter">
+          <input id="q" type="search" placeholder="Search objects (e.g., worker, crane, crack, rebar, hard hat)">
         </div>
         <div class="right">
-          <button class="btn-mini" id="btnReset" type="button">Reset</button>
+          <button class="btn-mini" id="btnReset" type="button">Reset View</button>
           <button class="btn-mini" id="btnExport" type="button">Export CSV</button>
         </div>
       </div>
@@ -357,7 +467,7 @@
     <div id="toolboxSpacer"></div>
 
     <div class="legend mt-2">
-      <span><span class="dot"></span>All classes are rendered as arcs; click to inspect; double-click to zoom into a branch.</span>
+      <span><span class="dot"></span>Click to inspect · Double-click to zoom. Category names always appear on the ring.</span>
       <span>·</span>
       <span>Hover for tooltip</span>
     </div>
@@ -385,6 +495,21 @@
                 </div>
                 <div class="tip" id="tip"></div>
               </div>
+
+              <!-- Always-visible names list -->
+              <div class="names-panel" aria-label="Names in current view">
+                <div class="names-head">
+                  <div>
+                    <div class="names-title">Names in current view</div>
+                    <div class="names-sub" id="namesSub">—</div>
+                  </div>
+                  <div class="text-muted small">Click a name to inspect</div>
+                </div>
+                <div class="names-body">
+                  <div id="nameList" class="name-grid"></div>
+                </div>
+              </div>
+
               <div class="text-muted small mt-2">
                 Alias + category rules are loaded from <code>data/object_taxonomy_config.json</code>.
               </div>
@@ -400,32 +525,41 @@
                 <div class="pane-sub">Canonical term + evidence</div>
               </div>
             </div>
-            <div class="pane-body">
-              <div class="muted-box" id="insDef">
-                Select any arc to see canonical key, merged aliases, and dataset evidence.
+            <div class="pane-body ins-wrap">
+              <div class="ins-main">
+                <div class="muted-box" id="insDef">
+                  Select any arc to see canonical key, merged aliases, and dataset evidence.
+                </div>
+
+                <hr class="my-3">
+
+                <div class="kv">
+                  <div><strong>Canonical key</strong></div><div id="insKey">—</div>
+                  <div><strong>Display label</strong></div><div id="insLabel">—</div>
+                  <div><strong>Category</strong></div><div id="insCat">—</div>
+                  <div><strong>Coverage</strong></div><div id="insCov">—</div>
+                </div>
+
+                <div class="mt-3">
+                  <div class="text-muted small"><strong>Aliases merged</strong></div>
+                  <div class="chips" id="insAliases"></div>
+                </div>
+
+                <div class="mt-3">
+                  <div class="text-muted small"><strong>Example datasets</strong></div>
+                  <div class="chips" id="insDS"></div>
+                </div>
               </div>
 
-              <hr class="my-3">
-
-              <div class="kv">
-                <div><strong>Canonical key</strong></div><div id="insKey">—</div>
-                <div><strong>Display label</strong></div><div id="insLabel">—</div>
-                <div><strong>Category</strong></div><div id="insCat">—</div>
-                <div><strong>Coverage</strong></div><div id="insCov">—</div>
-              </div>
-
-              <div class="mt-3">
-                <div class="text-muted small"><strong>Aliases merged</strong></div>
-                <div class="chips" id="insAliases"></div>
-              </div>
-
-              <div class="mt-3">
-                <div class="text-muted small"><strong>Example datasets</strong></div>
-                <div class="chips" id="insDS"></div>
-              </div>
-
-              <div class="mt-3">
-                <a class="chip" id="insPermalink" href="object_class.html" style="text-decoration:none;">Open permalink</a>
+              <!-- Permalink moved to bottom + button styling -->
+              <div class="ins-footer">
+                <a class="perm-btn" id="insPermalink" href="object_class.html" aria-label="Open permalink for this canonical class">
+                  Open permalink
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M6.354 5.5H2.5A1.5 1.5 0 0 0 1 7v6a1.5 1.5 0 0 0 1.5 1.5h6A1.5 1.5 0 0 0 10 13.5V9.646a.5.5 0 0 0-1 0V13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5V7a.5.5 0 0 1 .5-.5h3.854a.5.5 0 0 0 0-1z"/>
+                    <path d="M11.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 1 0V2.707l-6.146 6.147a.5.5 0 1 0 .708.708L12.707 3.414H14.5a.5.5 0 0 0 0-1h-3z"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -534,7 +668,7 @@
     let CFG = null;
     let TERM_ALIASES = new Map();
     let CATEGORY_RULES = [];
-    let LABEL_RULES = { min_arc_px: 46 };
+    let LABEL_RULES = { min_arc_px_root: 46, min_arc_px_zoom: 18 };
 
     function compileConfig(cfg){
       CFG = cfg || {};
@@ -543,7 +677,7 @@
         id: c.id,
         re: new RegExp(c.pattern, 'i')
       }));
-      LABEL_RULES = CFG.label_rules || LABEL_RULES;
+      LABEL_RULES = Object.assign(LABEL_RULES, (CFG.label_rules || {}));
     }
 
     function applyAliasMerge(raw){
@@ -599,7 +733,6 @@
         byCat.get(cat).push(rec);
       }
 
-      // stable ordering: use config order, then Other
       const catOrder = (CATEGORY_RULES.map(x=>x.id)).concat(['Other / Unclassified']);
       const cats = Array.from(byCat.keys()).sort((a,b)=>{
         return catOrder.indexOf(a) - catOrder.indexOf(b);
@@ -665,7 +798,6 @@
         `<strong style="color:var(--oc-ink)">Canonical class definition</strong>
          <div class="mt-1">
            A dataset label mapped to canonical class <span class="hl">${esc(data.label || data.canon)}</span>.
-           Canonicalization merges common spelling/format variants to enable cross-dataset benchmarking.
          </div>`;
 
       document.getElementById('insKey').textContent = data.canon || '—';
@@ -677,7 +809,6 @@
         aliases.length ? aliases.slice(0, 18).map(a => `<span class="chip">${esc(a)}</span>`).join('')
                       : `<span class="text-muted small">—</span>`;
 
-      // ✅ Deep link to dataset detail page
       const toDatasetDetail = (id) => `datasets/detail.html?id=${encodeURIComponent(id)}`;
       document.getElementById('insDS').innerHTML =
         ds.length ? ds.map(id => `<span class="chip"><a href="${toDatasetDetail(id)}" title="Open dataset details">${esc(id)}</a></span>`).join('')
@@ -685,6 +816,62 @@
 
       const href = `object_class.html?key=${encodeURIComponent(data.canon)}&label=${encodeURIComponent(data.label || data.canon)}`;
       document.getElementById('insPermalink').setAttribute('href', href);
+    }
+
+    /* ---------- Names panel ---------- */
+    function setNamesPanelForNode(focus){
+      const nameList = document.getElementById('nameList');
+      const namesSub = document.getElementById('namesSub');
+      nameList.innerHTML = '';
+
+      if(!focus) { namesSub.textContent = '—'; return; }
+
+      // Root: show all categories
+      if(focus.depth === 0){
+        const cats = (focus.children || []).slice()
+          .sort((a,b)=> (b.value||0) - (a.value||0));
+
+        namesSub.textContent = `Root · ${cats.length} categories`;
+
+        cats.forEach(c => {
+          const leafCount = (c.leaves ? c.leaves().length : (c.children||[]).length);
+          const el = document.createElement('div');
+          el.className = 'name-item';
+          el.innerHTML = `<div class="nm">${esc(c.data.name)}</div><div class="meta">${leafCount} nodes</div>`;
+          el.addEventListener('click', () => {
+            RUNTIME.sb.zoomTo(c);
+            setInspectorCategory(c.data.name);
+            document.getElementById('hudLeft').textContent = `Category: ${c.data.name}`;
+          });
+          nameList.appendChild(el);
+        });
+        return;
+      }
+
+      // Category focus: show all leaves under it
+      const leaves = (focus.leaves ? focus.leaves() : []).slice()
+        .sort((a,b)=>{
+          const ca = a.data.coverage ?? 0;
+          const cb = b.data.coverage ?? 0;
+          if(cb !== ca) return cb - ca;
+          return (a.data.label || a.data.canon || a.data.name).localeCompare(b.data.label || b.data.canon || b.data.name);
+        });
+
+      const catName = focus.data?.name || 'Category';
+      namesSub.textContent = `${catName} · ${leaves.length} nodes`;
+
+      leaves.forEach(n => {
+        const label = n.data.label || n.data.canon || n.data.name;
+        const cov = n.data.coverage ?? 0;
+        const el = document.createElement('div');
+        el.className = 'name-item';
+        el.innerHTML = `<div class="nm">${esc(label)}</div><div class="meta">${cov} ds</div>`;
+        el.addEventListener('click', () => {
+          setInspectorLeaf(n.data);
+          document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(label)}</strong>`;
+        });
+        nameList.appendChild(el);
+      });
     }
 
     /* ---------- Export ---------- */
@@ -707,8 +894,8 @@
       return rows.map(r => r.map(escCSV).join(',')).join('\n');
     }
 
-    /* ---------- Sunburst renderer (ALL nodes shown) ---------- */
-    function renderSunburst(rootData){
+    /* ---------- Sunburst renderer ---------- */
+    function renderSunburst(rootData, onFocusChange){
       const container = document.getElementById('viz');
       container.querySelector('svg')?.remove();
 
@@ -722,16 +909,16 @@
         .attr('width', W)
         .attr('height', H);
 
+      const defs = svg.append('defs');
+
       const g = svg.append('g')
         .attr('transform', `translate(${W/2},${H/2})`);
 
       const root = d3.hierarchy(rootData)
-        .sum(d => d.coverage ? (1 + Math.log1p(d.coverage)) : 0.2) // keep all leaves visible
+        .sum(d => d.coverage ? (1 + Math.log1p(d.coverage)) : 0.2)
         .sort((a,b) => b.value - a.value);
 
-      const partition = d3.partition()
-        .size([2 * Math.PI, R]);
-
+      const partition = d3.partition().size([2 * Math.PI, R]);
       partition(root);
 
       const arc = d3.arc()
@@ -749,44 +936,75 @@
         if(d.depth === 0) return 'rgba(15,46,75,0.10)';
         const top = d.ancestors().find(a => a.depth === 1);
         const i = top ? (catIndex.get(top.data.name) ?? 0) : 0;
-        // Use HSL-like variation without hardcoding colors; still consistent
         const t = color(i);
         return `rgba(11,102,195,${0.10 + 0.35*t})`;
       }
 
       const paths = g.append('g')
         .selectAll('path')
-        .data(root.descendants().filter(d => d.depth)) // skip center root
+        .data(root.descendants().filter(d => d.depth))
         .join('path')
         .attr('class','arc')
         .attr('d', arc)
         .attr('fill', d => fillFor(d))
-        .attr('fill-opacity', d => d.depth === 1 ? 0.55 : (d.depth === 2 ? 0.42 : 0.33));
+        .attr('fill-opacity', d => d.depth === 1 ? 0.58 : (d.depth === 2 ? 0.42 : 0.33));
 
-      // Labels only when arc length is sufficient
-      const labels = g.append('g')
-        .selectAll('text')
-        .data(root.descendants().filter(d => d.depth)) // label categories + some leaves
-        .join('text')
-        .attr('class','sb-label')
-        .attr('text-anchor','middle')
-        .attr('dy','0.32em')
-        .style('display', d => {
-          const arcLen = (d.x1 - d.x0) * ((d.y0 + d.y1) / 2);
-          return arcLen >= (LABEL_RULES.min_arc_px || 46) ? 'block' : 'none';
-        })
-        .attr('transform', d => {
-          const a = (d.x0 + d.x1) / 2;
-          const r = (d.y0 + d.y1) / 2;
-          const rot = (a * 180 / Math.PI) - 90;
-          const flip = rot > 90 ? 180 : 0;
-          return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
-        })
-        .text(d => d.data.name);
+      // ---- Category labels ALWAYS visible via textPath ----
+      // Create an arc path per category (depth 1)
+      const catNodes = root.descendants().filter(d => d.depth === 1);
+      catNodes.forEach((d,i) => {
+        const pathId = `catPath-${i}`;
+        const rMid = (d.y0 + d.y1) / 2;
+        const a0 = d.x0, a1 = d.x1;
+        const p = d3.path();
+        p.arc(0,0,rMid,a0,a1);
+        defs.append('path').attr('id', pathId).attr('d', p.toString());
 
-      // Click behavior:
-      // - category click -> inspector + zoom into that ring
-      // - leaf click -> inspector (and keep zoom context)
+        g.append('text')
+          .attr('class','cat-label')
+          .attr('font-size', 14)
+          .append('textPath')
+          .attr('href', `#${pathId}`)
+          .attr('startOffset', '50%')
+          .attr('text-anchor', 'middle')
+          .text(d.data.name);
+      });
+
+      // ---- Leaf labels (space-permitting; more aggressive when zoomed) ----
+      const labelLayer = g.append('g');
+
+      function labelThresholdForFocus(focus){
+        // root = conservative; category zoom = show more
+        if(!focus || focus.depth === 0) return (LABEL_RULES.min_arc_px_root ?? 46);
+        return (LABEL_RULES.min_arc_px_zoom ?? 18);
+      }
+
+      function drawLeafLabels(focus){
+        labelLayer.selectAll('*').remove();
+        const thr = labelThresholdForFocus(focus);
+
+        labelLayer.selectAll('text')
+          .data(root.descendants().filter(d => d.depth >= 2 && !d.children))
+          .join('text')
+          .attr('class','sb-label')
+          .attr('text-anchor','middle')
+          .attr('dy','0.32em')
+          .style('display', d => {
+            const dd = d.current || d;
+            const arcLen = (dd.x1 - dd.x0) * ((dd.y0 + dd.y1) / 2);
+            return arcLen >= thr ? 'block' : 'none';
+          })
+          .attr('transform', d => {
+            const dd = d.current || d;
+            const a = (dd.x0 + dd.x1) / 2;
+            const r = (dd.y0 + dd.y1) / 2;
+            const rot = (a * 180 / Math.PI) - 90;
+            const flip = rot > 90 ? 180 : 0;
+            return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
+          })
+          .text(d => d.data.name);
+      }
+
       let focus = root;
 
       function zoomTo(p){
@@ -813,26 +1031,12 @@
             };
           });
 
-        labels.transition(t)
-          .attrTween('transform', d => {
-            const i = d3.interpolate(d.current || d, d.target);
-            return tt => {
-              const dd = i(tt);
-              const a = (dd.x0 + dd.x1) / 2;
-              const r = (dd.y0 + dd.y1) / 2;
-              const rot = (a * 180 / Math.PI) - 90;
-              const flip = rot > 90 ? 180 : 0;
-              return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
-            };
-          })
-          .style('display', d => {
-            const dd = d.current || d;
-            const arcLen = (dd.x1 - dd.x0) * ((dd.y0 + dd.y1) / 2);
-            return arcLen >= (LABEL_RULES.min_arc_px || 46) ? 'block' : 'none';
-          });
+        t.on('end', () => {
+          drawLeafLabels(focus);
+          if(typeof onFocusChange === 'function') onFocusChange(focus);
+        });
       }
 
-      // tooltip helpers
       function showTip(ev, d){
         const isLeaf = !d.children;
         const name = d.data.name;
@@ -868,7 +1072,6 @@
             document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(d.data.label || d.data.canon || d.data.name)}</strong>`;
             setInspectorLeaf(d.data);
           }else{
-            // intermediate (unlikely here): treat as category
             setInspectorCategory(d.data.name);
           }
         })
@@ -884,13 +1087,16 @@
         zoomTo(root);
       });
 
-      // init current
       root.each(d => d.current = d);
 
-      return { zoomTo, root, paths };
+      // initial labels + names list
+      drawLeafLabels(root);
+      if(typeof onFocusChange === 'function') onFocusChange(root);
+
+      return { zoomTo, root };
     }
 
-    /* ---------- Search: find canon and zoom to its arc ---------- */
+    /* ---------- Search ---------- */
     function buildCanonToNodeIndex(sbRoot){
       const map = new Map();
       sbRoot.descendants().forEach(d => {
@@ -905,7 +1111,6 @@
     async function init(){
       syncToolboxSpacer();
 
-      // load config
       const cfg = await loadJSON('data/object_taxonomy_config.json');
       compileConfig(cfg);
 
@@ -923,7 +1128,7 @@
       document.getElementById('subtitle').textContent =
         `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories`;
 
-      const sb = renderSunburst(rootData);
+      const sb = renderSunburst(rootData, (focus) => setNamesPanelForNode(focus));
       RUNTIME.sb = sb;
       RUNTIME.canonIndex = buildCanonToNodeIndex(sb.root);
 
@@ -938,21 +1143,21 @@
         const node = RUNTIME.canonIndex.get(direct);
 
         if(node){
-          // zoom to its parent category for context, then select leaf in inspector
           const parent = node.parent || sb.root;
           sb.zoomTo(parent);
-
-          if(!node.children){
-            setInspectorLeaf(node.data);
-            document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(node.data.label || node.data.canon)}</strong>`;
-          } else {
-            setInspectorCategory(node.data.name);
-            document.getElementById('hudLeft').textContent = `Category: ${node.data.name}`;
-          }
+          setTimeout(() => {
+            if(!node.children){
+              setInspectorLeaf(node.data);
+              document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(node.data.label || node.data.canon)}</strong>`;
+            } else {
+              setInspectorCategory(node.data.name);
+              document.getElementById('hudLeft').textContent = `Category: ${node.data.name}`;
+            }
+          }, 540);
           return;
         }
 
-        // fallback: contains match against aliases
+        // fallback contains match against aliases
         let best = null;
         for(const rec of idx.values()){
           const hay = (rec.canon + ' ' + Array.from(rec.rawSet).join(' ')).toLowerCase();
@@ -965,8 +1170,10 @@
           const n = RUNTIME.canonIndex.get(best.canon);
           if(n){
             sb.zoomTo(n.parent || sb.root);
-            setInspectorLeaf(n.data);
-            document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(n.data.label || n.data.canon)}</strong>`;
+            setTimeout(() => {
+              setInspectorLeaf(n.data);
+              document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(n.data.label || n.data.canon)}</strong>`;
+            }, 540);
           }
         }
       });

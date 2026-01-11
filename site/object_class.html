@@ -17,12 +17,14 @@
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
-      --oc-shadow:0 10px 26px rgba(15,46,75,.08);
-      --oc-radius:18px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
     html,body{ background:var(--oc-bg); color:var(--oc-text); }
     a{ color:var(--oc-link); }
-    .oc-container{ max-width:980px; }
+    .oc-container{ max-width:1080px; }
+
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700; }
 
     .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
     .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
@@ -30,61 +32,35 @@
     .brand-wordmark .oc-construction{ font-size:1.35rem; font-weight:700; letter-spacing:-.01em; }
     .oc-logo{ height:44px; width:44px; }
     .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
+    .navbar .nav-link.plain:hover,
+    .navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
 
-    .pane{
-      border:1px solid var(--oc-border);
-      border-radius: var(--oc-radius);
-      background: radial-gradient(1000px 600px at 15% 0%, rgba(11,102,195,.10), transparent 55%),
-                  radial-gradient(900px 540px at 90% 20%, rgba(242,162,56,.12), transparent 55%),
-                  linear-gradient(180deg, #ffffff, #fbfdff);
-      box-shadow: var(--oc-shadow);
-      overflow:hidden;
-    }
-    .pane-head{
-      padding:14px 16px;
-      border-bottom:1px solid var(--oc-border);
-      background: rgba(255,255,255,.68);
-      backdrop-filter: blur(6px);
-    }
-    .k{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
-    .title{ font-weight:900; color:var(--oc-ink); margin:.25rem 0 0; }
-    .sub{ color:var(--oc-subtle); margin:.35rem 0 0; }
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
+    .oc-card-body{ padding:1.25rem; }
 
-    .pane-body{ padding:16px; }
     .chip{
       border:1px solid var(--oc-border);
-      background: rgba(255,255,255,.92);
+      background:#fff;
       border-radius:999px;
-      padding:.35rem .65rem;
-      font-weight:850;
-      font-size:.86rem;
-      color: var(--oc-ink);
+      padding:.35rem .6rem;
+      font-weight:900;
+      font-size:.85rem;
+      color:var(--oc-ink);
       display:inline-flex;
       align-items:center;
       gap:8px;
-      box-shadow: 0 10px 22px rgba(15,46,75,.06);
       text-decoration:none;
     }
-    .muted{
-      background: rgba(246,249,252,.82);
-      border:1px solid var(--oc-border);
-      border-radius: 16px;
-      padding: 12px 14px;
-      color: var(--oc-subtle);
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 160px 1fr;
-      gap: 10px 12px;
-      color: var(--oc-subtle);
-    }
-    .kv strong{ color: var(--oc-ink); }
-    footer{ border-top:1px solid var(--oc-border); margin-top:36px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
+
+    footer{ border-top:1px solid var(--oc-border); margin-top:44px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
   </style>
 </head>
 
 <body>
+  <!-- NAVBAR (same as other pages; shorten here if you prefer, but keep consistent) -->
   <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
     <div class="container oc-container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
@@ -94,49 +70,62 @@
           <span class="oc-construction">Open Science</span>
         </span>
       </a>
-      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample">
+
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample"
+              aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarsExample">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-          <li class="nav-item"><a class="nav-link plain" href="object_taxonomy.html">Taxonomy</a></li>
           <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
           <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
           <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+          <li class="nav-item"><a class="nav-link plain active" href="object_taxonomy.html">Taxonomy</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <main class="container oc-container my-4">
-    <div class="pane">
-      <div class="pane-head">
-        <div class="k">Object class</div>
-        <h1 class="h3 title" id="label">—</h1>
-        <div class="sub">
-          Canonical key: <code id="key">—</code> · Category: <strong id="cat">—</strong>
+  <main class="container oc-container">
+    <section class="oc-section">
+      <div class="oc-kicker mb-2">Object class</div>
+      <h1 class="h3 fw-bold" style="color:var(--oc-ink);" id="title">—</h1>
+      <p class="text-muted mb-0">
+        Canonical key: <code id="canon">—</code>
+        · Category: <span class="hl" id="cat">—</span>
+      </p>
+    </section>
+
+    <section class="oc-section">
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="oc-card h-100"><div class="oc-card-body">
+            <div class="oc-kicker mb-2">Aliases merged</div>
+            <div id="aliases" class="d-flex flex-wrap gap-2"></div>
+          </div></div>
+        </div>
+        <div class="col-lg-6">
+          <div class="oc-card h-100"><div class="oc-card-body">
+            <div class="oc-kicker mb-2">Dataset evidence</div>
+            <div class="text-muted mb-2"><span id="dsCount">—</span> dataset(s) contain this class.</div>
+            <div id="datasets" class="d-flex flex-wrap gap-2"></div>
+          </div></div>
         </div>
       </div>
-      <div class="pane-body">
-        <div class="muted mb-3" id="def">
-          Evidence-based class page: aliases merged + dataset evidence derived from <code>data/datasets.json</code>.
-        </div>
+    </section>
 
-        <div class="kv mb-3">
-          <div><strong>Coverage</strong></div><div id="cov">—</div>
-          <div><strong>Aliases merged</strong></div><div id="aliases">—</div>
-          <div><strong>Example datasets</strong></div><div id="datasets">—</div>
-        </div>
-
-        <div class="d-flex flex-wrap gap-2">
-          <a class="chip" href="object_taxonomy.html">Back to taxonomy map</a>
-          <a class="chip" href="dataset.html">Open datasets</a>
+    <footer class="py-4 mt-3">
+      <div class="container oc-container small text-muted text-center">
+        <div>© <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+        <div class="mt-2">
+          <small>
+            <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+            links to original sources. We do not host or distribute datasets, models, code or paywalled content.
+            All rights remain with the original authors, creators and publishers.
+          </small>
         </div>
       </div>
-    </div>
-
-    <footer class="py-4 text-center small text-muted">
-      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
     </footer>
   </main>
 
@@ -144,49 +133,64 @@
   <script>
     document.getElementById('yearNow').textContent = new Date().getFullYear();
 
+    const esc = (s) => String(s ?? '')
+      .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+      .replaceAll('"','&quot;').replaceAll("'","&#39;");
+
+    const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
     const normStr = (v) => (v == null ? '' : String(v).trim());
-    const canonKey = (s) => normStr(s).toLowerCase().replace(/[_/]+/g,' ').replace(/-+/g,' ').replace(/\s+/g,' ').trim();
-    const singularize = (key) => {
+    function canonKey(s){
+      return normStr(s).toLowerCase()
+        .replace(/[_/]+/g,' ')
+        .replace(/-+/g,' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+    function singularize(key){
       const t = canonKey(key);
       if(t.endsWith('ies') && t.length > 4) return t.slice(0,-3) + 'y';
       if(t.endsWith('s') && !t.endsWith('ss') && t.length > 3) return t.slice(0,-1);
       return t;
-    };
-    const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
-    const getParam = (name) => new URL(location.href).searchParams.get(name);
+    }
 
-    const TERM_ALIASES = new Map([
+    const ALIAS = new Map([
       ['hardhat','hard hat'],
       ['helmet','hard hat'],
       ['people','worker'],
       ['person','worker'],
       ['construction worker','worker'],
       ['rebar','reinforcing bar'],
+      ['reinforcement bar','reinforcing bar'],
       ['dumptruck','dump truck'],
       ['dump-truck','dump truck'],
       ['cracks','crack']
     ]);
-    const applyAliasMerge = (raw) => {
+    function mergeAlias(raw){
       const k = canonKey(raw);
-      const v = TERM_ALIASES.get(k);
+      const v = ALIAS.get(k);
       return v ? canonKey(v) : k;
-    };
+    }
 
-    const CATEGORIES = [
-      { id:'People', re:/\b(worker|person|people|human|inspector|operator|foreman)\b/ },
-      { id:'Equipment & Vehicles', re:/\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|roller|grader|drone|uav|robot)\b/ },
-      { id:'PPE & Safety', re:/\b(hard hat|reflective vest|vest|glove|goggle|mask|respirator|harness|traffic cone|barricade|barrier|sign)\b/ },
-      { id:'Materials', re:/\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall|insulation|soil|gravel|sand)\b/ },
-      { id:'Structural Components', re:/\b(beam|column|slab|girder|truss|joist|foundation|pile|pier|wall|deck)\b/ },
-      { id:'MEP Components', re:/\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler|outlet|switch|meter)\b/ },
-      { id:'Site & Temporary Works', re:/\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|curb|site|stockpile|container|pallet)\b/ },
-      { id:'Defects & Damage', re:/\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\b/ }
+    const CATS = [
+      { id:'People', re:/\b(worker|person|people|human|inspector|operator)\b/ },
+      { id:'Equipment', re:/\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|drone|uav|robot)\b/ },
+      { id:'PPE', re:/\b(hard hat|vest|glove|goggle|mask|respirator|harness)\b/ },
+      { id:'Materials', re:/\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall)\b/ },
+      { id:'Structural', re:/\b(beam|column|slab|girder|truss|joist|foundation|pile|wall)\b/ },
+      { id:'MEP', re:/\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler)\b/ },
+      { id:'Site', re:/\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|site|stockpile)\b/ },
+      { id:'Defects', re:/\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\b/ }
     ];
-    const inferCategory = (canon) => {
-      const s = canonKey(canon);
-      for(const c of CATEGORIES){ if(c.re.test(s)) return c.id; }
-      return 'Other / Unclassified';
-    };
+    function inferCat(k){
+      const s = canonKey(k);
+      for(const c of CATS){ if(c.re.test(s)) return c.id; }
+      return 'Other';
+    }
+
+    function getParam(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name);
+    }
 
     async function loadDatasets(){
       const res = await fetch('data/datasets.json', { cache:'no-store' });
@@ -197,49 +201,52 @@
     }
 
     async function init(){
-      const key = singularize(applyAliasMerge(getParam('key') || ''));
+      const key = singularize(mergeAlias(getParam('key') || ''));
       const label = getParam('label') || key;
 
-      document.getElementById('key').textContent = key || '—';
-      document.getElementById('label').textContent = label || '—';
-      document.getElementById('cat').textContent = inferCategory(key);
+      document.getElementById('title').textContent = label || key;
+      document.getElementById('canon').textContent = key;
+      document.getElementById('cat').textContent = inferCat(key);
 
       const datasets = await loadDatasets();
-      const aliasSet = new Set();
-      const dsSet = new Set();
-      let mentions = 0;
+
+      const aliases = new Set();
+      const dsHits = [];
 
       for(const ds of datasets){
-        const dsId = ds.id || ds.name || '(unknown)';
-        for(const raw of normArray(ds.classes)){
-          const canon = singularize(applyAliasMerge(raw));
+        const dsid = ds.id || ds.name || '';
+        const classes = normArray(ds.classes);
+        for(const c of classes){
+          const canon = singularize(mergeAlias(c));
           if(canon === key){
-            aliasSet.add(normStr(raw));
-            dsSet.add(dsId);
-            mentions += 1;
+            aliases.add(normStr(c));
+            dsHits.push({ id: dsid, title: ds.name || ds.title || dsid, year: ds.year, url: ds.doi || ds.access || '' });
           }
         }
       }
 
-      document.getElementById('cov').textContent = `${dsSet.size} datasets · ${mentions} mentions`;
-      const aliases = Array.from(aliasSet).sort((a,b)=>a.localeCompare(b)).slice(0, 30);
-      document.getElementById('aliases').innerHTML = aliases.length
-        ? aliases.map(a=>`<span class="chip">${a}</span>`).join(' ')
-        : '—';
+      // Render aliases
+      const aliasEl = document.getElementById('aliases');
+      const aliasArr = Array.from(aliases).sort((a,b)=>a.localeCompare(b));
+      aliasEl.innerHTML = aliasArr.length
+        ? aliasArr.map(a=>`<span class="chip">${esc(a)}</span>`).join('')
+        : `<span class="text-muted">—</span>`;
 
-      const ds = Array.from(dsSet).slice(0, 40);
-      document.getElementById('datasets').innerHTML = ds.length
-        ? ds.map(id=>`<a class="chip" href="dataset.html">${id}</a>`).join(' ')
-        : '—';
+      // Render datasets
+      document.getElementById('dsCount').textContent = String(dsHits.length);
 
-      document.getElementById('def').innerHTML =
-        `<strong style="color:var(--oc-ink)">Canonical class</strong>
-         <div class="mt-1">This page provides traceable evidence (aliases + dataset sources) for class <span class="hl">${label}</span>.</div>`;
+      const dsEl = document.getElementById('datasets');
+      dsEl.innerHTML = dsHits.length
+        ? dsHits.slice(0, 60).map(x=>{
+            // Best-effort: link to your dataset page; if you have dataset detail pages, swap URL here.
+            return `<a class="chip" href="dataset.html" title="${esc(x.title)}">${esc(x.id)}${x.year ? ' · '+esc(x.year) : ''}</a>`;
+          }).join('')
+        : `<span class="text-muted">No datasets found.</span>`;
     }
 
     init().catch(err=>{
       console.warn('[object_class] init error:', err);
-      document.getElementById('def').textContent = 'Could not load class page. Ensure data/datasets.json exists and is valid.';
+      document.getElementById('title').textContent = 'Could not load class details';
     });
   </script>
 </body>
