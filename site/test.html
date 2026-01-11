@@ -171,7 +171,7 @@
       stroke-width: 2px;
     }
 
-    /* leaf labels (only when space permits) */
+    /* leaf labels */
     .sb-label{
       font-size: 12px;
       font-weight: 850;
@@ -215,7 +215,7 @@
     .tip strong{ display:block; font-weight: 950; }
     .tip .sub{ color: var(--oc-subtle); font-size: .92rem; margin-top:2px; }
 
-    /* Names panel (always shows every node name in view) */
+    /* Names panel */
     .names-panel{
       margin-top: 12px;
       border:1px solid var(--oc-border);
@@ -312,7 +312,7 @@
     }
     .chip a{ text-decoration:none; color: inherit; }
 
-    /* Permalink button (NOT a chip) */
+    /* Permalink button */
     .perm-btn{
       display:inline-flex;
       align-items:center;
@@ -356,10 +356,30 @@
       .kv{ grid-template-columns: 120px 1fr; }
     }
 
-    /* Make inspector footer stick to bottom visually */
-    .ins-wrap{ display:flex; flex-direction:column; height:100%; }
-    .ins-main{ flex: 1 1 auto; }
-    .ins-footer{ margin-top: 14px; }
+    /* Inspector: ensure footer always visible + main scrolls */
+    .ins-wrap{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      min-height: 640px; /* keeps layout stable */
+    }
+    .ins-main{
+      flex: 1 1 auto;
+      overflow:auto;
+      padding-right: 6px; /* avoid scrollbar overlay */
+    }
+    .ins-footer{
+      position: sticky;
+      bottom: 0;
+      margin-top: 14px;
+      padding-top: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 26%, rgba(255,255,255,.98));
+    }
+
+    /* make right pane body stretch so sticky footer works */
+    .pane.h-100 .pane-body{
+      height: calc(100% - 56px); /* subtract header */
+    }
   </style>
 </head>
 
@@ -652,6 +672,13 @@
       if(/[A-Z]/.test(raw) && raw.length <= 16) return raw;
       return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     }
+    function shortenLabelToFit(text, maxChars){
+      const s = String(text || '').trim();
+      if(!s) return '';
+      if(maxChars <= 3) return s.slice(0, Math.max(1, maxChars));
+      if(s.length <= maxChars) return s;
+      return s.slice(0, Math.max(1, maxChars - 1)).trimEnd() + '…';
+    }
 
     async function loadJSON(path){
       const res = await fetch(path, { cache:'no-store' });
@@ -668,7 +695,7 @@
     let CFG = null;
     let TERM_ALIASES = new Map();
     let CATEGORY_RULES = [];
-    let LABEL_RULES = { min_arc_px_root: 46, min_arc_px_zoom: 18 };
+    let LABEL_RULES = { min_arc_px_root: 70, min_arc_px_zoom: 22 };
 
     function compileConfig(cfg){
       CFG = cfg || {};
@@ -826,7 +853,6 @@
 
       if(!focus) { namesSub.textContent = '—'; return; }
 
-      // Root: show all categories
       if(focus.depth === 0){
         const cats = (focus.children || []).slice()
           .sort((a,b)=> (b.value||0) - (a.value||0));
@@ -848,7 +874,6 @@
         return;
       }
 
-      // Category focus: show all leaves under it
       const leaves = (focus.leaves ? focus.leaves() : []).slice()
         .sort((a,b)=>{
           const ca = a.data.coverage ?? 0;
@@ -927,7 +952,6 @@
         .innerRadius(d => d.y0)
         .outerRadius(d => Math.max(d.y0 + 8, d.y1 - 1));
 
-      // Color by top-level category (stable)
       const catNames = (root.children || []).map(c => c.data.name);
       const catIndex = new Map(catNames.map((n,i)=>[n,i]));
       const color = d3.scaleLinear().domain([0, Math.max(1, catNames.length-1)]).range([0.15, 0.95]);
@@ -949,8 +973,7 @@
         .attr('fill', d => fillFor(d))
         .attr('fill-opacity', d => d.depth === 1 ? 0.58 : (d.depth === 2 ? 0.42 : 0.33));
 
-      // ---- Category labels ALWAYS visible via textPath ----
-      // Create an arc path per category (depth 1)
+      // ---- Category labels ALWAYS visible via textPath (with truncation) ----
       const catNodes = root.descendants().filter(d => d.depth === 1);
       catNodes.forEach((d,i) => {
         const pathId = `catPath-${i}`;
@@ -960,6 +983,10 @@
         p.arc(0,0,rMid,a0,a1);
         defs.append('path').attr('id', pathId).attr('d', p.toString());
 
+        const arcLen = (a1 - a0) * rMid;           // pixels along the arc
+        const maxChars = Math.floor(arcLen / 8.5); // ~8.5px per character (safe)
+        const label = shortenLabelToFit(d.data.name, Math.max(4, maxChars));
+
         g.append('text')
           .attr('class','cat-label')
           .attr('font-size', 14)
@@ -967,42 +994,55 @@
           .attr('href', `#${pathId}`)
           .attr('startOffset', '50%')
           .attr('text-anchor', 'middle')
-          .text(d.data.name);
+          .text(label);
       });
 
-      // ---- Leaf labels (space-permitting; more aggressive when zoomed) ----
+      // ---- Leaf labels (collision-gated) ----
       const labelLayer = g.append('g');
 
       function labelThresholdForFocus(focus){
-        // root = conservative; category zoom = show more
-        if(!focus || focus.depth === 0) return (LABEL_RULES.min_arc_px_root ?? 46);
-        return (LABEL_RULES.min_arc_px_zoom ?? 18);
+        if(!focus || focus.depth === 0) return (LABEL_RULES.min_arc_px_root ?? 70);
+        return (LABEL_RULES.min_arc_px_zoom ?? 22);
       }
 
       function drawLeafLabels(focus){
         labelLayer.selectAll('*').remove();
         const thr = labelThresholdForFocus(focus);
 
+        const leaves = root.descendants().filter(d => d.depth >= 2 && !d.children);
+
+        const candidates = leaves.map(d => {
+          const dd = d.current || d;
+          const a = (dd.x0 + dd.x1) / 2;
+          const r = (dd.y0 + dd.y1) / 2;
+          const arcLen = (dd.x1 - dd.x0) * r;
+          return { d, dd, a, r, arcLen };
+        })
+        .filter(x => x.arcLen >= thr)
+        .sort((x,y) => x.a - y.a);
+
+        const minAngle = (!focus || focus.depth === 0) ? 0.12 : 0.06; // radians (~7° root, ~3.5° zoom)
+        let lastAngle = -Infinity;
+        const kept = [];
+        for(const x of candidates){
+          if(x.a - lastAngle >= minAngle){
+            kept.push(x);
+            lastAngle = x.a;
+          }
+        }
+
         labelLayer.selectAll('text')
-          .data(root.descendants().filter(d => d.depth >= 2 && !d.children))
+          .data(kept, x => x.d.data.id || x.d.data.canon || x.d.data.name)
           .join('text')
           .attr('class','sb-label')
           .attr('text-anchor','middle')
           .attr('dy','0.32em')
-          .style('display', d => {
-            const dd = d.current || d;
-            const arcLen = (dd.x1 - dd.x0) * ((dd.y0 + dd.y1) / 2);
-            return arcLen >= thr ? 'block' : 'none';
-          })
-          .attr('transform', d => {
-            const dd = d.current || d;
-            const a = (dd.x0 + dd.x1) / 2;
-            const r = (dd.y0 + dd.y1) / 2;
-            const rot = (a * 180 / Math.PI) - 90;
+          .attr('transform', x => {
+            const rot = (x.a * 180 / Math.PI) - 90;
             const flip = rot > 90 ? 180 : 0;
-            return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
+            return `rotate(${rot}) translate(${x.r},0) rotate(${flip})`;
           })
-          .text(d => d.data.name);
+          .text(x => x.d.data.name);
       }
 
       let focus = root;
@@ -1058,7 +1098,6 @@
         tip.style.transform = 'translateY(6px)';
       }
 
-      // Interactions
       paths
         .on('mousemove', function(ev, d){ showTip(ev, d); })
         .on('mouseleave', hideTip)
@@ -1080,7 +1119,6 @@
           zoomTo(d);
         });
 
-      // background click resets zoom
       svg.on('click', () => {
         document.getElementById('hudLeft').textContent = 'Tip: click an arc';
         resetInspector();
@@ -1089,7 +1127,6 @@
 
       root.each(d => d.current = d);
 
-      // initial labels + names list
       drawLeafLabels(root);
       if(typeof onFocusChange === 'function') onFocusChange(root);
 
@@ -1132,7 +1169,6 @@
       RUNTIME.sb = sb;
       RUNTIME.canonIndex = buildCanonToNodeIndex(sb.root);
 
-      // search
       const input = document.getElementById('q');
       input.addEventListener('keydown', (e) => {
         if(e.key !== 'Enter') return;
@@ -1157,7 +1193,6 @@
           return;
         }
 
-        // fallback contains match against aliases
         let best = null;
         for(const rec of idx.values()){
           const hay = (rec.canon + ' ' + Array.from(rec.rawSet).join(' ')).toLowerCase();
@@ -1178,7 +1213,6 @@
         }
       });
 
-      // buttons
       document.getElementById('btnReset').addEventListener('click', () => location.reload());
       document.getElementById('btnExport').addEventListener('click', () => {
         const rows = [['canonical_key','display_label','category','coverage_datasets','mentions','aliases_merged']];
