@@ -48,7 +48,7 @@
       margin:.2rem 0 .35rem;
       color:var(--oc-ink);
     }
-    .hero p.lead{ max-width:92ch; margin:0 auto; color:var(--oc-subtle); }
+    .hero p.lead{ max-width:96ch; margin:0 auto; color:var(--oc-subtle); }
     .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .08em; font-weight:800; }
 
     .oc-section{ margin-top:26px; }
@@ -66,16 +66,20 @@
     .pane-head{
       padding:12px 14px;
       border-bottom:1px solid var(--oc-border);
-      background: rgba(255,255,255,.65);
+      background: rgba(255,255,255,.70);
       backdrop-filter: blur(6px);
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
     }
     .pane-title{ font-weight:900; color:var(--oc-ink); }
     .pane-sub{ color:var(--oc-subtle); font-size:.92rem; margin-top:2px; }
-    .pane-body{ padding:14px; }
 
-    /* sticky toolbox + spacer (fix overlay bug) */
-    .sticky-tools{ position: sticky; top: 74px; z-index: 30; }
+    /* Sticky toolbox in-flow (no overlay). Spacer keeps content from being covered. */
+    .sticky-tools{
+      position: sticky;
+      top: 74px;
+      z-index: 30;
+      margin-top: 12px;
+    }
     #toolboxSpacer{ height: 0px; }
     @media (max-width: 991.98px){
       .sticky-tools{ position: static; top:auto; }
@@ -86,17 +90,16 @@
       display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
       border:1px solid var(--oc-border);
       border-radius: 999px;
-      background: rgba(255,255,255,.90);
+      background: rgba(255,255,255,.92);
       backdrop-filter: blur(7px);
       box-shadow: 0 12px 26px rgba(15,46,75,.08);
       padding:10px 12px;
     }
     .toolbox .left{ display:flex; gap:10px; align-items:center; flex:1 1 auto; min-width: 260px; }
-    .toolbox .right{ display:flex; gap:8px; align-items:center; flex:0 0 auto; flex-wrap:wrap; }
+    .toolbox .right{ display:flex; gap:10px; align-items:center; flex:0 0 auto; flex-wrap:wrap; }
     .toolbox input{
       width: 100%;
-      border:0;
-      outline:none;
+      border:0; outline:none;
       background: transparent;
       padding: .2rem .2rem;
       color: var(--oc-ink);
@@ -117,884 +120,649 @@
     }
     .btn-mini:hover{ transform: translateY(-1px); }
 
-    .legend{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-      color: var(--oc-subtle);
-      font-size: .9rem;
-    }
-    .legend .dot{
-      width:10px; height:10px; border-radius:999px; display:inline-block;
-      background: var(--oc-accent);
-      box-shadow: 0 8px 18px rgba(242,162,56,.18);
-      margin-right:6px;
-    }
-    .legend code{ color: var(--oc-ink); font-weight: 800; }
-
-    /* Viz container */
-    .viz-wrap{
-      height: 680px;
-      border-radius: 18px;
-      border:1px solid var(--oc-border);
-      overflow:hidden;
-      position: relative;
-      background: radial-gradient(800px 520px at 50% 50%, rgba(15,46,75,.06), transparent 60%);
-    }
-    .viz-hud{
-      position:absolute; top:12px; left:12px; right:12px;
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-      pointer-events:none;
-    }
-    .hud-pill{
-      pointer-events:auto;
-      border:1px solid var(--oc-border);
+    .control{
+      display:flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border:1px solid rgba(15,46,75,.12);
+      background: rgba(255,255,255,.9);
       border-radius: 999px;
-      padding: 7px 10px;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(6px);
-      color: var(--oc-subtle);
-      font-weight: 750;
-      box-shadow: 0 12px 26px rgba(15,46,75,.08);
-      display:flex; align-items:center; gap:10px;
-      white-space: nowrap;
+      box-shadow: 0 10px 20px rgba(15,46,75,.05);
+      font-weight:800;
+      color:var(--oc-ink);
     }
-    .hud-pill strong{ color: var(--oc-ink); }
-    .hud-pill .sep{ opacity:.45; }
+    .control input[type="range"]{ width:120px; }
 
-    /* Sunburst */
-    .arc{
-      stroke: rgba(255,255,255,.9);
-      stroke-width: 1.2px;
-      cursor: pointer;
+    .pane-body{ padding:14px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap: 14px;
+      align-items: stretch;
     }
-    .arc:hover{
-      stroke: rgba(11,102,195,.9);
-      stroke-width: 2px;
+    @media (max-width: 1100px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
-    .sb-label{
-      font-size: 12px;
-      font-weight: 850;
-      fill: rgba(15,46,75,.92);
-      pointer-events: none;
-      paint-order: stroke;
-      stroke: rgba(255,255,255,.92);
-      stroke-width: 4px;
-      stroke-linejoin: round;
-    }
-
-    /* Tooltip */
-    .tip{
-      position:absolute;
-      pointer-events:none;
-      padding:10px 11px;
-      border:1px solid var(--oc-border);
-      border-radius: 14px;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 16px 34px rgba(15,46,75,.12);
-      color: var(--oc-ink);
-      min-width: 220px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity .12s ease, transform .12s ease;
-      z-index: 40;
-    }
-    .tip strong{ display:block; font-weight: 950; }
-    .tip .sub{ color: var(--oc-subtle); font-size: .92rem; margin-top:2px; }
-
-    /* Inspector */
-    .muted-box{
-      background: rgba(246,249,252,.78);
+    .vizWrap{
       border:1px solid var(--oc-border);
       border-radius: 16px;
-      padding: 12px 14px;
-      color: var(--oc-subtle);
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(15,46,75,.06);
+      overflow:hidden;
+      min-height: 72vh;
+      position: relative;
     }
-    .kv{
-      display:grid;
-      grid-template-columns: 140px 1fr;
-      gap: 10px 12px;
-      color: var(--oc-subtle);
-      font-size: .95rem;
-    }
-    .kv strong{ color: var(--oc-ink); }
-    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-    .chip{
-      border:1px solid var(--oc-border);
-      background: rgba(255,255,255,.92);
-      border-radius:999px;
-      padding:.35rem .65rem;
-      font-weight:850;
-      font-size:.86rem;
+    .vizTopHint{
+      position:absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 5;
+      font-size: .9rem;
+      font-weight: 850;
       color: var(--oc-ink);
-      box-shadow: 0 10px 22px rgba(15,46,75,.06);
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(15,46,75,.10);
+      border-radius: 999px;
+      padding: 6px 10px;
+      backdrop-filter: blur(6px);
     }
-    .chip a{ text-decoration:none; color: inherit; }
+    .vizTopHint span{ color: var(--oc-subtle); font-weight: 800; margin-left: 8px; }
 
-    .issue-btn{
-      position:fixed; right:18px; bottom:18px;
-      background:#0f2e4b; color:#fff;
-      text-decoration:none;
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:900;
-      box-shadow:0 14px 30px rgba(15,46,75,.18);
-      z-index:99;
+    svg{ display:block; width:100%; height:100%; }
+
+    .details{
+      border:1px solid var(--oc-border);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(15,46,75,.06);
+      padding: 12px 12px 10px;
     }
-    .issue-btn:hover{ transform:translateY(-1px); color:#fff; }
-
-    footer{ border-top:1px solid var(--oc-border); margin-top:44px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
-    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-
-    @media (max-width: 991.98px){
-      .viz-wrap{ height: 560px; }
-      .kv{ grid-template-columns: 120px 1fr; }
+    .details h3{ font-size: 1.05rem; margin: 2px 0 6px; font-weight: 950; color: var(--oc-ink); }
+    .details .meta{ color: var(--oc-subtle); font-weight: 700; font-size: .92rem; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border:1px solid rgba(15,46,75,.12);
+      background: rgba(246,249,252,.85);
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-weight: 850;
+      color: var(--oc-ink);
+      margin: 3px 6px 0 0;
+      font-size: .86rem;
     }
+    .list-clean{ margin: 10px 0 0; padding-left: 1.1rem; color: var(--oc-text); }
+    .muted{ color: var(--oc-subtle); }
+
+    /* Radial label readability */
+    .labelHalo{
+      paint-order: stroke fill;
+      stroke: rgba(255,255,255,.92);
+      stroke-width: 3.8px;
+      stroke-linejoin: round;
+    }
+    .catLabel{
+      font-weight: 950;
+      letter-spacing: .02em;
+    }
+    .termLabel{
+      font-weight: 800;
+    }
+    .linkLine{
+      fill: none;
+      stroke: rgba(15,46,75,.16);
+      stroke-width: 1.0px;
+    }
+    .nodeDot{
+      stroke: rgba(15,46,75,.20);
+      stroke-width: 1;
+    }
+    .highlight .termLabel,
+    .highlight .catLabel{
+      fill: #0b66c3 !important;
+    }
+    .dimmed{ opacity: .14; }
+
+    .footer{
+      border-top: 1px solid var(--oc-border);
+      margin-top: 40px;
+      padding: 18px 0 24px;
+      color: var(--oc-subtle);
+      font-weight: 650;
+    }
+
+    /* Fullscreen mode (visual polish) */
+    .fs-on .vizWrap{
+      position: fixed;
+      inset: 16px;
+      z-index: 9999;
+      min-height: auto;
+      height: calc(100vh - 32px);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(15,46,75,.20);
+    }
+    .fs-on .fs-hide{ display:none !important; }
   </style>
 </head>
 
 <body>
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <!-- Top Nav -->
+  <nav class="navbar navbar-expand-lg bg-white oc-nav sticky-top">
     <div class="container oc-container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
-        <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
-        <span class="brand-wordmark">
-          <span class="oc-open">OpenConstruction</span>
-          <span class="oc-construction">Open Science</span>
-        </span>
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        <img src="/assets/img/icon.png" class="oc-logo" alt="OpenConstruction logo">
+        <div class="brand-wordmark">
+          <div class="oc-open">OPEN</div>
+          <div class="oc-construction">Construction</div>
+        </div>
       </a>
 
-      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample"
-              aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ocNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExample">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-          <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+      <div class="collapse navbar-collapse" id="ocNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link plain" href="/datasets/">Datasets</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="/models/">Models</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="/benchmarks.html">Benchmarks</a></li>
+          <li class="nav-item"><a class="nav-link plain active" href="/object_taxonomy.html">Taxonomy</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="/contributors.html">Community</a></li>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link plain dropdown-toggle" href="#" id="ddProducts" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddProducts">
-              <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
-              <li><a class="dropdown-item" href="models.html">Models</a></li>
-              <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
-              <li><a class="dropdown-item" href="oer.html">OERs</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item"><a class="nav-link plain" href="schema.html" data-route="schema">Schema</a></li>
-          <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
-          <li class="nav-item"><a class="nav-link plain active" href="object_taxonomy.html" aria-current="page">Taxonomy</a></li>
-
-          <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
-          <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
-
-          <li class="nav-item">
-            <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener"
-               aria-label="OpenConstruction on GitHub" title="View on GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                   viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                         0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                         0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                         0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
-                         1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                         0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
-                         8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-              </svg>
+          <!-- GitHub icon -->
+          <li class="nav-item ms-lg-2">
+            <a class="nav-link icon-only" href="https://github.com/openconstruction" target="_blank" rel="noopener" aria-label="OpenConstruction on GitHub">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21
+              1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21
+              2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+              0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
             </a>
           </li>
 
+          <!-- Subscribe icon -->
           <li class="nav-item">
-            <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
-                    data-bs-toggle="modal" data-bs-target="#subscribeModal"
-                    aria-label="Subscribe for updates" title="Subscribe">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-                <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
-                         0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
-                         1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
-                         7 0 0 0 8.5 2z"/>
-              </svg>
-            </button>
+            <a class="nav-link icon-only" href="/updates.xml" target="_blank" rel="noopener" aria-label="Subscribe RSS">
+              <button class="btn-subscribe-icon" type="button" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M6.18 17.82a2.18 2.18 0 1 1 0 4.36 2.18 2.18 0 0 1 0-4.36ZM4 4.44v3.09c7.44 0 13.47 6.03 13.47 13.47h3.09C20.56 11.86 13.14 4.44 4 4.44Zm0 6.18v3.09c4.02 0 7.29 3.27 7.29 7.29h3.09c0-5.72-4.66-10.38-10.38-10.38Z"/></svg>
+              </button>
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- Hero -->
   <header class="hero">
-    <div class="container oc-container content">
-      <div class="oc-kicker mb-2">Controlled Vocabulary</div>
-      <h1>Object / Class Taxonomy Map</h1>
-      <p class="lead">
-        A <span class="hl">zoomable taxonomy</span> derived from dataset label spaces (<code>classes</code> in <code>data/datasets.json</code>).
-        All nodes are shown; labels appear when space permits, with hover + inspector for details.
-      </p>
+    <div class="container oc-container">
+      <div class="content">
+        <div class="oc-kicker mb-2">Controlled Vocabulary</div>
+        <h1>Object / Class Taxonomy for <span class="hl">OpenConstruction</span></h1>
+        <p class="lead">
+          A SKOS-like, machine-readable vocabulary for object/class labels across the dataset catalog.
+          This page emphasizes readability at scale: <strong>all categories and all leaf terms are rendered</strong>,
+          and search can focus the view to any term to avoid “dense-map blindness”.
+        </p>
+      </div>
     </div>
   </header>
 
   <main class="container oc-container">
-    <!-- Tools -->
-    <section class="oc-section sticky-tools">
-      <div class="toolbox" id="toolbox">
-        <div class="left">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
-               viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-          </svg>
-          <input id="q" type="search" placeholder="Search objects (e.g., worker, crane, crack, rebar, hard hat) and press Enter">
+
+    <section class="oc-section">
+      <div class="pane">
+        <div class="pane-head">
+          <div>
+            <div class="pane-title">Radial Taxonomy Map</div>
+            <div class="pane-sub">Pan/zoom the figure. Click a node to inspect synonyms and jump to example datasets.</div>
+          </div>
+          <div class="fs-hide">
+            <button class="btn-mini" id="btnFullscreen" type="button" title="Fullscreen">Fullscreen</button>
+          </div>
         </div>
-        <div class="right">
-          <button class="btn-mini" id="btnReset" type="button">Reset</button>
-          <button class="btn-mini" id="btnExport" type="button">Export CSV</button>
+
+        <div class="pane-body">
+
+          <!-- Sticky toolbox (in-flow) -->
+          <div class="sticky-tools">
+            <div class="toolbox" id="toolbox">
+              <div class="left">
+                <span class="pill" title="Vocabulary source">object_vocab.json</span>
+                <div style="flex:1 1 auto; min-width:220px;">
+                  <input id="q" placeholder="Search objects/classes (prefLabel or synonyms)…" autocomplete="off">
+                </div>
+                <button class="btn-mini" id="btnClear" type="button">Clear</button>
+                <button class="btn-mini" id="btnFocusFirst" type="button">Focus</button>
+              </div>
+
+              <div class="right">
+                <div class="control" title="Increase/decrease leaf label font size">
+                  Font <input id="fontRange" type="range" min="9" max="16" value="12">
+                </div>
+                <div class="control" title="Increase/decrease overall radius (spreads nodes)">
+                  Radius <input id="radRange" type="range" min="380" max="820" value="640">
+                </div>
+                <button class="btn-mini" id="btnReset" type="button">Reset view</button>
+              </div>
+            </div>
+            <div id="toolboxSpacer"></div>
+          </div>
+
+          <div class="grid mt-3">
+            <div class="vizWrap" id="vizWrap">
+              <div class="vizTopHint">Tip<span>Search → Focus to jump to the best match</span></div>
+              <svg id="svg" aria-label="Object taxonomy radial map"></svg>
+            </div>
+
+            <aside class="details" id="details">
+              <h3 id="dTitle">Select a term</h3>
+              <div class="meta" id="dMeta">Click any category or leaf term in the figure.</div>
+
+              <div class="mt-3">
+                <div class="pill">Synonyms</div>
+                <div id="dSyn" class="muted mt-2">—</div>
+              </div>
+
+              <div class="mt-3">
+                <div class="pill">Broader</div>
+                <div id="dBroader" class="muted mt-2">—</div>
+              </div>
+
+              <div class="mt-3">
+                <div class="pill">Example datasets</div>
+                <ul id="dExamples" class="list-clean muted">
+                  <li>—</li>
+                </ul>
+              </div>
+
+              <div class="mt-3 small muted">
+                Why radial? Compared to a force-directed “ball of yarn”, a radial cluster yields stable label orientation,
+                clearer category boundaries, and deterministic layout (important for a scientific controlled vocabulary).
+              </div>
+            </aside>
+          </div>
+
         </div>
       </div>
     </section>
-    <div id="toolboxSpacer"></div>
 
-    <div class="legend mt-2">
-      <span><span class="dot"></span>All classes are rendered as arcs; click to inspect; double-click to zoom into a branch.</span>
-      <span>·</span>
-      <span>Hover for tooltip</span>
+    <div class="footer">
+      <div class="container oc-container">
+        OpenConstruction · Object / Class Taxonomy (controlled vocabulary). Suggested citation: OpenConstruction Vocabulary, v1.0.
+      </div>
     </div>
 
-    <!-- Main -->
-    <section class="oc-section">
-      <div class="row g-4">
-        <div class="col-lg-8">
-          <div class="pane">
-            <div class="pane-head">
-              <div>
-                <div class="pane-title">Taxonomy map</div>
-                <div class="pane-sub" id="subtitle">Loading…</div>
-              </div>
-              <div class="hud-pill">
-                <span><strong id="statDS">—</strong> datasets</span><span class="sep">·</span>
-                <span><strong id="statCanon">—</strong> canonical classes</span>
-              </div>
-            </div>
-            <div class="pane-body">
-              <div class="viz-wrap" id="viz">
-                <div class="viz-hud">
-                  <div class="hud-pill" id="hudLeft">Tip: click an arc</div>
-                  <div class="hud-pill" id="hudRight">Zoom: <strong id="zoomLbl">Root</strong></div>
-                </div>
-                <div class="tip" id="tip"></div>
-              </div>
-              <div class="text-muted small mt-2">
-                Alias + category rules are loaded from <code>data/object_taxonomy_config.json</code>.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4">
-          <div class="pane h-100">
-            <div class="pane-head">
-              <div>
-                <div class="pane-title">Inspector</div>
-                <div class="pane-sub">Canonical term + evidence</div>
-              </div>
-            </div>
-            <div class="pane-body">
-              <div class="muted-box" id="insDef">
-                Select any arc to see canonical key, merged aliases, and dataset evidence.
-              </div>
-
-              <hr class="my-3">
-
-              <div class="kv">
-                <div><strong>Canonical key</strong></div><div id="insKey">—</div>
-                <div><strong>Display label</strong></div><div id="insLabel">—</div>
-                <div><strong>Category</strong></div><div id="insCat">—</div>
-                <div><strong>Coverage</strong></div><div id="insCov">—</div>
-              </div>
-
-              <div class="mt-3">
-                <div class="text-muted small"><strong>Aliases merged</strong></div>
-                <div class="chips" id="insAliases"></div>
-              </div>
-
-              <div class="mt-3">
-                <div class="text-muted small"><strong>Example datasets</strong></div>
-                <div class="chips" id="insDS"></div>
-              </div>
-
-              <div class="mt-3">
-                <a class="chip" id="insPermalink" href="object_class.html" style="text-decoration:none;">Open permalink</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="py-4 mt-3">
-      <div class="container oc-container small text-muted text-center">
-        <div>© <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
-        <div class="mt-2">
-          <small>
-            <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
-            links to original sources. We do not host or distribute datasets, models, code or paywalled content.
-            All rights remain with the original authors, creators and publishers.
-          </small>
-        </div>
-      </div>
-    </footer>
   </main>
 
-  <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml"
-     class="issue-btn" target="_blank" rel="noopener">
-    Issue or Suggestion?
-  </a>
-
-  <!-- Subscribe modal -->
-  <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
-      <div class="modal-content p-3 rounded-3 shadow">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <h6 class="m-0 fw-semibold">Subscribe</h6>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
-              method="post" target="_blank" novalidate>
-          <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
-          <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
-          <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
-          <div style="position:absolute; left:-5000px" aria-hidden="true">
-            <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
-          </div>
-          <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    document.getElementById('yearNow').textContent = new Date().getFullYear();
+    /* ------------------------- helpers ------------------------- */
+    const $ = (id) => document.getElementById(id);
 
-    /* ---------- Sticky overlay fix: spacer equals toolbox height ---------- */
-    function syncToolboxSpacer(){
-      const tb = document.getElementById('toolbox');
-      const sp = document.getElementById('toolboxSpacer');
-      if(!tb || !sp) return;
-      const isSticky = window.matchMedia('(min-width: 992px)').matches;
-      sp.style.height = isSticky ? (tb.getBoundingClientRect().height + 12) + 'px' : '0px';
-    }
-    window.addEventListener('resize', syncToolboxSpacer);
-    window.addEventListener('load', syncToolboxSpacer);
-
-    /* ---------- utilities ---------- */
-    const esc = (s) => String(s ?? '')
-      .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
-      .replaceAll('"','&quot;').replaceAll("'","&#39;");
-
-    const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
-    const normStr = (v) => (v == null ? '' : String(v).trim());
-
-    function canonKey(s){
-      return normStr(s).toLowerCase()
-        .replace(/[_/]+/g,' ')
-        .replace(/-+/g,' ')
-        .replace(/\s+/g,' ')
+    function normKey(s){
+      return (s || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[“”"'`]/g,"")
+        .replace(/[^a-z0-9\\s\\-/&]+/g," ")
+        .replace(/\\s+/g," ")
         .trim();
     }
-    function singularize(key){
-      const t = canonKey(key);
-      if(t.endsWith('ies') && t.length > 4) return t.slice(0,-3) + 'y';
-      if(t.endsWith('s') && !t.endsWith('ss') && t.length > 3) return t.slice(0,-1);
-      return t;
-    }
-    function niceLabel(key){
-      const raw = normStr(key);
-      if(!raw) return '';
-      if(/[A-Z]/.test(raw) && raw.length <= 16) return raw;
-      return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-    }
 
-    async function loadJSON(path){
-      const res = await fetch(path, { cache:'no-store' });
-      if(!res.ok) throw new Error(`Cannot load ${path}`);
-      return await res.json();
+    function setSpacer(){
+      const tb = $("toolbox");
+      const sp = $("toolboxSpacer");
+      if (!tb || !sp) return;
+      // Always reserve vertical space so sticky never overlays content below.
+      sp.style.height = (tb.offsetHeight + 12) + "px";
+    }
+    window.addEventListener("resize", setSpacer);
+
+    function datasetDetailURL(id){
+      return `/datasets/detail.html?id=${encodeURIComponent(id)}`;
     }
 
-    async function loadDatasets(){
-      const raw = await loadJSON('data/datasets.json');
-      return (Array.isArray(raw) ? raw : Object.values(raw || {})).filter(Boolean);
-    }
+    /* ------------------------- state ------------------------- */
+    let VOCAB = null;
+    let conceptById = new Map();
+    let termIndex = []; // searchable entries
+    let matches = [];
+    let firstMatchNode = null;
 
-    /* ---------- config (aliases + categories moved out of HTML) ---------- */
-    let CFG = null;
-    let TERM_ALIASES = new Map();
-    let CATEGORY_RULES = [];
-    let LABEL_RULES = { min_arc_px: 46 };
+    // viz state
+    let svg, gRoot, gLinks, gNodes, zoom;
+    let width = 900, height = 900;
+    let R = 640;
+    let baseFont = 12;
 
-    function compileConfig(cfg){
-      CFG = cfg || {};
-      TERM_ALIASES = new Map(Object.entries(CFG.aliases || {}));
-      CATEGORY_RULES = (CFG.categories || []).map(c => ({
-        id: c.id,
-        re: new RegExp(c.pattern, 'i')
-      }));
-      LABEL_RULES = CFG.label_rules || LABEL_RULES;
-    }
+    /* ------------------------- build hierarchy ------------------------- */
+    function buildHierarchy(vocab){
+      // Create a hierarchy rooted at oc:objects
+      const nodes = new Map();
+      vocab.concepts.forEach(c => nodes.set(c.id, {...c}));
 
-    function applyAliasMerge(raw){
-      const k = canonKey(raw);
-      const v = TERM_ALIASES.get(k);
-      return v ? canonKey(v) : k;
-    }
-
-    function inferCategory(canon){
-      const s = canonKey(canon);
-      for(const c of CATEGORY_RULES){
-        if(c.re.test(s)) return c.id;
-      }
-      return 'Other / Unclassified';
-    }
-
-    /* ---------- build index & hierarchy ---------- */
-    function buildIndex(datasets){
-      const idx = new Map();
-      for(const ds of datasets){
-        const dsId = ds.id || ds.name || '(unknown)';
-        for(const raw of normArray(ds.classes)){
-          const merged = applyAliasMerge(raw);
-          const canon = singularize(merged);
-          if(!canon) continue;
-
-          if(!idx.has(canon)){
-            idx.set(canon, {
-              canon,
-              label: niceLabel(canon),
-              category: inferCategory(canon),
-              rawSet: new Set(),
-              dsSet: new Set(),
-              mentions: 0
-            });
-          }
-          const rec = idx.get(canon);
-          rec.rawSet.add(normStr(raw));
-          rec.dsSet.add(dsId);
-          rec.mentions += 1;
-        }
-      }
-      return idx;
-    }
-
-    function buildHierarchy(idx){
-      const root = { name:'Objects', id:'root', children:[] };
-
-      const byCat = new Map();
-      for(const rec of idx.values()){
-        const cat = rec.category || 'Other / Unclassified';
-        if(!byCat.has(cat)) byCat.set(cat, []);
-        byCat.get(cat).push(rec);
+      function childrenOf(id){
+        const n = nodes.get(id);
+        const kids = (n && n.narrower) ? n.narrower.slice() : [];
+        return kids.filter(k => nodes.has(k)).map(k => nodes.get(k));
       }
 
-      // stable ordering: use config order, then Other
-      const catOrder = (CATEGORY_RULES.map(x=>x.id)).concat(['Other / Unclassified']);
-      const cats = Array.from(byCat.keys()).sort((a,b)=>{
-        return catOrder.indexOf(a) - catOrder.indexOf(b);
-      });
-
-      for(const cat of cats){
-        const items = byCat.get(cat).sort((a,b)=>{
-          const da=a.dsSet.size, db=b.dsSet.size;
-          if(db!==da) return db-da;
-          return (a.label||a.canon).localeCompare(b.label||b.canon);
-        });
-
-        root.children.push({
-          name: cat,
-          id: 'cat:' + cat,
-          children: items.map(r => ({
-            name: r.label || r.canon,
-            id: 'obj:' + r.canon,
-            canon: r.canon,
-            label: r.label || r.canon,
-            category: r.category,
-            coverage: r.dsSet.size,
-            mentions: r.mentions,
-            aliases: Array.from(r.rawSet),
-            datasets: Array.from(r.dsSet)
-          }))
-        });
+      function build(id){
+        const n = nodes.get(id);
+        const kids = childrenOf(id).map(k => build(k.id));
+        return { ...n, children: kids };
       }
 
-      return root;
+      // Ensure "Other" exists in categories list and as category concept
+      return build("oc:objects");
     }
 
-    /* ---------- Inspector ---------- */
-    function resetInspector(){
-      document.getElementById('insDef').textContent =
-        'Select any arc to see canonical key, merged aliases, and dataset evidence.';
-      document.getElementById('insKey').textContent = '—';
-      document.getElementById('insLabel').textContent = '—';
-      document.getElementById('insCat').textContent = '—';
-      document.getElementById('insCov').textContent = '—';
-      document.getElementById('insAliases').innerHTML = '';
-      document.getElementById('insDS').innerHTML = '';
-      document.getElementById('insPermalink').setAttribute('href', 'object_class.html');
-    }
+    function isCategory(d){ return d.data && d.data.type === "Category"; }
+    function isRoot(d){ return d.data && d.data.id === "oc:objects"; }
 
-    function setInspectorCategory(cat){
-      document.getElementById('insDef').innerHTML =
-        `<strong style="color:var(--oc-ink)">Category</strong><div class="mt-1">Browse objects under <span class="hl">${esc(cat)}</span>.</div>`;
-      document.getElementById('insKey').textContent = '—';
-      document.getElementById('insLabel').textContent = cat;
-      document.getElementById('insCat').textContent = cat;
-      document.getElementById('insCov').textContent = '—';
-      document.getElementById('insAliases').innerHTML = '';
-      document.getElementById('insDS').innerHTML = '';
-      document.getElementById('insPermalink').setAttribute('href', 'object_taxonomy.html');
-    }
+    /* ------------------------- radial layout ------------------------- */
+    function renderRadial(rootData){
+      const wrap = $("vizWrap");
+      width = wrap.clientWidth;
+      height = wrap.clientHeight;
 
-    function setInspectorLeaf(data){
-      const aliases = (data.aliases || []).slice().sort((a,b)=>a.localeCompare(b));
-      const ds = (data.datasets || []).slice(0, 24);
+      svg = d3.select("#svg")
+        .attr("viewBox", [-(width/2), -(height/2), width, height])
+        .attr("role","img");
 
-      document.getElementById('insDef').innerHTML =
-        `<strong style="color:var(--oc-ink)">Canonical class definition</strong>
-         <div class="mt-1">
-           A dataset label mapped to canonical class <span class="hl">${esc(data.label || data.canon)}</span>.
-           Canonicalization merges common spelling/format variants to enable cross-dataset benchmarking.
-         </div>`;
+      svg.selectAll("*").remove();
 
-      document.getElementById('insKey').textContent = data.canon || '—';
-      document.getElementById('insLabel').textContent = data.label || data.canon || '—';
-      document.getElementById('insCat').textContent = data.category || '—';
-      document.getElementById('insCov').textContent = `${data.coverage ?? 0} datasets · ${data.mentions ?? 0} mentions`;
+      gRoot = svg.append("g");
 
-      document.getElementById('insAliases').innerHTML =
-        aliases.length ? aliases.slice(0, 18).map(a => `<span class="chip">${esc(a)}</span>`).join('')
-                      : `<span class="text-muted small">—</span>`;
+      // Zoom
+      zoom = d3.zoom()
+        .scaleExtent([0.28, 8])
+        .on("zoom", (event) => gRoot.attr("transform", event.transform));
 
-      // ✅ Deep link to dataset detail page
-      const toDatasetDetail = (id) => `datasets/detail.html?id=${encodeURIComponent(id)}`;
-      document.getElementById('insDS').innerHTML =
-        ds.length ? ds.map(id => `<span class="chip"><a href="${toDatasetDetail(id)}" title="Open dataset details">${esc(id)}</a></span>`).join('')
-                  : `<span class="text-muted small">—</span>`;
+      svg.call(zoom);
 
-      const href = `object_class.html?key=${encodeURIComponent(data.canon)}&label=${encodeURIComponent(data.label || data.canon)}`;
-      document.getElementById('insPermalink').setAttribute('href', href);
-    }
-
-    /* ---------- Export ---------- */
-    function downloadText(filename, text){
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    }
-    function toCSV(rows){
-      const escCSV = (v) => {
-        const s = String(v ?? '');
-        if(/[,"\n]/.test(s)) return `"${s.replaceAll('"','""')}"`;
-        return s;
-      };
-      return rows.map(r => r.map(escCSV).join(',')).join('\n');
-    }
-
-    /* ---------- Sunburst renderer (ALL nodes shown) ---------- */
-    function renderSunburst(rootData){
-      const container = document.getElementById('viz');
-      container.querySelector('svg')?.remove();
-
-      const tip = document.getElementById('tip');
-
-      const W = container.clientWidth;
-      const H = container.clientHeight;
-      const R = Math.min(W, H) / 2 - 18;
-
-      const svg = d3.select(container).append('svg')
-        .attr('width', W)
-        .attr('height', H);
-
-      const g = svg.append('g')
-        .attr('transform', `translate(${W/2},${H/2})`);
-
-      const root = d3.hierarchy(rootData)
-        .sum(d => d.coverage ? (1 + Math.log1p(d.coverage)) : 0.2) // keep all leaves visible
-        .sort((a,b) => b.value - a.value);
-
-      const partition = d3.partition()
+      const root = d3.hierarchy(rootData);
+      const cluster = d3.cluster()
         .size([2 * Math.PI, R]);
 
-      partition(root);
+      cluster(root);
 
-      const arc = d3.arc()
-        .startAngle(d => d.x0)
-        .endAngle(d => d.x1)
-        .innerRadius(d => d.y0)
-        .outerRadius(d => Math.max(d.y0 + 8, d.y1 - 1));
+      // Helpers to map polar->cartesian
+      const project = (a, r) => [Math.cos(a - Math.PI/2) * r, Math.sin(a - Math.PI/2) * r];
 
-      // Color by top-level category (stable)
-      const catNames = (root.children || []).map(c => c.data.name);
-      const catIndex = new Map(catNames.map((n,i)=>[n,i]));
-      const color = d3.scaleLinear().domain([0, Math.max(1, catNames.length-1)]).range([0.15, 0.95]);
+      // Links
+      gLinks = gRoot.append("g").attr("aria-label","links");
 
-      function fillFor(d){
-        if(d.depth === 0) return 'rgba(15,46,75,0.10)';
-        const top = d.ancestors().find(a => a.depth === 1);
-        const i = top ? (catIndex.get(top.data.name) ?? 0) : 0;
-        // Use HSL-like variation without hardcoding colors; still consistent
-        const t = color(i);
-        return `rgba(11,102,195,${0.10 + 0.35*t})`;
-      }
+      const linkGen = d3.linkRadial()
+        .angle(d => d.x)
+        .radius(d => d.y);
 
-      const paths = g.append('g')
-        .selectAll('path')
-        .data(root.descendants().filter(d => d.depth)) // skip center root
-        .join('path')
-        .attr('class','arc')
-        .attr('d', arc)
-        .attr('fill', d => fillFor(d))
-        .attr('fill-opacity', d => d.depth === 1 ? 0.55 : (d.depth === 2 ? 0.42 : 0.33));
+      const links = gLinks.selectAll("path")
+        .data(root.links())
+        .join("path")
+        .attr("class","linkLine")
+        .attr("d", linkGen);
 
-      // Labels only when arc length is sufficient
-      const labels = g.append('g')
-        .selectAll('text')
-        .data(root.descendants().filter(d => d.depth)) // label categories + some leaves
-        .join('text')
-        .attr('class','sb-label')
-        .attr('text-anchor','middle')
-        .attr('dy','0.32em')
-        .style('display', d => {
-          const arcLen = (d.x1 - d.x0) * ((d.y0 + d.y1) / 2);
-          return arcLen >= (LABEL_RULES.min_arc_px || 46) ? 'block' : 'none';
+      // Nodes
+      gNodes = gRoot.append("g").attr("aria-label","nodes");
+
+      const node = gNodes.selectAll("g")
+        .data(root.descendants())
+        .join("g")
+        .attr("transform", d => {
+          const [x,y] = project(d.x, d.y);
+          return `translate(${x},${y})`;
         })
-        .attr('transform', d => {
-          const a = (d.x0 + d.x1) / 2;
-          const r = (d.y0 + d.y1) / 2;
-          const rot = (a * 180 / Math.PI) - 90;
-          const flip = rot > 90 ? 180 : 0;
-          return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
+        .attr("data-id", d => d.data.id)
+        .style("cursor","pointer")
+        .on("click", (_, d) => onSelect(d))
+        .on("dblclick", (_, d) => focusNode(d));
+
+      node.append("circle")
+        .attr("r", d => isRoot(d) ? 7 : (isCategory(d) ? 4.2 : 2.8))
+        .attr("class","nodeDot")
+        .attr("fill", d => isRoot(d) ? "rgba(15,46,75,.85)" : (isCategory(d) ? "rgba(242,162,56,.95)" : "rgba(11,102,195,.85)"));
+
+      // Labels: always show ALL labels; use rotation so they read outward
+      node.append("text")
+        .attr("class", d => (isCategory(d) ? "catLabel labelHalo" : "termLabel labelHalo"))
+        .attr("dy", "0.32em")
+        .attr("font-size", d => {
+          if (isRoot(d)) return Math.max(14, baseFont + 3);
+          if (isCategory(d)) return Math.max(13, baseFont + 1);
+          return baseFont;
         })
-        .text(d => d.data.name);
-
-      // Click behavior:
-      // - category click -> inspector + zoom into that ring
-      // - leaf click -> inspector (and keep zoom context)
-      let focus = root;
-
-      function zoomTo(p){
-        focus = p;
-        document.getElementById('zoomLbl').textContent = p.depth === 0 ? 'Root' : p.data.name;
-
-        const t = g.transition().duration(520);
-
-        root.each(d => {
-          d.target = {
-            x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
-            x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
-            y0: Math.max(0, d.y0 - p.y0),
-            y1: Math.max(0, d.y1 - p.y0)
-          };
-        });
-
-        paths.transition(t)
-          .attrTween('d', d => {
-            const i = d3.interpolate(d.current || d, d.target);
-            return tt => {
-              d.current = i(tt);
-              return arc(d.current);
-            };
-          });
-
-        labels.transition(t)
-          .attrTween('transform', d => {
-            const i = d3.interpolate(d.current || d, d.target);
-            return tt => {
-              const dd = i(tt);
-              const a = (dd.x0 + dd.x1) / 2;
-              const r = (dd.y0 + dd.y1) / 2;
-              const rot = (a * 180 / Math.PI) - 90;
-              const flip = rot > 90 ? 180 : 0;
-              return `rotate(${rot}) translate(${r},0) rotate(${flip})`;
-            };
-          })
-          .style('display', d => {
-            const dd = d.current || d;
-            const arcLen = (dd.x1 - dd.x0) * ((dd.y0 + dd.y1) / 2);
-            return arcLen >= (LABEL_RULES.min_arc_px || 46) ? 'block' : 'none';
-          });
-      }
-
-      // tooltip helpers
-      function showTip(ev, d){
-        const isLeaf = !d.children;
-        const name = d.data.name;
-        const cat = (d.ancestors().find(a=>a.depth===1)?.data?.name) || d.data.category || '—';
-        const cov = d.data.coverage ?? 0;
-
-        tip.innerHTML = `
-          <strong>${esc(name)}</strong>
-          <div class="sub">${esc(cat)} · ${cov} dataset(s)</div>
-          <div class="sub">${isLeaf ? 'Click to inspect · Double-click to zoom context' : 'Click to browse · Double-click to zoom'}</div>
-        `;
-        tip.style.left = (ev.offsetX + 14) + 'px';
-        tip.style.top  = (ev.offsetY + 14) + 'px';
-        tip.style.opacity = 1;
-        tip.style.transform = 'translateY(0px)';
-      }
-      function hideTip(){
-        tip.style.opacity = 0;
-        tip.style.transform = 'translateY(6px)';
-      }
-
-      // Interactions
-      paths
-        .on('mousemove', function(ev, d){ showTip(ev, d); })
-        .on('mouseleave', hideTip)
-        .on('click', (ev, d) => {
-          ev.stopPropagation();
-
-          if(d.depth === 1){
-            document.getElementById('hudLeft').textContent = `Category: ${d.data.name}`;
-            setInspectorCategory(d.data.name);
-          }else if(!d.children){
-            document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(d.data.label || d.data.canon || d.data.name)}</strong>`;
-            setInspectorLeaf(d.data);
-          }else{
-            // intermediate (unlikely here): treat as category
-            setInspectorCategory(d.data.name);
-          }
+        .attr("text-anchor", d => (d.x < Math.PI) ? "start" : "end")
+        .attr("transform", d => {
+          const rot = (d.x * 180 / Math.PI) - 90;
+          const flip = (d.x >= Math.PI) ? 180 : 0;
+          const offset = isRoot(d) ? 14 : (isCategory(d) ? 12 : 9);
+          return `rotate(${rot}) translate(${offset},0) rotate(${flip})`;
         })
-        .on('dblclick', (ev, d) => {
-          ev.stopPropagation();
-          zoomTo(d);
-        });
+        .attr("fill", d => {
+          if (isRoot(d)) return "rgba(15,46,75,.95)";
+          if (isCategory(d)) return "rgba(15,46,75,.92)";
+          return "rgba(30,42,54,.90)";
+        })
+        .text(d => d.data.prefLabel || d.data.id);
 
-      // background click resets zoom
-      svg.on('click', () => {
-        document.getElementById('hudLeft').textContent = 'Tip: click an arc';
-        resetInspector();
-        zoomTo(root);
-      });
+      // keep a searchable index of leaf + category labels
+      termIndex = root.descendants().map(d => ({
+        id: d.data.id,
+        key: normKey((d.data.prefLabel || "")),
+        alts: (d.data.altLabels || []).map(normKey),
+        node: d
+      }));
 
-      // init current
-      root.each(d => d.current = d);
+      // start at a nice scale
+      const initScale = Math.min(width, height) / (R * 2 + 240);
+      svg.call(zoom.transform, d3.zoomIdentity.scale(Math.max(0.55, Math.min(0.95, initScale))));
 
-      return { zoomTo, root, paths };
+      // stash for highlighting
+      window.__OC_ROOT = root;
     }
 
-    /* ---------- Search: find canon and zoom to its arc ---------- */
-    function buildCanonToNodeIndex(sbRoot){
-      const map = new Map();
-      sbRoot.descendants().forEach(d => {
-        if(d.data && d.data.canon) map.set(d.data.canon, d);
-      });
-      return map;
+    /* ------------------------- selection / details ------------------------- */
+    function renderDetails(concept){
+      $("dTitle").textContent = concept.prefLabel || concept.id;
+      const cat = concept.category ? ` · Category: ${concept.category}` : "";
+      const count = concept.stats && concept.stats.dataset_count != null ? ` · Appears in ${concept.stats.dataset_count} dataset(s)` : "";
+      $("dMeta").textContent = `${concept.type || "Concept"}${cat}${count}`;
+
+      const syn = (concept.altLabels && concept.altLabels.length) ? concept.altLabels : [];
+      $("dSyn").innerHTML = syn.length ? syn.map(s => `<span class="pill">${escapeHTML(s)}</span>`).join(" ") : `<span class="muted">—</span>`;
+
+      const broader = (concept.broader && concept.broader.length) ? concept.broader : [];
+      if (broader.length){
+        const labels = broader.map(id => conceptById.get(id)?.prefLabel || id);
+        $("dBroader").innerHTML = labels.map(s => `<span class="pill">${escapeHTML(s)}</span>`).join(" ");
+      } else {
+        $("dBroader").innerHTML = `<span class="muted">—</span>`;
+      }
+
+      const examples = (concept.examples && concept.examples.datasets) ? concept.examples.datasets : [];
+      const ul = $("dExamples");
+      ul.innerHTML = "";
+      if (!examples.length){
+        ul.innerHTML = `<li>—</li>`;
+      } else {
+        examples.slice(0, 8).forEach(id => {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${datasetDetailURL(id)}">${escapeHTML(id)}</a>`;
+          ul.appendChild(li);
+        });
+      }
     }
 
-    /* ---------- init ---------- */
-    let RUNTIME = { idx:null, sb:null, canonIndex:null };
+    function onSelect(d){
+      const concept = conceptById.get(d.data.id) || d.data;
+      renderDetails(concept);
+      highlightByIds(new Set([d.data.id]));
+    }
 
+    function escapeHTML(s){
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    /* ------------------------- search + highlight + focus ------------------------- */
+    function search(q){
+      const qq = normKey(q);
+      matches = [];
+      firstMatchNode = null;
+
+      if (!qq){
+        clearHighlight();
+        $("btnFocusFirst").disabled = true;
+        return;
+      }
+
+      for (const item of termIndex){
+        if (item.key.includes(qq) || item.alts.some(a => a.includes(qq))){
+          matches.push(item);
+        }
+      }
+      $("btnFocusFirst").disabled = matches.length === 0;
+
+      // highlight all matches, but keep the map readable by dimming non-matches
+      const idset = new Set(matches.map(m => m.id));
+      highlightByIds(idset);
+
+      // best match heuristic: prefer exact start match, then shorter label
+      matches.sort((a,b) => {
+        const aStart = a.key.startsWith(qq) ? 0 : 1;
+        const bStart = b.key.startsWith(qq) ? 0 : 1;
+        if (aStart !== bStart) return aStart - bStart;
+        return a.key.length - b.key.length;
+      });
+
+      firstMatchNode = matches[0]?.node || null;
+    }
+
+    function highlightByIds(idset){
+      const nodes = d3.select("#svg").selectAll("g[data-id]");
+      nodes.classed("highlight", d => idset.has(d.data.id));
+      nodes.classed("dimmed", d => idset.size && !idset.has(d.data.id));
+    }
+
+    function clearHighlight(){
+      const nodes = d3.select("#svg").selectAll("g[data-id]");
+      nodes.classed("highlight", false);
+      nodes.classed("dimmed", false);
+    }
+
+    function focusNode(d){
+      // zoom to node: translate node to center and scale up a bit
+      const wrap = $("vizWrap");
+      const w = wrap.clientWidth, h = wrap.clientHeight;
+
+      const t = d3.zoomTransform(d3.select("#svg").node());
+      const pt = d3.pointer({clientX:0, clientY:0}, d3.select("#svg").node()); // not used
+
+      const nodeEl = d3.select(`g[data-id="${CSS.escape(d.data.id)}"]`).node();
+      if (!nodeEl) return;
+
+      // Get node position in current SVG coordinate system:
+      const m = nodeEl.getCTM();
+      // m.e, m.f are in screen coords, but we can use getBBox + transform logic:
+      // simpler: compute node position from data again
+      const root = window.__OC_ROOT;
+      const project = (a, r) => [Math.cos(a - Math.PI/2) * r, Math.sin(a - Math.PI/2) * r];
+      const [nx, ny] = project(d.x, d.y);
+
+      const scale = Math.max(1.2, Math.min(4.0, t.k * 1.6));
+      const tx = -nx * scale;
+      const ty = -ny * scale;
+
+      const target = d3.zoomIdentity.translate(tx, ty).scale(scale);
+
+      d3.select("#svg")
+        .transition()
+        .duration(520)
+        .call(zoom.transform, target);
+
+      // update details too
+      onSelect(d);
+    }
+
+    function resetView(){
+      const wrap = $("vizWrap");
+      width = wrap.clientWidth;
+      height = wrap.clientHeight;
+      const initScale = Math.min(width, height) / (R * 2 + 240);
+      d3.select("#svg")
+        .transition()
+        .duration(520)
+        .call(zoom.transform, d3.zoomIdentity.scale(Math.max(0.55, Math.min(0.95, initScale))));
+      clearHighlight();
+    }
+
+    /* ------------------------- load vocab + init ------------------------- */
     async function init(){
-      syncToolboxSpacer();
+      setSpacer();
 
-      // load config
-      const cfg = await loadJSON('data/object_taxonomy_config.json');
-      compileConfig(cfg);
+      // Load controlled vocabulary (generated file)
+      const res = await fetch("/site/data/object_vocab.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Could not load /site/data/object_vocab.json");
+      VOCAB = await res.json();
 
-      document.getElementById('subtitle').textContent = 'Building canonical index from datasets.json…';
+      // Build lookup
+      VOCAB.concepts.forEach(c => conceptById.set(c.id, c));
 
-      const datasets = await loadDatasets();
-      document.getElementById('statDS').textContent = String(datasets.length);
+      const rootData = buildHierarchy(VOCAB);
+      renderRadial(rootData);
 
-      const idx = buildIndex(datasets);
-      RUNTIME.idx = idx;
+      // wire UI
+      $("q").addEventListener("input", (e) => search(e.target.value));
+      $("btnClear").addEventListener("click", () => {
+        $("q").value = "";
+        search("");
+      });
+      $("btnFocusFirst").addEventListener("click", () => {
+        if (firstMatchNode) focusNode(firstMatchNode);
+      });
+      $("btnReset").addEventListener("click", resetView);
 
-      document.getElementById('statCanon').textContent = String(idx.size);
-
-      const rootData = buildHierarchy(idx);
-      document.getElementById('subtitle').textContent =
-        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories`;
-
-      const sb = renderSunburst(rootData);
-      RUNTIME.sb = sb;
-      RUNTIME.canonIndex = buildCanonToNodeIndex(sb.root);
-
-      // search
-      const input = document.getElementById('q');
-      input.addEventListener('keydown', (e) => {
-        if(e.key !== 'Enter') return;
-        const needle = canonKey(input.value || '');
-        if(!needle) return;
-
-        const direct = singularize(applyAliasMerge(needle));
-        const node = RUNTIME.canonIndex.get(direct);
-
-        if(node){
-          // zoom to its parent category for context, then select leaf in inspector
-          const parent = node.parent || sb.root;
-          sb.zoomTo(parent);
-
-          if(!node.children){
-            setInspectorLeaf(node.data);
-            document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(node.data.label || node.data.canon)}</strong>`;
-          } else {
-            setInspectorCategory(node.data.name);
-            document.getElementById('hudLeft').textContent = `Category: ${node.data.name}`;
-          }
-          return;
-        }
-
-        // fallback: contains match against aliases
-        let best = null;
-        for(const rec of idx.values()){
-          const hay = (rec.canon + ' ' + Array.from(rec.rawSet).join(' ')).toLowerCase();
-          if(hay.includes(needle)){
-            if(!best) best = rec;
-            else if(rec.dsSet.size > best.dsSet.size) best = rec;
-          }
-        }
-        if(best){
-          const n = RUNTIME.canonIndex.get(best.canon);
-          if(n){
-            sb.zoomTo(n.parent || sb.root);
-            setInspectorLeaf(n.data);
-            document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(n.data.label || n.data.canon)}</strong>`;
-          }
-        }
+      $("fontRange").addEventListener("input", (e) => {
+        baseFont = parseInt(e.target.value, 10);
+        renderRadial(buildHierarchy(VOCAB));
+        // reapply search highlight if needed
+        const q = $("q").value;
+        if (q) search(q);
+        setSpacer();
+      });
+      $("radRange").addEventListener("input", (e) => {
+        R = parseInt(e.target.value, 10);
+        renderRadial(buildHierarchy(VOCAB));
+        const q = $("q").value;
+        if (q) search(q);
+        setSpacer();
       });
 
-      // buttons
-      document.getElementById('btnReset').addEventListener('click', () => location.reload());
-      document.getElementById('btnExport').addEventListener('click', () => {
-        const rows = [['canonical_key','display_label','category','coverage_datasets','mentions','aliases_merged']];
-        for(const rec of Array.from(idx.values()).sort((a,b)=>b.dsSet.size-a.dsSet.size)){
-          rows.push([
-            rec.canon,
-            rec.label,
-            rec.category,
-            rec.dsSet.size,
-            rec.mentions,
-            Array.from(rec.rawSet).slice(0, 30).join(' | ')
-          ]);
-        }
-        downloadText('openconstruction_object_taxonomy.csv', toCSV(rows));
+      // Fullscreen
+      $("btnFullscreen").addEventListener("click", () => {
+        document.body.classList.toggle("fs-on");
+        setTimeout(() => {
+          renderRadial(buildHierarchy(VOCAB));
+          const q = $("q").value;
+          if (q) search(q);
+          setSpacer();
+        }, 40);
       });
 
-      resetInspector();
+      $("btnFocusFirst").disabled = true;
+
+      // initial detail
+      renderDetails(conceptById.get("oc:objects"));
     }
 
     init().catch(err => {
-      console.warn('[object taxonomy] init error:', err);
-      document.getElementById('subtitle').textContent = 'Could not load taxonomy. Ensure data/datasets.json and data/object_taxonomy_config.json exist.';
-      document.getElementById('viz').innerHTML = `<div class="p-4 text-muted">Could not load visualization.</div>`;
+      console.error(err);
+      $("dTitle").textContent = "Error";
+      $("dMeta").textContent = err.message || String(err);
     });
   </script>
 </body>
