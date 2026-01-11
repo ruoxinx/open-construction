@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Object Class</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-shadow:0 10px 26px rgba(15,46,75,.08);
+      --oc-radius:18px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+    }
+    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    a{ color:var(--oc-link); }
+    .oc-container{ max-width:980px; }
+
+    .oc-nav{ backdrop-filter:saturate(120%) blur(6px); border-bottom:1px solid var(--oc-border)!important; }
+    .brand-wordmark{ display:flex; flex-direction:column; line-height:1; gap:0; align-items:flex-start; color:#0F2E4B; }
+    .brand-wordmark .oc-open{ font-size:.75rem; font-weight:400; letter-spacing:.15em; text-transform:uppercase; opacity:.7; margin-bottom:-.1rem; }
+    .brand-wordmark .oc-construction{ font-size:1.35rem; font-weight:700; letter-spacing:-.01em; }
+    .oc-logo{ height:44px; width:44px; }
+    .navbar .nav-link.plain{ font-weight:700; color:var(--oc-text); padding:.5rem .6rem; }
+    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{ color:var(--oc-ink); text-decoration:underline; text-underline-offset:3px; }
+
+    .pane{
+      border:1px solid var(--oc-border);
+      border-radius: var(--oc-radius);
+      background: radial-gradient(1000px 600px at 15% 0%, rgba(11,102,195,.10), transparent 55%),
+                  radial-gradient(900px 540px at 90% 20%, rgba(242,162,56,.12), transparent 55%),
+                  linear-gradient(180deg, #ffffff, #fbfdff);
+      box-shadow: var(--oc-shadow);
+      overflow:hidden;
+    }
+    .pane-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--oc-border);
+      background: rgba(255,255,255,.68);
+      backdrop-filter: blur(6px);
+    }
+    .k{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .title{ font-weight:900; color:var(--oc-ink); margin:.25rem 0 0; }
+    .sub{ color:var(--oc-subtle); margin:.35rem 0 0; }
+
+    .pane-body{ padding:16px; }
+    .chip{
+      border:1px solid var(--oc-border);
+      background: rgba(255,255,255,.92);
+      border-radius:999px;
+      padding:.35rem .65rem;
+      font-weight:850;
+      font-size:.86rem;
+      color: var(--oc-ink);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      box-shadow: 0 10px 22px rgba(15,46,75,.06);
+      text-decoration:none;
+    }
+    .muted{
+      background: rgba(246,249,252,.82);
+      border:1px solid var(--oc-border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: var(--oc-subtle);
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap: 10px 12px;
+      color: var(--oc-subtle);
+    }
+    .kv strong{ color: var(--oc-ink); }
+    footer{ border-top:1px solid var(--oc-border); margin-top:36px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+    <div class="container oc-container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+        <span class="brand-wordmark">
+          <span class="oc-open">OpenConstruction</span>
+          <span class="oc-construction">Open Science</span>
+        </span>
+      </a>
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExample">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item"><a class="nav-link plain" href="object_taxonomy.html">Taxonomy</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container oc-container my-4">
+    <div class="pane">
+      <div class="pane-head">
+        <div class="k">Object class</div>
+        <h1 class="h3 title" id="label">—</h1>
+        <div class="sub">
+          Canonical key: <code id="key">—</code> · Category: <strong id="cat">—</strong>
+        </div>
+      </div>
+      <div class="pane-body">
+        <div class="muted mb-3" id="def">
+          Evidence-based class page: aliases merged + dataset evidence derived from <code>data/datasets.json</code>.
+        </div>
+
+        <div class="kv mb-3">
+          <div><strong>Coverage</strong></div><div id="cov">—</div>
+          <div><strong>Aliases merged</strong></div><div id="aliases">—</div>
+          <div><strong>Example datasets</strong></div><div id="datasets">—</div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a class="chip" href="object_taxonomy.html">Back to taxonomy map</a>
+          <a class="chip" href="dataset.html">Open datasets</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="py-4 text-center small text-muted">
+      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+    const normStr = (v) => (v == null ? '' : String(v).trim());
+    const canonKey = (s) => normStr(s).toLowerCase().replace(/[_/]+/g,' ').replace(/-+/g,' ').replace(/\s+/g,' ').trim();
+    const singularize = (key) => {
+      const t = canonKey(key);
+      if(t.endsWith('ies') && t.length > 4) return t.slice(0,-3) + 'y';
+      if(t.endsWith('s') && !t.endsWith('ss') && t.length > 3) return t.slice(0,-1);
+      return t;
+    };
+    const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
+    const getParam = (name) => new URL(location.href).searchParams.get(name);
+
+    const TERM_ALIASES = new Map([
+      ['hardhat','hard hat'],
+      ['helmet','hard hat'],
+      ['people','worker'],
+      ['person','worker'],
+      ['construction worker','worker'],
+      ['rebar','reinforcing bar'],
+      ['dumptruck','dump truck'],
+      ['dump-truck','dump truck'],
+      ['cracks','crack']
+    ]);
+    const applyAliasMerge = (raw) => {
+      const k = canonKey(raw);
+      const v = TERM_ALIASES.get(k);
+      return v ? canonKey(v) : k;
+    };
+
+    const CATEGORIES = [
+      { id:'People', re:/\b(worker|person|people|human|inspector|operator|foreman)\b/ },
+      { id:'Equipment & Vehicles', re:/\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|roller|grader|drone|uav|robot)\b/ },
+      { id:'PPE & Safety', re:/\b(hard hat|reflective vest|vest|glove|goggle|mask|respirator|harness|traffic cone|barricade|barrier|sign)\b/ },
+      { id:'Materials', re:/\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall|insulation|soil|gravel|sand)\b/ },
+      { id:'Structural Components', re:/\b(beam|column|slab|girder|truss|joist|foundation|pile|pier|wall|deck)\b/ },
+      { id:'MEP Components', re:/\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler|outlet|switch|meter)\b/ },
+      { id:'Site & Temporary Works', re:/\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|curb|site|stockpile|container|pallet)\b/ },
+      { id:'Defects & Damage', re:/\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\b/ }
+    ];
+    const inferCategory = (canon) => {
+      const s = canonKey(canon);
+      for(const c of CATEGORIES){ if(c.re.test(s)) return c.id; }
+      return 'Other / Unclassified';
+    };
+
+    async function loadDatasets(){
+      const res = await fetch('data/datasets.json', { cache:'no-store' });
+      if(!res.ok) throw new Error('Cannot load data/datasets.json');
+      const raw = await res.json();
+      const arr = Array.isArray(raw) ? raw : Object.values(raw || {});
+      return arr.filter(Boolean);
+    }
+
+    async function init(){
+      const key = singularize(applyAliasMerge(getParam('key') || ''));
+      const label = getParam('label') || key;
+
+      document.getElementById('key').textContent = key || '—';
+      document.getElementById('label').textContent = label || '—';
+      document.getElementById('cat').textContent = inferCategory(key);
+
+      const datasets = await loadDatasets();
+      const aliasSet = new Set();
+      const dsSet = new Set();
+      let mentions = 0;
+
+      for(const ds of datasets){
+        const dsId = ds.id || ds.name || '(unknown)';
+        for(const raw of normArray(ds.classes)){
+          const canon = singularize(applyAliasMerge(raw));
+          if(canon === key){
+            aliasSet.add(normStr(raw));
+            dsSet.add(dsId);
+            mentions += 1;
+          }
+        }
+      }
+
+      document.getElementById('cov').textContent = `${dsSet.size} datasets · ${mentions} mentions`;
+      const aliases = Array.from(aliasSet).sort((a,b)=>a.localeCompare(b)).slice(0, 30);
+      document.getElementById('aliases').innerHTML = aliases.length
+        ? aliases.map(a=>`<span class="chip">${a}</span>`).join(' ')
+        : '—';
+
+      const ds = Array.from(dsSet).slice(0, 40);
+      document.getElementById('datasets').innerHTML = ds.length
+        ? ds.map(id=>`<a class="chip" href="dataset.html">${id}</a>`).join(' ')
+        : '—';
+
+      document.getElementById('def').innerHTML =
+        `<strong style="color:var(--oc-ink)">Canonical class</strong>
+         <div class="mt-1">This page provides traceable evidence (aliases + dataset sources) for class <span class="hl">${label}</span>.</div>`;
+    }
+
+    init().catch(err=>{
+      console.warn('[object_class] init error:', err);
+      document.getElementById('def').textContent = 'Could not load class page. Ensure data/datasets.json exists and is valid.';
+    });
+  </script>
+</body>
+</html>
