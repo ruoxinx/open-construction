@@ -1,37 +1,4933 @@
 {
   "schema_version": "1.0",
-  "aliases": {
-    "hardhat": "hard hat",
-    "helmet": "hard hat",
-    "hi vis vest": "reflective vest",
-    "safety vest": "reflective vest",
-    "people": "worker",
-    "person": "worker",
-    "construction worker": "worker",
-    "rebar": "reinforcing bar",
-    "reinforcement bar": "reinforcing bar",
-    "dumptruck": "dump truck",
-    "dump-truck": "dump truck",
-    "cones": "traffic cone",
-    "cracks": "crack",
-    "spalling": "spall"
+  "type": "openconstruction.object_vocab",
+  "title": "OpenConstruction Object & Class Vocabulary",
+  "description": "Controlled vocabulary (SKOS-like) for object/class labels observed in OpenConstruction dataset catalogs. Includes explicit category assignments, synonyms (altLabels), and optional broader/narrower relations.",
+  "generated_from": {
+    "source": "datasets.json (uploaded)",
+    "num_datasets": 96,
+    "raw_class_labels": 470,
+    "canonical_terms": 426,
+    "generated_at": "2026-01-11T20:20:35Z"
   },
   "categories": [
-    { "id": "People", "pattern": "\\b(worker|person|people|human|inspector|operator|foreman)\\b" },
-    { "id": "Equipment & Vehicles", "pattern": "\\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|roller|grader|drone|uav|robot)\\b" },
-    { "id": "PPE & Safety", "pattern": "\\b(hard hat|reflective vest|vest|glove|goggle|mask|respirator|harness|traffic cone|barricade|barrier|sign)\\b" },
-    { "id": "Materials", "pattern": "\\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall|insulation|soil|gravel|sand)\\b" },
-    { "id": "Structural Components", "pattern": "\\b(beam|column|slab|girder|truss|joist|foundation|pile|pier|wall|deck)\\b" },
-    { "id": "MEP Components", "pattern": "\\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler|outlet|switch|meter)\\b" },
-    { "id": "Site & Temporary Works", "pattern": "\\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|curb|site|stockpile|container|pallet)\\b" },
-    { "id": "Defects & Damage", "pattern": "\\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\\b" }
-  ],
-  "overrides": {
-    "category_map": {
-      "worker": "People",
-      "hard hat": "PPE & Safety",
-      "dump truck": "Equipment & Vehicles",
-      "reinforcing bar": "Materials"
+    {
+      "id": "activities-states",
+      "label": "Activities & States",
+      "description": "Actions, motions, process states, and activity labels that appear as ‘classes’ in some datasets.",
+      "pattern": "\\b(idle|swing|load|dump\\b|move\\b|fill\\b|walk\\b|stand\\b|fall\\b|talk\\b|climb\\b|wear\\b|site preparation|active construction|post construction|unknown|production activities|unsafe activities|awkward activities|common activities|other activities)\\b",
+      "member_count": 25,
+      "example_members": [
+        "active-construction",
+        "awkward-activities",
+        "climb-ladder",
+        "common-activities",
+        "dump-trucks",
+        "dump-trucks-fill",
+        "dump-trucks-move",
+        "excavators-dump",
+        "excavators-idle",
+        "excavators-move",
+        "fall-detected",
+        "fall-down",
+        "fill-dirt",
+        "other-activities",
+        "post-construction",
+        "production-activities",
+        "site-preparation",
+        "stand",
+        "stand-rest-walk",
+        "talk",
+        "unknown",
+        "unsafe-activities",
+        "walk",
+        "walk-straight",
+        "walk-winding"
+      ]
+    },
+    {
+      "id": "background",
+      "label": "Background/Other",
+      "description": "Background/void/other labels used in segmentation datasets.",
+      "pattern": "\\b(background|other)\\b",
+      "member_count": 2,
+      "example_members": [
+        "background",
+        "other"
+      ]
+    },
+    {
+      "id": "building-components",
+      "label": "Building Components",
+      "description": "Architectural components and assemblies (openings, façade parts, prefabricated elements).",
+      "pattern": "\\b(door|window|balcony|facade|opening|curtain wall|billboard|air conditioning unit|platform|midrail|toprail|runner|caster|bracing|sole|outrigger)\\b",
+      "member_count": 21,
+      "example_members": [
+        "air-conditioning-unit",
+        "balcony",
+        "billboard",
+        "caster",
+        "cross-bracing",
+        "door",
+        "embedded-window",
+        "emergency-door-release",
+        "facade",
+        "fire-door-sign",
+        "longitudinal-diagonal-bracing",
+        "midrail",
+        "opening-corners",
+        "opening-hole",
+        "platform",
+        "protruding-window",
+        "runner",
+        "sole-board-stable-support",
+        "sole-plate-with-screw",
+        "toprail",
+        "window"
+      ]
+    },
+    {
+      "id": "construction-equipment",
+      "label": "Construction Equipment",
+      "description": "Heavy equipment and machinery used on construction and earthmoving sites.",
+      "pattern": "\\b(excavator|dozer|bulldozer|grader|compactor|roller|loader|crane|pile driver|crawler drill|earth auger|pump truck|forklift|concrete mixer|mixer)\\b",
+      "member_count": 28,
+      "example_members": [
+        "backhoe-loader",
+        "bulldozer",
+        "compactor",
+        "concrete-mixer",
+        "concrete-mixer-truck",
+        "concrete-mixer-trucks",
+        "concrete-transport-mixer",
+        "crane",
+        "crane-hook",
+        "crawler-drill",
+        "dozer",
+        "earth-auger",
+        "excavator",
+        "forklift",
+        "grader",
+        "loader",
+        "mixer",
+        "mixer-truck",
+        "mobile-crane",
+        "no-sole-board-roller-support",
+        "pile-driver",
+        "pump-truck",
+        "road-roller",
+        "roller",
+        "tower-crane"
+      ]
+    },
+    {
+      "id": "defects-damage",
+      "label": "Defects & Damage",
+      "description": "Defect types (cracks, spalling, potholes, etc.) for condition assessment datasets.",
+      "pattern": "\\b(crack|pothole|rutting|ravelling|spalling|shoving|bleeding|patch|damage|destruction)\\b",
+      "member_count": 19,
+      "example_members": [
+        "bleeding",
+        "crack",
+        "crack-alligator",
+        "crack-block",
+        "crack-corner",
+        "crack-edge",
+        "crack-longitudinal",
+        "crack-transverse",
+        "destruction",
+        "minor-damage",
+        "moderate-damage",
+        "no-damage-or-very-minor-damage",
+        "patch",
+        "pothole",
+        "ravelling",
+        "rutting",
+        "severe-damage",
+        "shoving",
+        "spalling"
+      ]
+    },
+    {
+      "id": "environment-phenomena",
+      "label": "Environment & Phenomena",
+      "description": "Environmental or physical phenomena (smoke, dust, fire, etc.) and contextual scene factors.",
+      "pattern": "\\b(dust|smoke|fire|thermal bridges|cavity|utility)\\b",
+      "member_count": 13,
+      "example_members": [
+        "cavity",
+        "dust",
+        "fire",
+        "fire-blanket",
+        "fire-equipment-sign",
+        "fire-exit-sign",
+        "fire-extinguisher",
+        "fire-hydrant",
+        "hidden-fire-equipment",
+        "smoke",
+        "thermal-bridges",
+        "utility",
+        "visible-dust"
+      ]
+    },
+    {
+      "id": "materials",
+      "label": "Materials",
+      "description": "Construction materials and surface types (including common scene materials).",
+      "pattern": "\\b(concrete|brick|rebar|wood|steel|timber|glass|stone|tile|plaster|gypsum|plastic|paper|metal|leather|fabric|carpet|ceramic|wallpaper|water|sky|foliage|food|mirror|painted|polishedstone|mesh|insulation|pipes)\\b",
+      "member_count": 44,
+      "example_members": [
+        "brick",
+        "carpet",
+        "ceramic",
+        "chiseled-concrete",
+        "circular-pipes",
+        "concrete",
+        "concrete-casting-work",
+        "concrete-crack",
+        "fabric",
+        "first-coat-plaster",
+        "foaming-insulation",
+        "foliage",
+        "food",
+        "glass",
+        "gypsum",
+        "hard-plastic",
+        "hoop-rebar",
+        "leather",
+        "mesh",
+        "metal",
+        "mirror",
+        "mulching-fabric",
+        "painted",
+        "paper",
+        "picking-a-brick"
+      ]
+    },
+    {
+      "id": "mep-utilities",
+      "label": "MEP & Utilities",
+      "description": "Mechanical, electrical, plumbing (MEP) and utility components.",
+      "pattern": "\\b(duct|ahu|fcu|vav|grille|air terminal|pipe|piping|airduct|cabletray|firehydrant|sprinkler|fire hose|alarm|smoke detector|emergency light|call point|lift)\\b",
+      "member_count": 19,
+      "example_members": [
+        "ahu",
+        "air-terminal",
+        "airduct",
+        "cabletray",
+        "duct",
+        "emergency-light",
+        "fcu",
+        "fire-alarm",
+        "fire-call-point",
+        "fire-hose-reel",
+        "firefighting-lift-switch",
+        "firehydrant",
+        "grille",
+        "pipe",
+        "piping-system",
+        "piping-systems",
+        "smoke-detector",
+        "sprinkler",
+        "vav"
+      ]
+    },
+    {
+      "id": "other",
+      "label": "Other/Uncategorized",
+      "description": "Terms that do not match current category rules; keep explicit assignments here until refined.",
+      "pattern": "",
+      "member_count": 160,
+      "example_members": [
+        "1f",
+        "2f",
+        "3f",
+        "4f",
+        "5f",
+        "appliance",
+        "backhoe",
+        "bearer",
+        "boom-arm",
+        "bricklayin-and-plastering-work",
+        "bricks",
+        "bridge",
+        "broomiong-rough",
+        "broomiong-smooth",
+        "broomiong-vey-smooth",
+        "building",
+        "buildings-under-construction",
+        "bushes",
+        "cab-boom",
+        "cabinet",
+        "cardboard",
+        "cars",
+        "cart-transportation",
+        "ceiling",
+        "climbing-stairs"
+      ]
+    },
+    {
+      "id": "people",
+      "label": "People",
+      "description": "Human subjects commonly labeled in site imagery, safety datasets, and pose/activity datasets.",
+      "pattern": "\\b(worker|workers|person|people|human|pedestrian|foreman|operator|inspector|face|head|body)\\b",
+      "member_count": 21,
+      "example_members": [
+        "body-end",
+        "face",
+        "face-protection",
+        "head",
+        "head-protection",
+        "head-with-helmet",
+        "human",
+        "leaning-person",
+        "no-face-protection",
+        "no-head-protection",
+        "people",
+        "people-helmet",
+        "people-no-helmet",
+        "person",
+        "person-body",
+        "person-head",
+        "person-no-helmet",
+        "person-with-helmet",
+        "starting-and-following-the-worker",
+        "worker",
+        "workers"
+      ]
+    },
+    {
+      "id": "ppe",
+      "label": "Personal Protective Equipment",
+      "description": "Safety gear and PPE items (e.g., hard hats, vests, harnesses) used in construction safety monitoring.",
+      "pattern": "\\b(hardhat|helmet|vest|harness|goggles|gloves|mask|boots|safety\\s*glass|hat)\\b",
+      "member_count": 20,
+      "example_members": [
+        "colored-hardhat-blue",
+        "colored-hardhat-red",
+        "colored-hardhat-white",
+        "colored-hardhat-yellow",
+        "colored-helmet-blue",
+        "colored-helmet-red",
+        "colored-helmet-white",
+        "colored-helmet-yellow",
+        "gloves",
+        "goggles",
+        "hardhat",
+        "hat",
+        "helmet",
+        "mask",
+        "no-hardhat",
+        "safety-boots",
+        "safety-glass",
+        "safety-harness",
+        "vest",
+        "wear-helmet"
+      ]
+    },
+    {
+      "id": "signs-controls",
+      "label": "Signs & Safety Controls",
+      "description": "Traffic control devices, safety barriers, signage, and site control elements.",
+      "pattern": "\\b(fence|slogan|board|traffic signal|light pole|road sign|advertising board|road divider|zebra crossing|bus stop|safety cone|opening hole|fire exit sign|fire door sign|fire equipment sign)\\b",
+      "member_count": 10,
+      "example_members": [
+        "advertising-board",
+        "board",
+        "fence",
+        "light-pole",
+        "road-divider",
+        "road-sign-board",
+        "safety-cone",
+        "slogan",
+        "traffic-signal",
+        "zebra-crossing"
+      ]
+    },
+    {
+      "id": "structural-elements",
+      "label": "Structural Elements",
+      "description": "Load-bearing or structural building elements often represented in drawings/BIM or segmentation.",
+      "pattern": "\\b(beam|column|slab|wall|footing|stair|railing)\\b",
+      "member_count": 14,
+      "example_members": [
+        "beam",
+        "beam-bending-failure",
+        "cmu-wall",
+        "column",
+        "column-type2-failure",
+        "column-type3-failure",
+        "column-type4-failure",
+        "column-type5-failure",
+        "footing",
+        "glass-curtain-wall",
+        "railing",
+        "slab",
+        "stair",
+        "wall"
+      ]
+    },
+    {
+      "id": "tools",
+      "label": "Tools & Handheld Items",
+      "description": "Hand tools, attachments, and small handheld items.",
+      "pattern": "\\b(cutter|drill|grinder|hammer|knife|saw|shovel|spanner|tacker|trowel|wrench|bucket|hook)\\b",
+      "member_count": 19,
+      "example_members": [
+        "arm-bucket",
+        "bucket",
+        "cutter",
+        "drill",
+        "excavators-load-bucket",
+        "excavators-swing-bucket",
+        "grinder",
+        "hammer",
+        "hanging-hook",
+        "hook",
+        "knife",
+        "left-bucket-end",
+        "right-bucket-end",
+        "saw",
+        "shovel",
+        "spanner",
+        "tacker",
+        "trowel",
+        "wrench"
+      ]
+    },
+    {
+      "id": "vehicles",
+      "label": "Vehicles",
+      "description": "Road or site vehicles and trucks (including dump trucks and mixers when labeled as vehicles).",
+      "pattern": "\\b(truck|dump truck|bus|car|motorcycle|cycles|vehicle|skid steer)\\b",
+      "member_count": 11,
+      "example_members": [
+        "bus",
+        "bus-stop",
+        "car",
+        "cycles",
+        "dump-truck",
+        "motorcycle",
+        "other-vehicle",
+        "pc-truck",
+        "skid-steer",
+        "spraying-car",
+        "truck"
+      ]
     }
-  }
+  ],
+  "terms": [
+    {
+      "id": "1f",
+      "prefLabel": "1F",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "2f",
+      "prefLabel": "2F",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "3f",
+      "prefLabel": "3F",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "4f",
+      "prefLabel": "4F",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "5f",
+      "prefLabel": "5F",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "active-construction",
+      "prefLabel": "Active Construction",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "SMART"
+        ]
+      }
+    },
+    {
+      "id": "advertising-board",
+      "prefLabel": "Advertising Board",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "ahu",
+      "prefLabel": "AHU",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "air-conditioning-unit",
+      "prefLabel": "Air Conditioning Unit",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "air-terminal",
+      "prefLabel": "Air Terminal",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "airduct",
+      "prefLabel": "Airduct",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "appliance",
+      "prefLabel": "Appliance",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "arm-bucket",
+      "prefLabel": "Arm Bucket",
+      "category": "tools",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "awkward-activities",
+      "prefLabel": "Awkward Activities",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CML"
+        ]
+      }
+    },
+    {
+      "id": "background",
+      "prefLabel": "Background",
+      "category": "background",
+      "altLabels": [
+        "background"
+      ],
+      "examples": {
+        "datasets": [
+          "PC-Urban",
+          "Construction-Site-Segmentation",
+          "ConstScene"
+        ]
+      }
+    },
+    {
+      "id": "backhoe",
+      "prefLabel": "Backhoe",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "backhoe-loader",
+      "prefLabel": "Backhoe Loader",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Backhoe loader"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "AIDCON"
+        ]
+      }
+    },
+    {
+      "id": "balcony",
+      "prefLabel": "Balcony",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "beam",
+      "prefLabel": "Beam",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "BIMNet",
+          "AEC_Objects_in_IFC-based_BIM"
+        ]
+      }
+    },
+    {
+      "id": "beam-bending-failure",
+      "prefLabel": "Beam Bending Failure",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "concrete-crack-lab"
+        ]
+      }
+    },
+    {
+      "id": "bearer",
+      "prefLabel": "Bearer",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "billboard",
+      "prefLabel": "Billboard",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "bleeding",
+      "prefLabel": "Bleeding",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "board",
+      "prefLabel": "Board",
+      "category": "signs-controls",
+      "altLabels": [
+        "board"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "body-end",
+      "prefLabel": "Body End",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "boom-arm",
+      "prefLabel": "Boom Arm",
+      "category": "other",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "brick",
+      "prefLabel": "Brick",
+      "category": "materials",
+      "altLabels": [
+        "Brick"
+      ],
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "SODA",
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "bricklayin-and-plastering-work",
+      "prefLabel": "Bricklayin And Plastering Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "bricks",
+      "prefLabel": "Bricks",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "bridge",
+      "prefLabel": "Bridge",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "broomiong-rough",
+      "prefLabel": "Broomiong-rough",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "broomiong-smooth",
+      "prefLabel": "Broomiong-smooth",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "broomiong-vey-smooth",
+      "prefLabel": "Broomiong-vey Smooth",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "bucket",
+      "prefLabel": "Bucket",
+      "category": "tools",
+      "altLabels": [
+        "bucket"
+      ],
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "small-tool",
+          "Small-Construction-Tools"
+        ]
+      }
+    },
+    {
+      "id": "building",
+      "prefLabel": "Building",
+      "category": "other",
+      "altLabels": [
+        "building"
+      ],
+      "examples": {
+        "datasets": [
+          "PC-Urban",
+          "GlobalBuildingAtlas"
+        ]
+      }
+    },
+    {
+      "id": "buildings-under-construction",
+      "prefLabel": "Buildings Under Construction",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "bulldozer",
+      "prefLabel": "Bulldozer",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "VCVW-3D",
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "bus",
+      "prefLabel": "Bus",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "bus-stop",
+      "prefLabel": "Bus Stop",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "bushes",
+      "prefLabel": "Bushes",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "cab-boom",
+      "prefLabel": "Cab Boom",
+      "category": "other",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "cabinet",
+      "prefLabel": "Cabinet",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "cabletray",
+      "prefLabel": "Cabletray",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "car",
+      "prefLabel": "Car",
+      "category": "vehicles",
+      "altLabels": [
+        "car"
+      ],
+      "examples": {
+        "datasets": [
+          "PC-Urban",
+          "Construction-Site-Segmentation",
+          "AIDCON"
+        ]
+      }
+    },
+    {
+      "id": "cardboard",
+      "prefLabel": "Cardboard",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "carpet",
+      "prefLabel": "Carpet",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "cars",
+      "prefLabel": "Cars",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConRebSeg"
+        ]
+      }
+    },
+    {
+      "id": "cart-transportation",
+      "prefLabel": "Cart Transportation",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Construction-Activity-Scenes"
+        ]
+      }
+    },
+    {
+      "id": "caster",
+      "prefLabel": "Caster",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "cavity",
+      "prefLabel": "Cavity",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "GPR"
+        ]
+      }
+    },
+    {
+      "id": "ceiling",
+      "prefLabel": "Ceiling",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "ceramic",
+      "prefLabel": "Ceramic",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "chiseled-concrete",
+      "prefLabel": "Chiseled Concrete",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "circular-pipes",
+      "prefLabel": "Circular Pipes",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Steel-Cross-Section"
+        ]
+      }
+    },
+    {
+      "id": "climb-ladder",
+      "prefLabel": "Climb Ladder",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "climbing-stairs",
+      "prefLabel": "Climbing Stairs",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "climbing-with-one-hand",
+      "prefLabel": "Climbing With One Hand",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Thermal-Workers"
+        ]
+      }
+    },
+    {
+      "id": "climbing-with-two-hands",
+      "prefLabel": "Climbing With Two Hands",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Thermal-Workers"
+        ]
+      }
+    },
+    {
+      "id": "clothes",
+      "prefLabel": "Clothes",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Safety-Harness"
+        ]
+      }
+    },
+    {
+      "id": "cmu-wall",
+      "prefLabel": "CMU Wall",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "color",
+      "prefLabel": "Color",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UAV-Construction"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhat-blue",
+      "prefLabel": "Colored Hardhat (blue)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "GDUT-HWD"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhat-red",
+      "prefLabel": "Colored Hardhat (red)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "GDUT-HWD"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhat-white",
+      "prefLabel": "Colored Hardhat (white)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "GDUT-HWD"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhat-yellow",
+      "prefLabel": "Colored Hardhat (yellow)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "GDUT-HWD"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhats-blue",
+      "prefLabel": "Colored Hardhats (blue)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhats-red",
+      "prefLabel": "Colored Hardhats (red)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhats-white",
+      "prefLabel": "Colored Hardhats (white)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "colored-hardhats-yellow",
+      "prefLabel": "Colored Hardhats (yellow)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "colored-helmet-blue",
+      "prefLabel": "Colored Helmet (blue)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CHV"
+        ]
+      }
+    },
+    {
+      "id": "colored-helmet-red",
+      "prefLabel": "Colored Helmet (red)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CHV"
+        ]
+      }
+    },
+    {
+      "id": "colored-helmet-white",
+      "prefLabel": "Colored Helmet (white)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CHV"
+        ]
+      }
+    },
+    {
+      "id": "colored-helmet-yellow",
+      "prefLabel": "Colored Helmet (yellow)",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CHV"
+        ]
+      }
+    },
+    {
+      "id": "column",
+      "prefLabel": "Column",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "BIMNet",
+          "AEC_Objects_in_IFC-based_BIM"
+        ]
+      }
+    },
+    {
+      "id": "column-type2-failure",
+      "prefLabel": "Column Type2 Failure",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "concrete-crack-lab"
+        ]
+      }
+    },
+    {
+      "id": "column-type3-failure",
+      "prefLabel": "Column Type3 Failure",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "concrete-crack-lab"
+        ]
+      }
+    },
+    {
+      "id": "column-type4-failure",
+      "prefLabel": "Column Type4 Failure",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "concrete-crack-lab"
+        ]
+      }
+    },
+    {
+      "id": "column-type5-failure",
+      "prefLabel": "Column Type5 Failure",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "concrete-crack-lab"
+        ]
+      }
+    },
+    {
+      "id": "commanding-work",
+      "prefLabel": "Commanding Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "common-activities",
+      "prefLabel": "Common Activities",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CML"
+        ]
+      }
+    },
+    {
+      "id": "compactor",
+      "prefLabel": "Compactor",
+      "category": "construction-equipment",
+      "altLabels": [
+        "compactor"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "AIDCON"
+        ]
+      }
+    },
+    {
+      "id": "concrete",
+      "prefLabel": "Concrete",
+      "category": "materials",
+      "altLabels": [
+        "concrete"
+      ],
+      "examples": {
+        "datasets": [
+          "CODD",
+          "Construction-Material-Textual",
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "concrete-casting-work",
+      "prefLabel": "Concrete Casting Work",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "concrete-crack",
+      "prefLabel": "Concrete Crack",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Concrete-Crack"
+        ]
+      }
+    },
+    {
+      "id": "concrete-mixer",
+      "prefLabel": "Concrete Mixer",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "concrete-mixer-truck",
+      "prefLabel": "Concrete Mixer Truck",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Concrete_mixer_truck"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "Peru-Construction"
+        ]
+      }
+    },
+    {
+      "id": "concrete-mixer-trucks",
+      "prefLabel": "Concrete Mixer Trucks",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "concrete-transport-mixer",
+      "prefLabel": "Concrete Transport Mixer",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "MOCS"
+        ]
+      }
+    },
+    {
+      "id": "cord-reel",
+      "prefLabel": "Cord Reel",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Small-Construction-Tools"
+        ]
+      }
+    },
+    {
+      "id": "crack",
+      "prefLabel": "Crack",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "TOPO-Loss-Crack"
+        ]
+      }
+    },
+    {
+      "id": "crack-alligator",
+      "prefLabel": "Crack Alligator",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crack-block",
+      "prefLabel": "Crack Block",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crack-corner",
+      "prefLabel": "Crack Corner",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crack-edge",
+      "prefLabel": "Crack Edge",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crack-longitudinal",
+      "prefLabel": "Crack Longitudinal",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crack-transverse",
+      "prefLabel": "Crack Transverse",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "crane",
+      "prefLabel": "Crane",
+      "category": "construction-equipment",
+      "altLabels": [
+        "crane"
+      ],
+      "narrower": [
+        "crane-hook"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Site-Segmentation",
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "crane-hook",
+      "prefLabel": "Crane Hook",
+      "category": "construction-equipment",
+      "broader": [
+        "crane"
+      ],
+      "examples": {
+        "datasets": [
+          "hook"
+        ]
+      }
+    },
+    {
+      "id": "crawler-drill",
+      "prefLabel": "Crawler Drill",
+      "category": "construction-equipment",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "cross-bracing",
+      "prefLabel": "Cross Bracing",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "crouch-floor",
+      "prefLabel": "Crouch Floor",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "crusher",
+      "prefLabel": "Crusher",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConstScene"
+        ]
+      }
+    },
+    {
+      "id": "cutter",
+      "prefLabel": "Cutter",
+      "category": "tools",
+      "altLabels": [
+        "cutter"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "small-tool",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "cycles",
+      "prefLabel": "Cycles",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "delivering-the-tool",
+      "prefLabel": "Delivering The Tool",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "desk-chair",
+      "prefLabel": "Desk & Chair",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "destruction",
+      "prefLabel": "Destruction",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "door",
+      "prefLabel": "Door",
+      "category": "building-components",
+      "altLabels": [
+        "Door"
+      ],
+      "examples": {
+        "datasets": [
+          "UGD",
+          "bfa-yolo-dataset",
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "dozer",
+      "prefLabel": "Dozer",
+      "category": "construction-equipment",
+      "altLabels": [
+        "dozer"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "AIDCON",
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "dozers",
+      "prefLabel": "Dozers",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "drill",
+      "prefLabel": "Drill",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "duct",
+      "prefLabel": "Duct",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "dump-truck",
+      "prefLabel": "Dump Truck",
+      "category": "vehicles",
+      "altLabels": [
+        "dump-truck",
+        "Dump_truck"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "Peru-Construction",
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "dump-trucks",
+      "prefLabel": "Dump Trucks",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "dump-trucks-fill",
+      "prefLabel": "Dump Trucks-fill",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "dump-trucks-move",
+      "prefLabel": "Dump Trucks-move",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "dust",
+      "prefLabel": "Dust",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "CDE"
+        ]
+      }
+    },
+    {
+      "id": "earth-auger",
+      "prefLabel": "Earth Auger",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "ebox",
+      "prefLabel": "Ebox",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "education",
+      "prefLabel": "Education",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "electric-box",
+      "prefLabel": "Electric Box",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA"
+        ]
+      }
+    },
+    {
+      "id": "elevator",
+      "prefLabel": "Elevator",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "embedded-window",
+      "prefLabel": "Embedded Window",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "emergency-door-release",
+      "prefLabel": "Emergency Door Release",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "emergency-light",
+      "prefLabel": "Emergency Light",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "emergency-stop",
+      "prefLabel": "Emergency Stop",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "energy",
+      "prefLabel": "Energy",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "excavation-and-earthmoving-work",
+      "prefLabel": "Excavation And Earthmoving Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "excavator",
+      "prefLabel": "Excavator",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Excavator"
+      ],
+      "narrower": [
+        "arm-bucket",
+        "boom-arm",
+        "bucket",
+        "cab-boom",
+        "crawler-drill",
+        "left-bucket-end",
+        "right-bucket-end"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "MOCS",
+          "Peru-Construction"
+        ]
+      }
+    },
+    {
+      "id": "excavators",
+      "prefLabel": "Excavators",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "excavators-dump",
+      "prefLabel": "Excavators-dump",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "excavators-idle",
+      "prefLabel": "Excavators-idle",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "excavators-load-bucket",
+      "prefLabel": "Excavators-load Bucket",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "excavators-move",
+      "prefLabel": "Excavators-move",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "excavators-swing-bucket",
+      "prefLabel": "Excavators-swing Bucket",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "Earthmoving-Equipment"
+        ]
+      }
+    },
+    {
+      "id": "exposed-aggregate-rough",
+      "prefLabel": "Exposed Aggregate-rough",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "exposed-aggregate-smooth",
+      "prefLabel": "Exposed Aggregate-smooth",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "exposed-aggregate-very-rough",
+      "prefLabel": "Exposed Aggregate-very Rough",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "exposed-reinforcement-bars",
+      "prefLabel": "Exposed Reinforcement Bars",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConRebSeg"
+        ]
+      }
+    },
+    {
+      "id": "extrude",
+      "prefLabel": "Extrude",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "VideoCAD"
+        ]
+      }
+    },
+    {
+      "id": "fabric",
+      "prefLabel": "Fabric",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "facade",
+      "prefLabel": "Facade",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Opening-Segmentation"
+        ]
+      }
+    },
+    {
+      "id": "face",
+      "prefLabel": "Face",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "face-protection",
+      "prefLabel": "Face Protection",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "fall-detected",
+      "prefLabel": "Fall-detected",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "fall-down",
+      "prefLabel": "Fall Down",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "fcu",
+      "prefLabel": "FCU",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "fence",
+      "prefLabel": "Fence",
+      "category": "signs-controls",
+      "altLabels": [
+        "fence"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "Construction-Site-Segmentation",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "fill-dirt",
+      "prefLabel": "Fill Dirt",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "fire",
+      "prefLabel": "Fire",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "fire-alarm",
+      "prefLabel": "Fire Alarm",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-blanket",
+      "prefLabel": "Fire Blanket",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-call-point",
+      "prefLabel": "Fire Call Point",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-door-sign",
+      "prefLabel": "Fire Door Sign",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-equipment-sign",
+      "prefLabel": "Fire Equipment Sign",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-exit-sign",
+      "prefLabel": "Fire Exit Sign",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-extinguisher",
+      "prefLabel": "Fire Extinguisher",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-hose-reel",
+      "prefLabel": "Fire Hose Reel",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "fire-hydrant",
+      "prefLabel": "Fire Hydrant",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "firefighting-lift-switch",
+      "prefLabel": "Firefighting Lift Switch",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "firehydrant",
+      "prefLabel": "Firehydrant",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "first-coat-plaster",
+      "prefLabel": "First Coat Plaster",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "floor",
+      "prefLabel": "Floor",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "foaming-insulation",
+      "prefLabel": "Foaming Insulation",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "foliage",
+      "prefLabel": "Foliage",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "food",
+      "prefLabel": "Food",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "footing",
+      "prefLabel": "Footing",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "AEC_Objects_in_IFC-based_BIM"
+        ]
+      }
+    },
+    {
+      "id": "forklift",
+      "prefLabel": "Forklift",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "formwork",
+      "prefLabel": "Formwork",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "furniture",
+      "prefLabel": "Furniture",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "general-waste",
+      "prefLabel": "General Waste",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "glass",
+      "prefLabel": "Glass",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "glass-curtain-wall",
+      "prefLabel": "Glass Curtain Wall",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "gloves",
+      "prefLabel": "Gloves",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "goggles",
+      "prefLabel": "Goggles",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "grader",
+      "prefLabel": "Grader",
+      "category": "construction-equipment",
+      "altLabels": [
+        "grader"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "VCVW-3D",
+          "AIDCON"
+        ]
+      }
+    },
+    {
+      "id": "grille",
+      "prefLabel": "Grille",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "grinder",
+      "prefLabel": "Grinder",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "gypsum",
+      "prefLabel": "Gypsum",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "hair",
+      "prefLabel": "Hair",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "hammer",
+      "prefLabel": "Hammer",
+      "category": "tools",
+      "altLabels": [
+        "hammer"
+      ],
+      "examples": {
+        "datasets": [
+          "small-tool",
+          "Small-Construction-Tools"
+        ]
+      }
+    },
+    {
+      "id": "handcart",
+      "prefLabel": "Handcart",
+      "category": "other",
+      "altLabels": [
+        "handcart"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "handcart-work",
+      "prefLabel": "Handcart Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "handsup-high",
+      "prefLabel": "Handsup High",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "handsup-low",
+      "prefLabel": "Handsup Low",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "hanging-hook",
+      "prefLabel": "Hanging Hook",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "MOCS"
+        ]
+      }
+    },
+    {
+      "id": "hanging-object",
+      "prefLabel": "Hanging Object",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "HangCon"
+        ]
+      }
+    },
+    {
+      "id": "hanging-object-with-rope",
+      "prefLabel": "Hanging Object With Rope",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "HangCon"
+        ]
+      }
+    },
+    {
+      "id": "hard-plastic",
+      "prefLabel": "Hard Plastic",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "hardhat",
+      "prefLabel": "Hardhat",
+      "category": "ppe",
+      "altLabels": [
+        "hardhat"
+      ],
+      "examples": {
+        "datasets": [
+          "SHWD",
+          "Hardhat-Wearing",
+          "CPPE"
+        ]
+      }
+    },
+    {
+      "id": "hat",
+      "prefLabel": "Hat",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "pictor-ppe"
+        ]
+      }
+    },
+    {
+      "id": "head",
+      "prefLabel": "Head",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "head-protection",
+      "prefLabel": "Head Protection",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "head-with-helmet",
+      "prefLabel": "Head With Helmet",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "health",
+      "prefLabel": "Health",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "helmet",
+      "prefLabel": "Helmet",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "SODA",
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "hidden-fire-equipment",
+      "prefLabel": "Hidden Fire Equipment",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "holding-the-tool",
+      "prefLabel": "Holding The Tool",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "hook",
+      "prefLabel": "Hook",
+      "category": "tools",
+      "altLabels": [
+        "Hook"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "hoop-rebar",
+      "prefLabel": "Hoop Rebar",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "ROI-1555"
+        ]
+      }
+    },
+    {
+      "id": "hopper",
+      "prefLabel": "Hopper",
+      "category": "other",
+      "altLabels": [
+        "Hopper"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "human",
+      "prefLabel": "Human",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Construction-Site-Segmentation",
+          "ConstScene"
+        ]
+      }
+    },
+    {
+      "id": "i-beams",
+      "prefLabel": "I-beams",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Steel-Cross-Section"
+        ]
+      }
+    },
+    {
+      "id": "jumping-down",
+      "prefLabel": "Jumping Down",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "keyboard",
+      "prefLabel": "Keyboard",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "VideoCAD"
+        ]
+      }
+    },
+    {
+      "id": "kneel-floor",
+      "prefLabel": "Kneel Floor",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "knife",
+      "prefLabel": "Knife",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "ladder-work",
+      "prefLabel": "Ladder Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "lamp",
+      "prefLabel": "Lamp",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "laying-back",
+      "prefLabel": "Laying Back",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "leaning-person",
+      "prefLabel": "Leaning Person",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "CPP-1214"
+        ]
+      }
+    },
+    {
+      "id": "leather",
+      "prefLabel": "Leather",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "left-bucket-end",
+      "prefLabel": "Left Bucket End",
+      "category": "tools",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "letterbox",
+      "prefLabel": "Letterbox",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "leveling-ground-work",
+      "prefLabel": "Leveling Ground Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "levelling-paint",
+      "prefLabel": "Levelling Paint",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "light-pole",
+      "prefLabel": "Light-pole",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "lighting",
+      "prefLabel": "Lighting",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "loader",
+      "prefLabel": "Loader",
+      "category": "construction-equipment",
+      "altLabels": [
+        "loader"
+      ],
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "Construction-Site-Segmentation",
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "longitudinal-diagonal-bracing",
+      "prefLabel": "Longitudinal Diagonal Bracing",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "machine-work",
+      "prefLabel": "Machine Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "machinery",
+      "prefLabel": "Machinery",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "manufactured-housing-communities-mhc",
+      "prefLabel": "Manufactured Housing Communities (MHC)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "MHC"
+        ]
+      }
+    },
+    {
+      "id": "mask",
+      "prefLabel": "Mask",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "masonry-work",
+      "prefLabel": "Masonry Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Construction-Activity-Scenes"
+        ]
+      }
+    },
+    {
+      "id": "mechanical-hoisting-work",
+      "prefLabel": "Mechanical Hoisting Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "mesh",
+      "prefLabel": "Mesh",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "metal",
+      "prefLabel": "Metal",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "midrail",
+      "prefLabel": "Midrail",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "minor-damage",
+      "prefLabel": "Minor Damage",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "mirror",
+      "prefLabel": "Mirror",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "mixed",
+      "prefLabel": "Mixed",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "mixer",
+      "prefLabel": "Mixer",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "mixer-truck",
+      "prefLabel": "Mixer Truck",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "Construction-Site-Segmentation"
+        ]
+      }
+    },
+    {
+      "id": "mobile-crane",
+      "prefLabel": "Mobile Crane",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "ACID",
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "moderate-damage",
+      "prefLabel": "Moderate Damage",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "motorcycle",
+      "prefLabel": "Motorcycle",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "mouse",
+      "prefLabel": "Mouse",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "VideoCAD"
+        ]
+      }
+    },
+    {
+      "id": "movement",
+      "prefLabel": "Movement",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UAV-Construction"
+        ]
+      }
+    },
+    {
+      "id": "muffler",
+      "prefLabel": "Muffler",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "mulching-fabric",
+      "prefLabel": "Mulching Fabric",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "no-activity",
+      "prefLabel": "No Activity",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SMART"
+        ]
+      }
+    },
+    {
+      "id": "no-damage-or-very-minor-damage",
+      "prefLabel": "No Damage Or Very Minor Damage",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "no-face-protection",
+      "prefLabel": "No Face Protection",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "no-hardhat",
+      "prefLabel": "No Hardhat",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "Hardhat-Wearing"
+        ]
+      }
+    },
+    {
+      "id": "no-head-protection",
+      "prefLabel": "No Head Protection",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "no-scaffold",
+      "prefLabel": "No Scaffold",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "no-sole-board-roller-support",
+      "prefLabel": "No Sole Board/roller Support",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "no-toeboard",
+      "prefLabel": "No Toeboard",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "non-manufactured-housing-communities-non-mhc",
+      "prefLabel": "Non-manufactured Housing Communities (non-mhc)",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "MHC"
+        ]
+      }
+    },
+    {
+      "id": "non-residential",
+      "prefLabel": "Non-residential",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "none",
+      "prefLabel": "None",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "GDUT-HWD"
+        ]
+      }
+    },
+    {
+      "id": "not-wearing-safety-equipment",
+      "prefLabel": "Not Wearing Safety Equipment",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "object",
+      "prefLabel": "Object",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "opening-corners",
+      "prefLabel": "Opening Corners",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Opening-Segmentation"
+        ]
+      }
+    },
+    {
+      "id": "opening-hole",
+      "prefLabel": "Opening Hole",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "openings",
+      "prefLabel": "Openings",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Opening-Segmentation"
+        ]
+      }
+    },
+    {
+      "id": "other",
+      "prefLabel": "Other",
+      "category": "background",
+      "altLabels": [
+        "Other"
+      ],
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "AIDCON",
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "other-activities",
+      "prefLabel": "Other Activities",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CML"
+        ]
+      }
+    },
+    {
+      "id": "other-vehicle",
+      "prefLabel": "Other Vehicle",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "MOCS"
+        ]
+      }
+    },
+    {
+      "id": "others",
+      "prefLabel": "Others",
+      "category": "other",
+      "altLabels": [
+        "Others"
+      ],
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "outtrigger",
+      "prefLabel": "Outtrigger",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "painted",
+      "prefLabel": "Painted",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "paper",
+      "prefLabel": "Paper",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "particle-monitors",
+      "prefLabel": "Particle Monitors",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "patch",
+      "prefLabel": "Patch",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "pc",
+      "prefLabel": "PC",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "pc-delivery-trucks",
+      "prefLabel": "PC Delivery Trucks",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "pc-truck",
+      "prefLabel": "Pc-truck",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "pe-membrane-smooth",
+      "prefLabel": "PE Membrane-smooth",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "pe-membrane-vey-smooth",
+      "prefLabel": "PE Membrane-vey Smooth",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CTR"
+        ]
+      }
+    },
+    {
+      "id": "pedestrians",
+      "prefLabel": "Pedestrians",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "people",
+      "prefLabel": "People",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "people-helmet",
+      "prefLabel": "People-helmet",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "CIS",
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "people-no-helmet",
+      "prefLabel": "People-no-helmet",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "CIS",
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "person",
+      "prefLabel": "Person",
+      "category": "people",
+      "altLabels": [
+        "Person"
+      ],
+      "examples": {
+        "datasets": [
+          "SHWD",
+          "Peru-Construction",
+          "CHV"
+        ]
+      }
+    },
+    {
+      "id": "person-body",
+      "prefLabel": "Person Body",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "person-head",
+      "prefLabel": "Person Head",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SCUT-HEAD",
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "person-no-helmet",
+      "prefLabel": "Person No Helmet",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "person-with-helmet",
+      "prefLabel": "Person With Helmet",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "SHEL5K"
+        ]
+      }
+    },
+    {
+      "id": "personnel-hoisting-work",
+      "prefLabel": "Personnel Hoisting Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "persons",
+      "prefLabel": "Persons",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConRebSeg"
+        ]
+      }
+    },
+    {
+      "id": "picking-a-brick",
+      "prefLabel": "Picking A Brick",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "picking-objects",
+      "prefLabel": "Picking Objects",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "pile",
+      "prefLabel": "Pile",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConstScene"
+        ]
+      }
+    },
+    {
+      "id": "pile-driver",
+      "prefLabel": "Pile Driver",
+      "category": "construction-equipment",
+      "altLabels": [
+        "pile driver"
+      ],
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "Construction-Site-Segmentation",
+          "Object-Detection-Construction"
+        ]
+      }
+    },
+    {
+      "id": "pillar",
+      "prefLabel": "Pillar",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "pipe",
+      "prefLabel": "Pipe",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "UGD"
+        ]
+      }
+    },
+    {
+      "id": "pipes",
+      "prefLabel": "Pipes",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "piping-system",
+      "prefLabel": "Piping System",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "piping-systems",
+      "prefLabel": "Piping Systems",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "BIM_updating"
+        ]
+      }
+    },
+    {
+      "id": "placing-a-brick",
+      "prefLabel": "Placing A Brick",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "plaster-boards",
+      "prefLabel": "Plaster Boards",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "plasterboard",
+      "prefLabel": "Plasterboard",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "plastering",
+      "prefLabel": "Plastering",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Construction-Activity-Scenes"
+        ]
+      }
+    },
+    {
+      "id": "plastic",
+      "prefLabel": "Plastic",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "plastics",
+      "prefLabel": "Plastics",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "platform",
+      "prefLabel": "Platform",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "polishedstone",
+      "prefLabel": "Polishedstone",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "position",
+      "prefLabel": "Position",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UAV-Construction"
+        ]
+      }
+    },
+    {
+      "id": "post-construction",
+      "prefLabel": "Post Construction",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "SMART"
+        ]
+      }
+    },
+    {
+      "id": "pothole",
+      "prefLabel": "Pothole",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "precast-components",
+      "prefLabel": "Precast Components",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "production-activities",
+      "prefLabel": "Production Activities",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CML"
+        ]
+      }
+    },
+    {
+      "id": "protruding-window",
+      "prefLabel": "Protruding Window",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "bfa-yolo-dataset"
+        ]
+      }
+    },
+    {
+      "id": "pump-truck",
+      "prefLabel": "Pump Truck",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "MOCS"
+        ]
+      }
+    },
+    {
+      "id": "pushing-cart",
+      "prefLabel": "Pushing Cart",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "quantity",
+      "prefLabel": "Quantity",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UAV-Construction"
+        ]
+      }
+    },
+    {
+      "id": "railing",
+      "prefLabel": "Railing",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "ravelling",
+      "prefLabel": "Ravelling",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "reaching-far",
+      "prefLabel": "Reaching Far",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Thermal-Workers"
+        ]
+      }
+    },
+    {
+      "id": "rebar",
+      "prefLabel": "Rebar",
+      "category": "materials",
+      "altLabels": [
+        "Rebar"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "Synthetic-Rebar",
+          "Rebar-Counting"
+        ]
+      }
+    },
+    {
+      "id": "rebar-work",
+      "prefLabel": "Rebar Work",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Activity-Scenes"
+        ]
+      }
+    },
+    {
+      "id": "rebars",
+      "prefLabel": "Rebars",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Steel-Cross-Section"
+        ]
+      }
+    },
+    {
+      "id": "reinforcement-work",
+      "prefLabel": "Reinforcement Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "residential",
+      "prefLabel": "Residential",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "right-bucket-end",
+      "prefLabel": "Right Bucket End",
+      "category": "tools",
+      "broader": [
+        "excavator"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Equipment-Pose"
+        ]
+      }
+    },
+    {
+      "id": "road",
+      "prefLabel": "Road",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban",
+          "ConstScene"
+        ]
+      }
+    },
+    {
+      "id": "road-divider",
+      "prefLabel": "Road Divider",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "road-lane",
+      "prefLabel": "Road Lane",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "road-roller",
+      "prefLabel": "Road Roller",
+      "category": "construction-equipment",
+      "altLabels": [
+        "road roller"
+      ],
+      "examples": {
+        "datasets": [
+          "Construction-Site-Segmentation",
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "road-sign-board",
+      "prefLabel": "Road Sign Board",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "roll-painting",
+      "prefLabel": "Roll Painting",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "roller",
+      "prefLabel": "Roller",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Roller"
+      ],
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "Object-Detection-Construction",
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "rollers",
+      "prefLabel": "Rollers",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "rope",
+      "prefLabel": "Rope",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "HangCon"
+        ]
+      }
+    },
+    {
+      "id": "rubbish-bin",
+      "prefLabel": "Rubbish Bin",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "runner",
+      "prefLabel": "Runner",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "rutting",
+      "prefLabel": "Rutting",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "safety-boots",
+      "prefLabel": "Safety Boots",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "safety-cone",
+      "prefLabel": "Safety Cone",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "safety-glass",
+      "prefLabel": "Safety Glass",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CHVG"
+        ]
+      }
+    },
+    {
+      "id": "safety-harness",
+      "prefLabel": "Safety Harness",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "Safety-Harness"
+        ]
+      }
+    },
+    {
+      "id": "sanitary",
+      "prefLabel": "Sanitary",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "saw",
+      "prefLabel": "Saw",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "scaffold",
+      "prefLabel": "Scaffold",
+      "category": "other",
+      "altLabels": [
+        "Scaffold"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "Scaffold_removal"
+        ]
+      }
+    },
+    {
+      "id": "scaffold-work",
+      "prefLabel": "Scaffold Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "scaffolding",
+      "prefLabel": "Scaffolding",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "second-coat-plaster",
+      "prefLabel": "Second Coat Plaster",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Construction-Material-Textual"
+        ]
+      }
+    },
+    {
+      "id": "severe-damage",
+      "prefLabel": "Severe Damage",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "DoriaNET"
+        ]
+      }
+    },
+    {
+      "id": "shovel",
+      "prefLabel": "Shovel",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "shoving",
+      "prefLabel": "Shoving",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "side-path",
+      "prefLabel": "Side-path",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "site-preparation",
+      "prefLabel": "Site Preparation",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "SMART"
+        ]
+      }
+    },
+    {
+      "id": "sketch",
+      "prefLabel": "Sketch",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "VideoCAD"
+        ]
+      }
+    },
+    {
+      "id": "skid-steer",
+      "prefLabel": "Skid Steer",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "Peru-Construction"
+        ]
+      }
+    },
+    {
+      "id": "skin",
+      "prefLabel": "Skin",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "skip-bin",
+      "prefLabel": "Skip Bin",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "sky",
+      "prefLabel": "Sky",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "slab",
+      "prefLabel": "Slab",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "BIMNet",
+          "AEC_Objects_in_IFC-based_BIM"
+        ]
+      }
+    },
+    {
+      "id": "slabs",
+      "prefLabel": "Slabs",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "mlstruct-fp"
+        ]
+      }
+    },
+    {
+      "id": "slogan",
+      "prefLabel": "Slogan",
+      "category": "signs-controls",
+      "altLabels": [
+        "slogan"
+      ],
+      "examples": {
+        "datasets": [
+          "SODA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "smoke",
+      "prefLabel": "Smoke",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "CMA",
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "smoke-detector",
+      "prefLabel": "Smoke Detector",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "soft-plastic",
+      "prefLabel": "Soft Plastic",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "sole-board-stable-support",
+      "prefLabel": "SOLE Board/stable Support",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "sole-plate-with-screw",
+      "prefLabel": "Sole Plate With Screw",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "spalling",
+      "prefLabel": "Spalling",
+      "category": "defects-damage",
+      "examples": {
+        "datasets": [
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "spanner",
+      "prefLabel": "Spanner",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "spraying-car",
+      "prefLabel": "Spraying Car",
+      "category": "vehicles",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "spraying-paint",
+      "prefLabel": "Spraying Paint",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "spraying-sink",
+      "prefLabel": "Spraying Sink",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "sprinkler",
+      "prefLabel": "Sprinkler",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "Fire-ART"
+        ]
+      }
+    },
+    {
+      "id": "square-tubes",
+      "prefLabel": "Square Tubes",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Steel-Cross-Section"
+        ]
+      }
+    },
+    {
+      "id": "stair",
+      "prefLabel": "Stair",
+      "category": "structural-elements",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "stairs-up-down",
+      "prefLabel": "Stairs Up-down",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "stand",
+      "prefLabel": "Stand",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "stand-rest-walk",
+      "prefLabel": "Stand, Rest, Walk",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "standing",
+      "prefLabel": "Standing",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Thermal-Workers"
+        ]
+      }
+    },
+    {
+      "id": "starting-and-following-the-worker",
+      "prefLabel": "Starting And Following The Worker",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "status",
+      "prefLabel": "Status",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "UAV-Construction"
+        ]
+      }
+    },
+    {
+      "id": "steel",
+      "prefLabel": "Steel",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "stone",
+      "prefLabel": "Stone",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "Building-Characteristics"
+        ]
+      }
+    },
+    {
+      "id": "stones",
+      "prefLabel": "Stones",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "stopping-and-leaving-away",
+      "prefLabel": "Stopping And Leaving Away",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ThermalNet"
+        ]
+      }
+    },
+    {
+      "id": "straight-rebar",
+      "prefLabel": "Straight Rebar",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "ROI-1555"
+        ]
+      }
+    },
+    {
+      "id": "surveying-work",
+      "prefLabel": "Surveying Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "symbol",
+      "prefLabel": "Symbol",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PID"
+        ]
+      }
+    },
+    {
+      "id": "tacker",
+      "prefLabel": "Tacker",
+      "category": "tools",
+      "altLabels": [
+        "Tacker"
+      ],
+      "examples": {
+        "datasets": [
+          "small-tool",
+          "Small-Construction-Tools"
+        ]
+      }
+    },
+    {
+      "id": "talk",
+      "prefLabel": "Talk",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "telecommunication",
+      "prefLabel": "Telecommunication",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "thermal-bridges",
+      "prefLabel": "Thermal Bridges",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "TBBR"
+        ]
+      }
+    },
+    {
+      "id": "tile",
+      "prefLabel": "Tile",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "tiles",
+      "prefLabel": "Tiles",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "tiling",
+      "prefLabel": "Tiling",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Construction-Activity-Scenes"
+        ]
+      }
+    },
+    {
+      "id": "timber",
+      "prefLabel": "Timber",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "CDW-Seg"
+        ]
+      }
+    },
+    {
+      "id": "toeboard",
+      "prefLabel": "Toeboard",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "top-rebar",
+      "prefLabel": "Top Rebar",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "Stirrup-Rebar"
+        ]
+      }
+    },
+    {
+      "id": "toprail",
+      "prefLabel": "Toprail",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "toprailing",
+      "prefLabel": "Toprailing",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "Scaffolding"
+        ]
+      }
+    },
+    {
+      "id": "tower-crane",
+      "prefLabel": "Tower Crane",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Tower crane",
+        "Tower_crane"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "MOCS",
+          "Peru-Construction"
+        ]
+      }
+    },
+    {
+      "id": "traffic-signal",
+      "prefLabel": "Traffic Signal",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "transport-work",
+      "prefLabel": "Transport Work",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "SODA-ktsh"
+        ]
+      }
+    },
+    {
+      "id": "transportation",
+      "prefLabel": "Transportation",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "tree",
+      "prefLabel": "Tree",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "trowel",
+      "prefLabel": "Trowel",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "truck",
+      "prefLabel": "Truck",
+      "category": "vehicles",
+      "altLabels": [
+        "truck"
+      ],
+      "narrower": [
+        "truck-crane"
+      ],
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "Peru-Construction",
+          "PC-Urban"
+        ]
+      }
+    },
+    {
+      "id": "truck-crane",
+      "prefLabel": "Truck Crane",
+      "category": "construction-equipment",
+      "broader": [
+        "truck"
+      ],
+      "examples": {
+        "datasets": [
+          "Peru-Construction"
+        ]
+      }
+    },
+    {
+      "id": "trucks",
+      "prefLabel": "Trucks",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "ConRebSeg"
+        ]
+      }
+    },
+    {
+      "id": "typed-input",
+      "prefLabel": "Typed Input",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "VideoCAD"
+        ]
+      }
+    },
+    {
+      "id": "unknown",
+      "prefLabel": "Unknown",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "SMART",
+          "camhighways"
+        ]
+      }
+    },
+    {
+      "id": "unsafe-activities",
+      "prefLabel": "Unsafe Activities",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CML"
+        ]
+      }
+    },
+    {
+      "id": "utility",
+      "prefLabel": "Utility",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "GPR"
+        ]
+      }
+    },
+    {
+      "id": "vacuum-cleaning",
+      "prefLabel": "Vacuum Cleaning",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "vav",
+      "prefLabel": "VAV",
+      "category": "mep-utilities",
+      "examples": {
+        "datasets": [
+          "mep2bim"
+        ]
+      }
+    },
+    {
+      "id": "vehicle-crane",
+      "prefLabel": "Vehicle Crane",
+      "category": "construction-equipment",
+      "examples": {
+        "datasets": [
+          "MOCS"
+        ]
+      }
+    },
+    {
+      "id": "vest",
+      "prefLabel": "Vest",
+      "category": "ppe",
+      "altLabels": [
+        "Vest"
+      ],
+      "examples": {
+        "datasets": [
+          "CHV",
+          "CPPE",
+          "SODA"
+        ]
+      }
+    },
+    {
+      "id": "visible-dust",
+      "prefLabel": "Visible Dust",
+      "category": "environment-phenomena",
+      "examples": {
+        "datasets": [
+          "Visible-Dust"
+        ]
+      }
+    },
+    {
+      "id": "walk",
+      "prefLabel": "Walk",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "walk-straight",
+      "prefLabel": "Walk Straight",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "walk-winding",
+      "prefLabel": "Walk Winding",
+      "category": "activities-states",
+      "examples": {
+        "datasets": [
+          "vtt-coniot"
+        ]
+      }
+    },
+    {
+      "id": "wall",
+      "prefLabel": "Wall",
+      "category": "structural-elements",
+      "altLabels": [
+        "Wall"
+      ],
+      "examples": {
+        "datasets": [
+          "PC-Urban",
+          "UGD",
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "wallpaper",
+      "prefLabel": "Wallpaper",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500"
+        ]
+      }
+    },
+    {
+      "id": "walls",
+      "prefLabel": "Walls",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "mlstruct-fp"
+        ]
+      }
+    },
+    {
+      "id": "waste",
+      "prefLabel": "Waste",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "waste-container",
+      "prefLabel": "Waste Container",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "IFR_Dataset"
+        ]
+      }
+    },
+    {
+      "id": "water",
+      "prefLabel": "Water",
+      "category": "materials",
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "PC-Urban",
+          "CISI"
+        ]
+      }
+    },
+    {
+      "id": "wear-helmet",
+      "prefLabel": "Wear Helmet",
+      "category": "ppe",
+      "examples": {
+        "datasets": [
+          "CMA"
+        ]
+      }
+    },
+    {
+      "id": "wheel-loader",
+      "prefLabel": "Wheel Loader",
+      "category": "construction-equipment",
+      "altLabels": [
+        "Wheel loader",
+        "wheel-loader"
+      ],
+      "examples": {
+        "datasets": [
+          "ACID",
+          "AIDCON",
+          "CMOT"
+        ]
+      }
+    },
+    {
+      "id": "wheel-loaders",
+      "prefLabel": "Wheel Loaders",
+      "category": "other",
+      "examples": {
+        "datasets": [
+          "CIS"
+        ]
+      }
+    },
+    {
+      "id": "window",
+      "prefLabel": "Window",
+      "category": "building-components",
+      "examples": {
+        "datasets": [
+          "BIMNet"
+        ]
+      }
+    },
+    {
+      "id": "wood",
+      "prefLabel": "Wood",
+      "category": "materials",
+      "altLabels": [
+        "Wood"
+      ],
+      "examples": {
+        "datasets": [
+          "MINC-2500",
+          "SODA",
+          "CODD"
+        ]
+      }
+    },
+    {
+      "id": "worker",
+      "prefLabel": "Worker",
+      "category": "people",
+      "altLabels": [
+        "Worker"
+      ],
+      "examples": {
+        "datasets": [
+          "MOCS",
+          "CPPE",
+          "VCVW-3D"
+        ]
+      }
+    },
+    {
+      "id": "workers",
+      "prefLabel": "Workers",
+      "category": "people",
+      "examples": {
+        "datasets": [
+          "OSHA-safety"
+        ]
+      }
+    },
+    {
+      "id": "wrench",
+      "prefLabel": "Wrench",
+      "category": "tools",
+      "examples": {
+        "datasets": [
+          "small-tool"
+        ]
+      }
+    },
+    {
+      "id": "zebra-crossing",
+      "prefLabel": "Zebra-crossing",
+      "category": "signs-controls",
+      "examples": {
+        "datasets": [
+          "PC-Urban"
+        ]
+      }
+    }
+  ]
 }
