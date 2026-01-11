@@ -449,10 +449,10 @@
     </tr>
   </thead>
   <tbody>
-<tr><td><code>added_date</code></td><td>Yes</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
-<tr><td><code>ai_tech</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>AI techniques used (e.g., CV, LLMs).</td></tr>
-<tr><td><code>applications</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Application areas (e.g., safety monitoring).</td></tr>
-<tr><td><code>companies</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company list (name/url).</td></tr>
+<tr><td><code>added_date</code></td><td>No</td><td><span class='text-muted'>(catalog metadata) —</span></td><td>Date added to OpenConstruction catalog (YYYY-MM-DD).</td></tr>
+<tr><td><code>ai_tech</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>AI techniques used (e.g., CV, LLMs).</td></tr>
+<tr><td><code>applications</code></td><td>Yes</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Application areas (e.g., safety monitoring).</td></tr>
+<tr><td><code>companies</code></td><td>Yes</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company list (name/url).</td></tr>
 <tr><td><code>companies[].name</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company name.</td></tr>
 <tr><td><code>companies[].url</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher / provider</span></td><td>Company website URL.</td></tr>
 <tr><td><code>contributor</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>GitHub handle or name of submitter.</td></tr>
@@ -480,11 +480,11 @@
 <tr><td><code>outcomes[].value</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Outcome value.</td></tr>
 <tr><td><code>phase</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Project lifecycle phase (e.g., design, construction).</td></tr>
 <tr><td><code>provider</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Technology provider (if applicable).</td></tr>
-<tr><td><code>stakeholders</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Primary stakeholder groups.</td></tr>
+<tr><td><code>stakeholders</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Primary stakeholder groups.</td></tr>
 <tr><td><code>summary</code></td><td>Yes</td><td><span class='text-muted'>schema.org:description</span></td><td>Short description of the use case.</td></tr>
 <tr><td><code>tags</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Tag list.</td></tr>
 <tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Use case title.</td></tr>
-<tr><td><code>year</code></td><td>No</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Year of the referenced deployment/publication.</td></tr></tbody></table></div>
+<tr><td><code>year</code></td><td>Yes</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Year of the referenced deployment/publication.</td></tr></tbody></table></div>
 
     <div class="row g-3 mt-3">
       <div class="col-lg-6">
@@ -582,15 +582,15 @@
 <tr><td><code>id</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Stable short identifier used in URLs.</td></tr>
 <tr><td><code>image</code></td><td>No</td><td><span class='text-muted'>schema.org:image</span></td><td>Preview image URL.</td></tr>
 <tr><td><code>institutions</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Associated institutions.</td></tr>
-<tr><td><code>language</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Language code or name.</td></tr>
+<tr><td><code>language</code></td><td>Yes</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Language code or name.</td></tr>
 <tr><td><code>license</code></td><td>Yes</td><td><span class='text-muted'>schema.org:license</span></td><td>License (e.g., CC BY).</td></tr>
 <tr><td><code>media</code></td><td>No</td><td><span class='text-muted'>schema.org:associatedMedia</span></td><td>Media formats (video, pdf, interactive, etc.).</td></tr>
-<tr><td><code>provider</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Provider/host organization.</td></tr>
+<tr><td><code>provider</code></td><td>Yes</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Provider/host organization.</td></tr>
 <tr><td><code>publisher</code></td><td>No</td><td><span class='text-muted'>schema.org:publisher</span></td><td>Publisher (if different from provider).</td></tr>
 <tr><td><code>source</code></td><td>Yes</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Canonical source URL.</td></tr>
 <tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Resource title.</td></tr>
-<tr><td><code>topics</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Topic tags (professional phrasing).</td></tr>
-<tr><td><code>year</code></td><td>No</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Publication year (if known).</td></tr></tbody></table></div>
+<tr><td><code>topics</code></td><td>Yes</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Topic tags (professional phrasing).</td></tr>
+<tr><td><code>year</code></td><td>Yes</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Publication year (if known).</td></tr></tbody></table></div>
 
     <div class="row g-3 mt-3">
       <div class="col-lg-6">
