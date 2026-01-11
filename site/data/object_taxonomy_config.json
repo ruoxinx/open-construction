@@ -1,0 +1,31 @@
+{
+  "aliases": {
+    "hardhat": "hard hat",
+    "helmet": "hard hat",
+    "hi vis vest": "reflective vest",
+    "safety vest": "reflective vest",
+    "people": "worker",
+    "person": "worker",
+    "construction worker": "worker",
+    "rebar": "reinforcing bar",
+    "reinforcement bar": "reinforcing bar",
+    "dumptruck": "dump truck",
+    "dump-truck": "dump truck",
+    "cones": "traffic cone",
+    "cracks": "crack",
+    "spalling": "spall"
+  },
+  "categories": [
+    { "id": "People", "pattern": "\\b(worker|person|people|human|inspector|operator|foreman)\\b" },
+    { "id": "Equipment & Vehicles", "pattern": "\\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|roller|grader|drone|uav|robot)\\b" },
+    { "id": "PPE & Safety", "pattern": "\\b(hard hat|reflective vest|vest|glove|goggle|mask|respirator|harness|traffic cone|barricade|barrier|sign)\\b" },
+    { "id": "Materials", "pattern": "\\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall|insulation|soil|gravel|sand)\\b" },
+    { "id": "Structural Components", "pattern": "\\b(beam|column|slab|girder|truss|joist|foundation|pile|pier|wall|deck)\\b" },
+    { "id": "MEP Components", "pattern": "\\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler|outlet|switch|meter)\\b" },
+    { "id": "Site & Temporary Works", "pattern": "\\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|curb|site|stockpile|container|pallet)\\b" },
+    { "id": "Defects & Damage", "pattern": "\\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\\b" }
+  ],
+  "label_rules": {
+    "min_arc_px": 46
+  }
+}
