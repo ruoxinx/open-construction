@@ -420,7 +420,7 @@ const LICENSE_URLS = {
   'ODC-BY': 'https://opendatacommons.org/licenses/by/',
   'MIT License with Commons Clause Restriction':
     'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
-  'FI-NCALFI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+  'FI-NCA': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
   'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
   'BSD 3-Clause': 'https://opensource.org/license/bsd-3-clause',
   'Academic Use Only (University of Cambridge)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
@@ -698,11 +698,16 @@ function render(items){
 
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
-			<div class="meta mb-1">
-			  ${(m.authors && m.authors.length) ? `${esc(m.authors.join(', '))} • ` : ''}
-			  ${m.year || '—'}
-			  ${m.license ? ` • ${licenseLinkHTML(m.license)}` : ''}
-			</div>
+			${(() => {
+			  const licHTML = licenseLinkHTML(m.license);
+			  return `
+				<div class="meta mb-1">
+				  ${(m.authors && m.authors.length) ? `${esc(m.authors.join(', '))} • ` : ''}
+				  ${m.year || '—'}
+				  ${licHTML ? ` • ${licHTML}` : ''}
+				</div>
+			  `;
+			})()}
 
 
           <!-- Compact combined tag row -->
