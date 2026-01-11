@@ -175,6 +175,6 @@ ${rssItems}
 </rss>
 `;
 
-const OUT_PATH = path.resolve(__dirname, '..', 'updates.xml');
+const OUT_PATH = path.resolve(__dirname, '..', '..', 'updates.xml');
 fs.writeFileSync(OUT_PATH, rss);
 console.log(`✅ Wrote ${OUT_PATH} with ${items.length} item(s).`);
