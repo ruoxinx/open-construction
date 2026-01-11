@@ -62,9 +62,6 @@ All pull requests are validated through **CI/CD workflows**, including:
 - Lightweight link validation  
 - Attribution and license checks  
 
-These checks ensure that community contributions are
-**consistent, interoperable, and sustainable**.
-
 
 ## Modular Extension System
 
@@ -74,9 +71,6 @@ capabilities.
 Example module types include:
 - Benchmark definitions and task packs
 - Validation and enrichment utilities
-
-Modules are registered and maintained
-by contributors, enabling **co-development of platform capabilities**.
 
 
 ## Governance & Stewardship

@@ -56,8 +56,6 @@ All leadership roles are:
 - Rotating and time-bound
 - Based on contribution history and community trust
 
-This structure supports long-term ecosystem resilience.
-
 
 ## Amendments
 
