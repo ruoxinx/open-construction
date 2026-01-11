@@ -130,19 +130,24 @@
     }
     .legend code{ color: var(--oc-ink); font-weight: 800; }
 
-    /* Viz container */
+    /* Viz container (smaller) */
     .viz-wrap{
-      height: 680px;
+      height: 600px; /* smaller than before */
       border-radius: 18px;
       border:1px solid var(--oc-border);
       overflow:hidden;
       position: relative;
-      background: radial-gradient(800px 520px at 50% 50%, rgba(15,46,75,.06), transparent 60%);
+      background: radial-gradient(780px 500px at 50% 50%, rgba(15,46,75,.06), transparent 60%);
     }
+    @media (max-width: 991.98px){
+      .viz-wrap{ height: 520px; }
+    }
+
     .viz-hud{
       position:absolute; top:12px; left:12px; right:12px;
       display:flex; gap:10px; align-items:center; justify-content:space-between;
       pointer-events:none;
+      z-index: 3;
     }
     .hud-pill{
       pointer-events:auto;
@@ -160,14 +165,61 @@
     .hud-pill strong{ color: var(--oc-ink); }
     .hud-pill .sep{ opacity:.45; }
 
+    /* Category legend inside viz (shows ALL category names without overlap) */
+    .cat-legend{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      width: min(360px, calc(100% - 24px));
+      max-height: 240px;
+      overflow:auto;
+      border:1px solid var(--oc-border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 14px 30px rgba(15,46,75,.08);
+      padding:10px 10px;
+      z-index: 2;
+    }
+    .cat-legend .title{
+      display:flex; justify-content:space-between; align-items:baseline;
+      gap:10px;
+      padding:2px 4px 8px;
+      border-bottom:1px solid rgba(231,237,243,.85);
+      margin-bottom:8px;
+    }
+    .cat-legend .title strong{ color: var(--oc-ink); font-weight: 950; }
+    .cat-legend .title span{ color: var(--oc-subtle); font-size:.88rem; }
+    .cat-item{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:6px 8px;
+      border-radius: 12px;
+      border:1px solid rgba(231,237,243,.85);
+      background: rgba(246,249,252,.72);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+      margin-bottom:8px;
+    }
+    .cat-item:hover{ transform: translateY(-1px); background: rgba(255,255,255,.92); }
+    .cat-left{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .swatch{ width:10px; height:10px; border-radius:999px; flex:0 0 auto; box-shadow: 0 10px 22px rgba(15,46,75,.08); }
+    .cat-name{
+      font-weight: 900; color: var(--oc-ink);
+      font-size:.92rem;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      max-width: 210px;
+    }
+    .cat-meta{ color: var(--oc-subtle); font-size:.86rem; white-space:nowrap; }
+
     /* Sunburst */
     .arc{
-      stroke: rgba(255,255,255,.9);
+      stroke: rgba(255,255,255,.92);
       stroke-width: 1.2px;
       cursor: pointer;
     }
     .arc:hover{
-      stroke: rgba(11,102,195,.9);
+      stroke: rgba(15,46,75,.55);
       stroke-width: 2px;
     }
 
@@ -181,18 +233,6 @@
       stroke: rgba(255,255,255,.92);
       stroke-width: 4px;
       stroke-linejoin: round;
-    }
-
-    /* category labels along arc */
-    .cat-label{
-      fill: rgba(15,46,75,.94);
-      font-weight: 950;
-      letter-spacing: .02em;
-      paint-order: stroke;
-      stroke: rgba(255,255,255,.95);
-      stroke-width: 5px;
-      stroke-linejoin: round;
-      pointer-events:none;
     }
 
     /* Tooltip */
@@ -336,37 +376,20 @@
       text-decoration:none;
     }
 
-    .issue-btn{
-      position:fixed; right:18px; bottom:18px;
-      background:#0f2e4b; color:#fff;
-      text-decoration:none;
-      padding:10px 12px;
-      border-radius:999px;
-      font-weight:900;
-      box-shadow:0 14px 30px rgba(15,46,75,.18);
-      z-index:99;
-    }
-    .issue-btn:hover{ transform:translateY(-1px); color:#fff; }
-
     footer{ border-top:1px solid var(--oc-border); margin-top:44px; padding:18px 0; color:var(--oc-subtle); font-size:.95rem; }
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-
-    @media (max-width: 991.98px){
-      .viz-wrap{ height: 560px; }
-      .kv{ grid-template-columns: 120px 1fr; }
-    }
 
     /* Inspector: ensure footer always visible + main scrolls */
     .ins-wrap{
       display:flex;
       flex-direction:column;
       height:100%;
-      min-height: 640px; /* keeps layout stable */
+      min-height: 640px;
     }
     .ins-main{
       flex: 1 1 auto;
       overflow:auto;
-      padding-right: 6px; /* avoid scrollbar overlay */
+      padding-right: 6px;
     }
     .ins-footer{
       position: sticky;
@@ -375,10 +398,31 @@
       padding-top: 12px;
       background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 26%, rgba(255,255,255,.98));
     }
-
-    /* make right pane body stretch so sticky footer works */
     .pane.h-100 .pane-body{
-      height: calc(100% - 56px); /* subtract header */
+      height: calc(100% - 56px);
+    }
+
+	/* ---- Floating Suggestion Button ---- */
+    .issue-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: #fff;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -462,7 +506,7 @@
       <h1>Object / Class Taxonomy Map</h1>
       <p class="lead">
         A <span class="hl">zoomable taxonomy</span> derived from dataset label spaces (<code>classes</code> in <code>data/datasets.json</code>).
-        Category names are always readable on the chart; all node names are always listed below for precise identification.
+        All <span class="hl">category names</span> are shown in the in-chart legend; node names are listed below for precise identification.
       </p>
     </div>
   </header>
@@ -487,7 +531,7 @@
     <div id="toolboxSpacer"></div>
 
     <div class="legend mt-2">
-      <span><span class="dot"></span>Click to inspect · Double-click to zoom. Category names always appear on the ring.</span>
+      <span><span class="dot"></span>Click to inspect · Double-click to zoom.</span>
       <span>·</span>
       <span>Hover for tooltip</span>
     </div>
@@ -513,6 +557,16 @@
                   <div class="hud-pill" id="hudLeft">Tip: click an arc</div>
                   <div class="hud-pill" id="hudRight">Zoom: <strong id="zoomLbl">Root</strong></div>
                 </div>
+
+                <!-- category legend injected here -->
+                <div class="cat-legend" id="catLegend" aria-label="Category legend">
+                  <div class="title">
+                    <strong>Categories</strong>
+                    <span id="catLegendSub">—</span>
+                  </div>
+                  <div id="catLegendBody"></div>
+                </div>
+
                 <div class="tip" id="tip"></div>
               </div>
 
@@ -571,7 +625,6 @@
                 </div>
               </div>
 
-              <!-- Permalink moved to bottom + button styling -->
               <div class="ins-footer">
                 <a class="perm-btn" id="insPermalink" href="object_class.html" aria-label="Open permalink for this canonical class">
                   Open permalink
@@ -672,13 +725,6 @@
       if(/[A-Z]/.test(raw) && raw.length <= 16) return raw;
       return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     }
-    function shortenLabelToFit(text, maxChars){
-      const s = String(text || '').trim();
-      if(!s) return '';
-      if(maxChars <= 3) return s.slice(0, Math.max(1, maxChars));
-      if(s.length <= maxChars) return s;
-      return s.slice(0, Math.max(1, maxChars - 1)).trimEnd() + '…';
-    }
 
     async function loadJSON(path){
       const res = await fetch(path, { cache:'no-store' });
@@ -691,7 +737,7 @@
       return (Array.isArray(raw) ? raw : Object.values(raw || {})).filter(Boolean);
     }
 
-    /* ---------- config (aliases + categories moved out of HTML) ---------- */
+    /* ---------- config ---------- */
     let CFG = null;
     let TERM_ALIASES = new Map();
     let CATEGORY_RULES = [];
@@ -772,9 +818,21 @@
           return (a.label||a.canon).localeCompare(b.label||b.canon);
         });
 
+        // compute category totals correctly
+        const catDs = new Set();
+        let catMentions = 0;
+        for(const r of items){
+          for(const id of r.dsSet) catDs.add(id);
+          catMentions += (r.mentions || 0);
+        }
+
         root.children.push({
           name: cat,
           id: 'cat:' + cat,
+          category: cat,
+          coverage: catDs.size,      // ✅ total datasets under category
+          mentions: catMentions,
+          datasets: Array.from(catDs),
           children: items.map(r => ({
             name: r.label || r.canon,
             id: 'obj:' + r.canon,
@@ -788,7 +846,6 @@
           }))
         });
       }
-
       return root;
     }
 
@@ -805,13 +862,18 @@
       document.getElementById('insPermalink').setAttribute('href', 'object_class.html');
     }
 
-    function setInspectorCategory(cat){
+    function setInspectorCategory(catData){
+      const cat = catData?.name || catData || 'Category';
+      const cov = catData?.coverage ?? null;
+
       document.getElementById('insDef').innerHTML =
-        `<strong style="color:var(--oc-ink)">Category</strong><div class="mt-1">Browse objects under <span class="hl">${esc(cat)}</span>.</div>`;
+        `<strong style="color:var(--oc-ink)">Category</strong>
+         <div class="mt-1">Browse objects under <span class="hl">${esc(cat)}</span>.</div>`;
+
       document.getElementById('insKey').textContent = '—';
       document.getElementById('insLabel').textContent = cat;
       document.getElementById('insCat').textContent = cat;
-      document.getElementById('insCov').textContent = '—';
+      document.getElementById('insCov').textContent = (cov == null) ? '—' : `${cov} datasets`;
       document.getElementById('insAliases').innerHTML = '';
       document.getElementById('insDS').innerHTML = '';
       document.getElementById('insPermalink').setAttribute('href', 'object_taxonomy.html');
@@ -855,18 +917,19 @@
 
       if(focus.depth === 0){
         const cats = (focus.children || []).slice()
-          .sort((a,b)=> (b.value||0) - (a.value||0));
+          .sort((a,b)=> (b.data.coverage||0) - (a.data.coverage||0));
 
         namesSub.textContent = `Root · ${cats.length} categories`;
 
         cats.forEach(c => {
           const leafCount = (c.leaves ? c.leaves().length : (c.children||[]).length);
+          const cov = c.data.coverage ?? 0;
           const el = document.createElement('div');
           el.className = 'name-item';
-          el.innerHTML = `<div class="nm">${esc(c.data.name)}</div><div class="meta">${leafCount} nodes</div>`;
+          el.innerHTML = `<div class="nm">${esc(c.data.name)}</div><div class="meta">${cov} ds · ${leafCount} nodes</div>`;
           el.addEventListener('click', () => {
             RUNTIME.sb.zoomTo(c);
-            setInspectorCategory(c.data.name);
+            setInspectorCategory(c.data);
             document.getElementById('hudLeft').textContent = `Category: ${c.data.name}`;
           });
           nameList.appendChild(el);
@@ -899,6 +962,37 @@
       });
     }
 
+    /* ---------- Category legend renderer (no overlap) ---------- */
+    function renderCategoryLegend(catNodes, catColorFn){
+      const sub = document.getElementById('catLegendSub');
+      const body = document.getElementById('catLegendBody');
+      if(!sub || !body) return;
+
+      sub.textContent = `${catNodes.length} total`;
+
+      body.innerHTML = '';
+      catNodes
+        .slice()
+        .sort((a,b)=> (b.data.coverage||0) - (a.data.coverage||0))
+        .forEach(n => {
+          const row = document.createElement('div');
+          row.className = 'cat-item';
+          row.innerHTML = `
+            <div class="cat-left">
+              <span class="swatch" style="background:${catColorFn(n)}"></span>
+              <div class="cat-name" title="${esc(n.data.name)}">${esc(n.data.name)}</div>
+            </div>
+            <div class="cat-meta">${(n.data.coverage||0)} ds</div>
+          `;
+          row.addEventListener('click', () => {
+            RUNTIME.sb.zoomTo(n);
+            setInspectorCategory(n.data);
+            document.getElementById('hudLeft').textContent = `Category: ${n.data.name}`;
+          });
+          body.appendChild(row);
+        });
+    }
+
     /* ---------- Export ---------- */
     function downloadText(filename, text){
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -928,19 +1022,20 @@
 
       const W = container.clientWidth;
       const H = container.clientHeight;
-      const R = Math.min(W, H) / 2 - 18;
+
+      // smaller sunburst: leave more margins + room for legend
+      const R = Math.min(W, H) / 2 - 90;
 
       const svg = d3.select(container).append('svg')
         .attr('width', W)
         .attr('height', H);
 
-      const defs = svg.append('defs');
-
       const g = svg.append('g')
         .attr('transform', `translate(${W/2},${H/2})`);
 
+      // sum uses leaf coverage (category coverage already computed but we keep leaf weighting)
       const root = d3.hierarchy(rootData)
-        .sum(d => d.coverage ? (1 + Math.log1p(d.coverage)) : 0.2)
+        .sum(d => (d.canon ? (1 + Math.log1p(d.coverage || 0)) : 0))
         .sort((a,b) => b.value - a.value);
 
       const partition = d3.partition().size([2 * Math.PI, R]);
@@ -952,16 +1047,44 @@
         .innerRadius(d => d.y0)
         .outerRadius(d => Math.max(d.y0 + 8, d.y1 - 1));
 
-      const catNames = (root.children || []).map(c => c.data.name);
+      // Professional palette (muted, distinct, consistent)
+      const PALETTE = [
+        '#1f4e79', '#2c6e49', '#6b4e71', '#7a5c3a', '#1f6f8b',
+        '#5f6c37', '#7b3f3f', '#3f5a7a', '#2b2d42'
+      ];
+      const catNodes = (root.children || []);
+      const catNames = catNodes.map(c => c.data.name);
       const catIndex = new Map(catNames.map((n,i)=>[n,i]));
-      const color = d3.scaleLinear().domain([0, Math.max(1, catNames.length-1)]).range([0.15, 0.95]);
+
+      function baseCatColor(topName){
+        const i = catIndex.get(topName) ?? 0;
+        return PALETTE[i % PALETTE.length];
+      }
+
+      // depth-based alpha
+      function alphaForDepth(depth){
+        if(depth === 1) return 0.55;
+        if(depth === 2) return 0.35;
+        return 0.25;
+      }
+
+      function toRGBA(hex, a){
+        const h = hex.replace('#','').trim();
+        const r = parseInt(h.slice(0,2),16);
+        const g = parseInt(h.slice(2,4),16);
+        const b = parseInt(h.slice(4,6),16);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+
+      function catColorFn(nodeDepth1){
+        return baseCatColor(nodeDepth1.data.name);
+      }
 
       function fillFor(d){
-        if(d.depth === 0) return 'rgba(15,46,75,0.10)';
+        if(d.depth === 0) return 'rgba(15,46,75,0.06)';
         const top = d.ancestors().find(a => a.depth === 1);
-        const i = top ? (catIndex.get(top.data.name) ?? 0) : 0;
-        const t = color(i);
-        return `rgba(11,102,195,${0.10 + 0.35*t})`;
+        const hex = baseCatColor(top ? top.data.name : (catNames[0] || ''));
+        return toRGBA(hex, alphaForDepth(d.depth));
       }
 
       const paths = g.append('g')
@@ -970,34 +1093,9 @@
         .join('path')
         .attr('class','arc')
         .attr('d', arc)
-        .attr('fill', d => fillFor(d))
-        .attr('fill-opacity', d => d.depth === 1 ? 0.58 : (d.depth === 2 ? 0.42 : 0.33));
+        .attr('fill', d => fillFor(d));
 
-      // ---- Category labels ALWAYS visible via textPath (with truncation) ----
-      const catNodes = root.descendants().filter(d => d.depth === 1);
-      catNodes.forEach((d,i) => {
-        const pathId = `catPath-${i}`;
-        const rMid = (d.y0 + d.y1) / 2;
-        const a0 = d.x0, a1 = d.x1;
-        const p = d3.path();
-        p.arc(0,0,rMid,a0,a1);
-        defs.append('path').attr('id', pathId).attr('d', p.toString());
-
-        const arcLen = (a1 - a0) * rMid;           // pixels along the arc
-        const maxChars = Math.floor(arcLen / 8.5); // ~8.5px per character (safe)
-        const label = shortenLabelToFit(d.data.name, Math.max(4, maxChars));
-
-        g.append('text')
-          .attr('class','cat-label')
-          .attr('font-size', 14)
-          .append('textPath')
-          .attr('href', `#${pathId}`)
-          .attr('startOffset', '50%')
-          .attr('text-anchor', 'middle')
-          .text(label);
-      });
-
-      // ---- Leaf labels (collision-gated) ----
+      // leaf labels (collision-gated)
       const labelLayer = g.append('g');
 
       function labelThresholdForFocus(focus){
@@ -1021,7 +1119,7 @@
         .filter(x => x.arcLen >= thr)
         .sort((x,y) => x.a - y.a);
 
-        const minAngle = (!focus || focus.depth === 0) ? 0.12 : 0.06; // radians (~7° root, ~3.5° zoom)
+        const minAngle = (!focus || focus.depth === 0) ? 0.12 : 0.06;
         let lastAngle = -Infinity;
         const kept = [];
         for(const x of candidates){
@@ -1078,14 +1176,24 @@
       }
 
       function showTip(ev, d){
-        const isLeaf = !d.children;
         const name = d.data.name;
-        const cat = (d.ancestors().find(a=>a.depth===1)?.data?.name) || d.data.category || '—';
-        const cov = d.data.coverage ?? 0;
+        const top = d.ancestors().find(a => a.depth === 1);
+        const cat = top ? top.data.name : (d.data.category || '—');
 
+        // ✅ correct dataset count for category nodes
+        let dsCount = 0;
+        if(d.depth === 1){
+          dsCount = d.data.coverage ?? (d.data.datasets ? d.data.datasets.length : 0);
+        }else if(d.data && typeof d.data.coverage === 'number'){
+          dsCount = d.data.coverage;
+        }else{
+          dsCount = 0;
+        }
+
+        const isLeaf = !d.children;
         tip.innerHTML = `
           <strong>${esc(name)}</strong>
-          <div class="sub">${esc(cat)} · ${cov} dataset(s)</div>
+          <div class="sub">${esc(cat)} · ${dsCount} dataset(s)</div>
           <div class="sub">${isLeaf ? 'Click to inspect · Double-click to zoom context' : 'Click to browse · Double-click to zoom'}</div>
         `;
         tip.style.left = (ev.offsetX + 14) + 'px';
@@ -1106,12 +1214,12 @@
 
           if(d.depth === 1){
             document.getElementById('hudLeft').textContent = `Category: ${d.data.name}`;
-            setInspectorCategory(d.data.name);
+            setInspectorCategory(d.data);
           }else if(!d.children){
             document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(d.data.label || d.data.canon || d.data.name)}</strong>`;
             setInspectorLeaf(d.data);
           }else{
-            setInspectorCategory(d.data.name);
+            setInspectorCategory(d.data);
           }
         })
         .on('dblclick', (ev, d) => {
@@ -1126,6 +1234,9 @@
       });
 
       root.each(d => d.current = d);
+
+      // Legend: show ALL categories without overlap
+      renderCategoryLegend(catNodes, (n)=>baseCatColor(n.data.name));
 
       drawLeafLabels(root);
       if(typeof onFocusChange === 'function') onFocusChange(root);
@@ -1186,7 +1297,7 @@
               setInspectorLeaf(node.data);
               document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(node.data.label || node.data.canon)}</strong>`;
             } else {
-              setInspectorCategory(node.data.name);
+              setInspectorCategory(node.data);
               document.getElementById('hudLeft').textContent = `Category: ${node.data.name}`;
             }
           }, 540);
