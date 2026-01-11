@@ -75,7 +75,7 @@ Example module types include:
 - Benchmark definitions and task packs
 - Validation and enrichment utilities
 
-Modules are registered and maintained independently
+Modules are registered and maintained
 by contributors, enabling **co-development of platform capabilities**.
 
 
