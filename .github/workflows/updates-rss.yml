@@ -28,6 +28,10 @@ jobs:
       - name: Commit updates.xml
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: update RSS feed (updates.xml)"
+          commit_message: "chore: update RSS feed"
           file_pattern: "updates.xml"
+          
+          commit_user_name: "OpenConstruction Bot"
+          commit_user_email: "support@openconstruction.org"
+          commit_author: "OpenConstruction Bot <support@openconstruction.org>"
 

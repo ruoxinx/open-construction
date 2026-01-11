@@ -507,7 +507,12 @@ function canonicalizeModalityLabel(raw){
   const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
+  const hasBIM  = has(/\bbim\b|\bifc\b|building\s*information\s*model(?:ing)?|revit|archicad|open\s*bim/);
+  const hasLogs = has(/\blog\b|\blogs\b|event\s*log|change\s*log|audit\s*trail|version\s*history|ledger/);
 
+
+  if (hasBIM)     return 'BIM';
+  if (hasLogs)    return 'Logs';
   if (hasLidar)   return 'LiDAR';
   if (hasSAR)     return 'SAR';
   if (hasDepth)   return 'RGB-D';

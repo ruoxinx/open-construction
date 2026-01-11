@@ -1128,5 +1128,31 @@
     "added_date": "2026-01-10",
     "contributor": "Changyu Du",
   "contributor_url": "https://github.com/dcy0577"
+  },
+    {
+    "id": "openBIMdisk",
+    "title": "Open BIM exchange on Blockchain 3.0 virtual disk: A traceable semantic differential transaction approach",
+    "authors": ["Lingming Kong", "Rui Zhao", "Chimay J. Anumba", "Weisheng Lu", "Fan Xue"],
+	"abstract": "Building information modeling (BIM) has become prevalent in construction engineering management. However, the efficiency of traditional file-based BIM exchange between multidisciplinary teams remains low due to the transmission of redundant data from mostly unchanged BIM objects. Additionally, the traceability of changes between BIM files is limited. This paper proposes a traceable semantic differential transaction (tSDT) approach for open BIM exchange, which minimizes data redundancy and enables semantic-level traceability of BIM changes. Furthermore, openBIMdisk implements the tSDT and provides a Blockchain 3.0 virtual disk to support efficient, traceable, and secure BIM exchanges across multiple blockchain services. A pilot study of a modular construction project demonstrated the effectiveness of tSDT and open-BIMdisk. Experimental results indicated that tSDT achieved minimal BIM redundancy for storing and restoring all BIM changes, using a sheer 0.007% of disk space on average. openBIMdisk facilitated BIM version management and object-level semantic traceability with a response time of 5.3 ms. The contributions of this paper are twofold. First, tSDT offers a novel and efficient approach for semantic BIM change traceability. Second, openBIMdisk provides BIM practitioners with a Blockchain 3.0 application featuring intuitive and user-friendly interfaces for BIM exchange.",
+    "year": 2025,
+    "modalities": [
+	"BIM",
+    "Transaction Logs"
+	],
+	"tasks": [
+	"Semantic BIM Change Detection"
+	],
+    "applications": [    
+    "Blockchain-Enabled BIM Management",
+    "Design Change Auditing",
+    "Cross-Platform BIM Data Exchange"
+	],
+    "license": "Apache-2.0",
+    "paper_url": "https://doi.org/10.1007/s42524-024-4006-x",
+    "code_url": "https://github.com/KarleKong/openBIMdisk",
+    "thumbnail": "assets/img/models/openBIMdisk.png",
+    "added_date": "2026-01-10",
+    "contributor": "Lingming Kong",
+	"contributor_url": "https://github.com/KarleKong"
   }
 ]
