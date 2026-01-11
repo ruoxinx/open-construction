@@ -9,7 +9,7 @@ workflows, and open educational resources (OERs) for the
 Architecture, Engineering, and Construction (AEC) domain.
 
 🌐 Website: https://www.openconstruction.org  
-💬 Community: https://github.com/ruoxinx/OpenConstruction-Datasets/discussions  
+💬 Community: https://github.com/ruoxinx/open-construction/discussions  
 📧 Contact: support@openconstruction.org  
 
 
