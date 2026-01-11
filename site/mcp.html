@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="shortcut icon" href="/favicon.ico">
-	<meta name="theme-color" content="#0f2e4b">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · MCP Integration</title>
+  <title>OpenConstruction · Programmatic Access</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
     :root{
       --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c; --oc-border:#e7edf3;
@@ -24,28 +26,28 @@
 
     /* NAV */
     .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
+    .brand-wordmark{
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+      gap:0;
+      align-items:flex-start;
+      color:#0F2E4B;
+    }
+    .brand-wordmark .oc-open{
+      font-size:0.75rem;
+      font-weight:400;
+      letter-spacing:0.15em;
+      text-transform:uppercase;
+      opacity:0.7;
+      margin-bottom:-0.1rem;
+    }
+    .brand-wordmark .oc-sep{display:none}
+    .brand-wordmark .oc-construction{
+      font-size:1.35rem;
+      font-weight:700;
+      letter-spacing:-0.01em;
+    }
     .oc-logo{height:44px;width:44px}
     .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
     .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
@@ -56,13 +58,13 @@
 
     /* HERO */
     header.hero .content{ padding:56px 0 28px; text-align:center; }
-    header.hero h1{ font-weight:800; color:#0f2e4b; margin-bottom:.3rem; letter-spacing:.2px }
-    header.hero p.lead{ color:var(--oc-sub); margin:0 auto; max-width:70ch }
+    header.hero h1{ font-weight:800; color:#0f2e4b; margin-bottom:.35rem; letter-spacing:.2px }
+    header.hero p.lead{ color:var(--oc-sub); margin:0 auto; max-width:78ch }
 
     .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
 
     /* SECTION BASE */
-    .oc-section{ margin:24px 0 }
+    .oc-section{ margin:18px 0 }
     .section-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:1rem 1.1rem }
     .kicker{ font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--oc-sub); margin-bottom:.25rem; font-weight:600 }
     .section-title{ font-weight:800; color:var(--oc-ink); margin-bottom:.35rem; font-size:1.35rem }
@@ -82,16 +84,38 @@
     .feature-item{ background:#f8f9fa; border:1px solid var(--oc-border); border-radius:10px; padding:.7rem; transition:all .2s; min-height:108px }
     .feature-item:hover{ box-shadow:0 4px 10px rgba(15,46,75,.08); transform:translateY(-2px) }
     .feature-icon{ font-size:1.05rem; margin-bottom:.3rem; display:block }
-    .feature-title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem; font-size:.98rem }
     .feature-desc{ color:var(--oc-sub); font-size:.86rem; margin:0; line-height:1.45 }
 
     /* BADGES */
-    .tool-badge{ display:inline-block; background:#e7f3ff; color:#0b66c3; padding:.22rem .44rem; border-radius:6px; font-size:.78rem; font-weight:600; margin:.16rem .18rem .16rem 0; border:1px solid #b3d9ff }
+    .tool-badge{
+      display:inline-block; background:#e7f3ff; color:#0b66c3;
+      padding:.22rem .44rem; border-radius:6px;
+      font-size:.78rem; font-weight:600;
+      margin:.16rem .18rem .16rem 0;
+      border:1px solid #b3d9ff
+    }
+    .pill{
+      display:inline-block; background:#f3f6f9; color:#2a3946;
+      padding:.18rem .48rem; border-radius:999px;
+      font-size:.78rem; font-weight:700;
+      border:1px solid var(--oc-border);
+      margin:.12rem .18rem .12rem 0;
+      white-space:nowrap;
+    }
 
     /* STEPS */
     .step-list{ counter-reset:step; list-style:none; padding-left:0; margin:.8rem 0 }
     .step-list > li{ counter-increment:step; margin-bottom:.8rem; padding-left:2.25rem; position:relative; color:#2a3946 }
-    .step-list > li::before{ content:counter(step); position:absolute; left:0; top:.05rem; background:#0b66c3; color:#fff; width:1.65rem; height:1.65rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; box-shadow:0 2px 6px rgba(11,102,195,.2) }
+    .step-list > li::before{
+      content:counter(step);
+      position:absolute; left:0; top:.05rem;
+      background:#0b66c3; color:#fff;
+      width:1.65rem; height:1.65rem;
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:.8rem;
+      box-shadow:0 2px 6px rgba(11,102,195,.2)
+    }
     .step-list > li strong{ color:var(--oc-ink); font-weight:700; display:block; margin-bottom:.2rem; font-size:.98rem }
 
     /* CALLOUTS */
@@ -101,51 +125,124 @@
     .callout-title{ font-weight:700; color:var(--oc-ink); margin-bottom:.3rem; font-size:.94rem }
 
     /* CODE */
-    .code-block{ background:#f8f9fa; border:1px solid #dee2e6; border-radius:10px; padding:.6rem .7rem; margin:.6rem 0; overflow-x:auto; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.86rem; line-height:1.5; color:#1e2a36; position:relative }
-    .inline-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f3f6f9;border:1px solid #e7edf3;border-radius:6px;padding:.06rem .35rem}
-    .copy-btn{ position:absolute; top:.4rem; right:.4rem; border:1px solid var(--oc-border); background:#fff; border-radius:8px; font-size:.76rem; padding:.18rem .45rem; color:#2a3946 }
+    .code-block{
+      background:#f8f9fa; border:1px solid #dee2e6; border-radius:10px;
+      padding:.6rem .7rem; margin:.6rem 0; overflow-x:auto;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:.86rem; line-height:1.5; color:#1e2a36;
+      position:relative
+    }
+    .inline-code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      background:#f3f6f9; border:1px solid #e7edf3;
+      border-radius:6px; padding:.06rem .35rem
+    }
+    .copy-btn{
+      position:absolute; top:.4rem; right:.4rem;
+      border:1px solid var(--oc-border); background:#fff;
+      border-radius:8px; font-size:.76rem;
+      padding:.18rem .45rem; color:#2a3946
+    }
+
+    /* LEFT TOC (professional doc layout) */
+    .toc-card{
+      position:sticky;
+      top:92px;
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      background:#fff;
+      padding:.9rem .9rem;
+    }
+    .toc-title{ font-weight:800; color:var(--oc-ink); margin:0 0 .35rem 0; font-size:1rem }
+    .toc-card a{
+      display:block;
+      padding:.28rem .25rem;
+      border-radius:8px;
+      color:#2a3946;
+      font-weight:700;
+      font-size:.92rem;
+      text-decoration:none;
+    }
+    .toc-card a:hover{ background:#f3f6f9; text-decoration:none; }
+    .toc-sub{
+      margin-top:.1rem;
+      padding-left:.35rem;
+      border-left:2px solid #eef3f8;
+    }
+    .toc-sub a{ font-weight:600; font-size:.88rem; color:#4b5b6a; }
 
     /* FOOTER */
     footer .footnote{ color:#6b7b8c }
+		    /* ---- Floating Suggestion Button ---- */
+    .issue-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: #fff;
+      text-decoration: none;
+    }
+	
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
+<!-- NAV (same as your mcp.html, only label updated if you want) -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
       <span class="brand-wordmark">
-      <span class="oc-open">OpenConstruction</span>
-      <span class="oc-construction">Open Science</span>
-    </span>
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
     </a>
+
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
-		<li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
+
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddProducts" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddProducts">
             <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
             <li><a class="dropdown-item" href="models.html">Models</a></li>
             <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
-			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
+
         <li class="nav-item"><a class="nav-link plain" href="schema.html" data-route="dataset">Schema</a></li>
         <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
+
         <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle active" href="#" id="ddResources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResources">
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item active" href="mcp.html">MCP Docs</a></li>
+            <li><a class="dropdown-item active" href="mcp.html">APIs</a></li>
           </ul>
         </li>
+
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
 
@@ -176,104 +273,259 @@
 
 <header class="hero">
   <div class="container oc-container content">
-    <h1>MCP Integration</h1>
-    <p class="lead">Enable AI assistants to access <span class="hl">OpenConstruction</span> via the <span class="hl">Model Context Protocol</span>.</p>
+    <h1>Programmatic Access</h1>
+    <p class="lead">
+      Provide tools and assistants structured access to <span class="hl">OpenConstruction</span>
+      catalogs through a <span class="hl">Web API</span> and an <span class="hl">Agent Interface</span> (MCP).
+    </p>
   </div>
 </header>
 
 <main class="container oc-container my-4">
-
-  <!-- INTRO -->
-  <section class="oc-section" id="intro">
-    <div class="section-card">
-      <div class="kicker">Introduction</div>
-      <h2 class="section-title">What is MCP?</h2>
-      <p><strong>Model Context Protocol (MCP)</strong> standardizes how AI assistants connect to external tools and data sources. The OpenConstruction MCP server exposes read-only access to our <em>Datasets</em>, <em>Models</em>, <em>Use Cases</em>, <em>Tools</em>, and <em>Guides</em> catalogs through a small set of server tools.</p>
-      <div class="callout success">
-        <div class="callout-title">Example</div>
-        <p>Ask: <em>“Find 2024 datasets for safety monitoring.”</em> → receive structured metadata with links back to the catalog entries.</p>
-      </div>
-      <div class="callout">
-        <div class="callout-title">MCP quick links</div>
-        <ul class="m-0">
-          <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a></li>
-          <li><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub org</a></li>
-          <li><a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP config</a></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- CAPABILITIES -->
-  <section class="oc-section" id="capabilities">
-    <div class="section-card">
-      <div class="kicker">Capabilities</div>
-      <h2 class="section-title">Available Tools</h2>
-      <p class="section-subtitle">Core tool groups exposed by the OpenConstruction MCP server:</p>
-
-      <div class="feature-grid">
-        <div class="feature-item">
-          <span class="feature-icon">🔍 Search resources</span>
-          <div class="feature-desc">
-            <span class="tool-badge">search_models</span>
-            <span class="tool-badge">search_datasets</span>
-            <span class="tool-badge">search_use_cases</span>
-          </div>
+  <div class="row g-3">
+    <!-- LEFT TOC -->
+    <aside class="col-lg-3 d-none d-lg-block">
+      <div class="toc-card">
+        <div class="toc-title">On this page</div>
+        <a href="#overview">Overview</a>
+        <div class="toc-sub">
+          <a href="#api-intro">Web API</a>
+          <a href="#mcp-intro">MCP</a>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon">📊 Get details</span>
-          <div class="feature-desc">
-            <span class="tool-badge">get_model_details</span>
-            <span class="tool-badge">get_dataset_details</span>
-          </div>
+        <a href="#api">Web API Documentation</a>
+        <div class="toc-sub">
+          <a href="#api-endpoints">Endpoints</a>
+          <a href="#api-access">Access patterns</a>
+          <a href="#api-sdk">SDK (optional)</a>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon">🛠️ Browse & guidance</span>
-          <div class="feature-desc">
-            <span class="tool-badge">list_tools</span>
-            <span class="tool-badge">get_best_practices</span>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">📈 Catalog statistics</span>
-          <div class="feature-desc">
-            <span class="tool-badge">get_catalog_stats</span>
-          </div>
+        <a href="#mcp">MCP Documentation</a>
+        <div class="toc-sub">
+          <a href="#mcp-capabilities">Capabilities</a>
+          <a href="#mcp-setup">Install & Connect</a>
+          <a href="#mcp-usage">Usage scenarios</a>
         </div>
       </div>
-    </div>
-  </section>
+    </aside>
 
-  <!-- INSTALLATION -->
-  <section class="oc-section" id="setup">
-    <div class="section-card">
-      <div class="kicker">Setup</div>
-      <h2 class="section-title">Install & Connect</h2>
-      <p class="section-subtitle">Minimal steps to run the server locally and connect it to an MCP-compatible client (e.g., Claude Desktop).</p>
-      <ul class="step-list">
-        <li><strong>Clone repository</strong>
-          <div class="code-block" data-code="git clone https://github.com/ruoxinx/openconstruction-mcp-server.git
+    <!-- RIGHT CONTENT -->
+    <div class="col-lg-9">
+
+      <!-- OVERVIEW -->
+      <section class="oc-section" id="overview">
+        <div class="section-card">
+          <div class="kicker">Overview</div>
+          <h2 class="section-title">Access Architecture</h2>
+          <p class="section-subtitle">
+            OpenConstruction provides two complementary machine-access interfaces to the same authoritative catalogs.
+          </p>
+
+          <div class="row g-3">
+            <div class="col-md-6" id="api-intro">
+              <div class="callout success mb-0">
+                <div class="callout-title">Web API (Static JSON)</div>
+                <p class="mb-2">Best for: scripts, web apps, pipelines, reproducible research, CI.</p>
+                <span class="pill">Fetch JSON</span>
+                <span class="pill">No auth</span>
+                <span class="pill">Versionable</span>
+              </div>
+            </div>
+            <div class="col-md-6" id="mcp-intro">
+              <div class="callout mb-0">
+                <div class="callout-title">Agent Interface (MCP)</div>
+                <p class="mb-2">Best for: AI assistants and tool-calling workflows.</p>
+                <span class="pill">Tool interface</span>
+                <span class="pill">Read-only</span>
+                <span class="pill">Assistant-ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout warning mt-3">
+            <div class="callout-title">Read-only policy</div>
+            <p class="mb-0">
+              Both interfaces are read-only to protect integrity and provenance. Contributions occur through the OpenConstruction contribution workflow.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== WEB API ===================== -->
+      <section class="oc-section" id="api">
+        <div class="section-card">
+          <div class="kicker">Web API</div>
+          <h2 class="section-title">Static JSON API</h2>
+          <p class="section-subtitle">
+            Public, machine-readable endpoints served under <span class="inline-code">/data/</span>.
+          </p>
+
+          <div class="prose" id="api-endpoints">
+            <h3>Endpoints</h3>
+            <p>Catalogs are served as static JSON:</p>
+
+            <div class="feature-grid">
+              <div class="feature-item"><span class="feature-icon">📦 Datasets</span><div class="feature-desc"><span class="tool-badge">/data/datasets.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🧠 Models</span><div class="feature-desc"><span class="tool-badge">/data/models.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🧩 Use cases</span><div class="feature-desc"><span class="tool-badge">/data/use-cases.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🛠️ Tools</span><div class="feature-desc"><span class="tool-badge">/data/tools.json</span></div></div>
+
+              <div class="feature-item"><span class="feature-icon">📘 Guides</span><div class="feature-desc"><span class="tool-badge">/data/guides.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🎓 OERs</span><div class="feature-desc"><span class="tool-badge">/data/oer.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🌍 Contributors</span><div class="feature-desc"><span class="tool-badge">/data/contributors.json</span></div></div>
+              <div class="feature-item"><span class="feature-icon">🧭 Taxonomy</span><div class="feature-desc">
+                <span class="tool-badge">/data/object_vocab.json</span>
+                <span class="tool-badge">/data/object_taxonomy_config.json</span>
+              </div></div>
+            </div>
+
+            <div class="callout warning">
+              <div class="callout-title">Data shape compatibility</div>
+              <p class="mb-0">
+                Catalogs may be stored as an array, an envelope object containing an array, or an <span class="inline-code">{id: record}</span> map.
+                If you need a stable normalized interface, use the SDK below.
+              </p>
+            </div>
+
+            <h3 id="api-access">Access patterns</h3>
+
+            <div class="code-block" data-code="https://www.openconstruction.org/data/datasets.json">
+              <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>https://www.openconstruction.org/data/datasets.json</code></pre>
+            </div>
+
+            <div class="code-block" data-code="https://raw.githubusercontent.com/ruoxinx/open-construction/main/site/data/datasets.json">
+              <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>https://raw.githubusercontent.com/ruoxinx/open-construction/main/site/data/datasets.json</code></pre>
+            </div>
+
+            <h3 id="api-sdk">SDK (optional)</h3>
+            <p>
+              The OpenConstruction SDK provides normalization + search helpers. Keep code examples in README; the page below provides minimal copy-paste blocks.
+            </p>
+
+            <div class="code-block" data-code="npm i @openconstruction/api">
+              <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>npm i @openconstruction/api</code></pre>
+            </div>
+
+            <div class="code-block" data-code='import { OpenConstructionClient } from "@openconstruction/api";
+
+const oc = new OpenConstructionClient({
+  baseUrl: "https://www.openconstruction.org",
+  noCache: true
+});
+
+const hits = await oc.search("models", "BIM", { limit: 50 });'>
+              <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+<pre><code>import { OpenConstructionClient } from "@openconstruction/api";
+
+const oc = new OpenConstructionClient({
+  baseUrl: "https://www.openconstruction.org",
+  noCache: true
+});
+
+const hits = await oc.search("models", "BIM", { limit: 50 });</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== MCP (YOUR CONTENT PRESERVED + HEADING UPDATED) ===================== -->
+      <section class="oc-section" id="mcp">
+        <div class="section-card">
+          <div class="kicker">Agent Interface</div>
+          <h2 class="section-title">Model Context Protocol (MCP)</h2>
+
+          <!-- INTRO (same content as your original mcp.html) -->
+          <div class="prose">
+            <h3>What is MCP?</h3>
+            <p><strong>Model Context Protocol (MCP)</strong> standardizes how AI assistants connect to external tools and data sources. The OpenConstruction MCP server exposes read-only access to our <em>Datasets</em>, <em>Models</em>, <em>Use Cases</em>, <em>Tools</em>, and <em>Guides</em> catalogs through a small set of server tools.</p>
+            <div class="callout success">
+              <div class="callout-title">Example</div>
+              <p>Ask: <em>“Find 2024 datasets for safety monitoring.”</em> → receive structured metadata with links back to the catalog entries.</p>
+            </div>
+            <div class="callout">
+              <div class="callout-title">MCP quick links</div>
+              <ul class="m-0">
+                <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a></li>
+                <li><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener">MCP GitHub org</a></li>
+                <li><a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP config</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAPABILITIES (same content, moved into its own card for better doc structure) -->
+      <section class="oc-section" id="mcp-capabilities">
+        <div class="section-card">
+          <div class="kicker">Capabilities</div>
+          <h2 class="section-title">Available Tools</h2>
+          <p class="section-subtitle">Core tool groups exposed by the OpenConstruction MCP server:</p>
+
+          <div class="feature-grid">
+            <div class="feature-item">
+              <span class="feature-icon">🔍 Search resources</span>
+              <div class="feature-desc">
+                <span class="tool-badge">search_models</span>
+                <span class="tool-badge">search_datasets</span>
+                <span class="tool-badge">search_use_cases</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📊 Get details</span>
+              <div class="feature-desc">
+                <span class="tool-badge">get_model_details</span>
+                <span class="tool-badge">get_dataset_details</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🛠️ Browse & guidance</span>
+              <div class="feature-desc">
+                <span class="tool-badge">list_tools</span>
+                <span class="tool-badge">get_best_practices</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📈 Catalog statistics</span>
+              <div class="feature-desc">
+                <span class="tool-badge">get_catalog_stats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INSTALLATION (same content preserved) -->
+      <section class="oc-section" id="mcp-setup">
+        <div class="section-card">
+          <div class="kicker">Setup</div>
+          <h2 class="section-title">Install & Connect</h2>
+          <p class="section-subtitle">Minimal steps to run the server locally and connect it to an MCP-compatible client (e.g., Claude Desktop).</p>
+
+          <ul class="step-list">
+            <li><strong>Clone repository</strong>
+              <div class="code-block" data-code="git clone https://github.com/ruoxinx/openconstruction-mcp-server.git
 cd openconstruction-mcp-server">
-            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+                <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
 <pre><code>git clone https://github.com/ruoxinx/openconstruction-mcp-server.git
 cd openconstruction-mcp-server</code></pre>
-          </div>
-        </li>
-        <li><strong>Install dependencies</strong>
-          <div class="code-block" data-code="npm install">
-            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+              </div>
+            </li>
+            <li><strong>Install dependencies</strong>
+              <div class="code-block" data-code="npm install">
+                <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
 <pre><code>npm install</code></pre>
-          </div>
-        </li>
-        <li><strong>Build server</strong>
-          <div class="code-block" data-code="npm run build">
-            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+              </div>
+            </li>
+            <li><strong>Build server</strong>
+              <div class="code-block" data-code="npm run build">
+                <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
 <pre><code>npm run build</code></pre>
-          </div>
-        </li>
-        <li><strong>Configure Claude Desktop</strong>
-          <p class="mb-2">Add to <span class="inline-code">claude_desktop_config.json</span>:</p>
-          <div class="code-block" data-code='{
+              </div>
+            </li>
+            <li><strong>Configure Claude Desktop</strong>
+              <p class="mb-2">Add to <span class="inline-code">claude_desktop_config.json</span>:</p>
+              <div class="code-block" data-code='{
   "mcpServers": {
     "openconstruction": {
       "command": "node",
@@ -281,7 +533,7 @@ cd openconstruction-mcp-server</code></pre>
     }
   }
 }'>
-            <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
+                <button class="copy-btn" type="button" aria-label="Copy">Copy</button>
 <pre><code>{
   "mcpServers": {
     "openconstruction": {
@@ -290,50 +542,59 @@ cd openconstruction-mcp-server</code></pre>
     }
   }
 }</code></pre>
+              </div>
+              <p class="small text-muted m-0">See: <a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP guide</a></p>
+            </li>
+            <li><strong>Restart & verify</strong>
+              <p class="m-0">Reopen Claude Desktop and run.</p>
+            </li>
+          </ul>
+
+          <div class="callout warning mt-3">
+            <div class="callout-title">Tip — Private GitHub data</div>
+            <p class="mb-1">
+              If your catalogs are in a private repository, configure your server with a fine-grained GitHub PAT (Contents: Read) or a classic PAT with minimal <em>repo</em> read scope to fetch JSON safely.
+              Never embed tokens in client config; store them in server-side environment variables.
+            </p>
           </div>
-          <p class="small text-muted m-0">See: <a href="https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop" target="_blank" rel="noopener">Claude Desktop MCP guide</a></p>
-        </li>
-        <li><strong>Restart & verify</strong>
-          <p class="m-0">Reopen Claude Desktop and run.</p>
-        </li>
-      </ul>
-      <div class="callout warning mt-3">
-        <div class="callout-title">Tip — Private GitHub data</div>
-        <p class="mb-1">If your catalogs are in a private repository, configure your server with a fine-grained GitHub PAT (Contents: Read) or a classic PAT with minimal <em>repo</em> read scope to fetch JSON safely. Never embed tokens in client config; store them in server-side environment variables.</p>
-      </div>
-    </div>
-  </section>
+        </div>
+      </section>
 
-  <!-- USAGE -->
-  <section class="oc-section" id="usage">
-    <div class="section-card">
-      <div class="kicker">Examples</div>
-      <h2 class="section-title">Usage Scenarios</h2>
-      <div class="prose">
-        <div class="callout"><strong>Dataset discovery:</strong> “List point cloud datasets for semantic segmentation.”</div>
-        <div class="callout"><strong>Model search:</strong> “Find models for safety monitoring published after 2023.”</div>
-        <div class="callout"><strong>Use-case exploration:</strong> “Show industry deployments of computer vision.”</div>
-      </div>
-    </div>
-  </section>
+      <!-- USAGE (same content preserved) -->
+      <section class="oc-section" id="mcp-usage">
+        <div class="section-card">
+          <div class="kicker">Examples</div>
+          <h2 class="section-title">Usage Scenarios</h2>
+          <div class="prose">
+            <div class="callout"><strong>Dataset discovery:</strong> “List point cloud datasets for semantic segmentation.”</div>
+            <div class="callout"><strong>Model search:</strong> “Find models for safety monitoring published after 2023.”</div>
+            <div class="callout"><strong>Use-case exploration:</strong> “Show industry deployments of computer vision.”</div>
+          </div>
+        </div>
+      </section>
 
+    </div><!-- /col -->
+  </div><!-- /row -->
 </main>
 
 <footer class="py-4 mt-3 border-top">
   <div class="container oc-container small text-muted text-center">
-    <div>
-      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
-    </div>
+    <div>© <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
     <div class="mt-2">
       <small>
-        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides 
-        links to original sources. We do not host or distribute datasets, models, code, or paywalled content. 
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code, or paywalled content.
         All rights remain with the original authors, creators, and publishers.
       </small>
     </div>
   </div>
 </footer>
 
+<!-- Floating button -->
+<a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml"
+   class="issue-btn" target="_blank" rel="noopener">
+  Issue or Suggestion?
+</a>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">

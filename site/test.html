@@ -132,7 +132,7 @@
 
     /* Viz container (smaller) */
     .viz-wrap{
-      height: 600px; /* smaller than before */
+      height: 600px;
       border-radius: 18px;
       border:1px solid var(--oc-border);
       overflow:hidden;
@@ -164,53 +164,6 @@
     }
     .hud-pill strong{ color: var(--oc-ink); }
     .hud-pill .sep{ opacity:.45; }
-
-    /* Category legend inside viz (shows ALL category names without overlap) */
-    .cat-legend{
-      position:absolute;
-      left:12px;
-      bottom:12px;
-      width: min(360px, calc(100% - 24px));
-      max-height: 240px;
-      overflow:auto;
-      border:1px solid var(--oc-border);
-      border-radius: 16px;
-      background: rgba(255,255,255,.86);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 14px 30px rgba(15,46,75,.08);
-      padding:10px 10px;
-      z-index: 2;
-    }
-    .cat-legend .title{
-      display:flex; justify-content:space-between; align-items:baseline;
-      gap:10px;
-      padding:2px 4px 8px;
-      border-bottom:1px solid rgba(231,237,243,.85);
-      margin-bottom:8px;
-    }
-    .cat-legend .title strong{ color: var(--oc-ink); font-weight: 950; }
-    .cat-legend .title span{ color: var(--oc-subtle); font-size:.88rem; }
-    .cat-item{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      padding:6px 8px;
-      border-radius: 12px;
-      border:1px solid rgba(231,237,243,.85);
-      background: rgba(246,249,252,.72);
-      cursor:pointer;
-      transition: transform .12s ease, background .12s ease;
-      margin-bottom:8px;
-    }
-    .cat-item:hover{ transform: translateY(-1px); background: rgba(255,255,255,.92); }
-    .cat-left{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .swatch{ width:10px; height:10px; border-radius:999px; flex:0 0 auto; box-shadow: 0 10px 22px rgba(15,46,75,.08); }
-    .cat-name{
-      font-weight: 900; color: var(--oc-ink);
-      font-size:.92rem;
-      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-      max-width: 210px;
-    }
-    .cat-meta{ color: var(--oc-subtle); font-size:.86rem; white-space:nowrap; }
 
     /* Sunburst */
     .arc{
@@ -446,7 +399,7 @@
 
       <div class="collapse navbar-collapse" id="navbarsExample">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-          <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
 
           <li class="nav-item dropdown">
             <a class="nav-link plain dropdown-toggle" href="#" id="ddProducts" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
@@ -458,12 +411,12 @@
             </ul>
           </li>
 
-          <li class="nav-item"><a class="nav-link plain" href="schema.html" data-route="schema">Schema</a></li>
-          <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="schema.html">Schema</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
           <li class="nav-item"><a class="nav-link plain active" href="object_taxonomy.html" aria-current="page">Taxonomy</a></li>
 
-          <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
-          <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
 
           <li class="nav-item">
             <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener"
@@ -502,11 +455,9 @@
   <!-- HERO -->
   <header class="hero">
     <div class="container oc-container content">
-      <div class="oc-kicker mb-2">Controlled Vocabulary</div>
-      <h1>Object / Class Taxonomy Map</h1>
+      <h1>Object Taxonomy Map</h1>
       <p class="lead">
-        A <span class="hl">zoomable taxonomy</span> derived from dataset label spaces (<code>classes</code> in <code>data/datasets.json</code>).
-        All <span class="hl">category names</span> are shown in the in-chart legend; node names are listed below for precise identification.
+        An <span class="hl">object taxonomy</span> derived from dataset label spaces.
       </p>
     </div>
   </header>
@@ -557,20 +508,10 @@
                   <div class="hud-pill" id="hudLeft">Tip: click an arc</div>
                   <div class="hud-pill" id="hudRight">Zoom: <strong id="zoomLbl">Root</strong></div>
                 </div>
-
-                <!-- category legend injected here -->
-                <div class="cat-legend" id="catLegend" aria-label="Category legend">
-                  <div class="title">
-                    <strong>Categories</strong>
-                    <span id="catLegendSub">—</span>
-                  </div>
-                  <div id="catLegendBody"></div>
-                </div>
-
                 <div class="tip" id="tip"></div>
               </div>
 
-              <!-- Always-visible names list -->
+              <!-- Names panel (this is the ONLY category listing now) -->
               <div class="names-panel" aria-label="Names in current view">
                 <div class="names-head">
                   <div>
@@ -687,7 +628,6 @@
   <script>
     document.getElementById('yearNow').textContent = new Date().getFullYear();
 
-    /* ---------- Sticky overlay fix: spacer equals toolbox height ---------- */
     function syncToolboxSpacer(){
       const tb = document.getElementById('toolbox');
       const sp = document.getElementById('toolboxSpacer');
@@ -698,7 +638,6 @@
     window.addEventListener('resize', syncToolboxSpacer);
     window.addEventListener('load', syncToolboxSpacer);
 
-    /* ---------- utilities ---------- */
     const esc = (s) => String(s ?? '')
       .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
       .replaceAll('"','&quot;').replaceAll("'","&#39;");
@@ -737,7 +676,6 @@
       return (Array.isArray(raw) ? raw : Object.values(raw || {})).filter(Boolean);
     }
 
-    /* ---------- config ---------- */
     let CFG = null;
     let TERM_ALIASES = new Map();
     let CATEGORY_RULES = [];
@@ -767,7 +705,6 @@
       return 'Other / Unclassified';
     }
 
-    /* ---------- build index & hierarchy ---------- */
     function buildIndex(datasets){
       const idx = new Map();
       for(const ds of datasets){
@@ -818,7 +755,6 @@
           return (a.label||a.canon).localeCompare(b.label||b.canon);
         });
 
-        // compute category totals correctly
         const catDs = new Set();
         let catMentions = 0;
         for(const r of items){
@@ -830,7 +766,7 @@
           name: cat,
           id: 'cat:' + cat,
           category: cat,
-          coverage: catDs.size,      // ✅ total datasets under category
+          coverage: catDs.size,
           mentions: catMentions,
           datasets: Array.from(catDs),
           children: items.map(r => ({
@@ -849,7 +785,6 @@
       return root;
     }
 
-    /* ---------- Inspector ---------- */
     function resetInspector(){
       document.getElementById('insDef').textContent =
         'Select any arc to see canonical key, merged aliases, and dataset evidence.';
@@ -907,7 +842,6 @@
       document.getElementById('insPermalink').setAttribute('href', href);
     }
 
-    /* ---------- Names panel ---------- */
     function setNamesPanelForNode(focus){
       const nameList = document.getElementById('nameList');
       const namesSub = document.getElementById('namesSub');
@@ -962,38 +896,6 @@
       });
     }
 
-    /* ---------- Category legend renderer (no overlap) ---------- */
-    function renderCategoryLegend(catNodes, catColorFn){
-      const sub = document.getElementById('catLegendSub');
-      const body = document.getElementById('catLegendBody');
-      if(!sub || !body) return;
-
-      sub.textContent = `${catNodes.length} total`;
-
-      body.innerHTML = '';
-      catNodes
-        .slice()
-        .sort((a,b)=> (b.data.coverage||0) - (a.data.coverage||0))
-        .forEach(n => {
-          const row = document.createElement('div');
-          row.className = 'cat-item';
-          row.innerHTML = `
-            <div class="cat-left">
-              <span class="swatch" style="background:${catColorFn(n)}"></span>
-              <div class="cat-name" title="${esc(n.data.name)}">${esc(n.data.name)}</div>
-            </div>
-            <div class="cat-meta">${(n.data.coverage||0)} ds</div>
-          `;
-          row.addEventListener('click', () => {
-            RUNTIME.sb.zoomTo(n);
-            setInspectorCategory(n.data);
-            document.getElementById('hudLeft').textContent = `Category: ${n.data.name}`;
-          });
-          body.appendChild(row);
-        });
-    }
-
-    /* ---------- Export ---------- */
     function downloadText(filename, text){
       const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
       const a = document.createElement('a');
@@ -1013,7 +915,6 @@
       return rows.map(r => r.map(escCSV).join(',')).join('\n');
     }
 
-    /* ---------- Sunburst renderer ---------- */
     function renderSunburst(rootData, onFocusChange){
       const container = document.getElementById('viz');
       container.querySelector('svg')?.remove();
@@ -1023,7 +924,7 @@
       const W = container.clientWidth;
       const H = container.clientHeight;
 
-      // smaller sunburst: leave more margins + room for legend
+      // smaller sunburst
       const R = Math.min(W, H) / 2 - 90;
 
       const svg = d3.select(container).append('svg')
@@ -1033,7 +934,6 @@
       const g = svg.append('g')
         .attr('transform', `translate(${W/2},${H/2})`);
 
-      // sum uses leaf coverage (category coverage already computed but we keep leaf weighting)
       const root = d3.hierarchy(rootData)
         .sum(d => (d.canon ? (1 + Math.log1p(d.coverage || 0)) : 0))
         .sort((a,b) => b.value - a.value);
@@ -1047,11 +947,11 @@
         .innerRadius(d => d.y0)
         .outerRadius(d => Math.max(d.y0 + 8, d.y1 - 1));
 
-      // Professional palette (muted, distinct, consistent)
       const PALETTE = [
         '#1f4e79', '#2c6e49', '#6b4e71', '#7a5c3a', '#1f6f8b',
         '#5f6c37', '#7b3f3f', '#3f5a7a', '#2b2d42'
       ];
+
       const catNodes = (root.children || []);
       const catNames = catNodes.map(c => c.data.name);
       const catIndex = new Map(catNames.map((n,i)=>[n,i]));
@@ -1060,14 +960,11 @@
         const i = catIndex.get(topName) ?? 0;
         return PALETTE[i % PALETTE.length];
       }
-
-      // depth-based alpha
       function alphaForDepth(depth){
         if(depth === 1) return 0.55;
         if(depth === 2) return 0.35;
         return 0.25;
       }
-
       function toRGBA(hex, a){
         const h = hex.replace('#','').trim();
         const r = parseInt(h.slice(0,2),16);
@@ -1075,11 +972,6 @@
         const b = parseInt(h.slice(4,6),16);
         return `rgba(${r},${g},${b},${a})`;
       }
-
-      function catColorFn(nodeDepth1){
-        return baseCatColor(nodeDepth1.data.name);
-      }
-
       function fillFor(d){
         if(d.depth === 0) return 'rgba(15,46,75,0.06)';
         const top = d.ancestors().find(a => a.depth === 1);
@@ -1095,7 +987,6 @@
         .attr('d', arc)
         .attr('fill', d => fillFor(d));
 
-      // leaf labels (collision-gated)
       const labelLayer = g.append('g');
 
       function labelThresholdForFocus(focus){
@@ -1180,7 +1071,6 @@
         const top = d.ancestors().find(a => a.depth === 1);
         const cat = top ? top.data.name : (d.data.category || '—');
 
-        // ✅ correct dataset count for category nodes
         let dsCount = 0;
         if(d.depth === 1){
           dsCount = d.data.coverage ?? (d.data.datasets ? d.data.datasets.length : 0);
@@ -1235,16 +1125,12 @@
 
       root.each(d => d.current = d);
 
-      // Legend: show ALL categories without overlap
-      renderCategoryLegend(catNodes, (n)=>baseCatColor(n.data.name));
-
       drawLeafLabels(root);
       if(typeof onFocusChange === 'function') onFocusChange(root);
 
       return { zoomTo, root };
     }
 
-    /* ---------- Search ---------- */
     function buildCanonToNodeIndex(sbRoot){
       const map = new Map();
       sbRoot.descendants().forEach(d => {
@@ -1253,7 +1139,6 @@
       return map;
     }
 
-    /* ---------- init ---------- */
     let RUNTIME = { idx:null, sb:null, canonIndex:null };
 
     async function init(){

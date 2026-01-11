@@ -60,7 +60,7 @@
 </head>
 
 <body>
-  <!-- NAVBAR (same as other pages; shorten here if you prefer, but keep consistent) -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
     <div class="container oc-container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
@@ -78,10 +78,54 @@
 
       <div class="collapse navbar-collapse" id="navbarsExample">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
-          <li class="nav-item"><a class="nav-link plain" href="dataset.html">Datasets</a></li>
-          <li class="nav-item"><a class="nav-link plain" href="models.html">Models</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link plain dropdown-toggle" href="#" id="ddProducts" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddProducts">
+              <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+              <li><a class="dropdown-item" href="models.html">Models</a></li>
+              <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+              <li><a class="dropdown-item" href="oer.html">OERs</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link plain" href="schema.html">Schema</a></li>
           <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
-          <li class="nav-item"><a class="nav-link plain active" href="object_taxonomy.html">Taxonomy</a></li>
+          <li class="nav-item"><a class="nav-link plain active" href="object_taxonomy.html" aria-current="page">Taxonomy</a></li>
+
+          <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
+          <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+
+          <li class="nav-item">
+            <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener"
+               aria-label="OpenConstruction on GitHub" title="View on GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                   viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                         0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                         0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                         0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                         1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                         0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                         8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+              </svg>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                    data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                    aria-label="Subscribe for updates" title="Subscribe">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                   viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+                <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
+                         0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
+                         1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
+                         7 0 0 0 8.5 2z"/>
+              </svg>
+            </button>
+          </li>
         </ul>
       </div>
     </div>
