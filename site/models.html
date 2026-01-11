@@ -403,6 +403,35 @@ const ICON_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
 );
 
 /* ---------------------------
+   License links (canonical)
+--------------------------- */
+const LICENSE_URLS = {
+  'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+  'CC0': 'https://creativecommons.org/public-domain/cc0/',
+  'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+  'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+  'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+  'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+  'MIT': 'https://opensource.org/licenses/MIT',
+  'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+  'MIT License with Commons Clause Restriction':
+    'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE'
+};
+
+function licenseLinkHTML(license){
+  if (!license) return '';
+  const key = license.trim();
+  const url = LICENSE_URLS[key];
+  if (!url) return esc(key); // unknown license → plain text
+  return `<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a>`;
+}
+
+
+/* ---------------------------
    Helpers
 --------------------------- */
 const byId = id => document.getElementById(id);
@@ -658,10 +687,12 @@ function render(items){
 
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
-          <div class="meta mb-1">
-            ${(m.authors && m.authors.length) ? `${m.authors.join(', ')} • ` : ''}
-            ${m.year || '—'}
-          </div>
+			<div class="meta mb-1">
+			  ${(m.authors && m.authors.length) ? `${esc(m.authors.join(', '))} • ` : ''}
+			  ${m.year || '—'}
+			  ${m.license ? ` • ${licenseLinkHTML(m.license)}` : ''}
+			</div>
+
 
           <!-- Compact combined tag row -->
           <div class="tag-row">
