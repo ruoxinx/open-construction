@@ -1147,7 +1147,7 @@
     "Design Change Auditing",
     "Cross-Platform BIM Data Exchange"
 	],
-    "license": "Apache-2.0",
+    "license": "Apache 2.0",
     "paper_url": "https://doi.org/10.1007/s42524-024-4006-x",
     "code_url": "https://github.com/KarleKong/openBIMdisk",
     "thumbnail": "assets/img/models/openBIMdisk.png",
