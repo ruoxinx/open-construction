@@ -417,7 +417,7 @@ function cardHTML(ds){
   const submittedByHTML = (ds.contributor || ds.contributor_url)
     ? `<div class="submitted-by">
          <a href="${ds.contributor_url || '#'}" target="_blank" rel="noopener">
-           Submitted by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
+           Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
          </a>
        </div>`
     : '';

@@ -692,7 +692,7 @@ function render(items){
           ${m.contributor || m.contributor_url ? `
             <div class="submitted-by">
               <a href="${m.contributor_url || '#'}" target="_blank" rel="noopener">
-                Submitted by <strong>${m.contributor?.startsWith('@') ? m.contributor : '@' + m.contributor}</strong>
+                Proposed by <strong>${m.contributor?.startsWith('@') ? m.contributor : '@' + m.contributor}</strong>
               </a>
             </div>` : ''}
         </div>
