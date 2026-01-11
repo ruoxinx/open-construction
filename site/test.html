@@ -186,6 +186,18 @@
       font-weight: 800;
       fill: rgba(107,123,140,.95);
     }
+    /* leaf labels: slightly smaller + cleaner */
+    .node .leaf-label{
+      font-size: 11px;
+      font-weight: 780;
+      fill: rgba(15,46,75,.92);
+      paint-order: stroke;
+      stroke: rgba(255,255,255,.92);
+      stroke-width: 3px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .node--active circle{
       stroke: rgba(11,102,195,.9);
       stroke-width: 2.8px;
@@ -358,6 +370,8 @@
         <span>Click nodes to inspect aliases & evidence</span>
         <span>·</span>
         <span><code>Shift</code> + scroll to zoom</span>
+        <span>·</span>
+        <span><strong>Tip:</strong> leaf labels appear when zoomed in, or when a leaf is selected</span>
       </div>
     </section>
 
@@ -638,7 +652,7 @@
     }
 
     // --------- D3 Radial cluster ----------
-    function renderRadial(rootData, idx){
+    function renderRadial(rootData){
       const container = document.getElementById('viz');
       container.querySelector('svg')?.remove();
 
@@ -659,6 +673,7 @@
         .on('zoom', (ev) => {
           g.attr('transform', `translate(${W/2},${H/2}) scale(${ev.transform.k}) translate(${ev.transform.x/ev.transform.k},${ev.transform.y/ev.transform.k})`);
           document.getElementById('zoomLvl').textContent = `${ev.transform.k.toFixed(2)}×`;
+          updateLeafVisibility(ev.transform.k);
         });
 
       svg.call(zoom).on("wheel.zoom", null); // disable default wheel zoom
@@ -682,7 +697,7 @@
       const maxCov = Math.max(1, d3.max(coverages));
       const radiusScale = d3.scaleSqrt().domain([0, maxCov]).range([3.8, 10.5]);
 
-      const link = g.append('g')
+      g.append('g')
         .selectAll('path')
         .data(root.links())
         .join('path')
@@ -702,24 +717,25 @@
       node.append('circle')
         .attr('r', d => d.children ? (d.depth===0 ? 8.5 : 6.6) : radiusScale(d.data.coverage || 0));
 
-      // Labels: categories + leaf names
-      node.append('text')
+      // --- Progressive disclosure labels (IMPORTANT) ---
+      // 1) Category/root labels always visible
+      node.filter(d => d.children).append('text')
         .attr('dy', '0.32em')
         .attr('x', d => d.x < Math.PI ? 12 : -12)
         .attr('text-anchor', d => d.x < Math.PI ? 'start' : 'end')
         .attr('transform', d => d.x >= Math.PI ? 'rotate(180)' : null)
-        .text(d => {
-          if(d.depth === 0) return 'Objects';
-          if(d.children) return d.data.name;
-          return d.data.name;
-        })
-        .style('display', d => {
-          // hide very dense leaf labels until zoomed in? keep visible; user can zoom.
-          return 'block';
-        });
+        .text(d => (d.depth === 0 ? 'Objects' : d.data.name));
 
-      // Coverage sublabel for leaves
-      node.filter(d => !d.children).append('text')
+      // 2) Leaf labels are zoom/selection controlled
+      const leafLabel = node.filter(d => !d.children).append('text')
+        .attr('class','leaf-label')
+        .attr('dy', '0.32em')
+        .attr('x', d => d.x < Math.PI ? 12 : -12)
+        .attr('text-anchor', d => d.x < Math.PI ? 'start' : 'end')
+        .attr('transform', d => d.x >= Math.PI ? 'rotate(180)' : null)
+        .text(d => d.data.name);
+
+      const leafSub = node.filter(d => !d.children).append('text')
         .attr('class','label-sub')
         .attr('dy', '1.65em')
         .attr('x', d => d.x < Math.PI ? 12 : -12)
@@ -732,15 +748,29 @@
         .attr('class','ring')
         .attr('r', 14);
 
+      let selectedCanon = null;
+
+      function updateLeafVisibility(k){
+        // Hide leaf labels by default; show when zoomed in or selected
+        const showByZoom = k >= 1.55;
+
+        leafLabel.style('display', d => {
+          if (selectedCanon && d.data.canon === selectedCanon) return 'block';
+          return showByZoom ? 'block' : 'none';
+        });
+
+        leafSub.style('display', d => {
+          if (selectedCanon && d.data.canon === selectedCanon) return 'block';
+          return showByZoom ? 'block' : 'none';
+        });
+      }
+
       function activateNode(target){
-        // clear
         g.selectAll('.node').classed('node--active', false);
         if(!target) return;
 
-        // mark active
         d3.select(target).classed('node--active', true);
 
-        // move ring to the node position
         const d = d3.select(target).datum();
         const angle = d.x - Math.PI/2;
         const x = Math.cos(angle) * d.y;
@@ -759,14 +789,22 @@
       // click interaction
       node.on('click', (ev, d) => {
         ev.stopPropagation();
+
         if(d.children) {
           // category clicked
+          selectedCanon = null;
+          updateLeafVisibility(d3.zoomTransform(svg.node()).k);
+
           document.getElementById('hudLeft').textContent = `Category: ${d.data.name}`;
           activateNode(ev.currentTarget);
           setInspectorCategory(d.data.name);
           return;
         }
+
         // leaf clicked
+        selectedCanon = d.data.canon || null;
+        updateLeafVisibility(d3.zoomTransform(svg.node()).k);
+
         document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(d.data.label || d.data.canon)}</strong>`;
         activateNode(ev.currentTarget);
         setInspectorLeaf(d.data);
@@ -777,6 +815,10 @@
         document.getElementById('hudLeft').textContent = 'Tip: click a node';
         g.selectAll('.node').classed('node--active', false);
         ring.style('opacity', 0);
+
+        selectedCanon = null;
+        updateLeafVisibility(d3.zoomTransform(svg.node()).k);
+
         resetInspector();
       });
 
@@ -793,17 +835,24 @@
         if(!el) return false;
         const d = d3.select(el).datum();
 
-        // zoom a bit and center (approx)
-        const k = 1.35;
+        // zoom a bit more so labels become readable
+        const k = 1.75;
         svg.transition().duration(420).call(zoom.scaleTo, k);
 
-        // activate
+        selectedCanon = d.data.canon || null;
+        // ensure leaf label shows even before zoom completes
+        updateLeafVisibility(k);
+
         activateNode(el);
         setInspectorLeaf(d.data);
+        document.getElementById('hudLeft').innerHTML = `Selected: <strong>${esc(d.data.label || d.data.canon)}</strong>`;
         return true;
       }
 
-      return { flyToNode, searchIndex };
+      // initial: hide leaf labels until zoom in / selection
+      updateLeafVisibility(1.0);
+
+      return { flyToNode };
     }
 
     // ---------- Inspector ----------
@@ -848,11 +897,17 @@
       document.getElementById('insCov').textContent = `${data.coverage ?? 0} datasets · ${data.mentions ?? 0} mentions`;
 
       document.getElementById('insAliases').innerHTML =
-        aliases.length ? aliases.slice(0, 18).map(a => `<span class="chip">${esc(a)}</span>`).join('') : `<span class="text-muted small">—</span>`;
+        aliases.length
+          ? aliases.slice(0, 18).map(a => `<span class="chip">${esc(a)}</span>`).join('')
+          : `<span class="text-muted small">—</span>`;
+
+      // ✅ Deep link to dataset detail page
+      const toDatasetDetail = (id) => `datasets/detail.html?id=${encodeURIComponent(id)}`;
 
       document.getElementById('insDS').innerHTML =
-        ds.length ? ds.map(id => `<span class="chip"><a href="dataset.html" title="Open Datasets">${esc(id)}</a></span>`).join('')
-                  : `<span class="text-muted small">—</span>`;
+        ds.length
+          ? ds.map(id => `<span class="chip"><a href="${toDatasetDetail(id)}" title="Open dataset details">${esc(id)}</a></span>`).join('')
+          : `<span class="text-muted small">—</span>`;
 
       const href = `object_class.html?key=${encodeURIComponent(data.canon)}&label=${encodeURIComponent(data.label || data.canon)}`;
       document.getElementById('insPermalink').setAttribute('href', href);
@@ -896,8 +951,8 @@
       document.getElementById('subtitle').textContent =
         `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${CATEGORIES.length + 1} top-level categories`;
 
-      const { flyToNode } = renderRadial(rootData, idx);
-      RUNTIME.flyToNode = flyToNode;
+      const out = renderRadial(rootData);
+      RUNTIME.flyToNode = out.flyToNode;
 
       // Search: best-effort match by canon + aliases
       const input = document.getElementById('q');
