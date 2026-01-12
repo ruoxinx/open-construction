@@ -249,6 +249,29 @@
 	@media (prefers-reduced-motion: reduce) {
 	.logo-track { animation: none; }
 	}
+	
+	/* ---- Floating Suggestion Button ---- */
+    .issue-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: #fff;
+      text-decoration: none;
+    }
   </style>
 
   <style>
@@ -481,6 +504,12 @@
     </div>
   </div>
 </footer>
+
+<!-- Floating button -->
+<a href="https://github.com/ruoxinx/open-construction/discussions"
+   class="issue-btn" target="_blank" rel="noopener">
+  Join us
+</a>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
