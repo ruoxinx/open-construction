@@ -2810,9 +2810,8 @@
   "image_url": "assets/img/datasets/AEC_Objects_in_IFC-based_BIM.png",
   "added_date": "2025-12-30",
   "contributor": "AUTOIC Lab",
-  "contributor_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab"}
-
-},
+  "contributor_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab"
+  },
 "IFCNet":
 {
   "id": "IFCNet",
@@ -2834,6 +2833,5 @@
   "image_url": "assets/img/datasets/IFCNet.png",
   "added_date": "2026-01-11",
   "contributor": "Christoph Emunds",
-  "contributor_url": "https://github.com/cemunds"}
-
+  "contributor_url": "https://github.com/cemunds"
 }
