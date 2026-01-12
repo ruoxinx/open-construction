@@ -2788,7 +2788,8 @@
   "image_url": "assets/img/datasets/IFR_Dataset.png",
   "added_date": "2025-12-29",
   "contributor": "ICON Lab",
-  "contributor_url": "https://intelconstructlab.github.io/"},
+  "contributor_url": "https://intelconstructlab.github.io/"
+  },
 "AEC_Objects_in_IFC-based_BIM":
 {
   "id": "AEC_Objects_in_IFC-based_BIM",
