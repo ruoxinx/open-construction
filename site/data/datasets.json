@@ -2812,4 +2812,28 @@
   "contributor": "AUTOIC Lab",
   "contributor_url": "https://polytechnic.purdue.edu/facilities/automation-and-intelligent-construction-autoic-lab"}
 
+},
+"IFCNet":
+{
+  "id": "IFCNet",
+  "name": "IFC-based BIM Geometry",
+  "authors": "Christoph Emunds, Nicolas Pauen, Veronika Richter, Jérôme Frisch, Christoph van Treeck",
+  "year": 2022,
+  "num_images": "19,613 individual IFC objects",
+  "data_modality": "IFC-based BIM",
+  "annotation_types": ["BIM objects"],
+  "potential_tasks": ["Object Detection"],
+  "num_classes": 65,
+  "classes": ["Actuator", "AirTerminal", "AirTerminalBox", "AirToAirHeatRecovery", "Alarm", "AudioVisualAppliance", "Beam", "Boiler", "Burner", "CableCarrierFitting", "CableCarrierSegment", "CableSegment", "Chiller", "Coil", "Column", "CommunicationsAppliance", "Controller", "Covering", "CurtainWall", "Damper", "Door", "DuctFitting", "DuctSegment", "DuctSilencer", "ElectricAppliance", "ElectricDistributionBoard", "ElectricFlowStorageDevice", "ElectricMotor", "Fan", "Fastener", "FireSuppressionTerminal", "FlowInstrument", "FlowMeter", "Furniture", "HeatExchanger", "Humidifier", "Interceptor", "Lamp", "LightFixture", "Member", "Outlet", "Pile", "PipeFitting", "PipeSegment", "Plate", "ProtectiveDevice", "Pump", "Railing", "Ramp", "ReinforcingMesh","Roof", "SanitaryTerminal", "Sensor", "ShadingDevice", "Slab", "SolarDevice", "SpaceHeater", "Stair", "SwitchingDevice", "Tank", "UnitaryEquipment", "Valve", "Wall", "WasteTerminal", "Window"],
+  "license": "CC-BY-4.0",
+  "geographical_location":"",
+  "resolution": "",
+  "paper": "SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks",
+  "doi": "https://doi.org/10.1016/j.aei.2022.101641",
+  "access": "https://ifcnet.e3d.rwth-aachen.de/",
+  "image_url": "assets/img/datasets/IFCNet.png",
+  "added_date": "2026-01-11",
+  "contributor": "Christoph Emunds",
+  "contributor_url": "https://github.com/cemunds"}
+
 }
