@@ -43,7 +43,10 @@
           },
           "modalities": {
             "$ref": "schema.common.json#/definitions/tags"
-          }
+          },
+           "notes": {
+        "type": "string"
+          },
         },
         "additionalProperties": false
       }

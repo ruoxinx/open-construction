@@ -2834,5 +2834,28 @@
   "image_url": "assets/img/datasets/IFCNet.png",
   "added_date": "2026-01-11",
   "contributor": "Christoph Emunds",
-"contributor_url": "https://github.com/cemunds"}
+"contributor_url": "https://github.com/cemunds"},
+"RAOA-DTCTP_ori":
+{
+  "id": "RAOA-DTCTP_ori",
+  "name": "Construction Time–Cost Trade-off (Original Dataset)",
+  "authors": "Önder Halis Bettemir, M. Talat Birgonul",
+  "year": 2025,
+  "num_images": "15 projects",
+  "data_modality": "Text",
+  "annotation_types": ["cost"],
+  "potential_tasks": ["Cost Optimization"],
+  "num_classes": 1,
+  "classes": ["cost over activities"],
+  "license": "Not Specified",
+  "geographical_location":"",
+  "resolution": "",
+  "paper": "Solution of discrete time–cost trade-off problem with adaptive search domain",
+  "doi": "https://doi.org/10.1108/ECAM-06-2022-0601",
+  "access": "https://drive.google.com/file/d/1ZfAiCvkOmByq5T0nyUxTCsA4C3eEdBrd/view",
+  "image_url": "assets/img/datasets/IFCNet.png",
+  "added_date": "2026-01-11",
+  "contributor": "Önder Halis Bettemir",
+"contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr",
+"notes": "Part of the data comes from: Nasiri, Sasan, and Ming Lu. 'Streamlined project time-cost tradeoff optimization methodology: Algorithm, automation, and application.' Automation in construction 133 (2022): 104002."}
 }
