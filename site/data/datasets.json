@@ -2834,7 +2834,8 @@
   "image_url": "assets/img/datasets/IFCNet.png",
   "added_date": "2026-01-11",
   "contributor": "Christoph Emunds",
-"contributor_url": "https://github.com/cemunds"},
+"contributor_url": "https://github.com/cemunds"
+},
 "RAOA-DTCTP_ori":
 {
   "id": "RAOA-DTCTP_ori",
@@ -2856,6 +2857,5 @@
   "image_url": "assets/img/datasets/RAOA-DTCTP_ori.png",
   "added_date": "2026-01-11",
   "contributor": "Önder Halis Bettemir",
-"contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr",
-"notes": "Part of the data comes from: Nasiri, Sasan, and Ming Lu. 'Streamlined project time-cost tradeoff optimization methodology: Algorithm, automation, and application.' Automation in construction 133 (2022): 104002."}
+"contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr"}
 }
