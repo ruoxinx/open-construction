@@ -93,9 +93,6 @@
       "doi": {
         "type": ["string","null"]
       },
-      "notes": {
-        "type": ["string", "null"]
-      },
     },
     "required": [
       "id",
