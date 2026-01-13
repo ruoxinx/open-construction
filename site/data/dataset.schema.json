@@ -26,7 +26,7 @@
       "num_images": {
         "type": [
           "string",
-		  "integer",
+          "integer",
           "null"
         ]
       },
@@ -89,14 +89,16 @@
       },
       "authors": {
         "type": [
-		"string", 
-		"null"
-		]
+          "string",
+          "null"
+        ]
       },
       "doi": {
-        "type": ["string", "null"]
+        "type": [
+          "string",
+          "null"
+        ]
       }
-      },
     },
     "required": [
       "id",
