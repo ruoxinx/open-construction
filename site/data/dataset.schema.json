@@ -88,10 +88,14 @@
         ]
       },
       "authors": {
-        "type": ["string", "null"]
+        "type": [
+		"string", 
+		"null"
+		]
       },
       "doi": {
-        "type": ["string","null"]
+        "type": ["string", "null"]
+      }
       },
     },
     "required": [
