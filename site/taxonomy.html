@@ -690,14 +690,46 @@
     let CATEGORY_RULES = [];
     let LABEL_RULES = { min_arc_px_root: 70, min_arc_px_zoom: 22 };
 
+    let EXCLUSIONS = { min_label_len: 2, terms: new Set(), patterns: [] };
+
+
     function compileConfig(cfg){
       CFG = cfg || {};
-      TERM_ALIASES = new Map(Object.entries(CFG.aliases || {}));
+
+      // Canonicalize alias keys/values so lookups match canonKey() normalization
+      TERM_ALIASES = new Map();
+      for(const [k,v] of Object.entries(CFG.aliases || {})){
+        const kk = canonKey(k);
+        const vv = canonKey(v);
+        if(kk && vv) TERM_ALIASES.set(kk, vv);
+      }
+
       CATEGORY_RULES = (CFG.categories || []).map(c => ({
         id: c.id,
         re: new RegExp(c.pattern, 'i')
       }));
+
       LABEL_RULES = Object.assign(LABEL_RULES, (CFG.label_rules || {}));
+
+      // Exclusions (objects to remove from taxonomy)
+      const ex = (CFG.exclusions || {});
+      EXCLUSIONS.min_label_len = Number(ex.min_label_len ?? EXCLUSIONS.min_label_len ?? 2);
+      EXCLUSIONS.terms = new Set((ex.remove_terms || []).map(x => canonKey(x)).filter(Boolean));
+      EXCLUSIONS.patterns = (ex.remove_patterns || []).map(p => {
+        try { return new RegExp(p, 'i'); } catch(e){ return null; }
+      }).filter(Boolean);
+    }
+
+    function shouldExcludeLabel(rawLabel){
+      const raw = normStr(rawLabel);
+      const key = canonKey(raw);
+      if(!key) return true;
+      if(key.length < EXCLUSIONS.min_label_len) return true;
+      if(EXCLUSIONS.terms && EXCLUSIONS.terms.has(key)) return true;
+      for(const re of (EXCLUSIONS.patterns || [])){
+        if(re.test(raw) || re.test(key)) return true;
+      }
+      return false;
     }
 
     function applyAliasMerge(raw){
@@ -716,12 +748,19 @@
 
     function buildIndex(datasets){
       const idx = new Map();
+      const stats = { total_labels: 0, kept: 0, excluded: 0 };
+
       for(const ds of datasets){
         const dsId = ds.id || ds.name || '(unknown)';
         for(const raw of normArray(ds.classes)){
-          const merged = applyAliasMerge(raw);
+          stats.total_labels += 1;
+
+          const rawNorm = normStr(raw);
+          if(shouldExcludeLabel(rawNorm)) { stats.excluded += 1; continue; }
+
+          const merged = applyAliasMerge(rawNorm);
           const canon = singularize(merged);
-          if(!canon) continue;
+          if(!canon) { stats.excluded += 1; continue; }
 
           if(!idx.has(canon)){
             idx.set(canon, {
@@ -734,12 +773,13 @@
             });
           }
           const rec = idx.get(canon);
-          rec.rawSet.add(normStr(raw));
+          rec.rawSet.add(rawNorm);
           rec.dsSet.add(dsId);
           rec.mentions += 1;
+          stats.kept += 1;
         }
       }
-      return idx;
+      return { idx, stats };
     }
 
     function buildHierarchy(idx){
@@ -1161,14 +1201,17 @@
       const datasets = await loadDatasets();
       document.getElementById('statDS').textContent = String(datasets.length);
 
-      const idx = buildIndex(datasets);
+      const built = buildIndex(datasets);
+      const idx = built.idx;
+      const stats = built.stats;
       RUNTIME.idx = idx;
+      RUNTIME.stats = stats;
 
       document.getElementById('statCanon').textContent = String(idx.size);
 
       const rootData = buildHierarchy(idx);
       document.getElementById('subtitle').textContent =
-        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories`;
+        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories · filtered ${stats.excluded} noisy label(s)`;
 
       const sb = renderSunburst(rootData, (focus) => setNamesPanelForNode(focus));
       RUNTIME.sb = sb;

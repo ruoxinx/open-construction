@@ -1,7 +1,13 @@
 {
   "aliases": {
-    "hardhat": "hard hat",
-    "helmet": "hard hat",
+    "helmet": "hardhat",
+	"visible dust": "dust",
+	"head protection": "hardhat",
+	"person head": "head",
+	"colored helmet (yellow)": "yellow hardhat",
+	"colored helmet (white)": "white hardhat",
+	"colored helmet (red)": "red hardhat",
+	"colored helmet (blue)": "blue hardhat",
     "hi vis vest": "reflective vest",
     "safety vest": "reflective vest",
     "people": "worker",
@@ -26,6 +32,48 @@
     { "id": "Defects & Damage", "pattern": "\\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\\b" }
   ],
   "label_rules": {
-    "min_arc_px": 46
+    "min_arc_px": 46,
+    "min_arc_px_root": 70,
+    "min_arc_px_zoom": 22
+  },
+  "exclusions": {
+    "min_label_len": 2,
+    "remove_terms": [
+      "object",
+      "objects",
+      "thing",
+      "things",
+      "item",
+      "items",
+      "misc",
+      "miscellaneous",
+      "other",
+      "others",
+      "unknown",
+      "unlabeled",
+      "unlabelled",
+      "background",
+      "void",
+      "none",
+      "null",
+      "n/a",
+      "na",
+      "not applicable",
+      "ignore",
+      "discard",
+      "todo",
+      "tbd"
+    ],
+    "remove_patterns": [
+      "^\\s*$",
+      "^\\d+$",
+      "^\\W+$",
+      "^(?:bg|bkg|background)$",
+      "^(?:other|unknown|misc|miscellaneous)$",
+      "^no\\s*(?:label|labels)?$",
+      "^(?:n\\/?a|na|none|null)$",
+      "^unlabeled$",
+      "^unlabelled$"
+    ]
   }
 }
