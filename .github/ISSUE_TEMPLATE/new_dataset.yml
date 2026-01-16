@@ -1,4 +1,4 @@
-name: New Dataset Suggestion
+name: "New Dataset Submission"
 title: "[Dataset] <dataset name>"
 labels: ["dataset:submission"]
 body:
