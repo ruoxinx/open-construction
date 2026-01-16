@@ -4,22 +4,6 @@ title: "[Dataset] <dataset id> — <dataset name>"
 labels: ["dataset:submission"]
 
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ## Workflow
-        1) Submit this issue form.
-        2) Bot validates and comments feedback.
-        3) Maintainer reviews the issue. If approved, maintainer applies label **dataset:approved**.
-        4) Bot opens a PR that updates **site/data/datasets.json** and stores the dataset image in **assets/img/datasets/**.
-
-        ## Dataset Image Requirement (no links needed)
-        Please attach **one representative image** (sample, teaser, screenshot, figure, or montage) to this issue:
-        - After submitting the issue, **drag & drop** the image into the issue body (or add it as the first comment).
-        - The bot will automatically find the first attached image, rename it to match the Dataset ID, and commit it to:
-          `assets/img/datasets/<DATASET_ID>.<ext>`
-
-        **Accepted formats:** PNG, JPG/JPEG, WEBP
 
   - type: input
     id: dataset_id
