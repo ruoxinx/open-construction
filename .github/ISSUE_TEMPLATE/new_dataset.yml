@@ -1,4 +1,5 @@
 name: "New Dataset Submission"
+description: "Submit a dataset."
 title: "[Dataset] <dataset name>"
 labels: ["dataset:submission"]
 body:
