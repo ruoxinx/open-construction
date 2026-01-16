@@ -1,76 +1,182 @@
 name: New Dataset Suggestion
-description: Propose a new dataset to add to the catalog
 title: "[Dataset] <dataset name>"
-labels: ["new dataset"]
+labels: ["dataset:submission"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Workflow:
+        1) Bot validates this issue and comments feedback.
+        2) Maintainer reviews and applies label **dataset:approved**.
+        3) Bot opens a PR that updates **site/data/datasets.json**.
+
   - type: input
-    id: name
-    attributes: 
-      label: Dataset name
-    validations: 
+    id: dataset_id
+    attributes:
+      label: Dataset ID
+      description: "Unique key in datasets.json. Use letters/numbers/dash only (e.g., MINC-2500)."
+      placeholder: "MINC-2500"
+    validations:
+      required: true
+
+  - type: input
+    id: dataset_name
+    attributes:
+      label: Dataset Name
+      placeholder: "Materials in Context Database-2500"
+    validations:
       required: true
 
   - type: input
     id: year
-    attributes: 
-      label: Release year
-      placeholder: "2023"
+    attributes:
+      label: Year
+      placeholder: "2015"
+    validations:
+      required: true
+
+  - type: textarea
+    id: authors
+    attributes:
+      label: Authors
+      description: "Single string (e.g., 'First Last, First Last')."
+      placeholder: "Sean Bell, Paul Upchurch, Noah Snavely, Kavita Bala"
+    validations:
+      required: true
+
+  - type: input
+    id: doi
+    attributes:
+      label: DOI (optional)
+      placeholder: "https://doi.org/..."
+    validations:
+      required: false
+
+  - type: input
+    id: paper_url
+    attributes:
+      label: Paper URL (optional)
+      placeholder: "https://..."
+    validations:
+      required: false
 
   - type: input
     id: access
-    attributes: 
-      label: Dataset URL / Access link
+    attributes:
+      label: Access URL
+      description: "Direct dataset access or official landing page."
       placeholder: "https://..."
-    validations: 
+    validations:
       required: true
 
   - type: input
     id: license
-    attributes: 
+    attributes:
       label: License
+      description: "Examples: MIT, Apache-2.0, CC BY 4.0, CC0, GPL-3.0"
       placeholder: "CC BY 4.0"
+    validations:
+      required: true
 
   - type: input
-    id: paper
-    attributes: 
-      label: Paper (if available)
-      placeholder: "..."
+    id: data_modality
+    attributes:
+      label: Data Modality
+      placeholder: "Ground RGB"
+    validations:
+      required: true
+
+  - type: textarea
+    id: annotation_types
+    attributes:
+      label: Annotation Types
+      description: "Comma-separated list (e.g., 'classification, segmentation')."
+      placeholder: "classification"
+    validations:
+      required: true
+
+  - type: textarea
+    id: potential_tasks
+    attributes:
+      label: Potential Tasks
+      description: "Comma-separated list."
+      placeholder: "Material classification, Scene understanding"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Contact Information (Required)"
 
   - type: input
-    id: authors
-    attributes: 
-      label: Authors
-      placeholder: "First Author, Second Author, ..."
+    id: submitter_name
+    attributes:
+      label: Submitter Name
+    validations:
+      required: true
 
   - type: input
-    id: doi
-    attributes: 
-      label: DOI / URL
-      placeholder: "https://..."
-
-  - type: textarea
-    id: description
-    attributes: 
-      label: Short description
+    id: submitter_email
+    attributes:
+      label: Submitter Email
+      placeholder: "name@domain.edu"
+    validations:
+      required: true
 
   - type: input
-    id: modality
-    attributes: 
-      label: Data modality
-      placeholder: "RGB, Video, Multispectral…"
+    id: submitter_affiliation
+    attributes:
+      label: Submitter Affiliation
+    validations:
+      required: true
+
+  - type: input
+    id: submitter_github
+    attributes:
+      label: Submitter GitHub (optional)
+      placeholder: "@username"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Authorship (Required)"
+
+  - type: dropdown
+    id: authorship
+    attributes:
+      label: Authorship
+      options:
+        - "I am submitting as an author of this article/dataset"
+        - "I am not an author but have obtained permission to submit as a third party"
+    validations:
+      required: true
 
   - type: textarea
-    id: classes
-    attributes: 
-      label: Object classes (comma separated)
+    id: permission_statement
+    attributes:
+      label: Permission statement (required if third-party)
+      description: "Briefly describe how you obtained permission."
+      placeholder: "Permission was granted by <name/organization> on <date>."
+    validations:
+      required: false
 
-  - type: textarea
-    id: tasks
-    attributes: 
-      label: Potential tasks (comma separated)
+  - type: markdown
+    attributes:
+      value: "## Submission Agreement (All Required)"
 
-  - type: textarea
-    id: additional_info
-    attributes: 
-      label: Additional information
-      description: "Any other notes or context"
+  - type: checkboxes
+    id: agreements
+    attributes:
+      label: Agreements
+      options:
+        - label: "My contact information is current."
+          required: true
+        - label: "I confirm the metadata is accurate to the best of my knowledge."
+          required: true
+        - label: "I confirm the license information is accurate."
+          required: true
+        - label: "This submission contains no private/sensitive information."
+          required: true
+        - label: "I agree this record may be published in OpenConstruction."
+          required: true
