@@ -2911,7 +2911,6 @@
   "annotation_types": ["Project cost", "Project duration"],
   "potential_tasks": ["Cost Optimization"],
   "license": "CC BY 4.0",
-  "geographical_location":"",
   "paper": "Project Scheduling to Minimize the Time and Cost in Large-Scale Construction Projects with Repulsion-Based Improved Arithmetic Optimization",
   "doi": "https://doi.org/10.1108/ECAM-06-2022-0601",
   "access": "https://github.com/Abdikrim/Case-study-problems",
@@ -2919,6 +2918,5 @@
   "added_date": "2026-01-17",
   "contributor": "Vedat Toğan",
 "contributor_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en"
-},
-
+}
 }
