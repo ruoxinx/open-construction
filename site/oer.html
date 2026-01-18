@@ -429,7 +429,16 @@ function render(items){
 
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
-          <div class="meta mb-1">${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${o.year || '—'}</div>
+          ${(() => {
+			  const year = o.year || '—';
+			  const license = o.license && String(o.license).trim();
+			  return `
+				<div class="meta mb-1">
+				  ${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${year}
+				  ${license ? ` · ${license}` : ''}
+				</div>
+			  `;
+			})()}
           ${tagsHTML}
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
             ${o.source?`<a class="btn btn-sm btn-primary" href="${o.source}" target="_blank" rel="noopener">View resource</a>`:''}

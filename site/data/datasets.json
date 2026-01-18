@@ -2773,7 +2773,7 @@
   "name": "Indoor FireRescue Rada (IFR) dataset",
   "authors": "Kangkang Duan, Zehao Zhu, Zhengbo Zou",
   "year": 2025,
-  "num_images": "27000",
+  "num_images": "27,000",
   "data_modality": "Ground RGB, Point Cloud",
   "annotation_types": ["3D bounding box"],
   "potential_tasks": ["3D Object Detection"],

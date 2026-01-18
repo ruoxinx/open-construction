@@ -1211,7 +1211,7 @@
 
       const rootData = buildHierarchy(idx);
       document.getElementById('subtitle').textContent =
-        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories · filtered ${stats.excluded} noisy label(s)`;
+        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories`;
 
       const sb = renderSunburst(rootData, (focus) => setNamesPanelForNode(focus));
       RUNTIME.sb = sb;
