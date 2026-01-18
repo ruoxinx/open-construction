@@ -591,5 +591,14 @@
     "link_url": "https://www.tudelft.nl/en/staff/t.yildizli/",
   "image": "https://t.e7096c671.entry.domains/Jxn3nQefLijynujFnwyuxX1WYNg=/278x371/filters:strip_exif()/https%3A%2F%2Ffilelist.tudelft.nl%2FPersonen%2Fp2a4k8.jpg%3Fhash%3D0cccf8cf03",
   "type": "person"
+  },
+     {
+    "id": "Vedat Toğan",
+    "name": "Vedat Toğan",
+    "role": "Dataset Contributor",
+    "affiliation": "Karadeniz Technical University (Türkiye)",
+    "link_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=G9SF36YAAAAJ&citpid=8",
+  "type": "person"
   }
 ]

@@ -2836,25 +2836,23 @@
   "contributor": "Christoph Emunds",
 "contributor_url": "https://github.com/cemunds"
 },
-"RAOA-DTCTP_ori":
+"DTCTP":
 {
-  "id": "RAOA-DTCTP_ori",
+  "id": "DTCTP",
   "name": "Construction Time–Cost Trade-off Dataset",
   "authors": "Önder Halis Bettemir, M. Talat Birgonul",
   "year": 2025,
   "num_images": "15 projects",
-  "data_modality": "Text",
-  "annotation_types": ["cost"],
+  "data_modality": "Tabular",
+  "annotation_types": ["Project cost", "Project duration"],
   "potential_tasks": ["Cost Optimization"],
-  "num_classes": 1,
-  "classes": ["cost over activities"],
   "license": "Not Specified",
   "geographical_location":"",
   "resolution": "",
   "paper": "Solution of discrete time–cost trade-off problem with adaptive search domain",
   "doi": "https://doi.org/10.1108/ECAM-06-2022-0601",
   "access": "https://drive.google.com/file/d/1ZfAiCvkOmByq5T0nyUxTCsA4C3eEdBrd/view",
-  "image_url": "assets/img/datasets/RAOA-DTCTP_ori.png",
+  "image_url": "assets/img/datasets/DTCTP.png",
   "added_date": "2026-01-11",
   "contributor": "Önder Halis Bettemir",
 "contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr"
@@ -2901,5 +2899,26 @@
   "added_date": "2026-01-17",
   "contributor": "Centre for the Sustainable Built Environment (CSBE)",
   "contributor_url": "https://csbe.civmin.utoronto.ca/"
-}
+},
+"RAOA-DTCTP":
+{
+  "id": "RAOA-DTCTP",
+  "name": "Large-Scale Construction Time–Cost Trade-off Dataset",
+  "authors": "Vedat Toğan, Abdikarim Said Sulub, Mohammad Azim Eirgash, Fatemeh Mostofi",
+  "year": 2025,
+  "num_images": "291 activities",
+  "data_modality": "Tabular",
+  "annotation_types": ["Project cost", "Project duration"],
+  "potential_tasks": ["Cost Optimization"],
+  "license": "CC BY 4.0",
+  "geographical_location":"",
+  "paper": "Project Scheduling to Minimize the Time and Cost in Large-Scale Construction Projects with Repulsion-Based Improved Arithmetic Optimization",
+  "doi": "https://doi.org/10.1108/ECAM-06-2022-0601",
+  "access": "https://github.com/Abdikrim/Case-study-problems",
+  "image_url": "assets/img/datasets/RAOA-DTCTP.png",
+  "added_date": "2026-01-17",
+  "contributor": "Vedat Toğan",
+"contributor_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en"
+},
+
 }
