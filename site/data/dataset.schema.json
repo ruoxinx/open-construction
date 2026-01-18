@@ -88,11 +88,23 @@
         ]
       },
       "authors": {
-        "type": [
-          "string",
-          "null"
-        ]
-      },
+		  "type": ["string", "array", "null"],
+		  "items": {
+			"oneOf": [
+			  { "type": "string" },
+			  {
+				"type": "object",
+				"properties": {
+				  "name": { "type": "string" },
+				  "url": { "type": "string", "format": "uri" }
+				},
+				"required": ["name"],
+				"additionalProperties": false
+			  }
+			]
+		  }
+		}
+		,
       "doi": {
         "type": [
           "string",
