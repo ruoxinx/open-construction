@@ -1171,5 +1171,22 @@
     "added_date": "2026-01-11",
     "contributor": "Christoph Emunds",
   "contributor_url": "https://github.com/cemunds"
+  },
+      {
+    "id": "MultiLabel_SewerDefect_SSL",
+    "title": "SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks",
+    "authors": ["Tugba Yildizli", "Tianlong Jia", "Jeroen Langeveld", "Riccardo Taormina"],
+	"abstract": "Automated sewer defect detection has advanced through deep learning, particularly supervised methods using CCTV images, but based on large annotated datasets. This paper proposes a semi-supervised learning (SSL) approach to reduce labeling demands. The method comprises self-supervised pre-training on unlabeled images using SwAV (Swapping Assignments between multiple Views) followed by fine-tuning for multi-label classification. Experiments on the Sewer-ML dataset demonstrate that the SSL approach, trained on only 35k labeled images, achieves an F1-score of 69.11%, and F2CIW of 54.22%, surpassing the fully supervised baseline trained from scratch on 1.04 million images. Increasing the unlabeled pre-training data further enhances performance, while ImageNet initialization consistently outperforms training from scratch. Self-supervised learning also helps mitigate the effects of mislabeled data, which is observed to be present even in the Sewer-ML ground truth. Overall, self-supervised learning provides an accurate, scalable, and cost-effective alternative to fully supervised approaches, particularly in data-scarce or imperfectly labeled scenarios.",
+    "year": 2026,
+    "modalities": ["Ground RGB"],
+  "tasks": ["Sewer defect classification"],
+    "applications": ["Asset management"],
+    "license": "CC BY-NC-SA 4.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106751",
+    "code_url": "https://github.com/tubayildizli/MultiLabel_SewerDefect_SSL",
+    "thumbnail": "assets/img/models/MultiLabel_SewerDefect_SSL.png",
+    "added_date": "2026-01-17",
+    "contributor": "Tugba Yildizli",
+    "contributor_url": "https://www.tudelft.nl/en/staff/t.yildizli/"
   }
 ]
