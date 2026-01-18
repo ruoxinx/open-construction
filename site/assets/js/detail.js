@@ -201,6 +201,11 @@ async function initDetail(){
 
   const imgSrc = `../assets/img/datasets/${encodeURIComponent(id)}.png`;
   const captionText = ds.sample_caption || ds.caption || 'Sample from the dataset';
+  const noteText = safeText(ds.note);
+	const noteInline = (noteText !== '—')
+	? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
+	: '';
+
 
   const mainHero = `
     <style>
@@ -227,6 +232,7 @@ async function initDetail(){
                  onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
                  class="ds-img" data-zoom-src="${imgSrc}">
             <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
+			${noteInline}
           </figure>
         </div>
         <div class="col-lg-6">
@@ -241,7 +247,6 @@ async function initDetail(){
               ${metaRow('Location', chipLane(ds.geographical_location))}
               ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
               ${metaRow('Classes', chipLane(ds.classes))}
-			  ${metaRow('Note', safeText(ds.note))}
             </dl>
           </div>
         </div>
