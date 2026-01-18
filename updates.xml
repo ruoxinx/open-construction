@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Large-Scale Construction Time–Cost Trade-off Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=RAOA-DTCTP</link>
+    <guid isPermaLink="false">datasets:RAOA-DTCTP:2026-01-17</guid>
+    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:MultiLabel_SewerDefect_SSL:2026-01-17</guid>
@@ -32,8 +40,8 @@
 
   <item>
     <title><![CDATA[Dataset: Construction Time–Cost Trade-off Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=RAOA-DTCTP_ori</link>
-    <guid isPermaLink="false">datasets:RAOA-DTCTP_ori:2026-01-11</guid>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DTCTP</link>
+    <guid isPermaLink="false">datasets:DTCTP:2026-01-11</guid>
     <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:openBIMdisk:2026-01-10</guid>
     <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Building information modeling (BIM) has become prevalent in construction engineering management. However, the efficiency of traditional file-based BIM exchange between multidisciplinary teams remains low due to the transmission of redundant data from mostly unchanged BIM objects. Additionally, the traceability of changes between BIM files is limited. This paper proposes a traceable semantic differential transaction (tSDT) approach for open BIM exchange, which minimizes data redundancy and enables semantic-level traceability of BIM changes. Furthermore, openBIMdisk implements the tSDT and provides a Blockchain 3.0 virtual disk to support efficient, traceable, and secure BIM exchanges across multiple blockchain services. A pilot study of a modular construction project demonstrated the effectiveness of tSDT and open-BIMdisk. Experimental results indicated that tSDT achieved minimal BIM redundancy for storing and restoring all BIM changes, using a sheer 0.007% of disk space on average. openBIMdisk facilitated BIM version management and object-level semantic traceability with a response time of 5.3 ms. The contributions of this paper are twofold. First, tSDT offers a novel and efficient approach for semantic BIM change traceability. Second, openBIMdisk provides BIM practitioners with a Blockchain 3.0 application featuring intuitive and user-friendly interfaces for BIM exchange.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: VoxCity: Grid-based semantic 3D city model generation, and urban environment simulation]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:VoxCity:2026-01-07</guid>
-    <pubDate>Wed, 07 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Three-dimensional urban environment simulation is a powerful tool for informed urban planning. However, the intensive manual effort required to prepare input 3D city models has hindered its widespread adoption. To address this challenge, we present VoxCity, an open-source Python package that provides a one-stop solution for grid-based 3D city model generation and urban environment simulation for cities worldwide. VoxCity’s ‘generator’ subpackage automatically downloads building heights, tree canopy heights, land cover, and terrain elevation within a specified target area, and voxelizes buildings, trees, land cover, and terrain to generate an integrated voxel city model. The ‘simulator’ subpackage enables users to conduct environmental simulations, including solar radiation and view index analyses. Users can export the generated models using several file formats compatible with external software, such as ENVI-met (INX), Blender, and Rhino (OBJ). We generated 3D city models for eight global cities, and demonstrated the calculation of solar irradiance, sky view index, and green view index. We also showcased microclimate simulation and 3D rendering visualization through ENVI-met and Rhino, respectively, through the file export function. Additionally, we reviewed openly available geospatial data to create guidelines to help users choose appropriate data sources depending on their target areas and purposes. VoxCity can significantly reduce the effort and time required for 3D city model preparation and promote the utilization of urban environment simulations. This contributes to more informed urban and architectural design that considers environmental impacts, and in turn, fosters sustainable and livable cities. VoxCity is released openly at https://github.com/kunifujiwara/VoxCity]]></description>
   </item>
   </channel>
 </rss>
