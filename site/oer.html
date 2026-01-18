@@ -317,6 +317,48 @@ function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(
 function normKey(s){ if(s==null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
 function fmtDateISO(d){ try{ const dt=(d instanceof Date)?d:new Date(d); if(isNaN(+dt)) return null; const y=dt.getFullYear(); const m=String(dt.getMonth()+1).padStart(2,'0'); const day=String(dt.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }catch{return null} }
 
+/* ---------------------------
+   License links (canonical)
+--------------------------- */
+const LICENSE_URLS = {
+  'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+  'CC0': 'https://creativecommons.org/public-domain/cc0/',
+  'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+  'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+  'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+  'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+  'MIT': 'https://opensource.org/licenses/MIT',
+  'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+  'MIT License with Commons Clause Restriction':
+    'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+  'FI-NCA': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+  'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+  'BSD 3-Clause': 'https://opensource.org/license/bsd-3-clause',
+  'Academic Use Only (University of Cambridge)':
+    'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+  'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+  'Modified BSD':
+    'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
+  'CC BY-NC-SA 4.0':
+    'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en'
+};
+
+function licenseLinkHTML(license){
+  if (!license) return '';
+
+  const key = String(license).trim();
+  if (!key || key.toLowerCase() === 'unspecified') return '';
+
+  const url = LICENSE_URLS[key];
+  if (!url) return esc(key); // unknown license → plain text
+  return `<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a>`;
+}
+
+
 /*************************
  * State
  *************************/
@@ -429,13 +471,13 @@ function render(items){
 
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
-          ${(() => {
+			${(() => {
 			  const year = o.year || '—';
-			  const license = o.license && String(o.license).trim();
+			  const licHTML = licenseLinkHTML(o.license);
 			  return `
 				<div class="meta mb-1">
 				  ${providerOrAuthors ? providerOrAuthors + ' • ' : ''}${year}
-				  ${license ? ` · ${license}` : ''}
+				  ${licHTML ? ` · ${licHTML}` : ''}
 				</div>
 			  `;
 			})()}
