@@ -112,6 +112,10 @@
         ]
       }
     },
+	"note": {
+	  "type": ["string", "null"],
+	  "description": "Additional notes, caveats, or remarks about the dataset."
+	},
     "required": [
       "id",
       "name"

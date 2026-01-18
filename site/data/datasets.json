@@ -2917,6 +2917,7 @@
   "image_url": "assets/img/datasets/RAOA-DTCTP.png",
   "added_date": "2026-01-17",
   "contributor": "Vedat Toğan",
-"contributor_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en"
+  "contributor_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en",
+  "note": "The dataset is drawn from benchmark instances defined by Bettemir and Birgonul (2025). Experimental data are shared below with authorization from the original source. The full dataset is also accessible in the cited publication (Bettemir & Birgonul, 2025, Eng. Constr. Archit. Manage., 32(2): 1032–1052. https://doi.org/10.1108/ECAM-06-2022-0601)."
 }
 }

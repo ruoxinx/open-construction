@@ -241,6 +241,7 @@ async function initDetail(){
               ${metaRow('Location', chipLane(ds.geographical_location))}
               ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
               ${metaRow('Classes', chipLane(ds.classes))}
+			  ${metaRow('Note', safeText(ds.note))}
             </dl>
           </div>
         </div>
