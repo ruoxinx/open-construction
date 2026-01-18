@@ -347,6 +347,15 @@ const LICENSE_URLS = {
     'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en'
 };
 
+/* Escape helper for safe HTML insertion */
+function esc(s){
+  return String(s)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;');
+}
+
+
 function licenseLinkHTML(license){
   if (!license) return '';
 
