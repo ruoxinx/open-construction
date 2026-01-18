@@ -596,9 +596,18 @@
     "id": "Vedat Toğan",
     "name": "Vedat Toğan",
     "role": "Dataset Contributor",
-    "affiliation": "Karadeniz Technical University (Türkiye)",
+    "affiliation": "Karadeniz Technical University (Turkey)",
     "link_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en",
   "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=G9SF36YAAAAJ&citpid=8",
+  "type": "person"
+  },
+     {
+    "id": "Önder Halis Bettemir",
+    "name": "Önder Halis Bettemir",
+    "role": "Dataset Contributor",
+    "affiliation": "İnönü University (Turkey)",
+    "link_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr",
+  "image": "https://admin.inonu.edu.tr/servlet/image/AVATAR/1140/26-05-2025_085807230_225x300.png",
   "type": "person"
   }
 ]
