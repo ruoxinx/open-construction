@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:MultiLabel_SewerDefect_SSL:2026-01-17</guid>
+    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Automated sewer defect detection has advanced through deep learning, particularly supervised methods using CCTV images, but based on large annotated datasets. This paper proposes a semi-supervised learning (SSL) approach to reduce labeling demands. The method comprises self-supervised pre-training on unlabeled images using SwAV (Swapping Assignments between multiple Views) followed by fine-tuning for multi-label classification. Experiments on the Sewer-ML dataset demonstrate that the SSL approach, trained on only 35k labeled images, achieves an F1-score of 69.11%, and F2CIW of 54.22%, surpassing the fully supervised baseline trained from scratch on 1.04 million images. Increasing the unlabeled pre-training data further enhances performance, while ImageNet initialization consistently outperforms training from scratch. Self-supervised learning also helps mitigate the effects of mislabeled data, which is observed to be present even in the Sewer-ML ground truth. Overall, self-supervised learning provides an accurate, scalable, and cost-effective alternative to fully supervised approaches, particularly in data-scarce or imperfectly labeled scenarios.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IFC-based BIM Geometry]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IFCNet</link>
     <guid isPermaLink="false">datasets:IFCNet:2026-01-11</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:VoxCity:2026-01-07</guid>
     <pubDate>Wed, 07 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Three-dimensional urban environment simulation is a powerful tool for informed urban planning. However, the intensive manual effort required to prepare input 3D city models has hindered its widespread adoption. To address this challenge, we present VoxCity, an open-source Python package that provides a one-stop solution for grid-based 3D city model generation and urban environment simulation for cities worldwide. VoxCity’s ‘generator’ subpackage automatically downloads building heights, tree canopy heights, land cover, and terrain elevation within a specified target area, and voxelizes buildings, trees, land cover, and terrain to generate an integrated voxel city model. The ‘simulator’ subpackage enables users to conduct environmental simulations, including solar radiation and view index analyses. Users can export the generated models using several file formats compatible with external software, such as ENVI-met (INX), Blender, and Rhino (OBJ). We generated 3D city models for eight global cities, and demonstrated the calculation of solar irradiance, sky view index, and green view index. We also showcased microclimate simulation and 3D rendering visualization through ENVI-met and Rhino, respectively, through the file export function. Additionally, we reviewed openly available geospatial data to create guidelines to help users choose appropriate data sources depending on their target areas and purposes. VoxCity can significantly reduce the effort and time required for 3D city model preparation and promote the utilization of urban environment simulations. This contributes to more informed urban and architectural design that considers environmental impacts, and in turn, fosters sustainable and livable cities. VoxCity is released openly at https://github.com/kunifujiwara/VoxCity]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: AEC Objects in IFC-based BIM Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=AEC_Objects_in_IFC-based_BIM</link>
-    <guid isPermaLink="false">datasets:AEC_Objects_in_IFC-based_BIM:2025-12-30</guid>
-    <pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
