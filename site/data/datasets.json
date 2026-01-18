@@ -2839,7 +2839,7 @@
 "RAOA-DTCTP_ori":
 {
   "id": "RAOA-DTCTP_ori",
-  "name": "Construction Time–Cost Trade-off (Original Dataset)",
+  "name": "Construction Time–Cost Trade-off Dataset",
   "authors": "Önder Halis Bettemir, M. Talat Birgonul",
   "year": 2025,
   "num_images": "15 projects",
@@ -2857,5 +2857,26 @@
   "image_url": "assets/img/datasets/RAOA-DTCTP_ori.png",
   "added_date": "2026-01-11",
   "contributor": "Önder Halis Bettemir",
-"contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr"}
+"contributor_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr"
+},
+"CCS-ResourceUse":
+{
+  "id": "CCS-ResourceUse",
+  "name": "Construction classification system database",
+  "authors": "Gursans Guven, Aldrick Arceo, Allison Bennett, Melanie Tham, Bolaji Olanrewaju, Molly McGrail, Kaan Isin, Alexander W. Olson, Shoshanna Saxe",
+  "year": 2022,
+  "num_images": "70 buildings",
+  "data_modality": "Tabular",
+  "annotation_types": ["Material quantities", "Material types", "Country", "City", "Construction date", "Building type", "Contributor", "Floor level", "MasterFormat", "UniFormat"],
+  "potential_tasks": ["Material flow analysis"],
+  "license": "CC BY 4.0",
+  "geographical_location":"Canada, U.S",
+  "paper": "A construction classification system database for understanding resource use in building construction",
+  "doi": "https://doi.org/10.1038/s41597-022-01141-8",
+  "access": "https://zenodo.org/records/7850125",
+  "image_url": "assets/img/datasets/CCS-ResourceUse.png",
+  "added_date": "2026-01-17",
+  "contributor": "Centre for the Sustainable Built Environment (CSBE)",
+"contributor_url": "https://csbe.civmin.utoronto.ca/"
+}
 }
