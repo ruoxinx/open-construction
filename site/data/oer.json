@@ -370,8 +370,27 @@
 	  "publisher": "",
 	  "institutions": ["University of Washington"],
 	  "added": "2025-11-09"
-	}
-
-
+	},
+	{
+	  "id": "mn-dot-introduction-to-plan-reading",
+	  "title": "Introduction to Bridge Plan Reading",
+	  "provider": "Minnesota Department of Transportation (MnDOT) eLearning Services",
+	  "year": 2021,
+	  "source": "https://www.dot.mn.gov/onlinelearning/bridge/Plan%20Reading/story.html",
+	  "image": "assets/img/oer/mn-dot-introduction-to-plan-reading.png",
+	  "language": ["English"],
+	  "topics": [
+		"Plan Reading",
+		"Bridge Engineering",
+		"Construction Documentation",
+		"Transportation Infrastructure"
+	  ],
+	  "license": "Proprietary (Government Training Material)",
+	  "media": ["Text/HTML",
+		"Interactive eLearning"],
+	  "publisher": "Minnesota Department of Transportation",
+	  "institutions": ["Minnesota Department of Transportation"],
+	  "added": "2026-01-18"
+}
   ]
 }
