@@ -582,5 +582,14 @@
     "link_url": "https://github.com/cemunds",
   "image": "https://avatars.githubusercontent.com/u/8558936?v=4",
   "type": "person"
+  },
+     {
+    "id": "Tugba Yildizli",
+    "name": "Tugba Yildizli",
+    "role": "Model Contributor",
+    "affiliation": "Delft University of Technology (Netherlands)",
+    "link_url": "https://www.tudelft.nl/en/staff/t.yildizli/",
+  "image": "https://t.e7096c671.entry.domains/Jxn3nQefLijynujFnwyuxX1WYNg=/278x371/filters:strip_exif()/https%3A%2F%2Ffilelist.tudelft.nl%2FPersonen%2Fp2a4k8.jpg%3Fhash%3D0cccf8cf03",
+  "type": "person"
   }
 ]
