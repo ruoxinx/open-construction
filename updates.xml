@@ -23,7 +23,7 @@
   </item>
 
   <item>
-    <title><![CDATA[Model: SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks]]></title>
+    <title><![CDATA[Model: Self-supervised learning for multi-label sewer defect classification]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:MultiLabel_SewerDefect_SSL:2026-01-17</guid>
     <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
