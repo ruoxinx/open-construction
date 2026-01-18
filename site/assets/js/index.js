@@ -80,6 +80,7 @@ function canonicalizeModalityLabel(raw){
   const hasText    = has(/\btext\b|\bdocument\b|\bpdf\b|\bcode\b|\bnlp\b|\btextual\b/);
   const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
   const hasGeospatial = has(/\bgeospatial\b|\bgis\b|shapefile|geojson|geodatabase|geopackage|orthomosaic|orthophoto|dem\b|dsm\b|dtm\b|georeferenc(?:e|ed)|topograph(?:y|ic)|cartograph(?:y|ic)/);
+  const hasTabular = has(/\btabular\b|\btable\b|\bspreadsheet\b|\bcsv\b|\bxls\b|\bxlsx\b|\bparquet\b|\btsv\b|\brelational\b|\bdatabase\b|\bsql\b/);
 
 
 
@@ -97,6 +98,7 @@ function canonicalizeModalityLabel(raw){
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
   if (hasRasterCAD) return 'Rasterized CAD';
   if (hasSynthetic) return 'Synthetic';
+  if (hasTabular) return 'Tabular';
   if (hasText)    return 'Text';
   if (hasGeospatial) return 'Geospatial Data';
   return 'Other';
