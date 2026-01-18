@@ -35,13 +35,76 @@ function safeText(val){
   return txt;
 }
 
-function authorListHtml(val){
-  const txt = safeText(val);
+// Authors can be provided as:
+// 1) string: "A, B, C"
+// 2) array of strings: ["A", "B"]
+// 3) array of objects: [{ name:"A", url:"https://..." }, ...]
+// 4) string/array + ds.author_urls as a map: {"A":"https://..."}
+// 5) string/array + ds.author_urls as an aligned array: ["https://...", "", ...]
+function authorListHtml(authorsVal, authorUrls){
+  const txt = safeText(authorsVal);
   if (txt === '—') return '';
-  const names = Array.isArray(val) ? val : String(val).split(',');
-  const clean = names.map(n => n.trim()).filter(Boolean);
+
+  // Case (3): array of objects
+  if (Array.isArray(authorsVal) && authorsVal.length && typeof authorsVal[0] === 'object' && authorsVal[0] !== null) {
+    const items = authorsVal
+      .map(a => ({ name: safeText(a?.name), url: a?.url ? String(a.url).trim() : '' }))
+      .filter(a => a.name && a.name !== '—');
+    if (!items.length) return '';
+    return items.map(({name, url}) => {
+      const safeName = escapeHtml(name);
+      const safeUrl = safeHref(url);
+      return `<div class="mb-1">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</div>`;
+    }).join('');
+  }
+
+  const names = Array.isArray(authorsVal) ? authorsVal : String(authorsVal).split(',');
+  const clean = names.map(n => String(n).trim()).filter(Boolean);
   if (!clean.length) return '';
-  return clean.map(n => `<div class="mb-1">${n}</div>`).join('');
+
+  // Build name -> url resolver from authorUrls
+  const urlByName = new Map();
+  if (authorUrls && typeof authorUrls === 'object') {
+    if (Array.isArray(authorUrls)) {
+      // aligned list
+      clean.forEach((name, i) => {
+        const u = authorUrls[i];
+        if (u) urlByName.set(name, String(u).trim());
+      });
+    } else {
+      // map
+      Object.entries(authorUrls).forEach(([k, v]) => {
+        if (!k) return;
+        if (!v) return;
+        urlByName.set(String(k).trim(), String(v).trim());
+      });
+    }
+  }
+
+  return clean.map((name) => {
+    const safeName = escapeHtml(name);
+    const safeUrl = safeHref(urlByName.get(name) || '');
+    return `<div class="mb-1">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</div>`;
+  }).join('');
+}
+
+// ---------- tiny sanitizers ----------
+function escapeHtml(s){
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function safeHref(href){
+  if (!href) return '';
+  const raw = String(href).trim();
+  try {
+    const u = new URL(raw);
+    if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+  } catch {}
+  return '';
 }
 
 function formatLicense(licVal){
@@ -61,8 +124,8 @@ function formatLicense(licVal){
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
     'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
     'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-	'MIT License with Commons Clause Restriction':'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
-	'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en'
+    'MIT License with Commons Clause Restriction':'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en'
   };
   if (licenseMap[key]) {
     return `<a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a>`;
@@ -198,7 +261,7 @@ async function initDetail(){
   // Sidebar (conditionally rendered)
   const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
   const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
-  const authorBlock = authorListHtml(ds.authors);
+  const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
 
   const sidebar = `
     <div class="position-sticky" style="top:88px">
