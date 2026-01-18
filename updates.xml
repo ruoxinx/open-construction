@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Construction classification system database]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=CCS-ResourceUse</link>
+    <guid isPermaLink="false">datasets:CCS-ResourceUse:2026-01-17</guid>
+    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IFC-based BIM Geometry]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IFCNet</link>
     <guid isPermaLink="false">datasets:IFCNet:2026-01-11</guid>
@@ -15,7 +23,7 @@
   </item>
 
   <item>
-    <title><![CDATA[Dataset: Construction Time–Cost Trade-off (Original Dataset)]]></title>
+    <title><![CDATA[Dataset: Construction Time–Cost Trade-off Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=RAOA-DTCTP_ori</link>
     <guid isPermaLink="false">datasets:RAOA-DTCTP_ori:2026-01-11</guid>
     <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=AEC_Objects_in_IFC-based_BIM</link>
     <guid isPermaLink="false">datasets:AEC_Objects_in_IFC-based_BIM:2025-12-30</guid>
     <pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Indoor FireRescue Rada (IFR) dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=IFR_Dataset</link>
-    <guid isPermaLink="false">datasets:IFR_Dataset:2025-12-29</guid>
-    <pubDate>Mon, 29 Dec 2025 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
