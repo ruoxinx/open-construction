@@ -5,11 +5,19 @@
       "children": [
         {
           "id": "Construction Personnel",
-          "pattern": "\\b(worker|person|people|human|laborer|foreman|operator)\\b"
+          "pattern": "\\\\b(worker|person|people|human|laborer|foreman|operator)\\\\b"
         },
         {
           "id": "Inspection & Safety Staff",
-          "pattern": "\\b(inspector|safety)\\b"
+          "pattern": "\\\\b(inspector|safety)\\\\b"
+        },
+        {
+          "id": "Public / Pedestrians",
+          "pattern": "\\b(pedestrian|passerby|crowd)\\b"
+        },
+        {
+          "id": "Body Parts",
+          "pattern": "\\b(head|face|hand|arm|leg|foot)\\b"
         }
       ]
     },
@@ -18,35 +26,51 @@
       "children": [
         {
           "id": "Head Protection",
-          "pattern": "\\b(hard\\s*hat|hardhat|helmet)\\b"
+          "pattern": "\\\\b(hard\\\\s*hat|hardhat|helmet|hat)\\\\b"
         },
         {
           "id": "Eye & Face Protection",
-          "pattern": "\\b(goggle|face\\s*shield|face\\s*protection)\\b"
+          "pattern": "\\\\b(goggle|face\\s*shield|face\\s*protection)\\\\b"
         },
         {
           "id": "Hand Protection",
-          "pattern": "\\b(glove)\\b"
+          "pattern": "\\\\b(glove)\\\\b"
         },
         {
           "id": "Foot Protection",
-          "pattern": "\\b(boot|safety\\s*boot)\\b"
+          "pattern": "\\\\b(boot|safety\\s*boot)\\\\b"
         },
         {
           "id": "Fall Protection",
-          "pattern": "\\b(harness|lanyard|lifeline)\\b"
+          "pattern": "\\\\b(harness|lanyard|lifeline)\\\\b"
         },
         {
           "id": "High-Visibility Apparel",
-          "pattern": "\\b(hi\\s*vis|high\\s*visibility|reflective\\s*vest|safety\\s*vest|vest)\\b"
+          "pattern": "\\\\b(hi\\\\s*vis|high\\\\s*visibility|reflective\\\\s*vest|safety\\\\s*vest)\\\\b"
         },
         {
           "id": "Traffic Control & Barricades",
-          "pattern": "\\b(traffic\\s*cone|cone|barricade|barrier)\\b"
+          "pattern": "\\\\b(traffic\\s*cone|cone|barricade|barrier)\\\\b"
         },
         {
           "id": "Safety Signage",
-          "pattern": "\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign)\\b"
+          "pattern": "\\\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign)\\\\b"
+        },
+        {
+          "id": "Respiratory Protection",
+          "pattern": "(?:\\\\b(mask|respirator|dust\\\\s*mask)\\\\b)|(?:\\b(mask|respirator)\\b)"
+        },
+        {
+          "id": "Hearing Protection",
+          "pattern": "(?:\\\\b(earplug|ear\\\\s*muff|earmuff|hearing\\\\s*protection)\\\\b)|(?:\\b(ear\\s*plug|earplug|earmuff)\\b)"
+        },
+        {
+          "id": "Work Zone Monitoring",
+          "pattern": "\\\\b(particle\\\\s*monitor|gas\\\\s*monitor|noise\\\\s*meter)\\\\b"
+        },
+        {
+          "id": "Protective Clothing",
+          "pattern": "(?:(?:\\b(clothes|clothing|apparel)\\b)|(?:\\b(clothes|clothing|apparel|coverall|overalls)\\b))|(?:\\b(clothing|clothes|apparel)\\b)"
         }
       ]
     },
@@ -55,27 +79,43 @@
       "children": [
         {
           "id": "Earthmoving Equipment",
-          "pattern": "\\b(excavator|bulldozer|dozer|loader|skid\\s*steer|grader|backhoe)\\b"
+          "pattern": "\\\\b(excavator|bulldozer|dozer|loader|skid\\s*steer|grader|backhoe)\\\\b"
         },
         {
           "id": "Lifting & Hoisting Equipment",
-          "pattern": "\\b(crane|tower\\s*crane|truck\\s*crane|mobile\\s*crane|hook|outtrigger)\\b"
+          "pattern": "\\\\b(crane|tower\\s*crane|truck\\s*crane|mobile\\s*crane|hook|outtrigger)\\\\b"
         },
         {
           "id": "Concrete Equipment",
-          "pattern": "\\b(concrete\\s*mixer|mixer\\s*truck|pump\\s*truck)\\b"
+          "pattern": "(?:\\\\b(concrete\\\\s*mixer|mixer\\\\s*truck|pump\\\\s*truck|mixer)\\\\b)|(?:\\b(mixer)\\b)"
         },
         {
           "id": "Compaction & Paving",
-          "pattern": "\\b(roller|compactor)\\b"
+          "pattern": "\\\\b(roller|compactor)\\\\b"
         },
         {
           "id": "Transport Vehicles",
-          "pattern": "\\b(dump\\s*truck|truck|car|bus)\\b"
+          "pattern": "(?:(?:\\\\b(dump\\s*truck|truck|car|bus)\\\\b)|(?:\\b(motorcycle|bike|vehicle)\\b))|(?:\\b(forklift)\\b)"
         },
         {
           "id": "Attachments & Components",
-          "pattern": "\\b(bucket|boom\\s*arm|arm\\s*bucket)\\b"
+          "pattern": "(?:\\\\b(bucket|boom\\s*arm|arm\\s*bucket)\\\\b)|(?:\\b(body\\s*end|cab\\s*boom)\\b)"
+        },
+        {
+          "id": "Processing & Demolition Equipment",
+          "pattern": "(?:\\\\b(crusher|breaker|demolition)\\\\b)|(?:\\b(crusher)\\b)"
+        },
+        {
+          "id": "Material Processing Components",
+          "pattern": "\\\\b(hopper)\\\\b"
+        },
+        {
+          "id": "Vehicle Components",
+          "pattern": "(?:\\\\b(muffler|exhaust)\\\\b)|(?:\\b(muffler)\\b)"
+        },
+        {
+          "id": "Drilling & Augering Equipment",
+          "pattern": "(?:\\\\b(earth\\\\s*auger|auger)\\\\b)|(?:\\b(auger|earth\\s*auger)\\b)"
         }
       ]
     },
@@ -84,15 +124,19 @@
       "children": [
         {
           "id": "Hand Tools",
-          "pattern": "\\b(hammer|wrench|spanner|shovel|trowel|saw|knife)\\b"
+          "pattern": "\\\\b(hammer|wrench|spanner|shovel|trowel|saw|knife)\\\\b"
         },
         {
           "id": "Power Tools",
-          "pattern": "\\b(drill|grinder|cutter)\\b"
+          "pattern": "(?:\\\\b(drill|grinder|cutter)\\\\b)|(?:\\b(tacker|nail\\s*gun|staple\\s*gun)\\b)"
         },
         {
           "id": "Measuring & Layout Tools",
-          "pattern": "\\b(level|measuring|survey)\\b"
+          "pattern": "\\\\b(level|measuring|survey)\\\\b"
+        },
+        {
+          "id": "Fastening Tools",
+          "pattern": "\\\\b(tacker|stapler|nailer)\\\\b"
         }
       ]
     },
@@ -101,23 +145,43 @@
       "children": [
         {
           "id": "Scaffolding & Access",
-          "pattern": "\\b(scaffold|scaffolding|ladder)\\b"
+          "pattern": "(?:\\\\b(scaffold|scaffolding|ladder)\\\\b)|(?:\\b(platform|runner|bearer|caster|top\\s*rail|mid\\s*rail|toeboard|toe\\s*board)\\b)"
         },
         {
           "id": "Formwork & Shoring",
-          "pattern": "\\b(formwork|shoring)\\b"
+          "pattern": "\\\\b(formwork|shoring)\\\\b"
         },
         {
           "id": "Fencing & Barriers",
-          "pattern": "\\b(fence|fencing)\\b"
+          "pattern": "\\\\b(fence|fencing)\\\\b"
         },
         {
           "id": "Storage & Waste",
-          "pattern": "\\b(container|skip\\s*bin|waste\\s*container|rubbish\\s*bin|pallet)\\b"
+          "pattern": "(?:(?:\\\\b(container|skip\\s*bin|waste\\s*container|rubbish\\s*bin|pallet)\\\\b)|(?:\\b(hopper|skip\\s*bin|waste\\s*container|container)\\b))|(?:\\b(waste|general\\s*waste)\\b)"
         },
         {
           "id": "Roadway & Site Elements",
-          "pattern": "\\b(road|lane|curb|zebra\\s*crossing|bus\\s*stop|side\\s*path)\\b"
+          "pattern": "\\\\b(road|lane|curb|zebra\\s*crossing|bus\\s*stop|side\\s*path)\\\\b"
+        },
+        {
+          "id": "Edge Protection",
+          "pattern": "\\\\b(toeboard|toe\\\\s*board|guardrail|handrail)\\\\b"
+        },
+        {
+          "id": "Rigging & Lifting Accessories",
+          "pattern": "(?:\\\\b(rope|sling|shackle|chain)\\\\b)|(?:\\b(rope|sling|shackle|rigging)\\b)"
+        },
+        {
+          "id": "Material Handling Aids",
+          "pattern": "(?:\\\\b(handcart|trolley|wheelbarrow)\\\\b)|(?:\\b(handcart|wheel\\s*cart|trolley|cart)\\b)"
+        },
+        {
+          "id": "Utilities & Services",
+          "pattern": "(?:\\\\b(utility)\\\\b)|(?:\\b(utility|utilities)\\b)"
+        },
+        {
+          "id": "Temporary Power & Cords",
+          "pattern": "(?:\\\\b(cord\\\\s*reel|extension\\\\s*cord)\\\\b)|(?:\\b(cord\\s*reel)\\b)"
         }
       ]
     },
@@ -126,23 +190,27 @@
       "children": [
         {
           "id": "Foundations",
-          "pattern": "\\b(foundation|footing|pile|pier)\\b"
+          "pattern": "\\\\b(foundation|footing|pile|pier)\\\\b"
         },
         {
           "id": "Columns & Vertical Members",
-          "pattern": "\\b(column|pillar)\\b"
+          "pattern": "\\\\b(column|pillar)\\\\b"
         },
         {
           "id": "Beams & Girders",
-          "pattern": "\\b(beam|girder|i\\s*beam)\\b"
+          "pattern": "\\\\b(beam|girder|i\\s*beam)\\\\b"
         },
         {
           "id": "Slabs & Decks",
-          "pattern": "\\b(slab|deck)\\b"
+          "pattern": "\\\\b(slab|deck)\\\\b"
         },
         {
           "id": "Connections & Reinforcement",
-          "pattern": "\\b(rebar|reinforcing\\s*bar|reinforcement\\s*bar|reinforcing\\s*mesh|fastener|plate|brace|bracing)\\b"
+          "pattern": "(?:\\\\b(rebar|reinforcing\\s*bar|reinforcement\\s*bar|reinforcing\\s*mesh|fastener|plate|brace|bracing|square\\\\s*tube|tube)\\\\b)|(?:\\b(mesh)\\b)"
+        },
+        {
+          "id": "Prefabricated & Precast Components",
+          "pattern": "\\b(precast|prefab|precast\\s*component|precast\\s*panel)\\b"
         }
       ]
     },
@@ -151,23 +219,55 @@
       "children": [
         {
           "id": "Walls & Partitions",
-          "pattern": "\\b(wall|cmu\\s*wall|partition)\\b"
+          "pattern": "\\\\b(wall|cmu\\s*wall|partition)\\\\b"
         },
         {
           "id": "Doors & Windows",
-          "pattern": "\\b(door|window|curtain\\s*wall|curtainwall)\\b"
+          "pattern": "\\\\b(door|window|curtain\\s*wall|curtainwall)\\\\b"
         },
         {
           "id": "Roofs",
-          "pattern": "\\b(roof)\\b"
+          "pattern": "\\\\b(roof)\\\\b"
         },
         {
           "id": "Interior Finishes",
-          "pattern": "\\b(tile|carpet|wallpaper|plaster|gypsum|drywall|ceiling)\\b"
+          "pattern": "\\\\b(tile|carpet|wallpaper|plaster|gypsum|drywall|ceiling)\\\\b"
         },
         {
           "id": "Openings",
-          "pattern": "\\b(opening|opening\\s*hole|opening\\s*corner)\\b"
+          "pattern": "\\\\b(opening|opening\\s*hole|opening\\s*corner)\\\\b"
+        },
+        {
+          "id": "Stairs & Ramps",
+          "pattern": "(?:\\\\b(stair|stairs|staircase|ramp)\\\\b)|(?:\\b(stair|stairs|staircase|ramp)\\b)"
+        },
+        {
+          "id": "Railings & Guards",
+          "pattern": "(?:\\\\b(railing|handrail|guardrail|balcony)\\\\b)|(?:\\b(railing|handrail|guard\\s*rail|guardrail|balustrade)\\b)"
+        },
+        {
+          "id": "Floors",
+          "pattern": "(?:\\\\b(floor)\\\\b)|(?:\\b(floor)\\b)"
+        },
+        {
+          "id": "Building Context",
+          "pattern": "(?:\\\\b(building)\\\\b)|(?:\\b(building|facility|housing|block|tower|structure)\\b)"
+        },
+        {
+          "id": "Furniture & Fixtures",
+          "pattern": "(?:(?:\\\\b(furniture|chair|table)\\\\b)|(?:\\b(furniture|fixture|letterbox|mailbox|cabinet|shelf|mirror)\\b))|(?:\\b(desk|chair)\\b)"
+        },
+        {
+          "id": "Façade & Cladding",
+          "pattern": "(?:\\\\b(facade|façade|cladding)\\\\b)|(?:\\b(facade|fa\\u00e7ade|cladding)\\b)"
+        },
+        {
+          "id": "Building Exterior Elements",
+          "pattern": "\\b(balcony)\\b"
+        },
+        {
+          "id": "Shading Devices",
+          "pattern": "\\b(shadingdevice|shading\\s*device)\\b"
         }
       ]
     },
@@ -176,19 +276,19 @@
       "children": [
         {
           "id": "Electrical",
-          "pattern": "\\b(electric|electrical|lighting|light|luminaire|panel|distribution board|switch|outlet|receptacle|breaker|conduit|cable|wire|tray|junction box|meter|transformer|generator|ups|switchgear|motor)\\b"
+          "pattern": "\\\\b(electric|electrical|lighting|light|luminaire|panel|distribution board|switch|outlet|receptacle|breaker|conduit|cable|wire|tray|junction box|meter|transformer|generator|ups|switchgear|motor)\\\\b"
         },
         {
           "id": "HVAC",
-          "pattern": "\\b(hvac|air\\s*terminal|air\\s*terminal\\s*box|duct|diffuser|grille|damper|ahu|chiller|boiler|fan\\b|vav\\b|fcu\\b|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
+          "pattern": "\\\\b(hvac|air\\s*terminal|air\\s*terminal\\s*box|duct|diffuser|grille|damper|ahu|chiller|boiler|fan\\b|vav\\b|fcu\\b|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\\\b"
         },
         {
           "id": "Plumbing",
-          "pattern": "\\b(plumbing|pipe|pipe\\s*fitting|pipe\\s*segment|valve|pump\\b|tank\\b|sanitary|waste\\s*terminal|hydrant\\b|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\b"
+          "pattern": "\\\\b(plumbing|pipe|pipe\\s*fitting|pipe\\s*segment|valve|pump\\b|tank\\b|sanitary|waste\\s*terminal|hydrant\\b|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\\\b"
         },
         {
           "id": "Fire Protection",
-          "pattern": "\\b(fire\\s*alarm|alarm\\b|sprinkler|standpipe|hose\\s*reel|extinguisher|fire\\s*hydrant|suppression|call\\s*point|smoke\\s*detector|detector)\\b"
+          "pattern": "(?:\\\\b(fire\\s*alarm|alarm\\b|sprinkler|standpipe|hose\\s*reel|extinguisher|fire\\s*hydrant|suppression|call\\s*point|smoke\\s*detector|detector)\\\\b)|(?:\\b(fire\\s*blanket|hidden\\s*fire\\s*equipment)\\b)"
         }
       ]
     },
@@ -197,31 +297,55 @@
       "children": [
         {
           "id": "Concrete & Cementitious",
-          "pattern": "\\b(concrete|cement|asphalt|mortar)\\b"
+          "pattern": "\\\\b(concrete|cement|asphalt|mortar)\\\\b"
         },
         {
           "id": "Steel & Metals",
-          "pattern": "\\b(steel|metal)\\b"
+          "pattern": "(?:\\\\b(steel|metal)\\\\b)|(?:\\b(tube|square\\s*tube)\\b)"
         },
         {
           "id": "Wood & Timber",
-          "pattern": "\\b(wood|timber)\\b"
+          "pattern": "\\\\b(wood|timber)\\\\b"
         },
         {
           "id": "Masonry",
-          "pattern": "\\b(brick|masonry|stone)\\b"
+          "pattern": "\\\\b(brick|masonry|stone)\\\\b"
         },
         {
           "id": "Insulation & Membranes",
-          "pattern": "\\b(insulation|membrane|pe\\s*membrane|foaming\\s*insulation)\\b"
+          "pattern": "\\\\b(insulation|membrane|pe\\s*membrane|foaming\\s*insulation)\\\\b"
         },
         {
           "id": "Glass & Plastics",
-          "pattern": "\\b(glass|plastic)\\b"
+          "pattern": "\\\\b(glass|plastic)\\\\b"
         },
         {
           "id": "Surface Treatments",
-          "pattern": "\\b(exposed\\s*aggregate|broomiong|paint|painting|coating)\\b"
+          "pattern": "(?:\\\\b(exposed\\\\s*aggregate|brooming|paint|painting|coating)\\\\b)|(?:\\b(brooming)\\b)"
+        },
+        {
+          "id": "Sheet Goods & Boards",
+          "pattern": "(?:\\\\b(plasterboard|gypsum\\\\s*board|drywall|board|cardboard)\\\\b)|(?:\\b(board|panel|plywood|sheet\\s*goods|plaster\\s*board)\\b)"
+        },
+        {
+          "id": "Textiles & Fabrics",
+          "pattern": "(?:\\\\b(fabric)\\\\b)|(?:\\b(fabric|textile|geotextile|cloth|canvas|leather)\\b)"
+        },
+        {
+          "id": "Ceramics",
+          "pattern": "\\\\b(ceramic)\\\\b"
+        },
+        {
+          "id": "Aggregates & Soils",
+          "pattern": "(?:\\\\b(fill\\\\s*dirt|soil|aggregate)\\\\b)|(?:\\b(fill\\s*dirt)\\b)"
+        },
+        {
+          "id": "Ceramics & Stone",
+          "pattern": "\\b(ceramic|porcelain|tile|stone|polished\\s*stone|granite|marble)\\b"
+        },
+        {
+          "id": "Packaging & Cardboard",
+          "pattern": "\\b(cardboard)\\b"
         }
       ]
     },
@@ -230,19 +354,31 @@
       "children": [
         {
           "id": "Cracking",
-          "pattern": "\\b(crack|cracking)\\b"
+          "pattern": "\\\\b(crack|cracking)\\\\b"
         },
         {
           "id": "Spalling & Delamination",
-          "pattern": "\\b(spall|spalling|delamination)\\b"
+          "pattern": "\\\\b(spall|spalling|delamination)\\\\b"
         },
         {
           "id": "Corrosion",
-          "pattern": "\\b(corrosion|rust)\\b"
+          "pattern": "\\\\b(corrosion|rust)\\\\b"
         },
         {
           "id": "Potholes & Raveling",
-          "pattern": "\\b(pothole|ravelling|rutting)\\b"
+          "pattern": "\\\\b(pothole|ravelling|rutting)\\\\b"
+        },
+        {
+          "id": "Thermal Bridging",
+          "pattern": "\\\\b(thermal\\\\s*bridge)\\\\b"
+        },
+        {
+          "id": "Damage Severity",
+          "pattern": "(?:\\\\b(minor\\\\s*damage|severe\\\\s*damage)\\\\b)|(?:\\b(no\\s*damage|very\\s*minor\\s*damage|minor\\s*damage|moderate\\s*damage|severe\\s*damage)\\b)"
+        },
+        {
+          "id": "Surface Distress",
+          "pattern": "\\b(patch|patching|shoving)\\b"
         }
       ]
     },
@@ -251,19 +387,47 @@
       "children": [
         {
           "id": "Equipment Operations",
-          "pattern": "\\b(excavators\\s*(dump|idle|move|load|swing)|dump\\s*trucks\\s*(fill|move))\\b"
+          "pattern": "\\\\b(excavators\\s*(dump|idle|move|load|swing)|dump\\s*trucks\\s*(fill|move))\\\\b"
         },
         {
           "id": "Manual Tasks",
-          "pattern": "\\b(picking|placing|plastering|tiling|masonry\\s*work|handcart\\s*work)\\b"
+          "pattern": "(?:\\\\b(picking|placing|plastering|tiling|masonry\\\\s*work|handcart\\\\s*work|reinforcement\\\\s*work|machine\\\\s*work|commanding\\\\s*work|excavation|earthmoving|leveling|transport\\\\s*work|hoisting|surveying|vacuum\\\\s*cleaning|patch|shoving|jumping\\\\s*down)\\\\b)|(?:\\b(cart\\s*transportation|handcart\\s*work|material\\s*handling)\\b)"
         },
         {
           "id": "Access & Climbing",
-          "pattern": "\\b(climb|climbing|stairs|kneel|crouch|leaning|handsup)\\b"
+          "pattern": "(?:\\\\b(climb|climbing|stairs|kneel|crouch|leaning|handsup)\\\\b)|(?:\\b(reaching\\s*far|stopping\\s*and\\s*leaving\\s*away)\\b)"
         },
         {
           "id": "Unsafe Events",
-          "pattern": "\\b(fall\\s*detected|fall\\s*down|unsafe\\s*activity|no\\s*hardhat|not\\s*wearing\\s*safety)\\b"
+          "pattern": "(?:\\\\b(fall\\s*detected|fall\\s*down|unsafe\\s*activity|no\\s*hardhat|not\\s*wearing\\s*safety)\\\\b)|(?:\\b(no\\s*toeboard|no\\s*toe\\s*board)\\b)"
+        },
+        {
+          "id": "Project Phase",
+          "pattern": "\\b(site\\s*preparation|active\\s*construction|post\\s*construction|no\\s*activity)\\b"
+        },
+        {
+          "id": "General Activities",
+          "pattern": "\\b(stand|standing|walk|walking|talk|talking)\\b"
+        },
+        {
+          "id": "Work Categories",
+          "pattern": "\\b(site\\s*preparation|active\\s*construction|post\\s*construction|machine\\s*work|reinforcement\\s*work|excavation\\s*and\\s*earthmoving\\s*work|leveling\\s*ground\\s*work|transport\\s*work|mechanical\\s*hoisting\\s*work|personnel\\s*hoisting\\s*work|commanding\\s*work|surveying\\s*work)\\b"
+        },
+        {
+          "id": "Surveying & Layout",
+          "pattern": "\\b(surveying\\s*work|survey\\b)\\b"
+        },
+        {
+          "id": "Cleaning & Maintenance",
+          "pattern": "\\b(vacuum\\s*cleaning|cleaning)\\b"
+        },
+        {
+          "id": "Postures & Motions",
+          "pattern": "\\b(jumping\\s*down|laying\\s*back)\\b"
+        },
+        {
+          "id": "Transport Work",
+          "pattern": "\\b(transportation)\\b"
         }
       ]
     },
@@ -272,7 +436,15 @@
       "children": [
         {
           "id": "Regulatory & Warning Signage",
-          "pattern": "\\b(sign|billboard|advertising\\s*board|fire\\s*exit\\s*sign|traffic\\s*signal)\\b"
+          "pattern": "(?:\\\\b(sign|billboard|advertising\\s*board|fire\\s*exit\\s*sign|traffic\\s*signal)\\\\b)|(?:\\b(slogan)\\b)"
+        },
+        {
+          "id": "Symbols & Markings",
+          "pattern": "(?:\\\\b(symbol|marking|label)\\\\b)|(?:\\b(symbol|marking|pictogram)\\b)"
+        },
+        {
+          "id": "Text & Markings",
+          "pattern": "\\b(slogan|text|logo|marking)\\b"
         }
       ]
     },
@@ -281,11 +453,15 @@
       "children": [
         {
           "id": "Airborne Particulates",
-          "pattern": "\\b(dust|smoke|particle\\s*monitor)\\b"
+          "pattern": "\\\\b(dust|smoke|particle\\s*monitor)\\\\b"
         },
         {
           "id": "Environment Context",
-          "pattern": "\\b(sky|tree|foliage|water)\\b"
+          "pattern": "(?:\\\\b(sky|tree|foliage|water)\\\\b)|(?:\\b(bush|bushes|shrub)\\b)"
+        },
+        {
+          "id": "Fire & Smoke",
+          "pattern": "(?:\\\\b(fire|smoke)\\\\b)|(?:\\b(fire|flame|burning|smoke)\\b)"
         }
       ]
     },
@@ -294,11 +470,24 @@
       "children": [
         {
           "id": "Color & Appearance",
-          "pattern": "\\b(color|painted)\\b"
+          "pattern": "\\\\b(color|painted)\\\\b"
         },
         {
           "id": "Quantity & Status",
-          "pattern": "\\b(quantity|status|position|movement|energy|education|health|food)\\b"
+          "pattern": "\\\\b(quantity|status|position|movement|energy|education|health|food)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Civil & Site Infrastructure",
+      "children": [
+        {
+          "id": "Bridges & Structures",
+          "pattern": "(?:\\b(bridge|overpass|viaduct)\\b)|(?:\\b(bridge)\\b)"
+        },
+        {
+          "id": "Roadways & Pavements",
+          "pattern": "\\b(road|street|lane|sidewalk|zebra\\s*crossing|curb)\\b"
         }
       ]
     }
@@ -311,34 +500,66 @@
   "exclusions": {
     "min_label_len": 2,
     "remove_terms": [
+      "1f",
+      "awkward activities",
+      "awkward activity",
       "background",
+      "bleeding",
+      "buildings under construction",
+      "cavity",
       "color",
+      "common activities",
+      "common activity",
       "cost over activities",
       "cost over activity",
       "cycle",
+      "cycles",
+      "delivering the tool",
+      "destruction",
       "discard",
       "education",
       "energy",
       "food",
+      "hair",
+      "hanging object",
+      "head",
       "health",
+      "holding the tool",
       "ignore",
       "item",
       "items",
+      "keyboard",
+      "machinery",
+      "manufactured housing communities (mhc)",
+      "member",
+      "mhc",
       "misc",
       "miscellaneous",
       "mixed",
       "n/a",
       "na",
+      "no activity",
+      "non manufactured housing communities (non mhc)",
+      "non mhc",
+      "non-residential",
       "none",
       "not applicable",
       "null",
       "object",
       "objects",
       "other",
+      "other activities",
+      "other activity",
       "others",
+      "paper",
+      "pc",
       "position",
       "quantity",
+      "residential",
       "sketch",
+      "skin",
+      "slogan",
+      "stand, rest, walk",
       "status",
       "tbd",
       "thing",
@@ -348,7 +569,11 @@
       "unknown",
       "unlabeled",
       "unlabelled",
-      "void"
+      "void",
+      "mouse",
+      "extrude",
+      "covering",
+      "non residential"
     ],
     "remove_patterns": [
       "^\\s*$",
@@ -359,7 +584,8 @@
       "^no\\s*(?:label|labels)?$",
       "^(?:n\\/?a|na|none|null)$",
       "^unlabeled$",
-      "^unlabelled$"
+      "^unlabelled$",
+      "^\\d+[a-z]$"
     ]
   },
   "aliases": {
@@ -378,7 +604,7 @@
     "circular pipes": "circular pipe",
     "climbing stairs": "climbing stair",
     "climbing with two hands": "climbing with two hand",
-    "clothes": "clothe",
+    "clothes": "clothing",
     "colored helmet (blue)": "blue hardhat",
     "colored helmet (red)": "red hardhat",
     "colored helmet (white)": "white hardhat",
@@ -515,7 +741,25 @@
     "colored hardhats (pink)": "pink hardhat",
     "colored helmet (pink)": "pink hardhat",
     "hi-vis vest": "high visibility vest",
-    "reflective vest": "high visibility vest"
+    "reflective vest": "high visibility vest",
+    "stair": "stair",
+    "railing": "railing",
+    "furniture": "furniture",
+    "person helmet": "hard hat",
+    "person no helmet": "no hard hat",
+    "cart transportation": "cart transportation",
+    "other vehicle": "vehicle",
+    "body end": "body end",
+    "cab boom": "cab boom",
+    "polishedstone": "polished stone",
+    "Surveying work": "surveying work",
+    "Minor Damage": "minor damage",
+    "Moderate Damage": "moderate damage",
+    "Severe Damage": "severe damage",
+    "surveying work": "surveying work",
+    "minor damage": "minor damage",
+    "moderate damage": "moderate damage",
+    "severe damage": "severe damage"
   },
   "normalization": {
     "strip_colors": [
@@ -663,13 +907,14 @@
     "typo_map": {
       "broomiong": "brooming",
       "vey": "very",
-      "toprailing": "top railing"
+      "toprailing": "top railing",
+      "surverying": "surveying"
     }
   },
   "category_map": {
     "actuator": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "ahu": {
       "l1": "MEP Systems",
@@ -701,7 +946,7 @@
     },
     "alarm": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Fire Protection"
     },
     "appliance": {
       "l1": "MEP Systems",
@@ -749,7 +994,7 @@
     },
     "coil": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "colored hardhat (blue)": {
       "l1": "PPE & Safety Equipment",
@@ -789,7 +1034,7 @@
     },
     "controller": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "damper": {
       "l1": "MEP Systems",
@@ -817,7 +1062,7 @@
     },
     "electric box": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Electrical"
     },
     "electricappliance": {
       "l1": "MEP Systems",
@@ -873,7 +1118,7 @@
     },
     "flowmeter": {
       "l1": "MEP Systems",
-      "l2": "Electrical"
+      "l2": "HVAC"
     },
     "glove": {
       "l1": "PPE & Safety Equipment",
@@ -887,13 +1132,9 @@
       "l1": "PPE & Safety Equipment",
       "l2": "Head Protection"
     },
-    "hat": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "heatexchanger": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "humidifier": {
       "l1": "MEP Systems",
@@ -905,7 +1146,7 @@
     },
     "lamp": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Electrical"
     },
     "lightfixture": {
       "l1": "MEP Systems",
@@ -915,17 +1156,9 @@
       "l1": "MEP Systems",
       "l2": "Electrical"
     },
-    "mask": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "outlet": {
       "l1": "MEP Systems",
       "l2": "Electrical"
-    },
-    "particle monitor": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
     },
     "people helmet": {
       "l1": "PPE & Safety Equipment",
@@ -953,7 +1186,7 @@
     },
     "protectivedevice": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Electrical"
     },
     "pump": {
       "l1": "MEP Systems",
@@ -975,10 +1208,6 @@
       "l1": "PPE & Safety Equipment",
       "l2": "Traffic Control & Barricades"
     },
-    "safety glass": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "safety harness": {
       "l1": "PPE & Safety Equipment",
       "l2": "Fall Protection"
@@ -993,7 +1222,7 @@
     },
     "sensor": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "solardevice": {
       "l1": "MEP Systems",
@@ -1001,7 +1230,7 @@
     },
     "spaceheater": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "sprinkler": {
       "l1": "MEP Systems",
@@ -1046,6 +1275,90 @@
     "yellow hardhat": {
       "l1": "PPE & Safety Equipment",
       "l2": "Head Protection"
+    },
+    "hard hat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "air terminal box": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electric distribution board": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "cable tray": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "pipe fitting": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pipe segment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "duct segment": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "duct fitting": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "fire hydrant": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "light fixture": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "space heater": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "switching device": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "protective device": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "unitary equipment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "fire suppression terminal": {
+      "l1": "MEP Systems",
+      "l2": "Fire Protection"
+    },
+    "sanitary terminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "waste terminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "mask": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Respiratory Protection"
+    },
+    "hat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "particle monitor": {
+      "l1": "Environment & Conditions",
+      "l2": "Airborne Particulates"
     }
+  },
+  "resolution_policy": {
+    "fallback": "reject",
+    "on_unmatched": "exclude_and_flag"
   }
 }
