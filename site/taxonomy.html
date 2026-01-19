@@ -712,7 +712,8 @@
         const l1id = l1?.id;
         for(const l2 of (l1?.children || [])){
           const l2id = l2?.id;
-          const pat = l2?.pattern;
+          const pat0 = l2?.pattern;
+          const pat = (typeof pat0 === 'string') ? pat0.replace(/\\\\/g,'\\') : pat0;
           if(!l1id || !l2id || !pat) continue;
           try{
             TAXONOMY_RULES.push({ l1: l1id, l2: l2id, re: new RegExp(pat, 'i') });
@@ -724,8 +725,10 @@
       if(!TAXONOMY_RULES.length && Array.isArray(CFG.categories)){
         for(const c of CFG.categories){
           if(!c?.id || !c?.pattern) continue;
+          const p0 = c.pattern;
+          const p = (typeof p0 === 'string') ? p0.replace(/\\\\/g,'\\') : p0;
           try{
-            TAXONOMY_RULES.push({ l1: c.id, l2: null, re: new RegExp(c.pattern, 'i') });
+            TAXONOMY_RULES.push({ l1: c.id, l2: null, re: new RegExp(p, 'i') });
           } catch(e){ /* ignore */ }
         }
       }
