@@ -18,7 +18,7 @@
       "children": [
         {
           "id": "Head Protection",
-          "pattern": "\\\\b(hard\\s*hat|hardhat|helmet)\\\\b"
+          "pattern": "\\\\b(hard\\\\s*hat|hardhat|helmet|hat)\\\\b"
         },
         {
           "id": "Eye & Face Protection",
@@ -38,7 +38,7 @@
         },
         {
           "id": "High-Visibility Apparel",
-          "pattern": "\\\\b(hi\\s*vis|high\\s*visibility|reflective\\s*vest|safety\\s*vest|vest)\\\\b"
+          "pattern": "\\\\b(hi\\\\s*vis|high\\\\s*visibility|reflective\\\\s*vest|safety\\\\s*vest)\\\\b"
         },
         {
           "id": "Traffic Control & Barricades",
@@ -47,6 +47,18 @@
         {
           "id": "Safety Signage",
           "pattern": "\\\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign)\\\\b"
+        },
+        {
+          "id": "Respiratory Protection",
+          "pattern": "\\\\b(mask|respirator|dust\\\\s*mask)\\\\b"
+        },
+        {
+          "id": "Hearing Protection",
+          "pattern": "\\\\b(earplug|ear\\\\s*muff|earmuff|hearing\\\\s*protection)\\\\b"
+        },
+        {
+          "id": "Work Zone Monitoring",
+          "pattern": "\\\\b(particle\\\\s*monitor|gas\\\\s*monitor|noise\\\\s*meter)\\\\b"
         }
       ]
     },
@@ -63,7 +75,7 @@
         },
         {
           "id": "Concrete Equipment",
-          "pattern": "\\\\b(concrete\\s*mixer|mixer\\s*truck|pump\\s*truck)\\\\b"
+          "pattern": "\\\\b(concrete\\\\s*mixer|mixer\\\\s*truck|pump\\\\s*truck|mixer)\\\\b"
         },
         {
           "id": "Compaction & Paving",
@@ -76,6 +88,22 @@
         {
           "id": "Attachments & Components",
           "pattern": "\\\\b(bucket|boom\\s*arm|arm\\s*bucket)\\\\b"
+        },
+        {
+          "id": "Processing & Demolition Equipment",
+          "pattern": "\\\\b(crusher|breaker|demolition)\\\\b"
+        },
+        {
+          "id": "Material Processing Components",
+          "pattern": "\\\\b(hopper)\\\\b"
+        },
+        {
+          "id": "Vehicle Components",
+          "pattern": "\\\\b(muffler|exhaust)\\\\b"
+        },
+        {
+          "id": "Drilling & Augering Equipment",
+          "pattern": "\\\\b(earth\\\\s*auger|auger)\\\\b"
         }
       ]
     },
@@ -93,6 +121,10 @@
         {
           "id": "Measuring & Layout Tools",
           "pattern": "\\\\b(level|measuring|survey)\\\\b"
+        },
+        {
+          "id": "Fastening Tools",
+          "pattern": "\\\\b(tacker|stapler|nailer)\\\\b"
         }
       ]
     },
@@ -118,6 +150,26 @@
         {
           "id": "Roadway & Site Elements",
           "pattern": "\\\\b(road|lane|curb|zebra\\s*crossing|bus\\s*stop|side\\s*path)\\\\b"
+        },
+        {
+          "id": "Edge Protection",
+          "pattern": "\\\\b(toeboard|toe\\\\s*board|guardrail|handrail)\\\\b"
+        },
+        {
+          "id": "Rigging & Lifting Accessories",
+          "pattern": "\\\\b(rope|sling|shackle|chain)\\\\b"
+        },
+        {
+          "id": "Material Handling Aids",
+          "pattern": "\\\\b(handcart|trolley|wheelbarrow)\\\\b"
+        },
+        {
+          "id": "Utilities & Services",
+          "pattern": "\\\\b(utility)\\\\b"
+        },
+        {
+          "id": "Temporary Power & Cords",
+          "pattern": "\\\\b(cord\\\\s*reel|extension\\\\s*cord)\\\\b"
         }
       ]
     },
@@ -142,7 +194,7 @@
         },
         {
           "id": "Connections & Reinforcement",
-          "pattern": "\\\\b(rebar|reinforcing\\s*bar|reinforcement\\s*bar|reinforcing\\s*mesh|fastener|plate|brace|bracing)\\\\b"
+          "pattern": "\\\\b(rebar|reinforcing\\s*bar|reinforcement\\s*bar|reinforcing\\s*mesh|fastener|plate|brace|bracing|square\\\\s*tube|tube)\\\\b"
         }
       ]
     },
@@ -168,6 +220,30 @@
         {
           "id": "Openings",
           "pattern": "\\\\b(opening|opening\\s*hole|opening\\s*corner)\\\\b"
+        },
+        {
+          "id": "Stairs & Ramps",
+          "pattern": "\\\\b(stair|stairs|staircase|ramp)\\\\b"
+        },
+        {
+          "id": "Railings & Guards",
+          "pattern": "\\\\b(railing|handrail|guardrail|balcony)\\\\b"
+        },
+        {
+          "id": "Floors",
+          "pattern": "\\\\b(floor)\\\\b"
+        },
+        {
+          "id": "Building Context",
+          "pattern": "\\\\b(building)\\\\b"
+        },
+        {
+          "id": "Furniture & Fixtures",
+          "pattern": "\\\\b(furniture|chair|table)\\\\b"
+        },
+        {
+          "id": "Façade & Cladding",
+          "pattern": "\\\\b(facade|façade|cladding)\\\\b"
         }
       ]
     },
@@ -221,7 +297,23 @@
         },
         {
           "id": "Surface Treatments",
-          "pattern": "\\\\b(exposed\\s*aggregate|broomiong|paint|painting|coating)\\\\b"
+          "pattern": "\\\\b(exposed\\\\s*aggregate|brooming|paint|painting|coating)\\\\b"
+        },
+        {
+          "id": "Sheet Goods & Boards",
+          "pattern": "\\\\b(plasterboard|gypsum\\\\s*board|drywall|board|cardboard)\\\\b"
+        },
+        {
+          "id": "Textiles & Fabrics",
+          "pattern": "\\\\b(fabric)\\\\b"
+        },
+        {
+          "id": "Ceramics",
+          "pattern": "\\\\b(ceramic)\\\\b"
+        },
+        {
+          "id": "Aggregates & Soils",
+          "pattern": "\\\\b(fill\\\\s*dirt|soil|aggregate)\\\\b"
         }
       ]
     },
@@ -243,6 +335,14 @@
         {
           "id": "Potholes & Raveling",
           "pattern": "\\\\b(pothole|ravelling|rutting)\\\\b"
+        },
+        {
+          "id": "Thermal Bridging",
+          "pattern": "\\\\b(thermal\\\\s*bridge)\\\\b"
+        },
+        {
+          "id": "Damage Severity",
+          "pattern": "\\\\b(minor\\\\s*damage|severe\\\\s*damage)\\\\b"
         }
       ]
     },
@@ -255,7 +355,7 @@
         },
         {
           "id": "Manual Tasks",
-          "pattern": "\\\\b(picking|placing|plastering|tiling|masonry\\s*work|handcart\\s*work)\\\\b"
+          "pattern": "\\\\b(picking|placing|plastering|tiling|masonry\\\\s*work|handcart\\\\s*work|reinforcement\\\\s*work|machine\\\\s*work|commanding\\\\s*work|excavation|earthmoving|leveling|transport\\\\s*work|hoisting|surveying|vacuum\\\\s*cleaning|patch|shoving|jumping\\\\s*down)\\\\b"
         },
         {
           "id": "Access & Climbing",
@@ -273,6 +373,10 @@
         {
           "id": "Regulatory & Warning Signage",
           "pattern": "\\\\b(sign|billboard|advertising\\s*board|fire\\s*exit\\s*sign|traffic\\s*signal)\\\\b"
+        },
+        {
+          "id": "Symbols & Markings",
+          "pattern": "\\\\b(symbol|marking|label)\\\\b"
         }
       ]
     },
@@ -286,6 +390,10 @@
         {
           "id": "Environment Context",
           "pattern": "\\\\b(sky|tree|foliage|water)\\\\b"
+        },
+        {
+          "id": "Fire & Smoke",
+          "pattern": "\\\\b(fire|smoke)\\\\b"
         }
       ]
     },
@@ -348,7 +456,30 @@
       "unknown",
       "unlabeled",
       "unlabelled",
-      "void"
+      "void",
+      "head",
+      "slogan",
+      "pc",
+      "keyboard",
+      "machinery",
+      "member",
+      "cavity",
+      "mhc",
+      "non mhc",
+      "manufactured housing communities (mhc)",
+      "non manufactured housing communities (non mhc)",
+      "other activity",
+      "common activity",
+      "awkward activity",
+      "stand, rest, walk",
+      "buildings under construction",
+      "destruction",
+      "bleeding",
+      "hanging object",
+      "delivering the tool",
+      "holding the tool",
+      "hair",
+      "1f"
     ],
     "remove_patterns": [
       "^\\s*$",
@@ -359,7 +490,8 @@
       "^no\\s*(?:label|labels)?$",
       "^(?:n\\/?a|na|none|null)$",
       "^unlabeled$",
-      "^unlabelled$"
+      "^unlabelled$",
+      "^\\d+[a-z]$"
     ]
   },
   "aliases": {
@@ -669,7 +801,7 @@
   "category_map": {
     "actuator": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "ahu": {
       "l1": "MEP Systems",
@@ -701,7 +833,7 @@
     },
     "alarm": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Fire Protection"
     },
     "appliance": {
       "l1": "MEP Systems",
@@ -749,7 +881,7 @@
     },
     "coil": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "colored hardhat (blue)": {
       "l1": "PPE & Safety Equipment",
@@ -789,7 +921,7 @@
     },
     "controller": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "damper": {
       "l1": "MEP Systems",
@@ -817,7 +949,7 @@
     },
     "electric box": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Electrical"
     },
     "electricappliance": {
       "l1": "MEP Systems",
@@ -873,7 +1005,7 @@
     },
     "flowmeter": {
       "l1": "MEP Systems",
-      "l2": "Electrical"
+      "l2": "HVAC"
     },
     "glove": {
       "l1": "PPE & Safety Equipment",
@@ -887,13 +1019,9 @@
       "l1": "PPE & Safety Equipment",
       "l2": "Head Protection"
     },
-    "hat": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "heatexchanger": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "humidifier": {
       "l1": "MEP Systems",
@@ -915,17 +1043,9 @@
       "l1": "MEP Systems",
       "l2": "Electrical"
     },
-    "mask": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "outlet": {
       "l1": "MEP Systems",
       "l2": "Electrical"
-    },
-    "particle monitor": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
     },
     "people helmet": {
       "l1": "PPE & Safety Equipment",
@@ -953,7 +1073,7 @@
     },
     "protectivedevice": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "Electrical"
     },
     "pump": {
       "l1": "MEP Systems",
@@ -975,10 +1095,6 @@
       "l1": "PPE & Safety Equipment",
       "l2": "Traffic Control & Barricades"
     },
-    "safety glass": {
-      "l1": "PPE & Safety Equipment",
-      "l2": "Safety Signage"
-    },
     "safety harness": {
       "l1": "PPE & Safety Equipment",
       "l2": "Fall Protection"
@@ -993,7 +1109,7 @@
     },
     "sensor": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "solardevice": {
       "l1": "MEP Systems",
@@ -1001,7 +1117,7 @@
     },
     "spaceheater": {
       "l1": "MEP Systems",
-      "l2": "Plumbing"
+      "l2": "HVAC"
     },
     "sprinkler": {
       "l1": "MEP Systems",
@@ -1046,6 +1162,78 @@
     "yellow hardhat": {
       "l1": "PPE & Safety Equipment",
       "l2": "Head Protection"
+    },
+    "hard hat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "air terminal box": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electric distribution board": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "cable tray": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "pipe fitting": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pipe segment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "duct segment": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "duct fitting": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "fire hydrant": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "light fixture": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "space heater": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "switching device": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "protective device": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "unitary equipment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "fire suppression terminal": {
+      "l1": "MEP Systems",
+      "l2": "Fire Protection"
+    },
+    "sanitary terminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "waste terminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
     }
+  },
+  "resolution_policy": {
+    "fallback": "reject",
+    "on_unmatched": "exclude_and_flag"
   }
 }
