@@ -45,10 +45,6 @@
           "pattern": "\\\\b(harness|lanyard|lifeline)\\\\b"
         },
         {
-          "id": "High-Visibility Apparel",
-          "pattern": "\\\\b(hi\\\\s*vis|high\\\\s*visibility|reflective\\\\s*vest|safety\\\\s*vest)\\\\b"
-        },
-        {
           "id": "Traffic Control & Barricades",
           "pattern": "\\\\b(traffic\\s*cone|cone|barricade|barrier)\\\\b"
         },
@@ -70,7 +66,7 @@
         },
         {
           "id": "Protective Clothing",
-          "pattern": "(?:(?:\\b(clothes|clothing|apparel)\\b)|(?:\\b(clothes|clothing|apparel|coverall|overalls)\\b))|(?:\\b(clothing|clothes|apparel)\\b)"
+		  "pattern": "\\b(high\\s*visibility|hi\\s*vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|vest|clothing|apparel|protective\\s*clothing|coverall|coveralls|overalls|jacket|coat)\\b"
         }
       ]
     },
