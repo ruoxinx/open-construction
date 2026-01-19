@@ -1,4 +1,367 @@
 {
+  "taxonomy": [
+    {
+      "id": "People",
+      "children": [
+        {
+          "id": "Construction Personnel",
+          "pattern": "\\\\b(worker|person|people|human|laborer|foreman|operator)\\\\b"
+        },
+        {
+          "id": "Inspection & Safety Staff",
+          "pattern": "\\\\b(inspector|safety)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "PPE & Safety Equipment",
+      "children": [
+        {
+          "id": "Head Protection",
+          "pattern": "\\\\b(hard\\s*hat|hardhat|helmet)\\\\b"
+        },
+        {
+          "id": "Eye & Face Protection",
+          "pattern": "\\\\b(goggle|face\\s*shield|face\\s*protection)\\\\b"
+        },
+        {
+          "id": "Hand Protection",
+          "pattern": "\\\\b(glove)\\\\b"
+        },
+        {
+          "id": "Foot Protection",
+          "pattern": "\\\\b(boot|safety\\s*boot)\\\\b"
+        },
+        {
+          "id": "Fall Protection",
+          "pattern": "\\\\b(harness|lanyard|lifeline)\\\\b"
+        },
+        {
+          "id": "High-Visibility Apparel",
+          "pattern": "\\\\b(hi\\s*vis|high\\s*visibility|reflective\\s*vest|safety\\s*vest|vest)\\\\b"
+        },
+        {
+          "id": "Traffic Control & Barricades",
+          "pattern": "\\\\b(traffic\\s*cone|cone|barricade|barrier)\\\\b"
+        },
+        {
+          "id": "Safety Signage",
+          "pattern": "\\\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Equipment & Vehicles",
+      "children": [
+        {
+          "id": "Earthmoving Equipment",
+          "pattern": "\\\\b(excavator|bulldozer|dozer|loader|skid\\s*steer|grader|backhoe)\\\\b"
+        },
+        {
+          "id": "Lifting & Hoisting Equipment",
+          "pattern": "\\\\b(crane|tower\\s*crane|truck\\s*crane|mobile\\s*crane|hook|outtrigger)\\\\b"
+        },
+        {
+          "id": "Concrete Equipment",
+          "pattern": "\\\\b(concrete\\s*mixer|mixer\\s*truck|pump\\s*truck)\\\\b"
+        },
+        {
+          "id": "Compaction & Paving",
+          "pattern": "\\\\b(roller|compactor)\\\\b"
+        },
+        {
+          "id": "Transport Vehicles",
+          "pattern": "\\\\b(dump\\s*truck|truck|car|bus)\\\\b"
+        },
+        {
+          "id": "Attachments & Components",
+          "pattern": "\\\\b(bucket|boom\\s*arm|arm\\s*bucket)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Tools",
+      "children": [
+        {
+          "id": "Hand Tools",
+          "pattern": "\\\\b(hammer|wrench|spanner|shovel|trowel|saw|knife)\\\\b"
+        },
+        {
+          "id": "Power Tools",
+          "pattern": "\\\\b(drill|grinder|cutter)\\\\b"
+        },
+        {
+          "id": "Measuring & Layout Tools",
+          "pattern": "\\\\b(level|measuring|survey)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Temporary Works & Site Logistics",
+      "children": [
+        {
+          "id": "Scaffolding & Access",
+          "pattern": "\\\\b(scaffold|scaffolding|ladder)\\\\b"
+        },
+        {
+          "id": "Formwork & Shoring",
+          "pattern": "\\\\b(formwork|shoring)\\\\b"
+        },
+        {
+          "id": "Fencing & Barriers",
+          "pattern": "\\\\b(fence|fencing)\\\\b"
+        },
+        {
+          "id": "Storage & Waste",
+          "pattern": "\\\\b(container|skip\\s*bin|waste\\s*container|rubbish\\s*bin|pallet)\\\\b"
+        },
+        {
+          "id": "Roadway & Site Elements",
+          "pattern": "\\\\b(road|lane|curb|zebra\\s*crossing|bus\\s*stop|side\\s*path)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Structural Elements",
+      "children": [
+        {
+          "id": "Foundations",
+          "pattern": "\\\\b(foundation|footing|pile|pier)\\\\b"
+        },
+        {
+          "id": "Columns & Vertical Members",
+          "pattern": "\\\\b(column|pillar)\\\\b"
+        },
+        {
+          "id": "Beams & Girders",
+          "pattern": "\\\\b(beam|girder|i\\s*beam)\\\\b"
+        },
+        {
+          "id": "Slabs & Decks",
+          "pattern": "\\\\b(slab|deck)\\\\b"
+        },
+        {
+          "id": "Connections & Reinforcement",
+          "pattern": "\\\\b(rebar|reinforcing\\s*bar|reinforcement\\s*bar|reinforcing\\s*mesh|fastener|plate|brace|bracing)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Architectural & Envelope Elements",
+      "children": [
+        {
+          "id": "Walls & Partitions",
+          "pattern": "\\\\b(wall|cmu\\s*wall|partition)\\\\b"
+        },
+        {
+          "id": "Doors & Windows",
+          "pattern": "\\\\b(door|window|curtain\\s*wall|curtainwall)\\\\b"
+        },
+        {
+          "id": "Roofs",
+          "pattern": "\\\\b(roof)\\\\b"
+        },
+        {
+          "id": "Interior Finishes",
+          "pattern": "\\\\b(tile|carpet|wallpaper|plaster|gypsum|drywall|ceiling)\\\\b"
+        },
+        {
+          "id": "Openings",
+          "pattern": "\\\\b(opening|opening\\s*hole|opening\\s*corner)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "MEP Systems",
+      "children": [
+        {
+          "id": "Electrical",
+          "pattern": "\\\\b(electric|electrical|lighting|light|luminaire|panel|distribution board|switch|outlet|receptacle|breaker|conduit|cable|wire|tray|junction box|meter|transformer|generator|ups|switchgear|motor)\\\\b"
+        },
+        {
+          "id": "HVAC",
+          "pattern": "\\\\b(hvac|air\\s*terminal|air\\s*terminal\\s*box|duct|diffuser|grille|damper|ahu|chiller|boiler|fan\\b|vav\\b|fcu\\b|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\\\b"
+        },
+        {
+          "id": "Plumbing",
+          "pattern": "\\\\b(plumbing|pipe|pipe\\s*fitting|pipe\\s*segment|valve|pump\\b|tank\\b|sanitary|waste\\s*terminal|hydrant\\b|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\\\b"
+        },
+        {
+          "id": "Fire Protection",
+          "pattern": "\\\\b(fire\\s*alarm|alarm\\b|sprinkler|standpipe|hose\\s*reel|extinguisher|fire\\s*hydrant|suppression|call\\s*point|smoke\\s*detector|detector)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Materials & Products",
+      "children": [
+        {
+          "id": "Concrete & Cementitious",
+          "pattern": "\\\\b(concrete|cement|asphalt|mortar)\\\\b"
+        },
+        {
+          "id": "Steel & Metals",
+          "pattern": "\\\\b(steel|metal)\\\\b"
+        },
+        {
+          "id": "Wood & Timber",
+          "pattern": "\\\\b(wood|timber)\\\\b"
+        },
+        {
+          "id": "Masonry",
+          "pattern": "\\\\b(brick|masonry|stone)\\\\b"
+        },
+        {
+          "id": "Insulation & Membranes",
+          "pattern": "\\\\b(insulation|membrane|pe\\s*membrane|foaming\\s*insulation)\\\\b"
+        },
+        {
+          "id": "Glass & Plastics",
+          "pattern": "\\\\b(glass|plastic)\\\\b"
+        },
+        {
+          "id": "Surface Treatments",
+          "pattern": "\\\\b(exposed\\s*aggregate|broomiong|paint|painting|coating)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Defects & Damage",
+      "children": [
+        {
+          "id": "Cracking",
+          "pattern": "\\\\b(crack|cracking)\\\\b"
+        },
+        {
+          "id": "Spalling & Delamination",
+          "pattern": "\\\\b(spall|spalling|delamination)\\\\b"
+        },
+        {
+          "id": "Corrosion",
+          "pattern": "\\\\b(corrosion|rust)\\\\b"
+        },
+        {
+          "id": "Potholes & Raveling",
+          "pattern": "\\\\b(pothole|ravelling|rutting)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Work Activities & Postures",
+      "children": [
+        {
+          "id": "Equipment Operations",
+          "pattern": "\\\\b(excavators\\s*(dump|idle|move|load|swing)|dump\\s*trucks\\s*(fill|move))\\\\b"
+        },
+        {
+          "id": "Manual Tasks",
+          "pattern": "\\\\b(picking|placing|plastering|tiling|masonry\\s*work|handcart\\s*work)\\\\b"
+        },
+        {
+          "id": "Access & Climbing",
+          "pattern": "\\\\b(climb|climbing|stairs|kneel|crouch|leaning|handsup)\\\\b"
+        },
+        {
+          "id": "Unsafe Events",
+          "pattern": "\\\\b(fall\\s*detected|fall\\s*down|unsafe\\s*activity|no\\s*hardhat|not\\s*wearing\\s*safety)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Signage & Information",
+      "children": [
+        {
+          "id": "Regulatory & Warning Signage",
+          "pattern": "\\\\b(sign|billboard|advertising\\s*board|fire\\s*exit\\s*sign|traffic\\s*signal)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Environment & Conditions",
+      "children": [
+        {
+          "id": "Airborne Particulates",
+          "pattern": "\\\\b(dust|smoke|particle\\s*monitor)\\\\b"
+        },
+        {
+          "id": "Environment Context",
+          "pattern": "\\\\b(sky|tree|foliage|water)\\\\b"
+        }
+      ]
+    },
+    {
+      "id": "Non-Visual / Metadata",
+      "children": [
+        {
+          "id": "Color & Appearance",
+          "pattern": "\\\\b(color|painted)\\\\b"
+        },
+        {
+          "id": "Quantity & Status",
+          "pattern": "\\\\b(quantity|status|position|movement|energy|education|health|food)\\\\b"
+        }
+      ]
+    }
+  ],
+  "label_rules": {
+    "min_arc_px": 46,
+    "min_arc_px_root": 70,
+    "min_arc_px_zoom": 22
+  },
+  "exclusions": {
+    "min_label_len": 2,
+    "remove_terms": [
+      "background",
+      "color",
+      "cost over activities",
+      "cost over activity",
+      "cycle",
+      "discard",
+      "education",
+      "energy",
+      "food",
+      "health",
+      "ignore",
+      "item",
+      "items",
+      "misc",
+      "miscellaneous",
+      "mixed",
+      "n/a",
+      "na",
+      "none",
+      "not applicable",
+      "null",
+      "object",
+      "objects",
+      "other",
+      "others",
+      "position",
+      "quantity",
+      "sketch",
+      "status",
+      "tbd",
+      "thing",
+      "things",
+      "todo",
+      "typed input",
+      "unknown",
+      "unlabeled",
+      "unlabelled",
+      "void"
+    ],
+    "remove_patterns": [
+      "^\\s*$",
+      "^\\d+$",
+      "^\\W+$",
+      "^(?:bg|bkg|background)$",
+      "^(?:other|unknown|misc|miscellaneous)$",
+      "^no\\s*(?:label|labels)?$",
+      "^(?:n\\/?a|na|none|null)$",
+      "^unlabeled$",
+      "^unlabelled$"
+    ]
+  },
   "aliases": {
     "arm_bucket": "arm bucket",
     "awkward activities": "awkward activity",
@@ -6,10 +369,10 @@
     "body_end": "body end",
     "boom_arm": "boom arm",
     "bricks": "brick",
-    "broomiong-rough": "broomiong rough",
-    "broomiong-smooth": "broomiong smooth",
-    "broomiong-vey smooth": "broomiong vey smooth",
-    "bushes": "bushe",
+    "broomiong-rough": "brooming rough",
+    "broomiong-smooth": "brooming smooth",
+    "broomiong-vey smooth": "brooming very smooth",
+    "bushes": "bush",
     "cab_boom": "cab boom",
     "cars": "car",
     "circular pipes": "circular pipe",
@@ -61,7 +424,7 @@
     "goggles": "goggle",
     "head protection": "hardhat",
     "helmet": "hardhat",
-    "hi vis vest": "reflective vest",
+    "hi vis vest": "high visibility vest",
     "i-beams": "i beam",
     "leaning_person": "leaning person",
     "left_bucket_end": "left bucket end",
@@ -80,7 +443,7 @@
     "pc delivery trucks": "pc delivery truck",
     "pc-truck": "pc truck",
     "pe membrane-smooth": "pe membrane smooth",
-    "pe membrane-vey smooth": "pe membrane vey smooth",
+    "pe membrane-vey smooth": "pe membrane very smooth",
     "pedestrians": "pedestrian",
     "people": "worker",
     "people-helmet": "people helmet",
@@ -103,7 +466,7 @@
     "safety boots": "safety boot",
     "safety glass": "safety glass",
     "safety harness": "safety harness",
-    "safety vest": "reflective vest",
+    "safety vest": "high visibility vest",
     "safety_cone": "safety cone",
     "side-path": "side path",
     "skid_steer": "skid steer",
@@ -125,541 +488,564 @@
     "wheel loaders": "wheel loader",
     "wheel-loader": "wheel loader",
     "workers": "worker",
-    "zebra-crossing": "zebra crossing"
+    "zebra-crossing": "zebra crossing",
+    "bushe": "bush",
+    "broomiong rough": "brooming rough",
+    "broomiong smooth": "brooming smooth",
+    "broomiong vey smooth": "brooming very smooth",
+    "pe membrane vey smooth": "pe membrane very smooth",
+    "colored hardhats (red)": "red hardhat",
+    "colored hardhats (blue)": "blue hardhat",
+    "colored hardhats (yellow)": "yellow hardhat",
+    "colored hardhats (white)": "white hardhat",
+    "colored hardhats (green)": "green hardhat",
+    "colored helmet (green)": "green hardhat",
+    "colored hardhats (orange)": "orange hardhat",
+    "colored helmet (orange)": "orange hardhat",
+    "colored hardhats (black)": "black hardhat",
+    "colored helmet (black)": "black hardhat",
+    "colored hardhats (brown)": "brown hardhat",
+    "colored helmet (brown)": "brown hardhat",
+    "colored hardhats (grey)": "grey hardhat",
+    "colored helmet (grey)": "grey hardhat",
+    "colored hardhats (gray)": "gray hardhat",
+    "colored helmet (gray)": "gray hardhat",
+    "colored hardhats (purple)": "purple hardhat",
+    "colored helmet (purple)": "purple hardhat",
+    "colored hardhats (pink)": "pink hardhat",
+    "colored helmet (pink)": "pink hardhat",
+    "hi-vis vest": "high visibility vest",
+    "reflective vest": "high visibility vest"
   },
-  "categories": [
-    {
-      "id": "People",
-      "pattern": "\\b(worker|person|people|human|inspector|operator|foreman)\\b"
-    },
-    {
-      "id": "Equipment & Vehicles",
-      "pattern": "\\\\b(crane|excavator|bulldozer|loader|forklift|truck|dump truck|mixer|roller|grader|drone|uav|robot|car|dozer|tower crane|wheel loader)\\\\b"
-    },
-    {
-      "id": "PPE & Safety",
-      "pattern": "\\\\b(hard hat|reflective vest|vest|glove|goggle|mask|respirator|harness|traffic cone|barricade|barrier|sign|blue hardhat|hardhat|helmet|hi vis vest|high visibility vest|red hardhat|safety vest|white hardhat|yellow hardhat)\\\\b"
-    },
-    {
-      "id": "Materials",
-      "pattern": "\\\\b(concrete|cement|asphalt|steel|reinforcing bar|brick|wood|timber|glass|gypsum|drywall|insulation|soil|gravel|sand|fastener|reinforcing mesh|reinforcingmesh)\\\\b"
-    },
-    {
-      "id": "Structural Components",
-      "pattern": "\\\\b(beam|column|slab|girder|truss|joist|foundation|pile|pier|wall|deck|door|member|plate|ramp|roof)\\\\b"
-    },
-    {
-      "id": "MEP Components",
-      "pattern": "\\\\b(pipe|duct|hvac|valve|pump|cable|wire|panel|conduit|sprinkler|outlet|switch|meter|fan|fire suppression terminal|firesuppressionterminal|flow instrument|flowmeter|heatexchanger|humidifier|interceptor|light fixture|lightfixture|pipe fitting|pipe segment|pipefitting|pipesegment|protective device|protectivedevice|sanitary terminal|sanitaryterminal|sensor|space heater|spaceheater|switching device|switchingdevice|tank|unitary equipment|unitaryequipment|waste terminal|wasteterminal)\\\\b"
-    },
-    {
-      "id": "Site & Temporary Works",
-      "pattern": "\\b(scaffold|scaffolding|formwork|shoring|fence|road|lane|curb|site|stockpile|container|pallet)\\b"
-    },
-    {
-      "id": "Defects & Damage",
-      "pattern": "\\b(crack|spall|corrosion|rust|delamination|pothole|defect|damage|leak)\\b"
-    }
-  ],
-  "label_rules": {
-    "min_arc_px": 46,
-    "min_arc_px_root": 70,
-    "min_arc_px_zoom": 22
-  },
-  "exclusions": {
-    "min_label_len": 2,
-    "remove_terms": [
-      "background",
-      "cost over activities",
-      "cost over activity",
-      "discard",
-      "ignore",
-      "item",
-      "items",
-      "misc",
-      "miscellaneous",
-      "n/a",
-      "na",
-      "none",
-      "not applicable",
-      "null",
-      "object",
-      "objects",
-      "other",
-      "others",
-      "tbd",
-      "thing",
-      "things",
-      "todo",
-      "unknown",
-      "unlabeled",
-      "unlabelled",
-      "void"
+  "normalization": {
+    "strip_colors": [
+      "red",
+      "blue",
+      "yellow",
+      "white",
+      "green",
+      "orange",
+      "black",
+      "brown",
+      "grey",
+      "gray",
+      "purple",
+      "pink"
     ],
-    "remove_patterns": [
-      "^\\s*$",
-      "^\\d+$",
-      "^\\W+$",
-      "^(?:bg|bkg|background)$",
-      "^(?:other|unknown|misc|miscellaneous)$",
-      "^no\\s*(?:label|labels)?$",
-      "^(?:n\\/?a|na|none|null)$",
-      "^unlabeled$",
-      "^unlabelled$"
-    ]
+    "strip_modifiers": [
+      "clean",
+      "dirty",
+      "new",
+      "old",
+      "damaged",
+      "broken",
+      "cracked",
+      "rusty",
+      "wet",
+      "dry",
+      "rough",
+      "smooth",
+      "very",
+      "minor",
+      "moderate",
+      "severe"
+    ],
+    "compound_splits": {
+      "hardhat": [
+        "hard",
+        "hat"
+      ],
+      "hi-vis": [
+        "hi",
+        "vis"
+      ],
+      "hivis": [
+        "hi",
+        "vis"
+      ],
+      "airterminalbox": [
+        "air",
+        "terminal",
+        "box"
+      ],
+      "electricdistributionboard": [
+        "electric",
+        "distribution",
+        "board"
+      ],
+      "cabletray": [
+        "cable",
+        "tray"
+      ],
+      "pipefitting": [
+        "pipe",
+        "fitting"
+      ],
+      "pipesegment": [
+        "pipe",
+        "segment"
+      ],
+      "ductsegment": [
+        "duct",
+        "segment"
+      ],
+      "ductfitting": [
+        "duct",
+        "fitting"
+      ],
+      "firehydrant": [
+        "fire",
+        "hydrant"
+      ],
+      "lightfixture": [
+        "light",
+        "fixture"
+      ],
+      "spaceheater": [
+        "space",
+        "heater"
+      ],
+      "switchingdevice": [
+        "switching",
+        "device"
+      ],
+      "protectivedevice": [
+        "protective",
+        "device"
+      ],
+      "unitaryequipment": [
+        "unitary",
+        "equipment"
+      ],
+      "firesuppressionterminal": [
+        "fire",
+        "suppression",
+        "terminal"
+      ],
+      "sanitaryterminal": [
+        "sanitary",
+        "terminal"
+      ],
+      "wasteterminal": [
+        "waste",
+        "terminal"
+      ]
+    },
+    "lemmatize": {
+      "workers": "worker",
+      "people": "person",
+      "persons": "person",
+      "men": "man",
+      "women": "woman",
+      "hardhats": "hard hat",
+      "helmets": "helmet",
+      "gloves": "glove",
+      "goggles": "goggle",
+      "boots": "boot",
+      "pipes": "pipe",
+      "ducts": "duct",
+      "valves": "valve",
+      "cables": "cable",
+      "wires": "wire",
+      "panels": "panel",
+      "trucks": "truck",
+      "excavators": "excavator",
+      "cranes": "crane",
+      "loaders": "loader",
+      "dozers": "dozer",
+      "bricks": "brick",
+      "tiles": "tile",
+      "walls": "wall",
+      "slabs": "slab",
+      "beams": "beam",
+      "columns": "column"
+    },
+    "typo_map": {
+      "broomiong": "brooming",
+      "vey": "very",
+      "toprailing": "top railing"
+    }
   },
   "category_map": {
-    "1f": "Materials",
-    "2f": "Materials",
-    "3f": "Materials",
-    "4f": "Materials",
-    "5f": "Materials",
-    "active construction": "Materials",
-    "actuator": "Materials",
-    "advertising board": "Materials",
-    "ahu": "Materials",
-    "air conditioning unit": "Materials",
-    "air terminal": "MEP Components",
-    "airduct": "Materials",
-    "airterminal": "Materials",
-    "airterminalbox": "Materials",
-    "airtoairheatrecovery": "Materials",
-    "alarm": "Materials",
-    "appliance": "Materials",
-    "arm bucket": "Materials",
-    "audiovisualappliance": "Materials",
-    "awkward activity": "Materials",
-    "backhoe": "Materials",
-    "backhoe loader": "Equipment & Vehicles",
-    "balcony": "Materials",
-    "beam": "Structural Components",
-    "beam bending failure": "Structural Components",
-    "bearer": "Materials",
-    "billboard": "Materials",
-    "bleeding": "Materials",
-    "blue hardhat": "PPE & Safety",
-    "board": "Materials",
-    "body end": "Materials",
-    "boiler": "Materials",
-    "boom arm": "Materials",
-    "brick": "Materials",
-    "bricklayin and plastering work": "Materials",
-    "bridge": "Materials",
-    "broomiong rough": "Materials",
-    "broomiong smooth": "Materials",
-    "broomiong vey smooth": "Materials",
-    "bucket": "Materials",
-    "building": "Materials",
-    "buildings under construction": "Materials",
-    "bulldozer": "Equipment & Vehicles",
-    "burner": "Materials",
-    "bus": "Materials",
-    "bus stop": "Materials",
-    "bushe": "Materials",
-    "cab boom": "Materials",
-    "cabinet": "Materials",
-    "cablecarrierfitting": "Materials",
-    "cablecarriersegment": "Materials",
-    "cablesegment": "Materials",
-    "cabletray": "Materials",
-    "car": "Equipment & Vehicles",
-    "cardboard": "Materials",
-    "carpet": "Materials",
-    "cart transportation": "Materials",
-    "caster": "Materials",
-    "cavity": "Materials",
-    "ceiling": "Materials",
-    "ceramic": "Materials",
-    "chiller": "Materials",
-    "chiseled concrete": "Materials",
-    "circular pipe": "MEP Components",
-    "climb ladder": "Materials",
-    "climbing stair": "Materials",
-    "climbing with one hand": "Materials",
-    "climbing with two hand": "Materials",
-    "clothe": "Materials",
-    "cmu wall": "Structural Components",
-    "coil": "Materials",
-    "color": "Materials",
-    "colored hardhat (blue)": "PPE & Safety",
-    "colored hardhat (red)": "PPE & Safety",
-    "colored hardhat (white)": "PPE & Safety",
-    "colored hardhat (yellow)": "PPE & Safety",
-    "colored hardhats (blue)": "Materials",
-    "colored hardhats (red)": "Materials",
-    "colored hardhats (white)": "Materials",
-    "colored hardhats (yellow)": "Materials",
-    "column": "Structural Components",
-    "column type2 failure": "Structural Components",
-    "column type3 failure": "Structural Components",
-    "column type4 failure": "Structural Components",
-    "column type5 failure": "Structural Components",
-    "commanding work": "Materials",
-    "common activity": "Materials",
-    "communicationsappliance": "Materials",
-    "compactor": "Materials",
-    "concrete": "Materials",
-    "concrete casting work": "Materials",
-    "concrete crack": "Materials",
-    "concrete mixer": "Equipment & Vehicles",
-    "concrete mixer truck": "Equipment & Vehicles",
-    "concrete transport mixer": "Equipment & Vehicles",
-    "controller": "Materials",
-    "cord reel": "Materials",
-    "cost over activity": "Materials",
-    "covering": "Materials",
-    "crack": "Defects & Damage",
-    "crack alligator": "Defects & Damage",
-    "crack block": "Defects & Damage",
-    "crack corner": "Defects & Damage",
-    "crack edge": "Defects & Damage",
-    "crack longitudinal": "Defects & Damage",
-    "crack transverse": "Defects & Damage",
-    "crane": "Equipment & Vehicles",
-    "crane hook": "Equipment & Vehicles",
-    "crawler drill": "Materials",
-    "cross bracing": "Materials",
-    "crouch floor": "Materials",
-    "crusher": "Materials",
-    "curtainwall": "Materials",
-    "cutter": "Materials",
-    "cycle": "Materials",
-    "damper": "Materials",
-    "delivering the tool": "Materials",
-    "desk & chair": "Materials",
-    "destruction": "Materials",
-    "door": "Structural Components",
-    "dozer": "Equipment & Vehicles",
-    "drill": "Materials",
-    "duct": "MEP Components",
-    "ductfitting": "Materials",
-    "ductsegment": "Materials",
-    "ductsilencer": "Materials",
-    "dump truck": "Equipment & Vehicles",
-    "dump trucks fill": "Materials",
-    "dump trucks move": "Materials",
-    "dust": "Defects & Damage",
-    "earth auger": "Materials",
-    "ebox": "Materials",
-    "education": "Materials",
-    "electric box": "Materials",
-    "electricappliance": "Materials",
-    "electricdistributionboard": "Materials",
-    "electricflowstoragedevice": "Materials",
-    "electricmotor": "Materials",
-    "elevator": "Materials",
-    "embedded window": "Structural Components",
-    "emergency door release": "Structural Components",
-    "emergency light": "Materials",
-    "emergency stop": "Materials",
-    "energy": "Materials",
-    "excavation and earthmoving work": "Materials",
-    "excavator": "Equipment & Vehicles",
-    "excavators dump": "Materials",
-    "excavators idle": "Materials",
-    "excavators load bucket": "Materials",
-    "excavators move": "Materials",
-    "excavators swing bucket": "Materials",
-    "exposed aggregate rough": "Materials",
-    "exposed aggregate smooth": "Materials",
-    "exposed aggregate very rough": "Materials",
-    "exposed reinforcement bar": "Materials",
-    "extrude": "Materials",
-    "fabric": "Materials",
-    "facade": "Materials",
-    "face": "Materials",
-    "face protection": "Materials",
-    "fall detected": "Materials",
-    "fall down": "Materials",
-    "fan": "MEP Components",
-    "fastener": "Materials",
-    "fcu": "Materials",
-    "fence": "Site & Temporary Works",
-    "fill dirt": "Materials",
-    "fire": "Materials",
-    "fire alarm": "Materials",
-    "fire blanket": "Materials",
-    "fire call point": "Materials",
-    "fire door sign": "PPE & Safety",
-    "fire equipment sign": "PPE & Safety",
-    "fire exit sign": "PPE & Safety",
-    "fire extinguisher": "Materials",
-    "fire hose reel": "Materials",
-    "fire hydrant": "Materials",
-    "firefighting lift switch": "MEP Components",
-    "firehydrant": "Materials",
-    "firesuppressionterminal": "Materials",
-    "first coat plaster": "Materials",
-    "floor": "Materials",
-    "flowinstrument": "Materials",
-    "flowmeter": "MEP Components",
-    "foaming insulation": "Materials",
-    "foliage": "Materials",
-    "food": "Materials",
-    "footing": "Materials",
-    "forklift": "Equipment & Vehicles",
-    "formwork": "Site & Temporary Works",
-    "furniture": "Materials",
-    "general waste": "Materials",
-    "glass": "Materials",
-    "glass curtain wall": "Materials",
-    "glove": "PPE & Safety",
-    "goggle": "PPE & Safety",
-    "grader": "Equipment & Vehicles",
-    "grille": "Materials",
-    "grinder": "Materials",
-    "gypsum": "Materials",
-    "hair": "Materials",
-    "hammer": "Materials",
-    "handcart": "Materials",
-    "handcart work": "Materials",
-    "handsup high": "Materials",
-    "handsup low": "Materials",
-    "hanging hook": "Materials",
-    "hanging object": "Materials",
-    "hanging object with rope": "Materials",
-    "hard plastic": "Materials",
-    "hardhat": "PPE & Safety",
-    "hat": "Materials",
-    "head": "People",
-    "head with helmet": "PPE & Safety",
-    "health": "Materials",
-    "heatexchanger": "Materials",
-    "hidden fire equipment": "Materials",
-    "holding the tool": "Materials",
-    "hook": "Materials",
-    "hoop rebar": "Materials",
-    "hopper": "Materials",
-    "human": "People",
-    "humidifier": "MEP Components",
-    "i beam": "Structural Components",
-    "interceptor": "MEP Components",
-    "jumping down": "Materials",
-    "keyboard": "Materials",
-    "kneel floor": "Materials",
-    "knife": "Materials",
-    "ladder work": "Materials",
-    "lamp": "Materials",
-    "laying back": "Materials",
-    "leaning person": "People",
-    "leather": "Materials",
-    "left bucket end": "Materials",
-    "letterbox": "Materials",
-    "leveling ground work": "Materials",
-    "levelling paint": "Materials",
-    "light pole": "Materials",
-    "lightfixture": "Materials",
-    "lighting": "Materials",
-    "loader": "Equipment & Vehicles",
-    "longitudinal diagonal bracing": "Materials",
-    "machine work": "Materials",
-    "machinery": "Materials",
-    "manufactured housing communities (mhc)": "Materials",
-    "mask": "PPE & Safety",
-    "masonry work": "Materials",
-    "mechanical hoisting work": "Materials",
-    "member": "Structural Components",
-    "mesh": "Materials",
-    "metal": "Materials",
-    "midrail": "Materials",
-    "minor damage": "Defects & Damage",
-    "mirror": "Materials",
-    "mixed": "Materials",
-    "mixer": "Equipment & Vehicles",
-    "mixer truck": "Equipment & Vehicles",
-    "mobile crane": "Equipment & Vehicles",
-    "moderate damage": "Defects & Damage",
-    "motorcycle": "Materials",
-    "mouse": "Materials",
-    "movement": "Materials",
-    "muffler": "Materials",
-    "mulching fabric": "Materials",
-    "no activity": "Materials",
-    "no damage or very minor damage": "Defects & Damage",
-    "no face protection": "Materials",
-    "no hardhat": "PPE & Safety",
-    "no head protection": "Materials",
-    "no scaffold": "Site & Temporary Works",
-    "no sole board roller support": "Equipment & Vehicles",
-    "no toeboard": "Materials",
-    "non manufactured housing communities (non mhc)": "Materials",
-    "non residential": "Materials",
-    "not wearing safety equipment": "Materials",
-    "opening": "Materials",
-    "opening corner": "Materials",
-    "opening hole": "Materials",
-    "other activity": "Materials",
-    "other vehicle": "Materials",
-    "outlet": "MEP Components",
-    "outtrigger": "Materials",
-    "painted": "Materials",
-    "paper": "Materials",
-    "particle monitor": "Materials",
-    "patch": "Materials",
-    "pc": "Materials",
-    "pc delivery truck": "Equipment & Vehicles",
-    "pc truck": "Equipment & Vehicles",
-    "pe membrane smooth": "Materials",
-    "pe membrane vey smooth": "Materials",
-    "pedestrian": "Materials",
-    "people helmet": "People",
-    "people no helmet": "People",
-    "person": "People",
-    "person body": "People",
-    "person no helmet": "People",
-    "person with helmet": "People",
-    "personnel hoisting work": "Materials",
-    "picking a brick": "Materials",
-    "picking object": "Materials",
-    "pile": "Structural Components",
-    "pile driver": "Structural Components",
-    "pillar": "Materials",
-    "pipe": "MEP Components",
-    "pipefitting": "MEP Components",
-    "pipesegment": "MEP Components",
-    "piping system": "Materials",
-    "placing a brick": "Materials",
-    "plaster board": "Materials",
-    "plasterboard": "Materials",
-    "plastering": "Materials",
-    "plastic": "Materials",
-    "plate": "Structural Components",
-    "platform": "Materials",
-    "polishedstone": "Materials",
-    "position": "Materials",
-    "post construction": "Materials",
-    "pothole": "Defects & Damage",
-    "precast component": "Materials",
-    "production activity": "Materials",
-    "protectivedevice": "Materials",
-    "protruding window": "Structural Components",
-    "pump": "MEP Components",
-    "pump truck": "Equipment & Vehicles",
-    "pushing cart": "Materials",
-    "quantity": "Materials",
-    "railing": "Materials",
-    "ramp": "Structural Components",
-    "ravelling": "Materials",
-    "reaching far": "Materials",
-    "rebar": "Materials",
-    "rebar work": "Materials",
-    "red hardhat": "PPE & Safety",
-    "reinforcement work": "Materials",
-    "reinforcing bar": "Materials",
-    "reinforcingmesh": "Materials",
-    "residential": "Materials",
-    "right bucket end": "Materials",
-    "road": "Site & Temporary Works",
-    "road divider": "Site & Temporary Works",
-    "road lane": "Site & Temporary Works",
-    "road roller": "Equipment & Vehicles",
-    "road sign board": "PPE & Safety",
-    "roll painting": "Materials",
-    "roller": "Equipment & Vehicles",
-    "roof": "Structural Components",
-    "rope": "Materials",
-    "rubbish bin": "Materials",
-    "runner": "Materials",
-    "rutting": "Materials",
-    "safety boot": "Materials",
-    "safety cone": "Materials",
-    "safety glass": "Materials",
-    "safety harness": "PPE & Safety",
-    "sanitary": "Materials",
-    "sanitaryterminal": "Materials",
-    "saw": "Materials",
-    "scaffold": "Site & Temporary Works",
-    "scaffold work": "Site & Temporary Works",
-    "scaffolding": "Site & Temporary Works",
-    "second coat plaster": "Materials",
-    "sensor": "MEP Components",
-    "severe damage": "Defects & Damage",
-    "shadingdevice": "Materials",
-    "shovel": "Materials",
-    "shoving": "Materials",
-    "side path": "Materials",
-    "site preparation": "Site & Temporary Works",
-    "sketch": "Materials",
-    "skid steer": "Materials",
-    "skin": "Materials",
-    "skip bin": "Materials",
-    "sky": "Materials",
-    "slab": "Structural Components",
-    "slogan": "Materials",
-    "smoke": "Materials",
-    "smoke detector": "Materials",
-    "soft plastic": "Materials",
-    "solardevice": "Materials",
-    "sole board stable support": "Materials",
-    "sole plate with screw": "Structural Components",
-    "spaceheater": "Materials",
-    "spall": "Defects & Damage",
-    "spanner": "Materials",
-    "spraying car": "Equipment & Vehicles",
-    "spraying paint": "Materials",
-    "spraying sink": "Materials",
-    "sprinkler": "MEP Components",
-    "square tube": "Materials",
-    "stair": "Materials",
-    "stairs up down": "Materials",
-    "stand": "Materials",
-    "stand, rest, walk": "Materials",
-    "standing": "Materials",
-    "starting and following the worker": "People",
-    "statu": "Materials",
-    "steel": "Materials",
-    "stone": "Materials",
-    "stopping and leaving away": "Materials",
-    "straight rebar": "Materials",
-    "surveying work": "Materials",
-    "switchingdevice": "Materials",
-    "symbol": "Materials",
-    "tacker": "Materials",
-    "talk": "Materials",
-    "tank": "MEP Components",
-    "telecommunication": "Materials",
-    "thermal bridge": "Materials",
-    "tile": "Materials",
-    "tiling": "Materials",
-    "timber": "Materials",
-    "toeboard": "Materials",
-    "top rebar": "Materials",
-    "toprail": "Materials",
-    "toprailing": "Materials",
-    "tower crane": "Equipment & Vehicles",
-    "traffic signal": "Materials",
-    "transport work": "Materials",
-    "transportation": "Materials",
-    "tree": "Materials",
-    "trowel": "Materials",
-    "truck": "Equipment & Vehicles",
-    "truck crane": "Equipment & Vehicles",
-    "typed input": "Materials",
-    "unitaryequipment": "Materials",
-    "unsafe activity": "Materials",
-    "utility": "Materials",
-    "vacuum cleaning": "Materials",
-    "valve": "MEP Components",
-    "vav": "Materials",
-    "vehicle crane": "Equipment & Vehicles",
-    "vest": "PPE & Safety",
-    "walk": "Materials",
-    "walk straight": "Materials",
-    "walk winding": "Materials",
-    "wall": "Structural Components",
-    "wallpaper": "Materials",
-    "waste": "Materials",
-    "waste container": "Site & Temporary Works",
-    "wasteterminal": "Materials",
-    "water": "Materials",
-    "wear helmet": "PPE & Safety",
-    "wheel loader": "Equipment & Vehicles",
-    "white hardhat": "PPE & Safety",
-    "window": "Structural Components",
-    "wood": "Materials",
-    "worker": "People",
-    "wrench": "Materials",
-    "yellow hardhat": "PPE & Safety",
-    "zebra crossing": "Materials"
+    "actuator": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "ahu": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "air conditioning unit": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "air terminal": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "airduct": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "airterminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "airterminalbox": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "airtoairheatrecovery": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "alarm": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "appliance": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "audiovisualappliance": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "blue hardhat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "boiler": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "burner": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "cablecarrierfitting": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "cablecarriersegment": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "cablesegment": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "cabletray": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "chiller": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "circular pipe": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "coil": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "colored hardhat (blue)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhat (red)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhat (white)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhat (yellow)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhats (blue)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhats (red)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhats (white)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "colored hardhats (yellow)": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "communicationsappliance": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "controller": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "damper": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "duct": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "ductfitting": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "ductsegment": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "ductsilencer": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "ebox": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electric box": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electricappliance": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electricdistributionboard": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "electricflowstoragedevice": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "electricmotor": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "elevator": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "emergency light": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "emergency stop": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "fan": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "fcu": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "firefighting lift switch": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "firehydrant": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "firesuppressionterminal": {
+      "l1": "MEP Systems",
+      "l2": "Fire Protection"
+    },
+    "flowinstrument": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "flowmeter": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "glove": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Hand Protection"
+    },
+    "goggle": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Eye & Face Protection"
+    },
+    "hardhat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "hat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Safety Signage"
+    },
+    "heatexchanger": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "humidifier": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "interceptor": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "lamp": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "lightfixture": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "lighting": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "mask": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Safety Signage"
+    },
+    "outlet": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "particle monitor": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Safety Signage"
+    },
+    "people helmet": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "pipe": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pipefitting": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pipesegment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "piping system": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "production activity": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "protectivedevice": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pump": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "pump truck": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "red hardhat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "safety boot": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Foot Protection"
+    },
+    "safety cone": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Traffic Control & Barricades"
+    },
+    "safety glass": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Safety Signage"
+    },
+    "safety harness": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Fall Protection"
+    },
+    "sanitary": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "sanitaryterminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "sensor": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "solardevice": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "spaceheater": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "sprinkler": {
+      "l1": "MEP Systems",
+      "l2": "Fire Protection"
+    },
+    "switchingdevice": {
+      "l1": "MEP Systems",
+      "l2": "Electrical"
+    },
+    "tank": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "telecommunication": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "unitaryequipment": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "valve": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "vav": {
+      "l1": "MEP Systems",
+      "l2": "HVAC"
+    },
+    "vest": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "High-Visibility Apparel"
+    },
+    "wasteterminal": {
+      "l1": "MEP Systems",
+      "l2": "Plumbing"
+    },
+    "white hardhat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    },
+    "yellow hardhat": {
+      "l1": "PPE & Safety Equipment",
+      "l2": "Head Protection"
+    }
   }
 }

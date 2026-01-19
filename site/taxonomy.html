@@ -688,6 +688,8 @@
     let CFG = null;
     let TERM_ALIASES = new Map();
     let CATEGORY_RULES = [];
+    let TAXONOMY = null;
+    let TAXON_L1_ORDER = [];
     let LABEL_RULES = { min_arc_px_root: 70, min_arc_px_zoom: 22 };
 
     let EXCLUSIONS = { min_label_len: 2, terms: new Set(), patterns: [] };
@@ -708,6 +710,18 @@
         id: c.id,
         re: new RegExp(c.pattern, 'i')
       }));
+
+      // Two-level taxonomy (optional): cfg.taxonomy = [{id, children:[{id, pattern}, ...]}, ...]
+      TAXONOMY = null;
+      TAXON_L1_ORDER = [];
+      if(Array.isArray(CFG.taxonomy)){
+        TAXONOMY = CFG.taxonomy.map(l1 => ({
+          id: l1.id,
+          children: (l1.children || []).map(l2 => ({ id: l2.id, re: new RegExp(l2.pattern, 'i') }))
+        }));
+        TAXON_L1_ORDER = TAXONOMY.map(x => x.id);
+      }
+
 
       LABEL_RULES = Object.assign(LABEL_RULES, (CFG.label_rules || {}));
 
@@ -740,6 +754,24 @@
 
     function inferCategory(canon){
       const s = canonKey(canon);
+
+      // 1) Explicit assignment (optional)
+      const mapped = (CFG && CFG.category_map) ? CFG.category_map[s] : null;
+      if(mapped){
+        if(typeof mapped === 'string') return mapped;
+        if(mapped && mapped.l1 && mapped.l2) return `${mapped.l1}::${mapped.l2}`;
+      }
+
+      // 2) Two-level taxonomy (preferred)
+      if(Array.isArray(TAXONOMY)){
+        for(const l1 of TAXONOMY){
+          for(const l2 of (l1.children || [])){
+            if(l2.re.test(s)) return `${l1.id}::${l2.id}`;
+          }
+        }
+      }
+
+      // 3) Legacy single-level rules fallback
       for(const c of CATEGORY_RULES){
         if(c.re.test(s)) return c.id;
       }
@@ -785,52 +817,97 @@
     function buildHierarchy(idx){
       const root = { name:'Objects', id:'root', children:[] };
 
-      const byCat = new Map();
+      const byL1 = new Map();
+
       for(const rec of idx.values()){
         const cat = rec.category || 'Other / Unclassified';
-        if(!byCat.has(cat)) byCat.set(cat, []);
-        byCat.get(cat).push(rec);
-      }
-
-      const catOrder = (CATEGORY_RULES.map(x=>x.id)).concat(['Other / Unclassified']);
-      const cats = Array.from(byCat.keys()).sort((a,b)=>{
-        return catOrder.indexOf(a) - catOrder.indexOf(b);
-      });
-
-      for(const cat of cats){
-        const items = byCat.get(cat).sort((a,b)=>{
-          const da=a.dsSet.size, db=b.dsSet.size;
-          if(db!==da) return db-da;
-          return (a.label||a.canon).localeCompare(b.label||b.canon);
-        });
-
-        const catDs = new Set();
-        let catMentions = 0;
-        for(const r of items){
-          for(const id of r.dsSet) catDs.add(id);
-          catMentions += (r.mentions || 0);
+        let l1 = cat;
+        let l2 = 'Other';
+        if(String(cat).includes('::')){
+          const parts = String(cat).split('::');
+          l1 = (parts[0] || 'Other / Unclassified').trim();
+          l2 = (parts[1] || 'Other').trim();
         }
 
-        root.children.push({
-          name: cat,
-          id: 'cat:' + cat,
-          category: cat,
-          coverage: catDs.size,
-          mentions: catMentions,
-          datasets: Array.from(catDs),
-          children: items.map(r => ({
-            name: r.label || r.canon,
-            id: 'obj:' + r.canon,
-            canon: r.canon,
-            label: r.label || r.canon,
-            category: r.category,
-            coverage: r.dsSet.size,
-            mentions: r.mentions,
-            aliases: Array.from(r.rawSet),
-            datasets: Array.from(r.dsSet)
-          }))
-        });
+        if(!byL1.has(l1)) byL1.set(l1, new Map());
+        const byL2 = byL1.get(l1);
+        if(!byL2.has(l2)) byL2.set(l2, []);
+        byL2.get(l2).push(rec);
       }
+
+      const l1Order = Array.isArray(TAXON_L1_ORDER) && TAXON_L1_ORDER.length
+        ? TAXON_L1_ORDER.slice()
+        : (CATEGORY_RULES.map(x=>x.id));
+
+      const l1Names = Array.from(byL1.keys()).sort((a,b)=>{
+        const ia = l1Order.indexOf(a);
+        const ib = l1Order.indexOf(b);
+        if(ia === -1 && ib === -1) return a.localeCompare(b);
+        if(ia === -1) return 1;
+        if(ib === -1) return -1;
+        return ia - ib;
+      });
+
+      for(const l1 of l1Names){
+        const l2Map = byL1.get(l1);
+        const l2Names = Array.from(l2Map.keys()).sort((a,b)=>a.localeCompare(b));
+
+        const l1Ds = new Set();
+        let l1Mentions = 0;
+
+        const l1Node = {
+          name: l1,
+          id: 'l1:' + l1,
+          level1: l1,
+          children: []
+        };
+
+        for(const l2 of l2Names){
+          const items = l2Map.get(l2).sort((a,b)=>{
+            const da=a.dsSet.size, db=b.dsSet.size;
+            if(db!==da) return db-da;
+            return (a.label||a.canon).localeCompare(b.label||b.canon);
+          });
+
+          const l2Ds = new Set();
+          let l2Mentions = 0;
+          for(const r of items){
+            for(const id of r.dsSet) l2Ds.add(id);
+            l2Mentions += (r.mentions || 0);
+          }
+          for(const id of l2Ds) l1Ds.add(id);
+          l1Mentions += l2Mentions;
+
+          l1Node.children.push({
+            name: l2,
+            id: 'l2:' + l1 + '::' + l2,
+            level1: l1,
+            level2: l2,
+            coverage: l2Ds.size,
+            mentions: l2Mentions,
+            datasets: Array.from(l2Ds),
+            children: items.map(r => ({
+              name: r.label || r.canon,
+              id: 'obj:' + r.canon,
+              canon: r.canon,
+              label: r.label || r.canon,
+              level1: l1,
+              level2: l2,
+              category: r.category,
+              coverage: r.dsSet.size,
+              mentions: r.mentions,
+              aliases: Array.from(r.rawSet),
+              datasets: Array.from(r.dsSet)
+            }))
+          });
+        }
+
+        l1Node.coverage = l1Ds.size;
+        l1Node.mentions = l1Mentions;
+        l1Node.datasets = Array.from(l1Ds);
+        root.children.push(l1Node);
+      }
+
       return root;
     }
 
@@ -1047,7 +1124,7 @@
         labelLayer.selectAll('*').remove();
         const thr = labelThresholdForFocus(focus);
 
-        const leaves = root.descendants().filter(d => d.depth >= 2 && !d.children);
+        const leaves = root.descendants().filter(d => d.depth >= 3 && !d.children);
 
         const candidates = leaves.map(d => {
           const dd = d.current || d;
