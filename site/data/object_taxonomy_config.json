@@ -66,7 +66,7 @@
         },
         {
           "id": "Protective Clothing",
-		  "pattern": "\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|clothes\\s*|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
+		    "pattern": "^(?:clothes)$|\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
         }
       ]
     },
