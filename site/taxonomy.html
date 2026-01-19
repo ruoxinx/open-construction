@@ -687,9 +687,9 @@
 
     let CFG = null;
     let TERM_ALIASES = new Map();
-    let CATEGORY_RULES = [];
-    let TAXONOMY = null;
-    let TAXON_L1_ORDER = [];
+    // Two-level taxonomy rules compiled from CFG.taxonomy.
+    // Each entry: { l1: "MEP Systems", l2: "Electrical", re: /.../i }
+    let TAXONOMY_RULES = [];
     let LABEL_RULES = { min_arc_px_root: 70, min_arc_px_zoom: 22 };
 
     let EXCLUSIONS = { min_label_len: 2, terms: new Set(), patterns: [] };
@@ -706,22 +706,29 @@
         if(kk && vv) TERM_ALIASES.set(kk, vv);
       }
 
-      CATEGORY_RULES = (CFG.categories || []).map(c => ({
-        id: c.id,
-        re: new RegExp(c.pattern, 'i')
-      }));
-
-      // Two-level taxonomy (optional): cfg.taxonomy = [{id, children:[{id, pattern}, ...]}, ...]
-      TAXONOMY = null;
-      TAXON_L1_ORDER = [];
-      if(Array.isArray(CFG.taxonomy)){
-        TAXONOMY = CFG.taxonomy.map(l1 => ({
-          id: l1.id,
-          children: (l1.children || []).map(l2 => ({ id: l2.id, re: new RegExp(l2.pattern, 'i') }))
-        }));
-        TAXON_L1_ORDER = TAXONOMY.map(x => x.id);
+      // Compile two-level taxonomy rules (preferred)
+      TAXONOMY_RULES = [];
+      for(const l1 of (CFG.taxonomy || [])){
+        const l1id = l1?.id;
+        for(const l2 of (l1?.children || [])){
+          const l2id = l2?.id;
+          const pat = l2?.pattern;
+          if(!l1id || !l2id || !pat) continue;
+          try{
+            TAXONOMY_RULES.push({ l1: l1id, l2: l2id, re: new RegExp(pat, 'i') });
+          } catch(e){ /* ignore invalid regex */ }
+        }
       }
 
+      // Back-compat: if an older config provides CFG.categories (single-level), compile to L1-only rules.
+      if(!TAXONOMY_RULES.length && Array.isArray(CFG.categories)){
+        for(const c of CFG.categories){
+          if(!c?.id || !c?.pattern) continue;
+          try{
+            TAXONOMY_RULES.push({ l1: c.id, l2: null, re: new RegExp(c.pattern, 'i') });
+          } catch(e){ /* ignore */ }
+        }
+      }
 
       LABEL_RULES = Object.assign(LABEL_RULES, (CFG.label_rules || {}));
 
@@ -752,35 +759,18 @@
       return v ? canonKey(v) : k;
     }
 
-    function inferCategory(canon){
+    // Closed-world mapping: return {l1, l2} if matched; otherwise null.
+    function inferCategory2(canon){
       const s = canonKey(canon);
-
-      // 1) Explicit assignment (optional)
-      const mapped = (CFG && CFG.category_map) ? CFG.category_map[s] : null;
-      if(mapped){
-        if(typeof mapped === 'string') return mapped;
-        if(mapped && mapped.l1 && mapped.l2) return `${mapped.l1}::${mapped.l2}`;
+      for(const r of TAXONOMY_RULES){
+        if(r.re.test(s)) return { l1: r.l1, l2: r.l2 };
       }
-
-      // 2) Two-level taxonomy (preferred)
-      if(Array.isArray(TAXONOMY)){
-        for(const l1 of TAXONOMY){
-          for(const l2 of (l1.children || [])){
-            if(l2.re.test(s)) return `${l1.id}::${l2.id}`;
-          }
-        }
-      }
-
-      // 3) Legacy single-level rules fallback
-      for(const c of CATEGORY_RULES){
-        if(c.re.test(s)) return c.id;
-      }
-      return 'Other / Unclassified';
+      return null;
     }
 
     function buildIndex(datasets){
       const idx = new Map();
-      const stats = { total_labels: 0, kept: 0, excluded: 0 };
+      const stats = { total_labels: 0, kept: 0, excluded: 0, unmatched: 0 };
 
       for(const ds of datasets){
         const dsId = ds.id || ds.name || '(unknown)';
@@ -794,17 +784,24 @@
           const canon = singularize(merged);
           if(!canon) { stats.excluded += 1; continue; }
 
+          const cat = inferCategory2(canon);
+          // Closed-world: if we cannot map, do NOT create an "Other" bucket. Exclude + flag.
+          if(!cat){ stats.unmatched += 1; continue; }
+
           if(!idx.has(canon)){
             idx.set(canon, {
               canon,
               label: niceLabel(canon),
-              category: inferCategory(canon),
+              l1: cat.l1,
+              l2: cat.l2,
+              category: cat.l2 ? `${cat.l1} → ${cat.l2}` : cat.l1,
               rawSet: new Set(),
               dsSet: new Set(),
               mentions: 0
             });
           }
           const rec = idx.get(canon);
+          // Keep first mapping; if later rules disagree, prefer existing (deterministic).
           rec.rawSet.add(rawNorm);
           rec.dsSet.add(dsId);
           rec.mentions += 1;
@@ -815,55 +812,75 @@
     }
 
     function buildHierarchy(idx){
+      // Root -> L1 -> L2 -> leaf (canonical)
       const root = { name:'Objects', id:'root', children:[] };
 
+      // Group by L1 then L2. If a record has no L2 (shouldn't happen in the two-level config),
+      // attach it directly under L1 without inventing a catch-all.
       const byL1 = new Map();
-
       for(const rec of idx.values()){
-        const cat = rec.category || 'Other / Unclassified';
-        let l1 = cat;
-        let l2 = 'Other';
-        if(String(cat).includes('::')){
-          const parts = String(cat).split('::');
-          l1 = (parts[0] || 'Other / Unclassified').trim();
-          l2 = (parts[1] || 'Other').trim();
-        }
-
+        const l1 = rec.l1;
+        const l2 = rec.l2 || null;
         if(!byL1.has(l1)) byL1.set(l1, new Map());
         const byL2 = byL1.get(l1);
-        if(!byL2.has(l2)) byL2.set(l2, []);
-        byL2.get(l2).push(rec);
+        const key = l2 ?? '__direct__';
+        if(!byL2.has(key)) byL2.set(key, []);
+        byL2.get(key).push(rec);
       }
 
-      const l1Order = Array.isArray(TAXON_L1_ORDER) && TAXON_L1_ORDER.length
-        ? TAXON_L1_ORDER.slice()
-        : (CATEGORY_RULES.map(x=>x.id));
-
+      // Stable ordering: follow config taxonomy order if available
+      const l1Order = (CFG.taxonomy || []).map(x=>x.id).filter(Boolean);
       const l1Names = Array.from(byL1.keys()).sort((a,b)=>{
-        const ia = l1Order.indexOf(a);
-        const ib = l1Order.indexOf(b);
-        if(ia === -1 && ib === -1) return a.localeCompare(b);
-        if(ia === -1) return 1;
-        if(ib === -1) return -1;
-        return ia - ib;
+        const ia = l1Order.indexOf(a), ib = l1Order.indexOf(b);
+        if(ia !== -1 || ib !== -1) return (ia === -1 ? 1 : ia) - (ib === -1 ? 1 : ib);
+        return a.localeCompare(b);
       });
 
       for(const l1 of l1Names){
-        const l2Map = byL1.get(l1);
-        const l2Names = Array.from(l2Map.keys()).sort((a,b)=>a.localeCompare(b));
+        const byL2 = byL1.get(l1);
+        const l2Order = ((CFG.taxonomy || []).find(x=>x.id===l1)?.children || []).map(x=>x.id).filter(Boolean);
+        const l2Names = Array.from(byL2.keys())
+          .filter(k => k !== '__direct__')
+          .sort((a,b)=>{
+            const ia = l2Order.indexOf(a), ib = l2Order.indexOf(b);
+            if(ia !== -1 || ib !== -1) return (ia === -1 ? 1 : ia) - (ib === -1 ? 1 : ib);
+            return a.localeCompare(b);
+          });
 
         const l1Ds = new Set();
         let l1Mentions = 0;
+        const l1Node = { name: l1, id: 'l1:' + l1, coverage: 0, mentions: 0, datasets: [], children: [] };
 
-        const l1Node = {
-          name: l1,
-          id: 'l1:' + l1,
-          level1: l1,
-          children: []
-        };
+        // First: direct leaves under L1 (rare; only for back-compat configs)
+        if(byL2.has('__direct__')){
+          const directItems = byL2.get('__direct__').sort((a,b)=>{
+            const da=a.dsSet.size, db=b.dsSet.size;
+            if(db!==da) return db-da;
+            return (a.label||a.canon).localeCompare(b.label||b.canon);
+          });
+          for(const r of directItems){
+            for(const id of r.dsSet) l1Ds.add(id);
+            l1Mentions += (r.mentions || 0);
+          }
+          // Attach direct leaves under L1
+          l1Node.children.push(...directItems.map(r => ({
+            name: r.label || r.canon,
+            id: 'obj:' + r.canon,
+            canon: r.canon,
+            label: r.label || r.canon,
+            l1: r.l1,
+            l2: r.l2,
+            category: r.category,
+            coverage: r.dsSet.size,
+            mentions: r.mentions,
+            aliases: Array.from(r.rawSet),
+            datasets: Array.from(r.dsSet)
+          })));
+        }
 
+        // Then: standard L2 groups
         for(const l2 of l2Names){
-          const items = l2Map.get(l2).sort((a,b)=>{
+          const items = byL2.get(l2).sort((a,b)=>{
             const da=a.dsSet.size, db=b.dsSet.size;
             if(db!==da) return db-da;
             return (a.label||a.canon).localeCompare(b.label||b.canon);
@@ -872,17 +889,16 @@
           const l2Ds = new Set();
           let l2Mentions = 0;
           for(const r of items){
-            for(const id of r.dsSet) l2Ds.add(id);
+            for(const id of r.dsSet) { l2Ds.add(id); l1Ds.add(id); }
             l2Mentions += (r.mentions || 0);
           }
-          for(const id of l2Ds) l1Ds.add(id);
           l1Mentions += l2Mentions;
 
           l1Node.children.push({
             name: l2,
-            id: 'l2:' + l1 + '::' + l2,
-            level1: l1,
-            level2: l2,
+            id: 'l2:' + l1 + '>' + l2,
+            l1,
+            l2,
             coverage: l2Ds.size,
             mentions: l2Mentions,
             datasets: Array.from(l2Ds),
@@ -891,8 +907,8 @@
               id: 'obj:' + r.canon,
               canon: r.canon,
               label: r.label || r.canon,
-              level1: l1,
-              level2: l2,
+              l1: r.l1,
+              l2: r.l2,
               category: r.category,
               coverage: r.dsSet.size,
               mentions: r.mentions,
@@ -1124,7 +1140,7 @@
         labelLayer.selectAll('*').remove();
         const thr = labelThresholdForFocus(focus);
 
-        const leaves = root.descendants().filter(d => d.depth >= 3 && !d.children);
+        const leaves = root.descendants().filter(d => d.depth >= 2 && !d.children);
 
         const candidates = leaves.map(d => {
           const dd = d.current || d;
@@ -1287,8 +1303,22 @@
       document.getElementById('statCanon').textContent = String(idx.size);
 
       const rootData = buildHierarchy(idx);
-      document.getElementById('subtitle').textContent =
-        `Derived from ${datasets.length} datasets · ${idx.size} canonical classes · ${Math.max(1, (rootData.children||[]).length)} categories`;
+      const l1Count = (rootData.children || []).length;
+      const l2Count = (rootData.children || []).reduce((acc, n) => {
+        const kids = (n.children || []);
+        // count only true L2 groups (depth-2 nodes without canon)
+        return acc + kids.filter(x => !x.canon && (x.children || []).length).length;
+      }, 0);
+      const parts = [
+        `Derived from ${datasets.length} datasets`,
+        `${idx.size} canonical classes`,
+        `${l1Count} disciplines`,
+        `${l2Count} subclasses`
+      ];
+      if(stats.unmatched){
+        parts.push(`${stats.unmatched} unmapped (excluded)`);
+      }
+      document.getElementById('subtitle').textContent = parts.join(' · ');
 
       const sb = renderSunburst(rootData, (focus) => setNamesPanelForNode(focus));
       RUNTIME.sb = sb;
@@ -1340,11 +1370,13 @@
 
       document.getElementById('btnReset').addEventListener('click', () => location.reload());
       document.getElementById('btnExport').addEventListener('click', () => {
-        const rows = [['canonical_key','display_label','category','coverage_datasets','mentions','aliases_merged']];
+        const rows = [['canonical_key','display_label','level1','level2','category','coverage_datasets','mentions','aliases_merged']];
         for(const rec of Array.from(idx.values()).sort((a,b)=>b.dsSet.size-a.dsSet.size)){
           rows.push([
             rec.canon,
             rec.label,
+            rec.l1 || '',
+            rec.l2 || '',
             rec.category,
             rec.dsSet.size,
             rec.mentions,
