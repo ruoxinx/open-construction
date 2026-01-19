@@ -66,7 +66,7 @@
         },
         {
           "id": "Protective Clothing",
-          "pattern": "\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|clothes|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
+		  "pattern": "\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|clothes\\s*|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
         }
       ]
     },
@@ -243,7 +243,7 @@
         },
         {
           "id": "Railings & Guards",
-          "pattern": "(?:\\\\b(railing|handrail|guardrail|balcony)\\\\b)|(?:\\b(railing|handrail|guard\\s*rail|guardrail|balustrade)\\b)"
+          "pattern": "\\b(railing|handrail|guardrail|top\\s*railing|toprailing|balustrade|balcony)\\b"
         },
         {
           "id": "Floors",
@@ -280,12 +280,12 @@
         },
         {
           "id": "HVAC",
-		  "pattern": "\\b(hvac|air\\s*duct|airduct|duct|ductwork|duct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|diffuser|grille|damper|ahu|chiller|boiler|fan|vav|fcu|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
-
+		  "pattern": "\\b(hvac|air\\s*terminal|airterminal|air\\s*terminal\\s*box|airterminalbox|air\\s*to\\s*air\\s*heat\\s*recovery|airtoairheatrecovery|duct|ductwork|duct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|coil|burner|space\\s*heater|spaceheater|ahu|fcu|vav|chiller|boiler|fan|unitary\\s*equipment|unitaryequipment|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
         },
         {
           "id": "Plumbing",
-		  "pattern": "\\b(plumbing|piping\\s*system(?:s)?|piping|pipe|pipe\\s*fitting|pipe\\s*segment|valve|pump|tank|sanitary|waste\\s*(?:line|system|terminal)|hydrant|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\b"
+		  "pattern": "\\b(plumbing|sanitary\\s*terminal|sanitaryterminal|fire\\s*suppression\\s*terminal|firesuppressionterminal|hydrant|valve|pipe|piping|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\b"
+
         },
         {
           "id": "Fire Protection",
