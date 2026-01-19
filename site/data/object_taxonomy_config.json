@@ -1061,6 +1061,8 @@
       "l1": "MEP Systems",
       "l2": "Plumbing"
     },
+	"clothing": { "l1": "PPE & Safety Equipment", "l2": "Protective Clothing" },
+    "clothes":  { "l1": "PPE & Safety Equipment", "l2": "Protective Clothing" },
     "electric box": {
       "l1": "MEP Systems",
       "l2": "Electrical"
