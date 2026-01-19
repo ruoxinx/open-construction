@@ -485,6 +485,7 @@
         <div class="right">
           <button class="btn-mini" id="btnReset" type="button">Reset View</button>
           <button class="btn-mini" id="btnExport" type="button">Export CSV</button>
+          <button class="btn-mini" id="btnExportUnmapped" type="button" title="Download unmapped labels for taxonomy curation">Export unmapped</button>
         </div>
       </div>
     </section>
@@ -773,7 +774,7 @@
 
     function buildIndex(datasets){
       const idx = new Map();
-      const stats = { total_labels: 0, kept: 0, excluded: 0, unmatched: 0 };
+      const stats = { total_labels: 0, kept: 0, excluded: 0, unmatched: 0, unmatched_map: new Map() };
 
       for(const ds of datasets){
         const dsId = ds.id || ds.name || '(unknown)';
@@ -789,7 +790,17 @@
 
           const cat = inferCategory2(canon);
           // Closed-world: if we cannot map, do NOT create an "Other" bucket. Exclude + flag.
-          if(!cat){ stats.unmatched += 1; continue; }
+          if(!cat){
+            stats.unmatched += 1;
+            const k = canonKey(rawNorm);
+            if(k){
+              if(!stats.unmatched_map.has(k)) stats.unmatched_map.set(k, { raw: rawNorm, count: 0, ds: new Set() });
+              const u = stats.unmatched_map.get(k);
+              u.count += 1;
+              u.ds.add(dsId);
+            }
+            continue;
+          }
 
           if(!idx.has(canon)){
             idx.set(canon, {
@@ -945,6 +956,7 @@
     function setInspectorCategory(catData){
       const cat = catData?.name || catData || 'Category';
       const cov = catData?.coverage ?? null;
+      const ds = (catData?.datasets || []).slice(0, 24);
 
       document.getElementById('insDef').innerHTML =
         `<strong style="color:var(--oc-ink)">Category</strong>
@@ -955,7 +967,10 @@
       document.getElementById('insCat').textContent = cat;
       document.getElementById('insCov').textContent = (cov == null) ? '—' : `${cov} datasets`;
       document.getElementById('insAliases').innerHTML = '';
-      document.getElementById('insDS').innerHTML = '';
+      const toDatasetDetail = (id) => `datasets/detail.html?id=${encodeURIComponent(id)}`;
+      document.getElementById('insDS').innerHTML =
+        ds.length ? ds.map(id => `<span class="chip"><a href="${toDatasetDetail(id)}" title="Open dataset details">${esc(id)}</a></span>`).join('')
+                  : `<span class="text-muted small">—</span>`;
       document.getElementById('insPermalink').setAttribute('href', 'object_taxonomy.html');
     }
 
@@ -1387,6 +1402,16 @@
           ]);
         }
         downloadText('openconstruction_object_taxonomy.csv', toCSV(rows));
+      });
+
+      document.getElementById('btnExportUnmapped').addEventListener('click', () => {
+        const um = Array.from((RUNTIME.stats?.unmatched_map || new Map()).values())
+          .sort((a,b)=> (b.count||0) - (a.count||0));
+        const rows = [['raw_label','count','example_datasets']];
+        for(const r of um){
+          rows.push([r.raw, r.count || 0, Array.from(r.ds || []).slice(0, 25).join(' | ')]);
+        }
+        downloadText('openconstruction_unmapped_labels.csv', toCSV(rows));
       });
 
       resetInspector();
