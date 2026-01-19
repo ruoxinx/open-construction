@@ -66,7 +66,7 @@
         },
         {
           "id": "Protective Clothing",
-		  "pattern": "\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
+          "pattern": "\\b(high\\s*visibility|hi\\s*vis|hi-?vis|reflective|safety\\s*vest|hi\\s*vis\\s*vest|reflective\\s*vest|protective\\s*vest|vest|protective\\s*clothing|ppe\\s*(?:clothing|clothes|apparel)|work\\s*clothes|protective\\s*clothes|clothes|coverall(?:s)?|overall(?:s)?|workwear|protective\\s*jacket|protective\\s*coat|flame\\s*resistant|fr\\s*clothing)\\b"
         }
       ]
     },
@@ -112,7 +112,11 @@
         {
           "id": "Drilling & Augering Equipment",
           "pattern": "(?:\\\\b(earth\\\\s*auger|auger)\\\\b)|(?:\\b(auger|earth\\s*auger)\\b)"
-        }
+        },
+		{
+		  "id": "Elevator",
+		  "pattern": "\\b(elevator|lift|freight\\s*elevator|passenger\\s*elevator)\\b"
+		}
       ]
     },
     {
@@ -272,11 +276,12 @@
       "children": [
         {
           "id": "Electrical",
-          "pattern": "\\\\b(electric|electrical|lighting|light|luminaire|panel|distribution board|switch|outlet|receptacle|breaker|conduit|cable|wire|tray|junction box|meter|transformer|generator|ups|switchgear|motor)\\\\b"
+		  "pattern": "\\b(electric|electrical|lighting|light|lamp|light\\s*fixture|lightfixture|luminaire|electric\\s*appliance|electricappliance|appliance|electric\\s*distribution\\s*board|electricdistributionboard|distribution\\s*board|panel|electric\\s*motor|electricmotor|motor|electric\\s*flow\\s*storage\\s*device|electricflowstoragedevice|switch|switching\\s*device|switchingdevice|outlet|receptacle|breaker|conduit|cable|cable\\s*segment|cablesegment|cable\\s*carrier\\s*fitting|cablecarrierfitting|cable\\s*carrier\\s*segment|cablecarriersegment|cable\\s*tray|cabletray|wire|tray|junction\\s*box|ebox|meter|transformer|generator|ups|switchgear)\\b"
         },
         {
           "id": "HVAC",
-          "pattern": "\\\\b(hvac|air\\s*terminal|air\\s*terminal\\s*box|duct|diffuser|grille|damper|ahu|chiller|boiler|fan\\b|vav\\b|fcu\\b|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\\\b"
+		  "pattern": "\\b(hvac|air\\s*duct|airduct|duct|ductwork|duct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|diffuser|grille|damper|ahu|chiller|boiler|fan|vav|fcu|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
+
         },
         {
           "id": "Plumbing",
