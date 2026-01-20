@@ -280,7 +280,7 @@
         },
         {
           "id": "HVAC",
-		  "pattern": "\\b(hvac|air\\s*terminal|airterminal|air\\s*terminal\\s*box|airterminalbox|air|grille\\s*to\\s*air\\s*heat\\s*recovery|airtoairheatrecovery|duct|ductwork|airduct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|damper|coil|burner|space\\s*heater|spaceheater|ahu|fcu|vav|chiller|boiler|fan|unitary\\s*equipment|unitaryequipment|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
+		    "pattern": "\\b(hvac|air\\s*terminal|airterminal|air\\s*terminal\\s*box|airterminalbox|air\\s*to\\s*air\\s*heat\\s*recovery|airtoairheatrecovery|duct|ductwork|air\\s*duct|airduct|air\\s*duct\\s*fitting|airduct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|damper|grille|coil|burner|space\\s*heater|spaceheater|ahu|fcu|vav|chiller|boiler|fan|unitary\\s*equipment|unitaryequipment|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
         },
         {
           "id": "Plumbing",
