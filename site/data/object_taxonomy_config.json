@@ -50,7 +50,7 @@
         },
         {
           "id": "Safety Signage",
-          "pattern": "\\\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign)\\\\b"
+		  "pattern": "\\b(safety\\s*sign|warning\\s*sign|fire\\s*exit\\s*sign|fire\\s*door\\s*sign|road\\s*sign|emergency\\s*stop)\\b"
         },
         {
           "id": "Respiratory Protection",
@@ -280,11 +280,11 @@
         },
         {
           "id": "HVAC",
-		  "pattern": "\\b(hvac|air\\s*terminal|airterminal|air\\s*terminal\\s*box|airterminalbox|air\\s*to\\s*air\\s*heat\\s*recovery|airtoairheatrecovery|duct|ductwork|duct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|coil|burner|space\\s*heater|spaceheater|ahu|fcu|vav|chiller|boiler|fan|unitary\\s*equipment|unitaryequipment|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
+		  "pattern": "\\b(hvac|air\\s*terminal|airterminal|air\\s*terminal\\s*box|airterminalbox|air|grille\\s*to\\s*air\\s*heat\\s*recovery|airtoairheatrecovery|duct|ductwork|airduct\\s*fitting|ductfitting|duct\\s*segment|ductsegment|duct\\s*silencer|ductsilencer|damper|coil|burner|space\\s*heater|spaceheater|ahu|fcu|vav|chiller|boiler|fan|unitary\\s*equipment|unitaryequipment|heat\\s*exchanger|humidifier|air\\s*conditioning|heat\\s*recovery)\\b"
         },
         {
           "id": "Plumbing",
-		  "pattern": "\\b(plumbing|sanitary\\s*terminal|sanitaryterminal|fire\\s*suppression\\s*terminal|firesuppressionterminal|hydrant|valve|pipe|piping|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\b"
+		  "pattern": "\\b(plumbing|sanitary\\s*terminal|sanitaryterminal|fire\\s*suppression\\s*terminal|firesuppressionterminal|hydrant|valve|pipe|pipefitting|pipesegment|pump|tank|wasteterminal|sanitary|piping|fixture|toilet|sink|faucet|water\\s*heater|interceptor)\\b"
 
         },
         {
