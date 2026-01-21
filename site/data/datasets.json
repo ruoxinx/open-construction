@@ -2919,5 +2919,46 @@
   "contributor": "Vedat Toğan",
   "contributor_url": "https://scholar.google.com/citations?user=G9SF36YAAAAJ&hl=en",
   "note": "The dataset is drawn from benchmark instances defined by Bettemir and Birgonul (2025). Experimental data are shared below with authorization from the original source. The full dataset is also accessible in the cited publication (Bettemir & Birgonul, 2025, Eng. Constr. Archit. Manage., 32(2): 1032–1052. https://doi.org/10.1108/ECAM-06-2022-0601)."
+},
+"BDAChat":
+{
+  "name": "OLBDA: Object-Level Building Damage Assessment Dataset",
+  "authors": "Yong Wang, Jiawei Cui, Changhai Zhai, Xigui Tao, Yuhao Li",
+  "doi": "https://doi.org/10.1016/j.aei.2026.104320",
+  "year": 2026,
+  "data_modality": "Satellite RGB",
+  "num_images": "22,068+6226",
+  "num_classes": 10,
+  "classes": [
+    "No damage",
+    "Minor damage",
+    "Major damage",
+    "Destroyed",
+	"Flooding",
+	"Wildfire",
+	"Volcano",
+	"Tsunami",
+	"Earthquake",
+	"Hurricane"
+  ],
+  "resolution": "",
+  "annotation_types": [
+    "Disaster level",
+    "Disaster class"
+  ],
+  "geographical_location": "Global",
+  "potential_tasks": [
+    "Disaster recognition",
+    "Damage classification",
+    "Causal reasoning"
+  ],
+  "license": "CC BY-NC-SA 4.0",
+  "paper": "Integrating segmentation and vision-language model for automated and interpretable building damage assessment from satellite imagery",
+  "access": "https://github.com/WangYong921/BDAChat",
+  "id": "BDAChat",
+  "image_url": "assets/img/datasets/BDAChat.png",
+  "added_date": "2026-01-20",
+  "contributor": "Urban Infrastructure Safety and Resilience Research Center",
+  "contributor_url": "https://homepage.hit.edu.cn/zhaichanghai?lang=en"
 }
 }
