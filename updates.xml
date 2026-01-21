@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: OLBDA: Object-Level Building Damage Assessment Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BDAChat</link>
+    <guid isPermaLink="false">datasets:BDAChat:2026-01-20</guid>
+    <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Construction classification system database]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CCS-ResourceUse</link>
     <guid isPermaLink="false">datasets:CCS-ResourceUse:2026-01-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BIM-Command-Recommendation:2026-01-10</guid>
     <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[The adoption of Building Information Modeling (BIM) and model-based design within the Architecture, Engineering, and Construction (AEC) industry has been hindered by the perception that using BIM authoring tools demands more effort than conventional 2D drafting. To enhance design efficiency, this paper proposes a BIM command recommendation framework that predicts the optimal next actions in real-time based on users’ historical interactions. We propose a comprehensive filtering and enhancement method for large-scale raw BIM log data and introduce a novel command recommendation model. Our model builds upon the state-of-the-art Transformer backbones originally developed for large language models (LLMs), incorporating a custom feature fusion module, dedicated loss function, and targeted learning strategy. In a case study, the proposed method is applied to over 32 billion rows of real-world log data collected globally from the BIM authoring software Vectorworks. Experimental results demonstrate that our method can learn universal and generalizable modeling patterns from anonymous user interaction sequences across different countries, disciplines, and projects. When generating recommendations for the next command, our approach achieves a Recall@10 of approximately 84%. The code is available at: https://github.com/dcy0577/BIM-Command-Recommendation.git.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Open BIM exchange on Blockchain 3.0 virtual disk: A traceable semantic differential transaction approach]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:openBIMdisk:2026-01-10</guid>
-    <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Building information modeling (BIM) has become prevalent in construction engineering management. However, the efficiency of traditional file-based BIM exchange between multidisciplinary teams remains low due to the transmission of redundant data from mostly unchanged BIM objects. Additionally, the traceability of changes between BIM files is limited. This paper proposes a traceable semantic differential transaction (tSDT) approach for open BIM exchange, which minimizes data redundancy and enables semantic-level traceability of BIM changes. Furthermore, openBIMdisk implements the tSDT and provides a Blockchain 3.0 virtual disk to support efficient, traceable, and secure BIM exchanges across multiple blockchain services. A pilot study of a modular construction project demonstrated the effectiveness of tSDT and open-BIMdisk. Experimental results indicated that tSDT achieved minimal BIM redundancy for storing and restoring all BIM changes, using a sheer 0.007% of disk space on average. openBIMdisk facilitated BIM version management and object-level semantic traceability with a response time of 5.3 ms. The contributions of this paper are twofold. First, tSDT offers a novel and efficient approach for semantic BIM change traceability. Second, openBIMdisk provides BIM practitioners with a Blockchain 3.0 application featuring intuitive and user-friendly interfaces for BIM exchange.]]></description>
   </item>
   </channel>
 </rss>
