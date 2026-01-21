@@ -235,7 +235,8 @@ async function initDetail(){
       const modelTitle = m.title || m.name || 'Untitled';
       const year = (m.year !== undefined && m.year !== null) ? m.year : '—';
 
-      const imgSrc = `../assets/img/models/${encodeURIComponent(m.id || id)}.png`;
+      const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
+      const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Preview';
 
       const mainHero = `
@@ -260,9 +261,8 @@ async function initDetail(){
           <div class="row g-0">
             <div class="col-lg-6">
               <figure class="m-0 ds-figure">
-                <img src="${imgSrc}" alt="${escapeHtml(modelTitle)} preview"
-                     onerror="this.onerror=null;this.src='../assets/img/models/_placeholder.png';"
-                     class="ds-img" data-zoom-src="${imgSrc}">
+                <img src="" data-oc-img="model" alt="${escapeHtml(modelTitle)} preview"
+                     class="ds-img" data-zoom-src="" data-oc-zoom="model">
                 <figcaption class="text-muted small text-center py-2 ds-cap">${escapeHtml(captionText)}</figcaption>
               </figure>
             </div>
@@ -274,7 +274,6 @@ async function initDetail(){
                   ${metaRow('Modalities', chipLane(modality))}
                   ${metaRow('Tasks', chipLane(tasks))}
                   ${metaRow('Applications', chipLane(applications))}
-                  ${metaRow('License', formatLicense(m.license || ''))}
                   ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
                   ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
                   ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
@@ -344,6 +343,8 @@ async function initDetail(){
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
+    // ensure model thumbnails work for .png/.jpg/.jpeg/.gif/.webp
+    if (imgEl) setImgWithFallback(imgEl, imgBase, imgPlaceholder);
       if (imgEl && modalEl) {
         imgEl.addEventListener('click', () => {
           const modalImg = modalEl.querySelector('.modal-img');
@@ -412,7 +413,7 @@ async function initDetail(){
             <figure class="m-0 ds-figure">
               <img src="${imgSrc}" alt="${ds.name} preview"
                    onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
-                   class="ds-img" data-zoom-src="${imgSrc}">
+                   class="ds-img" data-zoom-src="" data-oc-zoom="model">
               <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
               ${noteInline}
             </figure>
@@ -507,3 +508,23 @@ async function initDetail(){
 }
 
 document.addEventListener('DOMContentLoaded', initDetail);
+
+/* ---------- model image fallback (png/jpg/jpeg/gif/webp) ---------- */
+function setImgWithFallback(imgEl, basePath, placeholderPath) {
+  const exts = ['png','jpg','jpeg','gif','webp'];
+  imgEl.dataset.base = basePath;
+  imgEl.dataset.placeholder = placeholderPath || '';
+  imgEl.dataset.extIndex = imgEl.dataset.extIndex || '0';
+  // start with png
+  imgEl.src = `${basePath}.${exts[0]}`;
+  imgEl.onerror = () => {
+    const i = parseInt(imgEl.dataset.extIndex || '0', 10) + 1;
+    imgEl.dataset.extIndex = String(i);
+    if (i < exts.length) {
+      imgEl.src = `${basePath}.${exts[i]}`;
+    } else if (imgEl.dataset.placeholder) {
+      imgEl.onerror = null;
+      imgEl.src = imgEl.dataset.placeholder;
+    }
+  };
+}
