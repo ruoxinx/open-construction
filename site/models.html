@@ -703,7 +703,7 @@ function render(items){
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1">${m.title || 'Untitled'}</h3>
+          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="models/details.html?id=${encodeURIComponent(m.id)}">${m.title || 'Untitled'}</a></h3>
 			${(() => {
 			  const licHTML = licenseLinkHTML(m.license);
 			  return `
@@ -744,9 +744,7 @@ function render(items){
 
           <!-- Actions + Added note -->
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-            ${m.paper_url ? `<a class="btn btn-sm btn-primary" href="${m.paper_url}" target="_blank" rel="noopener">Paper</a>`:''}
-            ${m.code_url ? `<a class="btn btn-sm btn-outline-secondary" href="${m.code_url}" target="_blank" rel="noopener">Code</a>`:''}
-            ${doiLink ? `<a class="btn btn-sm btn-outline-secondary" href="${doiLink}" target="_blank" rel="noopener">DOI</a>`:''}
+            <a class="btn btn-sm btn-primary" href="models/details.html?id=${encodeURIComponent(m.id)}">View details</a>
             ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
           </div>
         </div>

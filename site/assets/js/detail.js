@@ -166,7 +166,37 @@ function metaRow(label, valueHTML) {
 }
 
 /* ========== page ========== */
+
+function getDetailType(){
+  const t = document.body?.getAttribute('data-oc-detail') || document.documentElement?.getAttribute('data-oc-detail') || '';
+  if (t) return String(t).toLowerCase();
+  const p = (location.pathname || '').toLowerCase();
+  if (p.includes('/models/')) return 'model';
+  return 'dataset';
+}
+
+function normalizeModelPayload(payload){
+  // models.json may be: array, {models:[...]}, or keyed object
+  if (Array.isArray(payload)) return payload;
+  if (payload && Array.isArray(payload.models)) return payload.models;
+  if (payload && typeof payload === 'object') return Object.values(payload);
+  return [];
+}
+
+function findModelById(modelsArr, id){
+  if (!id) return null;
+  // Prefer exact id match
+  let m = modelsArr.find(x => String(x?.id || '').trim() === id);
+  if (m) return m;
+
+  // Fallback: some records might use "name" or "title" as id-ish
+  const idNorm = String(id).trim().toLowerCase();
+  return modelsArr.find(x => String(x?.title || x?.name || '').trim().toLowerCase() === idNorm) || null;
+}
+
 async function initDetail(){
+  const type = getDetailType();
+
   const id = decodeURIComponent((typeof getParam === 'function'
     ? getParam('id')
     : new URL(window.location.href).searchParams.get('id')) || '');
@@ -174,150 +204,306 @@ async function initDetail(){
   const root = document.getElementById('detailRoot');
   if (!root) return;
 
-  let dataObj = {};
   try{
-    const res = await fetch('../data/datasets.json', { cache: 'no-cache' });
-    dataObj = res.ok ? await res.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
-  }catch(e){
-    if (typeof showErrorBanner === 'function') showErrorBanner('Could not load data/datasets.json for detail page.');
-    console.error(e);
-  }
+    if (type === 'model') {
+      const res = await fetch('../data/models.json', { cache: 'no-cache' });
+      const payload = res.ok ? await res.json() : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
+      const arr = normalizeModelPayload(payload);
+      const m = findModelById(arr, id);
 
-  const ds = dataObj?.[id];
-  if(!ds){
-    root.innerHTML = '<div class="alert alert-warning">Dataset not found.</div>';
-    window.OC?.clearSkeleton?.();
-    return;
-  }
+      if (!m){
+        root.innerHTML = '<div class="alert alert-warning">Model not found.</div>';
+        window.OC?.clearSkeleton?.();
+        return;
+      }
 
-  if (typeof incViews === 'function') incViews(id);
+      if (typeof incViews === 'function') incViews(id);
 
-  // Header badges (skip null license)
-  window.OC?.setBadges?.({
-    modality: safeText(ds.data_modality) === '—' ? '' : ds.data_modality,
-    tasks: (Array.isArray(ds.potential_tasks) ? ds.potential_tasks.join(', ') : String(ds.potential_tasks || '')).trim(),
-    license: (safeText(ds.license) === '—') ? '' : ds.license
-  });
+      // Badges
+      const modality = m.data_modality || m.modalities || m.modality || m.data_modalities || '';
+      const tasks = m.tasks || m.potential_tasks || m.task || '';
+      const applications = m.applications || m.application || '';
+      const license = safeText(m.license) === '—' ? '' : m.license;
 
-  const imgSrc = `../assets/img/datasets/${encodeURIComponent(id)}.png`;
-  const captionText = ds.sample_caption || ds.caption || 'Sample from the dataset';
-  const noteText = safeText(ds.note);
-	const noteInline = (noteText !== '—')
-	? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
-	: '';
+      window.OC?.setBadges?.({
+        modality: safeText(modality) === '—' ? '' : modality,
+        tasks: Array.isArray(tasks) ? tasks.join(', ') : String(tasks || '').trim(),
+        applications: Array.isArray(applications) ? applications.join(', ') : String(applications || '').trim(),
+        license
+      });
 
+      const modelTitle = m.title || m.name || 'Untitled';
+      const year = (m.year !== undefined && m.year !== null) ? m.year : '—';
 
-  const mainHero = `
-    <style>
-      .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
-      .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
-      .ds-cap{ line-height:1.25; }
-      .ds-body{ padding:24px 28px; }
-      .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
-      .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
-      .meta{ margin:0; }
-      .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
-      .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
-      .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
-      .meta-val{ font-weight:600; line-height:1.4; }
-      .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
-      .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
-    </style>
+      const imgSrc = `../assets/img/models/${encodeURIComponent(m.id || id)}.png`;
+      const captionText = m.sample_caption || m.caption || 'Preview';
 
-    <div class="ds-card mb-3 bg-white">
-      <div class="row g-0">
-        <div class="col-lg-6">
-          <figure class="m-0 ds-figure">
-            <img src="${imgSrc}" alt="${ds.name} preview"
-                 onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
-                 class="ds-img" data-zoom-src="${imgSrc}">
-            <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
-			${noteInline}
-          </figure>
-        </div>
-        <div class="col-lg-6">
-          <div class="ds-body">
-            <h1 class="ds-title">${ds.name}</h1>
-            <div class="ds-year">(${ds.year ?? '—'})</div>
-            <dl class="meta">
-              ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}` : '')}
-              ${metaRow('Modality', chipLane(ds.data_modality))}
-              ${metaRow('Annotations', chipLane(ds.annotation_types))}
-              ${metaRow('Resolution', safeText(ds.resolution))}
-              ${metaRow('Location', chipLane(ds.geographical_location))}
-              ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
-              ${metaRow('Classes', chipLane(ds.classes))}
-            </dl>
+      const mainHero = `
+        <style>
+          .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
+          .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
+          .ds-cap{ line-height:1.25; }
+          .ds-body{ padding:24px 28px; }
+          .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
+          .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
+          .meta{ margin:0; }
+          .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
+          .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
+          .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
+          .meta-val{ font-weight:600; line-height:1.4; }
+          .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
+          .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
+          .abs{ white-space:pre-wrap; }
+        </style>
+
+        <div class="ds-card mb-3 bg-white">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <figure class="m-0 ds-figure">
+                <img src="${imgSrc}" alt="${escapeHtml(modelTitle)} preview"
+                     onerror="this.onerror=null;this.src='../assets/img/models/_placeholder.png';"
+                     class="ds-img" data-zoom-src="${imgSrc}">
+                <figcaption class="text-muted small text-center py-2 ds-cap">${escapeHtml(captionText)}</figcaption>
+              </figure>
+            </div>
+            <div class="col-lg-6">
+              <div class="ds-body">
+                <h1 class="ds-title">${escapeHtml(modelTitle)}</h1>
+                <div class="ds-year">(${escapeHtml(year)})</div>
+                <dl class="meta">
+                  ${metaRow('Modalities', chipLane(modality))}
+                  ${metaRow('Tasks', chipLane(tasks))}
+                  ${metaRow('Applications', chipLane(applications))}
+                  ${metaRow('License', formatLicense(m.license || ''))}
+                  ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
+                  ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
+                  ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
+                  ${metaRow('Abstract', m.abstract ? `<div class="abs small">${escapeHtml(m.abstract)}</div>` : '')}
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content border-0">
-          <div class="modal-body text-center p-2">
-            <img src="" alt="Full preview" class="modal-img" style="max-height:calc(100vh - 7rem); width:auto; max-width:100%; object-fit:contain;">
+        <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content border-0">
+              <div class="modal-body text-center p-2">
+                <img src="" alt="Full preview" class="modal-img" style="max-height:calc(100vh - 7rem); width:auto; max-width:100%; object-fit:contain;">
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  `;
+      `;
 
-  // Sidebar (conditionally rendered)
-  const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
-  const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
-  const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
+      const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
+      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
+      const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
 
-  const sidebar = `
-    <div class="position-sticky" style="top:88px">
-      <div class="card border-0 shadow-sm mb-3">
-        <div class="card-body">
-          <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
-          <div class="d-grid gap-2">
-            ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
-            ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
+      const paperUrl = m.paper_url || m.paper || '';
+      const codeUrl  = m.code_url  || m.code  || '';
+      const doiUrl   = m.doi ? (String(m.doi).startsWith('http') ? m.doi : `https://doi.org/${String(m.doi).trim()}`) : '';
+
+      const sidebar = `
+        <div class="position-sticky" style="top:88px">
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
+              <div class="d-grid gap-2">
+                ${paperUrl ? `<a class="btn btn-primary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">Paper</a>` : ''}
+                ${codeUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${codeUrl}" target="_blank" rel="noopener">Code</a>` : ''}
+                ${doiUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
+              </div>
+            </div>
           </div>
+
+          ${(doiBlock || licenseBlock) ? `
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
+              <div class="small">${doiBlock}${licenseBlock}</div>
+            </div>
+          </div>` : ''}
+
+          ${authorBlock ? `
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+              <div class="small">${authorBlock}</div>
+            </div>
+          </div>` : ''}
         </div>
-      </div>
+      `;
 
-      ${(doiBlock || licenseBlock) ? `
-      <div class="card border-0 shadow-sm mb-3">
-        <div class="card-body">
-          <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
-          <div class="small">${doiBlock}${licenseBlock}</div>
+      root.innerHTML = `
+        <div class="row g-3">
+          <div class="col-lg-9">${mainHero}</div>
+          <div class="col-lg-3">${sidebar}</div>
         </div>
-      </div>` : ''}
+      `;
 
-      ${authorBlock ? `
-      <div class="card border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-          <div class="small">${authorBlock}</div>
-        </div>
-      </div>` : ''}
-    </div>
-  `;
+      const imgEl = root.querySelector('.ds-img');
+      const modalEl = root.querySelector('#imgModal');
+      if (imgEl && modalEl) {
+        imgEl.addEventListener('click', () => {
+          const modalImg = modalEl.querySelector('.modal-img');
+          if (modalImg) modalImg.src = imgEl.getAttribute('data-zoom-src') || imgEl.src;
+          const modal = new bootstrap.Modal(modalEl);
+          modal.show();
+        });
+      }
 
-  root.innerHTML = `
-    <div class="row g-3">
-      <div class="col-lg-9">${mainHero}</div>
-      <div class="col-lg-3">${sidebar}</div>
-    </div>
-  `;
+      window.OC?.clearSkeleton?.();
+      return;
+    }
 
-  const imgEl = root.querySelector('.ds-img');
-  const modalEl = root.querySelector('#imgModal');
-  if (imgEl && modalEl) {
-    imgEl.addEventListener('click', () => {
-      const modalImg = modalEl.querySelector('.modal-img');
-      if (modalImg) modalImg.src = imgEl.getAttribute('data-zoom-src') || imgEl.src;
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
+    // ---------- dataset (existing behavior) ----------
+    let dataObj = {};
+    try{
+      const res = await fetch('../data/datasets.json', { cache: 'no-cache' });
+      dataObj = res.ok ? await res.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
+    }catch(e){
+      if (typeof showErrorBanner === 'function') showErrorBanner('Could not load data/datasets.json for detail page.');
+      console.error(e);
+    }
+
+    const ds = dataObj?.[id];
+    if(!ds){
+      root.innerHTML = '<div class="alert alert-warning">Dataset not found.</div>';
+      window.OC?.clearSkeleton?.();
+      return;
+    }
+
+    if (typeof incViews === 'function') incViews(id);
+
+    window.OC?.setBadges?.({
+      modality: safeText(ds.data_modality) === '—' ? '' : ds.data_modality,
+      tasks: (Array.isArray(ds.potential_tasks) ? ds.potential_tasks.join(', ') : String(ds.potential_tasks || '')).trim(),
+      license: (safeText(ds.license) === '—') ? '' : ds.license
     });
-  }
 
-  window.OC?.clearSkeleton?.();
+    const imgSrc = `../assets/img/datasets/${encodeURIComponent(id)}.png`;
+    const captionText = ds.sample_caption || ds.caption || 'Sample from the dataset';
+    const noteText = safeText(ds.note);
+    const noteInline = (noteText !== '—')
+      ? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
+      : '';
+
+    const mainHero = `
+      <style>
+        .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
+        .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
+        .ds-cap{ line-height:1.25; }
+        .ds-body{ padding:24px 28px; }
+        .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
+        .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
+        .meta{ margin:0; }
+        .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
+        .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
+        .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
+        .meta-val{ font-weight:600; line-height:1.4; }
+        .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
+        .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
+      </style>
+
+      <div class="ds-card mb-3 bg-white">
+        <div class="row g-0">
+          <div class="col-lg-6">
+            <figure class="m-0 ds-figure">
+              <img src="${imgSrc}" alt="${ds.name} preview"
+                   onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
+                   class="ds-img" data-zoom-src="${imgSrc}">
+              <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
+              ${noteInline}
+            </figure>
+          </div>
+          <div class="col-lg-6">
+            <div class="ds-body">
+              <h1 class="ds-title">${ds.name}</h1>
+              <div class="ds-year">(${ds.year ?? '—'})</div>
+              <dl class="meta">
+                ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}` : '')}
+                ${metaRow('Modality', chipLane(ds.data_modality))}
+                ${metaRow('Annotations', chipLane(ds.annotation_types))}
+                ${metaRow('Resolution', safeText(ds.resolution))}
+                ${metaRow('Location', chipLane(ds.geographical_location))}
+                ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
+                ${metaRow('Classes', chipLane(ds.classes))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content border-0">
+            <div class="modal-body text-center p-2">
+              <img src="" alt="Full preview" class="modal-img" style="max-height:calc(100vh - 7rem); width:auto; max-width:100%; object-fit:contain;">
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
+    const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
+    const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
+
+    const sidebar = `
+      <div class="position-sticky" style="top:88px">
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
+            <div class="d-grid gap-2">
+              ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
+              ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
+            </div>
+          </div>
+        </div>
+
+        ${(doiBlock || licenseBlock) ? `
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
+            <div class="small">${doiBlock}${licenseBlock}</div>
+          </div>
+        </div>` : ''}
+
+        ${authorBlock ? `
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+            <div class="small">${authorBlock}</div>
+          </div>
+        </div>` : ''}
+      </div>
+    `;
+
+    root.innerHTML = `
+      <div class="row g-3">
+        <div class="col-lg-9">${mainHero}</div>
+        <div class="col-lg-3">${sidebar}</div>
+      </div>
+    `;
+
+    const imgEl = root.querySelector('.ds-img');
+    const modalEl = root.querySelector('#imgModal');
+    if (imgEl && modalEl) {
+      imgEl.addEventListener('click', () => {
+        const modalImg = modalEl.querySelector('.modal-img');
+        if (modalImg) modalImg.src = imgEl.getAttribute('data-zoom-src') || imgEl.src;
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      });
+    }
+
+    window.OC?.clearSkeleton?.();
+  }catch(e){
+    console.error(e);
+    root.innerHTML = '<div class="alert alert-danger">Failed to load details.</div>';
+    window.OC?.clearSkeleton?.();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initDetail);
