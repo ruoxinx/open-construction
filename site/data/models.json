@@ -1202,7 +1202,7 @@
   "abstract": "The rapid assessment of constructed facilities after extreme events is a knowledge-intensive task critical for effective emergency management. However, methodologies for automated, object-level damage assessment at scale remain underdeveloped, often lacking fine-grained interpretability or scalability. This paper introduces a framework that integrates instance segmentation with temporal Vision Language Model (VLM), which is empowered with visual damage reasoning capabilities through fine-tuning on domain-specific knowledge, for the automated and interpretable assessment of structural assets from satellite imagery. Our three-stage approach synergizes: high-precision segmentation via a modified Segment Anything Model (SAM); spatiotemporal data pairing to isolate asset-specific changes; and BDAChat, the first temporal VLM fine-tuned for object-level damage assessment. Unlike traditional black-box models, BDAChat provides both high-accuracy damage classification and causal interpretations, serving as an intelligent damage inference system. The framework’s effectiveness and scalability are validated through the Lahaina wildfire and hurricane Ian case study. This modular framework automates and accelerates the object-level building damage assessment process, demonstrating significant potential for real-time building damage evaluation and resilient infrastructure planning. The code and dataset are available at https://github.com/WangYong921/BDAChat.",
   "year": 2026,
   "modalities": [
-    "Satellite RGB",
+    "Satellite RGB"
   ],
   "tasks": [
     "Disaster recognition",

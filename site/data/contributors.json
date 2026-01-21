@@ -609,5 +609,14 @@
     "link_url": "https://scholar.google.com/citations?user=nv_0MHwAAAAJ&hl=tr",
   "image": "https://admin.inonu.edu.tr/servlet/image/AVATAR/1140/26-05-2025_085807230_225x300.png",
   "type": "person"
+  },
+     {
+    "id": "Urban Infrastructure Safety and Resilience Research Center",
+    "name": "Urban Infrastructure Safety and Resilience Research Center",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Harbin Institute of Technology (China)",
+    "link_url": "https://homepage.hit.edu.cn/zhaichanghai?lang=en",
+  "image": "assets/img/contributors/avatar.png",
+  "type": "org"
   }
 ]
