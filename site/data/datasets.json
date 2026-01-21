@@ -2950,7 +2950,7 @@
   "potential_tasks": [
     "Disaster recognition",
     "Damage classification",
-    "Causal reasoning"
+    "Visual question answering"
   ],
   "license": "CC BY-NC-SA 4.0",
   "paper": "Integrating segmentation and vision-language model for automated and interpretable building damage assessment from satellite imagery",

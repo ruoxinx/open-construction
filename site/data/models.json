@@ -1188,5 +1188,37 @@
     "added_date": "2026-01-17",
     "contributor": "Tugba Yildizli",
     "contributor_url": "https://www.tudelft.nl/en/staff/t.yildizli/"
-  }
+  },
+  {
+  "id": "BDAChat",
+  "title": "BDAChat: Temporal Vision-Language Model for Object-Level Building Damage Assessment",
+  "authors": [
+    "Yong Wang",
+    "Jiawei Cui",
+    "Changhai Zhai",
+    "Xigui Tao",
+    "Yuhao Li"
+  ],
+  "abstract": "The rapid assessment of constructed facilities after extreme events is a knowledge-intensive task critical for effective emergency management. However, methodologies for automated, object-level damage assessment at scale remain underdeveloped, often lacking fine-grained interpretability or scalability. This paper introduces a framework that integrates instance segmentation with temporal Vision Language Model (VLM), which is empowered with visual damage reasoning capabilities through fine-tuning on domain-specific knowledge, for the automated and interpretable assessment of structural assets from satellite imagery. Our three-stage approach synergizes: high-precision segmentation via a modified Segment Anything Model (SAM); spatiotemporal data pairing to isolate asset-specific changes; and BDAChat, the first temporal VLM fine-tuned for object-level damage assessment. Unlike traditional black-box models, BDAChat provides both high-accuracy damage classification and causal interpretations, serving as an intelligent damage inference system. The framework’s effectiveness and scalability are validated through the Lahaina wildfire and hurricane Ian case study. This modular framework automates and accelerates the object-level building damage assessment process, demonstrating significant potential for real-time building damage evaluation and resilient infrastructure planning. The code and dataset are available at https://github.com/WangYong921/BDAChat.",
+  "year": 2026,
+  "modalities": [
+    "Satellite RGB",
+  ],
+  "tasks": [
+    "Disaster recognition",
+    "Damage classification",
+    "Visual question answering"
+  ],
+  "applications": [
+    "Post-disaster damage assessment"
+  ],
+  "license": "MIT",
+  "paper_url": "https://doi.org/10.1016/j.aei.2026.104320",
+  "code_url": "https://github.com/WangYong921/BDAChat",
+  "thumbnail": "assets/img/models/BDAChat.png",
+  "added_date": "2026-01-10",
+  "contributor": "Urban Infrastructure Safety and Resilience Research Center",
+  "contributor_url": "https://homepage.hit.edu.cn/zhaichanghai?lang=en"
+}
+
 ]
