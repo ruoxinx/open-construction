@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: BDAChat: Temporal Vision-Language Model for Object-Level Building Damage Assessment]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:BDAChat:2026-01-20</guid>
+    <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[The rapid assessment of constructed facilities after extreme events is a knowledge-intensive task critical for effective emergency management. However, methodologies for automated, object-level damage assessment at scale remain underdeveloped, often lacking fine-grained interpretability or scalability. This paper introduces a framework that integrates instance segmentation with temporal Vision Language Model (VLM), which is empowered with visual damage reasoning capabilities through fine-tuning on domain-specific knowledge, for the automated and interpretable assessment of structural assets from satellite imagery. Our three-stage approach synergizes: high-precision segmentation via a modified Segment Anything Model (SAM); spatiotemporal data pairing to isolate asset-specific changes; and BDAChat, the first temporal VLM fine-tuned for object-level damage assessment. Unlike traditional black-box models, BDAChat provides both high-accuracy damage classification and causal interpretations, serving as an intelligent damage inference system. The framework’s effectiveness and scalability are validated through the Lahaina wildfire and hurricane Ian case study. This modular framework automates and accelerates the object-level building damage assessment process, demonstrating significant potential for real-time building damage evaluation and resilient infrastructure planning. The code and dataset are available at https://github.com/WangYong921/BDAChat.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Construction classification system database]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CCS-ResourceUse</link>
     <guid isPermaLink="false">datasets:CCS-ResourceUse:2026-01-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BIMgent:2026-01-10</guid>
     <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Existing computer-use agents primarily focus on general-purpose desktop automation tasks, with limited exploration of their application in highly specialized domains. In particular, the 3D building modeling process in the Architecture, Engineering, and Construction (AEC) sector involves open-ended design tasks and complex interaction patterns within Building Information Modeling (BIM) authoring software, which has yet to be thoroughly addressed by current studies. In this paper, we propose BIMgent, an agentic framework powered by multimodal large language models (LLMs), designed to enable autonomous building model authoring via graphical user interface (GUI) operations. BIMgent automates the architectural building modeling process, including multimodal input for conceptual design, planning of software-specific workflows, and efficient execution of the authoring GUI actions. We evaluate BIMgent on real-world building modeling tasks, including both text-based conceptual design generation and reconstruction from existing building design. The design quality achieved by BIMgent was found to be reasonable. Its operations achieved a 32% success rate, whereas all baseline models failed to complete the tasks (0% success rate). Results demonstrate that BIMgent effectively reduces manual workload while preserving design intent, highlighting its potential for practical deployment in real-world architectural modeling scenarios. Code available at: https://github.com/ZihanDDD/BIMgent]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Predictive modeling: BIM command recommendation based on large-scale usage logs]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:BIM-Command-Recommendation:2026-01-10</guid>
-    <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[The adoption of Building Information Modeling (BIM) and model-based design within the Architecture, Engineering, and Construction (AEC) industry has been hindered by the perception that using BIM authoring tools demands more effort than conventional 2D drafting. To enhance design efficiency, this paper proposes a BIM command recommendation framework that predicts the optimal next actions in real-time based on users’ historical interactions. We propose a comprehensive filtering and enhancement method for large-scale raw BIM log data and introduce a novel command recommendation model. Our model builds upon the state-of-the-art Transformer backbones originally developed for large language models (LLMs), incorporating a custom feature fusion module, dedicated loss function, and targeted learning strategy. In a case study, the proposed method is applied to over 32 billion rows of real-world log data collected globally from the BIM authoring software Vectorworks. Experimental results demonstrate that our method can learn universal and generalizable modeling patterns from anonymous user interaction sequences across different countries, disciplines, and projects. When generating recommendations for the next command, our approach achieves a Recall@10 of approximately 84%. The code is available at: https://github.com/dcy0577/BIM-Command-Recommendation.git.]]></description>
   </item>
   </channel>
 </rss>
