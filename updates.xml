@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Domain-adaptive instance segmentation for far-field object monitoring using SAM-based weak supervision and noisy student self-training]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:Weak_and_Self-supervision_model:2026-01-30</guid>
+    <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Automating construction site monitoring through deep learning–based segmentation presents challenges due to the high cost of pixel-wise annotations. This paper introduces a weakly and self-supervised learning framework that enhances segmentation accuracy while reducing annotation burden. Human-annotated bounding-box ground truth is used as prompts for the Segment Anything Model (SAM) to generate high-quality polygon mask labels, which are further refined through self-training. Compared to fully supervised learning models, the framework integrates Transfer Learning, Pseudo-Label Refinement, and the Noisy Student technique, improving mask mean Average Precision (Mask mAP) by 3–63% across seven target domains and achieving a Mask mAP of 72.27%. The approach also outperforms existing weakly supervised techniques, including BoxSnake and BoxTeacher, by 18% and 25.95%, respectively, and exceeds the performance of point-based methods such as PointWSSIS by 48.78%.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: xBD: A Dataset for Assessing Building Damage from Satellite Imagery]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=xBD</link>
     <guid isPermaLink="false">datasets:xBD:2026-01-29</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: IFC-based BIM Geometry]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IFCNet</link>
     <guid isPermaLink="false">datasets:IFCNet:2026-01-11</guid>
-    <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Construction Time–Cost Trade-off Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=DTCTP</link>
-    <guid isPermaLink="false">datasets:DTCTP:2026-01-11</guid>
     <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
