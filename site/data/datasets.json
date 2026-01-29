@@ -2939,7 +2939,7 @@
 	"Volcano",
 	"Tsunami",
 	"Earthquake",
-	"Hurricane"
+	"Hurric ane"
   ],
   "resolution": "",
   "annotation_types": [
@@ -2960,5 +2960,36 @@
   "added_date": "2026-01-20",
   "contributor": "Urban Infrastructure Safety and Resilience Research Center",
   "contributor_url": "https://homepage.hit.edu.cn/zhaichanghai?lang=en"
+},
+"xBD": {
+    "name": "xBD: A Dataset for Assessing Building Damage from Satellite Imagery",
+    "authors": "Ritwik Gupta, Richard Hosfelt, Sandra Sajeev, Nirav Patel, Bryce Goodman, Jigar Doshi, Eric Heim, Howie Choset, Matthew Gaston",
+    "year": 2019,
+    "data_modality": "Satellite RGB",
+    "num_images": 22068,
+    "num_classes": 4,
+    "classes": [
+      "no damage",
+      "minor damage",
+      "major damage",
+      "destroyed"
+    ],
+    "resolution": "≤ 0.8 m ground sample distance (GSD)",
+    "annotation_types": [
+      "building damage"
+    ],
+    "geographical_location": "Global",
+    "potential_tasks": [
+      "Damage classification"
+    ],
+    "license": "CC BY-NC-SA 4.0",
+    "paper": "https://arxiv.org/abs/1911.09296",
+    "access": "https://xview2.org/",
+    "id": "xBD",
+    "image_url": "assets/img/datasets/xBD.png",
+    "added_date": "2026-01-29",
+    "contributor": "CMU SEI",
+    "contributor_url": "https://www.sei.cmu.edu/"
 }
+
 }
