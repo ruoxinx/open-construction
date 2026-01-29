@@ -627,5 +627,23 @@
     "link_url": "https://www.sei.cmu.edu/",
   "image": "https://github.com/cmu-sei.png?size=160",
   "type": "org"
-  }
+  },
+       {
+    "id": "Veronika Richter",
+    "name": "Veronika Richter",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "RWTH Aachen University (Germany)",
+    "link_url": "https://scholar.google.com/citations?user=tcRsfoEAAAAJ&hl=de",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=tcRsfoEAAAAJ&citpid=2",
+  "type": "person"
+  },
+         {
+    "id": "Jérôme Frisch",
+    "name": "Jérôme Frisch",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "RWTH Aachen University (Germany)",
+    "link_url": "https://scholar.google.com/citations?hl=de&user=yrgm-coAAAAJ&view_op=list_works&sortby=pubdate",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=yrgm-coAAAAJ&citpid=1",
+  "type": "person"
+  },
 ]
