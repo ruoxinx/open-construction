@@ -2992,6 +2992,36 @@
     "added_date": "2026-01-29",
     "contributor": "CMU SEI",
     "contributor_url": "https://www.sei.cmu.edu/"
+},
+"Weak_and_Self_supervision": {
+    "name": "Construction Site Safety Dataset",
+    "authors": "Minkyu Koo, Taegeon Kim, Minhyun Lee, Kinam Kim, Hongjo Kim",
+    "year": 2026,
+    "data_modality": "Ground RGB",
+    "num_images": 7435,
+    "num_classes": 4,
+    "classes": [
+      "worker",
+	  "hardhat",
+	  "strap",
+	  "hook"
+    ],
+    "resolution": "",
+    "annotation_types": [
+      "Polygon masks"
+    ],
+    "geographical_location": "South Korea",
+    "potential_tasks": [
+      "Object segmentation",
+      "Pseudo label generation"
+    ],
+    "license": "MIT License",
+    "paper": "https://doi.org/10.1016/j.autcon.2026.106772",
+    "access": "https://github.com/kmk0119804/Weak_and_Self-supervision",
+    "id": "Weak_and_Self_supervision",
+    "image_url": "assets/img/datasets/Weak_and_Self_supervision.png",
+    "added_date": "2026-01-29",
+    "contributor": "Smart Infrastructure Laboratory",
+    "contributor_url": "https://hongjo.github.io/#home"
 }
-
 }
