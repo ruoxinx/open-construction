@@ -618,5 +618,14 @@
     "link_url": "https://homepage.hit.edu.cn/zhaichanghai?lang=en",
   "image": "assets/img/contributors/avatar.png",
   "type": "org"
+  },
+    {
+    "id": "CMU-SEI",
+    "name": "CMU Software Engineering Institute (SEI)",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Carnegie Mellon University (U.S)",
+    "link_url": "https://www.sei.cmu.edu/",
+  "image": "https://github.com/cmu-sei.png?size=160",
+  "type": "org"
   }
 ]
