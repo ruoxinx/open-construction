@@ -2986,6 +2986,7 @@
     ],
     "license": "CC BY-NC-SA 4.0",
     "paper": "https://arxiv.org/abs/1911.09296",
+	"doi": "https://arxiv.org/abs/1911.09296",
     "access": "https://xview2.org/",
     "id": "xBD",
     "image_url": "assets/img/datasets/xBD.png",
@@ -3015,7 +3016,8 @@
       "Object segmentation",
       "Pseudo label generation"
     ],
-    "license": "MIT License",
+    "license": "MIT",
+	 "doi":"https://doi.org/10.1016/j.autcon.2026.106772",
     "paper": "https://doi.org/10.1016/j.autcon.2026.106772",
     "access": "https://github.com/kmk0119804/Weak_and_Self-supervision",
     "id": "Weak_and_Self_supervision",

@@ -1244,7 +1244,34 @@
     "added_date": "2026-01-30",
 	"contributor": "CMU SEI",
     "contributor_url": "https://www.sei.cmu.edu/"
+},
+{
+    "id": "Weak_and_Self-supervision_model",
+    "title": "Domain-adaptive instance segmentation for far-field object monitoring using SAM-based weak supervision and noisy student self-training",
+    "authors": [
+        "Minkyu Koo", "Taegeon Kim", "Minhyun Lee", "Kinam Kim", "Hongjo Kim"
+    ],
+	"abstract": "Automating construction site monitoring through deep learning–based segmentation presents challenges due to the high cost of pixel-wise annotations. This paper introduces a weakly and self-supervised learning framework that enhances segmentation accuracy while reducing annotation burden. Human-annotated bounding-box ground truth is used as prompts for the Segment Anything Model (SAM) to generate high-quality polygon mask labels, which are further refined through self-training. Compared to fully supervised learning models, the framework integrates Transfer Learning, Pseudo-Label Refinement, and the Noisy Student technique, improving mask mean Average Precision (Mask mAP) by 3–63% across seven target domains and achieving a Mask mAP of 72.27%. The approach also outperforms existing weakly supervised techniques, including BoxSnake and BoxTeacher, by 18% and 25.95%, respectively, and exceeds the performance of point-based methods such as PointWSSIS by 48.78%.",
+    "year": 2026,
+    "modalities": [
+        "Ground RGB"
+    ],
+    "tasks": [
+      "Object segmentation",
+      "Pseudo label generation"
+    ],
+    "applications": [
+        "Safety monitoring"
+    ],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2026.106772",
+    "code_url": "https://github.com/kmk0119804/Weak_and_Self-supervision",
+    "thumbnail": "assets/img/models/Weak_and_Self-supervision_model.png",
+    "added_date": "2026-01-30",
+    "contributor": "Smart Infrastructure Laboratory",
+    "contributor_url": "https://hongjo.github.io/#home"
 }
+
 
 
 ]
