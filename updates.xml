@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Construction Site Safety Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=Weak_and_Self_supervision</link>
+    <guid isPermaLink="false">datasets:Weak_and_Self_supervision:2026-01-29</guid>
+    <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: OLBDA: Object-Level Building Damage Assessment Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BDAChat</link>
     <guid isPermaLink="false">datasets:BDAChat:2026-01-20</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:DTCTP:2026-01-11</guid>
     <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: SpaRSE-BIM: Classification of IFC-based geometry via sparse convolutional neural networks]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:SpaRSE-BIM:2026-01-11</guid>
-    <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Information exchange between Building Information Modeling (BIM) tools is challenging, since many applications use their own native data formats. The Industry Foundation Classes (IFC) schema, an open data exchange format for BIM, does not capture the full semantic meaning needed for direct use by different BIM tools and can be prone to information loss due to reduction, simplification, translation and interpretation of the data. Current practice often treats the imported model as a reference and requires a user to remodel the building using the respective application’s native elements. Many BIM object properties are defined by its classification. Inconsistencies in the mapping between native BIM elements and IFC, e.g. due to unsupported export functionality or manual error, can lead to problems when using the model in a downstream application. Recent works demonstrate that neural networks offer a promising possibility to alleviate this issue via classification of the objects contained in a BIM model and suggesting those corrections to the user. However, the computational overhead of these deep learning models, either due to necessary pre-processing of the data or runtime performance of the model, makes it difficult for them to be used in plug-ins or middleware for BIM tools. This work proposes SpaRSE-BIM, a neural network model based on sparse convolutions for the classification of IFC-based geometry and semantic enrichment of BIM models. Experiments are performed on two IFC entity classification benchmark datasets. The results demonstrate that SpaRSE-BIM is significantly more efficient at inference time compared to previous approaches, while maintaining state-of-the-art accuracy. Further experiments explore the applicability of IFC entity classification datasets to the domain of Scan-to-BIM. It can be shown that the feature space of SpaRSE-BIM learns to discern objects in a semantically meaningful way, even in cases where fine-grained subtype information for IFC objects is not available during training.]]></description>
   </item>
   </channel>
 </rss>
