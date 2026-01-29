@@ -2976,11 +2976,13 @@
     ],
     "resolution": "≤ 0.8 m ground sample distance (GSD)",
     "annotation_types": [
-      "building damage"
+      "building damage",
+	  "Building polygons"
     ],
     "geographical_location": "Global",
     "potential_tasks": [
-      "Damage classification"
+      "Damage classification",
+	  "Building detection"
     ],
     "license": "CC BY-NC-SA 4.0",
     "paper": "https://arxiv.org/abs/1911.09296",
