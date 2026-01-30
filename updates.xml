@@ -39,6 +39,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: MACO: Material Counting in Construction]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=MACO</link>
+    <guid isPermaLink="false">datasets:MACO:2026-01-29</guid>
+    <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: OLBDA: Object-Level Building Damage Assessment Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BDAChat</link>
     <guid isPermaLink="false">datasets:BDAChat:2026-01-20</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:MultiLabel_SewerDefect_SSL:2026-01-17</guid>
     <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Automated sewer defect detection has advanced through deep learning, particularly supervised methods using CCTV images, but based on large annotated datasets. This paper proposes a semi-supervised learning (SSL) approach to reduce labeling demands. The method comprises self-supervised pre-training on unlabeled images using SwAV (Swapping Assignments between multiple Views) followed by fine-tuning for multi-label classification. Experiments on the Sewer-ML dataset demonstrate that the SSL approach, trained on only 35k labeled images, achieves an F1-score of 69.11%, and F2CIW of 54.22%, surpassing the fully supervised baseline trained from scratch on 1.04 million images. Increasing the unlabeled pre-training data further enhances performance, while ImageNet initialization consistently outperforms training from scratch. Self-supervised learning also helps mitigate the effects of mislabeled data, which is observed to be present even in the Sewer-ML ground truth. Overall, self-supervised learning provides an accurate, scalable, and cost-effective alternative to fully supervised approaches, particularly in data-scarce or imperfectly labeled scenarios.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: IFC-based BIM Geometry]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=IFCNet</link>
-    <guid isPermaLink="false">datasets:IFCNet:2026-01-11</guid>
-    <pubDate>Sun, 11 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
