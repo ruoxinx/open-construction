@@ -2985,7 +2985,7 @@
 	  "Building detection"
     ],
     "license": "CC BY-NC-SA 4.0",
-    "paper": "https://arxiv.org/abs/1911.09296",
+    "paper": "xBD: A Dataset for Assessing Building Damage from Satellite Imagery",
 	"doi": "https://arxiv.org/abs/1911.09296",
     "access": "https://xview2.org/",
     "id": "xBD",
@@ -3018,12 +3018,44 @@
     ],
     "license": "MIT",
 	 "doi":"https://doi.org/10.1016/j.autcon.2026.106772",
-    "paper": "https://doi.org/10.1016/j.autcon.2026.106772",
+    "paper": "Domain-adaptive instance segmentation for far-field object monitoring using SAM-based weak supervision and noisy student self-training",
     "access": "https://github.com/kmk0119804/Weak_and_Self-supervision",
     "id": "Weak_and_Self_supervision",
     "image_url": "assets/img/datasets/Weak_and_Self_supervision.png",
     "added_date": "2026-01-29",
     "contributor": "Smart Infrastructure Laboratory",
     "contributor_url": "https://hongjo.github.io/#home"
+},
+"MACO": {
+    "name": "MACO: Material Counting in Construction",
+    "authors": "Qian Huang, Yutao Chen, Yang Li, Siyuan Liu, Zekai Fan, Xingjian Chen, Jun Chen",
+    "doi": "https://doi.org/10.1061/JCEMD4.COENG-17693",
+    "year": 2026,
+    "data_modality": "Ground RGB",
+    "num_images": 4426,
+    "num_classes": 7,
+    "classes": [
+      "rebar", "circular steel pipe", "square steel tube", "wood", "I-beam", "angle steel", "wheel buckle"
+    ],
+    "resolution": "",
+    "annotation_types": [
+      "horizontal bounding boxes",
+      "oriented bounding boxes",
+      "segmentation masks"
+    ],
+    "geographical_location": "China",
+    "potential_tasks": [
+      "object detection",
+      "instance segmentation",
+      "material counting"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "MACO: An Open-Image Data Set with Multiannotation Strategies for Building Material Counting",
+    "access": "https://doi.org/10.5281/zenodo.17165968",
+    "id": "MACO",
+    "image_url": "assets/img/datasets/MACO.png",
+    "added_date": "2026-01-29",
+    "contributor": "Qian Huang",
+    "contributor_url": "h_qian@tongji.edu.cn"
 }
 }
