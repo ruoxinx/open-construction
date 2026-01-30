@@ -628,7 +628,7 @@
   "image": "https://github.com/cmu-sei.png?size=160",
   "type": "org"
   },
-       {
+    {
     "id": "Veronika Richter",
     "name": "Veronika Richter",
     "role": "Dataset and Model Contributor",
@@ -637,7 +637,7 @@
   "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=tcRsfoEAAAAJ&citpid=2",
   "type": "person"
   },
-         {
+     {
     "id": "Jérôme Frisch",
     "name": "Jérôme Frisch",
     "role": "Dataset and Model Contributor",
@@ -646,7 +646,7 @@
   "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=yrgm-coAAAAJ&citpid=1",
   "type": "person"
   },
-           {
+     {
     "id": "Hongjo Kim",
     "name": "Hongjo Kim",
     "role": "Dataset and Model Contributor",
@@ -655,7 +655,7 @@
   "image": "https://hongjo.github.io/img/member/professor/arizona_hj_reszied1.jpg",
   "type": "person"
   },
-             {
+     {
     "id": "Smart Infrastructure Lab",
     "name": "Smart Infrastructure Lab",
     "role": "Dataset and Model Contributor",
@@ -663,5 +663,23 @@
     "link_url": "https://hongjo.github.io/#members",
   "image": "assets/img/contributors/avatar.png",
   "type": "org"
+  },
+     {
+    "id": "Qian Huang",
+    "name": "Qian Huang",
+    "role": "Dataset Contributor",
+    "affiliation": "Tongji University (China)",
+    "link_url": "h_qian@tongji.edu.cn",
+  "image": "assets/img/contributors/avatar.png",
+  "type": "person"
+  },
+      {
+    "id": "Jun Chen",
+    "name": "Jun Chen",
+    "role": "Dataset Contributor",
+    "affiliation": "Tongji University (China)",
+    "link_url": "cejchen@tongji.edu.cn",
+  "image": "https://structure.tongji.edu.cn/__local/E/70/23/F480E5ECED82703FC4361B0E322_4130E49E_5FA5.jpg",
+  "type": "person"
   }
 ]
