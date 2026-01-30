@@ -2967,14 +2967,15 @@
     "year": 2019,
     "data_modality": "Satellite RGB",
     "num_images": 22068,
-    "num_classes": 4,
+    "num_classes": 5,
     "classes": [
       "no damage",
       "minor damage",
       "major damage",
-      "destroyed"
+      "destroyed",
+      "background"
     ],
-    "resolution": "≤ 0.8 m ground sample distance (GSD)",
+    "resolution": "≤ 0.5 m ground sample distance (GSD)",
     "annotation_types": [
       "building damage",
 	  "Building polygons"
@@ -2984,7 +2985,7 @@
       "Damage classification",
 	  "Building detection"
     ],
-    "license": "CC BY-NC-SA 4.0",
+    "license": "Mixed License, see https://xview2.org/terms",
     "paper": "xBD: A Dataset for Assessing Building Damage from Satellite Imagery",
 	"doi": "https://arxiv.org/abs/1911.09296",
     "access": "https://xview2.org/",
