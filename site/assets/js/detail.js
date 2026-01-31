@@ -9,121 +9,6 @@ function doiHref(doiVal){
   try { return new URL(raw).href; } catch { return `https://doi.org/${raw}`; }
 }
 
-// Extract the canonical DOI string (no URL prefix). Returns '' if invalid.
-function doiId(doiVal){
-  const href = doiHref(doiVal);
-  if (!href) return '';
-  try {
-    const u = new URL(href);
-    // Common: https://doi.org/10.xxxx/...
-    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      return u.pathname.replace(/^\/+/, '');
-    }
-  } catch {}
-  // Fall back: raw string
-  const raw = String(doiVal || '').trim();
-  return raw.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '');
-}
-
-/* ---------- paper metrics (Altmetric + Citations) ---------- */
-async function fetchAltmetric(doi){
-  if (!doi) return null;
-  // Altmetric API: https://api.altmetric.com/v1/doi/{doi}
-  const url = `https://api.altmetric.com/v1/doi/${encodeURIComponent(doi)}`;
-  try {
-    const r = await fetch(url, { cache: 'no-cache' });
-    if (!r.ok) return null;
-    const j = await r.json();
-    const score = Number(j?.score ?? 0);
-    // Prefer Altmetric details URL if provided
-    const details = j?.details_url ? String(j.details_url) : (j?.altmetric_id ? `https://www.altmetric.com/details/${j.altmetric_id}` : '');
-    return {
-      score: isFinite(score) ? score : 0,
-      details_url: safeHref(details)
-    };
-  } catch {
-    return null;
-  }
-}
-
-async function fetchCitations(doi){
-  if (!doi) return null;
-
-  // Primary: Semantic Scholar (often has reliable citationCount)
-  // https://api.semanticscholar.org/graph/v1/paper/DOI:{doi}?fields=citationCount
-  const s2Url = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(doi)}?fields=citationCount`;
-  try {
-    const r = await fetch(s2Url, { cache: 'no-cache' });
-    if (r.ok) {
-      const j = await r.json();
-      const n = Number(j?.citationCount ?? 0);
-      if (isFinite(n)) return { count: n };
-    }
-  } catch {}
-
-  // Fallback: Crossref is-referenced-by-count
-  const crUrl = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
-  try {
-    const r = await fetch(crUrl, { cache: 'no-cache' });
-    if (!r.ok) return null;
-    const j = await r.json();
-    const n = Number(j?.message?.['is-referenced-by-count'] ?? 0);
-    return { count: isFinite(n) ? n : 0 };
-  } catch {
-    return null;
-  }
-}
-
-async function renderPaperMetrics(doiVal, mountEl){
-  if (!mountEl) return;
-  const doi = doiId(doiVal);
-  if (!doi) { mountEl.remove(); return; }
-
-  // Fetch in parallel; fail soft.
-  const [alt, cit] = await Promise.all([
-    fetchAltmetric(doi),
-    fetchCitations(doi)
-  ]);
-
-  const altScore = Number(alt?.score ?? 0);
-  const citCount = Number(cit?.count ?? 0);
-
-  // Hide entire card if both are missing or zero
-  const showAlt = isFinite(altScore) && altScore > 0;
-  const showCit = isFinite(citCount) && citCount > 0;
-  if (!showAlt && !showCit) { mountEl.remove(); return; }
-
-  const altUrl = alt?.details_url || '';
-
-  mountEl.innerHTML = `
-    <div class="card border-0 shadow-sm mb-3">
-      <div class="card-body">
-        <h2 class="h6 text-uppercase text-muted mb-3">Impact</h2>
-
-        <div class="d-flex flex-wrap gap-2">
-          ${showCit ? `
-            <span class="badge rounded-pill border bg-body text-body px-3 py-2" title="Citation count">
-              <span class="me-2 d-inline-flex align-items-center justify-content-center" aria-hidden="true" style="width:1.25rem;height:1.25rem;border-radius:999px;background:rgba(0,0,0,.06);font-size:.75rem;line-height:1;">C</span>
-              <span class="me-1">Citations</span>
-              <span class="fw-semibold">${safeFormatInt(citCount)}</span>
-            </span>
-          ` : ''}
-
-          ${showAlt ? `
-            ${altUrl ? `<a href="${altUrl}" target="_blank" rel="noopener" class="text-decoration-none">` : ''}
-              <span class="badge rounded-pill border bg-body text-body px-3 py-2" title="Altmetric score">
-                <span class="me-2 d-inline-flex align-items-center justify-content-center" aria-hidden="true" style="width:1.25rem;height:1.25rem;border-radius:999px;background:rgba(0,0,0,.06);font-size:.75rem;line-height:1;">A</span>
-                <span class="me-1">Altmetric</span>
-                <span class="fw-semibold">${safeFormatInt(altScore)}</span>
-              </span>
-            ${altUrl ? `</a>` : ''}
-          ` : ''}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
 function formatDoi(doiVal){
   const href = doiHref(doiVal);
   if (!href) return '—';
@@ -247,6 +132,142 @@ function formatLicense(licVal){
   }
   return norm;
 }
+
+/* ---------- publication badges (Altmetric / Dimensions) ---------- */
+function ensureExternalScript(src, id){
+  if (!src) return;
+  if (id && document.getElementById(id)) return;
+  // If same src already present, don't add again
+  const exists = Array.from(document.scripts || []).some(s => s?.src === src);
+  if (exists) return;
+
+  const s = document.createElement('script');
+  if (id) s.id = id;
+  s.src = src;
+  s.async = true;
+  s.defer = true;
+  document.head.appendChild(s);
+}
+
+function normalizeDoiForBadge(doiVal){
+  // Altmetric/Dimensions accept raw DOI; strip DOI resolver if user stored a URL.
+  if (!doiVal) return '';
+  const raw = String(doiVal).trim();
+  if (!raw) return '';
+  // If it's a URL, use pathname as DOI (handles doi.org and other resolvers)
+  try {
+    const u = new URL(raw);
+    const doi = (u.pathname || '').replace(/^\/+/, '');
+    return doi || raw;
+  } catch {
+    return raw;
+  }
+}
+
+function impactCardHtml(doiVal){
+  const doi = normalizeDoiForBadge(doiVal);
+  if (!doi) return '';
+  return `
+    <div class="card border-0 shadow-sm mb-3" data-oc-impact-card data-oc-doi="${escapeHtml(doi)}" style="display:none;">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h6 text-uppercase text-muted mb-0">Impact</h2>
+          <div class="d-flex gap-2">
+            <span class="badge rounded-pill bg-light text-dark border" data-oc-impact-altmetric-badge style="display:none;">Altmetric</span>
+            <span class="badge rounded-pill bg-light text-dark border" data-oc-impact-citations-badge style="display:none;">Citations</span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column gap-2 small">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted">Altmetric</div>
+            <div class="fw-semibold" data-oc-altmetric>—</div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted">Citations</div>
+            <div class="fw-semibold" data-oc-citations>—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function fetchAltmetricScore(doi){
+  // Altmetric public API (may fail due to CORS depending on deployment; we fail-safe to 0)
+  if (!doi) return 0;
+  const url = `https://api.altmetric.com/v1/doi/${encodeURIComponent(doi)}`;
+  try{
+    const r = await fetch(url, { cache: 'no-cache' });
+    if (!r.ok) return 0;
+    const j = await r.json();
+    const score = Number(j?.score ?? 0);
+    return Number.isFinite(score) ? score : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function fetchCitationCount(doi){
+  // Semantic Scholar Graph API (no key required for this endpoint in most cases)
+  if (!doi) return 0;
+  const url = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(doi)}?fields=citationCount`;
+  try{
+    const r = await fetch(url, { cache: 'no-cache' });
+    if (r.ok) {
+      const j = await r.json();
+      const c = Number(j?.citationCount ?? 0);
+      return Number.isFinite(c) ? c : 0;
+    }
+  } catch {}
+  // Fallback: Crossref (has is-referenced-by-count)
+  try{
+    const cr = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}`, { cache: 'no-cache' });
+    if (!cr.ok) return 0;
+    const j = await cr.json();
+    const c = Number(j?.message?.['is-referenced-by-count'] ?? 0);
+    return Number.isFinite(c) ? c : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function initImpactCards(rootEl){
+  const cards = Array.from(rootEl?.querySelectorAll?.('[data-oc-impact-card]') || []);
+  if (!cards.length) return;
+
+  await Promise.all(cards.map(async (card) => {
+    const doi = card.getAttribute('data-oc-doi') || '';
+    const altEl = card.querySelector('[data-oc-altmetric]');
+    const citEl = card.querySelector('[data-oc-citations]');
+    const altBadge = card.querySelector('[data-oc-impact-altmetric-badge]');
+    const citBadge = card.querySelector('[data-oc-impact-citations-badge]');
+
+    const [alt, cit] = await Promise.all([
+      fetchAltmetricScore(doi),
+      fetchCitationCount(doi)
+    ]);
+
+    const altScore = Number.isFinite(Number(alt)) ? Number(alt) : 0;
+    const citCount = Number.isFinite(Number(cit)) ? Number(cit) : 0;
+
+    if (altEl) altEl.textContent = altScore ? safeFormatInt(altScore) : '—';
+    if (citEl) citEl.textContent = citCount ? safeFormatInt(citCount) : '—';
+
+    // Hide entire card if both are zero/unavailable
+    if (!altScore && !citCount) {
+      card.remove();
+      return;
+    }
+
+    // Show badges only when the metric exists
+    if (altBadge) altBadge.style.display = altScore ? '' : 'none';
+    if (citBadge) citBadge.style.display = citCount ? '' : 'none';
+
+    card.style.display = '';
+  }));
+}
+
 
 /* ---------- chip helpers ---------- */
 function isNotSpecified(s){
@@ -413,6 +434,8 @@ async function initDetail(){
       const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
+      // Impact metrics card (Altmetric + Citations); hidden if both are zero
+      const impactBlock = impactCardHtml(m.doi);
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
@@ -439,16 +462,15 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-          ${authorBlock ? `
-          <div class="card border-0 shadow-sm">
+      ${authorBlock ? `
+          <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
               <div class="small">${authorBlock}</div>
             </div>
           </div>` : ''}
 
-          <!-- Paper impact metrics (rendered client-side; hidden if zeros) -->
-          <div id="ocPaperMetrics"></div>
+          ${impactBlock}
         </div>
       `;
 
@@ -457,10 +479,11 @@ async function initDetail(){
           <div class="col-lg-9">${mainHero}</div>
           <div class="col-lg-3">${sidebar}</div>
         </div>
-      `;
+      `
 
-      // Render Altmetric + citation counts (hide if zero)
-      renderPaperMetrics(m.doi, root.querySelector('#ocPaperMetrics'));
+      // Initialize Impact card metrics (Altmetric + Citations)
+      initImpactCards(root);
+;
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -571,6 +594,8 @@ async function initDetail(){
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
+    // Impact metrics card (Altmetric + Citations); hidden if both are zero
+    const impactBlock = impactCardHtml(ds.doi);
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -593,27 +618,28 @@ async function initDetail(){
         </div>` : ''}
 
         ${authorBlock ? `
-        <div class="card border-0 shadow-sm">
+        <div class="card border-0 shadow-sm mb-3">
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
             <div class="small">${authorBlock}</div>
           </div>
         </div>` : ''}
 
-        <!-- Paper impact metrics (rendered client-side; hidden if zeros) -->
-        <div id="ocPaperMetrics"></div>
+        ${impactBlock}
       </div>
     `;
+
 
     root.innerHTML = `
       <div class="row g-3">
         <div class="col-lg-9">${mainHero}</div>
         <div class="col-lg-3">${sidebar}</div>
       </div>
-    `;
+    `
 
-    // Render Altmetric + citation counts (hide if zero)
-    renderPaperMetrics(ds.doi, root.querySelector('#ocPaperMetrics'));
+    // Initialize Impact card metrics (Altmetric + Citations)
+    initImpactCards(root);
+;
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
