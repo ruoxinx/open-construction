@@ -3,27 +3,24 @@
    ============================== */
 
 /* ========== helpers ========== */
-
-// Normalize DOI values to the bare DOI string (e.g., "10.xxxx/xxxx")
 function normalizeDoi(doiVal){
-  if (!doiVal && doiVal !== 0) return '';
+  if (!doiVal) return '';
   let s = String(doiVal).trim();
   if (!s) return '';
-  s = s.replace(/^doi\s*:\s*/i, '').trim();
-  // If it's a URL, try to extract from /<doi>
-  try{
-    const u = new URL(s);
-    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      s = u.pathname.replace(/^\/+/, '').trim();
-    } else if (u.pathname && u.pathname.length > 1 && /10\./.test(u.pathname)) {
-      // Sometimes DOIs are embedded in paths on publisher sites; keep only from 10.x
-      const m = u.href.match(/(10\.[0-9]{4,9}\/[^\s?#]+)/);
-      if (m) s = m[1];
-    }
-  }catch{ /* not a URL */ }
-  // Final extraction safety
-  const m2 = s.match(/(10\.[0-9]{4,9}\/[^\s?#]+)/);
-  return (m2 ? m2[1] : s).trim();
+  s = s.replace(/^doi\s*:\s*/i, '');
+  s = s.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '');
+  s = s.replace(/^www\.(dx\.)?doi\.org\//i, '');
+  return s.trim();
+}
+
+function ensureScript(src, flag, onloadCb){
+  if (window[flag]) { onloadCb && onloadCb(); return; }
+  const s = document.createElement('script');
+  s.src = src;
+  s.async = true;
+  s.onload = () => { window[flag] = true; onloadCb && onloadCb(); };
+  s.onerror = () => {};
+  document.body.appendChild(s);
 }
 
 function doiHref(doiVal){
@@ -38,6 +35,7 @@ function formatDoi(doiVal){
   if (!doi || !href) return '—';
   return `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(doi)}</a>`;
 }
+
 
 function safeFormatInt(v){
   if (typeof formatInt === 'function') return formatInt(v);
@@ -101,104 +99,12 @@ function authorListHtml(authorsVal, authorUrls){
 
   return clean.map((name) => {
     const safeName = escapeHtml(name);
-    const u = urlByName.get(name);
-    const safeUrl = safeHref(u);
+    const safeUrl = safeHref(urlByName.get(name) || '');
     return `<div class="mb-1">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</div>`;
   }).join('');
 }
 
-/* ====== publication metrics (Altmetric + Dimensions) ====== */
-
-function ensureScriptOnce(src, flag, onload){
-  if (window[flag]) { if (typeof onload === 'function') onload(); return; }
-  const s = document.createElement('script');
-  s.src = src;
-  s.async = true;
-  s.onload = () => { window[flag] = true; if (typeof onload === 'function') onload(); };
-  document.body.appendChild(s);
-}
-
-function initAltmetric(){
-  // embed.js exposes _altmetric_embed_init in most cases
-  if (typeof window._altmetric_embed_init === 'function') {
-    try { window._altmetric_embed_init(); } catch {}
-  } else if (window.Altmetric && typeof window.Altmetric.embed === 'function') {
-    try { window.Altmetric.embed(); } catch {}
-  }
-}
-
-function initDimensions(){
-  // badge.js exposes __dimensions_embed.addBadges()
-  const d = window.__dimensions_embed;
-  if (d && typeof d.addBadges === 'function') {
-    try { d.addBadges(); } catch {}
-  }
-}
-
-function publicationMetricsCardHtml(doiRaw){
-  const doi = normalizeDoi(doiRaw);
-  if (!doi) return '';
-  // Always show Dimensions. Altmetric will auto-hide if no mentions.
-  return `
-    <div class="card border-0 shadow-sm oc-publication-metrics mt-3">
-      <div class="card-body">
-        <h2 class="h6 text-uppercase text-muted mb-3">Publication Metrics</h2>
-
-        <div class="oc-dimensions-wrap mb-3">
-          <div class="small text-muted mb-1">Dimensions (citations)</div>
-          <span class="__dimensions_badge_embed__" data-doi="${doi}" data-style="small_rectangle"></span>
-        </div>
-
-        <div class="oc-altmetric-wrap mb-3">
-          <div class="small text-muted mb-1">Altmetric (online attention)</div>
-          <span class="altmetric-embed" data-doi="${doi}" data-badge-type="donut" data-hide-no-mentions="true"></span>
-        </div>
-
-        <div class="small text-muted">
-          Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function mountAndInitPublicationBadges(scope){
-  const root = scope || document;
-  // Load scripts once, then init. These scripts scan the DOM for embeds.
-  ensureScriptOnce('https://badge.dimensions.ai/badge.js', '__ocDimensionsLoaded', () => initDimensions());
-  ensureScriptOnce('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', '__ocAltmetricLoaded', () => initAltmetric());
-
-  // Re-init a few times because cards are injected dynamically and scripts may load after render
-  setTimeout(() => { initDimensions(); initAltmetric(); }, 300);
-  setTimeout(() => { initDimensions(); initAltmetric(); }, 1200);
-}
-
-/* Defensive cleanup: remove Altmetric wrappers when there are no mentions (so no '?' donuts and no empty labels). */
-function cleanupPublicationBadges(scope){
-  const root = scope || document;
-
-  const prune = () => {
-    // Altmetric: remove wrappers that end up hidden (data-hide-no-mentions=true).
-    root.querySelectorAll('.oc-altmetric-wrap').forEach(wrap => {
-      const embed = wrap.querySelector('.altmetric-embed');
-      if (!embed) { wrap.remove(); return; }
-      const style = window.getComputedStyle(embed);
-      const hidden = (style.display === 'none' || style.visibility === 'hidden' || embed.offsetHeight < 8 || embed.offsetWidth < 8);
-      if (hidden) wrap.remove();
-    });
-
-    // If publication metrics card has no embeds left, remove it.
-    root.querySelectorAll('.oc-publication-metrics').forEach(card => {
-      const hasAny = card.querySelector('.oc-altmetric-wrap .altmetric-embed, .oc-dimensions-wrap .__dimensions_badge_embed__');
-      if (!hasAny) card.remove();
-    });
-  };
-
-  setTimeout(prune, 800);
-  setTimeout(prune, 2200);
-  setTimeout(prune, 5000);
-}
-
+// ---------- tiny sanitizers ----------
 function escapeHtml(s){
   return String(s)
     .replace(/&/g, '&amp;')
@@ -275,6 +181,108 @@ function metaRow(label, valueHTML) {
   `;
 }
 
+/* ==============================
+   Publication metrics badges
+   ============================== */
+
+function getPublicationMeta(obj){
+  if (!obj) return null;
+  const pub = (obj.publication && typeof obj.publication === 'object') ? obj.publication : {};
+  const doi = normalizeDoi(pub.doi || obj.doi || '');
+  if (!doi) return null;
+
+  // Auto-enable by default when DOI exists; allow explicit disable via false.
+  const altmetric = (pub.altmetric ?? obj.altmetric);
+  const dimensions = (pub.dimensions ?? obj.dimensions);
+
+  return { doi, altmetric, dimensions };
+}
+
+function publicationMetricsHtml(pub){
+  if (!pub || !pub.doi) return '';
+  const showAlt = (pub.altmetric !== false);
+  const showDim = (pub.dimensions !== false);
+  if (!showAlt && !showDim) return '';
+
+  return `
+    <div class="mt-3 pt-3 border-top">
+      <h3 class="h6 text-uppercase text-muted mb-2">Publication metrics</h3>
+      <div class="d-flex flex-wrap gap-3 align-items-start" id="publicationMetrics">
+        ${showAlt ? `
+          <div style="min-width: 160px;">
+            <div class="small text-muted mb-1">Altmetric (online attention)</div>
+            <span class="altmetric-embed"
+                  data-doi="${escapeHtml(pub.doi)}"
+                  data-badge-type="donut"
+                  data-hide-no-mentions="true"></span>
+          </div>
+        ` : ''}
+
+        ${showDim ? `
+          <div style="min-width: 200px;">
+            <div class="small text-muted mb-1">Dimensions (citations)</div>
+            <span class="__dimensions_badge_embed__"
+                  data-doi="${escapeHtml(pub.doi)}"
+                  data-style="small_rectangle"></span>
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="small text-muted mt-2">
+        Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
+      </div>
+    </div>
+  `;
+}
+
+function initPublicationEmbeds(){
+  try {
+    if (window.__dimensions_embed && typeof window.__dimensions_embed.addBadges === 'function') {
+      window.__dimensions_embed.addBadges();
+    }
+  } catch {}
+
+  try {
+    if (typeof window._altmetric_embed_init === 'function') window._altmetric_embed_init();
+    if (window.Altmetric && typeof window.Altmetric.embed === 'function') window.Altmetric.embed();
+  } catch {}
+}
+
+function cleanupAltmetricNoMentions(){
+  document.querySelectorAll('.altmetric-embed').forEach(node => {
+    const style = window.getComputedStyle(node);
+    const isHidden = style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0';
+    const empty = !node.innerHTML || node.innerHTML.trim() === '';
+    if (isHidden || empty) node.remove();
+  });
+
+  const wrap = document.getElementById('publicationMetrics');
+  if (wrap && !wrap.querySelector('.altmetric-embed, .__dimensions_badge_embed__')) {
+    const parent = wrap.closest('.mt-3');
+    if (parent) parent.style.display = 'none';
+  }
+}
+
+function loadPublicationScriptsIfNeeded(pub){
+  if (!pub || !pub.doi) return;
+  const wantAlt = (pub.altmetric !== false);
+  const wantDim = (pub.dimensions !== false);
+
+  if (wantAlt) {
+    ensureScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', '__ocAltmetricLoaded', initPublicationEmbeds);
+  }
+  if (wantDim) {
+    ensureScript('https://badge.dimensions.ai/badge.js', '__ocDimensionsLoaded', initPublicationEmbeds);
+  }
+
+  // Re-init after scripts settle + remove hidden Altmetric
+  setTimeout(() => {
+    initPublicationEmbeds();
+    cleanupAltmetricNoMentions();
+  }, 1200);
+}
+
+
 /* ========== page ========== */
 
 function getDetailType(){
@@ -323,7 +331,8 @@ async function initDetail(){
 
       if (!m){
         root.innerHTML = '<div class="alert alert-warning">Model not found.</div>';
-        window.OC?.clearSkeleton?.();
+        loadPublicationScriptsIfNeeded(pub);
+    window.OC?.clearSkeleton?.();
         return;
       }
 
@@ -405,14 +414,15 @@ async function initDetail(){
         </div>
       `;
 
-      const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
+      const pub = getPublicationMeta(m);
+      const doiBlock = pub?.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(pub.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
-      const doiNorm = normalizeDoi(m.doi || m.doi_url || m.doiUrl || (m.publication && m.publication.doi));
-      const doiUrl   = doiNorm ? `https://doi.org/${doiNorm}` : '';
+      const doiUrl   = pub?.doi ? doiHref(pub.doi) : '';
+      const metricsBlock = publicationMetricsHtml(pub);
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
@@ -435,15 +445,13 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-          ${authorBlock ? `
+          ${(authorBlock || metricsBlock) ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-              <div class="small">${authorBlock}</div>
+              ${authorBlock ? `<h2 class="h6 text-uppercase text-muted mb-3">Authors</h2><div class="small">${authorBlock}</div>` : ''}
+              ${metricsBlock || ''}
             </div>
           </div>` : ''}
-          ${doiNorm ? publicationMetricsCardHtml(doiNorm) : ''}
-
         </div>
       `;
 
@@ -453,10 +461,6 @@ async function initDetail(){
           <div class="col-lg-3">${sidebar}</div>
         </div>
       `;
-
-      mountAndInitPublicationBadges(root);
-
-      cleanupPublicationBadges(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -471,6 +475,7 @@ async function initDetail(){
         });
       }
 
+      loadPublicationScriptsIfNeeded(pub);
       window.OC?.clearSkeleton?.();
       return;
     }
@@ -564,9 +569,11 @@ async function initDetail(){
       </div>
     `;
 
-    const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
+    const pub = getPublicationMeta(ds);
+    const doiBlock = pub?.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(pub.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
+    const metricsBlock = publicationMetricsHtml(pub);
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -575,7 +582,7 @@ async function initDetail(){
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
               ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
-              ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
+              ${pub?.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${doiHref(pub.doi)}" target="_blank" rel="noopener">View paper</a>` : ''}
             </div>
           </div>
         </div>
@@ -588,11 +595,11 @@ async function initDetail(){
           </div>
         </div>` : ''}
 
-        ${authorBlock ? `
+        ${(authorBlock || metricsBlock) ? `
         <div class="card border-0 shadow-sm">
           <div class="card-body">
-            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-            <div class="small">${authorBlock}</div>
+            ${authorBlock ? `<h2 class="h6 text-uppercase text-muted mb-3">Authors</h2><div class="small">${authorBlock}</div>` : ''}
+            ${metricsBlock || ''}
           </div>
         </div>` : ''}
       </div>
@@ -604,10 +611,6 @@ async function initDetail(){
         <div class="col-lg-3">${sidebar}</div>
       </div>
     `;
-
-    mountAndInitPublicationBadges(root);
-
-      cleanupPublicationBadges(root);
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
