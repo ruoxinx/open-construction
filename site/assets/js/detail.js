@@ -169,10 +169,14 @@ function publicationBadgesHtml(doiVal, cfg){
   if (!doi) return '';
 
   // Config precedence:
-  // 1) explicit per-record booleans (cfg.altmetric / cfg.dimensions)
-  // 2) defaults to true when DOI exists
-  const altmetricOn  = (cfg?.altmetric  !== undefined) ? !!cfg.altmetric  : true;
-  const dimensionsOn = (cfg?.dimensions !== undefined) ? !!cfg.dimensions : true;
+  // - If cfg.altmetric / cfg.dimensions is boolean, respect it.
+  // - If cfg.altmetric / cfg.dimensions is 0 or "0", treat as disabled (hide badges for zero metrics).
+  // - Otherwise default to true when DOI exists.
+  const asBool = v => (v === true || v === false) ? v : undefined;
+  const isZero = v => v === 0 || v === '0' || v === '0.0';
+
+  const altmetricOn  = isZero(cfg?.altmetric)  ? false : (asBool(cfg?.altmetric)  ?? true);
+  const dimensionsOn = isZero(cfg?.dimensions) ? false : (asBool(cfg?.dimensions) ?? true);
 
   const blocks = [];
   if (altmetricOn) {
@@ -196,12 +200,7 @@ function publicationBadgesHtml(doiVal, cfg){
   if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
   if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
 
-  return `
-    <div class="mt-3">
-      <div class="text-muted text-uppercase" style="font-size:.72rem; letter-spacing:.08em; font-weight:700;">Publication badges</div>
-      <div class="mt-2">${blocks.join('')}</div>
-    </div>
-  `;
+  return `<div class="mt-2">${blocks.join('')}</div>`;
 }
 
 /* ---------- chip helpers ---------- */
@@ -401,18 +400,21 @@ async function initDetail(){
           </div>` : ''}
 
       ${authorBlock ? `
-          <div class="card border-0 shadow-sm">
+          <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
               <div class="small">${authorBlock}</div>
-              ${pubBadgesBlock}
             </div>
-          </div>` : (pubBadgesBlock ? `
+          </div>` : ''}
+
+          ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-2">Publication Metrics</h2>
+              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.</div>
               ${pubBadgesBlock}
             </div>
-          </div>` : '')}
+          </div>` : ''}
         </div>
       `;
 
@@ -559,18 +561,21 @@ async function initDetail(){
         </div>` : ''}
 
         ${authorBlock ? `
-        <div class="card border-0 shadow-sm">
-          <div class="card-body">
-            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-            <div class="small">${authorBlock}</div>
-            ${pubBadgesBlock}
-          </div>
-        </div>` : (pubBadgesBlock ? `
-        <div class="card border-0 shadow-sm">
-          <div class="card-body">
-            ${pubBadgesBlock}
-          </div>
-        </div>` : '')}
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+              <div class="small">${authorBlock}</div>
+            </div>
+          </div>` : ''}
+
+          ${pubBadgesBlock ? `
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-2">Publication Metrics</h2>
+              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.</div>
+              ${pubBadgesBlock}
+            </div>
+          </div>` : ''}
       </div>
     `;
 
