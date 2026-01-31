@@ -365,18 +365,29 @@ async function initDetail(){
         </div>
       `;
 
-      const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
+      // ---- Links + DOI normalization (avoid duplicate DOI button when paper_url is already doi.org) ----
+      const paperUrl = (m.paper_url || m.paper || '').trim();
+      const codeUrl  = (m.code_url  || m.code  || '').trim();
+
+      // Prefer explicit DOI field; otherwise infer DOI from paper_url if it's already a doi.org link
+      const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
+      const doiUrl = doiSource
+        ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
+        : '';
+
+      // If paper_url is already the DOI link, don't show a separate DOI button
+      const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
+
+      // Reference bits (use doiSource so Reference + badges still work even if model lacks m.doi but paper_url is doi.org)
+      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
+
       // Automatic publication badges when DOI exists (can be disabled per record: altmetric:false / dimensions:false)
-      const pubBadgesBlock = publicationBadgesHtml(m.doi, {
+      const pubBadgesBlock = publicationBadgesHtml(doiSource, {
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
-
-      const paperUrl = m.paper_url || m.paper || '';
-      const codeUrl  = m.code_url  || m.code  || '';
-      const doiUrl   = m.doi ? (String(m.doi).startsWith('http') ? m.doi : `https://doi.org/${String(m.doi).trim()}`) : '';
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
@@ -386,7 +397,7 @@ async function initDetail(){
               <div class="d-grid gap-2">
                 ${paperUrl ? `<a class="btn btn-primary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
                 ${codeUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${codeUrl}" target="_blank" rel="noopener">View Code</a>` : ''}
-                ${doiUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
+                ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
           </div>
@@ -399,7 +410,7 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-      ${authorBlock ? `
+          ${authorBlock ? `
           <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
@@ -427,8 +438,8 @@ async function initDetail(){
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
-    // ensure model thumbnails work for .png/.jpg/.jpeg/.gif/.webp
-    if (imgEl) setImgWithFallback(imgEl, imgBase, imgPlaceholder);
+      // ensure model thumbnails work for .png/.jpg/.jpeg/.gif/.webp
+      if (imgEl) setImgWithFallback(imgEl, imgBase, imgPlaceholder);
       if (imgEl && modalEl) {
         imgEl.addEventListener('click', () => {
           const modalImg = modalEl.querySelector('.modal-img');
@@ -571,8 +582,8 @@ async function initDetail(){
           ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-2">Publication Metrics</h2>
-              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.</div>
+              <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
+              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
