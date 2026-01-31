@@ -9,6 +9,25 @@ function doiHref(doiVal){
   try { return new URL(raw).href; } catch { return `https://doi.org/${raw}`; }
 }
 
+
+function normalizeDoi(doiVal){
+  if (!doiVal) return '';
+  let s = String(doiVal).trim();
+  // strip common prefixes
+  s = s.replace(/^doi:\s*/i, '');
+  // if it's a doi.org URL, extract the DOI path
+  if (/^https?:\/\//i.test(s)) {
+    try {
+      const u = new URL(s);
+      if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
+        s = u.pathname.replace(/^\/+/, '');
+      }
+    } catch {}
+  }
+  return s.trim();
+}
+
+
 function formatDoi(doiVal){
   const href = doiHref(doiVal);
   if (!href) return '—';
@@ -96,7 +115,7 @@ function getPublicationMeta(obj){
 
   // Support both top-level fields and a nested publication object
   const pub = (obj.publication && typeof obj.publication === 'object') ? obj.publication : {};
-  const doi = (pub.doi || obj.doi || '').toString().trim();
+  const doi = normalizeDoi(pub.doi || obj.doi || '');
 
   const altmetric = (pub.altmetric !== undefined) ? pub.altmetric : obj.altmetric;
   const dimensions = (pub.dimensions !== undefined) ? pub.dimensions : obj.dimensions;
@@ -415,7 +434,8 @@ async function initDetail(){
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
-      const doiUrl   = m.doi ? (String(m.doi).startsWith('http') ? m.doi : `https://doi.org/${String(m.doi).trim()}`) : '';
+      const doiNorm = normalizeDoi(m.doi);
+      const doiUrl   = doiNorm ? `https://doi.org/${doiNorm}` : '';
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
