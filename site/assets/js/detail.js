@@ -93,30 +93,31 @@ async function renderPaperMetrics(doiVal, mountEl){
   const showCit = isFinite(citCount) && citCount > 0;
   if (!showAlt && !showCit) { mountEl.remove(); return; }
 
-  const doiUrl = `https://doi.org/${encodeURIComponent(doi)}`;
   const altUrl = alt?.details_url || '';
 
   mountEl.innerHTML = `
     <div class="card border-0 shadow-sm mb-3">
       <div class="card-body">
         <h2 class="h6 text-uppercase text-muted mb-3">Impact</h2>
-        <div class="small">
-          ${showAlt ? `
-            <div class="d-flex justify-content-between align-items-center py-1">
-              <div class="text-muted">Altmetric</div>
-              <div class="fw-semibold">${safeFormatInt(altScore)}</div>
-            </div>
-          ` : ''}
+
+        <div class="d-flex flex-wrap gap-2">
           ${showCit ? `
-            <div class="d-flex justify-content-between align-items-center py-1 ${showAlt ? 'border-top' : ''}" style="border-color:var(--oc-border)!important;">
-              <div class="text-muted">Citations</div>
-              <div class="fw-semibold">${safeFormatInt(citCount)}</div>
-            </div>
+            <span class="badge rounded-pill border bg-body text-body px-3 py-2" title="Citation count">
+              <span class="me-2 d-inline-flex align-items-center justify-content-center" aria-hidden="true" style="width:1.25rem;height:1.25rem;border-radius:999px;background:rgba(0,0,0,.06);font-size:.75rem;line-height:1;">C</span>
+              <span class="me-1">Citations</span>
+              <span class="fw-semibold">${safeFormatInt(citCount)}</span>
+            </span>
           ` : ''}
-          <div class="d-grid gap-2 mt-3">
-            ${showAlt && altUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${altUrl}" target="_blank" rel="noopener">View Altmetric</a>` : ''}
-            ${(showCit || showAlt) ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">Open DOI</a>` : ''}
-          </div>
+
+          ${showAlt ? `
+            ${altUrl ? `<a href="${altUrl}" target="_blank" rel="noopener" class="text-decoration-none">` : ''}
+              <span class="badge rounded-pill border bg-body text-body px-3 py-2" title="Altmetric score">
+                <span class="me-2 d-inline-flex align-items-center justify-content-center" aria-hidden="true" style="width:1.25rem;height:1.25rem;border-radius:999px;background:rgba(0,0,0,.06);font-size:.75rem;line-height:1;">A</span>
+                <span class="me-1">Altmetric</span>
+                <span class="fw-semibold">${safeFormatInt(altScore)}</span>
+              </span>
+            ${altUrl ? `</a>` : ''}
+          ` : ''}
         </div>
       </div>
     </div>
