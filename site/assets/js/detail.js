@@ -3,39 +3,137 @@
    ============================== */
 
 /* ========== helpers ========== */
-function normalizeDoi(doiVal){
-  if (!doiVal) return '';
-  let s = String(doiVal).trim();
-  if (!s) return '';
-  s = s.replace(/^doi\s*:\s*/i, '');
-  s = s.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '');
-  s = s.replace(/^www\.(dx\.)?doi\.org\//i, '');
-  return s.trim();
-}
-
-function ensureScript(src, flag, onloadCb){
-  if (window[flag]) { onloadCb && onloadCb(); return; }
-  const s = document.createElement('script');
-  s.src = src;
-  s.async = true;
-  s.onload = () => { window[flag] = true; onloadCb && onloadCb(); };
-  s.onerror = () => {};
-  document.body.appendChild(s);
-}
-
 function doiHref(doiVal){
-  const doi = normalizeDoi(doiVal);
+  if (!doiVal) return null;
+  const raw = String(doiVal).trim();
+  try { return new URL(raw).href; } catch { return `https://doi.org/${raw}`; }
+}
+
+// Extract the canonical DOI string (no URL prefix). Returns '' if invalid.
+function doiId(doiVal){
+  const href = doiHref(doiVal);
+  if (!href) return '';
+  try {
+    const u = new URL(href);
+    // Common: https://doi.org/10.xxxx/...
+    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
+      return u.pathname.replace(/^\/+/, '');
+    }
+  } catch {}
+  // Fall back: raw string
+  const raw = String(doiVal || '').trim();
+  return raw.replace(/^https?:\/\/(dx\.)?doi\.org\//i, '');
+}
+
+/* ---------- paper metrics (Altmetric + Citations) ---------- */
+async function fetchAltmetric(doi){
   if (!doi) return null;
-  return `https://doi.org/${doi}`;
+  // Altmetric API: https://api.altmetric.com/v1/doi/{doi}
+  const url = `https://api.altmetric.com/v1/doi/${encodeURIComponent(doi)}`;
+  try {
+    const r = await fetch(url, { cache: 'no-cache' });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const score = Number(j?.score ?? 0);
+    // Prefer Altmetric details URL if provided
+    const details = j?.details_url ? String(j.details_url) : (j?.altmetric_id ? `https://www.altmetric.com/details/${j.altmetric_id}` : '');
+    return {
+      score: isFinite(score) ? score : 0,
+      details_url: safeHref(details)
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function fetchCitations(doi){
+  if (!doi) return null;
+
+  // Primary: Semantic Scholar (often has reliable citationCount)
+  // https://api.semanticscholar.org/graph/v1/paper/DOI:{doi}?fields=citationCount
+  const s2Url = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(doi)}?fields=citationCount`;
+  try {
+    const r = await fetch(s2Url, { cache: 'no-cache' });
+    if (r.ok) {
+      const j = await r.json();
+      const n = Number(j?.citationCount ?? 0);
+      if (isFinite(n)) return { count: n };
+    }
+  } catch {}
+
+  // Fallback: Crossref is-referenced-by-count
+  const crUrl = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
+  try {
+    const r = await fetch(crUrl, { cache: 'no-cache' });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const n = Number(j?.message?.['is-referenced-by-count'] ?? 0);
+    return { count: isFinite(n) ? n : 0 };
+  } catch {
+    return null;
+  }
+}
+
+async function renderPaperMetrics(doiVal, mountEl){
+  if (!mountEl) return;
+  const doi = doiId(doiVal);
+  if (!doi) { mountEl.remove(); return; }
+
+  // Fetch in parallel; fail soft.
+  const [alt, cit] = await Promise.all([
+    fetchAltmetric(doi),
+    fetchCitations(doi)
+  ]);
+
+  const altScore = Number(alt?.score ?? 0);
+  const citCount = Number(cit?.count ?? 0);
+
+  // Hide entire card if both are missing or zero
+  const showAlt = isFinite(altScore) && altScore > 0;
+  const showCit = isFinite(citCount) && citCount > 0;
+  if (!showAlt && !showCit) { mountEl.remove(); return; }
+
+  const doiUrl = `https://doi.org/${encodeURIComponent(doi)}`;
+  const altUrl = alt?.details_url || '';
+
+  mountEl.innerHTML = `
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-muted mb-3">Impact</h2>
+        <div class="small">
+          ${showAlt ? `
+            <div class="d-flex justify-content-between align-items-center py-1">
+              <div class="text-muted">Altmetric</div>
+              <div class="fw-semibold">${safeFormatInt(altScore)}</div>
+            </div>
+          ` : ''}
+          ${showCit ? `
+            <div class="d-flex justify-content-between align-items-center py-1 ${showAlt ? 'border-top' : ''}" style="border-color:var(--oc-border)!important;">
+              <div class="text-muted">Citations</div>
+              <div class="fw-semibold">${safeFormatInt(citCount)}</div>
+            </div>
+          ` : ''}
+          <div class="d-grid gap-2 mt-3">
+            ${showAlt && altUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${altUrl}" target="_blank" rel="noopener">View Altmetric</a>` : ''}
+            ${(showCit || showAlt) ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">Open DOI</a>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function formatDoi(doiVal){
-  const doi = normalizeDoi(doiVal);
   const href = doiHref(doiVal);
-  if (!doi || !href) return '—';
-  return `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(doi)}</a>`;
+  if (!href) return '—';
+  try {
+    const u = new URL(href);
+    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
+      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</a>`;
+    }
+  } catch {}
+  return `<a href="${href}" target="_blank" rel="noopener">${href}</a>`;
 }
-
 
 function safeFormatInt(v){
   if (typeof formatInt === 'function') return formatInt(v);
@@ -181,108 +279,6 @@ function metaRow(label, valueHTML) {
   `;
 }
 
-/* ==============================
-   Publication metrics badges
-   ============================== */
-
-function getPublicationMeta(obj){
-  if (!obj) return null;
-  const pub = (obj.publication && typeof obj.publication === 'object') ? obj.publication : {};
-  const doi = normalizeDoi(pub.doi || obj.doi || '');
-  if (!doi) return null;
-
-  // Auto-enable by default when DOI exists; allow explicit disable via false.
-  const altmetric = (pub.altmetric ?? obj.altmetric);
-  const dimensions = (pub.dimensions ?? obj.dimensions);
-
-  return { doi, altmetric, dimensions };
-}
-
-function publicationMetricsHtml(pub){
-  if (!pub || !pub.doi) return '';
-  const showAlt = (pub.altmetric !== false);
-  const showDim = (pub.dimensions !== false);
-  if (!showAlt && !showDim) return '';
-
-  return `
-    <div class="mt-3 pt-3 border-top">
-      <h3 class="h6 text-uppercase text-muted mb-2">Publication metrics</h3>
-      <div class="d-flex flex-wrap gap-3 align-items-start" id="publicationMetrics">
-        ${showAlt ? `
-          <div style="min-width: 160px;">
-            <div class="small text-muted mb-1">Altmetric (online attention)</div>
-            <span class="altmetric-embed"
-                  data-doi="${escapeHtml(pub.doi)}"
-                  data-badge-type="donut"
-                  data-hide-no-mentions="true"></span>
-          </div>
-        ` : ''}
-
-        ${showDim ? `
-          <div style="min-width: 200px;">
-            <div class="small text-muted mb-1">Dimensions (citations)</div>
-            <span class="__dimensions_badge_embed__"
-                  data-doi="${escapeHtml(pub.doi)}"
-                  data-style="small_rectangle"></span>
-          </div>
-        ` : ''}
-      </div>
-
-      <div class="small text-muted mt-2">
-        Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
-      </div>
-    </div>
-  `;
-}
-
-function initPublicationEmbeds(){
-  try {
-    if (window.__dimensions_embed && typeof window.__dimensions_embed.addBadges === 'function') {
-      window.__dimensions_embed.addBadges();
-    }
-  } catch {}
-
-  try {
-    if (typeof window._altmetric_embed_init === 'function') window._altmetric_embed_init();
-    if (window.Altmetric && typeof window.Altmetric.embed === 'function') window.Altmetric.embed();
-  } catch {}
-}
-
-function cleanupAltmetricNoMentions(){
-  document.querySelectorAll('.altmetric-embed').forEach(node => {
-    const style = window.getComputedStyle(node);
-    const isHidden = style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0';
-    const empty = !node.innerHTML || node.innerHTML.trim() === '';
-    if (isHidden || empty) node.remove();
-  });
-
-  const wrap = document.getElementById('publicationMetrics');
-  if (wrap && !wrap.querySelector('.altmetric-embed, .__dimensions_badge_embed__')) {
-    const parent = wrap.closest('.mt-3');
-    if (parent) parent.style.display = 'none';
-  }
-}
-
-function loadPublicationScriptsIfNeeded(pub){
-  if (!pub || !pub.doi) return;
-  const wantAlt = (pub.altmetric !== false);
-  const wantDim = (pub.dimensions !== false);
-
-  if (wantAlt) {
-    ensureScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', '__ocAltmetricLoaded', initPublicationEmbeds);
-  }
-  if (wantDim) {
-    ensureScript('https://badge.dimensions.ai/badge.js', '__ocDimensionsLoaded', initPublicationEmbeds);
-  }
-
-  // Re-init after scripts settle + remove hidden Altmetric
-  setTimeout(() => {
-    initPublicationEmbeds();
-    cleanupAltmetricNoMentions();
-  }, 1200);
-}
-
-
 /* ========== page ========== */
 
 function getDetailType(){
@@ -331,8 +327,7 @@ async function initDetail(){
 
       if (!m){
         root.innerHTML = '<div class="alert alert-warning">Model not found.</div>';
-        loadPublicationScriptsIfNeeded(pub);
-    window.OC?.clearSkeleton?.();
+        window.OC?.clearSkeleton?.();
         return;
       }
 
@@ -414,15 +409,13 @@ async function initDetail(){
         </div>
       `;
 
-      const pub = getPublicationMeta(m);
-      const doiBlock = pub?.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(pub.doi)}</div>` : '';
+      const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
-      const doiUrl   = pub?.doi ? doiHref(pub.doi) : '';
-      const metricsBlock = publicationMetricsHtml(pub);
+      const doiUrl   = m.doi ? (String(m.doi).startsWith('http') ? m.doi : `https://doi.org/${String(m.doi).trim()}`) : '';
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
@@ -445,13 +438,16 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-          ${(authorBlock || metricsBlock) ? `
+          ${authorBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              ${authorBlock ? `<h2 class="h6 text-uppercase text-muted mb-3">Authors</h2><div class="small">${authorBlock}</div>` : ''}
-              ${metricsBlock || ''}
+              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+              <div class="small">${authorBlock}</div>
             </div>
           </div>` : ''}
+
+          <!-- Paper impact metrics (rendered client-side; hidden if zeros) -->
+          <div id="ocPaperMetrics"></div>
         </div>
       `;
 
@@ -461,6 +457,9 @@ async function initDetail(){
           <div class="col-lg-3">${sidebar}</div>
         </div>
       `;
+
+      // Render Altmetric + citation counts (hide if zero)
+      renderPaperMetrics(m.doi, root.querySelector('#ocPaperMetrics'));
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -475,7 +474,6 @@ async function initDetail(){
         });
       }
 
-      loadPublicationScriptsIfNeeded(pub);
       window.OC?.clearSkeleton?.();
       return;
     }
@@ -569,11 +567,9 @@ async function initDetail(){
       </div>
     `;
 
-    const pub = getPublicationMeta(ds);
-    const doiBlock = pub?.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(pub.doi)}</div>` : '';
+    const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
-    const metricsBlock = publicationMetricsHtml(pub);
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -582,7 +578,7 @@ async function initDetail(){
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
               ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
-              ${pub?.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${doiHref(pub.doi)}" target="_blank" rel="noopener">View paper</a>` : ''}
+              ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
             </div>
           </div>
         </div>
@@ -595,13 +591,16 @@ async function initDetail(){
           </div>
         </div>` : ''}
 
-        ${(authorBlock || metricsBlock) ? `
+        ${authorBlock ? `
         <div class="card border-0 shadow-sm">
           <div class="card-body">
-            ${authorBlock ? `<h2 class="h6 text-uppercase text-muted mb-3">Authors</h2><div class="small">${authorBlock}</div>` : ''}
-            ${metricsBlock || ''}
+            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+            <div class="small">${authorBlock}</div>
           </div>
         </div>` : ''}
+
+        <!-- Paper impact metrics (rendered client-side; hidden if zeros) -->
+        <div id="ocPaperMetrics"></div>
       </div>
     `;
 
@@ -611,6 +610,9 @@ async function initDetail(){
         <div class="col-lg-3">${sidebar}</div>
       </div>
     `;
+
+    // Render Altmetric + citation counts (hide if zero)
+    renderPaperMetrics(ds.doi, root.querySelector('#ocPaperMetrics'));
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
