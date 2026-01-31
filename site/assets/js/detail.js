@@ -3,41 +3,40 @@
    ============================== */
 
 /* ========== helpers ========== */
-function doiHref(doiVal){
-  if (!doiVal) return null;
-  const raw = String(doiVal).trim();
-  try { return new URL(raw).href; } catch { return `https://doi.org/${raw}`; }
-}
 
-
+// Normalize DOI values to the bare DOI string (e.g., "10.xxxx/xxxx")
 function normalizeDoi(doiVal){
-  if (!doiVal) return '';
+  if (!doiVal && doiVal !== 0) return '';
   let s = String(doiVal).trim();
-  // strip common prefixes
-  s = s.replace(/^doi:\s*/i, '');
-  // if it's a doi.org URL, extract the DOI path
-  if (/^https?:\/\//i.test(s)) {
-    try {
-      const u = new URL(s);
-      if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-        s = u.pathname.replace(/^\/+/, '');
-      }
-    } catch {}
-  }
-  return s.trim();
+  if (!s) return '';
+  s = s.replace(/^doi\s*:\s*/i, '').trim();
+  // If it's a URL, try to extract from /<doi>
+  try{
+    const u = new URL(s);
+    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
+      s = u.pathname.replace(/^\/+/, '').trim();
+    } else if (u.pathname && u.pathname.length > 1 && /10\./.test(u.pathname)) {
+      // Sometimes DOIs are embedded in paths on publisher sites; keep only from 10.x
+      const m = u.href.match(/(10\.[0-9]{4,9}\/[^\s?#]+)/);
+      if (m) s = m[1];
+    }
+  }catch{ /* not a URL */ }
+  // Final extraction safety
+  const m2 = s.match(/(10\.[0-9]{4,9}\/[^\s?#]+)/);
+  return (m2 ? m2[1] : s).trim();
 }
 
+function doiHref(doiVal){
+  const doi = normalizeDoi(doiVal);
+  if (!doi) return null;
+  return `https://doi.org/${doi}`;
+}
 
 function formatDoi(doiVal){
+  const doi = normalizeDoi(doiVal);
   const href = doiHref(doiVal);
-  if (!href) return '—';
-  try {
-    const u = new URL(href);
-    if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</a>`;
-    }
-  } catch {}
-  return `<a href="${href}" target="_blank" rel="noopener">${href}</a>`;
+  if (!doi || !href) return '—';
+  return `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(doi)}</a>`;
 }
 
 function safeFormatInt(v){
@@ -77,7 +76,6 @@ function authorListHtml(authorsVal, authorUrls){
     }).join('');
   }
 
-  // Case (1)/(2): string or array of strings
   const names = Array.isArray(authorsVal) ? authorsVal : String(authorsVal).split(',');
   const clean = names.map(n => String(n).trim()).filter(Boolean);
   if (!clean.length) return '';
@@ -103,103 +101,85 @@ function authorListHtml(authorsVal, authorUrls){
 
   return clean.map((name) => {
     const safeName = escapeHtml(name);
-    const safeUrl = safeHref(urlByName.get(name) || '');
+    const u = urlByName.get(name);
+    const safeUrl = safeHref(u);
     return `<div class="mb-1">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</div>`;
   }).join('');
 }
 
-/* ========= Publication metrics (Altmetric + Dimensions) ========= */
+/* ====== publication metrics (Altmetric + Dimensions) ====== */
 
-function getPublicationMeta(obj){
-  if (!obj) return { doi:'', altmetric: undefined, dimensions: undefined };
-
-  // Support both top-level fields and a nested publication object
-  const pub = (obj.publication && typeof obj.publication === 'object') ? obj.publication : {};
-  const doi = normalizeDoi(pub.doi || obj.doi || '');
-
-  const altmetric = (pub.altmetric !== undefined) ? pub.altmetric : obj.altmetric;
-  const dimensions = (pub.dimensions !== undefined) ? pub.dimensions : obj.dimensions;
-
-  return { doi, altmetric, dimensions };
+function ensureScriptOnce(src, flag, onload){
+  if (window[flag]) { if (typeof onload === 'function') onload(); return; }
+  const s = document.createElement('script');
+  s.src = src;
+  s.async = true;
+  s.onload = () => { window[flag] = true; if (typeof onload === 'function') onload(); };
+  document.body.appendChild(s);
 }
 
-function ensureBadgeScripts(){
-  // Load scripts once (only when needed)
-  if (window.__ocNeedAltmetric && !window.__altmetricLoaded) {
-    const s = document.createElement('script');
-    s.src = 'https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js';
-    s.async = true;
-    document.body.appendChild(s);
-    window.__altmetricLoaded = true;
+function initAltmetric(){
+  // embed.js exposes _altmetric_embed_init in most cases
+  if (typeof window._altmetric_embed_init === 'function') {
+    try { window._altmetric_embed_init(); } catch {}
+  } else if (window.Altmetric && typeof window.Altmetric.embed === 'function') {
+    try { window.Altmetric.embed(); } catch {}
   }
-  if (window.__ocNeedDimensions && !window.__dimensionsLoaded) {
-    const s = document.createElement('script');
-    s.src = 'https://badge.dimensions.ai/badge.js';
-    s.async = true;
-    document.body.appendChild(s);
-    window.__dimensionsLoaded = true;
-  }
-
-  // Best-effort refresh if scripts already present
-  try { window._altmetric_embed_init?.(); } catch {}
-  try { window.DimensionsBadge?.render?.(); } catch {}
 }
 
-function publicationMetricsHtml(obj){
-  const { doi, altmetric, dimensions } = getPublicationMeta(obj);
+function initDimensions(){
+  // badge.js exposes __dimensions_embed.addBadges()
+  const d = window.__dimensions_embed;
+  if (d && typeof d.addBadges === 'function') {
+    try { d.addBadges(); } catch {}
+  }
+}
+
+function publicationMetricsCardHtml(doiRaw){
+  const doi = normalizeDoi(doiRaw);
   if (!doi) return '';
-
-  // Auto-enable when DOI exists, unless explicitly false
-  const showAltmetric = (altmetric !== false);
-  const showDimensions = (dimensions !== false);
-
-  if (!showAltmetric && !showDimensions) return '';
-
-  if (showAltmetric) window.__ocNeedAltmetric = true;
-  if (showDimensions) window.__ocNeedDimensions = true;
-
-  const doiRaw = doi;
-  const doiAttr = escapeHtml(doiRaw);
-
-  const altHtml = showAltmetric ? `
-    <div class="oc-altmetric-wrap d-flex flex-column align-items-start">
-      <span class="altmetric-embed"
-            data-doi="${doiAttr}"
-            data-badge-type="donut"
-            data-hide-no-mentions="true"></span>
-      <div class="small text-muted mt-1">Altmetric (online attention)</div>
-    </div>
-  ` : '';
-
-  const dimHtml = showDimensions ? `
-    <div class="oc-dimensions-wrap d-flex flex-column align-items-start">
-      <span class="__dimensions_badge_embed__"
-            data-doi="${doiAttr}"
-            data-style="small_rectangle"></span>
-      <div class="small text-muted mt-1">Dimensions (citations)</div>
-    </div>
-  ` : '';
-
+  // Always show Dimensions. Altmetric will auto-hide if no mentions.
   return `
-    <div class="oc-publication-metrics mt-3">
-      <h3 class="h6 text-uppercase text-muted mb-2">Publication metrics</h3>
-      <div class="d-flex flex-wrap gap-3 align-items-start">
-        ${dimHtml}
-        ${altHtml}
-      </div>
-      <div class="small text-muted mt-2">
-        Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
+    <div class="card border-0 shadow-sm oc-publication-metrics mt-3">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-muted mb-3">Publication Metrics</h2>
+
+        <div class="oc-dimensions-wrap mb-3">
+          <div class="small text-muted mb-1">Dimensions (citations)</div>
+          <span class="__dimensions_badge_embed__" data-doi="${doi}" data-style="small_rectangle"></span>
+        </div>
+
+        <div class="oc-altmetric-wrap mb-3">
+          <div class="small text-muted mb-1">Altmetric (online attention)</div>
+          <span class="altmetric-embed" data-doi="${doi}" data-badge-type="donut" data-hide-no-mentions="true"></span>
+        </div>
+
+        <div class="small text-muted">
+          Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
+        </div>
       </div>
     </div>
   `;
 }
 
+function mountAndInitPublicationBadges(scope){
+  const root = scope || document;
+  // Load scripts once, then init. These scripts scan the DOM for embeds.
+  ensureScriptOnce('https://badge.dimensions.ai/badge.js', '__ocDimensionsLoaded', () => initDimensions());
+  ensureScriptOnce('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', '__ocAltmetricLoaded', () => initAltmetric());
+
+  // Re-init a few times because cards are injected dynamically and scripts may load after render
+  setTimeout(() => { initDimensions(); initAltmetric(); }, 300);
+  setTimeout(() => { initDimensions(); initAltmetric(); }, 1200);
+}
+
+/* Defensive cleanup: remove Altmetric wrappers when there are no mentions (so no '?' donuts and no empty labels). */
 function cleanupPublicationBadges(scope){
   const root = scope || document;
 
   const prune = () => {
-    // Altmetric may hide empty badges asynchronously (no mentions). Remove wrappers that end up hidden.
-    root.querySelectorAll?.('.oc-altmetric-wrap')?.forEach(wrap => {
+    // Altmetric: remove wrappers that end up hidden (data-hide-no-mentions=true).
+    root.querySelectorAll('.oc-altmetric-wrap').forEach(wrap => {
       const embed = wrap.querySelector('.altmetric-embed');
       if (!embed) { wrap.remove(); return; }
       const style = window.getComputedStyle(embed);
@@ -207,20 +187,18 @@ function cleanupPublicationBadges(scope){
       if (hidden) wrap.remove();
     });
 
-    // If the section exists but now has no badges, remove the whole section.
-    root.querySelectorAll?.('.oc-publication-metrics')?.forEach(section => {
-      const hasAny = section.querySelector('.oc-altmetric-wrap, .oc-dimensions-wrap');
-      if (!hasAny) section.remove();
+    // If publication metrics card has no embeds left, remove it.
+    root.querySelectorAll('.oc-publication-metrics').forEach(card => {
+      const hasAny = card.querySelector('.oc-altmetric-wrap .altmetric-embed, .oc-dimensions-wrap .__dimensions_badge_embed__');
+      if (!hasAny) card.remove();
     });
   };
 
-  // Run a few times to catch the async embed scripts.
   setTimeout(prune, 800);
   setTimeout(prune, 2200);
   setTimeout(prune, 5000);
 }
 
-// ---------- tiny sanitizers ----------
 function escapeHtml(s){
   return String(s)
     .replace(/&/g, '&amp;')
@@ -430,11 +408,10 @@ async function initDetail(){
       const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
-      const pubMetrics = publicationMetricsHtml(m);
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
-      const doiNorm = normalizeDoi(m.doi);
+      const doiNorm = normalizeDoi(m.doi || m.doi_url || m.doiUrl || (m.publication && m.publication.doi));
       const doiUrl   = doiNorm ? `https://doi.org/${doiNorm}` : '';
 
       const sidebar = `
@@ -458,14 +435,15 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-          ${(authorBlock || pubMetrics) ? `
+          ${authorBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-3">${authorBlock ? 'Authors' : 'Publication metrics'}</h2>
-              ${authorBlock ? `<div class="small">${authorBlock}</div>` : ''}
-              ${pubMetrics || ''}
+              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+              <div class="small">${authorBlock}</div>
             </div>
           </div>` : ''}
+          ${doiNorm ? publicationMetricsCardHtml(doiNorm) : ''}
+
         </div>
       `;
 
@@ -476,11 +454,9 @@ async function initDetail(){
         </div>
       `;
 
-      ensureBadgeScripts();
+      mountAndInitPublicationBadges(root);
 
-      ensureBadgeScripts();
-
-    cleanupPublicationBadges(root);
+      cleanupPublicationBadges(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -591,7 +567,6 @@ async function initDetail(){
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
-    const pubMetrics = publicationMetricsHtml(ds);
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -613,12 +588,11 @@ async function initDetail(){
           </div>
         </div>` : ''}
 
-        ${(authorBlock || pubMetrics) ? `
+        ${authorBlock ? `
         <div class="card border-0 shadow-sm">
           <div class="card-body">
-            <h2 class="h6 text-uppercase text-muted mb-3">${authorBlock ? 'Authors' : 'Publication metrics'}</h2>
-            ${authorBlock ? `<div class="small">${authorBlock}</div>` : ''}
-            ${pubMetrics || ''}
+            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
+            <div class="small">${authorBlock}</div>
           </div>
         </div>` : ''}
       </div>
@@ -631,7 +605,9 @@ async function initDetail(){
       </div>
     `;
 
-    cleanupPublicationBadges(root);
+    mountAndInitPublicationBadges(root);
+
+      cleanupPublicationBadges(root);
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
