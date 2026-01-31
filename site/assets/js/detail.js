@@ -410,8 +410,8 @@ async function initDetail(){
           ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-2">Publication Metrics</h2>
-              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.</div>
+              <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
+              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
