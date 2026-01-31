@@ -50,33 +50,7 @@ function authorListHtml(authorsVal, authorUrls){
     const items = authorsVal
       .map(a => ({ name: safeText(a?.name), url: a?.url ? String(a.url).trim() : '' }))
       .filter(a => a.name && a.name !== '—');
-    if (!items.length)
-function cleanupPublicationBadges(scope){
-  const root = scope || document;
-
-  const prune = () => {
-    // Altmetric may hide empty badges asynchronously (no mentions). Remove wrappers that end up hidden.
-    root.querySelectorAll?.('.oc-altmetric-wrap')?.forEach(wrap => {
-      const embed = wrap.querySelector('.altmetric-embed');
-      if (!embed) { wrap.remove(); return; }
-      const style = window.getComputedStyle(embed);
-      const hidden = (style.display === 'none' || style.visibility === 'hidden' || embed.offsetHeight < 8 || embed.offsetWidth < 8);
-      if (hidden) wrap.remove();
-    });
-
-    // If the section exists but now has no badges, remove the whole section.
-    root.querySelectorAll?.('.oc-publication-metrics')?.forEach(section => {
-      const hasAny = section.querySelector('.oc-altmetric-wrap, .oc-dimensions-wrap');
-      if (!hasAny) section.remove();
-    });
-  };
-
-  // Run a few times to catch the async embed scripts.
-  setTimeout(prune, 800);
-  setTimeout(prune, 2200);
-  setTimeout(prune, 5000);
-}
- return '';
+    if (!items.length) return '';
     return items.map(({name, url}) => {
       const safeName = escapeHtml(name);
       const safeUrl = safeHref(url);
@@ -84,6 +58,7 @@ function cleanupPublicationBadges(scope){
     }).join('');
   }
 
+  // Case (1)/(2): string or array of strings
   const names = Array.isArray(authorsVal) ? authorsVal : String(authorsVal).split(',');
   const clean = names.map(n => String(n).trim()).filter(Boolean);
   if (!clean.length) return '';
@@ -112,6 +87,118 @@ function cleanupPublicationBadges(scope){
     const safeUrl = safeHref(urlByName.get(name) || '');
     return `<div class="mb-1">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</div>`;
   }).join('');
+}
+
+/* ========= Publication metrics (Altmetric + Dimensions) ========= */
+
+function getPublicationMeta(obj){
+  if (!obj) return { doi:'', altmetric: undefined, dimensions: undefined };
+
+  // Support both top-level fields and a nested publication object
+  const pub = (obj.publication && typeof obj.publication === 'object') ? obj.publication : {};
+  const doi = (pub.doi || obj.doi || '').toString().trim();
+
+  const altmetric = (pub.altmetric !== undefined) ? pub.altmetric : obj.altmetric;
+  const dimensions = (pub.dimensions !== undefined) ? pub.dimensions : obj.dimensions;
+
+  return { doi, altmetric, dimensions };
+}
+
+function ensureBadgeScripts(){
+  // Load scripts once (only when needed)
+  if (window.__ocNeedAltmetric && !window.__altmetricLoaded) {
+    const s = document.createElement('script');
+    s.src = 'https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js';
+    s.async = true;
+    document.body.appendChild(s);
+    window.__altmetricLoaded = true;
+  }
+  if (window.__ocNeedDimensions && !window.__dimensionsLoaded) {
+    const s = document.createElement('script');
+    s.src = 'https://badge.dimensions.ai/badge.js';
+    s.async = true;
+    document.body.appendChild(s);
+    window.__dimensionsLoaded = true;
+  }
+
+  // Best-effort refresh if scripts already present
+  try { window._altmetric_embed_init?.(); } catch {}
+  try { window.DimensionsBadge?.render?.(); } catch {}
+}
+
+function publicationMetricsHtml(obj){
+  const { doi, altmetric, dimensions } = getPublicationMeta(obj);
+  if (!doi) return '';
+
+  // Auto-enable when DOI exists, unless explicitly false
+  const showAltmetric = (altmetric !== false);
+  const showDimensions = (dimensions !== false);
+
+  if (!showAltmetric && !showDimensions) return '';
+
+  if (showAltmetric) window.__ocNeedAltmetric = true;
+  if (showDimensions) window.__ocNeedDimensions = true;
+
+  const doiRaw = doi;
+  const doiAttr = escapeHtml(doiRaw);
+
+  const altHtml = showAltmetric ? `
+    <div class="oc-altmetric-wrap d-flex flex-column align-items-start">
+      <span class="altmetric-embed"
+            data-doi="${doiAttr}"
+            data-badge-type="donut"
+            data-hide-no-mentions="true"></span>
+      <div class="small text-muted mt-1">Altmetric (online attention)</div>
+    </div>
+  ` : '';
+
+  const dimHtml = showDimensions ? `
+    <div class="oc-dimensions-wrap d-flex flex-column align-items-start">
+      <span class="__dimensions_badge_embed__"
+            data-doi="${doiAttr}"
+            data-style="small_rectangle"></span>
+      <div class="small text-muted mt-1">Dimensions (citations)</div>
+    </div>
+  ` : '';
+
+  return `
+    <div class="oc-publication-metrics mt-3">
+      <h3 class="h6 text-uppercase text-muted mb-2">Publication metrics</h3>
+      <div class="d-flex flex-wrap gap-3 align-items-start">
+        ${dimHtml}
+        ${altHtml}
+      </div>
+      <div class="small text-muted mt-2">
+        Metrics reflect tracked citations and online mentions and may not capture all scholarly contributions.
+      </div>
+    </div>
+  `;
+}
+
+function cleanupPublicationBadges(scope){
+  const root = scope || document;
+
+  const prune = () => {
+    // Altmetric may hide empty badges asynchronously (no mentions). Remove wrappers that end up hidden.
+    root.querySelectorAll?.('.oc-altmetric-wrap')?.forEach(wrap => {
+      const embed = wrap.querySelector('.altmetric-embed');
+      if (!embed) { wrap.remove(); return; }
+      const style = window.getComputedStyle(embed);
+      const hidden = (style.display === 'none' || style.visibility === 'hidden' || embed.offsetHeight < 8 || embed.offsetWidth < 8);
+      if (hidden) wrap.remove();
+    });
+
+    // If the section exists but now has no badges, remove the whole section.
+    root.querySelectorAll?.('.oc-publication-metrics')?.forEach(section => {
+      const hasAny = section.querySelector('.oc-altmetric-wrap, .oc-dimensions-wrap');
+      if (!hasAny) section.remove();
+    });
+  };
+
+  // Run a few times to catch the async embed scripts.
+  setTimeout(prune, 800);
+  setTimeout(prune, 2200);
+  setTimeout(prune, 5000);
 }
 
 // ---------- tiny sanitizers ----------
@@ -324,6 +411,7 @@ async function initDetail(){
       const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
+      const pubMetrics = publicationMetricsHtml(m);
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
@@ -350,11 +438,12 @@ async function initDetail(){
             </div>
           </div>` : ''}
 
-          ${authorBlock ? `
+          ${(authorBlock || pubMetrics) ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-              <div class="small">${authorBlock}</div>
+              <h2 class="h6 text-uppercase text-muted mb-3">${authorBlock ? 'Authors' : 'Publication metrics'}</h2>
+              ${authorBlock ? `<div class="small">${authorBlock}</div>` : ''}
+              ${pubMetrics || ''}
             </div>
           </div>` : ''}
         </div>
@@ -367,7 +456,11 @@ async function initDetail(){
         </div>
       `;
 
-      cleanupPublicationBadges(root);
+      ensureBadgeScripts();
+
+      ensureBadgeScripts();
+
+    cleanupPublicationBadges(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -478,6 +571,7 @@ async function initDetail(){
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
+    const pubMetrics = publicationMetricsHtml(ds);
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -499,11 +593,12 @@ async function initDetail(){
           </div>
         </div>` : ''}
 
-        ${authorBlock ? `
+        ${(authorBlock || pubMetrics) ? `
         <div class="card border-0 shadow-sm">
           <div class="card-body">
-            <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
-            <div class="small">${authorBlock}</div>
+            <h2 class="h6 text-uppercase text-muted mb-3">${authorBlock ? 'Authors' : 'Publication metrics'}</h2>
+            ${authorBlock ? `<div class="small">${authorBlock}</div>` : ''}
+            ${pubMetrics || ''}
           </div>
         </div>` : ''}
       </div>
