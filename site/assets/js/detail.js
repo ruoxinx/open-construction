@@ -164,110 +164,45 @@ function normalizeDoiForBadge(doiVal){
   }
 }
 
-function impactCardHtml(doiVal){
+function publicationBadgesHtml(doiVal, cfg){
   const doi = normalizeDoiForBadge(doiVal);
   if (!doi) return '';
-  return `
-    <div class="card border-0 shadow-sm mb-3" data-oc-impact-card data-oc-doi="${escapeHtml(doi)}" style="display:none;">
-      <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <h2 class="h6 text-uppercase text-muted mb-0">Impact</h2>
-          <div class="d-flex gap-2">
-            <span class="badge rounded-pill bg-light text-dark border" data-oc-impact-altmetric-badge style="display:none;">Altmetric</span>
-            <span class="badge rounded-pill bg-light text-dark border" data-oc-impact-citations-badge style="display:none;">Citations</span>
-          </div>
-        </div>
 
-        <div class="d-flex flex-column gap-2 small">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="text-muted">Altmetric</div>
-            <div class="fw-semibold" data-oc-altmetric>—</div>
-          </div>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="text-muted">Citations</div>
-            <div class="fw-semibold" data-oc-citations>—</div>
-          </div>
-        </div>
+  // Config precedence:
+  // 1) explicit per-record booleans (cfg.altmetric / cfg.dimensions)
+  // 2) defaults to true when DOI exists
+  const altmetricOn  = (cfg?.altmetric  !== undefined) ? !!cfg.altmetric  : true;
+  const dimensionsOn = (cfg?.dimensions !== undefined) ? !!cfg.dimensions : true;
+
+  const blocks = [];
+  if (altmetricOn) {
+    blocks.push(`
+      <div class="mb-2">
+        <div class="altmetric-embed" data-badge-type="donut" data-doi="${escapeHtml(doi)}"></div>
       </div>
+    `);
+  }
+  if (dimensionsOn) {
+    blocks.push(`
+      <div class="mb-1">
+        <span class="__dimensions_badge_embed__" data-doi="${escapeHtml(doi)}" data-style="small_rectangle"></span>
+      </div>
+    `);
+  }
+
+  if (!blocks.length) return '';
+
+  // Ensure scripts are loaded once when the blocks exist.
+  if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
+  if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
+
+  return `
+    <div class="mt-3">
+      <div class="text-muted text-uppercase" style="font-size:.72rem; letter-spacing:.08em; font-weight:700;">Publication badges</div>
+      <div class="mt-2">${blocks.join('')}</div>
     </div>
   `;
 }
-
-async function fetchAltmetricScore(doi){
-  // Altmetric public API (may fail due to CORS depending on deployment; we fail-safe to 0)
-  if (!doi) return 0;
-  const url = `https://api.altmetric.com/v1/doi/${encodeURIComponent(doi)}`;
-  try{
-    const r = await fetch(url, { cache: 'no-cache' });
-    if (!r.ok) return 0;
-    const j = await r.json();
-    const score = Number(j?.score ?? 0);
-    return Number.isFinite(score) ? score : 0;
-  } catch {
-    return 0;
-  }
-}
-
-async function fetchCitationCount(doi){
-  // Semantic Scholar Graph API (no key required for this endpoint in most cases)
-  if (!doi) return 0;
-  const url = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(doi)}?fields=citationCount`;
-  try{
-    const r = await fetch(url, { cache: 'no-cache' });
-    if (r.ok) {
-      const j = await r.json();
-      const c = Number(j?.citationCount ?? 0);
-      return Number.isFinite(c) ? c : 0;
-    }
-  } catch {}
-  // Fallback: Crossref (has is-referenced-by-count)
-  try{
-    const cr = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}`, { cache: 'no-cache' });
-    if (!cr.ok) return 0;
-    const j = await cr.json();
-    const c = Number(j?.message?.['is-referenced-by-count'] ?? 0);
-    return Number.isFinite(c) ? c : 0;
-  } catch {
-    return 0;
-  }
-}
-
-async function initImpactCards(rootEl){
-  const cards = Array.from(rootEl?.querySelectorAll?.('[data-oc-impact-card]') || []);
-  if (!cards.length) return;
-
-  await Promise.all(cards.map(async (card) => {
-    const doi = card.getAttribute('data-oc-doi') || '';
-    const altEl = card.querySelector('[data-oc-altmetric]');
-    const citEl = card.querySelector('[data-oc-citations]');
-    const altBadge = card.querySelector('[data-oc-impact-altmetric-badge]');
-    const citBadge = card.querySelector('[data-oc-impact-citations-badge]');
-
-    const [alt, cit] = await Promise.all([
-      fetchAltmetricScore(doi),
-      fetchCitationCount(doi)
-    ]);
-
-    const altScore = Number.isFinite(Number(alt)) ? Number(alt) : 0;
-    const citCount = Number.isFinite(Number(cit)) ? Number(cit) : 0;
-
-    if (altEl) altEl.textContent = altScore ? safeFormatInt(altScore) : '—';
-    if (citEl) citEl.textContent = citCount ? safeFormatInt(citCount) : '—';
-
-    // Hide entire card if both are zero/unavailable
-    if (!altScore && !citCount) {
-      card.remove();
-      return;
-    }
-
-    // Show badges only when the metric exists
-    if (altBadge) altBadge.style.display = altScore ? '' : 'none';
-    if (citBadge) citBadge.style.display = citCount ? '' : 'none';
-
-    card.style.display = '';
-  }));
-}
-
 
 /* ---------- chip helpers ---------- */
 function isNotSpecified(s){
@@ -434,8 +369,11 @@ async function initDetail(){
       const doiBlock = m.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(m.doi)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
-      // Impact metrics card (Altmetric + Citations); hidden if both are zero
-      const impactBlock = impactCardHtml(m.doi);
+      // Automatic publication badges when DOI exists (can be disabled per record: altmetric:false / dimensions:false)
+      const pubBadgesBlock = publicationBadgesHtml(m.doi, {
+        altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
+        dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
+      });
 
       const paperUrl = m.paper_url || m.paper || '';
       const codeUrl  = m.code_url  || m.code  || '';
@@ -463,14 +401,18 @@ async function initDetail(){
           </div>` : ''}
 
       ${authorBlock ? `
-          <div class="card border-0 shadow-sm mb-3">
+          <div class="card border-0 shadow-sm">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
               <div class="small">${authorBlock}</div>
+              ${pubBadgesBlock}
             </div>
-          </div>` : ''}
-
-          ${impactBlock}
+          </div>` : (pubBadgesBlock ? `
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              ${pubBadgesBlock}
+            </div>
+          </div>` : '')}
         </div>
       `;
 
@@ -479,11 +421,7 @@ async function initDetail(){
           <div class="col-lg-9">${mainHero}</div>
           <div class="col-lg-3">${sidebar}</div>
         </div>
-      `
-
-      // Initialize Impact card metrics (Altmetric + Citations)
-      initImpactCards(root);
-;
+      `;
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -594,8 +532,11 @@ async function initDetail(){
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
-    // Impact metrics card (Altmetric + Citations); hidden if both are zero
-    const impactBlock = impactCardHtml(ds.doi);
+    // Automatic publication badges when DOI exists (can be disabled per record: altmetric:false / dimensions:false)
+    const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
+      altmetric: (ds.altmetric !== undefined) ? ds.altmetric : undefined,
+      dimensions: (ds.dimensions !== undefined) ? ds.dimensions : undefined
+    });
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
@@ -618,28 +559,27 @@ async function initDetail(){
         </div>` : ''}
 
         ${authorBlock ? `
-        <div class="card border-0 shadow-sm mb-3">
+        <div class="card border-0 shadow-sm">
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Authors</h2>
             <div class="small">${authorBlock}</div>
+            ${pubBadgesBlock}
           </div>
-        </div>` : ''}
-
-        ${impactBlock}
+        </div>` : (pubBadgesBlock ? `
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            ${pubBadgesBlock}
+          </div>
+        </div>` : '')}
       </div>
     `;
-
 
     root.innerHTML = `
       <div class="row g-3">
         <div class="col-lg-9">${mainHero}</div>
         <div class="col-lg-3">${sidebar}</div>
       </div>
-    `
-
-    // Initialize Impact card metrics (Altmetric + Citations)
-    initImpactCards(root);
-;
+    `;
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
