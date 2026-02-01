@@ -15,7 +15,7 @@ function formatDoi(doiVal){
   try {
     const u = new URL(href);
     if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</ </a>`;
+      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</a>`;
     }
   } catch {}
   return `<a href="${href}" target="_blank" rel="noopener">${href}</a>`;
@@ -110,8 +110,11 @@ function safeHref(href){
 
 /* ---------- abstract show more/less (model detail) ---------- */
 function abstractToggleHtml(text, opts = {}){
-  const t = (text == null) ? '' : String(text).trim();
+  let t = (text == null) ? '' : String(text).trim();
   if (!t) return '';
+
+  // remove leading indentation on each line (common in scraped abstracts)
+  t = t.replace(/^\s+/gm, '');
 
   const collapsedLines = Number.isFinite(opts.collapsedLines) ? opts.collapsedLines : 6;
   const minCharsForToggle = Number.isFinite(opts.minCharsForToggle) ? opts.minCharsForToggle : 320;
@@ -409,7 +412,7 @@ async function initDetail(){
 
 /* Abstract show more/less */
 .oc-abs-wrap{ position:relative; }
-.oc-abs-text{ white-space:pre-wrap; }
+.oc-abs-text{ white-space:pre-wrap; text-align:left; font-weight:400; } /* non-bold + no indent look */
 .oc-abs-text.is-collapsed{
   display:-webkit-box;
   -webkit-box-orient:vertical;
@@ -480,13 +483,15 @@ async function initDetail(){
       // If paper_url is already the DOI link, don't show a separate DOI button
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
 
-      // Reference bits (use doiSource so Reference + badges still work even if model lacks m.doi but paper_url is doi.org)
+      // Reference bits
       const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
 
-      // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
-      const pubBadgesBlock = publicationBadgesHtml(doiSource, {
+      // IMPORTANT: badges should work even when arXiv is stored in paper_url (and doi is empty)
+      const badgeIdSource = (m.doi && String(m.doi).trim()) ? m.doi : paperUrl;
+
+      const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
