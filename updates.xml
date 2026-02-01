@@ -11,7 +11,7 @@
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:xView2_baseline:2026-01-30</guid>
     <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New model added to OpenConstruction.]]></description>
+    <description><![CDATA[We present xBD, a new, large-scale dataset for the advancement of change detection and building damage assessment for humanitarian assistance and disaster recovery research. Natural disaster response requires an accurate understanding of damaged buildings in an affected region. Current response strategies require in-person damage assessments within 24-48 hours of a disaster. Massive potential exists for using aerial imagery combined with computer vision algorithms to assess damage and reduce the potential danger to human life. In collaboration with multiple disaster response agencies, xBD provides pre- and post-event satellite imagery across a variety of disaster events with building polygons, ordinal labels of damage level, and corresponding satellite metadata. Furthermore, the dataset contains bounding boxes and labels for environmental factors such as fire, water, and smoke. xBD is the largest building damage assessment dataset to date, containing 850,736 building annotations across 45,362 km	extsuperscript{2} of imagery.]]></description>
   </item>
 
   <item>
