@@ -397,7 +397,6 @@ async function initDetail(){
                   ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
                   ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
                   ${metaRow('Abstract', abstractToggleHtml(m.abstract, { collapsedLines: 6, minCharsForToggle: 320 }))}
-                  ${metaRow('Abstract', m.abstract ? `<div class="abs small">${escapeHtml(m.abstract)}</div>` : '')}
                 </dl>
               </div>
             </div>
