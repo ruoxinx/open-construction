@@ -15,7 +15,7 @@ function formatDoi(doiVal){
   try {
     const u = new URL(href);
     if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</a>`;
+      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</ </a>`;
     }
   } catch {}
   return `<a href="${href}" target="_blank" rel="noopener">${href}</a>`;
@@ -176,29 +176,66 @@ function ensureExternalScript(src, id){
   document.head.appendChild(s);
 }
 
-function normalizeDoiForBadge(doiVal){
-  // Altmetric/Dimensions accept raw DOI; strip DOI resolver if user stored a URL.
-  if (!doiVal) return '';
-  const raw = String(doiVal).trim();
-  if (!raw) return '';
-  // If it's a URL, use pathname as DOI (handles doi.org and other resolvers)
+function parseScholarlyId(idVal){
+  // Returns: { kind: 'doi'|'arxiv'|'pmid'|'dimensions_id'|'unknown', value: string }
+  if (!idVal) return { kind: 'unknown', value: '' };
+  const raw = String(idVal).trim();
+  if (!raw) return { kind: 'unknown', value: '' };
+
+  // 1) URL-based parsing
   try {
     const u = new URL(raw);
-    const doi = (u.pathname || '').replace(/^\/+/, '');
-    return doi || raw;
+    const host = (u.hostname || '').toLowerCase();
+
+    // DOI resolvers
+    if (host === 'doi.org' || host === 'dx.doi.org') {
+      const doi = (u.pathname || '').replace(/^\/+/, '');
+      return doi ? { kind: 'doi', value: doi } : { kind: 'unknown', value: raw };
+    }
+
+    // arXiv URLs
+    if (host.endsWith('arxiv.org')) {
+      // /abs/1911.09296 or /abs/1911.09296v2 or /pdf/1911.09296.pdf
+      const mAbs = (u.pathname || '').match(/^\/abs\/([^\/?#]+)/i);
+      if (mAbs && mAbs[1]) return { kind: 'arxiv', value: mAbs[1].replace(/\.pdf$/i, '') };
+
+      const mPdf = (u.pathname || '').match(/^\/pdf\/([^\/?#]+)/i);
+      if (mPdf && mPdf[1]) return { kind: 'arxiv', value: mPdf[1].replace(/\.pdf$/i, '') };
+    }
+
+    // If it's some other URL, we don't treat it as a DOI for badges
+    return { kind: 'unknown', value: raw };
   } catch {
-    return raw;
+    // not a URL, continue
   }
+
+  // 2) Raw identifiers
+
+  // Dimensions internal publication id (if you ever store it): pub.1234567890
+  if (/^pub\.\d+$/i.test(raw)) return { kind: 'dimensions_id', value: raw };
+
+  // PMID (all digits, typical length)
+  if (/^\d{6,10}$/.test(raw)) return { kind: 'pmid', value: raw };
+
+  // arXiv bare id: 1911.09296 or 1911.09296v2
+  if (/^\d{4}\.\d{4,5}(v\d+)?$/i.test(raw)) return { kind: 'arxiv', value: raw };
+
+  // arXiv prefixed: arXiv:1911.09296
+  const mArxiv = raw.match(/^arxiv:\s*(\d{4}\.\d{4,5}(v\d+)?)$/i);
+  if (mArxiv) return { kind: 'arxiv', value: mArxiv[1] };
+
+  // Otherwise, assume it’s a DOI-like string (fallback).
+  return { kind: 'doi', value: raw };
 }
 
 function publicationBadgesHtml(doiVal, cfg){
-  const doi = normalizeDoiForBadge(doiVal);
-  if (!doi) return '';
+  const id = parseScholarlyId(doiVal);
+  if (!id.value) return '';
 
   // Config precedence:
   // - If cfg.altmetric / cfg.dimensions is boolean, respect it.
   // - If cfg.altmetric / cfg.dimensions is 0 or "0", treat as disabled (hide badges for zero metrics).
-  // - Otherwise default to true when DOI exists.
+  // - Otherwise default to true when identifier exists.
   const asBool = v => (v === true || v === false) ? v : undefined;
   const isZero = v => v === 0 || v === '0' || v === '0.0';
 
@@ -206,19 +243,36 @@ function publicationBadgesHtml(doiVal, cfg){
   const dimensionsOn = isZero(cfg?.dimensions) ? false : (asBool(cfg?.dimensions) ?? true);
 
   const blocks = [];
+
+  // ----- Altmetric (supports DOI + arXiv IDs + PMID) -----
   if (altmetricOn) {
+    let altAttr = '';
+    if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${escapeHtml(id.value)}"`;
+    else if (id.kind === 'pmid') altAttr = `data-pmid="${escapeHtml(id.value)}"`;
+    else altAttr = `data-doi="${escapeHtml(id.value)}"`; // default DOI
+
     blocks.push(`
       <div class="mb-2">
-        <div class="altmetric-embed" data-badge-type="donut" data-doi="${escapeHtml(doi)}"></div>
+        <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
       </div>
     `);
   }
+
+  // ----- Dimensions badge -----
+  // Official embed supports data-doi / data-pmid / data-id (Dimensions internal id like pub.123...)
   if (dimensionsOn) {
-    blocks.push(`
-      <div class="mb-1">
-        <span class="__dimensions_badge_embed__" data-doi="${escapeHtml(doi)}" data-style="small_rectangle"></span>
-      </div>
-    `);
+    let dimAttr = '';
+    if (id.kind === 'doi') dimAttr = `data-doi="${escapeHtml(id.value)}"`;
+    else if (id.kind === 'pmid') dimAttr = `data-pmid="${escapeHtml(id.value)}"`;
+    else if (id.kind === 'dimensions_id') dimAttr = `data-id="${escapeHtml(id.value)}"`;
+
+    if (dimAttr) {
+      blocks.push(`
+        <div class="mb-1">
+          <span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_rectangle"></span>
+        </div>
+      `);
+    }
   }
 
   if (!blocks.length) return '';
@@ -353,7 +407,6 @@ async function initDetail(){
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-wrap; }
 
-
 /* Abstract show more/less */
 .oc-abs-wrap{ position:relative; }
 .oc-abs-text{ white-space:pre-wrap; }
@@ -432,7 +485,7 @@ async function initDetail(){
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
 
-      // Automatic publication badges when DOI exists (can be disabled per record: altmetric:false / dimensions:false)
+      // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
       const pubBadgesBlock = publicationBadgesHtml(doiSource, {
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
@@ -485,19 +538,18 @@ async function initDetail(){
         </div>
       `;
 
+      // Abstract toggle wiring (model detail)
+      root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
+        const textEl = wrap.querySelector('.oc-abs-text');
+        const btn = wrap.querySelector('[data-oc-abs-toggle]');
+        if (!textEl || !btn) return;
 
-// Abstract toggle wiring (model detail)
-root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
-  const textEl = wrap.querySelector('.oc-abs-text');
-  const btn = wrap.querySelector('[data-oc-abs-toggle]');
-  if (!textEl || !btn) return;
-
-  btn.addEventListener('click', () => {
-    const collapsed = textEl.classList.toggle('is-collapsed');
-    btn.textContent = collapsed ? 'Show more' : 'Show less';
-    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-  });
-});
+        btn.addEventListener('click', () => {
+          const collapsed = textEl.classList.toggle('is-collapsed');
+          btn.textContent = collapsed ? 'Show more' : 'Show less';
+          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        });
+      });
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -608,7 +660,7 @@ root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
-    // Automatic publication badges when DOI exists (can be disabled per record: altmetric:false / dimensions:false)
+    // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
     const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
       altmetric: (ds.altmetric !== undefined) ? ds.altmetric : undefined,
       dimensions: (ds.dimensions !== undefined) ? ds.dimensions : undefined
@@ -642,7 +694,7 @@ root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
             </div>
           </div>` : ''}
 
-          ${pubBadgesBlock ? `
+        ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
