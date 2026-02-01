@@ -107,6 +107,30 @@ function safeHref(href){
   return '';
 }
 
+/* ---------- abstract show more/less (model detail page only) ---------- */
+function abstractToggleHtml(text, opts = {}){
+  const t = (text == null) ? '' : String(text).trim();
+  if (!t) return '';
+  const collapsedLines = Number.isFinite(opts.collapsedLines) ? opts.collapsedLines : 6;
+  const minCharsForToggle = Number.isFinite(opts.minCharsForToggle) ? opts.minCharsForToggle : 320;
+
+  // Short abstracts: render as-is (no toggle)
+  if (t.length < minCharsForToggle){
+    return `<div class="abs small">${escapeHtml(t)}</div>`;
+  }
+
+  return `
+    <div class="oc-abs-wrap" data-oc-abs>
+      <div class="oc-abs-text abs small is-collapsed" style="--oc-abs-lines:${collapsedLines}">
+        ${escapeHtml(t)}
+      </div>
+      <button type="button" class="btn btn-link btn-sm p-0 oc-abs-toggle" data-oc-abs-toggle aria-expanded="false">
+        Show more
+      </button>
+    </div>
+  `;
+}
+
 function formatLicense(licVal){
   const norm = safeText(licVal);
   if (norm === '—') return '';
@@ -325,6 +349,28 @@ async function initDetail(){
           .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-wrap; }
+
+/* Abstract show more/less */
+.oc-abs-wrap{ position:relative; }
+.oc-abs-text{ white-space:pre-wrap; }
+.oc-abs-text.is-collapsed{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:var(--oc-abs-lines, 6);
+  overflow:hidden;
+  position:relative;
+}
+.oc-abs-text.is-collapsed::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height:2.2em;
+  background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+  pointer-events:none;
+}
+.oc-abs-toggle{ font-weight:600; text-decoration:none; }
+.oc-abs-toggle:hover{ text-decoration:underline; }
+
         </style>
 
         <div class="ds-card mb-3 bg-white">
@@ -347,7 +393,7 @@ async function initDetail(){
                   ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
                   ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
                   ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
-                  ${metaRow('Abstract', m.abstract ? `<div class="abs small">${escapeHtml(m.abstract)}</div>` : '')}
+                  ${metaRow('Abstract', abstractToggleHtml(m.abstract, { collapsedLines: 6, minCharsForToggle: 320 }))}
                 </dl>
               </div>
             </div>
@@ -435,6 +481,19 @@ async function initDetail(){
           <div class="col-lg-3">${sidebar}</div>
         </div>
       `;
+
+      // Abstract toggle wiring (model detail page only)
+      root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
+        const textEl = wrap.querySelector('.oc-abs-text');
+        const btn = wrap.querySelector('[data-oc-abs-toggle]');
+        if (!textEl || !btn) return;
+
+        btn.addEventListener('click', () => {
+          const collapsed = textEl.classList.toggle('is-collapsed');
+          btn.textContent = collapsed ? 'Show more' : 'Show less';
+          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        });
+      });
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
