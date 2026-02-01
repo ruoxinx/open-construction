@@ -528,8 +528,13 @@ async function initDetail(){
           ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
-              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
+			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
+			<div class="text-muted small mb-2">
+			  Indexed by
+			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
+			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
+			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)span>
+			</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
@@ -702,8 +707,13 @@ async function initDetail(){
         ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-              <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
-              <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
+			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
+			<div class="text-muted small mb-2">
+			  Indexed by
+			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
+			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
+			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)span>
+			</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
