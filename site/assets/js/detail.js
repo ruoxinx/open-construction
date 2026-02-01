@@ -530,10 +530,10 @@ async function initDetail(){
             <div class="card-body">
 			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
 			<div class="text-muted small mb-2">
-			  Indexed by
+			  Data source:
 			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
 			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
-			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)span>
+			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)</span>
 			</div>
               ${pubBadgesBlock}
             </div>
@@ -709,10 +709,10 @@ async function initDetail(){
             <div class="card-body">
 			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
 			<div class="text-muted small mb-2">
-			  Indexed by
+			  Data source:
 			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
 			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
-			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)span>
+			  <span class="ms-1">(records may be incomplete and coverage varies by venue and year)</span>
 			</div>
               ${pubBadgesBlock}
             </div>
