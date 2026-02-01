@@ -107,10 +107,12 @@ function safeHref(href){
   return '';
 }
 
-/* ---------- abstract show more/less (model detail page only) ---------- */
+
+/* ---------- abstract show more/less (model detail) ---------- */
 function abstractToggleHtml(text, opts = {}){
   const t = (text == null) ? '' : String(text).trim();
   if (!t) return '';
+
   const collapsedLines = Number.isFinite(opts.collapsedLines) ? opts.collapsedLines : 6;
   const minCharsForToggle = Number.isFinite(opts.minCharsForToggle) ? opts.minCharsForToggle : 320;
 
@@ -130,6 +132,7 @@ function abstractToggleHtml(text, opts = {}){
     </div>
   `;
 }
+
 
 function formatLicense(licVal){
   const norm = safeText(licVal);
@@ -350,6 +353,7 @@ async function initDetail(){
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-wrap; }
 
+
 /* Abstract show more/less */
 .oc-abs-wrap{ position:relative; }
 .oc-abs-text{ white-space:pre-wrap; }
@@ -370,7 +374,6 @@ async function initDetail(){
 }
 .oc-abs-toggle{ font-weight:600; text-decoration:none; }
 .oc-abs-toggle:hover{ text-decoration:underline; }
-
         </style>
 
         <div class="ds-card mb-3 bg-white">
@@ -394,6 +397,7 @@ async function initDetail(){
                   ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
                   ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
                   ${metaRow('Abstract', abstractToggleHtml(m.abstract, { collapsedLines: 6, minCharsForToggle: 320 }))}
+                  ${metaRow('Abstract', m.abstract ? `<div class="abs small">${escapeHtml(m.abstract)}</div>` : '')}
                 </dl>
               </div>
             </div>
@@ -482,18 +486,19 @@ async function initDetail(){
         </div>
       `;
 
-      // Abstract toggle wiring (model detail page only)
-      root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
-        const textEl = wrap.querySelector('.oc-abs-text');
-        const btn = wrap.querySelector('[data-oc-abs-toggle]');
-        if (!textEl || !btn) return;
 
-        btn.addEventListener('click', () => {
-          const collapsed = textEl.classList.toggle('is-collapsed');
-          btn.textContent = collapsed ? 'Show more' : 'Show less';
-          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-        });
-      });
+// Abstract toggle wiring (model detail)
+root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
+  const textEl = wrap.querySelector('.oc-abs-text');
+  const btn = wrap.querySelector('[data-oc-abs-toggle]');
+  if (!textEl || !btn) return;
+
+  btn.addEventListener('click', () => {
+    const collapsed = textEl.classList.toggle('is-collapsed');
+    btn.textContent = collapsed ? 'Show more' : 'Show less';
+    btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+  });
+});
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
