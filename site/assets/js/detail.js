@@ -206,39 +206,27 @@ function parseScholarlyId(idVal){
       if (mPdf && mPdf[1]) return { kind: 'arxiv', value: mPdf[1].replace(/\.pdf$/i, '') };
     }
 
-    // If it's some other URL, we don't treat it as a DOI for badges
+    // Other URLs are not treated as DOI for badge embedding
     return { kind: 'unknown', value: raw };
   } catch {
     // not a URL, continue
   }
 
   // 2) Raw identifiers
-
-  // Dimensions internal publication id (if you ever store it): pub.1234567890
-  if (/^pub\.\d+$/i.test(raw)) return { kind: 'dimensions_id', value: raw };
-
-  // PMID (all digits, typical length)
-  if (/^\d{6,10}$/.test(raw)) return { kind: 'pmid', value: raw };
-
-  // arXiv bare id: 1911.09296 or 1911.09296v2
-  if (/^\d{4}\.\d{4,5}(v\d+)?$/i.test(raw)) return { kind: 'arxiv', value: raw };
-
-  // arXiv prefixed: arXiv:1911.09296
+  if (/^pub\.\d+$/i.test(raw)) return { kind: 'dimensions_id', value: raw }; // Dimensions internal id
+  if (/^\d{6,10}$/.test(raw)) return { kind: 'pmid', value: raw };            // PMID
+  if (/^\d{4}\.\d{4,5}(v\d+)?$/i.test(raw)) return { kind: 'arxiv', value: raw }; // arXiv id
   const mArxiv = raw.match(/^arxiv:\s*(\d{4}\.\d{4,5}(v\d+)?)$/i);
   if (mArxiv) return { kind: 'arxiv', value: mArxiv[1] };
 
-  // Otherwise, assume it’s a DOI-like string (fallback).
+  // Otherwise treat as DOI-like string
   return { kind: 'doi', value: raw };
 }
 
-function publicationBadgesHtml(doiVal, cfg){
-  const id = parseScholarlyId(doiVal);
+function publicationBadgesHtml(idVal, cfg){
+  const id = parseScholarlyId(idVal);
   if (!id.value) return '';
 
-  // Config precedence:
-  // - If cfg.altmetric / cfg.dimensions is boolean, respect it.
-  // - If cfg.altmetric / cfg.dimensions is 0 or "0", treat as disabled (hide badges for zero metrics).
-  // - Otherwise default to true when identifier exists.
   const asBool = v => (v === true || v === false) ? v : undefined;
   const isZero = v => v === 0 || v === '0' || v === '0.0';
 
@@ -247,21 +235,21 @@ function publicationBadgesHtml(doiVal, cfg){
 
   const blocks = [];
 
-  // ----- Altmetric (supports DOI + arXiv IDs + PMID) -----
+  // ----- Altmetric -----
   if (altmetricOn) {
     let altAttr = '';
     if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${escapeHtml(id.value)}"`;
     else if (id.kind === 'pmid') altAttr = `data-pmid="${escapeHtml(id.value)}"`;
-    else altAttr = `data-doi="${escapeHtml(id.value)}"`; // default DOI
+    else altAttr = `data-doi="${escapeHtml(id.value)}"`;
 
     blocks.push(`
-      <div class="mb-2">
+      <div class="mb-2 oc-metric-item">
         <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
       </div>
     `);
   }
 
-  // ----- Dimensions badge -----
+  // ----- Dimensions -----
   // Official embed supports data-doi / data-pmid / data-id (Dimensions internal id like pub.123...)
   if (dimensionsOn) {
     let dimAttr = '';
@@ -271,7 +259,7 @@ function publicationBadgesHtml(doiVal, cfg){
 
     if (dimAttr) {
       blocks.push(`
-        <div class="mb-1">
+        <div class="mb-1 oc-metric-item">
           <span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_rectangle"></span>
         </div>
       `);
@@ -280,11 +268,57 @@ function publicationBadgesHtml(doiVal, cfg){
 
   if (!blocks.length) return '';
 
-  // Ensure scripts are loaded once when the blocks exist.
   if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
   if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
 
   return `<div class="mt-2">${blocks.join('')}</div>`;
+}
+
+/* ---------- hide zero metrics (Altmetric / Dimensions) ---------- */
+function autoHideZeroMetrics(root){
+  const card = root.querySelector('.oc-metrics-card');
+  if (!card) return;
+
+  const metricItems = () => Array.from(card.querySelectorAll('.oc-metric-item'));
+
+  const extractNumber = (el) => {
+    if (!el) return null;
+    const txt = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!txt) return null;
+    // pick the first integer we can find (badge center number usually)
+    const m = txt.match(/(?:^|\D)(\d+)(?:\D|$)/);
+    if (!m) return null;
+    const n = parseInt(m[1], 10);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const hideZerosOnceReady = () => {
+    let hiddenAny = false;
+
+    metricItems().forEach(item => {
+      if (item.classList.contains('d-none')) return;
+
+      const n = extractNumber(item);
+      // Only hide when we are confident it's loaded and shows explicit 0
+      if (n === 0) {
+        item.classList.add('d-none');
+        hiddenAny = true;
+      }
+    });
+
+    const anyVisible = metricItems().some(item => !item.classList.contains('d-none'));
+    if (!anyVisible) card.classList.add('d-none');
+
+    return hiddenAny;
+  };
+
+  // Embeds load async; poll briefly
+  let tries = 0;
+  const timer = setInterval(() => {
+    tries += 1;
+    hideZerosOnceReady();
+    if (tries >= 12) clearInterval(timer);
+  }, 600);
 }
 
 /* ---------- chip helpers ---------- */
@@ -406,30 +440,34 @@ async function initDetail(){
           .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
           .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
           .meta-val{ font-weight:600; line-height:1.4; }
+
+          /* Remove default DL/DD indentation that causes "indent space" */
+          .meta-row dt, .meta-row dd{ margin:0 !important; }
+
           .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-wrap; }
 
-/* Abstract show more/less */
-.oc-abs-wrap{ position:relative; }
-.oc-abs-text{ white-space:pre-wrap; text-align:left; font-weight:400; } /* non-bold + no indent look */
-.oc-abs-text.is-collapsed{
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:var(--oc-abs-lines, 6);
-  overflow:hidden;
-  position:relative;
-}
-.oc-abs-text.is-collapsed::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height:2.2em;
-  background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
-  pointer-events:none;
-}
-.oc-abs-toggle{ font-weight:600; text-decoration:none; }
-.oc-abs-toggle:hover{ text-decoration:underline; }
+          /* Abstract show more/less */
+          .oc-abs-wrap{ position:relative; }
+          .oc-abs-text{ white-space:pre-wrap; text-align:left; font-weight:400; } /* non-bold */
+          .oc-abs-text.is-collapsed{
+            display:-webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-line-clamp:var(--oc-abs-lines, 6);
+            overflow:hidden;
+            position:relative;
+          }
+          .oc-abs-text.is-collapsed::after{
+            content:"";
+            position:absolute;
+            left:0; right:0; bottom:0;
+            height:2.2em;
+            background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+            pointer-events:none;
+          }
+          .oc-abs-toggle{ font-weight:600; text-decoration:none; }
+          .oc-abs-toggle:hover{ text-decoration:underline; }
         </style>
 
         <div class="ds-card mb-3 bg-white">
@@ -483,7 +521,6 @@ async function initDetail(){
       // If paper_url is already the DOI link, don't show a separate DOI button
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
 
-      // Reference bits
       const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
@@ -526,7 +563,7 @@ async function initDetail(){
           </div>` : ''}
 
           ${pubBadgesBlock ? `
-          <div class="card border-0 shadow-sm">
+          <div class="card border-0 shadow-sm oc-metrics-card">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
               <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
@@ -543,6 +580,9 @@ async function initDetail(){
         </div>
       `;
 
+      // Hide zero badges (and card if both are zero)
+      autoHideZeroMetrics(root);
+
       // Abstract toggle wiring (model detail)
       root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
         const textEl = wrap.querySelector('.oc-abs-text');
@@ -558,7 +598,6 @@ async function initDetail(){
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
-      // ensure model thumbnails work for .png/.jpg/.jpeg/.gif/.webp
       if (imgEl) setImgWithFallback(imgEl, imgBase, imgPlaceholder);
       if (imgEl && modalEl) {
         imgEl.addEventListener('click', () => {
@@ -618,6 +657,10 @@ async function initDetail(){
         .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
         .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
         .meta-val{ font-weight:600; line-height:1.4; }
+
+        /* Remove default DL/DD indentation */
+        .meta-row dt, .meta-row dd{ margin:0 !important; }
+
         .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
       </style>
@@ -665,7 +708,8 @@ async function initDetail(){
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
     const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
-    // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
+
+    // badges based on ds.doi field (which may be DOI url/id or arXiv url/id)
     const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
       altmetric: (ds.altmetric !== undefined) ? ds.altmetric : undefined,
       dimensions: (ds.dimensions !== undefined) ? ds.dimensions : undefined
@@ -700,7 +744,7 @@ async function initDetail(){
           </div>` : ''}
 
         ${pubBadgesBlock ? `
-          <div class="card border-0 shadow-sm">
+          <div class="card border-0 shadow-sm oc-metrics-card">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-2">Metrics</h2>
               <div class="text-muted small mb-2">Metrics reflect tracked citations and online mentions and may not capture all contributions.</div>
@@ -716,6 +760,9 @@ async function initDetail(){
         <div class="col-lg-3">${sidebar}</div>
       </div>
     `;
+
+    // Hide zero badges (and card if both are zero)
+    autoHideZeroMetrics(root);
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
@@ -744,7 +791,6 @@ function setImgWithFallback(imgEl, basePath, placeholderPath) {
   imgEl.dataset.base = basePath;
   imgEl.dataset.placeholder = placeholderPath || '';
   imgEl.dataset.extIndex = imgEl.dataset.extIndex || '0';
-  // start with png
   imgEl.src = `${basePath}.${exts[0]}`;
   imgEl.onerror = () => {
     const i = parseInt(imgEl.dataset.extIndex || '0', 10) + 1;
