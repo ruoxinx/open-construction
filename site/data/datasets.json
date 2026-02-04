@@ -2966,7 +2966,7 @@
     "authors": "Ritwik Gupta, Richard Hosfelt, Sandra Sajeev, Nirav Patel, Bryce Goodman, Jigar Doshi, Eric Heim, Howie Choset, Matthew Gaston",
     "year": 2019,
     "data_modality": "Satellite RGB",
-    "num_images": 22068,
+    "num_images": 22,068,
     "num_classes": 5,
     "classes": [
       "no damage",
@@ -3060,34 +3060,29 @@
     "contributor_url": "h_qian@tongji.edu.cn"
 },
 "smart-safety-trajectory": {
-    "name": "Smart-safety-trajectory: Roadway worker trajectory prediction",
+    "name": "Roadway Worker Trajectory and Context Data from VR Simulator",
     "authors": "Daniel Bin Lu, Semiha Ergan",
     "doi": "https://doi.org/10.1016/j.aei.2025.104277",
     "year": 2026,
-    "data_modality": "3D head positions, 3D head orientations, Construction tasks, Vehicles seen by workers, Traffic proximity between a worker and the nearest vehicle",
-    "num_images": 13054,
-    "num_classes": 6,
-    "classes": [
-      "Camera coordinates", "Camera quaternions", "Construction task", "Count number of user camera’s raycasting hits with unique vehicle objects at every timestep","Unity script computes distance between user camera position and vehicle object position at every timestep","Use minimum distance among all vehicles at all timestep"
-    ],
-    "resolution": "",
+    "data_modality": "Trajactory",
+    "num_images": "13054 pairs of trajectory",
+    "resolution": "2.5 Hz",
     "annotation_types": [
-      "bounding boxes",
-      "positions",
-      "construction tasks",
-      "orientations"
+      "3D head positions",
+      "3D head orientations",
+      "Construction tasks",
+      "Vehicles seen by workers",
+	  "Traffic proximity"
     ],
-    "geographical_location": "Virtual",
+    "geographical_location": "VR simulator",
     "potential_tasks": [
-      "object detection",
-      "distance calculation",
-      "trajectory prediction"
+      "Trajectory prediction"
     ],
-    "license": "MIT license",
+    "license": "MIT",
     "paper": "Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones",
     "access": "https://github.com/bilab-nyu/smart-safety-trajectory",
     "id": "smart-safety-trajectory",
-    "image_url": "https://github.com/bilab-nyu/smart-safety-trajectory/raw/main/data_pipeline.png",
+    "image_url": "assets/img/datasets/smart-safety-trajectory.png",
     "added_date": "2026-02-04",
     "contributor": "Building Informatics and Visualization Lab (biLAB)",
     "contributor_url": "https://bilab.engineering.nyu.edu/about"
