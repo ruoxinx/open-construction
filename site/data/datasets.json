@@ -3064,7 +3064,7 @@
     "authors": "Daniel Bin Lu, Semiha Ergan",
     "doi": "https://doi.org/10.1016/j.aei.2025.104277",
     "year": 2026,
-    "data_modality": "Trajactory",
+    "data_modality": "Trajectory",
     "num_images": "13054 pairs of trajectory",
     "resolution": "2.5 Hz",
     "annotation_types": [
