@@ -1294,5 +1294,32 @@
     "added_date": "2026-02-04",
     "contributor": "Building Informatics and Visualization Lab (biLAB)",
     "contributor_url": "https://bilab.engineering.nyu.edu/about"
+},
+{
+    "id": "bim2sim",
+    "title": "Open-source framework for automated generation of building energy performance simulation models and beyond from BIM Data",
+    "authors": [
+        "David Jansen", "Veronika Richter", "Laura Maier", "Jérôme Frisch", "Christoph van Treeck", "Dirk Müller"
+    ],
+	"abstract": "The manual creation of Building Energy Performance Simulation (BEPS) models is time-consuming and error-prone, hindering the implementation of energy-efficient building designs. This paper explores how to automate the generation of BEPS models from Building Information Modeling (BIM) data while addressing challenges of data imperfection and tool compatibility. bim2sim is presented as an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools, including Modelica/TEASER and EnergyPlusWe present bim2sim, an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools including Modelica/TEASER and EnergyPlus. The application to a non-residential building case study demonstrates the framework’s capability to produce functional simulation models at different levels of detail with significant time savings, reducing the time for generating simulation results from a BIM model to less than one hour. The framework benefits architects, building services engineers, and simulation engineers by streamlining the simulation workflow while maintaining OpenBIM compatibility. Future research should address remaining limitations in geometry processing and material mapping to further facilitate seamless information exchange between building design and simulation domains.",
+    "year": 2025,
+    "modalities": [
+        "BIM/IFC"
+    ],
+    "tasks": [
+        "simulation model generation"
+    ],
+    "applications": [
+        "Building Performance Simulation",
+        "energy modelling",
+        "HVAC model generation",
+        "Life Cycle Assessment"
+    ],
+    "license": "LGPL-3.0",
+    "paper_url": "https://doi.org/10.1016/j.autcon.2025.106427",
+    "code_url": "https://github.com/BIM2SIM/bim2sim",
+    "contributor": "BIM2SIM Project Team",
+    "added_date": "2026-02-04"
+	"contributor_url": "https://github.com/BIM2SIM"
 }
 ]
