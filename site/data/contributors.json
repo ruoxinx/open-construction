@@ -682,7 +682,6 @@
   "image": "https://structure.tongji.edu.cn/__local/E/70/23/F480E5ECED82703FC4361B0E322_4130E49E_5FA5.jpg",
   "type": "person"
   },
-
       {
     "id": "Building Informatics and Visualization Lab",
     "name": "Building Informatics and Visualization Lab",
@@ -690,6 +689,15 @@
     "affiliation": "New York University (U.S)",
     "link_url": "https://bilab.engineering.nyu.edu/",
   "image": "https://bilab.engineering.nyu.edu/images/bilab_short_transparent.png",
+  "type": "org"
+  },
+        {
+    "id": "BIM2SIM",
+    "name": "BIM2SIM Project Team",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "RWTH Aachen University (Germany)",
+    "link_url": "https://github.com/BIM2SIM",
+  "image": "https://github.com/BIM2SIM.png?size=160",
   "type": "org"
   }
 
