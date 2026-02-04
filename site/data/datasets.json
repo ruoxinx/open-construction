@@ -2966,7 +2966,7 @@
     "authors": "Ritwik Gupta, Richard Hosfelt, Sandra Sajeev, Nirav Patel, Bryce Goodman, Jigar Doshi, Eric Heim, Howie Choset, Matthew Gaston",
     "year": 2019,
     "data_modality": "Satellite RGB",
-    "num_images": 22,068,
+    "num_images": "22,068",
     "num_classes": 5,
     "classes": [
       "no damage",
