@@ -699,6 +699,24 @@
     "link_url": "https://github.com/BIM2SIM",
   "image": "https://github.com/BIM2SIM.png?size=160",
   "type": "org"
+  },
+        {
+    "id": "Daniel Bin Lu",
+    "name": "Daniel Bin Lu",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "New York University (U.S)",
+    "link_url": "https://holistudio.github.io/",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=nvlietgAAAAJ&citpid=3",
+  "type": "person"
+  },
+          {
+    "id": "Semiha Ergan",
+    "name": "Semiha Ergan, Ph.D.",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "New York University (U.S)",
+    "link_url": "https://engineering.nyu.edu/faculty/semiha-ergan",
+  "image": "https://engineering.nyu.edu/sites/default/files/styles/square_large_default_2x/public/2018-08/rs40918_dsc1985_850x1280_0.jpg?h=df221a55&itok=ABKYs_ff",
+  "type": "person"
   }
 
 ]
