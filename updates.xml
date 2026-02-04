@@ -7,19 +7,27 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:smart-safety-trajectory:2026-02-05</guid>
+    <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Construction workers face rising risks of fatal injuries from vehicle crashes in roadway work zones. While transportation safety research has focused on motorists’ behavior, the behavior of roadway workers remains underexplored. Existing trajectory prediction models, developed for pedestrians or generic construction workers, typically do not account for the unique roadway work zone activities and traffic interactions faced by roadway workers. This study leverages a virtual reality (VR) and traffic simulation-based platform to capture detailed context data, such as roadwork activities and nearby vehicles in the worker’s field of view. The study’s main objective is to evaluate whether including this context improves trajectory prediction accuracy of deep learning-based models, particularly gated recurrent units (GRU) and transformer architectures. Results indicate that transformers can improve their trajectory prediction accuracy (i.e., lower miss-rate) when accounting for both the worker’s behavioral and traffic context data compared to a transformer trained on trajectory position data alone. These improvements in accuracy are observed across different roadwork construction tasks (e.g., installing sensor cable, distributing grout) and different proximities to traffic vehicles. These findings contribute to the development of more precise roadway worker trajectory models for use in autonomous vehicles and safety systems.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: Open-source framework for automated generation of building energy performance simulation models and beyond from BIM Data]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:bim2sim:2026-02-05</guid>
+    <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[The manual creation of Building Energy Performance Simulation (BEPS) models is time-consuming and error-prone, hindering the implementation of energy-efficient building designs. This paper explores how to automate the generation of BEPS models from Building Information Modeling (BIM) data while addressing challenges of data imperfection and tool compatibility. bim2sim is presented as an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools, including Modelica/TEASER and EnergyPlusWe present bim2sim, an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools including Modelica/TEASER and EnergyPlus. The application to a non-residential building case study demonstrates the framework’s capability to produce functional simulation models at different levels of detail with significant time savings, reducing the time for generating simulation results from a BIM model to less than one hour. The framework benefits architects, building services engineers, and simulation engineers by streamlining the simulation workflow while maintaining OpenBIM compatibility. Future research should address remaining limitations in geometry processing and material mapping to further facilitate seamless information exchange between building design and simulation domains.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Roadway Worker Trajectory and Context Data from VR Simulator]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=smart-safety-trajectory</link>
     <guid isPermaLink="false">datasets:smart-safety-trajectory:2026-02-04</guid>
     <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:smart-safety-trajectory:2026-02-04</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Construction workers face rising risks of fatal injuries from vehicle crashes in roadway work zones. While transportation safety research has focused on motorists’ behavior, the behavior of roadway workers remains underexplored. Existing trajectory prediction models, developed for pedestrians or generic construction workers, typically do not account for the unique roadway work zone activities and traffic interactions faced by roadway workers. This study leverages a virtual reality (VR) and traffic simulation-based platform to capture detailed context data, such as roadwork activities and nearby vehicles in the worker’s field of view. The study’s main objective is to evaluate whether including this context improves trajectory prediction accuracy of deep learning-based models, particularly gated recurrent units (GRU) and transformer architectures. Results indicate that transformers can improve their trajectory prediction accuracy (i.e., lower miss-rate) when accounting for both the worker’s behavioral and traffic context data compared to a transformer trained on trajectory position data alone. These improvements in accuracy are observed across different roadwork construction tasks (e.g., installing sensor cable, distributing grout) and different proximities to traffic vehicles. These findings contribute to the development of more precise roadway worker trajectory models for use in autonomous vehicles and safety systems.]]></description>
   </item>
 
   <item>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BDAChat:2026-01-20</guid>
     <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[The rapid assessment of constructed facilities after extreme events is a knowledge-intensive task critical for effective emergency management. However, methodologies for automated, object-level damage assessment at scale remain underdeveloped, often lacking fine-grained interpretability or scalability. This paper introduces a framework that integrates instance segmentation with temporal Vision Language Model (VLM), which is empowered with visual damage reasoning capabilities through fine-tuning on domain-specific knowledge, for the automated and interpretable assessment of structural assets from satellite imagery. Our three-stage approach synergizes: high-precision segmentation via a modified Segment Anything Model (SAM); spatiotemporal data pairing to isolate asset-specific changes; and BDAChat, the first temporal VLM fine-tuned for object-level damage assessment. Unlike traditional black-box models, BDAChat provides both high-accuracy damage classification and causal interpretations, serving as an intelligent damage inference system. The framework’s effectiveness and scalability are validated through the Lahaina wildfire and hurricane Ian case study. This modular framework automates and accelerates the object-level building damage assessment process, demonstrating significant potential for real-time building damage evaluation and resilient infrastructure planning. The code and dataset are available at https://github.com/WangYong921/BDAChat.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Construction classification system database]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CCS-ResourceUse</link>
-    <guid isPermaLink="false">datasets:CCS-ResourceUse:2026-01-17</guid>
-    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
