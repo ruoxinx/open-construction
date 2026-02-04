@@ -681,5 +681,16 @@
     "link_url": "https://structure.tongji.edu.cn/info/1012/2307.htm",
   "image": "https://structure.tongji.edu.cn/__local/E/70/23/F480E5ECED82703FC4361B0E322_4130E49E_5FA5.jpg",
   "type": "person"
+  },
+
+      {
+    "id": "Building Informatics and Visualization Lab",
+    "name": "Building Informatics and Visualization Lab",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "New York University (U.S)",
+    "link_url": "https://bilab.engineering.nyu.edu/",
+  "image": "https://bilab.engineering.nyu.edu/images/bilab_short_transparent.png",
+  "type": "org"
   }
+
 ]

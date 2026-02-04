@@ -1271,6 +1271,33 @@
     "added_date": "2026-01-30",
     "contributor": "Smart Infrastructure Laboratory",
     "contributor_url": "https://hongjo.github.io/#home"
+},
+{
+    "id": "smart-safety-trajectory",
+    "title": "Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones",
+    "authors": [
+        "Daniel Bin Lu", "Semiha Ergan"
+    ],
+  "abstract": "Construction workers face rising risks of fatal injuries from vehicle crashes in roadway work zones. While transportation safety research has focused on motorists’ behavior, the behavior of roadway workers remains underexplored. Existing trajectory prediction models, developed for pedestrians or generic construction workers, typically do not account for the unique roadway work zone activities and traffic interactions faced by roadway workers. This study leverages a virtual reality (VR) and traffic simulation-based platform to capture detailed context data, such as roadwork activities and nearby vehicles in the worker’s field of view. The study’s main objective is to evaluate whether including this context improves trajectory prediction accuracy of deep learning-based models, particularly gated recurrent units (GRU) and transformer architectures. Results indicate that transformers can improve their trajectory prediction accuracy (i.e., lower miss-rate) when accounting for both the worker’s behavioral and traffic context data compared to a transformer trained on trajectory position data alone. These improvements in accuracy are observed across different roadwork construction tasks (e.g., installing sensor cable, distributing grout) and different proximities to traffic vehicles. These findings contribute to the development of more precise roadway worker trajectory models for use in autonomous vehicles and safety systems.", 
+    "year": 2026,
+    "modalities": [
+        "3D head positions", "3D head orientations", "Construction tasks", "Vehicles seen by workers", "Traffic proximity between a worker and the nearest vehicle"
+    ],
+    "tasks": [
+      "object detection",
+      "distance calculation"
+    ],
+    "applications": [
+        "Safety monitoring",
+        "Trajectory prediction"
+    ],
+    "license": "MIT",
+    "paper_url": "https://doi.org/10.1016/j.aei.2025.104277",
+    "code_url": "https://github.com/bilab-nyu/smart-safety-trajectory",
+    "thumbnail": "https://github.com/bilab-nyu/smart-safety-trajectory/raw/main/data_pipeline.png",
+    "added_date": "2026-02-04",
+    "contributor": "Building Informatics and Visualization Lab (biLAB)",
+    "contributor_url": "https://bilab.engineering.nyu.edu/about"
 }
 
 

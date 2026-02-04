@@ -3058,5 +3058,38 @@
     "added_date": "2026-01-29",
     "contributor": "Qian Huang",
     "contributor_url": "h_qian@tongji.edu.cn"
+},
+"smart-safety-trajectory": {
+    "name": "Smart-safety-trajectory: Roadway worker trajectory prediction",
+    "authors": "Daniel Bin Lu, Semiha Ergan",
+    "doi": "https://doi.org/10.1016/j.aei.2025.104277",
+    "year": 2026,
+    "data_modality": "3D head positions, 3D head orientations, Construction tasks, Vehicles seen by workers, Traffic proximity between a worker and the nearest vehicle",
+    "num_images": 13054,
+    "num_classes": 6,
+    "classes": [
+      "Camera coordinates", "Camera quaternions", "Construction task", "Count number of user camera’s raycasting hits with unique vehicle objects at every timestep","Unity script computes distance between user camera position and vehicle object position at every timestep","Use minimum distance among all vehicles at all timestep"
+    ],
+    "resolution": "",
+    "annotation_types": [
+      "bounding boxes",
+      "positions",
+      "construction tasks",
+      "orientations"
+    ],
+    "geographical_location": "Virtual",
+    "potential_tasks": [
+      "object detection",
+      "distance calculation",
+      "trajectory prediction"
+    ],
+    "license": "MIT license",
+    "paper": "Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones",
+    "access": "https://github.com/bilab-nyu/smart-safety-trajectory",
+    "id": "smart-safety-trajectory",
+    "image_url": "https://github.com/bilab-nyu/smart-safety-trajectory/raw/main/data_pipeline.png",
+    "added_date": "2026-02-04",
+    "contributor": "Building Informatics and Visualization Lab (biLAB)",
+    "contributor_url": "https://bilab.engineering.nyu.edu/about"
 }
 }
