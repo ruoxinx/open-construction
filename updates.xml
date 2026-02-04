@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Smart-safety-trajectory: Roadway worker trajectory prediction]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=smart-safety-trajectory</link>
+    <guid isPermaLink="false">datasets:smart-safety-trajectory:2026-02-04</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: Behavioral modelling of roadway construction workers: Improving deep learning-based trajectory prediction with contextual information in traffic work zones]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:smart-safety-trajectory:2026-02-04</guid>
+    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Construction workers face rising risks of fatal injuries from vehicle crashes in roadway work zones. While transportation safety research has focused on motorists’ behavior, the behavior of roadway workers remains underexplored. Existing trajectory prediction models, developed for pedestrians or generic construction workers, typically do not account for the unique roadway work zone activities and traffic interactions faced by roadway workers. This study leverages a virtual reality (VR) and traffic simulation-based platform to capture detailed context data, such as roadwork activities and nearby vehicles in the worker’s field of view. The study’s main objective is to evaluate whether including this context improves trajectory prediction accuracy of deep learning-based models, particularly gated recurrent units (GRU) and transformer architectures. Results indicate that transformers can improve their trajectory prediction accuracy (i.e., lower miss-rate) when accounting for both the worker’s behavioral and traffic context data compared to a transformer trained on trajectory position data alone. These improvements in accuracy are observed across different roadwork construction tasks (e.g., installing sensor cable, distributing grout) and different proximities to traffic vehicles. These findings contribute to the development of more precise roadway worker trajectory models for use in autonomous vehicles and safety systems.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: xView2 Baseline: Localization and Classification Models for Building Damage Assessment]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:xView2_baseline:2026-01-30</guid>
@@ -68,22 +84,6 @@
     <guid isPermaLink="false">datasets:CCS-ResourceUse:2026-01-17</guid>
     <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Large-Scale Construction Time–Cost Trade-off Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=RAOA-DTCTP</link>
-    <guid isPermaLink="false">datasets:RAOA-DTCTP:2026-01-17</guid>
-    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Self-supervised learning for multi-label sewer defect classification]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:MultiLabel_SewerDefect_SSL:2026-01-17</guid>
-    <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Automated sewer defect detection has advanced through deep learning, particularly supervised methods using CCTV images, but based on large annotated datasets. This paper proposes a semi-supervised learning (SSL) approach to reduce labeling demands. The method comprises self-supervised pre-training on unlabeled images using SwAV (Swapping Assignments between multiple Views) followed by fine-tuning for multi-label classification. Experiments on the Sewer-ML dataset demonstrate that the SSL approach, trained on only 35k labeled images, achieves an F1-score of 69.11%, and F2CIW of 54.22%, surpassing the fully supervised baseline trained from scratch on 1.04 million images. Increasing the unlabeled pre-training data further enhances performance, while ImageNet initialization consistently outperforms training from scratch. Self-supervised learning also helps mitigate the effects of mislabeled data, which is observed to be present even in the Sewer-ML ground truth. Overall, self-supervised learning provides an accurate, scalable, and cost-effective alternative to fully supervised approaches, particularly in data-scarce or imperfectly labeled scenarios.]]></description>
   </item>
   </channel>
 </rss>
