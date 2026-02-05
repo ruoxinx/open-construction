@@ -324,6 +324,34 @@
     }
     .how-title{ font-weight:800; margin:0 0 .15rem; color:var(--oc-brand-ink); }
     .how-text{ margin:0; color:var(--oc-subtle); }
+
+	/* Dark buttons */
+	.btn-ink,
+	.btn-ink:visited,
+	.btn-ink:focus,
+	.btn-ink:active,
+	.btn-ink:focus-visible {
+	  color: #fff !important;
+	  background: var(--oc-brand-ink) !important;
+	  border-color: var(--oc-brand-ink) !important;
+	}
+
+	/* Light buttons */
+	.btn-accent,
+	.btn-accent:visited,
+	.btn-accent:focus,
+	.btn-accent:active,
+	.btn-accent:focus-visible {
+	  color: var(--oc-brand-ink) !important;
+	  background: #fff !important;
+	  border-color: var(--oc-brand-ink) !important;
+	}
+
+	.btn-ink:active,
+	.btn-accent:active {
+	  transform: translateY(1px);
+	}
+
   </style>
 </head>
 <body>
