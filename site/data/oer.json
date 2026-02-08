@@ -419,7 +419,7 @@
 },
 {
   "id": "stabil-educational-matlab-structural-analysis",
-  "title": "Stabil: Educational MATLAB Toolbox for Static and Dynamic Structural Analysis",
+  "title": "Stabil: An educational Matlab toolbox for static and dynamic structural analysis",
   "provider": "Stijn François, Mattias Schevenels, David Dooms, Miche Jansen, Jef Wambacq, Geert Lombaert, Geert Degrande, Guido De Roeck",
   "year": 2021,
   "source": "http://www.kuleuven.be/bwm/stabil",
@@ -430,7 +430,7 @@
   ],
   "license": "GPL-3.0",
   "media": [
-    "MATLAB Toolbox",
+    "MATLAB Toolbox"
   ],
   "publisher": "KU Leuven",
   "doi":"https://doi.org/10.1002/cae.22391",
