@@ -439,7 +439,31 @@
     "KU Leuven – Department of Architecture"
   ],
   "added": "2026-02-08"
+},
+{
+  "id": "teaching-structural-analysis-jupyter-notebooks",
+  "title": "Teaching structural analysis theory with Jupyter Notebooks",
+  "provider": "Andrés Suárez-García, Elena Arce-Fariña, María Álvarez Hernández, Milagros Fernández-Gavilanes",
+  "year": 2021,
+  "source": "https://github.com/asuagar/knowpil-theory-structures",
+  "image": "assets/img/oer/teaching-structural-analysis-jupyter-notebooks.png",
+  "language": ["English"],
+  "topics": [
+    "Structural Analysis",
+    "Matrix Stiffness Method"
+  ],
+  "license": "MIT",
+  "media": [
+    "Jupyter Notebooks"
+  ],
+  "doi":"https://doi.org/10.1002/cae.22383",
+  "publisher": "Wiley (article); GitHub (educational notebooks)",
+  "institutions": [
+    "Centro Universitario de la Defensa – Escuela Naval Militar de Marín"
+  ],
+  "added": "2026-02-08"
 }
+
 
 
 
