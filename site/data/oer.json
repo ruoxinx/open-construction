@@ -462,10 +462,33 @@
     "Centro Universitario de la Defensa – Escuela Naval Militar de Marín"
   ],
   "added": "2026-02-08"
+},
+{
+  "id": "3d-simulations-civil-engineering-lab-education",
+  "title": "3D Simulations in Civil Engineering Laboratory Education",
+  "provider": "Ourania-Nika Golemati, Vasilis Zafeiropoulos, Dimitris Kalles",
+  "year": 2020,
+  "source": "http://onlabs.eap.gr/
+  "doi": "https://doi.org/10.1145/3437120.3437271",
+  "image": "assets/img/oer/3d-simulations-civil-engineering-lab.png",
+  "language": ["English"],
+  "topics": [
+    "Civil Engineering Education",
+    "Virtual Laboratories",
+    "3D Simulation",
+    "Laboratory Education"
+  ],
+  "license": "",
+  "media": [
+    "3D Simulation",
+    "Virtual Laboratory"
+  ],
+  "publisher": "Association for Computing Machinery (ACM)",
+  "institutions": [
+    "Hellenic Open University",
+    "University of West Attica"
+  ],
+  "added": "2026-02-08"
 }
-
-
-
-
   ]
 }
