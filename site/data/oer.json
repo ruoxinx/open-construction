@@ -489,6 +489,44 @@
     "University of West Attica"
   ],
   "added": "2026-02-08"
+},
+{
+  "id": "vrscan3d-terrestrial-laser-scanning-simulator",
+  "title": "VRscan3D: Terrestrial Laser Scanning Simulator for Engineering Education",
+  "provider": "Thomas Luhmann, Maria Chizhova, Denys Gorkovchuk, Darius Popovas1,5, Julia Gorkovchuk, Mona Hess",
+  "year": 2022,
+  "source": "https://vrscan3d.com/index.html",
+  "doi": "https://doi.org/10.5194/isprs-archives-XLVI-2-W1-2022-329-2022",
+  "image": "https://vrscan3d.com/assets/img/about.jpg",
+  "language": ["English"],
+  "topics": [
+    "Terrestrial Laser Scanning",
+    "Photogrammetry",
+    "Geospatial Engineering Education",
+    "Construction Digitization"
+  ],
+  "license": "All Rights Reserved",
+  "media": [
+    "Virtual Reality Environment",
+    "Educational Simulator"
+  ],
+  "publisher": "ISPRS – International Society for Photogrammetry and Remote Sensing",
+  "institutions": [
+    "Jade University of Applied Sciences",
+    "University of Bamberg",
+    "Kiev National University for Construction and Architecture",
+    "Vilnius Gediminas Technical University"
+  ],
+  "added": "2026-02-08"
 }
+
+
+
+
+
+
+
+
+
   ]
 }
