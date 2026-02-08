@@ -391,6 +391,33 @@
 	  "publisher": "Minnesota Department of Transportation",
 	  "institutions": ["Minnesota Department of Transportation"],
 	  "added": "2026-01-18"
+},
+{
+  "id": "lesm-object-oriented-structural-analysis-matlab",
+  "title": "LESM—An object-oriented MATLAB program for structural analysis of linear element models",
+  "provider": "Pontifical Catholic University of Rio de Janeiro",
+  "year": 2019,
+  "source": "https://web.tecgraf.puc-rio.br/lesm",
+  "language": ["English"],
+  "topics": [
+    "Structural Analysis",
+    "Linear-elastic analysis",
+    "Computational Mechanics"
+  ],
+  "license": "MIT",
+  "media": [
+    "Software"
+  ],
+  "doi":"https://doi.org/10.1002/cae.22097",
+  "publisher": "Wiley (article); Tecgraf / PUC-Rio (software)",
+  "image": "https://web.tecgraf.puc-rio.br/lesm/images/hero-art.png",
+  "institutions": [
+    "Pontifical Catholic University of Rio de Janeiro",
+    "Tecgraf Institute of Technical-Scientific Software Development"
+  ],
+  "added": "2026-02-08"
 }
+
+
   ]
 }
