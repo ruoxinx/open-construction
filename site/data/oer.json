@@ -395,7 +395,7 @@
 {
   "id": "lesm-object-oriented-structural-analysis-matlab",
   "title": "LESM—An object-oriented MATLAB program for structural analysis of linear element models",
-  "provider": "Pontifical Catholic University of Rio de Janeiro",
+  "provider": "Rafael Lopez Rangel, Luiz Fernando Martha",
   "year": 2019,
   "source": "https://web.tecgraf.puc-rio.br/lesm",
   "language": ["English"],
@@ -406,7 +406,7 @@
   ],
   "license": "MIT",
   "media": [
-    "Software"
+    "MATLAB Toolbox"
   ],
   "doi":"https://doi.org/10.1002/cae.22097",
   "publisher": "Wiley (article); Tecgraf / PUC-Rio (software)",
@@ -416,7 +416,31 @@
     "Tecgraf Institute of Technical-Scientific Software Development"
   ],
   "added": "2026-02-08"
+},
+{
+  "id": "stabil-educational-matlab-structural-analysis",
+  "title": "Stabil: Educational MATLAB Toolbox for Static and Dynamic Structural Analysis",
+  "provider": "Stijn François, Mattias Schevenels, David Dooms, Miche Jansen, Jef Wambacq, Geert Lombaert, Geert Degrande, Guido De Roeck",
+  "year": 2021,
+  "source": "http://www.kuleuven.be/bwm/stabil",
+  "image": "https://bwk.kuleuven.be/bwm/stabil/framemode2.gif/@@images/image-600-d0caf7beddd8ba0eecf4193c70e0f594.gif",
+  "language": ["English"],
+  "topics": [
+    "Structural Analysis"
+  ],
+  "license": "GPL-3.0",
+  "media": [
+    "MATLAB Toolbox",
+  ],
+  "publisher": "KU Leuven",
+  "doi":"https://doi.org/10.1002/cae.22391",
+  "institutions": [
+    "KU Leuven – Department of Civil Engineering",
+    "KU Leuven – Department of Architecture"
+  ],
+  "added": "2026-02-08"
 }
+
 
 
   ]
