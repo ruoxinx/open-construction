@@ -518,7 +518,31 @@
     "Vilnius Gediminas Technical University"
   ],
   "added": "2026-02-08"
+},
+{
+  "id": "immersive-vr-technology-teach-construction",
+  "title": "Immersive Virtual Reality (VR) Technology to Teach Construction Engineering Concepts",
+  "creators": ["Muntazar Monsur", "Carla Delcambre", "Jakia Salam", "Ben Huckaby", "Arthur Earnest","Laurie Gyalog","Michael Castro","Stephen Waddell","Matthew Castro"],
+  "publisher": "OER Commons",
+  "year": 2025,
+  "doi": null,
+  "url": "https://oercommons.org/authoring/55216-immersive-virtual-reality-vr-technology-to-teach-c/view",
+  "image": "assets/img/oer/immersive-vr-technology-teach-construction.png",
+  "license": "CC BY-NC-ND 4.0",
+  "language": ["English"],
+  "topics": [
+    "Landscape Architecture",
+	"Construction materials"
+  ],
+  "media": [
+    "Virtual Reality Module",
+	"Videos",
+	"Drawings"
+  ],
+  "added": "2026-02-10"
 }
+
+
 
 
 
