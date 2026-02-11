@@ -522,7 +522,7 @@
 {
   "id": "immersive-vr-technology-teach-construction",
   "title": "Immersive Virtual Reality (VR) Technology to Teach Construction Engineering Concepts",
-  "provider": ["Muntazar Monsur", "Carla Delcambre", "Jakia Salam", "Ben Huckaby", "Arthur Earnest","Laurie Gyalog","Michael Castro","Stephen Waddell","Matthew Castro"],
+  "provider": "Muntazar Monsur, Carla Delcambre, Jakia Salam, Ben Huckaby, Arthur Earnest,Laurie Gyalog,Michael Castro,Stephen Waddell,Matthew Castro",
   "publisher": "OER Commons",
   "year": 2025,
   "doi": null,
@@ -568,7 +568,7 @@
 {
   "id": "oercommons-entc-2160-architectural-cad-instructional-materials",
   "title": "ENTC 2160: Architectural CAD Instructional Materials",
-  "provider": ["Keith Johnson", "Mohammad Moin Uddin"],
+  "provider": "Keith Johnson, Mohammad Moin Uddin",
   "year": 2023,
   "source": "https://dc.etsu.edu/entc-2160-oer/",
   "doi": null,
