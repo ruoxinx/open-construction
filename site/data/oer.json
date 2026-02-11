@@ -540,7 +540,32 @@
 	"Drawings"
   ],
   "added": "2026-02-10"
+},
+{
+  "id": "oercommons-introduction-to-architecture-environmental-design",
+  "title": "Introduction to Architecture & Environmental Design",
+  "provider": "Joel Turkel",
+  "year": 2014,
+  "source": "https://ocw.mit.edu/courses/4-104-architecture-studio-intentions-spring-2005/",
+  "doi": null,
+  "image": "https://ocw.mit.edu/courses/4-104-architecture-studio-intentions-spring-2005/b5447088d1d469b4232714b9d013b434_4-104s05.jpg",
+  "language": ["English"],
+  "topics": [
+    "Architectural Design",
+    "Environmental Design",
+  ],
+  "license": "CC BY-NC-SA 4.0",
+  "media": [
+    "Text/HTML",
+    "Course Materials",
+    "Assignments",
+    "Image Gallery"
+  ],
+  "publisher": "Massachusetts Institute of Technology (MIT OpenCourseWare)",
+  "institutions": ["Massachusetts Institute of Technology"],
+  "added": "2026-02-10"
 }
+
 
 
 
