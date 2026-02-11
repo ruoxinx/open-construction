@@ -564,7 +564,31 @@
   "publisher": "Massachusetts Institute of Technology (MIT OpenCourseWare)",
   "institutions": ["Massachusetts Institute of Technology"],
   "added": "2026-02-10"
+},
+{
+  "id": "oercommons-entc-2160-architectural-cad-instructional-materials",
+  "title": "ENTC 2160: Architectural CAD Instructional Materials",
+  "provider": ["Keith Johnson", "Mohammad Moin Uddin"],
+  "year": 2023,
+  "source": "https://dc.etsu.edu/entc-2160-oer/",
+  "doi": null,
+  "image": "https://img.oercommons.org/300x168/oercommons/media/upload/materials/images/Capture1_2.PNG",
+  "language": ["English"],
+  "topics": [
+    "Computer-Aided Design (CAD)",
+    "Architectural Drafting"
+  ],
+  "license": "CC BY 4.0",
+  "media": [
+    "Slides",
+    "Videos",
+    "Instructional Materials"
+  ],
+  "publisher": "East Tennessee State University",
+  "institutions": ["East Tennessee State University"],
+  "added": "2026-02-10"
 }
+
 
 
 
