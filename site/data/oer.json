@@ -631,7 +631,32 @@
   "publisher": "MIT OpenCourseWare",
   "institutions": ["Massachusetts Institute of Technology"],
   "added": "2026-02-13"
+},
+{
+  "id": "meta-future-world-vision-mega-city-vr",
+  "title": "Future World Vision: Mega City VR",
+  "provider": "ASCE",
+  "year": 2022,
+  "source": "https://futureworldvision.org/",
+  "doi": null,
+  "image": "https://futureworldvision.org/sites/default/files/styles/original/public/2022-02/Homepage%20-%20Story%201.jpg?itok=RRpgotc4",
+  "language": ["English"],
+  "topics": [
+    "Virtual Reality (VR)",
+    "Smart Cities",
+    "Urban Planning",
+    "Digital Twin"
+  ],
+  "license": null,
+  "media": [
+    "VR Experience",
+    "Interactive Simulation"
+  ],
+  "publisher": "ASCE",
+  "institutions": ["ASCE"],
+  "added": "2026-02-13"
 }
+
 
 
 
