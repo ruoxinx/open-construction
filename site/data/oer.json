@@ -587,7 +587,28 @@
   "publisher": "East Tennessee State University",
   "institutions": ["East Tennessee State University"],
   "added": "2026-02-10"
+},
+{
+  "id": "temple-structural-analysis",
+  "title": "Structural Analysis",
+  "provider": "Felix Udoeyo",
+  "year": 2023,
+  "source": "https://temple.manifoldapp.org/projects/structural-analysis",
+  "doi": "https://doi.org/10.34944/577z-sh85",
+  "image": "https://nyc3.digitaloceanspaces.com/manifold-temple-api-store/store/project/9b497fac-4c60-4001-874a-8592bd6e1267/cover/medium-70fee86ead5988ce57665b09307758eb.jpg",
+  "language": ["English"],
+  "topics": [
+    "Structural Analysis"
+  ],
+  "license": "CC-BY-NC-ND",
+  "media": [
+    "eBook"
+  ],
+  "publisher": "Temple University",
+  "institutions": ["Temple University"],
+  "added": "2026-02-13"
 }
+
 
 
 
