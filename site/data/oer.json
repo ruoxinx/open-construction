@@ -592,7 +592,7 @@
   "id": "temple-structural-analysis",
   "title": "Structural Analysis",
   "provider": "Felix Udoeyo",
-  "year": 2023,
+  "year": 2020,
   "source": "https://temple.manifoldapp.org/projects/structural-analysis",
   "doi": "https://doi.org/10.34944/577z-sh85",
   "image": "https://nyc3.digitaloceanspaces.com/manifold-temple-api-store/store/project/9b497fac-4c60-4001-874a-8592bd6e1267/cover/medium-70fee86ead5988ce57665b09307758eb.jpg",
@@ -600,14 +600,40 @@
   "topics": [
     "Structural Analysis"
   ],
-  "license": "CC-BY-NC-ND",
+  "license": "CC-BY-NC-ND 4.0",
   "media": [
     "eBook"
   ],
   "publisher": "Temple University",
   "institutions": ["Temple University"],
   "added": "2026-02-13"
+},
+{
+  "id": "mit-ocw-4-411-building-technology-laboratory",
+  "title": "Building Technology Laboratory",
+  "provider": "Prof. Les Norford",
+  "year": 2004,
+  "source": "https://ocw.mit.edu/courses/4-411-building-technology-laboratory-spring-2004/",
+  "doi": null,
+  "image": "https://ocw.mit.edu/courses/4-411-building-technology-laboratory-spring-2004/8b799287543b2a3c32614da3acf62201_4-411s04.jpg",
+  "language": ["English"],
+  "topics": [
+    "Building Technology",
+    "Architectural Technology"
+  ],
+  "license": "CC BY-NC-SA 4.0",
+  "media": [
+    "Lecture Notes",
+    "Assignments",
+    "Syllabus",
+    "Course Materials"
+  ],
+  "publisher": "MIT OpenCourseWare",
+  "institutions": ["Massachusetts Institute of Technology"],
+  "added": "2026-02-13"
 }
+
+
 
 
 
