@@ -3100,7 +3100,7 @@
     ],
     "resolution": null,
     "annotation_types": [
-      "Image label",
+      "Image label"
     ],
     "potential_tasks": [
       "Structural defect detection"
