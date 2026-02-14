@@ -717,6 +717,15 @@
     "link_url": "https://engineering.nyu.edu/faculty/semiha-ergan",
   "image": "https://engineering.nyu.edu/sites/default/files/styles/square_large_default_2x/public/2018-08/rs40918_dsc1985_850x1280_0.jpg?h=df221a55&itok=ABKYs_ff",
   "type": "person"
+  },
+            {
+    "id": "Zhaohui Chen",
+    "name": "Zhaohui Chen",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "University of Sydney (Australia)",
+    "link_url": "https://scholar.google.com/citations?user=g28lZgsAAAAJ&hl=en",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=g28lZgsAAAAJ&citpid=7",
+  "type": "person"
   }
 
 ]
