@@ -3086,5 +3086,36 @@
     "added_date": "2026-02-04",
     "contributor": "biLAB",
     "contributor_url": "https://bilab.engineering.nyu.edu/about"
+},
+"ADPT_Dataset": {
+    "name": "ADPT: Agent-based Defect Pattern Tagger (ADPT) Dataset",
+    "authors": "Sheng Jiang, Yuanmin Ning, Bingxi Huang, Weiyu Cheng, Peiyin Chen, Zhaohui Chen",
+    "doi": "https://doi.org/10.1016/j.jobe.2026.115399",
+    "year": 2026,
+    "data_modality": "Ground RGB",
+    "num_images": 6952,
+    "num_classes": 4,
+    "classes": [
+      "crack", "scaling", "efflorescence", "corrosion"
+    ],
+    "resolution": null,
+    "annotation_types": [
+      "Image label",
+    ],
+    "potential_tasks": [
+      "Structural defect detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "LVLMs as inspectors: An agentic framework for category-level structural defect annotation",
+    "access": "https://zenodo.org/records/18236933",
+    "id": "ADPT_Datasets_2026_18236933",
+    "image_url": "assets/img/datasets/ADPT_Dataset.png",
+    "added_date": "2026-02-06",
+    "contributor": "Zhaohui Chen",
+    "contributor_url": "https://scholar.google.com/citations?hl=en&user=g28lZgsAAAAJ&view_op=list_works&sortby=pubdate"
 }
+
+
+
+
 }
