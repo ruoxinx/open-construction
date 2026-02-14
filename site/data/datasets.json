@@ -3108,7 +3108,7 @@
     "license": "CC BY 4.0",
     "paper": "LVLMs as inspectors: An agentic framework for category-level structural defect annotation",
     "access": "https://zenodo.org/records/18236933",
-    "id": "ADPT_Datasets_2026_18236933",
+    "id": "ADPT_Dataset",
     "image_url": "assets/img/datasets/ADPT_Dataset.png",
     "added_date": "2026-02-06",
     "contributor": "Zhaohui Chen",
