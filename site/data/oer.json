@@ -655,7 +655,28 @@
   "publisher": "ASCE",
   "institutions": ["ASCE"],
   "added": "2026-02-14"
+},
+{
+  "id": "lbcc-structural-design",
+  "title": "Structural Design",
+  "provider": "Basic Concepts of Structural Design for Architecture Students",
+  "year": 2020,
+  "source": "https://lbcc.pressbooks.pub/structuraldesign/",
+  "doi": null,
+  "image": "https://lbcc.pressbooks.pub/app/uploads/sites/3/2023/04/Basic-Concepts-of-Structural-Design-for-Architecture-Students-Letter-768x994.png",
+  "language": ["English"],
+  "topics": [
+    "Architectural structure and design"
+  ],
+  "license": "CC BY-NC 4.0",
+  "media": [
+    "Textbook"
+  ],
+  "publisher": "Portland State University Library",
+  "institutions": ["Portland State University Librarye"],
+  "added": "2026-02-14"
 }
+
 
 
 
