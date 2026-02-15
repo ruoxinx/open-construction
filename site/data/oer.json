@@ -658,8 +658,8 @@
 },
 {
   "id": "lbcc-structural-design",
-  "title": "Structural Design",
-  "provider": "Basic Concepts of Structural Design for Architecture Students",
+  "title": "Basic Concepts of Structural Design for Architecture Students",
+  "provider": "Anahita Khodadadi",
   "year": 2020,
   "source": "https://lbcc.pressbooks.pub/structuraldesign/",
   "doi": null,
@@ -673,7 +673,7 @@
     "Textbook"
   ],
   "publisher": "Portland State University Library",
-  "institutions": ["Portland State University Librarye"],
+  "institutions": ["Portland State University Library"],
   "added": "2026-02-14"
 }
 
