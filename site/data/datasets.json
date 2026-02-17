@@ -3147,7 +3147,7 @@
     "doi": "https://doi.org/10.48550/arXiv.2412.07612",
     "year": 2025,
     "data_modality": "Ground RGB, Aerial RGB, Text captions",
-    "num_images": "501,153 change image pairs",
+    "num_images": "501,153 change pairs",
     "num_classes": 31583,
     "classes": null,
     "resolution": null,
