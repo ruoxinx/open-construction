@@ -77,20 +77,11 @@ function canonicalizeModalityLabel(raw){
   const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
   const hasBIM = has(/\b(ifc|bim|revit|rvt|navisworks|nwd|nwc|nwf|archicad|openbim|gbxml)\b/);
-  const hasDrawingCAD = has(
-	  /\b(cad|autocad|dwg|dxf|blueprint)\b|
-	   floor\s*plan|
-	   plan\s*view|
-	   construction\s*drawing|
-	   technical\s*drawing|
-	   shop\s*drawing|
-	   as[-\s]*built|
-	   \belevation\b|
-	   \bsection\b/i
-	);
+  const hasDrawingCAD = has(/\b(cad|autocad|dwg|dxf|blueprint)\b|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/i);
 
-	const isRasterCAD = hasDrawingCAD;
-	const isBIMIFC    = hasBIM && !hasDrawingCAD;
+
+  const isRasterCAD = hasDrawingCAD;
+  const isBIMIFC    = hasBIM && !hasDrawingCAD;
 
   const hasText    = has(/\btext\b|\bdocument\b|\bpdf\b|\bcode\b|\bnlp\b|\btextual\b/);
   const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
