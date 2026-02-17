@@ -3154,7 +3154,6 @@
     "annotation_types": [
       "Binary change masks"
     ],
-    "geographical_location": "null",
     "potential_tasks": [
       "Change detection",
       "Change segmentation",
