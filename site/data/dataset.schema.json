@@ -33,6 +33,7 @@
       "num_classes": {
         "type": [
           "integer",
+		  "string",
           "null"
         ]
       },
