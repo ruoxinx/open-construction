@@ -3113,6 +3113,33 @@
     "added_date": "2026-02-06",
     "contributor": "Zhaohui Chen",
     "contributor_url": "https://scholar.google.com/citations?hl=en&user=g28lZgsAAAAJ&view_op=list_works&sortby=pubdate"
+},
+"ifc-bench": {
+    "name": "IFC-Bench v2: BIM Comprehension & Reasoning Benchmark",
+    "authors": "Sylvain Hellin, Stavros Nousias, André Borrmann",
+    "doi": "http://www.doi.org/10.35490/EC3.2025.265",
+    "year": 2026,
+    "data_modality": "BIM models (IFC), question-answer pairs",
+    "num_images": "37 IFC models with 1,027 QA pairs",
+    "num_classes": "4 question categories",
+    "classes": ["direct retrieval", "computational aggregation", "geometric/spatial computation", "incomplete information"],
+    "resolution": "",
+    "annotation_types": [
+      "QA pairs",
+      "IFC model files"
+    ],
+    "geographical_location": null,
+    "potential_tasks": [
+      "BIM querying"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "Natural Language Information Retrieval from BIM Models: An LLM-Based Multi-Agent",
+    "access": "https://huggingface.co/datasets/sylvainHellin/ifc-bench",
+    "id": "ifc-bench",
+    "image_url": "assets/img/datasets/ifc-bench.png",
+    "added_date": "2026-02-17",
+    "contributor": "Sylvain Hellin",
+    "contributor_url": "https://www.cee.ed.tum.de/ccbe/team/sylvain-hellin/"
 }
 
 
