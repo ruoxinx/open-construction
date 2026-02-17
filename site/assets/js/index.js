@@ -76,10 +76,8 @@ function canonicalizeModalityLabel(raw){
   const hasAerial  = has(/\baerial\b|\bdrone\b|\buav\b|\bauv\b/);
   const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
-  const hasBIM = has(/\b(ifc|revit|bim|navisworks)\b/i);
-  const hasRasterCAD = has(
-	  /\b(cad|autocad|dwg|dxf)\b|blueprint|floor\s*plan|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/i
-	);
+  const hasBIM = has(/\b(ifc|bim|revit|rvt|navisworks|nwd|nwc|nwf|archicad|openbim|gbxml)\b/);
+  const hasRasterCue = has(/\b(scan(ned)?|scanned|raster|pdf|tif(f)?|png|jpg|jpeg)\b/);
 
   const hasText    = has(/\btext\b|\bdocument\b|\bpdf\b|\bcode\b|\bnlp\b|\btextual\b/);
   const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
@@ -100,11 +98,8 @@ function canonicalizeModalityLabel(raw){
   if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
   if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
-  if (hasBIM && !hasRasterCAD) {
-  type = "BIM Model Dataset";
-	} else if (hasRasterCAD) {
-	  type = "Raster CAD / Drawing Dataset";
-	}
+  if (isBIMIFC)   return 'BIM/IFC';
+  if (isRasterCAD) return 'Raster CAD';
   if (hasSynthetic) return 'Synthetic';
   if (hasTabular) return 'Tabular';
   if (hasText)    return 'Text';
