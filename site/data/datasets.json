@@ -3140,7 +3140,36 @@
     "added_date": "2026-02-17",
     "contributor": "Sylvain Hellin",
     "contributor_url": "https://www.cee.ed.tum.de/ccbe/team/sylvain-hellin/"
+},
+"CSeg": {
+    "name": "Conditional Change Segmentation dataset (CSeg)",
+    "authors": "Subin Varghese, Joshua Gao, Vedhus Hoskere",
+    "doi": "https://doi.org/10.48550/arXiv.2412.07612",
+    "year": 2025,
+    "data_modality": "Ground RGB, Aerial RGB, Text captions",
+    "num_images": "501,153 change image pairs",
+    "num_classes": 31583,
+    "classes": null,
+    "resolution": null,
+    "annotation_types": [
+      "Binary change masks"
+    ],
+    "geographical_location": "null",
+    "potential_tasks": [
+      "Change detection",
+      "Change segmentation",
+	  "Semantic segmentation"
+    ],
+    "license": "MIT",
+    "paper": "ViewDelta: Scaling Scene Change Detection through Text-Conditioning",
+    "access": "https://huggingface.co/datasets/hoskerelab/CSeg",
+    "id": "CSeg",
+    "image_url": "assets/img/datasets/CSeg.png",
+    "added_date": "2026-02-17",
+    "contributor": "Vedhus Hoskere",
+    "contributor_url": "https://www.cive.uh.edu/faculty/hoskere"
 }
+
 
 
 
