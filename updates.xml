@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: IFC-Bench v2: BIM Comprehension & Reasoning Benchmark]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=ifc-bench</link>
+    <guid isPermaLink="false">datasets:ifc-bench:2026-02-17</guid>
+    <pubDate>Tue, 17 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: ADPT: Agent-based Defect Pattern Tagger (ADPT) Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=ADPT_Dataset</link>
     <guid isPermaLink="false">datasets:ADPT_Dataset:2026-02-06</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: Construction Site Safety Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=Weak_and_Self_supervision</link>
     <guid isPermaLink="false">datasets:Weak_and_Self_supervision:2026-01-29</guid>
-    <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: MACO: Material Counting in Construction]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=MACO</link>
-    <guid isPermaLink="false">datasets:MACO:2026-01-29</guid>
     <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
