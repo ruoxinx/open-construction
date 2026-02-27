@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Automating dense GPR simulations for C-scan imaging of subsurface infrastructure]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:C-scan_Simulation:2026-02-27</guid>
+    <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Civil infrastructure requires continuous assessments to address aging, deterioration, and climate change impacts. Subsurface assets present particular challenges due to their invisibilities and the highly uncertain ground conditions. Ground Penetrating Radar (GPR) is widely employed for infrastructure inspection while its interpretation often demands significant expert knowledge. This paper presents an integrated framework for efficiently simulating dense GPR B-scans to support C-scan imaging and data-driven applications. Using pipeline leakage detection as a demonstration, the framework couples digital modelling, hydromechanical (HM) simulation, and finite-difference time-domain (FDTD) electromagnetic (EM) simulation. Automated data sharing between digital models and multi-physics solvers eliminates manual model setup. Simulated B-scans and C-scans capturing water-induced changes are validated against field experiments, with reality gap sources analysed. The framework enables scalable generation of physically informed synthetic GPR datasets for complex scenarios requiring geospatially registered inputs, supporting efficient C-scan imaging and data-driven interpretation.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IFC-Bench v2: BIM Comprehension & Reasoning Benchmark]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=ifc-bench</link>
     <guid isPermaLink="false">datasets:ifc-bench:2026-02-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:xView2_baseline:2026-01-30</guid>
     <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[We present xBD, a new, large-scale dataset for the advancement of change detection and building damage assessment for humanitarian assistance and disaster recovery research. Natural disaster response requires an accurate understanding of damaged buildings in an affected region. Current response strategies require in-person damage assessments within 24-48 hours of a disaster. Massive potential exists for using aerial imagery combined with computer vision algorithms to assess damage and reduce the potential danger to human life. In collaboration with multiple disaster response agencies, xBD provides pre- and post-event satellite imagery across a variety of disaster events with building polygons, ordinal labels of damage level, and corresponding satellite metadata. Furthermore, the dataset contains bounding boxes and labels for environmental factors such as fire, water, and smoke. xBD is the largest building damage assessment dataset to date, containing 850,736 building annotations across 45,362 km	extsuperscript{2} of imagery.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Domain-adaptive instance segmentation for far-field object monitoring using SAM-based weak supervision and noisy student self-training]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:Weak_and_Self-supervision_model:2026-01-30</guid>
-    <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Automating construction site monitoring through deep learning–based segmentation presents challenges due to the high cost of pixel-wise annotations. This paper introduces a weakly and self-supervised learning framework that enhances segmentation accuracy while reducing annotation burden. Human-annotated bounding-box ground truth is used as prompts for the Segment Anything Model (SAM) to generate high-quality polygon mask labels, which are further refined through self-training. Compared to fully supervised learning models, the framework integrates Transfer Learning, Pseudo-Label Refinement, and the Noisy Student technique, improving mask mean Average Precision (Mask mAP) by 3–63% across seven target domains and achieving a Mask mAP of 72.27%. The approach also outperforms existing weakly supervised techniques, including BoxSnake and BoxTeacher, by 18% and 25.95%, respectively, and exceeds the performance of point-based methods such as PointWSSIS by 48.78%.]]></description>
   </item>
   </channel>
 </rss>
