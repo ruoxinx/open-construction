@@ -1961,8 +1961,8 @@
     "GOOSE-Ex": {
     "name": "GOOSE-Ex Dataset",
 	"authors": "Raphael Hagmanns, Peter Mortimer, Miguel Granero, Thorsten Luettel, Janko Petereit",
-	"doi": "https://arxiv.org/abs/2409.18788",
-    "year": 2024,
+	"doi": "https://doi.org/10.1109/ICRA55743.2025.11127604",
+    "year": 2025,
 	"data_modality": "Ground RGB, Point Cloud, Thermal",
     "num_images": 5000,
     "num_classes": 64,
