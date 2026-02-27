@@ -2987,7 +2987,7 @@
     ],
     "license": "Mixed License, see https://xview2.org/terms",
     "paper": "xBD: A Dataset for Assessing Building Damage from Satellite Imagery",
-	"doi": "https://arxiv.org/abs/1911.09296",
+	"doi": "https://doi.org/10.48550/arXiv.1911.09296",
     "access": "https://xview2.org/",
     "id": "xBD",
     "image_url": "assets/img/datasets/xBD.png",
