@@ -744,7 +744,36 @@
     "link_url": "https://www.cive.uh.edu/faculty/hoskere",
 	"image": "https://www.cive.uh.edu/sites/cive/files/images/faculty/hoskere.jpg",
   "type": "person"
+  },
+          {
+    "id": "Ben M. Chen",
+    "name": "Ben M. Chen",
+    "role": "Dataset Contributor",
+    "affiliation": "Chinese University of Hong Kong (HK)",
+    "link_url": "https://www4.mae.cuhk.edu.hk/peoples/chen-benmei/",
+	"image": "https://www4.mae.cuhk.edu.hk/wp-content/uploads/2024/08/benchen.png",
+  "type": "person"
+  },
+            {
+    "id": "Xi Chen",
+    "name": "Xi Chen",
+    "role": "Dataset Contributor",
+    "affiliation": "Chinese University of Hong Kong (HK)",
+    "link_url": "https://www4.mae.cuhk.edu.hk/peoples/chen-xi/",
+	"image": "https://www4.mae.cuhk.edu.hk/wp-content/uploads/2024/07/chenxi.png",
+  "type": "person"
+  },
+              {
+    "id": "Benyun Zhao",
+    "name": "Benyun Zhao",
+    "role": "Dataset Contributor",
+    "affiliation": "Chinese University of Hong Kong (HK)",
+    "link_url": "https://github.com/BenyunZhao",
+	"image": "https://media.licdn.com/dms/image/v2/D5603AQEecFMcm3raIQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1721495757863?e=1773878400&v=beta&t=V7HcBQoZlUw5kWmKYIyzkpCa7JLYVz3eJCOqjvrl90c",
+  "type": "person"
   }
+  
+  
   
 
 ]
