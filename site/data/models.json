@@ -1346,6 +1346,32 @@
     "added_date": "2026-02-06",
 	"contributor": "Zhaohui Chen",
     "contributor_url": "https://scholar.google.com/citations?hl=en&user=g28lZgsAAAAJ&view_op=list_works&sortby=pubdate"
+},
+{
+  "id": "C-scan_Simulation",
+  "title": "Automating dense GPR simulations for C-scan imaging of subsurface infrastructure",
+  "authors": [
+    "Huamei Zhu", "Yimin Zhou", "Feng Xiao", "Jelena Ninic", "Wallace Lai", "Qian-bing Zhang"
+  ],
+  "abstract": "Civil infrastructure requires continuous assessments to address aging, deterioration, and climate change impacts. Subsurface assets present particular challenges due to their invisibilities and the highly uncertain ground conditions. Ground Penetrating Radar (GPR) is widely employed for infrastructure inspection while its interpretation often demands significant expert knowledge. This paper presents an integrated framework for efficiently simulating dense GPR B-scans to support C-scan imaging and data-driven applications. Using pipeline leakage detection as a demonstration, the framework couples digital modelling, hydromechanical (HM) simulation, and finite-difference time-domain (FDTD) electromagnetic (EM) simulation. Automated data sharing between digital models and multi-physics solvers eliminates manual model setup. Simulated B-scans and C-scans capturing water-induced changes are validated against field experiments, with reality gap sources analysed. The framework enables scalable generation of physically informed synthetic GPR datasets for complex scenarios requiring geospatially registered inputs, supporting efficient C-scan imaging and data-driven interpretation.",
+  "year": 2026,
+  "modalities": [
+    "GPR radargram",
+	"Synthetic data"
+  ],
+  "tasks": [
+    "GPR simulation"
+  ],
+  "applications": [
+    "Pipeline leakage detection",
+    "Subsurface infrastructure monitoring"
+  ],
+  "paper_url": "https://doi.org/10.1016/j.autcon.2026.106828",
+  "code_url": "https://github.com/M-Twin4US/C-scan_Simulation",
+  "thumbnail": "assets/img/models/C-scan_Simulation.png",
+  "added_date": "2026-02-27",
+  "contributor": "Huamei Zhu",
+    "contributor_url": "https://scholar.google.com/citations?hl=en&user=yGxI4poAAAAJ&view_op=list_works&sortby=pubdate"
 }
 
 
