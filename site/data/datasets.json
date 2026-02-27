@@ -3167,6 +3167,36 @@
     "added_date": "2026-02-17",
     "contributor": "Vedhus Hoskere",
     "contributor_url": "https://www.cive.uh.edu/faculty/hoskere"
+},
+"CUBIT": {
+    "name": "CUBIT-Det Dataset: High-Resolution Infrastructure Defect Detection Dataset",
+    "authors": "Benyun Zhao, Xunkuai Zhou, Guidong Yang, Junjie Wen, Jihan Zhang, Jia Dou, Li Guang, Xi Chen, Ben M. Chen",
+    "doi": "https://doi.org/10.1016/j.autcon.2024.105405",
+    "year": 2024,
+    "data_modality": "Aerial RGB, Ground RGB",
+    "num_images": 5527,
+    "num_classes": 3,
+    "classes": [
+      "crack",
+      "spalling",
+      "moisture"
+    ],
+    "resolution": "4624 × 3472",
+    "annotation_types": [
+      "bounding boxes"
+    ],
+    "geographical_location": "Hong Kong",
+    "potential_tasks": [
+      "object detection"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "High-resolution infrastructure defect detection dataset sourced by unmanned systems and validated with deep learning",
+    "access": "https://github.com/BenyunZhao/CUBIT",
+    "id": "CUBIT",
+    "image_url": "assets/img/datasets/CUBIT.png",
+    "added_date": "2026-02-27",
+    "contributor": "Benyun Zhao",
+    "contributor_url": "https://ruoxinx.github.io"
 }
 
 
