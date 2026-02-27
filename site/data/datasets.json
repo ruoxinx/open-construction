@@ -1127,7 +1127,7 @@
   "ConPR": {
     "name": "ConPR: Ongoing Construction Site dataset",
 	"authors": "Dongjae Lee, Minwoo Jung, Ayoung Kim",
-	"doi": "https://arxiv.org/abs/2407.03684",
+	"doi": "https://doi.org/10.48550/arXiv.2407.03684",
     "year": 2023,
     "data_modality": "Ground RGB,Point Cloud",
     "resolution": "Not Specified",
@@ -1606,7 +1606,7 @@
     "ConstructionSite-10k": {
     "name": "ConstructionSite 10k Dataset",
 	"authors": "Xuezheng Chen, Zhengbo Zou",
-	"doi": "https://arxiv.org/abs/2508.11011",
+	"doi": "https://doi.org/10.48550/arXiv.2508.11011",
     "year": 2025,
 	"data_modality": "Ground RGB",
     "num_images": 10013,
@@ -2674,7 +2674,7 @@
   "id": "VideoCAD",
   "name": "VideoCAD: Learning Long-Horizon 3D CAD UI Interactions from Video",
   "authors": "Brandon Man, Ghadi Nehme, Md Ferdous Alam, Faez Ahmed",
-  "doi": "https://arxiv.org/abs/2505.24838",
+  "doi": "https://doi.org/10.48550/arXiv.2505.24838",
   "year": 2025,
   "data_modality": "Video clips",
   "num_images": 41000,
