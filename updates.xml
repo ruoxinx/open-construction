@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: CUBIT-Det Dataset: High-Resolution Infrastructure Defect Detection Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=CUBIT</link>
+    <guid isPermaLink="false">datasets:CUBIT:2026-02-27</guid>
+    <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IFC-Bench v2: BIM Comprehension & Reasoning Benchmark]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=ifc-bench</link>
     <guid isPermaLink="false">datasets:ifc-bench:2026-02-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:Weak_and_Self-supervision_model:2026-01-30</guid>
     <pubDate>Fri, 30 Jan 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Automating construction site monitoring through deep learning–based segmentation presents challenges due to the high cost of pixel-wise annotations. This paper introduces a weakly and self-supervised learning framework that enhances segmentation accuracy while reducing annotation burden. Human-annotated bounding-box ground truth is used as prompts for the Segment Anything Model (SAM) to generate high-quality polygon mask labels, which are further refined through self-training. Compared to fully supervised learning models, the framework integrates Transfer Learning, Pseudo-Label Refinement, and the Noisy Student technique, improving mask mean Average Precision (Mask mAP) by 3–63% across seven target domains and achieving a Mask mAP of 72.27%. The approach also outperforms existing weakly supervised techniques, including BoxSnake and BoxTeacher, by 18% and 25.95%, respectively, and exceeds the performance of point-based methods such as PointWSSIS by 48.78%.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: xBD: A Dataset for Assessing Building Damage from Satellite Imagery]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=xBD</link>
-    <guid isPermaLink="false">datasets:xBD:2026-01-29</guid>
-    <pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
