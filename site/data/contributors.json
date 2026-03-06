@@ -780,8 +780,34 @@
     "link_url": "https://scholar.google.com/citations?hl=en&user=yGxI4poAAAAJ&view_op=list_works&sortby=pubdate",
 	"image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=yGxI4poAAAAJ&citpid=1",
   "type": "person"
+  },
+                  {
+    "id": "Smart IDC Lab",
+    "name": "Smart Industrialized Design and Construction (Smart IDC) Lab",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Florida (US)",
+    "link_url": "https://sites.google.com/view/smart-idc-lab/home",
+	"image": "https://lh3.googleusercontent.com/sitesv/APaQ0SRMLf50t_-kmRH-j5WAk9mjSecfP8uSZsNbBXn10OrgxgC9Ty1mLG5RCZrwf67koxZyj8ubXHKx7R_RN1Gb3zx8MNlJVUcZ_htvo5-YNUzKKkDn3fLwJ0C-e_2NQKJSSGIIdOmLnJ1dA-Mrb9Y7U4Jf1qMl6tVXv6MmmYViqadyEiySRSvHZpM2Sww2a0uKh5OCicnHYy74z3A=w1280",
+  "type": "org"
+  },
+                  {
+    "id": "Aladdin Alwisy",
+    "name": "Aladdin Alwisy, PhD",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Florida (US)",
+    "link_url": "https://dcp.ufl.edu/faculties/aladdin-alwisy/",
+	"image": "https://lh3.googleusercontent.com/sitesv/APaQ0SSenz59AM0H_F6Lf2utv9xTY4lzf6jg8o2su9iwb5pOLQ3xoon7jPlnRltggGyDddBMFMSENkVL3yX2NXw6jpBiJ5hTt7G12KM414Dx2A-BcGSLdC1sMFQs2V-JQHG3PSRzr5fVjQDGqjtDoo0lKir1tv4R2fOCAlxx-zK6O2ZyeqaMzcyHJtFrjhP0iZdJaHFx6bzHoX48-ubq9OMchvJ3y1QkN4OaJwL2=w1280",
+  "type": "person"
+  },
+                    {
+    "id": "Chao Xie",
+    "name": "Chao Xie",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Florida (US)",
+    "link_url": "https://yigediao.github.io/",
+	"image": "https://yigediao.github.io/avatar.jpg",
+  "type": "person"
   }
-  
   
   
   
