@@ -3197,6 +3197,35 @@
     "added_date": "2026-02-27",
     "contributor": "Benyun Zhao",
     "contributor_url": "https://benyunzhao.github.io/"
+},
+"wfcdataset": {
+    "name": "WFC Pose Estimation Dataset: 6-DOF Pose Estimation in Wood-Frame Construction",
+    "authors": "Chao Xie, Aladdin Alwisy",
+    "doi": "https://doi.org/10.1016/j.autcon.2026.106858",
+    "year": 2026,
+    "data_modality": "Ground RGB, Depth, 3D point clouds",
+    "num_images": "288 samples",
+    "num_classes": 1,
+    "classes": [
+      "wood studs"
+    ],
+    "resolution": "2208 × 1242",
+    "annotation_types": [
+      "6D pose annotations"
+    ],
+    "geographical_location": "U.S",
+    "potential_tasks": [
+      "6-DOF pose estimation",
+      "robot grasp pose estimation"
+    ],
+    "license": "CC-BY-NC-4.0",
+    "paper": "Advancing robotic automation in wood-framed construction using vision-driven adaptive control",
+    "access": "https://github.com/yigediao/wfcdataset",
+    "id": "wfcdataset",
+    "image_url": "assets/img/datasets/wfcdataset.png",
+    "added_date": "2026-02-10",
+    "contributor": "Smart IDC Lab",
+    "contributor_url": "https://sites.google.com/view/smart-idc-lab/home"
 }
 
 
