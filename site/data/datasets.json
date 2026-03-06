@@ -3218,7 +3218,7 @@
       "6-DOF pose estimation",
       "robot grasp pose estimation"
     ],
-    "license": "CC-BY-NC-4.0",
+    "license": "CC BY-NC 4.0",
     "paper": "Advancing robotic automation in wood-framed construction using vision-driven adaptive control",
     "access": "https://github.com/yigediao/wfcdataset",
     "id": "wfcdataset",
