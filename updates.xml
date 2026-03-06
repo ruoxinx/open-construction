@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: WFC Pose Estimation Dataset: 6-DOF Pose Estimation in Wood-Frame Construction]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=wfcdataset</link>
+    <guid isPermaLink="false">datasets:wfcdataset:2026-03-06</guid>
+    <pubDate>Fri, 06 Mar 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CUBIT-Det Dataset: High-Resolution Infrastructure Defect Detection Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CUBIT</link>
     <guid isPermaLink="false">datasets:CUBIT:2026-02-27</guid>
@@ -35,14 +43,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=CSeg</link>
     <guid isPermaLink="false">datasets:CSeg:2026-02-17</guid>
     <pubDate>Tue, 17 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: WFC Pose Estimation Dataset: 6-DOF Pose Estimation in Wood-Frame Construction]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=wfcdataset</link>
-    <guid isPermaLink="false">datasets:wfcdataset:2026-02-10</guid>
-    <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
 
