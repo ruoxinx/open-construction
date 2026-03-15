@@ -424,6 +424,7 @@ function render(items){
     const addedTxt = o._added_fmt ? `Added ${o._added_fmt}` : '';
     const authorsLine = Array.isArray(o.authors) ? o.authors.join(', ') : (o.authors || '');
     const providerOrAuthors = authorsLine || o.provider || '';
+    const detailHref = `oers/details.html?id=${encodeURIComponent(o.id || o.title || '')}`;
 
     // Build tag sections (add publisher + institutions here)
     const tagsHTML =
@@ -452,7 +453,9 @@ function render(items){
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1">${o.title || 'Untitled'}</h3>
+          <h3 class="h6 title mb-1">
+            <a href="${detailHref}" class="text-decoration-none text-dark">${o.title || 'Untitled'}</a>
+          </h3>
 			${(() => {
 			  const year = o.year || '—';
 			  const licHTML = licenseLinkHTML(o.license);
@@ -465,6 +468,7 @@ function render(items){
 			})()}
           ${tagsHTML}
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+            <a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View Details</a>
             ${o.source?`<a class="btn btn-sm btn-primary" href="${o.source}" target="_blank" rel="noopener">View resource</a>`:''}
             ${o._added_fmt?`<span class="added-note ms-auto">${addedTxt}</span>`:''}
           </div>
