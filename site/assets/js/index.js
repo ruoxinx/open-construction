@@ -420,7 +420,7 @@ function renderGrid(){
 function cardHTML(ds){
   const id   = ds.id || ds.name;
   const slug = encodeURIComponent(id);
-  const img  = ds.image_url || 'assets/img/placeholder.png';
+  const img  = ds.image_url || 'assets/img/placeholder/placeholder.png';
 
   // Build the overlay tag only when contributor info exists
   const submittedByHTML = (ds.contributor || ds.contributor_url)
@@ -435,7 +435,7 @@ function cardHTML(ds){
     <div class="card dataset-card h-100 shadow-sm">
       <div class="thumb">
         <img src="${img}" alt="${ds.name} preview" loading="lazy" decoding="async"
-             onerror="this.onerror=null;this.src='assets/img/placeholder.png';">
+             onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
         ${submittedByHTML}
       </div>
       <div class="card-body d-flex flex-column">

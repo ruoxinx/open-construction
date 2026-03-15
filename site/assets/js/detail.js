@@ -633,7 +633,7 @@ async function initDetail(){
           <div class="col-lg-6">
             <figure class="m-0 ds-figure">
               <img src="${imgSrc}" alt="${ds.name} preview"
-                   onerror="this.onerror=null;this.src='../assets/img/placeholder.png';"
+                   onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"
                    class="ds-img" data-zoom-src="" data-oc-zoom="model">
               <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
               ${noteInline}

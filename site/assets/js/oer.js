@@ -17,7 +17,7 @@
     skeleton: document.getElementById('oerSkeleton')
   };
 
-  const placeholderImg = 'assets/img/placeholder.png';
+  const placeholderImg = 'assets/img/placeholder/placeholder.png';
 
   // ---------- small helpers ----------
   const uniq   = a => [...new Set(a)];
