@@ -20,6 +20,26 @@
   };
 
   const placeholderImg = 'assets/img/placeholder/placeholder.png';
+  const LICENSE_URLS = {
+    'Apache 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'CC0': 'https://creativecommons.org/public-domain/cc0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'MIT': 'https://opensource.org/licenses/MIT',
+    'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+    'MIT License with Commons Clause Restriction': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+    'BSD 3-Clause': 'https://opensource.org/license/bsd-3-clause',
+    'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
+    'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/'
+  };
 
   // ---------- small helpers ----------
   const uniq   = a => [...new Set(a)];
@@ -28,6 +48,38 @@
   const has    = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
   const cssId  = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const detailHref = r => `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`;
+  const esc = s => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  function safeHref(href){
+    if (!href) return '';
+    try {
+      const url = new URL(String(href).trim(), window.location.href);
+      if (url.protocol === 'http:' || url.protocol === 'https:') return url.href;
+    } catch {}
+    return '';
+  }
+
+  function licenseLinkHTML(license){
+    if (!license) return '';
+    const key = String(license).trim();
+    if (!key || key.toLowerCase() === 'unspecified') return '';
+    const url = LICENSE_URLS[key];
+    if (!url) return esc(key);
+    return `<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a>`;
+  }
+
+  const sec = (label, arr, cls='') =>
+    (Array.isArray(arr) && arr.length)
+      ? `<div class="tag-section">
+           <div class="tag-title">${label}</div>
+           <div class="tags">
+             ${arr.map(t => `<span class="tag ${cls}">${esc(t)}</span>`).join('')}
+           </div>
+         </div>`
+      : '';
 
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
@@ -69,6 +121,8 @@
 
     const contributor     = r.contributor || r.submitted_by || r.submitter || r.user || '';
     const contributor_url = r.contributor_url || r.submitter_url || r.user_url || r.profile || '';
+    const publisher = r.publisher || r.published_by || '';
+    const institutions = r.institutions || r.institution || r.affiliations || [];
 
     return {
       id: r.id || '',
@@ -77,7 +131,9 @@
       topics: tokens(topics),
       media: tokens(media),
       license, year, added,
-      contributor, contributor_url
+      contributor, contributor_url,
+      publisher,
+      institutions: tokens(institutions)
     };
   }
 
@@ -163,48 +219,51 @@
     list.forEach(r=>{
       const img   = r.image || placeholderImg;
       const href  = detailHref(r);
-      const langs = r.language.map(x=>`<span class="tag">${x}</span>`).join('');
-      const tops  = r.topics.map(x=>`<span class="tag">${x}</span>`).join('');
-      const meds  = r.media.map(x=>`<span class="tag">${x}</span>`).join('');
-      const lic   = r.license || 'See source';
       const addedTxt = r.added ? `Added ${fmtAdded(r.added)}` : '';
       const year  = r.year;
+      const sourceHref = safeHref(r.source);
+      const contributorHref = safeHref(r.contributor_url);
+      const providerLine = r.provider || '';
+      const licHTML = licenseLinkHTML(r.license);
+      const tagsHTML =
+        sec('Topics', r.topics, 'topic') +
+        sec('Media', r.media, 'media') +
+        sec('Language', r.language, 'lang') +
+        (r.publisher ? sec('Publisher', [r.publisher], 'publisher') : '') +
+        (r.institutions.length ? sec('Institution(s)', r.institutions, 'inst') : '');
 
-      const submittedByHTML = (r.contributor || r.contributor_url)
+      const submittedByHTML = r.contributor
         ? `<div class="submitted-by">
-             <a href="${r.contributor_url || '#'}" target="_blank" rel="noopener">
-               Submitted by <strong>${String(r.contributor||'').startsWith('@') ? r.contributor : '@'+(r.contributor||'anonymous')}</strong>
-             </a>
+             ${contributorHref
+               ? `<a href="${contributorHref}" target="_blank" rel="noopener">Submitted by <strong>${esc(String(r.contributor).startsWith('@') ? r.contributor : '@'+r.contributor)}</strong></a>`
+               : `Submitted by <strong>${esc(String(r.contributor).startsWith('@') ? r.contributor : '@'+r.contributor)}</strong>`}
            </div>`
         : '';
 
       els.grid.insertAdjacentHTML('beforeend', `
         <div class="col-12">
-          <article class="paper-card">
+          <article class="oer-card">
             <div class="d-flex gap-3 align-items-start">
               <div class="left">
-                <img src="${img}" alt="${r.title} image" onerror="this.src='${placeholderImg}'">
+                <img src="${img}" alt="${esc(r.title)} image" onerror="this.src='${placeholderImg}'">
                 ${submittedByHTML}
               </div>
 
               <div class="flex-grow-1">
                 <h3 class="h6 title mb-1">
                   <a href="${href}" class="text-decoration-none text-dark">
-                    ${r.title}
+                    ${esc(r.title)}
                   </a>
                 </h3>
                 <div class="meta mb-2">
-                  ${r.provider ? `${r.provider}` : ''}${year ? ` • ${year}` : ''}
+                  ${providerLine ? `${esc(providerLine)}` : ''}${year ? ` • ${esc(year)}` : ''}${licHTML ? ` · ${licHTML}` : ''}
                 </div>
 
-                <div class="small mb-2"><strong>Language:</strong> <span class="tag-lane ms-1">${langs || '—'}</span></div>
-                <div class="small mb-2"><strong>Topics:</strong> <span class="tag-lane ms-1">${tops || '—'}</span></div>
-                <div class="small mb-2"><strong>Media:</strong> <span class="tag-lane ms-1">${meds || '—'}</span></div>
-                <div class="small mb-3"><strong>License:</strong> <span class="tag ms-1">${lic}</span></div>
+                ${tagsHTML}
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-                  <a class="btn btn-sm btn-outline-secondary" href="${r.source}" target="_blank" rel="noopener">Source</a>
-                  <a class="btn btn-sm btn-primary" href="${href}">View Details</a>
+                  ${sourceHref ? `<a class="btn btn-sm btn-primary" href="${sourceHref}" target="_blank" rel="noopener">Source</a>` : ''}
+                  <a class="btn btn-sm btn-outline-secondary" href="${href}">View Details</a>
                   ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
                 </div>
               </div>
@@ -279,6 +338,23 @@
       if (els.q) els.q.value = els.qDock.value;
       applyFilters();
     });
+    (function(){
+      const SHOW_AT = 220;
+      const HIDE_AT = 160;
+      let docked = false;
+      function setDock(on){
+        if (on === docked) return;
+        docked = on;
+        document.body.classList.toggle('docked', on);
+      }
+      function onScroll(){
+        const y = window.scrollY || 0;
+        if (!docked && y > SHOW_AT) setDock(true);
+        else if (docked && y < HIDE_AT) setDock(false);
+      }
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+    })();
     els.qBtn?.addEventListener('click', applyFilters);
     els.sort?.addEventListener('change', applyFilters);
   }
@@ -303,6 +379,8 @@
   async function init(){
     showSkeleton();
     try{
+      const yearNow = document.getElementById('yearNow');
+      if (yearNow) yearNow.textContent = new Date().getFullYear();
       const paths = Array.isArray(window.OER_JSON_PATHS) && window.OER_JSON_PATHS.length
         ? window.OER_JSON_PATHS
         : ['data/oer.json','../data/oer.json','/data/oer.json'];
