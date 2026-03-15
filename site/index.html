@@ -122,7 +122,7 @@
       background:#fff; color:var(--oc-brand-ink);
       border-bottom:1px solid var(--oc-border);
     }
-    .hero .content{ padding:56px 0 44px; text-align:center; }
+    .hero .content{ padding:64px 0 48px; text-align:center; }
     .hero-kicker{
       display:inline-flex;
       align-items:center;
@@ -147,15 +147,16 @@
     }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.85rem, 1.25rem + 2.4vw, 2.9rem);
-      margin:.55rem 0 .45rem;
+      font-size:clamp(1.95rem, 1.25rem + 2.5vw, 3.05rem);
+      margin:.7rem 0 .55rem;
     }
-    .hero p.lead{ max-width:66ch; margin:0 auto; color:var(--oc-subtle); font-size:1.05rem; }
+    .hero p.lead{ max-width:54ch; margin:0 auto; color:var(--oc-subtle); font-size:1.06rem; line-height:1.55; }
     .hero-note{
-      max-width:62ch;
+      max-width:58ch;
       margin:0 auto;
       color:var(--oc-subtle);
-      font-size:.95rem;
+      font-size:.93rem;
+      line-height:1.5;
     }
     .hero-actions{
       display:flex;
@@ -179,7 +180,130 @@
       text-decoration:underline;
       text-underline-offset:3px;
     }
-
+    .hero-search{
+      width:min(760px, 100%);
+      margin:1rem auto 0;
+      text-align:left;
+    }
+    .hero-search-form{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:.75rem;
+      padding:.75rem;
+      border:1px solid var(--oc-border);
+      border-radius:20px;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+    }
+    .hero-search-field{
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+      min-width:0;
+      padding:.2rem .2rem .2rem .35rem;
+      border:1px solid var(--oc-border);
+      border-radius:14px;
+      background:#fff;
+    }
+    .hero-search-icon{
+      flex:0 0 auto;
+      color:var(--oc-subtle);
+      margin-left:.15rem;
+    }
+    .hero-search-input{
+      border:0;
+      padding:.68rem .1rem;
+      font:inherit;
+      color:var(--oc-text);
+      background:transparent;
+      min-width:0;
+      width:100%;
+    }
+    .hero-search-input:focus{ outline:none; }
+    .hero-search-submit{
+      min-width:110px;
+      align-self:stretch;
+    }
+    .hero-search-scopes{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:.45rem;
+      margin-top:.65rem;
+    }
+    .hero-search-chip{
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      padding:.38rem .72rem;
+      background:#fff;
+      color:var(--oc-brand-ink);
+      font-size:.86rem;
+      font-weight:700;
+      line-height:1;
+    }
+    .hero-search-chip.is-active,
+    .hero-search-chip:hover{
+      background:#f5f9ff;
+      border-color:#cfddea;
+      color:var(--oc-brand-ink);
+    }
+    .hero-search-meta{
+      margin-top:.65rem;
+      color:var(--oc-subtle);
+      font-size:.84rem;
+      text-align:center;
+    }
+    .hero-search-results{
+      margin-top:.75rem;
+      border:1px solid var(--oc-border);
+      border-radius:18px;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+      overflow:hidden;
+    }
+    .hero-search-results[hidden]{ display:none !important; }
+    .search-results-head{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:center;
+      padding:.85rem 1rem;
+      border-bottom:1px solid var(--oc-border);
+      color:var(--oc-subtle);
+      font-size:.88rem;
+    }
+    .search-results-list{
+      display:grid;
+    }
+    .search-result{
+      display:flex;
+      flex-direction:column;
+      gap:.18rem;
+      padding:.9rem 1rem;
+      color:inherit;
+      text-decoration:none;
+    }
+    .search-result + .search-result{
+      border-top:1px solid var(--oc-border);
+    }
+    .search-result:hover{
+      background:#fbfdff;
+    }
+    .search-result-type{
+      color:var(--oc-subtle);
+      font-size:.73rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .search-result-title{
+      font-weight:800;
+      color:var(--oc-brand-ink);
+    }
+    .search-result-meta{
+      color:var(--oc-subtle);
+      font-size:.9rem;
+    }
     /* Buttons */
     .btn-ink{
       background:var(--oc-brand-ink); color:#fff; border-radius:999px; border:1px solid var(--oc-brand-ink);
@@ -192,18 +316,18 @@
     }
     .btn-accent:hover{ background:#f7fbff; }
 
-    .hero-center { display:flex; flex-direction:column; align-items:center; gap:1rem; }
+    .hero-center { display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
     .cta-group { display:inline-flex; gap:1rem; align-items:center; flex-wrap:wrap; }
 
     .featured-grid{
       display:grid;
       grid-template-columns:repeat(4, minmax(0, 1fr));
-      gap:1rem;
+      gap:1.15rem;
     }
     .featured-card{
       background:#fff;
       border:1px solid var(--oc-border);
-      border-radius:14px;
+      border-radius:16px;
       box-shadow:var(--oc-shadow);
       overflow:hidden;
       height:100%;
@@ -227,10 +351,10 @@
       display:block;
     }
     .featured-body{
-      padding:.9rem 1rem 1rem;
+      padding:1rem 1.05rem 1.05rem;
       display:flex;
       flex-direction:column;
-      gap:.4rem;
+      gap:.45rem;
       flex:1;
     }
     .featured-topline{
@@ -288,10 +412,10 @@
     }
     .featured-title{
       margin:0;
-      font-size:1rem;
+      font-size:1.02rem;
       font-weight:800;
       color:var(--oc-brand-ink);
-      line-height:1.3;
+      line-height:1.35;
     }
     .featured-desc{
       margin:0;
@@ -306,7 +430,7 @@
     .featured-meta{
       margin:0;
       color:var(--oc-subtle);
-      font-size:.9rem;
+      font-size:.88rem;
     }
     .featured-link{
       margin-top:auto;
@@ -316,20 +440,20 @@
     }
 
     /* Sections & cards */
-    .oc-section{ margin-top:40px; }
+    .oc-section{ margin-top:48px; }
     .oc-card{
       background:var(--oc-card);
       border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
+      border-radius:16px;
       box-shadow:var(--oc-shadow);
     }
-    .oc-card .oc-card-title{ font-weight:700; color:var(--oc-brand-ink); }
-    .oc-card .oc-card-body{ padding:1.25rem; }
+    .oc-card .oc-card-title{ font-weight:800; color:var(--oc-brand-ink); letter-spacing:-.01em; }
+    .oc-card .oc-card-body{ padding:1.45rem; }
     .oc-kicker{
-      font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle);
+      font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; color:var(--oc-subtle); font-weight:800;
     }
     .oc-ul{ margin-bottom:0; padding-left:1.1rem; }
-    .oc-ul li{ margin:.35rem 0; }
+    .oc-ul li{ margin:.42rem 0; }
 
     /* Reference block */
     pre.oc-bib{
@@ -428,8 +552,8 @@
        Hero Metrics (rings)
        ============================== */
     .metrics{
-      display:flex; gap:1.4rem; justify-content:center; align-items:center;
-      flex-wrap:wrap; margin:1.15rem 0 .25rem;
+      display:flex; gap:1.2rem; justify-content:center; align-items:center;
+      flex-wrap:wrap; margin:1rem 0 .15rem;
     }
     .metric{ display:flex; align-items:center; gap:1rem; background:transparent; border:none; }
     .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
@@ -460,11 +584,15 @@
 
     @media (max-width: 575.98px){
       .featured-grid{ grid-template-columns:1fr; }
-      .hero .content{ padding:44px 0 34px; }
+      .hero .content{ padding:48px 0 36px; }
       .hero-note{ font-size:.9rem; }
       .hero-actions{ align-items:stretch; }
       .cta-group{ width:100%; justify-content:center; }
       .cta-group .btn{ flex:1 1 180px; }
+      .hero-search-form{ grid-template-columns:1fr; }
+      .hero-search-submit{ min-height:46px; }
+      .oc-card .oc-card-body{ padding:1.2rem; }
+      .oc-section{ margin-top:36px; }
     }
 
     html, body, .oc-container { transform: none !important; }
@@ -490,24 +618,6 @@
       border-color: color-mix(in srgb, var(--oc-brand-accent) 28%, white);
       color: var(--oc-brand-ink);
     }
-	    .how-pill{
-      display:flex; gap:.85rem; align-items:flex-start;
-      border:1px solid var(--oc-border);
-      border-radius:12px;
-      background:linear-gradient(180deg, #fff, #fbfdff);
-      padding:1rem 1rem;
-      height:100%;
-    }
-    .how-ic{
-      flex:0 0 auto;
-      width:34px; height:34px; border-radius:12px;
-      display:flex; align-items:center; justify-content:center;
-      background:#eef4fb; border:1px solid #dfe8f3;
-      color:var(--oc-brand-ink);
-    }
-    .how-title{ font-weight:800; margin:0 0 .15rem; color:var(--oc-brand-ink); }
-    .how-text{ margin:0; color:var(--oc-subtle); }
-
 	/* Dark buttons */
 	.btn-ink,
 	.btn-ink:visited,
@@ -621,9 +731,38 @@
     <div class="hero-kicker">Open AEC Resource Library</div>
     <h1 class="mb-1">Open datasets, models, workflows, and educational resources for AI in AEC</h1>
 	<p class="lead mb-0">
-	  OpenConstruction helps teams quickly find reusable resources for research,
-      teaching, and real-world deployment across architecture, engineering, and construction.
+	  Find reusable AEC resources for research, educational use, and deployment.
 	</p>
+      <div class="hero-search" aria-labelledby="home-search-heading">
+        <div id="home-search-heading" class="visually-hidden">Search the OpenConstruction catalog</div>
+        <form class="hero-search-form" id="homeSearchForm">
+          <div class="hero-search-field">
+            <span class="hero-search-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <input
+              id="homeSearchInput"
+              class="hero-search-input"
+              type="search"
+              placeholder="Search datasets, models, workflows, and OERs"
+              aria-label="Search the catalog"
+              autocomplete="off">
+          </div>
+          <button class="btn btn-ink hero-search-submit" type="submit">Search</button>
+        </form>
+        <div class="hero-search-scopes" id="homeSearchScopes" role="tablist" aria-label="Search scope">
+          <button class="hero-search-chip is-active" type="button" data-scope="all" aria-pressed="true">All</button>
+          <button class="hero-search-chip" type="button" data-scope="dataset" aria-pressed="false">Datasets</button>
+          <button class="hero-search-chip" type="button" data-scope="model" aria-pressed="false">Models</button>
+          <button class="hero-search-chip" type="button" data-scope="workflow" aria-pressed="false">Workflows</button>
+          <button class="hero-search-chip" type="button" data-scope="oer" aria-pressed="false">OERs</button>
+        </div>
+        <div class="hero-search-meta">Search the full catalog from one place.</div>
+        <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
+      </div>
 
     <!-- grouped metrics -->
     <div class="hero-center">
@@ -719,7 +858,7 @@
         </div>
       </div>
       <p class="hero-note">
-        Built as open infrastructure with linked benchmarks, structured metadata, and community stewardship.
+        Open infrastructure with linked benchmarks and structured metadata.
       </p>
     </div><!-- /hero-center -->
   </div>
@@ -733,7 +872,7 @@
         <h2 id="featured-resources-heading" class="oc-card-title mb-2">Latest updates from the catalog</h2>
         <div class="featured-header-meta">
           <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
-          <span>Recently added datasets, models, workflows, and OERs across OpenConstruction.</span>
+          <span>Recently added across datasets, models, workflows, and OERs.</span>
         </div>
         <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
           <div class="featured-card">
@@ -747,125 +886,22 @@
     </div>
   </section>
 
-  <section class="oc-section" aria-labelledby="how-heading">
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <div class="oc-kicker mb-2">How it works</div>
-        <h3 id="how-heading" class="oc-card-title mb-3">From community contribution to reusable infrastructure</h3>
-        <div class="row g-3">
-          <div class="col-12 col-lg-4">
-            <div class="how-pill">
-              <div class="how-ic" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                </svg>
-              </div>
-              <div>
-                <p class="how-title">1) Contribute</p>
-                <p class="how-text">Submit assets or platform improvements via GitHub issues/PRs (schemas, validators, benchmarks, docs).</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="how-pill">
-              <div class="how-ic" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M20 12a8 8 0 1 1-8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div>
-                <p class="how-title">2) Validate</p>
-                <p class="how-text">Automated checks enforce schema completeness, link integrity, and benchmark metadata consistency.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="how-pill">
-              <div class="how-ic" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M5 9l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div>
-                <p class="how-title">3) Integrate & release</p>
-                <p class="how-text">Approved contributions land in versioned catalogs and power discoverability, reuse, and downstream tools.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-3 small text-muted">
-          Want to help maintain core infrastructure? Start with <a href="contribute.html">Contribute</a> or join our <a href="contributors.html">Community</a>.
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- About + Vision -->
-  <section class="oc-section">
-    <div class="row g-4">
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">About</div>
-            <h3 class="oc-card-title mb-2">What OpenConstruction provides</h3>
-            <p class="mb-2">
-			OpenConstruction is an open infrastructure layer for sharing, validating, and reusing AI-ready AEC knowledge assets.
-            </p>
-			<ul class="oc-ul">
-			  <li>Open-source platform code and deployment infrastructure</li>
-			  <li>Versioned metadata schemas and validation rules</li>
-			  <li>Community-governed contribution and review workflows</li>
-			  <li>Benchmarks and APIs that support downstream tools and research</li>
-			</ul>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Vision</div>
-            <h3 class="oc-card-title mb-2">Why it matters</h3>
-			<p class="mb-3">
-			  The goal is to make AEC resources easier to discover, compare, and maintain over time.
-			</p>
-			<ul class="oc-ul">
-			  <li>
-				Keep datasets, models, workflows, and OERs in one open catalog with standardized metadata.
-			  </li>
-			  <li>
-				Support research, teaching, and deployment by linking resources to benchmarks and real-world applications.
-			  </li>
-			  <li>
-				Enable long-term stewardship through shared curation, review, and open governance.
-			  </li>
-			</ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Get Involved -->
   <section class="oc-section">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Get Involved</div>
-        <h3 class="oc-card-title mb-3">Join the Community</h3>
+        <div class="oc-kicker mb-2">Overview</div>
+        <h3 class="oc-card-title mb-3">Open infrastructure for reusable AEC resources</h3>
         <p class="mb-3">
-          There are several practical ways to contribute:
+          OpenConstruction brings AEC datasets, models, workflows, and educational resources into one open catalog.
         </p>
 		<ul class="oc-ul">
-		  <li><strong>Platform contributors:</strong> Improve schemas, validation tools, UI components, and APIs.</li>
-		  <li><strong>Asset maintainers:</strong> Maintain dataset, model, and workflow entries over time.</li>
-		  <li><strong>Benchmark and schema contributors:</strong> Improve task definitions, evaluation protocols, metrics, and metadata structures.</li>
-		  <li><strong>Governance participants:</strong> Help shape roadmap priorities and review standards.</li>
-		</ul>
-
+		  <li>Standardized metadata and validation for consistent discovery</li>
+		  <li>Benchmarks and linked context for research, educational use, and deployment</li>
+		  <li>Open contribution, review, and governance for long-term stewardship</li>
+        </ul>
+        <p class="mt-3 mb-0 small text-muted">
+          Help improve the platform through <a href="contribute.html">Contribute</a> or <a href="contributors.html">Community</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -1072,71 +1108,20 @@
     </div>
   </section>
 
-  <!-- Feedback / Policy -->
-  <section class="oc-section">
-    <div class="row g-4">
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-		  <div class="oc-kicker mb-2">Liability</div>
-		  <h3 class="oc-card-title mb-2">Liability & Responsibility</h3>
-		  <p class="mb-0">
-			We do <span class="hl">not host, distribute, or control</span> the datasets, models, code,
-			or resources listed on this site. OpenConstruction, its organizers, and contributors shall <span class="hl">not be held liable</span>
-			  for any damages arising from the use or misuse of listed resources, and inclusion does
-			not imply endorsement or warranty.
-		  </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Policy</div>
-            <h3 class="oc-card-title mb-2">Request resource removal</h3>
-            <p class="mb-2">
-              OpenConstruction indexes <span class="hl">publicly available metadata and links</span> to original sources such as papers or repositories. 
-              We do <span class="hl">not host or distribute</span> any datasets, code, or proprietary materials, and we fully respect the intellectual property of all content owners.
-            </p>
-            <p class="mb-0">
-              For <span class="hl">removal or correction requests</span>, please contact 
-              <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>, and we’ll act quickly.
-            </p>
-          </div>
-        </div>
-      </div>
-  </section>
-
-  <!-- Acknowledgment -->
   <section class="oc-section">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Acknowledgment</div>
-        <h3 class="oc-card-title mb-2">Gratitude to Creators and Contributors</h3>
+        <div class="oc-kicker mb-2">Policy & Feedback</div>
+        <h3 class="oc-card-title mb-2">Questions, corrections, or removal requests</h3>
+        <p class="mb-2">
+          OpenConstruction indexes publicly available metadata and links to original sources. We do not host datasets, models, code, or proprietary materials, and inclusion does not imply endorsement or warranty.
+        </p>
         <p class="mb-0">
-          We sincerely thank all <span class="hl">creators and contributors</span> who have contributed your 
-          datasets, models, and other resources to the community. 
-          Your willingness to share knowledge fuels innovation, collaboration, and progress 
-          across the AEC research and practice ecosystem.
+          For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. For product feedback or feature ideas, <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">create a suggestion</a> or join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a>.
         </p>
       </div>
     </div>
   </section>
-  
-    <section class="oc-section">
-  <div class="oc-card">
-    <div class="oc-card-body">
-	  <div class="oc-kicker mb-2">Feedback</div>
-            <h3 class="oc-card-title mb-2">Have an idea or request?</h3>
-            <p class="mb-0">
-              We’d love to hear from you. Share suggestions or feature here:
-              <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">
-                Create a suggestion</a>, or join the conversation: <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank">Discussion Board</a>.
-            </p>
-    </div>
-  </div>
-</section>
   
 </main>
 
@@ -1367,6 +1352,10 @@
   (function(){
     const grid = document.getElementById('featuredResourcesGrid');
     const freshnessEl = document.getElementById('catalogFreshness');
+    const searchForm = document.getElementById('homeSearchForm');
+    const searchInput = document.getElementById('homeSearchInput');
+    const searchScopeButtons = Array.from(document.querySelectorAll('#homeSearchScopes [data-scope]'));
+    const searchResults = document.getElementById('homeSearchResults');
     if (!grid) return;
 
     function esc(s){
@@ -1413,6 +1402,161 @@
       const match = clean.match(/^.*?[.!?](?:\s|$)/);
       const sentence = match ? match[0].trim() : clean;
       return sentence.length > 140 ? `${sentence.slice(0, 137).trimEnd()}...` : sentence;
+    }
+
+    function normalizeText(text){
+      return String(text || '').toLowerCase();
+    }
+
+    function buildSearchIndex(datasetsJson, modelsJson, usecasesJson, oersJson){
+      const datasets = Object.values(datasetsJson || {}).map(ds => ({
+        type: 'dataset',
+        label: 'Dataset',
+        title: ds.name || ds.id || 'Untitled dataset',
+        href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
+        meta: [ds.year, ds.data_modality].filter(Boolean).join(' • '),
+        text: [
+          ds.name, ds.id, ds.data_modality,
+          ...(Array.isArray(ds.potential_tasks) ? ds.potential_tasks : []),
+          ...(Array.isArray(ds.classes) ? ds.classes : [])
+        ].join(' ')
+      }));
+      const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
+        type: 'model',
+        label: 'Model',
+        title: m.title || m.id || 'Untitled model',
+        href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
+        meta: [m.year, Array.isArray(m.tasks) ? m.tasks[0] : m.task].filter(Boolean).join(' • '),
+        text: [
+          m.title, m.id, m.abstract,
+          ...(Array.isArray(m.tasks) ? m.tasks : normalizeText(m.task) ? [m.task] : []),
+          ...(Array.isArray(m.applications) ? m.applications : normalizeText(m.application) ? [m.application] : []),
+          ...(Array.isArray(m.modalities) ? m.modalities : normalizeText(m.modality) ? [m.modality] : [])
+        ].join(' ')
+      }));
+      const workflows = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
+        type: 'workflow',
+        label: 'Workflow',
+        title: u.title || 'Untitled workflow',
+        href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
+        meta: [u.year, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
+        text: [
+          u.title, u.summary, u.phase,
+          ...(Array.isArray(u.stakeholders) ? u.stakeholders : []),
+          ...(Array.isArray(u.applications) ? u.applications : [])
+        ].join(' ')
+      }));
+      const oers = ((oersJson && oersJson.resources) || []).map(r => ({
+        type: 'oer',
+        label: 'OER',
+        title: r.title || 'Untitled resource',
+        href: r.source || 'oer.html',
+        external: true,
+        meta: [r.year, r.provider || r.publisher].filter(Boolean).join(' • '),
+        text: [
+          r.title, r.provider, r.publisher,
+          ...(Array.isArray(r.topics) ? r.topics : []),
+          ...(Array.isArray(r.institutions) ? r.institutions : [])
+        ].join(' ')
+      }));
+      return [...datasets, ...models, ...workflows, ...oers].map(item => ({
+        ...item,
+        haystack: normalizeText(`${item.title} ${item.meta} ${item.text}`)
+      }));
+    }
+
+    function renderSearchResults(items, query, scope){
+      if (!searchResults) return;
+      const scopeLabels = {
+        all: 'All resources',
+        dataset: 'Datasets',
+        model: 'Models',
+        workflow: 'Workflows',
+        oer: 'OERs'
+      };
+      const label = scopeLabels[scope] || 'All resources';
+      if (!query){
+        searchResults.hidden = true;
+        searchResults.innerHTML = '';
+        return;
+      }
+      if (!items.length){
+        searchResults.hidden = false;
+        searchResults.innerHTML = `
+          <div class="search-results-head">
+            <span>No results for “${esc(query)}”</span>
+            <span>${esc(label)}</span>
+          </div>
+          <div class="search-results-list">
+            <div class="search-result">
+              <span class="search-result-title">Try a broader keyword or switch scope.</span>
+            </div>
+          </div>`;
+        return;
+      }
+      searchResults.hidden = false;
+      searchResults.innerHTML = `
+        <div class="search-results-head">
+          <span>${items.length} result${items.length === 1 ? '' : 's'} for “${esc(query)}”</span>
+          <span>${esc(label)}</span>
+        </div>
+        <div class="search-results-list">
+          ${items.map(item => `
+            <a class="search-result" href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''}>
+              <span class="search-result-type">${esc(item.label)}</span>
+              <span class="search-result-title">${esc(item.title)}</span>
+              <span class="search-result-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</span>
+            </a>
+          `).join('')}
+        </div>`;
+    }
+
+    function wireSearch(searchIndex){
+      if (!searchForm || !searchInput || !searchResults) return;
+      let activeScope = 'all';
+      function setScope(scope){
+        activeScope = scope;
+        searchScopeButtons.forEach(btn => {
+          const isActive = btn.dataset.scope === scope;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+      function runSearch(){
+        const query = searchInput.value.trim();
+        const scope = activeScope;
+        if (!query){
+          renderSearchResults([], '', scope);
+          return [];
+        }
+        const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+        const results = searchIndex
+          .filter(item => (scope === 'all' || item.type === scope) && terms.every(term => item.haystack.includes(term)))
+          .slice(0, 8);
+        renderSearchResults(results, query, scope);
+        return results;
+      }
+      searchInput.addEventListener('input', runSearch);
+      searchScopeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          setScope(btn.dataset.scope || 'all');
+          runSearch();
+        });
+      });
+      searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const results = runSearch();
+        if (results[0]) window.location.href = results[0].href;
+      });
+      document.addEventListener('click', (event) => {
+        if (!searchResults.hidden && !searchForm.contains(event.target) && !searchResults.contains(event.target)){
+          searchResults.hidden = true;
+        }
+      });
+      searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim()) runSearch();
+      });
+      setScope(activeScope);
     }
 
     function pickItems(datasetsJson, modelsJson, usecasesJson, oersJson){
@@ -1537,6 +1681,7 @@
         ]);
         const freshest = latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson);
         if (freshnessEl && freshest) freshnessEl.textContent = `Last updated: ${formatDate(freshest)}`;
+        wireSearch(buildSearchIndex(datasetsJson, modelsJson, usecasesJson, oersJson));
         render(pickItems(datasetsJson, modelsJson, usecasesJson, oersJson));
       }catch(_){
         if (freshnessEl) freshnessEl.textContent = 'Last updated: unavailable';
