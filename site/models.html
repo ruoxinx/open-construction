@@ -99,7 +99,20 @@
     }
 
     /* ---------- Filters ---------- */
-    .filters{position:sticky;top:86px}
+    .filters{
+      position:sticky;
+      top:86px;
+      max-height:calc(100vh - 102px);
+      overflow:auto;
+      scrollbar-gutter:stable;
+    }
+    .filters .card-header{
+      position:sticky;
+      top:0;
+      z-index:1;
+      background:var(--oc-card);
+      border-bottom:1px solid var(--oc-border);
+    }
     .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
     .card .form-label{font-weight:700}
     .range-container{position:relative;height:36px;margin:.25rem 0 .5rem}
