@@ -427,7 +427,6 @@ async function initDetail(){
         { label: 'Primary task', value: taskList.length ? escapeHtml(taskList[0]) : '—' },
         { label: 'Application', value: appList.length ? escapeHtml(appList[0]) : '—' },
         { label: 'Modality', value: modalityList.length ? escapeHtml(modalityList[0]) : '—' },
-        { label: 'Framework', value: escapeHtml(safeText(m.framework || m.library || m.backbone || '')) },
         { label: 'License', value: formatLicense(m.license) || '—' }
       ];
 
