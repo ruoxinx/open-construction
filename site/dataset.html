@@ -20,6 +20,7 @@
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
 
   <style>
     /* ---------- Design tokens (LIGHT ONLY) ---------- */
@@ -30,50 +31,7 @@
       --oc-radius:14px; --oc-muted:#f6f9fc;
       --oc-brand:#0f2e4b; --oc-accent:#f2a238;
     }
-    html,body{background:var(--oc-bg); color:var(--oc-text)}
-    a{color:var(--oc-link)}
-
-    /* ---------- Navbar ---------- */
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
-    .oc-logo{height:44px;width:44px}
-
-    .navbar .nav-link.plain{
-      font-weight:700;
-      color:var(--oc-text);
-      padding:.5rem .6rem;
-    }
-    .navbar .nav-link.plain:hover{
-      color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-    .navbar .nav-link.plain.active{
-      color:var(--oc-ink);
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
+    /* shared shell styles live in assets/css/shared-site.css */
 	
 	.hl{
       background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
@@ -86,60 +44,7 @@
     .oc-cta{border-radius:999px;box-shadow:0 4px 10px rgba(16,185,129,.15)}
     .oc-cta:hover{box-shadow:0 6px 14px rgba(16,185,129,.22);transform:translateY(-1px)}
 
-    /* Minimal icon-only link (GitHub) */
-    .nav-link.icon-only{line-height:1; padding-top:.375rem; padding-bottom:.375rem;}
-    .nav-link.icon-only svg{display:block; width:20px; height:20px; color:inherit; opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    /* ---------- Docked search ---------- */
-    .navbar-search{
-      display:none;
-      width: clamp(200px, 24vw, 320px);
-    }
-    .navbar-search .form-control{
-      height:34px;
-      padding:.25rem .75rem;
-      font-size:.875rem;
-      line-height:1.2;
-      border-radius:999px;
-    }
-    body.docked .navbar-search{display:flex; flex:0 0 auto}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex; align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
-    }
-
-    /* ---------- Hero ---------- */
-    header.hero{
-      border-bottom:1px solid var(--oc-border);
-      background:#fff;
-    }
-    header.hero .content{ padding:56px 0 36px; text-align:center }
-    header.hero h1{ font-weight:800; color:var(--oc-brand); margin-bottom:.3rem }
-    header.hero p{ color:var(--oc-sub); margin:0 auto; max-width:72ch }
-    /* original big search size */
-    .search-input{border-radius:999px; padding:.9rem 1.1rem; max-width:720px; margin:0 auto; box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
-
-    /* ---------- Filters card ---------- */
-    .filters{
-      position:sticky;
-      top:86px;
-      max-height:calc(100vh - 102px);
-      overflow:auto;
-      scrollbar-gutter:stable;
-    }
-    .filters .card-header{
-      position:sticky;
-      top:0;
-      z-index:1;
-      background:var(--oc-card);
-      border-bottom:1px solid var(--oc-border);
-    }
-    .facet-list{ max-height: 280px; overflow:auto; border:1px solid var(--oc-border); border-radius:.5rem; padding:.55rem; background:var(--oc-card) }
     .facet-list .form-check{ margin-bottom:.25rem }
-    .card .form-label{ font-weight:700 }
     .facet-toggle{ font-size:.875rem; line-height:1.2 }
 
     /* ---------- Year dual range with selected track ---------- */
@@ -153,9 +58,6 @@
     .range-container .thumb::-moz-range-thumb{
       pointer-events:all; width:18px; height:18px; border-radius:50%; background:#0d6efd; border:2px solid #fff
     }
-
-    /* ---------- Result toolbar ---------- */
-    .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; flex-wrap:wrap }
 
     /* ---------- Dataset cards ---------- */
     .dataset-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); height:100% }
@@ -173,19 +75,6 @@
     /* Hide any legacy class-count spans inside labels */
     #filter-classes .form-check-label .text-muted{ display:none !important }
 	
-	/* Yellow subscribe bell */
-	.btn-subscribe-icon{
-	  background: transparent;
-	  border: 0;
-	  padding: .25rem .4rem;
-	  line-height: 1;
-	}
-	.btn-subscribe-icon svg{
-	  fill: var(--oc-accent);
-	}
-	.btn-subscribe-icon:hover svg{
-	  filter: brightness(1.15);
-	}
 	.submitted-tag {
 	  position: absolute;
 	  bottom: 8px;
@@ -212,20 +101,10 @@
 	}
 
     @media (max-width: 991.98px){
-      header.hero .content{padding:40px 0 28px}
-      .filters{position:static;top:auto;margin-bottom:1rem}
-      .facet-list{max-height:220px}
-      .toolbar > *{width:100%}
-      .toolbar .d-flex{width:100%;justify-content:space-between}
-      .toolbar .form-select{min-width:0;flex:1 1 auto}
       #datasetGrid{row-gap:.85rem}
     }
 
     @media (max-width: 575.98px){
-      .brand-wordmark .oc-open{font-size:.68rem}
-      .brand-wordmark .oc-construction{font-size:1.1rem}
-      header.hero .content{padding:34px 0 24px}
-      .search-input{padding:.82rem 1rem}
       .submitted-tag{
         max-width:calc(100% - 12px);
         font-size:.72rem;
@@ -416,7 +295,7 @@
   </div>
 </main>
 
-<footer class="py-4 mt-3 border-top">
+<footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
       © <span id="yearNow"></span> OpenConstruction Open Science Initiative

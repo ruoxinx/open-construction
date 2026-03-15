@@ -1,10 +1,12 @@
 // OER loader & renderer — mirrors Models page layout (horizontal paper-card)
 (function () {
   const state = { all: [], filtered: [] };
+  let syncingUrlState = false;
   const els = {
     grid: document.getElementById('oerGrid'),
     empty: document.getElementById('emptyState'),
     q: document.getElementById('q'),
+    qDock: document.getElementById('qDock'),
     qBtn: document.getElementById('qBtn'),
     sort: document.getElementById('sortBy'),
     lang: document.getElementById('filter-language'),
@@ -89,6 +91,56 @@
   function readChecked(container){
     if(!container) return [];
     return Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(i=>i.value);
+  }
+  function splitParam(value){
+    return String(value || '').split(',').map(v => v.trim()).filter(Boolean);
+  }
+  function setChecked(container, values){
+    const wanted = new Set(values);
+    if(!container) return;
+    container.querySelectorAll('input[type="checkbox"]').forEach(input => {
+      input.checked = wanted.has(input.value);
+    });
+  }
+  function syncUrlState(){
+    if (syncingUrlState) return;
+    const params = new URLSearchParams();
+    const q = (els.q?.value || '').trim();
+    const sort = els.sort?.value || 'added-desc';
+    const langs = readChecked(els.lang);
+    const topics = readChecked(els.topics);
+    const licenses = readChecked(els.license);
+    const media = readChecked(els.media);
+    const topicQ = (els.topicSearch?.value || '').trim();
+    const licQ = (els.licenseSearch?.value || '').trim();
+
+    if (q) params.set('q', q);
+    if (sort !== 'added-desc') params.set('sort', sort);
+    if (langs.length) params.set('language', langs.join(','));
+    if (topics.length) params.set('topics', topics.join(','));
+    if (licenses.length) params.set('licenses', licenses.join(','));
+    if (media.length) params.set('media', media.join(','));
+    if (topicQ) params.set('topicQuery', topicQ);
+    if (licQ) params.set('licenseQuery', licQ);
+
+    const query = params.toString();
+    history.replaceState(null, '', query ? `${location.pathname}?${query}` : location.pathname);
+  }
+  function restoreStateFromUrl(){
+    syncingUrlState = true;
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q') || '';
+    if (els.q) els.q.value = q;
+    if (els.qDock) els.qDock.value = q;
+    if (els.sort) els.sort.value = params.get('sort') || 'added-desc';
+    if (els.topicSearch) els.topicSearch.value = params.get('topicQuery') || '';
+    if (els.licenseSearch) els.licenseSearch.value = params.get('licenseQuery') || '';
+
+    setChecked(els.lang, splitParam(params.get('language')));
+    setChecked(els.topics, splitParam(params.get('topics')));
+    setChecked(els.license, splitParam(params.get('licenses')));
+    setChecked(els.media, splitParam(params.get('media')));
+    syncingUrlState = false;
   }
   function allFacetValues(list, key){
     return uniq(list.flatMap(r => tokens(r[key]))).sort((a,b)=>a.localeCompare(b));
@@ -203,6 +255,7 @@
 
     state.filtered = list;
     render(list);
+    syncUrlState();
   }
 
   function buildFacets(){
@@ -218,6 +271,10 @@
     els.topicSearch?.addEventListener('input', applyFilters);
     els.licenseSearch?.addEventListener('input', applyFilters);
     els.q?.addEventListener('input', applyFilters);
+    els.qDock?.addEventListener('input', ()=>{
+      if (els.q) els.q.value = els.qDock.value;
+      applyFilters();
+    });
     els.qBtn?.addEventListener('click', applyFilters);
     els.sort?.addEventListener('change', applyFilters);
   }
@@ -258,6 +315,7 @@
       }
 
       buildFacets();
+      restoreStateFromUrl();
       applyFilters();
       hideSkeleton();
     }catch(e){

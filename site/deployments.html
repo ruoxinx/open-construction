@@ -9,17 +9,18 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Use Cases</title>
+  <title>OpenConstruction · Workflows</title>
   <meta name="description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
   <link rel="canonical" href="https://www.openconstruction.org/deployments.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Use Cases">
+  <meta property="og:title" content="OpenConstruction · Workflows">
   <meta property="og:description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
   <meta property="og:url" content="https://www.openconstruction.org/deployments.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
 
   <style>
     :root{
@@ -34,61 +35,10 @@
       --tag-app-bg:#fff7e9;        --tag-app-border:#f7dfb4;    --tag-app-text:#84550f;
       --tag-stakeholder-bg:#f1eefc;--tag-stakeholder-border:#d7cff8; --tag-stakeholder-text:#3c2b8a;
     }
-    html,body{background:var(--oc-bg); color:var(--oc-text)}
-    a{color:var(--oc-link)}
-
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .oc-logo{height:44px;width:44px}
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
-    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px}
-    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
-    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    .navbar-search{display:none;width:clamp(200px,24vw,320px)}
-    .navbar-search .form-control{height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px}
-    body.docked .navbar-search{display:flex}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex;align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
-    }
-
-    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
-    header.hero .content{padding:56px 0 36px;text-align:center}
-    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
-    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
-    .search-input{border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;box-shadow:inset 0 1px 0 rgba(15,46,75,.05)}
+    /* shared shell styles live in assets/css/shared-site.css */
     .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
-
-    .filters{position:sticky;top:86px}
     .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
     .card .form-label{font-weight:700}
-
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 
     #usecaseGrid{ display:grid; grid-template-columns:1fr; gap:1rem; }
     @media (min-width:992px){ #usecaseGrid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -165,26 +115,11 @@
       text-decoration: underline;
     }
 
-    .btn-subscribe-icon{
-      background: transparent;
-      border: 0;
-      padding: .25rem .4rem;
-      line-height: 1;
-    }
-    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
-    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
-
     .actions{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
     @media (min-width:768px){ .actions{flex-wrap:nowrap;} }
     .actions .btn{white-space:nowrap;}
 
     @media (max-width: 991.98px){
-      header.hero .content{padding:40px 0 28px}
-      .filters{position:static;top:auto;margin-bottom:1rem}
-      .facet-list{max-height:220px}
-      .toolbar > *{width:100%}
-      .toolbar .d-flex{width:100%;justify-content:space-between}
-      .toolbar .form-select{min-width:0;flex:1 1 auto}
       .usecase-card{padding:.9rem}
       #usecaseGrid{gap:.85rem}
       .thumb-wrap{max-height:240px}
@@ -195,10 +130,6 @@
     }
 
     @media (max-width: 575.98px){
-      .brand-wordmark .oc-open{font-size:.68rem}
-      .brand-wordmark .oc-construction{font-size:1.1rem}
-      header.hero .content{padding:34px 0 24px}
-      .search-input{padding:.82rem 1rem}
       .submitted-tag{
         max-width:calc(100% - 12px);
         font-size:.72rem;
@@ -220,7 +151,7 @@
     </a>
 
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search workflows, apps, stakeholders …" aria-label="Search">
+      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
     </form>
 
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
@@ -283,9 +214,9 @@
 <header class="hero">
   <div class="container content">
     <h1 class="display-6 fw-bold">OpenConstruction Workflow Catalog</h1>
-    <p class="lead">Explore <span class="hl">practical AI use cases</span> across the AEC lifecycle</p>
+    <p class="lead">Explore <span class="hl">practical AI workflows</span> across the AEC lifecycle</p>
     <div id="searchDock" class="mt-3">
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search use cases, apps, stakeholders …" aria-label="Search large">
+      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
     </div>
   </div>
 </header>
@@ -347,7 +278,7 @@
 
     <section class="col-lg-9">
       <div class="toolbar mb-2">
-        <div><span id="resultCount" class="fw-semibold">0</span> use cases</div>
+        <div><span id="resultCount" class="fw-semibold">0</span> workflows</div>
         <div class="d-flex align-items-center gap-2">
           <label for="sortBy" class="me-1 small">Sort by</label>
           <select id="sortBy" class="form-select form-select-sm w-auto">
@@ -367,13 +298,13 @@
         <div class="skeleton"></div>
       </div>
 
-      <div id="emptyState" class="empty mt-3 d-none">No use cases match your filters. Try clearing some filters or changing the search.</div>
-      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load use-cases.json. Please check the file path and JSON format.</div>
+      <div id="emptyState" class="empty mt-3 d-none">No workflows match your filters. Try clearing some filters or changing the search.</div>
+      <div id="errorState" class="empty mt-3 d-none text-danger">Failed to load workflow catalog data. Please check the file path and JSON format.</div>
     </section>
   </div>
 </main>
 
-<footer class="py-4 mt-3 border-top">
+<footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
       © <span id="yearNow"></span> OpenConstruction Open Science Initiative
@@ -528,6 +459,75 @@ const state = {
   yMin: null, yMax: null
 };
 let PHASE_MAP=new Map(), STAKE_MAP=new Map(), TECH_MAP=new Map(), APP_MAP=new Map(), MOD_MAP=new Map(), EVID_MAP=new Map();
+let syncingUrlState = false;
+
+function splitParam(value){
+  return String(value || '').split(',').map(v=>v.trim()).filter(Boolean);
+}
+function syncUrlState(){
+  if(syncingUrlState) return;
+  const params = new URLSearchParams();
+  if(state.q) params.set('q', state.q);
+  if(state.sort && state.sort !== 'added-desc') params.set('sort', state.sort);
+  if(state.phases.size) params.set('phases', Array.from(state.phases).join(','));
+  if(state.stakeholders.size) params.set('stakeholders', Array.from(state.stakeholders).join(','));
+  if(state.techs.size) params.set('tech', Array.from(state.techs).join(','));
+  if(state.apps.size) params.set('applications', Array.from(state.apps).join(','));
+  if(state.modalities.size) params.set('modalities', Array.from(state.modalities).join(','));
+  if(state.evidences.size) params.set('evidence', Array.from(state.evidences).join(','));
+  if(rmin && rmax){
+    if(String(state.yMin) !== String(rmin.min)) params.set('yearMin', String(state.yMin));
+    if(String(state.yMax) !== String(rmax.max)) params.set('yearMax', String(state.yMax));
+  }
+  const query = params.toString();
+  const next = query ? `${location.pathname}?${query}` : location.pathname;
+  history.replaceState(null, '', next);
+}
+function setCheckedValues(containerId, values){
+  const wanted = new Set(values);
+  const root = byId(containerId);
+  if(!root) return;
+  root.querySelectorAll('input[type=checkbox]').forEach(input=>{
+    input.checked = wanted.has(input.value);
+  });
+}
+function restoreStateFromUrl(){
+  syncingUrlState = true;
+  const params = new URLSearchParams(location.search);
+  const q = params.get('q') || '';
+  state.q = q;
+  const heroInput = byId('q');
+  const dockInput = byId('qDock');
+  if(heroInput) heroInput.value = q;
+  if(dockInput) dockInput.value = q;
+
+  state.sort = params.get('sort') || 'added-desc';
+  const sortSel = byId('sortBy');
+  if(sortSel) sortSel.value = state.sort;
+
+  state.phases = new Set(splitParam(params.get('phases')));
+  state.stakeholders = new Set(splitParam(params.get('stakeholders')));
+  state.techs = new Set(splitParam(params.get('tech')));
+  state.apps = new Set(splitParam(params.get('applications')));
+  state.modalities = new Set(splitParam(params.get('modalities')));
+  state.evidences = new Set(splitParam(params.get('evidence')));
+
+  setCheckedValues('filter-phase', state.phases);
+  setCheckedValues('filter-stakeholder', state.stakeholders);
+  setCheckedValues('filter-tech', state.techs);
+  setCheckedValues('filter-app', state.apps);
+  setCheckedValues('filter-modality', state.modalities);
+  setCheckedValues('filter-evidence', state.evidences);
+
+  if(rmin && rmax){
+    const nextMin = params.get('yearMin');
+    const nextMax = params.get('yearMax');
+    if(nextMin) rmin.value = nextMin;
+    if(nextMax) rmax.value = nextMax;
+    updateTrack();
+  }
+  syncingUrlState = false;
+}
 
 function makeCheckbox(id, label, value){
   const wrap=document.createElement('div'); wrap.className='form-check';
@@ -608,6 +608,7 @@ function applyFilters(){
   }
 
   render(rows);
+  syncUrlState();
 }
 
 /* ---------- Submitted-by helpers ---------- */
@@ -685,7 +686,7 @@ function render(items){
         </div>
 
         <div class="d-flex flex-column gap-1">
-          <h3 class="h6 title mb-1">${escapeHTML(u.title || 'Untitled use case')}</h3>
+          <h3 class="h6 title mb-1">${escapeHTML(u.title || 'Untitled workflow')}</h3>
 
           <div class="meta">
             ${typeof u.year==='number' ? u.year : '—'}${u.geography? (' • ' + escapeHTML(u.geography)):''}${comps? (' • ' + comps):''}
@@ -752,7 +753,7 @@ function attachFacetHandlers(){
 
   const heroInput = byId('q'), dockInput = byId('qDock');
   function sync(to, from){ to.value = from.value; to.dispatchEvent(new Event('input',{bubbles:true})); }
-  const updateQ = debounce(()=>{ state.q = heroInput.value; if(!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
+    const updateQ = debounce(()=>{ state.q = heroInput.value; if(!document.body.classList.contains('docked')) dockInput.value = heroInput.value; applyFilters(); }, 120);
   if (dockInput && heroInput){
     dockInput.addEventListener('input', ()=>{ state.q = dockInput.value; sync(heroInput, dockInput); applyFilters(); });
     heroInput.addEventListener('input', updateQ);
@@ -798,6 +799,7 @@ async function loadUseCases(){
              : (typeof payload==='object' ? Object.values(payload) : []));
     USECASES = raw.map(u=>({ ...u, added_date: u.added_date || u.added || null }));
     buildFacets();
+    restoreStateFromUrl();
     applyFilters();
   }catch(e){
     console.error(e);
@@ -816,7 +818,7 @@ async function loadUseCases(){
 <a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_use_case.yml"
    class="issue-btn position-fixed" style="bottom:20px;right:20px;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;"
    target="_blank" rel="noopener">
-   Add New Use-Case
+   Add New Workflow
 </a>
 
 <style>

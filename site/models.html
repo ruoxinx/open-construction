@@ -20,6 +20,7 @@
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
 
   <style>
     /* ---------- Design tokens---------- */
@@ -39,82 +40,7 @@
       --tag-app-border:#cfe9db;
       --tag-app-text:#106946;
     }
-    html,body{background:var(--oc-bg); color:var(--oc-text)}
-    a{color:var(--oc-link)}
-
-    /* ---------- Navbar ---------- */
-    .oc-nav{backdrop-filter:saturate(120%) blur(6px)}
-    .oc-logo{height:44px;width:44px}
-	.brand-wordmark{
-	  display:flex;
-	  flex-direction:column;
-	  line-height:1;
-	  gap:0;
-	  align-items:flex-start;
-	  color:#0F2E4B;
-	}
-	.brand-wordmark .oc-open{
-	  font-size:0.75rem;
-	  font-weight:400;
-	  letter-spacing:0.15em;
-	  text-transform:uppercase;
-	  opacity:0.7;
-	  margin-bottom:-0.1rem;
-	}
-	.brand-wordmark .oc-sep{display:none}
-	.brand-wordmark .oc-construction{
-	  font-size:1.35rem;
-	  font-weight:700;
-	  letter-spacing:-0.01em;
-	}
-    .navbar .nav-link.plain{font-weight:700;color:var(--oc-text);padding:.5rem .6rem}
-    .navbar .nav-link.plain:hover,.navbar .nav-link.plain.active{
-      color:var(--oc-ink);text-decoration:underline;text-underline-offset:3px
-    }
-    .nav-link.icon-only{line-height:1;padding-top:.375rem;padding-bottom:.375rem}
-    .nav-link.icon-only svg{display:block;width:20px;height:20px;color:inherit;opacity:.9}
-    .nav-link.icon-only:hover svg{opacity:1}
-
-    /* ---------- Docked search ---------- */
-    .navbar-search{display:none;width:clamp(200px,24vw,320px)}
-    .navbar-search .form-control{
-      height:34px;padding:.25rem .75rem;font-size:.875rem;line-height:1.2;border-radius:999px
-    }
-    body.docked .navbar-search{display:flex}
-    body.docked #searchDock{display:none}
-    @media (min-width: 992px){
-      .navbar .container{display:flex;align-items:center}
-      .navbar .navbar-collapse{flex-grow:0}
-      .navbar .navbar-search{margin-left:.75rem}
-    }
-
-    /* ---------- Hero ---------- */
-    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
-    header.hero .content{padding:56px 0 36px;text-align:center}
-    header.hero h1{font-weight:800;color:var(--oc-brand);margin-bottom:.3rem}
-    header.hero p{color:var(--oc-sub);margin:0 auto;max-width:72ch}
-    .search-input{
-      border-radius:999px;padding:.9rem 1.1rem;max-width:720px;margin:0 auto;
-      box-shadow:inset 0 1px 0 rgba(15,46,75,.05)
-    }
-
-    /* ---------- Filters ---------- */
-    .filters{
-      position:sticky;
-      top:86px;
-      max-height:calc(100vh - 102px);
-      overflow:auto;
-      scrollbar-gutter:stable;
-    }
-    .filters .card-header{
-      position:sticky;
-      top:0;
-      z-index:1;
-      background:var(--oc-card);
-      border-bottom:1px solid var(--oc-border);
-    }
-    .facet-list{max-height:280px;overflow:auto;border:1px solid var(--oc-border);border-radius:.5rem;padding:.55rem;background:var(--oc-card)}
-    .card .form-label{font-weight:700}
+    /* shared shell styles live in assets/css/shared-site.css */
     .range-container{position:relative;height:36px;margin:.25rem 0 .5rem}
     .range-container .slider{position:absolute;left:10px;right:10px;top:14px;height:8px;background:#e9ecef;border-radius:10px}
     .range-container .range-selected{position:absolute;top:14px;height:8px;background:#0d6efd;border-radius:10px}
@@ -125,8 +51,6 @@
     .range-container .thumb::-moz-range-thumb{
       pointer-events:all;width:18px;height:18px;border-radius:50%;background:#0d6efd;border:2px solid #fff
     }
-
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 
     /* ---------- Paper / Model card ---------- */
     .paper-card{
@@ -185,23 +109,6 @@
       font-weight:600; border-radius:999px; padding:.2rem .6rem; font-size:.78rem
     }
 
-    /* Yellow bell only */
-    .btn-subscribe-icon{
-      color: var(--oc-brand-accent);
-      background: transparent;
-      border: 0;
-      padding: .25rem .4rem;
-      line-height: 1;
-    }
-    .btn-subscribe-icon:hover{ filter: brightness(1.05); }
-    .btn-subscribe-icon:focus-visible{
-      outline: 2px solid var(--oc-focus);
-      outline-offset: 2px;
-      border-radius: 999px;
-    }
-    .btn-subscribe-icon svg{ fill: var(--oc-accent); }
-    .btn-subscribe-icon:hover svg{ filter: brightness(1.15); }
-
     /* Submitted-by overlay */
     .paper-card .left .submitted-by{
       position:absolute; right:6px; bottom:6px;
@@ -215,12 +122,6 @@
     .paper-card .left .submitted-by a:hover{ text-decoration:underline; color:#0f2e4b; }
 
     @media (max-width: 991.98px){
-      header.hero .content{padding:40px 0 28px}
-      .filters{position:static;top:auto;margin-bottom:1rem}
-      .facet-list{max-height:220px}
-      .toolbar > *{width:100%}
-      .toolbar .d-flex{width:100%;justify-content:space-between}
-      .toolbar .form-select{min-width:0;flex:1 1 auto}
       .paper-card{padding:.9rem}
       .paper-card > .d-flex{flex-direction:column}
       .paper-card .left{
@@ -239,10 +140,6 @@
     }
 
     @media (max-width: 575.98px){
-      .brand-wordmark .oc-open{font-size:.68rem}
-      .brand-wordmark .oc-construction{font-size:1.1rem}
-      header.hero .content{padding:34px 0 24px}
-      .search-input{padding:.82rem 1rem}
       .paper-card .left .submitted-by{
         max-width:calc(100% - 12px);
         font-size:.72rem;
@@ -420,7 +317,7 @@
   </div>
 </main>
 
-<footer class="py-4 mt-3 border-top">
+<footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
       © <span id="yearNow"></span> OpenConstruction Open Science Initiative
@@ -609,10 +506,72 @@ const state = {
   licenses: new Set(),
   yMin: null, yMax: null
 };
+let syncingUrlState = false;
 
 let MODALITY_MAP = new Map(); // normKey -> Pretty label
 let TASK_MAP = new Map();     // normKey -> Pretty label
 let APP_MAP  = new Map();     // normKey -> Pretty label
+
+function splitParam(value){
+  return String(value || '').split(',').map(v => v.trim()).filter(Boolean);
+}
+function syncUrlState(){
+  if (syncingUrlState) return;
+  const params = new URLSearchParams();
+  if (state.q) params.set('q', state.q);
+  if (state.sort && state.sort !== 'added-desc') params.set('sort', state.sort);
+  if (state.modalities.size) params.set('modalities', Array.from(state.modalities).join(','));
+  if (state.tasks.size) params.set('tasks', Array.from(state.tasks).join(','));
+  if (state.applications.size) params.set('applications', Array.from(state.applications).join(','));
+  if (state.licenses.size) params.set('licenses', Array.from(state.licenses).join(','));
+  if (rmin && rmax){
+    if (String(state.yMin) !== String(rmin.min)) params.set('yearMin', String(state.yMin));
+    if (String(state.yMax) !== String(rmax.max)) params.set('yearMax', String(state.yMax));
+  }
+  const query = params.toString();
+  history.replaceState(null, '', query ? `${location.pathname}?${query}` : location.pathname);
+}
+function setCheckedValues(containerId, values){
+  const wanted = new Set(values);
+  const root = byId(containerId);
+  if (!root) return;
+  root.querySelectorAll('input[type=checkbox]').forEach(input => {
+    input.checked = wanted.has(input.value);
+  });
+}
+function restoreStateFromUrl(){
+  syncingUrlState = true;
+  const params = new URLSearchParams(location.search);
+  const q = params.get('q') || '';
+  state.q = q;
+  const heroInput = byId('q');
+  const dockInput = byId('qDock');
+  if (heroInput) heroInput.value = q;
+  if (dockInput) dockInput.value = q;
+
+  state.sort = params.get('sort') || 'added-desc';
+  const sortSel = byId('sortBy');
+  if (sortSel) sortSel.value = state.sort;
+
+  state.modalities = new Set(splitParam(params.get('modalities')));
+  state.tasks = new Set(splitParam(params.get('tasks')));
+  state.applications = new Set(splitParam(params.get('applications')));
+  state.licenses = new Set(splitParam(params.get('licenses')));
+
+  setCheckedValues('filter-modality', state.modalities);
+  setCheckedValues('filter-task', state.tasks);
+  setCheckedValues('filter-app', state.applications);
+  setCheckedValues('filter-license', state.licenses);
+
+  if (rmin && rmax){
+    const nextMin = params.get('yearMin');
+    const nextMax = params.get('yearMax');
+    if (nextMin) rmin.value = nextMin;
+    if (nextMax) rmax.value = nextMax;
+    updateTrack();
+  }
+  syncingUrlState = false;
+}
 
 function buildFacets(){
   // Modalities facet
@@ -721,6 +680,7 @@ function applyFilters(){
   }
 
   render(rows);
+  syncUrlState();
 }
 
 function render(items){
@@ -1011,6 +971,7 @@ async function loadModels(){
 
     const yearNow = byId('yearNow'); if (yearNow) yearNow.textContent = new Date().getFullYear();
     buildFacets();
+    restoreStateFromUrl();
     attachFacetHandlers();
     applyFilters();
   }catch(err){

@@ -9,6 +9,7 @@ let CLASSES    = new Map(); // normClassKey -> {label, count}
 
 const showAll = { modalities:false, tasks:false, licenses:false, classes:false };
 let facetsBound = false;
+let syncingUrlState = false;
 
 // ---------- helpers ----------
 function normKey(s){
@@ -327,9 +328,66 @@ function bindFacetSearch(){
   });
 }
 
+function splitParam(value){
+  return String(value || '').split(',').map(v=>v.trim()).filter(Boolean);
+}
+function setCheckedValues(group, values){
+  const wanted = new Set(values);
+  document.querySelectorAll(`input[data-group="${group}"]`).forEach(input=>{
+    input.checked = wanted.has(input.value);
+  });
+}
+function syncUrlState(){
+  if (syncingUrlState) return;
+  const f = readFilters();
+  const sort = document.getElementById('sortBy')?.value || 'added-desc';
+  const params = new URLSearchParams();
+  if (f.q) params.set('q', f.q);
+  if (sort !== 'added-desc') params.set('sort', sort);
+  if (f.yMin !== parseInt(document.getElementById('yearRangeMin')?.min || f.yMin, 10)) params.set('yearMin', String(f.yMin));
+  if (f.yMax !== parseInt(document.getElementById('yearRangeMax')?.max || f.yMax, 10)) params.set('yearMax', String(f.yMax));
+  if (f.mods.length) params.set('modalities', f.mods.join(','));
+  if (f.tasks.length) params.set('tasks', f.tasks.join(','));
+  if (f.licenses.length) params.set('licenses', f.licenses.join(','));
+  if (f.classes.length) params.set('classes', f.classes.join(','));
+  const query = params.toString();
+  history.replaceState(null, '', query ? `${location.pathname}?${query}` : location.pathname);
+}
+function restoreStateFromUrl(){
+  syncingUrlState = true;
+  const params = new URLSearchParams(location.search);
+  const q = params.get('q') || '';
+  const qEl = document.getElementById('q');
+  const qDockEl = document.getElementById('qDock');
+  if (qEl) qEl.value = q;
+  if (qDockEl) qDockEl.value = q;
+
+  const sort = params.get('sort');
+  const sortEl = document.getElementById('sortBy');
+  if (sort && sortEl) sortEl.value = sort;
+
+  const yrMinEl = document.getElementById('yearRangeMin');
+  const yrMaxEl = document.getElementById('yearRangeMax');
+  if (yrMinEl && params.get('yearMin')) yrMinEl.value = params.get('yearMin');
+  if (yrMaxEl && params.get('yearMax')) yrMaxEl.value = params.get('yearMax');
+  if (yrMinEl && yrMaxEl){
+    if (+yrMinEl.value > +yrMaxEl.value) yrMaxEl.value = yrMinEl.value;
+    const minValEl = document.getElementById('yearRangeMinVal');
+    const maxValEl = document.getElementById('yearRangeMaxVal');
+    if (minValEl) minValEl.textContent = yrMinEl.value;
+    if (maxValEl) maxValEl.textContent = yrMaxEl.value;
+  }
+
+  setCheckedValues('modality', splitParam(params.get('modalities')));
+  setCheckedValues('task', splitParam(params.get('tasks')));
+  setCheckedValues('license', splitParam(params.get('licenses')));
+  setCheckedValues('class', splitParam(params.get('classes')));
+  syncingUrlState = false;
+}
+
 // ---------- filtering & render ----------
 function readFilters(){
-  const q = document.getElementById('q')?.value.toLowerCase().trim() || '';
+  const q = document.getElementById('q')?.value.trim() || '';
   const yMin = parseInt(document.getElementById('yearRangeMin')?.value||'-999999',10);
   const yMax = parseInt(document.getElementById('yearRangeMax')?.value||'999999',10);
   const mods = Array.from(document.querySelectorAll('input[data-group="modality"]:checked')).map(el=>el.value);
@@ -341,6 +399,7 @@ function readFilters(){
 
 function applyFilters(){
   const f = readFilters();
+  const qNeedle = f.q.toLowerCase();
   const minEl=document.getElementById('yearRangeMinVal'), maxEl=document.getElementById('yearRangeMaxVal');
   if(minEl) minEl.textContent=f.yMin; if(maxEl) maxEl.textContent=f.yMax;
 
@@ -351,7 +410,7 @@ function applyFilters(){
     const dsClassKeys = Array.isArray(ds.classes)? ds.classes.map(normClassKey):[];
     const dsModKeys = Array.isArray(ds._mod_keys) ? ds._mod_keys : (ds.data_modality ? [normKey(ds.data_modality)] : []);
 
-    if (f.q){
+    if (qNeedle){
 	  
 	  const clsStr = dsClassKeys.join(' ');
 	  const tskStr = dsTaskKeys.join(' ');
@@ -375,7 +434,7 @@ function applyFilters(){
 		tskStr
 	  ].join(' ').toLowerCase();
 
-	  if (!hay.includes(f.q)) return false;
+	  if (!hay.includes(qNeedle)) return false;
 	}
 
     if (ds.year && (ds.year < f.yMin || ds.year > f.yMax)) return false;
@@ -394,6 +453,7 @@ function applyFilters(){
   });
 
   sortAndRender();
+  syncUrlState();
 }
 
 function sortAndRender(){
@@ -408,6 +468,7 @@ function sortAndRender(){
   }[field] || (d=> d.year ?? -Infinity);
   LIST.sort((a,b)=> (key(a)<key(b)?(desc?1:-1):(key(a)>key(b)?(desc?-1:1):0)));
   renderGrid();
+  syncUrlState();
 }
 
 function renderGrid(){
@@ -545,10 +606,11 @@ async function init(){
   }
 
   collectFacets();
+  restoreStateFromUrl();
   document.getElementById('sortBy')?.addEventListener('change', sortAndRender);
   document.getElementById('q')?.addEventListener('input', applyFilters);
 
   LIST = Object.values(ALL);
-  sortAndRender();
+  applyFilters();
 }
 document.addEventListener('DOMContentLoaded', init);
