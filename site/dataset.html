@@ -197,6 +197,27 @@
 	  position: relative;
 	  overflow: hidden;
 	}
+
+    @media (max-width: 991.98px){
+      header.hero .content{padding:40px 0 28px}
+      .filters{position:static;top:auto;margin-bottom:1rem}
+      .facet-list{max-height:220px}
+      .toolbar > *{width:100%}
+      .toolbar .d-flex{width:100%;justify-content:space-between}
+      .toolbar .form-select{min-width:0;flex:1 1 auto}
+      #datasetGrid{row-gap:.85rem}
+    }
+
+    @media (max-width: 575.98px){
+      .brand-wordmark .oc-open{font-size:.68rem}
+      .brand-wordmark .oc-construction{font-size:1.1rem}
+      header.hero .content{padding:34px 0 24px}
+      .search-input{padding:.82rem 1rem}
+      .submitted-tag{
+        max-width:calc(100% - 12px);
+        font-size:.72rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -539,6 +560,14 @@
     transform: translateY(-2px);
     color: #fff;
     text-decoration: none;
+  }
+  @media (max-width: 991.98px){
+    .issue-btn{
+      right:14px;
+      bottom:14px;
+      padding:10px 14px;
+      font-size:.82rem;
+    }
   }
 </style>
 

@@ -200,6 +200,41 @@
     }
     .paper-card .left .submitted-by a{ color:#1e2a36; text-decoration:none; }
     .paper-card .left .submitted-by a:hover{ text-decoration:underline; color:#0f2e4b; }
+
+    @media (max-width: 991.98px){
+      header.hero .content{padding:40px 0 28px}
+      .filters{position:static;top:auto;margin-bottom:1rem}
+      .facet-list{max-height:220px}
+      .toolbar > *{width:100%}
+      .toolbar .d-flex{width:100%;justify-content:space-between}
+      .toolbar .form-select{min-width:0;flex:1 1 auto}
+      .paper-card{padding:.9rem}
+      .paper-card > .d-flex{flex-direction:column}
+      .paper-card .left{
+        width:100%;
+        height:auto;
+        flex:0 0 auto;
+        aspect-ratio:16/9;
+      }
+      .added-note{margin-left:0}
+      .issue-btn{
+        right:14px;
+        bottom:14px;
+        padding:10px 14px;
+        font-size:.82rem;
+      }
+    }
+
+    @media (max-width: 575.98px){
+      .brand-wordmark .oc-open{font-size:.68rem}
+      .brand-wordmark .oc-construction{font-size:1.1rem}
+      header.hero .content{padding:34px 0 24px}
+      .search-input{padding:.82rem 1rem}
+      .paper-card .left .submitted-by{
+        max-width:calc(100% - 12px);
+        font-size:.72rem;
+      }
+    }
   </style>
 </head>
 <body>

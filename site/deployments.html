@@ -177,6 +177,33 @@
     .actions{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
     @media (min-width:768px){ .actions{flex-wrap:nowrap;} }
     .actions .btn{white-space:nowrap;}
+
+    @media (max-width: 991.98px){
+      header.hero .content{padding:40px 0 28px}
+      .filters{position:static;top:auto;margin-bottom:1rem}
+      .facet-list{max-height:220px}
+      .toolbar > *{width:100%}
+      .toolbar .d-flex{width:100%;justify-content:space-between}
+      .toolbar .form-select{min-width:0;flex:1 1 auto}
+      .usecase-card{padding:.9rem}
+      #usecaseGrid{gap:.85rem}
+      .thumb-wrap{max-height:240px}
+      .actions{align-items:stretch}
+      .actions .btn,
+      .actions .added-note{width:100%;justify-content:center}
+      .added-note{margin-left:0;text-align:center}
+    }
+
+    @media (max-width: 575.98px){
+      .brand-wordmark .oc-open{font-size:.68rem}
+      .brand-wordmark .oc-construction{font-size:1.1rem}
+      header.hero .content{padding:34px 0 24px}
+      .search-input{padding:.82rem 1rem}
+      .submitted-tag{
+        max-width:calc(100% - 12px);
+        font-size:.72rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -791,6 +818,17 @@ async function loadUseCases(){
    target="_blank" rel="noopener">
    Add New Use-Case
 </a>
+
+<style>
+  @media (max-width: 991.98px){
+    .issue-btn.position-fixed{
+      right:14px !important;
+      bottom:14px !important;
+      padding:10px 14px !important;
+      font-size:.82rem !important;
+    }
+  }
+</style>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">

@@ -136,6 +136,41 @@
     .btn-subscribe-icon { background:transparent; border:0; padding:.25rem .4rem; line-height:1; }
     .btn-subscribe-icon svg { fill: var(--oc-accent); }
     .btn-subscribe-icon:hover svg { filter: brightness(1.15); }
+
+    @media (max-width: 991.98px){
+      header.hero .content{padding:40px 0 28px}
+      .filters{position:static;top:auto;margin-bottom:1rem}
+      .facet-list{max-height:220px}
+      .toolbar > *{width:100%}
+      .toolbar .d-flex{width:100%;justify-content:space-between}
+      .toolbar .form-select{min-width:0;flex:1 1 auto}
+      .oer-card{padding:.9rem}
+      .oer-card > .d-flex{flex-direction:column}
+      .oer-card .left{
+        width:100%;
+        height:auto;
+        flex:0 0 auto;
+        aspect-ratio:16/10;
+      }
+      .added-note{margin-left:0}
+      .issue-btn{
+        right:14px;
+        bottom:14px;
+        padding:10px 14px;
+        font-size:.82rem;
+      }
+    }
+
+    @media (max-width: 575.98px){
+      .brand-wordmark .oc-open{font-size:.68rem}
+      .brand-wordmark .oc-construction{font-size:1.1rem}
+      header.hero .content{padding:34px 0 24px}
+      .search-input{padding:.82rem 1rem}
+      .oer-card .left .submitted-by{
+        max-width:calc(100% - 12px);
+        font-size:.72rem;
+      }
+    }
   </style>
 </head>
 
