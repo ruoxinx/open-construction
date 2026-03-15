@@ -147,8 +147,10 @@
     }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.95rem, 1.25rem + 2.5vw, 3.05rem);
+      font-size:clamp(1.7rem, 1.15rem + 2.05vw, 2.55rem);
       margin:.7rem 0 .55rem;
+      max-width:22ch;
+      margin-inline:auto;
     }
     .hero p.lead{ max-width:54ch; margin:0 auto; color:var(--oc-subtle); font-size:1.06rem; line-height:1.55; }
     .hero-actions{
@@ -158,14 +160,12 @@
       gap:.85rem;
     }
     .hero-search{
-      width:min(760px, 100%);
-      margin:1rem auto 0;
+      width:min(920px, 100%);
+      margin:1.1rem auto 0;
       text-align:left;
     }
     .hero-search-form{
-      display:grid;
-      grid-template-columns:minmax(0, 1fr) auto;
-      gap:.75rem;
+      display:block;
       padding:0;
       border:0;
       border-radius:0;
@@ -175,62 +175,79 @@
     .hero-search-field{
       display:flex;
       align-items:center;
-      gap:.75rem;
+      gap:.55rem;
       min-width:0;
-      padding:.28rem .28rem .28rem .48rem;
+      min-height:60px;
+      padding:.35rem .4rem .35rem .48rem;
       border:1px solid var(--oc-border);
-      border-radius:14px;
+      border-radius:16px;
       background:#fff;
+      box-shadow:0 10px 24px rgba(12, 47, 79, .08);
+      transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .hero-search-field:focus-within{
+      border-color:#bfd1e1;
+      box-shadow:0 14px 30px rgba(12, 47, 79, .12);
+      transform:translateY(-1px);
     }
     .hero-search-icon{
       flex:0 0 auto;
       color:var(--oc-subtle);
       margin-left:.15rem;
     }
+    .hero-search-scope{
+      flex:0 0 152px;
+      border:0;
+      border-right:1px solid var(--oc-border);
+      border-radius:0;
+      padding:.8rem 2rem .8rem .35rem;
+      font:inherit;
+      font-size:.94rem;
+      font-weight:700;
+      color:var(--oc-brand-ink);
+      background:
+        linear-gradient(45deg, transparent 50%, var(--oc-subtle) 50%),
+        linear-gradient(135deg, var(--oc-subtle) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) calc(50% - 2px),
+        calc(100% - 12px) calc(50% - 2px);
+      background-size:6px 6px, 6px 6px;
+      background-repeat:no-repeat;
+      appearance:none;
+      -webkit-appearance:none;
+      min-width:0;
+    }
+    .hero-search-scope:focus{ outline:none; }
     .hero-search-input{
       border:0;
-      padding:.84rem .1rem;
+      padding:1rem .2rem;
       font:inherit;
-      font-size:1rem;
+      font-size:1.04rem;
       color:var(--oc-text);
       background:transparent;
       min-width:0;
       width:100%;
     }
     .hero-search-input:focus{ outline:none; }
-    .hero-search-submit{
-      min-width:124px;
-      align-self:stretch;
-      padding-inline:1rem;
-    }
-    .hero-search-scopes{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:.45rem;
-      margin-top:.65rem;
-    }
-    .hero-search-chip{
-      border:1px solid var(--oc-border);
-      border-radius:999px;
-      padding:.38rem .72rem;
-      background:#fff;
-      color:var(--oc-brand-ink);
-      font-size:.86rem;
-      font-weight:700;
-      line-height:1;
-    }
-    .hero-search-chip.is-active,
-    .hero-search-chip:hover{
-      background:#f5f9ff;
-      border-color:#cfddea;
-      color:var(--oc-brand-ink);
-    }
     .hero-search-meta{
-      margin-top:.65rem;
+      margin-top:.55rem;
       color:var(--oc-subtle);
       font-size:.84rem;
       text-align:center;
+    }
+    .hero-search-meta kbd{
+      display:inline-block;
+      min-width:1.75em;
+      padding:.1rem .42rem;
+      margin:0 .15rem;
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      background:#fff;
+      color:var(--oc-brand-ink);
+      font:inherit;
+      font-size:.8rem;
+      font-weight:700;
+      box-shadow:0 2px 8px rgba(12, 47, 79, .06);
     }
     .hero-search-results{
       margin-top:.75rem;
@@ -298,10 +315,10 @@
     .hero-center { display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
     .cta-group { display:inline-flex; gap:1rem; align-items:center; flex-wrap:wrap; }
     .cta-group .btn{
-      min-height:48px;
-      padding:.8rem 1.25rem;
-      font-size:.98rem;
-      font-weight:700;
+      min-height:42px;
+      padding:.58rem .95rem;
+      font-size:.9rem;
+      font-weight:600;
       border-radius:999px;
     }
 
@@ -574,17 +591,19 @@
       .hero-actions{ align-items:stretch; }
       .cta-group{ width:100%; justify-content:center; }
       .cta-group .btn{ flex:1 1 180px; min-height:46px; }
-      .hero-search-form{ grid-template-columns:1fr; }
-      .hero-search-submit{ min-height:46px; }
-      .hero-search-scopes{
-        justify-content:flex-start;
-        flex-wrap:nowrap;
-        overflow:auto;
-        padding-bottom:.15rem;
-        scrollbar-width:none;
+      .hero-search-field{
+        flex-wrap:wrap;
+        align-items:center;
       }
-      .hero-search-scopes::-webkit-scrollbar{ display:none; }
-      .hero-search-chip{ flex:0 0 auto; }
+      .hero-search-scope{
+        flex:1 1 100%;
+        border-right:0;
+        border-bottom:1px solid var(--oc-border);
+        padding:.75rem 2rem .7rem .2rem;
+        background-position:
+          calc(100% - 10px) calc(50% - 2px),
+          calc(100% - 4px) calc(50% - 2px);
+      }
       .hero-search-results{ left:0; right:0; }
       .metrics{ gap:.85rem; }
       .metric{ gap:.7rem; }
@@ -731,7 +750,7 @@
 <header class="hero">
   <div class="container oc-container content">
     <div class="hero-kicker">Open AEC Resource Library</div>
-    <h1 class="mb-1">Open datasets, models, workflows, and educational resources for AI in AEC</h1>
+    <h1 class="mb-1">Discover open digital assets<br>for the AEC community</h1>
       <div class="hero-search" aria-labelledby="home-search-heading">
         <div id="home-search-heading" class="visually-hidden">Search the OpenConstruction catalog</div>
         <form class="hero-search-form" id="homeSearchForm">
@@ -742,23 +761,23 @@
                 <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
               </svg>
             </span>
+            <label class="visually-hidden" for="homeSearchScope">Filter search by resource type</label>
+            <select id="homeSearchScope" class="hero-search-scope" aria-label="Filter search by resource type">
+              <option value="all">All resources</option>
+              <option value="dataset">Datasets</option>
+              <option value="model">Models</option>
+              <option value="workflow">Workflows</option>
+              <option value="oer">OERs</option>
+            </select>
             <input
               id="homeSearchInput"
               class="hero-search-input"
               type="search"
-              placeholder="Search resources, authors, or titles ..."
+              placeholder="Search resources, authors, titles, or keywords ..."
               aria-label="Search the catalog"
               autocomplete="off">
           </div>
-          <button class="btn btn-ink hero-search-submit" type="submit">Search</button>
         </form>
-        <div class="hero-search-scopes" id="homeSearchScopes" role="tablist" aria-label="Search scope">
-          <button class="hero-search-chip is-active" type="button" data-scope="all" aria-pressed="true">All</button>
-          <button class="hero-search-chip" type="button" data-scope="dataset" aria-pressed="false">Datasets</button>
-          <button class="hero-search-chip" type="button" data-scope="model" aria-pressed="false">Models</button>
-          <button class="hero-search-chip" type="button" data-scope="workflow" aria-pressed="false">Workflows</button>
-          <button class="hero-search-chip" type="button" data-scope="oer" aria-pressed="false">OERs</button>
-        </div>
         <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
       </div>
 
@@ -1342,7 +1361,7 @@
     const freshnessEl = document.getElementById('catalogFreshness');
     const searchForm = document.getElementById('homeSearchForm');
     const searchInput = document.getElementById('homeSearchInput');
-    const searchScopeButtons = Array.from(document.querySelectorAll('#homeSearchScopes [data-scope]'));
+    const searchScopeSelect = document.getElementById('homeSearchScope');
     const searchResults = document.getElementById('homeSearchResults');
     if (!grid) return;
 
@@ -1502,19 +1521,10 @@
     }
 
     function wireSearch(searchIndex){
-      if (!searchForm || !searchInput || !searchResults) return;
-      let activeScope = 'all';
-      function setScope(scope){
-        activeScope = scope;
-        searchScopeButtons.forEach(btn => {
-          const isActive = btn.dataset.scope === scope;
-          btn.classList.toggle('is-active', isActive);
-          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
-      }
+      if (!searchForm || !searchInput || !searchResults || !searchScopeSelect) return;
       function runSearch(){
         const query = searchInput.value.trim();
-        const scope = activeScope;
+        const scope = searchScopeSelect.value || 'all';
         if (!query){
           renderSearchResults([], '', scope);
           return [];
@@ -1527,12 +1537,7 @@
         return results;
       }
       searchInput.addEventListener('input', runSearch);
-      searchScopeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setScope(btn.dataset.scope || 'all');
-          runSearch();
-        });
-      });
+      searchScopeSelect.addEventListener('change', runSearch);
       searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const results = runSearch();
@@ -1546,7 +1551,6 @@
       searchInput.addEventListener('focus', () => {
         if (searchInput.value.trim()) runSearch();
       });
-      setScope(activeScope);
     }
 
     function pickItems(datasetsJson, modelsJson, usecasesJson, oersJson){
