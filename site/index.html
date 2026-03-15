@@ -123,12 +123,62 @@
       border-bottom:1px solid var(--oc-border);
     }
     .hero .content{ padding:56px 0 44px; text-align:center; }
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .8rem;
+      border:1px solid #dbe6f0;
+      border-radius:999px;
+      background:#f8fbff;
+      color:var(--oc-brand-ink);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .hero-kicker::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--oc-brand-accent);
+      box-shadow:0 0 0 4px rgba(242,162,56,.16);
+    }
     .hero h1{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
-      font-size:clamp(1.6rem, 1.1rem + 2.2vw, 2.4rem);
-      margin:.25rem 0 .35rem;
+      font-size:clamp(1.85rem, 1.25rem + 2.4vw, 2.9rem);
+      margin:.55rem 0 .45rem;
     }
-    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
+    .hero p.lead{ max-width:66ch; margin:0 auto; color:var(--oc-subtle); font-size:1.05rem; }
+    .hero-note{
+      max-width:62ch;
+      margin:0 auto;
+      color:var(--oc-subtle);
+      font-size:.95rem;
+    }
+    .hero-actions{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:.85rem;
+    }
+    .hero-links{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:.5rem 1rem;
+      font-size:.92rem;
+    }
+    .hero-links a{
+      color:var(--oc-brand-ink);
+      font-weight:700;
+      text-decoration:none;
+    }
+    .hero-links a:hover{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
 
     /* Buttons */
     .btn-ink{
@@ -144,6 +194,126 @@
 
     .hero-center { display:flex; flex-direction:column; align-items:center; gap:1rem; }
     .cta-group { display:inline-flex; gap:1rem; align-items:center; flex-wrap:wrap; }
+
+    .featured-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:1rem;
+    }
+    .featured-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:14px;
+      box-shadow:var(--oc-shadow);
+      overflow:hidden;
+      height:100%;
+    }
+    .featured-card a{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      color:inherit;
+      text-decoration:none;
+    }
+    .featured-media{
+      aspect-ratio:16 / 9;
+      background:#f3f6fa;
+      overflow:hidden;
+    }
+    .featured-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .featured-body{
+      padding:.9rem 1rem 1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.4rem;
+      flex:1;
+    }
+    .featured-topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      flex-wrap:wrap;
+    }
+    .featured-header-meta{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:.5rem .75rem;
+      margin:0 0 .9rem;
+      color:var(--oc-subtle);
+      font-size:.9rem;
+    }
+    .freshness-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.28rem .7rem;
+      border:1px solid #dbe6f0;
+      border-radius:999px;
+      background:#f8fbff;
+      color:var(--oc-brand-ink);
+      font-weight:700;
+    }
+    .freshness-pill::before{
+      content:"";
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:#2f9e44;
+      box-shadow:0 0 0 4px rgba(47,158,68,.12);
+    }
+    .featured-type{
+      display:inline-flex;
+      align-self:flex-start;
+      padding:.2rem .55rem;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #dbe6f0;
+      color:var(--oc-brand-ink);
+      font-size:.74rem;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .featured-year{
+      color:var(--oc-subtle);
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .featured-title{
+      margin:0;
+      font-size:1rem;
+      font-weight:800;
+      color:var(--oc-brand-ink);
+      line-height:1.3;
+    }
+    .featured-desc{
+      margin:0;
+      color:var(--oc-text);
+      font-size:.93rem;
+      line-height:1.45;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .featured-meta{
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.9rem;
+    }
+    .featured-link{
+      margin-top:auto;
+      color:var(--oc-link);
+      font-weight:700;
+      font-size:.9rem;
+    }
 
     /* Sections & cards */
     .oc-section{ margin-top:40px; }
@@ -282,6 +452,19 @@
     @media (prefers-reduced-motion: reduce){
       .oc-timeline{ scroll-behavior:auto; }
       .ring-ready .ring-val{ transition:none; }
+    }
+
+    @media (max-width: 991.98px){
+      .featured-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 575.98px){
+      .featured-grid{ grid-template-columns:1fr; }
+      .hero .content{ padding:44px 0 34px; }
+      .hero-note{ font-size:.9rem; }
+      .hero-actions{ align-items:stretch; }
+      .cta-group{ width:100%; justify-content:center; }
+      .cta-group .btn{ flex:1 1 180px; }
     }
 
     html, body, .oc-container { transform: none !important; }
@@ -435,10 +618,11 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1 class="mb-1">OpenConstruction Open Science Initiative</h1>
+    <div class="hero-kicker">Open AEC Resource Library</div>
+    <h1 class="mb-1">Open datasets, models, workflows, and teaching resources for AI in AEC</h1>
 	<p class="lead mb-0">
-	  An <span class="hl">open-source infrastructure</span> that supports community-driven
-	  <span class="hl">sharing, curation, and stewardship</span> of AEC digital assets, including datasets, AI models, workflows, and educational resources for the AEC community.
+	  OpenConstruction helps teams quickly find reusable resources for research,
+      teaching, and real-world deployment across architecture, engineering, and construction.
 	</p>
 
     <!-- grouped metrics -->
@@ -521,18 +705,48 @@
       </div><!-- /metrics -->
 
       <!-- buttons -->
-      <div class="cta-group mt-2">
-        <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Explore Datasets</a>
-        <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Explore Models</a>
-        <a class="btn btn-ink btn-sm" href="deployments.html" aria-describedby="countUsecases">Explore Workflows</a>
-        <a class="btn btn-accent btn-sm" href="oer.html" aria-describedby="countOERs">Explore OERs</a>
-        <a class="btn btn-ink btn-sm" href="contributors.html">Get&nbsp;Involved</a>
+      <div class="hero-actions mt-2">
+        <div class="cta-group">
+          <a class="btn btn-ink btn-sm" href="dataset.html" aria-describedby="countDatasets">Browse Datasets</a>
+          <a class="btn btn-accent btn-sm" href="models.html" aria-describedby="countModels">Browse Models</a>
+          <a class="btn btn-ink btn-sm" href="deployments.html" aria-describedby="countUsecases">Browse Workflows</a>
+          <a class="btn btn-accent btn-sm" href="oer.html" aria-describedby="countOERs">Browse OERs</a>
+        </div>
+        <div class="hero-links" aria-label="Quick links">
+          <a href="benchmarks.html">Benchmarks</a>
+          <a href="contributors.html">Community</a>
+          <a href="contribute.html">Contribute</a>
+        </div>
       </div>
+      <p class="hero-note">
+        Built as open infrastructure with linked benchmarks, structured metadata, and community stewardship.
+      </p>
     </div><!-- /hero-center -->
   </div>
 </header>
 
 <main class="container oc-container">
+  <section class="oc-section" aria-labelledby="featured-resources-heading">
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <div class="oc-kicker mb-2">Featured Resources</div>
+        <h2 id="featured-resources-heading" class="oc-card-title mb-2">Latest updates from the catalog</h2>
+        <div class="featured-header-meta">
+          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
+          <span>Recently added datasets, models, workflows, and OERs across OpenConstruction.</span>
+        </div>
+        <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
+          <div class="featured-card">
+            <div class="featured-body">
+              <span class="featured-type">Loading</span>
+              <p class="featured-meta">Pulling the latest updates from the catalog…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="oc-section" aria-labelledby="how-heading">
     <div class="oc-card">
       <div class="oc-card-body">
@@ -596,16 +810,15 @@
         <div class="oc-card h-100">
           <div class="oc-card-body">
             <div class="oc-kicker mb-2">About</div>
-            <h3 class="oc-card-title mb-2">What is OpenConstruction Open-Science Initiative?</h3>
-            <p class="mb-0">
-			Support the <span class="hl">collaborative development, validation, 
-			and dissemination</span> of <span class="hl">AI-ready knowledge assets</span> for the Architecture, Engineering, and Construction (AEC) domain.
+            <h3 class="oc-card-title mb-2">What OpenConstruction provides</h3>
+            <p class="mb-2">
+			OpenConstruction is an open infrastructure layer for sharing, validating, and reusing AI-ready AEC knowledge assets.
             </p>
 			<ul class="oc-ul">
 			  <li>Open-source platform code and deployment infrastructure</li>
 			  <li>Versioned metadata schemas and validation rules</li>
 			  <li>Community-governed contribution and review workflows</li>
-			  <li>APIs and benchmarks enabling downstream tools and research</li>
+			  <li>Benchmarks and APIs that support downstream tools and research</li>
 			</ul>
 
           </div>
@@ -616,22 +829,19 @@
         <div class="oc-card h-100">
           <div class="oc-card-body">
             <div class="oc-kicker mb-2">Vision</div>
-            <h3 class="oc-card-title mb-2">Our Mission</h3>
+            <h3 class="oc-card-title mb-2">Why it matters</h3>
 			<p class="mb-3">
-			  We foster an <span class="hl">open-science ecosystem</span> for AEC by:
+			  The goal is to make AEC resources easier to discover, compare, and maintain over time.
 			</p>
 			<ul class="oc-ul">
 			  <li>
-				Maintaining an <span class="hl">open catalog</span> of AEC AI datasets, models, workflows, and OERs with standardized metadata.
+				Keep datasets, models, workflows, and OERs in one open catalog with standardized metadata.
 			  </li>
 			  <li>
-				Supporting <span class="hl">research, education, and deployment</span> by linking resources to benchmarks and real-world use cases.
+				Support research, teaching, and deployment by linking resources to benchmarks and real-world applications.
 			  </li>
 			  <li>
-				Enabling <span class="hl">community stewardship</span> through shared curation, review, and long-term maintenance of resources.
-			  </li>
-			  <li>
-				Advancing <span class="hl">distributed platform development</span> via open governance, public roadmaps, and CI/CD-backed contributions.
+				Enable long-term stewardship through shared curation, review, and open governance.
 			  </li>
 			</ul>
           </div>
@@ -647,12 +857,12 @@
         <div class="oc-kicker mb-2">Get Involved</div>
         <h3 class="oc-card-title mb-3">Join the Community</h3>
         <p class="mb-3">
-          Open science thrives when diverse voices collaborate and work together. Here are a few ways to contribute:
+          There are several practical ways to contribute:
         </p>
 		<ul class="oc-ul">
 		  <li><strong>Platform contributors:</strong> Improve schemas, validation tools, UI components, and APIs.</li>
 		  <li><strong>Asset maintainers:</strong> Maintain dataset, model, and workflow entries over time.</li>
-		  <li><strong>Benchmark, schema, and taxonomy developers:</strong> Contribute task definitions, evaluation protocols, metrics, and metadata schemas.</li>
+		  <li><strong>Benchmark and schema contributors:</strong> Improve task definitions, evaluation protocols, metrics, and metadata structures.</li>
 		  <li><strong>Governance participants:</strong> Help shape roadmap priorities and review standards.</li>
 		</ul>
 
@@ -1149,6 +1359,188 @@
         if(countElModels)   countElModels.textContent   = '—';
         if(countElUsecases) countElUsecases.textContent = '—';
         if(countElOERs)     countElOERs.textContent     = '—'; // NEW
+      }
+    })();
+  })();
+
+  // ===== Homepage featured resources =====
+  (function(){
+    const grid = document.getElementById('featuredResourcesGrid');
+    const freshnessEl = document.getElementById('catalogFreshness');
+    if (!grid) return;
+
+    function esc(s){
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function parseDate(value){
+      if (!value) return null;
+      const raw = String(value).trim();
+      const normalized = raw.replace(/^(\d{4})-(\d{1,2})-(\d{1,2})$/, (_, y, m, d) =>
+        `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+      );
+      const ts = Date.parse(normalized);
+      return Number.isNaN(ts) ? null : ts;
+    }
+
+    function formatDate(ts){
+      if (!ts) return '';
+      return new Date(ts).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    async function fetchFirst(paths){
+      for (const p of paths){
+        try{
+          const res = await fetch(p, { cache:'no-cache' });
+          if (res.ok) return res.json();
+        }catch(_){}
+      }
+      throw new Error('All JSON paths failed');
+    }
+
+    function firstLine(text){
+      const clean = String(text || '').replace(/\s+/g, ' ').trim();
+      if (!clean) return '';
+      const match = clean.match(/^.*?[.!?](?:\s|$)/);
+      const sentence = match ? match[0].trim() : clean;
+      return sentence.length > 140 ? `${sentence.slice(0, 137).trimEnd()}...` : sentence;
+    }
+
+    function pickItems(datasetsJson, modelsJson, usecasesJson, oersJson){
+      const datasets = Object.values(datasetsJson || {}).map(ds => ({
+        type: 'Dataset',
+        title: ds.name || 'Untitled dataset',
+        description: [ds.potential_tasks?.[0], ds.annotation_types?.[0]].filter(Boolean).join(' with ') || 'Structured catalog entry for AEC data reuse.',
+        meta: [ds.data_modality, ds.num_images ? `${ds.num_images.toLocaleString()} images` : null].filter(Boolean).join(' • '),
+        year: ds.year,
+        href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
+        image: ds.image_url || 'assets/img/placeholder/placeholder.png',
+        ts: parseDate(ds.added_date || ds.added),
+        cta: 'View dataset',
+        external: false
+      }));
+
+      const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
+        type: 'Model',
+        title: m.title || 'Untitled model',
+        description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
+        meta: [Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
+        year: m.year,
+        href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
+        image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
+        ts: parseDate(m.added_date || m.added),
+        cta: 'View model',
+        external: false
+      }));
+
+      const usecases = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
+        type: 'Workflow',
+        title: u.title || 'Untitled workflow',
+        description: firstLine(u.summary) || 'Applied workflow connecting AI methods to field deployment.',
+        meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
+        year: u.year,
+        href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
+        image: (Array.isArray(u.media) && u.media.find(media => media && media.type === 'image')?.url) || 'assets/img/placeholder/placeholder.png',
+        ts: parseDate(u.added_date || u.added),
+        cta: 'Open workflow',
+        external: false
+      }));
+
+      const oers = ((oersJson && oersJson.resources) || []).map(r => ({
+        type: 'OER',
+        title: r.title || 'Untitled resource',
+        description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
+        meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
+        year: r.year,
+        href: r.source || 'oer.html',
+        image: r.image || 'assets/img/placeholder/placeholder.png',
+        ts: parseDate(r.added || r.added_date),
+        cta: 'View resource',
+        external: true
+      }));
+
+      return [...datasets, ...models, ...usecases, ...oers]
+        .filter(item => item.title && item.href)
+        .sort((a, b) => {
+          const aTime = a.ts || 0;
+          const bTime = b.ts || 0;
+          if (bTime !== aTime) return bTime - aTime;
+          return (b.year || 0) - (a.year || 0);
+        })
+        .slice(0, 4);
+    }
+
+    function latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson){
+      const collect = [];
+      Object.values(datasetsJson || {}).forEach(item => collect.push(parseDate(item.added_date || item.added)));
+      (Array.isArray(modelsJson) ? modelsJson : []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
+      ((usecasesJson && usecasesJson.use_cases) || []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
+      ((oersJson && oersJson.resources) || []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
+      return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
+    }
+
+    function render(items){
+      if (!items.length){
+        grid.innerHTML = `
+          <div class="featured-card">
+            <div class="featured-body">
+              <div class="featured-topline">
+                <span class="featured-type">Catalog</span>
+              </div>
+              <p class="featured-meta">Featured resources will appear here as data loads.</p>
+            </div>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => `
+        <article class="featured-card">
+          <a href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''}>
+            <div class="featured-media">
+              <img src="${esc(item.image)}" alt="${esc(item.title)}"
+                   onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+            </div>
+            <div class="featured-body">
+              <div class="featured-topline">
+                <span class="featured-type">${esc(item.type)}</span>
+                ${item.year ? `<span class="featured-year">${esc(item.year)}</span>` : ''}
+              </div>
+              <h3 class="featured-title">${esc(item.title)}</h3>
+              <p class="featured-desc">${esc(item.description || 'OpenConstruction catalog resource')}</p>
+              <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
+              <span class="featured-link">${esc(item.cta)}</span>
+            </div>
+          </a>
+        </article>
+      `).join('');
+    }
+
+    (async function(){
+      try{
+        const [datasetsJson, modelsJson, usecasesJson, oersJson] = await Promise.all([
+          fetchFirst(['data/datasets.json','assets/datasets.json','datasets.json']),
+          fetchFirst(['data/models.json','assets/models.json','models.json']),
+          fetchFirst([
+            'data/use-cases.json','assets/deployments.json','deployments.json',
+            'data/usecases.json','assets/usecases.json','usecases.json'
+          ]),
+          fetchFirst(['data/oer.json','assets/oer.json','oer.json'])
+        ]);
+        const freshest = latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson);
+        if (freshnessEl && freshest) freshnessEl.textContent = `Last updated: ${formatDate(freshest)}`;
+        render(pickItems(datasetsJson, modelsJson, usecasesJson, oersJson));
+      }catch(_){
+        if (freshnessEl) freshnessEl.textContent = 'Last updated: unavailable';
+        render([]);
       }
     })();
   })();
