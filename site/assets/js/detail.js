@@ -713,6 +713,7 @@ async function initDetail(){
           .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
           .ds-cap{ line-height:1.25; }
           .ds-body{ padding:24px 28px; }
+          .ds-figure{ border-bottom:1px solid var(--oc-border); background:#f8fbff; }
           .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
           .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
           .ds-meta-line{ color:var(--oc-sub); margin-bottom:.9rem; line-height:1.45; }
@@ -786,29 +787,23 @@ async function initDetail(){
         </style>
 
         <div class="ds-card mb-3 bg-white">
-          <div class="row g-0">
-            <div class="col-lg-6">
-              <figure class="m-0 ds-figure">
-                <img src="" data-oc-img="model" alt="${escapeHtml(modelTitle)} preview"
-                     class="ds-img" data-zoom-src="" data-oc-zoom="model">
-                <figcaption class="text-muted small text-center py-2 ds-cap">${escapeHtml(captionText)}</figcaption>
-              </figure>
-            </div>
-            <div class="col-lg-6">
-              <div class="ds-body">
-                <h1 class="ds-title">${escapeHtml(modelTitle)}</h1>
-                <div class="ds-meta-line">${escapeHtml(
-                  [
-                    Array.isArray(m.authors) ? m.authors.join(', ') : safeText(m.authors || ''),
-                    year && year !== '—' ? year : ''
-                  ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
-                )}</div>
-                <div class="chip-lane">
-                  ${chipLane(modality).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                  ${chipLane(taskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                  ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                </div>
-              </div>
+          <figure class="m-0 ds-figure">
+            <img src="" data-oc-img="model" alt="${escapeHtml(modelTitle)} preview"
+                 class="ds-img" data-zoom-src="" data-oc-zoom="model">
+            <figcaption class="text-muted small text-center py-2 ds-cap">${escapeHtml(captionText)}</figcaption>
+          </figure>
+          <div class="ds-body">
+            <h1 class="ds-title">${escapeHtml(modelTitle)}</h1>
+            <div class="ds-meta-line">${escapeHtml(
+              [
+                Array.isArray(m.authors) ? m.authors.join(', ') : safeText(m.authors || ''),
+                year && year !== '—' ? year : ''
+              ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
+            )}</div>
+            <div class="chip-lane">
+              ${chipLane(modality).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+              ${chipLane(taskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+              ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
             </div>
           </div>
         </div>
@@ -1109,6 +1104,7 @@ async function initDetail(){
         .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
         .ds-cap{ line-height:1.25; }
         .ds-body{ padding:24px 28px; }
+        .ds-figure{ border-bottom:1px solid var(--oc-border); background:#f8fbff; }
         .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
         .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
         .ds-meta-line{ color:var(--oc-sub); margin-bottom:.9rem; line-height:1.45; }
@@ -1162,30 +1158,24 @@ async function initDetail(){
       </style>
 
       <div class="ds-card mb-3 bg-white">
-        <div class="row g-0">
-          <div class="col-lg-6">
-            <figure class="m-0 ds-figure">
-              <img src="${imgSrc}" alt="${ds.name} preview"
-                   onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"
-                   class="ds-img" data-zoom-src="" data-oc-zoom="model">
-              <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
-              ${noteInline}
-            </figure>
-          </div>
-            <div class="col-lg-6">
-            <div class="ds-body">
-              <h1 class="ds-title">${ds.name}</h1>
-              <div class="ds-meta-line">${escapeHtml(
-                [
-                  Array.isArray(ds.authors) ? ds.authors.join(', ') : safeText(ds.authors || ''),
-                  safeText(ds.year ?? '') !== '—' ? safeText(ds.year ?? '') : ''
-                ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
-              )}</div>
-              <div class="chip-lane">
-                ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-              </div>
-            </div>
+        <figure class="m-0 ds-figure">
+          <img src="${imgSrc}" alt="${ds.name} preview"
+               onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"
+               class="ds-img" data-zoom-src="" data-oc-zoom="model">
+          <figcaption class="text-muted small text-center py-2 ds-cap">${captionText}</figcaption>
+          ${noteInline}
+        </figure>
+        <div class="ds-body">
+          <h1 class="ds-title">${ds.name}</h1>
+          <div class="ds-meta-line">${escapeHtml(
+            [
+              Array.isArray(ds.authors) ? ds.authors.join(', ') : safeText(ds.authors || ''),
+              safeText(ds.year ?? '') !== '—' ? safeText(ds.year ?? '') : ''
+            ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
+          )}</div>
+          <div class="chip-lane">
+            ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+            ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
           </div>
         </div>
       </div>
