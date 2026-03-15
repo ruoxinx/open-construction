@@ -60,24 +60,59 @@ function getWorkflowId(){
   return url.searchParams.get('id') || '';
 }
 
+function ytId(urlValue){
+  try {
+    const url = new URL(urlValue);
+    const host = url.hostname.replace('www.', '');
+    if (host === 'youtube.com' || host === 'm.youtube.com') {
+      if (url.pathname === '/watch') return url.searchParams.get('v') || null;
+      if (url.pathname.startsWith('/shorts/')) return url.pathname.split('/')[2] || null;
+    }
+    if (host === 'youtu.be') return url.pathname.slice(1) || null;
+  } catch {}
+  return null;
+}
+
+function vimeoId(urlValue){
+  try {
+    const url = new URL(urlValue);
+    const host = url.hostname.replace('www.', '');
+    if (host === 'vimeo.com') {
+      const parts = url.pathname.split('/').filter(Boolean);
+      return parts.length ? parts[parts.length - 1] : null;
+    }
+  } catch {}
+  return null;
+}
+
 function getMediaEmbed(item){
   const media = Array.isArray(item.media) ? item.media : [];
-  const firstVideo = media.find(m => String(m?.type || '').toLowerCase() === 'video' && m.url);
-  if (firstVideo && /youtube\.com|youtu\.be/i.test(firstVideo.url)) {
-    let videoId = '';
-    try {
-      const u = new URL(firstVideo.url);
-      videoId = u.hostname.includes('youtu.be') ? u.pathname.replace(/^\//, '') : (u.searchParams.get('v') || '');
-    } catch {}
-    if (videoId) {
-      const embed = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
-      return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(firstVideo.alt || item.title || 'Workflow video')}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
-    }
+  const image = media.find(m => m && String(m.type || '').toLowerCase() === 'image' && m.url);
+  const video = media.find(m => m && String(m.type || '').toLowerCase() === 'video' && m.url);
+
+  if (image) {
+    const href = safeHref(item.links?.source) || safeHref(video?.url) || safeHref(image.url);
+    const imgTag = `<img src="${escapeHtml(image.url)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin">`;
+    return `<div class="media-wrap">${href ? `<a class="d-block h-100" href="${href}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>`;
   }
 
-  const firstImage = media.find(m => String(m?.type || '').toLowerCase() === 'image' && m.url);
-  if (firstImage) {
-    return `<div class="media-wrap"><img src="${escapeHtml(firstImage.url)}" alt="${escapeHtml(firstImage.alt || item.title || 'Workflow image')}" loading="lazy" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"></div>`;
+  if (video) {
+    const youtube = ytId(video.url);
+    const vimeo = vimeoId(video.url);
+    if (youtube) {
+      const embed = `https://www.youtube.com/embed/${encodeURIComponent(youtube)}`;
+      return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
+    }
+    if (vimeo) {
+      const embed = `https://player.vimeo.com/video/${encodeURIComponent(vimeo)}`;
+      return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(video.url)) {
+      return `<div class="media-wrap"><video src="${escapeHtml(video.url)}" controls playsinline preload="metadata"></video></div>`;
+    }
+    if (video.thumb) {
+      return `<div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(video.thumb)}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async"></a></div>`;
+    }
   }
 
   return `<div class="media-wrap placeholder"><div class="placeholder-copy">No media preview available</div></div>`;

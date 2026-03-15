@@ -663,9 +663,6 @@ function render(items){
     const doiBtn   = u.links?.doi    ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>` : '';
     const detailBtn = `<a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View details</a>`;
 
-    const detailId = `uc-${idx}`;
-    const detailsBtn = `<button class="btn btn-sm btn-link px-0 details-toggle" data-bs-toggle="collapse" data-bs-target="#${detailId}" aria-expanded="false" aria-controls="${detailId}">Show details</button>`;
-
     const apps = (u.applications||[]).slice(0,2).map(a=>`<span class="badge-app">${escapeHTML(a)}</span>`).join('');
     const tech = (u.ai_tech||[]).slice(0,1).map(t=>`<span class="badge-tech">${escapeHTML(t)}</span>`).join('');
     const phase = u.phase ? `<span class="badge-phase">${escapeHTML(u.phase)}</span>` : '';
@@ -702,23 +699,12 @@ function render(items){
 
           <div class="actions mt-2">
             ${srcBtn}${paperBtn}${codeBtn}${doiBtn}${detailBtn}
-            ${detailsBtn}
             ${addedTxt ? `<span class="added-note ms-md-auto">${addedTxt}</span>` : ''}
           </div>
-
-          ${detailsSection(u, idx)}
         </div>
       </div>
     `;
     grid.appendChild(el);
-  });
-
-  grid.querySelectorAll('.details-toggle').forEach(btn=>{
-    const targetSel = btn.getAttribute('data-bs-target');
-    const target = document.querySelector(targetSel);
-    if(!target) return;
-    target.addEventListener('show.bs.collapse', ()=> btn.textContent = 'Hide details');
-    target.addEventListener('hide.bs.collapse', ()=> btn.textContent = 'Show details');
   });
 }
 
