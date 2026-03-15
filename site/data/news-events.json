@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "id": "ci-summit-2026-ai-in-construction-workshop",
+      "title": "AI in Construction Workshop",
+      "category": "Workshop",
+      "status": "Sold out",
+      "is_featured": true,
+      "event_date": "2026-10-01",
+      "time_label": "1:00 pm - 3:00 pm",
+      "location": "CI Summit CRC",
+      "pricing": [
+        {
+          "label": "EB",
+          "price": "$40"
+        },
+        {
+          "label": "Standard",
+          "price": "$50"
+        }
+      ],
+      "summary": "The AI in Construction Workshop brings together industry practitioners and academic experts to explore how artificial intelligence is transforming construction through real-world applications, hands-on activities, and product demonstrations.",
+      "objectives": [
+        "Explore current AI applications in construction",
+        "Foster collaboration between academia and industry",
+        "Engage participants through interactive learning"
+      ],
+      "speakers": [
+        "Lane Smith, Safety Director, Flintco",
+        "Barry Nelson, President & CEO, FactorLab",
+        "Terry Mullis, VP of IT & Analytics, Rogers-O'Brien",
+        "Johnathon Grammer, VP of Operations Support, Rogers-O'Brien",
+        "Yanyu Wang, Assistant Professor, LSU",
+        "Ruoxin Xiong, Assistant Professor, Kent State University"
+      ],
+      "registration_url": "https://cisummit-crc.asce.org/program/additional-programs",
+      "source_url": "https://cisummit-crc.asce.org/program/additional-programs"
+    }
+  ]
+}

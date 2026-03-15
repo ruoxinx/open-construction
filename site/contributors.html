@@ -137,13 +137,120 @@
     .person-card{ transition:transform .12s ease; }
     .person-card:hover{ transform:translateY(-1px); }
     .person-card .card-body{ padding:1rem 1.1rem; }
+    .team-card .card-body{ padding:.9rem 1rem; }
     .headshot{
       width:86px; height:86px; object-fit:cover; border-radius:50%;
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
     }
+    .team-card .headshot{ width:72px; height:72px; }
     .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
+    .section-intro{
+      max-width:68ch;
+      color:var(--oc-subtle);
+      margin-bottom:1rem;
+    }
+    .community-links{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1rem;
+    }
+    .community-links .oc-card-body{ padding:1rem 1.05rem; }
+    .community-links p{
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.95rem;
+    }
+
+    .news-card{
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      height:100%;
+    }
+    .news-card .card-body{ padding:1.15rem 1.2rem; }
+    .news-eyebrow{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      flex-wrap:wrap;
+      margin-bottom:.55rem;
+    }
+    .news-pill{
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      border:1px solid var(--oc-border);
+      background:#f8fafc;
+      color:var(--oc-subtle);
+      font-size:.76rem;
+      font-weight:700;
+      letter-spacing:.04em;
+      padding:.18rem .55rem;
+      text-transform:uppercase;
+    }
+    .news-pill.status-live{
+      background:#fff7e9;
+      border-color:#f1d6aa;
+      color:#84550f;
+    }
+    .news-meta{
+      color:var(--oc-subtle);
+      font-size:.92rem;
+      margin-bottom:.75rem;
+    }
+    .news-summary{
+      color:var(--oc-text);
+      margin-bottom:.85rem;
+    }
+    .news-list{
+      margin:0;
+      padding-left:1.15rem;
+      color:var(--oc-text);
+    }
+    .news-list li + li{ margin-top:.35rem; }
+    .news-speakers{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.4rem;
+      margin-top:.4rem;
+    }
+    .news-speaker{
+      display:inline-flex;
+      align-items:center;
+      padding:.26rem .6rem;
+      border-radius:999px;
+      background:var(--oc-muted);
+      border:1px solid var(--oc-border);
+      font-size:.8rem;
+      color:var(--oc-text);
+    }
+    .news-price-row{
+      display:flex;
+      gap:.5rem;
+      flex-wrap:wrap;
+      margin:.85rem 0 0;
+    }
+    .news-price{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      border-radius:999px;
+      border:1px solid var(--oc-border);
+      background:#fff;
+      padding:.28rem .65rem;
+      font-size:.82rem;
+      color:var(--oc-text);
+    }
+    .news-empty{
+      border:1px dashed var(--oc-border);
+      border-radius:var(--oc-radius);
+      padding:1.1rem 1.2rem;
+      color:var(--oc-subtle);
+      background:#fff;
+    }
 
     /* Logo wall */
     .logo-wall{
@@ -265,6 +372,10 @@
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       #visitorMap{height:280px}
+      .news-card .card-body{padding:1rem}
+      .news-meta{font-size:.88rem}
+      .community-links{grid-template-columns:1fr}
+      .team-card .card-body{padding:.9rem}
     }
   </style>
 
@@ -451,11 +562,11 @@
 <main class="container oc-container">
   <!-- Core Team -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Team</div>
+    <div class="oc-kicker mb-2">Core Team</div>
     <div class="row g-4">
       <!-- 1 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/ruoxin-xiong.jpg" alt="Headshot of Ruoxin Xiong">
             <div>
@@ -468,7 +579,7 @@
       </div>
       <!-- 2 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/yanyu-wang.jpg" alt="Headshot of Yanyu Wang">
             <div>
@@ -481,7 +592,7 @@
       </div>
       <!-- 3 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/jiannan-cai.jpg" alt="Headshot of Jiannan Cai">
             <div>
@@ -494,7 +605,7 @@
       </div>
       <!-- 4 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/kaijian-liu.jpg" alt="Headshot of Kaijian Liu">
             <div>
@@ -507,7 +618,7 @@
       </div>
       <!-- 5 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/yuansheng-zhu.jpg" alt="Headshot of Yuansheng Zhu">
             <div>
@@ -520,7 +631,7 @@
       </div>
       <!-- 6 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/pingbo-tang.jpg" alt="Headshot of Pingbo Tang">
             <div>
@@ -533,7 +644,7 @@
       </div>
       <!-- 7 -->
       <div class="col-md-6 col-xl-4">
-        <div class="card oc-card person-card h-100">
+        <div class="card oc-card person-card team-card h-100">
           <div class="card-body d-flex gap-3">
             <img class="headshot" src="assets/img/contributors/nora-el-gohary.jpg" alt="Headshot of Nora El-Gohary">
             <div>
@@ -550,6 +661,7 @@
   <!-- Community Contributors -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Contributors/Labs</div>
+    <p class="section-intro">Researchers, labs, and practitioners who strengthen the catalog through submissions, validation, curation, and shared infrastructure.</p>
 
     <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
       <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
@@ -568,6 +680,7 @@
 
 <section class="oc-section">
   <div class="oc-kicker mb-2">Affiliations and Organizations</div>
+  <p class="section-intro">Universities, labs, and industry organizations represented in the OpenConstruction contributor community.</p>
 
   <div class="logo-marquee three-rows" aria-label="Affiliated institutions and organizations">
 
@@ -653,55 +766,41 @@
 	</template>
 	</section>
 
-  <!-- Contribute & Policy -->
-  <section class="oc-section">
-    <div class="row g-4">
+  <section class="oc-section" id="news-events">
+    <div class="mb-2">
+      <div class="oc-kicker">News &amp; Events</div>
+      <h3 class="oc-card-title mb-1">Workshops, talks, and community updates</h3>
+      <p class="text-muted mb-0">A lightweight feed of workshops, presentations, and milestones connected to the OpenConstruction community.</p>
+    </div>
+    <div class="row g-4" id="newsEventsGrid">
       <div class="col-12">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Contribute</div>
-            <h3 class="oc-card-title mb-2">Contributor Guidelines</h3>
-            <p class="mb-3">We welcome contributions that uphold <span class="hl">open‑science</span> values and follow our open development model:</p>
-            <ul class="mb-0">
-              <li><strong>Open-source workflow:</strong> Propose improvements and additions via GitHub issues and pull requests so that the community can review and iterate together.</li>
-              <li><strong>Peer review & maintainers:</strong> All changes are reviewed by peers and module maintainers to ensure quality, inclusivity and ethical compliance.</li>
-              <li><strong>Inclusive & accessible:</strong> Provide clear documentation and metadata so that diverse audiences can find and reuse your contribution.</li>
-              <li><strong>Ethical sharing:</strong> Respect privacy, obtain consent and anonymize data when necessary.</li>
-              <li><strong>Intellectual property & attribution:</strong> Include a valid licence (e.g., CC BY 4.0 or MIT).</li>
-            </ul>
-            <p class="mt-3 mb-0">For complete details, including role descriptions, templates and our roadmap, see the <a href="contribute.html">Contribute page</a>.</p>
-          </div>
+        <div class="news-empty">Loading upcoming events...</div>
+      </div>
+    </div>
+    <div class="mt-2 text-end">
+      <a class="small text-decoration-none fw-semibold" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Share an event or update</a>
+    </div>
+  </section>
+
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Collaborate</div>
+    <div class="community-links">
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Contribute</h3>
+          <p>See the <a href="contribute.html">Contribute page</a> for templates, review expectations, and submission guidance.</p>
         </div>
       </div>
-
-      <!-- Connect + Metadata row -->
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Connect</div>
-            <h3 class="oc-card-title mb-2">Work with Us</h3>
-            <p class="mb-2">Have ideas, features, or <span class="hl">partnership opportunities</span>?</p>
-            <ul class="mb-3">
-              <li><strong>Create an issue:</strong> Use our <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">GitHub templates</a> for feature requests and corrections.</li>
-              <li><strong>Join discussions:</strong> Participate on the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank">Discussion Board</a>.</li>
-              <li><strong>General enquiries:</strong> Email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a> for support or partnership discussions.</li>
-            </ul>
-          </div>
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Work with Us</h3>
+          <p>For collaborations, feature ideas, or partnership conversations, join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
         </div>
       </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <div class="oc-kicker mb-2">Policy</div>
-            <h3 class="oc-card-title mb-2">Request resource removal</h3>
-            <p class="mb-0">
-              OpenConstruction indexes publicly available metadata and provides links to original sources such as paper or repositories. 
-              We do <strong>not host or distribute</strong> any datasets, code, or proprietary materials, and we fully respect the intellectual property of all content owners.
-              For removal or correction requests, contact 
-              <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.
-            </p>
-          </div>
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Policy</h3>
+          <p>For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. OpenConstruction indexes metadata and links to original sources.</p>
         </div>
       </div>
     </div>
@@ -1218,6 +1317,102 @@ marquee.querySelectorAll('.logo img').forEach(img => {
 
   window.addEventListener('resize', ()=>{ /* keep cards’ size; page size fixed */ goTo(current,false); });
   buildSlides();
+})();
+</script>
+
+<script>
+(function(){
+  const DATA_URL = 'data/news-events.json';
+  const grid = document.getElementById('newsEventsGrid');
+  if (!grid) return;
+
+  function fmtDate(value){
+    if (!value) return '';
+    const d = new Date(value + 'T12:00:00');
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  }
+
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function render(events){
+    if (!events.length){
+      grid.innerHTML = '<div class="col-12"><div class="news-empty">No events are listed yet. Check back soon for workshops, talks, and announcements.</div></div>';
+      return;
+    }
+
+    grid.innerHTML = events.map((item) => {
+      const objectives = Array.isArray(item.objectives) ? item.objectives : [];
+      const speakers = Array.isArray(item.speakers) ? item.speakers : [];
+      const pricing = Array.isArray(item.pricing) ? item.pricing : [];
+      const statusClass = item.status ? `news-pill ${String(item.status).toLowerCase().includes('sold') ? 'status-live' : ''}` : 'news-pill';
+      return `
+        <div class="col-12">
+          <article class="news-card">
+            <div class="card-body">
+              <div class="news-eyebrow">
+                ${item.category ? `<span class="news-pill">${escapeHtml(item.category)}</span>` : ''}
+                ${item.status ? `<span class="${statusClass}">${escapeHtml(item.status)}</span>` : ''}
+                ${item.is_featured ? '<span class="news-pill">Featured</span>' : ''}
+              </div>
+              <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
+              <div class="news-meta">
+                ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' · ')}
+              </div>
+              ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
+              ${objectives.length ? `
+                <div class="mb-3">
+                  <div class="small fw-semibold text-uppercase text-muted mb-2">Workshop objectives</div>
+                  <ul class="news-list">
+                    ${objectives.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+              ${speakers.length ? `
+                <div class="mb-3">
+                  <div class="small fw-semibold text-uppercase text-muted mb-2">Meet the panel</div>
+                  <div class="news-speakers">
+                    ${speakers.map((speaker) => `<span class="news-speaker">${escapeHtml(speaker)}</span>`).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              ${pricing.length ? `
+                <div class="news-price-row">
+                  ${pricing.map((entry) => `<span class="news-price"><strong>${escapeHtml(entry.label || '')}</strong> ${escapeHtml(entry.price || '')}</span>`).join('')}
+                </div>
+              ` : ''}
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                ${item.registration_url ? `<a class="btn-ink btn-sm" href="${escapeHtml(item.registration_url)}" target="_blank" rel="noopener">View event</a>` : ''}
+                ${item.source_url ? `<a class="btn-accent btn-sm" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}
+              </div>
+            </div>
+          </article>
+        </div>
+      `;
+    }).join('');
+  }
+
+  fetch(DATA_URL, { cache: 'no-cache' })
+    .then((res) => {
+      if (!res.ok) throw new Error('Failed to load news-events.json');
+      return res.json();
+    })
+    .then((payload) => {
+      const events = Array.isArray(payload?.events) ? payload.events : [];
+      events.sort((a, b) => String(a.event_date || '').localeCompare(String(b.event_date || '')));
+      render(events);
+    })
+    .catch((err) => {
+      console.error('Failed to load events', err);
+      grid.innerHTML = '<div class="col-12"><div class="news-empty">Could not load events right now.</div></div>';
+    });
 })();
 </script>
 
