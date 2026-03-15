@@ -255,7 +255,13 @@
       color:var(--oc-subtle);
       font-size:.92rem;
       margin:0;
-      max-width:70ch;
+    }
+    .reach-footnote{
+      padding:.85rem 1.15rem 1rem;
+      border-top:1px solid var(--oc-border);
+      color:var(--oc-subtle);
+      font-size:.9rem;
+      background:#fff;
     }
     #visitorMap{
       height:clamp(320px, 44vw, 460px);
@@ -372,7 +378,8 @@
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       .reach-map-head{padding:.9rem 1rem .75rem}
-      .reach-note{font-size:.88rem}
+      .reach-note,
+      .reach-footnote{font-size:.88rem}
       #visitorMap{height:300px}
       .news-card .card-body{padding:1rem}
       .news-meta{font-size:.88rem}
@@ -819,10 +826,12 @@
       <div class="reach-map-head">
         <div>
           <div class="oc-kicker">Platform Reach</div>
+          <h3 class="oc-card-title mb-0">Aggregated visit footprint</h3>
         </div>
-        <p class="reach-note">Aggregated, privacy-preserving visit locations inferred from anonymized homepage traffic. No raw IP addresses are stored.</p>
+        <p class="reach-note">Approximate aggregated homepage visits shown at a broad geographic level.</p>
       </div>
       <div id="visitorMap" aria-label="Platform reach map"></div>
+      <div class="reach-footnote">Aggregated, privacy-preserving visit locations inferred from anonymized homepage traffic. No raw IP addresses are stored.</div>
     </div>
   </section>
 </main>
@@ -968,6 +977,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
   // Map
   const map = L.map('visitorMap', {
     zoomControl: true,
+    minZoom: 2,
     maxBounds: L.latLngBounds([[-85, -180], [85, 180]]), // clamp to world bounds
     maxBoundsViscosity: 1.0,                             // resist leaving bounds
     worldCopyJump: false                                 // no duplicate jump
@@ -975,6 +985,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
+    noWrap: true,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
   }).addTo(map);
 
