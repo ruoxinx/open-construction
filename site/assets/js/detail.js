@@ -113,6 +113,35 @@ function normalizeList(val){
   return String(val).split(',').map(v => v.trim()).filter(Boolean);
 }
 
+function datasetCountLabel(modalityVal){
+  const modalities = normalizeList(modalityVal).map(v => v.toLowerCase());
+  if (!modalities.length) return 'Samples';
+
+  const has = (pattern) => modalities.some(v => pattern.test(v));
+
+  if (has(/point\s*cloud|lidar|laser\s*scan|3d\s*scan/)) return 'Point Clouds';
+  if (has(/video|clip/)) return 'Videos';
+  if (has(/document|text|pdf|report|specification|contract/)) return 'Documents';
+  if (has(/audio|speech|sound/)) return 'Audio Files';
+  if (has(/bim|ifc|cad|mesh|graph/)) return 'Models';
+  if (has(/timeseries|time\s*series|sensor|tabular|table|csv/)) return 'Records';
+  if (has(/image|rgb|thermal|satellite|aerial|depth/)) return 'Images';
+
+  return 'Samples';
+}
+
+function datasetCountSummary(ds){
+  const count = ds?.num_images;
+  const classes = ds?.num_classes;
+  if (!(count || classes)) return '';
+
+  const countLabel = datasetCountLabel(ds?.data_modality).toLowerCase();
+  const parts = [];
+  if (count) parts.push(`${safeFormatInt(count)} ${countLabel}`);
+  if (classes) parts.push(`${safeFormatInt(classes)} classes`);
+  return parts.join(' · ');
+}
+
 function normKey(val){
   return String(val || '').trim().toLowerCase();
 }
@@ -814,11 +843,12 @@ async function initDetail(){
     const datasetTaskList = normalizeList(ds.potential_tasks);
     const datasetClassList = normalizeList(ds.classes);
     const datasetModalityList = normalizeList(ds.data_modality);
+    const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
     const quickFacts = [
       { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
-      { label: 'Images', value: escapeHtml(safeFormatInt(ds.num_images)) },
+      { label: datasetSampleLabel, value: escapeHtml(safeFormatInt(ds.num_images)) },
       { label: 'Classes', value: escapeHtml(safeFormatInt(ds.num_classes)) },
       { label: 'Primary task', value: datasetTaskList.length ? escapeHtml(datasetTaskList[0]) : '—' },
       { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
@@ -986,7 +1016,7 @@ async function initDetail(){
         <div class="detail-kicker">Overview</div>
         <h2 class="detail-heading">What this dataset contains</h2>
         <dl class="meta mb-0">
-          ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} images · ${safeFormatInt(ds.num_classes)} classes` : '')}
+          ${metaRow('Data · Classes', datasetCountSummary(ds))}
           ${metaRow('Modality', chipLane(ds.data_modality))}
           ${metaRow('Associated tasks', chipLane(ds.potential_tasks))}
           ${metaRow('Classes', chipLane(ds.classes))}
