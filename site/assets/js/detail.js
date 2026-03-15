@@ -524,10 +524,17 @@ async function initDetail(){
           .detail-section p:last-child{ margin-bottom:0; }
           .section-nav a{ color:var(--oc-link); text-decoration:none; }
           .section-nav a:hover{ text-decoration:underline; }
-          .quickfact-grid{ display:grid; gap:.8rem; }
-          .quickfact-row{ display:grid; gap:.2rem; }
+          .quickfact-grid{ display:grid; gap:.85rem; }
+          .quickfact-row{
+            display:grid;
+            gap:.28rem;
+            padding:.85rem .95rem;
+            border:1px solid var(--oc-border);
+            border-radius:12px;
+            background:linear-gradient(180deg, #fff, #fbfdff);
+          }
           .quickfact-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
-          .quickfact-value{ font-weight:700; line-height:1.35; }
+          .quickfact-value{ font-weight:700; line-height:1.45; }
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:800; color:var(--oc-ink); margin-bottom:.8rem; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
@@ -756,9 +763,15 @@ async function initDetail(){
 
     // ---------- dataset (existing behavior) ----------
     let dataObj = {};
+    let modelArr = [];
     try{
-      const res = await fetch('../data/datasets.json', { cache: 'no-cache' });
-      dataObj = res.ok ? await res.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
+      const [datasetRes, modelRes] = await Promise.all([
+        fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null),
+        fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null)
+      ]);
+      dataObj = datasetRes?.ok ? await datasetRes.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
+      const modelPayload = modelRes?.ok ? await modelRes.json() : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
+      modelArr = normalizeModelPayload(modelPayload);
     }catch(e){
       if (typeof showErrorBanner === 'function') showErrorBanner('Could not load data/datasets.json for detail page.');
       console.error(e);
@@ -785,10 +798,91 @@ async function initDetail(){
     const noteInline = (noteText !== '—')
       ? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
       : '';
+    const datasetTaskList = normalizeList(ds.potential_tasks);
+    const datasetClassList = normalizeList(ds.classes);
+    const datasetModalityList = normalizeList(ds.data_modality);
+    const quickFacts = [
+      { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
+      { label: 'Images', value: escapeHtml(safeFormatInt(ds.num_images)) },
+      { label: 'Classes', value: escapeHtml(safeFormatInt(ds.num_classes)) },
+      { label: 'Primary task', value: datasetTaskList.length ? escapeHtml(datasetTaskList[0]) : '—' },
+      { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
+      { label: 'License', value: formatLicense(ds.license) || '—' }
+    ];
+
+    function datasetHref(item){
+      return `../datasets/detail.html?id=${encodeURIComponent(item.id || item.name || '')}`;
+    }
+    function modelHref(model){
+      return `../models/details.html?id=${encodeURIComponent(model.id || model.title || '')}`;
+    }
+    function scoreOverlap(a, b){
+      const setA = new Set(normalizeList(a).map(normKey));
+      const setB = new Set(normalizeList(b).map(normKey));
+      let score = 0;
+      setA.forEach(v => { if (setB.has(v)) score += 1; });
+      return score;
+    }
+    const relatedDatasets = Object.values(dataObj || {})
+      .filter(other => other && other !== ds)
+      .map(other => {
+        const score = scoreOverlap(datasetTaskList, other.potential_tasks)
+          + scoreOverlap(datasetModalityList, other.data_modality)
+          + Math.min(scoreOverlap(datasetClassList, other.classes), 2);
+        return score > 0 ? { other, score } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score || (b.other.year || 0) - (a.other.year || 0))
+      .slice(0, 3)
+      .map(({ other }) => other);
+
+    const relatedModels = modelArr
+      .map(model => {
+        const score = scoreOverlap(datasetTaskList, model.tasks || model.task || model.potential_tasks)
+          + scoreOverlap(datasetModalityList, model.modalities || model.modality || model.data_modalities)
+          + normalizeList(model.training_data || model.datasets || model.dataset).some(v => {
+            const key = normKey(v);
+            return key && [ds.id, ds.name].some(name => normKey(name) === key);
+          }) * 4;
+        return score > 0 ? { model, score } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score || (b.model.year || 0) - (a.model.year || 0))
+      .slice(0, 3)
+      .map(({ model }) => model);
+
+    const relatedItemsHtml = `
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="detail-subcard h-100">
+            <div class="detail-subhead">Related models</div>
+            ${relatedModels.length ? relatedModels.map(model => `
+              <a class="related-link" href="${modelHref(model)}">
+                <span class="related-link-type">Model</span>
+                <span class="related-link-title">${escapeHtml(model.title || model.id || 'Untitled model')}</span>
+                <span class="related-link-meta">${escapeHtml(truncateText([normalizeList(model.tasks || model.task)[0], normalizeList(model.applications || model.application)[0]].filter(Boolean).join(' • ') || 'Likely compatible with this dataset', 90))}</span>
+              </a>
+            `).join('') : '<p class="text-muted small mb-0">No closely related models were identified from the current catalog metadata.</p>'}
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="detail-subcard h-100">
+            <div class="detail-subhead">Related datasets</div>
+            ${relatedDatasets.length ? relatedDatasets.map(other => `
+              <a class="related-link" href="${datasetHref(other)}">
+                <span class="related-link-type">Dataset</span>
+                <span class="related-link-title">${escapeHtml(other.name || other.id || 'Untitled dataset')}</span>
+                <span class="related-link-meta">${escapeHtml(truncateText([normalizeList(other.potential_tasks)[0], normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task or modality coverage', 90))}</span>
+              </a>
+            `).join('') : '<p class="text-muted small mb-0">No related datasets were found from shared task, class, or modality metadata.</p>'}
+          </div>
+        </div>
+      </div>
+    `;
 
     const mainHero = `
       <style>
-        .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
+        .ds-card,.detail-section,.detail-subcard,.quickfact-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); background:#fff; }
         .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
         .ds-cap{ line-height:1.25; }
         .ds-body{ padding:24px 28px; }
@@ -801,6 +895,35 @@ async function initDetail(){
         .meta-val{ font-weight:600; line-height:1.4; }
         .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
+        .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
+        .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
+        .detail-heading{ font-size:1.1rem; font-weight:800; color:var(--oc-ink); margin:0 0 .85rem; }
+        .section-nav a{ color:var(--oc-link); text-decoration:none; }
+        .section-nav a:hover{ text-decoration:underline; }
+        .quickfact-grid{ display:grid; gap:.85rem; }
+        .quickfact-row{
+          display:grid;
+          gap:.28rem;
+          padding:.85rem .95rem;
+          border:1px solid var(--oc-border);
+          border-radius:12px;
+          background:linear-gradient(180deg, #fff, #fbfdff);
+        }
+        .quickfact-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+        .quickfact-value{ font-weight:700; line-height:1.45; }
+        .detail-subcard{ padding:1rem; }
+        .detail-subhead{ font-size:.92rem; font-weight:800; color:var(--oc-ink); margin-bottom:.8rem; }
+        .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
+        .related-link + .related-link{ border-top:1px solid var(--oc-border); }
+        .related-link:hover .related-link-title{ color:var(--oc-link); }
+        .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
+        .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+        .ds-note-inline{ margin:0 .9rem .9rem; padding:.75rem .9rem; border-radius:12px; background:#fff8f0; border:1px solid #f2e1c8; color:#5e4a1a; font-size:.92rem; }
+        .ds-note-label{ font-weight:800; margin-right:.25rem; }
+        @media (max-width: 991.98px){
+          .meta-row{ grid-template-columns:1fr; gap:.35rem; }
+        }
       </style>
 
       <div class="ds-card mb-3 bg-white">
@@ -814,7 +937,7 @@ async function initDetail(){
               ${noteInline}
             </figure>
           </div>
-          <div class="col-lg-6">
+            <div class="col-lg-6">
             <div class="ds-body">
               <h1 class="ds-title">${ds.name}</h1>
               <div class="ds-year">(${ds.year ?? '—'})</div>
@@ -825,12 +948,39 @@ async function initDetail(){
                 ${metaRow('Resolution', safeText(ds.resolution))}
                 ${metaRow('Location', chipLane(ds.geographical_location))}
                 ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
-                ${metaRow('Classes', chipLane(ds.classes))}
               </dl>
             </div>
           </div>
         </div>
       </div>
+
+      <section id="overview" class="detail-section">
+        <div class="detail-kicker">Overview</div>
+        <h2 class="detail-heading">What this dataset contains</h2>
+        <dl class="meta mb-0">
+          ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} images · ${safeFormatInt(ds.num_classes)} classes` : '')}
+          ${metaRow('Classes', chipLane(ds.classes))}
+          ${metaRow('Annotations', chipLane(ds.annotation_types))}
+          ${metaRow('Geographic context', chipLane(ds.geographical_location))}
+        </dl>
+      </section>
+
+      <section id="access-and-usage" class="detail-section">
+        <div class="detail-kicker">Access & Usage</div>
+        <h2 class="detail-heading">How to use this dataset</h2>
+        <dl class="meta mb-0">
+          ${metaRow('License', formatLicense(ds.license) || '—')}
+          ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
+          ${metaRow('Download', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
+          ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
+        </dl>
+      </section>
+
+      <section id="related-resources" class="detail-section">
+        <div class="detail-kicker">Related Resources</div>
+        <h2 class="detail-heading">Keep exploring from here</h2>
+        ${relatedItemsHtml}
+      </section>
 
       <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -854,12 +1004,37 @@ async function initDetail(){
 
     const sidebar = `
       <div class="position-sticky" style="top:88px">
+        <div class="quickfact-card mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-uppercase text-muted mb-3">Quick Facts</h2>
+            <div class="quickfact-grid">
+              ${quickFacts.map(item => `
+                <div class="quickfact-row">
+                  <div class="quickfact-label">${escapeHtml(item.label)}</div>
+                  <div class="quickfact-value">${item.value}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
         <div class="card border-0 shadow-sm mb-3">
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
               ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
               ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+          <div class="card-body section-nav">
+            <h2 class="h6 text-uppercase text-muted mb-3">On This Page</h2>
+            <div class="d-grid gap-2 small">
+              <a href="#overview">Overview</a>
+              <a href="#access-and-usage">Access & Usage</a>
+              <a href="#related-resources">Related Resources</a>
             </div>
           </div>
         </div>
@@ -898,8 +1073,8 @@ async function initDetail(){
 
     root.innerHTML = `
       <div class="row g-3">
-        <div class="col-lg-9">${mainHero}</div>
-        <div class="col-lg-3">${sidebar}</div>
+        <div class="col-lg-8">${mainHero}</div>
+        <div class="col-lg-4">${sidebar}</div>
       </div>
     `;
 
