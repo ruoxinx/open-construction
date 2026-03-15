@@ -116,8 +116,88 @@ function normalizeList(val){
 function prettyTermLabel(raw){
   const key = normKey(raw).replace(/[_-]+/g, ' ');
   if (!key) return '';
+  const preferred = {
+    'object detection': 'Object Detection',
+    'semantic segmentation': 'Semantic Segmentation',
+    'object segmentation': 'Object Segmentation',
+    'image captioning': 'Image Captioning',
+    'action recognition': 'Action Recognition',
+    'crew activity recognition': 'Crew Activity Recognition',
+    'simultaneous localization and mapping': 'Simultaneous Localization and Mapping',
+    'pose estimation': 'Pose Estimation',
+    'object tracking': 'Object Tracking',
+    'point cloud segmentation': 'Point Cloud Segmentation',
+    'point cloud generation': 'Point Cloud Generation',
+    'point cloud visualization': 'Point Cloud Visualization',
+    '3d reconstruction': '3D Reconstruction',
+    '3d registration': '3D Registration',
+    '3d rendering': '3D Rendering',
+    'image to image translation': 'Image-to-Image Translation',
+    'image synthesis': 'Image Synthesis',
+    'knowledge reasoning': 'Knowledge Reasoning',
+    'knowledge graph construction': 'Knowledge Graph Construction',
+    'information retrieval': 'Information Retrieval',
+    'question answering': 'Question Answering',
+    'visual question answering': 'Visual Question Answering',
+    'video qa': 'Video QA',
+    'vision language reasoning': 'Vision-Language Reasoning',
+    'scan to bim': 'Scan-to-BIM',
+    'text to bim': 'Text-to-BIM',
+    'floorplan to bim': 'Floorplan-to-BIM',
+    '2d to bim reconstruction': '2D-to-BIM Reconstruction',
+    'bim object classification': 'BIM Object Classification',
+    'bim alignment': 'BIM Alignment',
+    'semantic bim change detection': 'Semantic BIM Change Detection',
+    'cad generation': 'CAD Generation',
+    'model context protocol': 'Model Context Protocol',
+    'building localization': 'Building Localization',
+    'damage classification': 'Damage Classification',
+    'sewer defect classification': 'Sewer Defect Classification',
+    'safety monitoring': 'Safety Monitoring',
+    'site understanding': 'Site Understanding',
+    'structural condition monitoring': 'Structural Condition Monitoring',
+    'site mapping and navigation': 'Site Mapping and Navigation',
+    'automated structural design': 'Automated Structural Design',
+    'conceptual design': 'Conceptual Design',
+    'compliance checking': 'Compliance Checking',
+    'quality control': 'Quality Control',
+    'shear wall layout generation': 'Shear Wall Layout Generation',
+    'plan recognition': 'Plan Recognition',
+    'as built bim generation': 'As-Built BIM Generation',
+    'ergonomic assessment': 'Ergonomic Assessment',
+    'productivity monitoring': 'Productivity Monitoring',
+    'floorplan generation': 'Floorplan Generation',
+    'building energy analysis': 'Building Energy Analysis',
+    '3d building mesh generation': '3D Building Mesh Generation',
+    'design brief automation': 'Design Brief Automation',
+    'historic digital survey': 'Historic Digital Survey',
+    'progress monitoring': 'Progress Monitoring',
+    'knowledge management': 'Knowledge Management',
+    'change detection': 'Change Detection',
+    'lod3 building model generation': 'LOD3 Building Model Generation',
+    'digital twin enrichment': 'Digital Twin Enrichment',
+    'digital twin generation': 'Digital Twin Generation',
+    'computer aided design': 'Computer-Aided Design',
+    'video based ui understanding': 'Video-Based UI Understanding',
+    'work package generation': 'Work Package Generation',
+    'bim authoring assistance': 'BIM Authoring Assistance',
+    'blockchain enabled bim management': 'Blockchain-Enabled BIM Management',
+    'design change auditing': 'Design Change Auditing',
+    'cross platform bim data exchange': 'Cross-Platform BIM Data Exchange',
+    'asset management': 'Asset Management',
+    'post disaster damage assessment': 'Post-Disaster Damage Assessment',
+    'post disaster assessment': 'Post-Disaster Assessment',
+    'building performance simulation': 'Building Performance Simulation',
+    'energy modelling': 'Energy Modelling',
+    'hvac model generation': 'HVAC Model Generation',
+    'life cycle assessment': 'Life Cycle Assessment',
+    'structural defect detection': 'Structural Defect Detection',
+    'pipeline leakage detection': 'Pipeline Leakage Detection',
+    'subsurface infrastructure monitoring': 'Subsurface Infrastructure Monitoring'
+  };
+  if (preferred[key]) return preferred[key];
   return key.split(' ').map(token => {
-    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm)$/i.test(token)) {
+    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod3|ui|pcd)$/i.test(token)) {
       return token.toUpperCase();
     }
     return token.charAt(0).toUpperCase() + token.slice(1);
@@ -859,7 +939,6 @@ async function initDetail(){
     window.OC?.setBadges?.({
       modality: safeText(ds.data_modality) === '—' ? '' : ds.data_modality,
       tasks: uniquePrettyTerms(ds.potential_tasks).join(', '),
-      applications: uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case).join(', '),
       license: (safeText(ds.license) === '—') ? '' : ds.license
     });
 
@@ -881,7 +960,6 @@ async function initDetail(){
       { label: datasetSampleLabel, value: escapeHtml(safeFormatInt(ds.num_images)) },
       { label: 'Classes', value: escapeHtml(safeFormatInt(ds.num_classes)) },
       { label: 'Primary Task', value: datasetTaskList.length ? escapeHtml(datasetTaskList[0]) : '—' },
-      { label: 'Primary Application', value: datasetApplicationList.length ? escapeHtml(datasetApplicationList[0]) : '—' },
       { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
       { label: 'License', value: formatLicense(ds.license) || '—' }
     ];
@@ -1056,7 +1134,6 @@ async function initDetail(){
           ${metaRow('Data · Classes', datasetCountSummary(ds))}
           ${metaRow('Modality', chipLane(ds.data_modality))}
           ${metaRow('Tasks', chipLane(datasetTaskList))}
-          ${metaRow('Applications', chipLane(datasetApplicationList))}
           ${metaRow('Classes', chipLane(ds.classes))}
           ${metaRow('Annotations', chipLane(ds.annotation_types))}
           ${metaRow('IFC / Source files', chipLane(ds.data_type || ds.file_types || ds.formats || ''))}

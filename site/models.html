@@ -430,6 +430,94 @@ function esc(s){
 
 /* ===== Normalizers & splitters ===== */
 function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+function prettyTermLabel(raw){
+  const key = normKey(raw);
+  if (!key) return '';
+  const preferred = {
+    'object detection': 'Object Detection',
+    'semantic segmentation': 'Semantic Segmentation',
+    'object segmentation': 'Object Segmentation',
+    'image captioning': 'Image Captioning',
+    'action recognition': 'Action Recognition',
+    'crew activity recognition': 'Crew Activity Recognition',
+    'simultaneous localization and mapping': 'Simultaneous Localization and Mapping',
+    'pose estimation': 'Pose Estimation',
+    'object tracking': 'Object Tracking',
+    'point cloud segmentation': 'Point Cloud Segmentation',
+    'point cloud generation': 'Point Cloud Generation',
+    'point cloud visualization': 'Point Cloud Visualization',
+    '3d reconstruction': '3D Reconstruction',
+    '3d registration': '3D Registration',
+    '3d rendering': '3D Rendering',
+    'image to image translation': 'Image-to-Image Translation',
+    'image synthesis': 'Image Synthesis',
+    'knowledge reasoning': 'Knowledge Reasoning',
+    'knowledge graph construction': 'Knowledge Graph Construction',
+    'information retrieval': 'Information Retrieval',
+    'question answering': 'Question Answering',
+    'visual question answering': 'Visual Question Answering',
+    'video qa': 'Video QA',
+    'vision language reasoning': 'Vision-Language Reasoning',
+    'scan to bim': 'Scan-to-BIM',
+    'text to bim': 'Text-to-BIM',
+    'floorplan to bim': 'Floorplan-to-BIM',
+    '2d to bim reconstruction': '2D-to-BIM Reconstruction',
+    'bim object classification': 'BIM Object Classification',
+    'bim alignment': 'BIM Alignment',
+    'semantic bim change detection': 'Semantic BIM Change Detection',
+    'cad generation': 'CAD Generation',
+    'model context protocol': 'Model Context Protocol',
+    'building localization': 'Building Localization',
+    'damage classification': 'Damage Classification',
+    'sewer defect classification': 'Sewer Defect Classification',
+    'safety monitoring': 'Safety Monitoring',
+    'site understanding': 'Site Understanding',
+    'structural condition monitoring': 'Structural Condition Monitoring',
+    'site mapping and navigation': 'Site Mapping and Navigation',
+    'automated structural design': 'Automated Structural Design',
+    'conceptual design': 'Conceptual Design',
+    'compliance checking': 'Compliance Checking',
+    'quality control': 'Quality Control',
+    'shear wall layout generation': 'Shear Wall Layout Generation',
+    'plan recognition': 'Plan Recognition',
+    'as built bim generation': 'As-Built BIM Generation',
+    'ergonomic assessment': 'Ergonomic Assessment',
+    'productivity monitoring': 'Productivity Monitoring',
+    'floorplan generation': 'Floorplan Generation',
+    'building energy analysis': 'Building Energy Analysis',
+    '3d building mesh generation': '3D Building Mesh Generation',
+    'design brief automation': 'Design Brief Automation',
+    'historic digital survey': 'Historic Digital Survey',
+    'progress monitoring': 'Progress Monitoring',
+    'knowledge management': 'Knowledge Management',
+    'change detection': 'Change Detection',
+    'lod3 building model generation': 'LOD3 Building Model Generation',
+    'digital twin enrichment': 'Digital Twin Enrichment',
+    'digital twin generation': 'Digital Twin Generation',
+    'computer aided design': 'Computer-Aided Design',
+    'video based ui understanding': 'Video-Based UI Understanding',
+    'work package generation': 'Work Package Generation',
+    'bim authoring assistance': 'BIM Authoring Assistance',
+    'blockchain enabled bim management': 'Blockchain-Enabled BIM Management',
+    'design change auditing': 'Design Change Auditing',
+    'cross platform bim data exchange': 'Cross-Platform BIM Data Exchange',
+    'asset management': 'Asset Management',
+    'post disaster damage assessment': 'Post-Disaster Damage Assessment',
+    'post disaster assessment': 'Post-Disaster Assessment',
+    'building performance simulation': 'Building Performance Simulation',
+    'energy modelling': 'Energy Modelling',
+    'hvac model generation': 'HVAC Model Generation',
+    'life cycle assessment': 'Life Cycle Assessment',
+    'structural defect detection': 'Structural Defect Detection',
+    'pipeline leakage detection': 'Pipeline Leakage Detection',
+    'subsurface infrastructure monitoring': 'Subsurface Infrastructure Monitoring'
+  };
+  if (preferred[key]) return preferred[key];
+  return key.split(' ').map(tok=>{
+    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i.test(tok)) return tok.toUpperCase();
+    return tok.charAt(0).toUpperCase()+tok.slice(1);
+  }).join(' ');
+}
 /* Split by comma / slash / pipe / ampersand / plus — DO NOT split the word "and" */
 function splitTags(input){
   if (input == null) return [];
@@ -437,8 +525,9 @@ function splitTags(input){
   const parts = str.split(/[,\/|&+]/g).map(p => p && p.trim()).filter(Boolean);
   const seen = new Set(); const out = [];
   for (const p of parts){
-    const k = normKey(p);
-    if (!seen.has(k)){ seen.add(k); out.push(p); }
+    const label = prettyTermLabel(p) || p;
+    const k = normKey(label);
+    if (!seen.has(k)){ seen.add(k); out.push(label); }
   }
   return out;
 }
