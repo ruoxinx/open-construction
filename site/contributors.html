@@ -234,7 +234,35 @@
     .logo-wall img:hover{ transform:scale(1.03); }
 
     /* Map */
-    #visitorMap{ height:360px; border-radius:12px; border:1px solid var(--oc-border); box-shadow:var(--oc-shadow); }
+    .reach-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      overflow:hidden;
+    }
+    .reach-map-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+      padding:1rem 1.15rem .8rem;
+      border-bottom:1px solid var(--oc-border);
+      background:linear-gradient(180deg,#fff,#fbfdff);
+    }
+    .reach-note{
+      color:var(--oc-subtle);
+      font-size:.92rem;
+      margin:0;
+      max-width:70ch;
+    }
+    #visitorMap{
+      height:clamp(320px, 44vw, 460px);
+      border-radius:0;
+      border:0;
+      box-shadow:none;
+    }
 
     /* Focus */
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
@@ -343,7 +371,9 @@
       .metric svg{width:94px;height:94px}
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
-      #visitorMap{height:280px}
+      .reach-map-head{padding:.9rem 1rem .75rem}
+      .reach-note{font-size:.88rem}
+      #visitorMap{height:300px}
       .news-card .card-body{padding:1rem}
       .news-meta{font-size:.88rem}
       .community-links{grid-template-columns:1fr}
@@ -785,14 +815,16 @@
 
   <!-- Visitors (heatmap) -->
   <section class="oc-section mb-5" id="visitorMapSection">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <div>
-        <div class="oc-kicker">Visitors</div>
-        <h3 class="oc-card-title mb-0">Historical Visits</h3>
+    <div class="reach-card">
+      <div class="reach-map-head">
+        <div>
+          <div class="oc-kicker">Platform Reach</div>
+          <h3 class="oc-card-title mb-0">Aggregated visit footprint</h3>
+        </div>
+        <p class="reach-note">Aggregated, privacy-preserving visit locations inferred from anonymized homepage traffic. No raw IP addresses are stored.</p>
       </div>
+      <div id="visitorMap" aria-label="Platform reach map"></div>
     </div>
-    <div id="visitorMap" aria-label="Visitor map"></div>
-    <p class="text-muted small mt-2 mb-0">Aggregated locations for the homepage only. No raw IPs stored.</p>
   </section>
 </main>
 
