@@ -465,36 +465,40 @@ async function initDetail(){
       function modelHref(model){
         return `details.html?id=${encodeURIComponent(model.id || model.title || '')}`;
       }
-      function scoreOverlap(a, b){
-        const setA = new Set(normalizeList(a).map(normKey));
-        const setB = new Set(normalizeList(b).map(normKey));
-        let score = 0;
-        setA.forEach(v => { if (setB.has(v)) score += 1; });
-        return score;
-      }
-      const relatedDatasets = datasets
-        .map(ds => {
-          const trainMatch = trainingList.some(name => {
-            const target = normKey(name);
-            return target && [ds.id, ds.name].some(v => normKey(v) === target);
-          });
-          const taskScore = scoreOverlap(taskList, ds.potential_tasks);
-          const modalityScore = scoreOverlap(modalityList, ds.data_modality);
-          const score = (trainMatch ? 5 : 0) + taskScore * 2 + modalityScore;
-          return score > 0 ? { ds, score } : null;
-        })
-        .filter(Boolean)
-        .sort((a, b) => b.score - a.score || (b.ds.year || 0) - (a.ds.year || 0))
-        .slice(0, 3)
-        .map(({ ds }) => ds);
+    function scoreOverlap(a, b){
+      const setA = new Set(normalizeList(a).map(normKey));
+      const setB = new Set(normalizeList(b).map(normKey));
+      let score = 0;
+      setA.forEach(v => { if (setB.has(v)) score += 1; });
+      return score;
+    }
+    const relatedDatasets = datasets
+      .map(ds => {
+        const trainMatch = trainingList.some(name => {
+          const target = normKey(name);
+          return target && [ds.id, ds.name].some(v => normKey(v) === target);
+        });
+        const taskScore = scoreOverlap(taskList, ds.potential_tasks);
+        const applicationScore = scoreOverlap(appList, ds.applications || ds.application || ds.use_cases || ds.use_case);
+        const modalityScore = scoreOverlap(modalityList, ds.data_modality);
+        const score = (trainMatch ? 8 : 0) + taskScore * 4 + applicationScore * 2 + modalityScore;
+        const hasStrongSignal = trainMatch || taskScore > 0 || applicationScore > 0;
+        return hasStrongSignal ? { ds, score } : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score || (b.ds.year || 0) - (a.ds.year || 0))
+      .slice(0, 3)
+      .map(({ ds }) => ds);
 
       const relatedModels = arr
         .filter(other => other && other !== m)
         .map(other => {
-          const score = scoreOverlap(taskList, other.tasks || other.task)
-            + scoreOverlap(appList, other.applications || other.application)
-            + scoreOverlap(modalityList, other.modalities || other.modality || other.data_modalities);
-          return score > 0 ? { other, score } : null;
+          const taskScore = scoreOverlap(taskList, other.tasks || other.task);
+          const applicationScore = scoreOverlap(appList, other.applications || other.application);
+          const modalityScore = scoreOverlap(modalityList, other.modalities || other.modality || other.data_modalities);
+          const score = taskScore * 4 + applicationScore * 2 + modalityScore;
+          const hasStrongSignal = taskScore > 0 || applicationScore > 0;
+          return hasStrongSignal ? { other, score } : null;
         })
         .filter(Boolean)
         .sort((a, b) => b.score - a.score || (b.other.year || 0) - (a.other.year || 0))
@@ -871,10 +875,13 @@ async function initDetail(){
     const relatedDatasets = Object.values(dataObj || {})
       .filter(other => other && other !== ds)
       .map(other => {
-        const score = scoreOverlap(datasetTaskList, other.potential_tasks)
-          + scoreOverlap(datasetModalityList, other.data_modality)
-          + Math.min(scoreOverlap(datasetClassList, other.classes), 2);
-        return score > 0 ? { other, score } : null;
+        const taskScore = scoreOverlap(datasetTaskList, other.potential_tasks);
+        const applicationScore = scoreOverlap(ds.applications || ds.application || ds.use_cases || ds.use_case, other.applications || other.application || other.use_cases || other.use_case);
+        const modalityScore = scoreOverlap(datasetModalityList, other.data_modality);
+        const classScore = Math.min(scoreOverlap(datasetClassList, other.classes), 2);
+        const score = taskScore * 4 + applicationScore * 2 + modalityScore + classScore;
+        const hasStrongSignal = taskScore > 0 || applicationScore > 0;
+        return hasStrongSignal ? { other, score } : null;
       })
       .filter(Boolean)
       .sort((a, b) => b.score - a.score || (b.other.year || 0) - (a.other.year || 0))
@@ -883,13 +890,16 @@ async function initDetail(){
 
     const relatedModels = modelArr
       .map(model => {
-        const score = scoreOverlap(datasetTaskList, model.tasks || model.task || model.potential_tasks)
-          + scoreOverlap(datasetModalityList, model.modalities || model.modality || model.data_modalities)
-          + normalizeList(model.training_data || model.datasets || model.dataset).some(v => {
+        const taskScore = scoreOverlap(datasetTaskList, model.tasks || model.task || model.potential_tasks);
+        const applicationScore = scoreOverlap(ds.applications || ds.application || ds.use_cases || ds.use_case, model.applications || model.application);
+        const modalityScore = scoreOverlap(datasetModalityList, model.modalities || model.modality || model.data_modalities);
+        const trainMatch = normalizeList(model.training_data || model.datasets || model.dataset).some(v => {
             const key = normKey(v);
             return key && [ds.id, ds.name].some(name => normKey(name) === key);
-          }) * 4;
-        return score > 0 ? { model, score } : null;
+          });
+        const score = (trainMatch ? 8 : 0) + taskScore * 4 + applicationScore * 2 + modalityScore;
+        const hasStrongSignal = trainMatch || taskScore > 0 || applicationScore > 0;
+        return hasStrongSignal ? { model, score } : null;
       })
       .filter(Boolean)
       .sort((a, b) => b.score - a.score || (b.model.year || 0) - (a.model.year || 0))
