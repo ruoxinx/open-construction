@@ -81,6 +81,18 @@
          </div>`
       : '';
 
+  function ensureCardInteractionStyles(){
+    if (document.getElementById('oer-card-click-style')) return;
+    const style = document.createElement('style');
+    style.id = 'oer-card-click-style';
+    style.textContent = `
+      .oer-card.clickable{cursor:pointer;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+      .oer-card.clickable:hover{transform:translateY(-1px);border-color:#d7e1eb;box-shadow:0 10px 26px rgba(15,46,75,.09)}
+      .oer-card.clickable:focus-visible{outline:3px solid rgba(11,102,195,.18);outline-offset:2px}
+    `;
+    document.head.appendChild(style);
+  }
+
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
 
@@ -242,7 +254,7 @@
 
       els.grid.insertAdjacentHTML('beforeend', `
         <div class="col-12">
-          <article class="oer-card">
+          <article class="oer-card clickable" tabindex="0" role="link" aria-label="View details for ${esc(r.title || 'this OER')}" data-detail-href="${href}">
             <div class="d-flex gap-3 align-items-start">
               <div class="left">
                 <img src="${img}" alt="${esc(r.title)} image" onerror="this.src='${placeholderImg}'">
@@ -379,6 +391,7 @@
   async function init(){
     showSkeleton();
     try{
+      ensureCardInteractionStyles();
       const yearNow = document.getElementById('yearNow');
       if (yearNow) yearNow.textContent = new Date().getFullYear();
       const paths = Array.isArray(window.OER_JSON_PATHS) && window.OER_JSON_PATHS.length
@@ -416,4 +429,22 @@
   }
 
   init();
+
+  document.addEventListener('click', (e)=>{
+    const card = e.target.closest('.oer-card.clickable');
+    if(!card) return;
+    if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+    const href = card.dataset.detailHref;
+    if(href) window.location.href = href;
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    const card = e.target.closest('.oer-card.clickable');
+    if(!card) return;
+    if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    const href = card.dataset.detailHref;
+    if(href) window.location.href = href;
+  });
 })();

@@ -562,18 +562,19 @@ function cardHTML(ds){
   const id   = ds.id || ds.name;
   const slug = encodeURIComponent(id);
   const img  = ds.image_url || 'assets/img/placeholder/placeholder.png';
+  const detailHref = `datasets/detail.html?id=${slug}`;
 
   // Build the overlay tag only when contributor info exists
-  const submittedByHTML = (ds.contributor || ds.contributor_url)
+  const submittedByHTML = ds.contributor
     ? `<div class="submitted-by">
-         <a href="${ds.contributor_url || '#'}" target="_blank" rel="noopener">
-           Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>
-         </a>
+         ${ds.contributor_url
+           ? `<a href="${ds.contributor_url}" target="_blank" rel="noopener">Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong></a>`
+           : `Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>`}
        </div>`
     : '';
 
   return `<div class="col-md-6 col-xl-4">
-    <div class="card dataset-card h-100 shadow-sm">
+    <div class="card dataset-card clickable h-100 shadow-sm" tabindex="0" role="link" aria-label="View details for ${ds.name}" data-detail-href="${detailHref}">
       <div class="thumb">
         <img src="${img}" alt="${ds.name} preview" loading="lazy" decoding="async"
              onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
@@ -581,7 +582,7 @@ function cardHTML(ds){
       </div>
       <div class="card-body d-flex flex-column">
         <div class="d-flex justify-content-between align-items-start">
-          <h6 class="card-title me-2">${ds.name}</h6>
+          <h6 class="card-title me-2"><a class="text-decoration-none text-dark" href="${detailHref}">${ds.name}</a></h6>
           <span class="badge text-bg-light">${ds.year ?? '—'}</span>
         </div>
         <div class="small text-muted mb-1">
@@ -591,7 +592,7 @@ function cardHTML(ds){
           Data <strong>${formatInt(ds.num_images)}</strong> · Classes <strong>${formatInt(ds.num_classes)}</strong>
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
-          <a class="btn btn-sm btn-primary" href="datasets/detail.html?id=${slug}">View details</a>
+          <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
           ${ds.added_date ? `<span class="badge text-bg-light ms-auto fw-normal">Added ${ds.added_date}</span>` : ''}
         </div>
       </div>
@@ -604,6 +605,19 @@ function cardHTML(ds){
 function injectThumbStyles(){
   if (document.getElementById('thumb-style')) return;
   const css = `
+    .dataset-card.clickable{
+      cursor:pointer;
+      transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease;
+    }
+    .dataset-card.clickable:hover{
+      transform:translateY(-1px);
+      border-color:#d7e1eb;
+      box-shadow:0 10px 26px rgba(15,46,75,.09)!important;
+    }
+    .dataset-card.clickable:focus-visible{
+      outline:3px solid rgba(11,102,195,.18);
+      outline-offset:2px;
+    }
     .dataset-card .thumb{
       position: relative;
       width:100%;
@@ -694,3 +708,21 @@ async function init(){
   applyFilters();
 }
 document.addEventListener('DOMContentLoaded', init);
+
+document.addEventListener('click', (e)=>{
+  const card = e.target.closest('.dataset-card.clickable');
+  if(!card) return;
+  if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+  const href = card.dataset.detailHref;
+  if(href) window.location.href = href;
+});
+
+document.addEventListener('keydown', (e)=>{
+  const card = e.target.closest('.dataset-card.clickable');
+  if(!card) return;
+  if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  const href = card.dataset.detailHref;
+  if(href) window.location.href = href;
+});
