@@ -976,7 +976,6 @@ async function initDetail(){
               <div class="chip-lane">
                 ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
                 ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${((ds.num_images || ds.num_classes) ? `<span class="chip">${escapeHtml(`${safeFormatInt(ds.num_images)} images · ${safeFormatInt(ds.num_classes)} classes`)}</span>` : '')}
               </div>
             </div>
           </div>
