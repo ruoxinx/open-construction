@@ -132,6 +132,37 @@
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+    .section-intro{ max-width:68ch; color:var(--oc-subtle); margin-bottom:1rem; }
+    .path-grid{ display:grid; gap:1rem; grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .path-card{ height:100%; }
+    .path-card .oc-card-body{ padding:1.1rem 1.15rem; }
+    .path-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
+    .path-list li + li{ margin-top:.35rem; }
+    .step-grid{ display:grid; gap:1rem; grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .step-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+      padding:1.05rem 1rem;
+      height:100%;
+    }
+    .step-num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      background:#eef4fb;
+      color:var(--oc-ink);
+      font-weight:800;
+      margin-bottom:.7rem;
+    }
+    .step-title{ font-weight:700; color:var(--oc-ink); margin-bottom:.35rem; }
+    .link-cards{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .link-cards .oc-card-body{ padding:1rem 1.05rem; }
+    .link-cards p{ margin:0; color:var(--oc-subtle); }
 
     /* People cards */
     .person-card{ transition:transform .12s ease; }
@@ -264,6 +295,9 @@
       .metric svg{width:94px;height:94px}
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
+      .path-grid,
+      .step-grid,
+      .link-cards{ grid-template-columns:1fr; }
       .issue-btn{
         right:14px;
         bottom:14px;
@@ -397,59 +431,59 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Contribute to OpenConstruction Ecosystem</h1>
+    <h1>Contribute to OpenConstruction</h1>
 	<p class="lead">
-	  Become a steward of the <span class="hl">open science ecosystem for AEC</span>:
-	  contribute resources, review contributions, and
-	  <span class="hl">co-develop and maintain the platform</span>.
+	  Help grow an <span class="hl">open science ecosystem for AI in AEC</span> by proposing resources,
+	  improving metadata, reviewing submissions, and helping shape the platform.
 	</p>
 
   </div>
 </header>
 
 <main class="container oc-container">
-  <!-- Roles & Pathways -->
+  <!-- Ways to help -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Roles &amp; Pathways</div>
-    <div class="row g-4">
-      <div class="col-md-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <h3 class="oc-card-title mb-2">Core Maintainers</h3>
-            <p>Provide strategic stewardship across all modules, uphold governance rules and facilitate consensus on major decisions. Core maintainers rotate on a fixed term.</p>
-          </div>
+    <div class="oc-kicker mb-2">Ways to Help</div>
+    <p class="section-intro">OpenConstruction works best when contributions are easy to understand and easy to review. Most people start with one of these paths.</p>
+    <div class="path-grid">
+      <div class="oc-card path-card">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title mb-2">Propose Resources</h3>
+          <ul class="path-list">
+            <li>Add a dataset, model, workflow, or OER using the GitHub submission templates.</li>
+            <li>Share links, source metadata, and enough context for others to evaluate the resource.</li>
+            <li>Help fill important gaps in tasks, modalities, and domains across AEC.</li>
+          </ul>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <h3 class="oc-card-title mb-2">Module Maintainers</h3>
-            <p>Oversee a specific module (Datasets, Models, Use Cases, OERs, Tools, Guides). They review pull requests, update metadata and coordinate releases for their module.</p>
-          </div>
+      <div class="oc-card path-card">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title mb-2">Improve Existing Records</h3>
+          <ul class="path-list">
+            <li>Correct metadata, add missing licenses, improve links, and clarify abstracts or tags.</li>
+            <li>Strengthen discoverability by refining tasks, modalities, and structured fields.</li>
+            <li>Report broken links, outdated resources, or inconsistent labels.</li>
+          </ul>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <h3 class="oc-card-title mb-2">Stewards &amp; Reviewers</h3>
-            <p>Mentor new contributors and ensure submissions meet quality and licensing requirements. Review editors manage peer review for proposals and coordinate with maintainers.</p>
-          </div>
+      <div class="oc-card path-card">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title mb-2">Review and Steward</h3>
+          <ul class="path-list">
+            <li>Review proposed additions for quality, attribution, and licensing completeness.</li>
+            <li>Help new contributors prepare submissions that are easier to merge and maintain.</li>
+            <li>Support module-level curation as the catalog grows.</li>
+          </ul>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <h3 class="oc-card-title mb-2">Release Leads</h3>
-            <p>Organise regular releases of the platform, collate changelogs and recognise contributions from across the community.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="oc-card h-100">
-          <div class="oc-card-body">
-            <h3 class="oc-card-title mb-2">Community Contributors</h3>
-            <p>Everyone can contribute! Whether by proposing new resources, improving metadata, reviewing pull requests or suggesting roadmap items, community contributors sustain and grow the ecosystem. Active contributors may be nominated to become maintainers.</p>
-          </div>
+      <div class="oc-card path-card">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title mb-2">Build the Platform</h3>
+          <ul class="path-list">
+            <li>Contribute to schemas, validation scripts, benchmarks, UI improvements, and guides.</li>
+            <li>Help shape roadmap priorities through issues, discussions, and implementation work.</li>
+            <li>Active contributors may grow into longer-term stewardship roles over time.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -457,54 +491,71 @@
 
   <!-- Contribution Process -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Contribution Process</div>
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <h3 class="oc-card-title mb-2">How to Contribute</h3>
-        <p>OpenConstruction uses a transparent, pull‑request based workflow. Follow these steps:</p>
-        <ol class="mb-3">
-          <li>Start by opening a GitHub issue using the appropriate template. Describe your proposal clearly and include links or examples.</li>
-          <li>Fork the relevant repository and prepare your addition or improvement. Use the provided metadata templates and validation scripts.</li>
-          <li>Submit a pull request. At least one other contributor will review your changes.</li>
-          <li>After peer review, a module maintainer merges the PR. Your contribution will appear in the next catalog release and you will be credited.</li>
-        </ol>
-        <p class="mb-0">Need help? Join our <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+    <div class="oc-kicker mb-2">Process</div>
+    <p class="section-intro">OpenConstruction uses a transparent review workflow so that contributions stay traceable, discussable, and easy to improve over time.</p>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Open an issue</div>
+        <p class="mb-0">Start with the right GitHub template and describe the resource, correction, or idea clearly.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Prepare the content</div>
+        <p class="mb-0">Use the existing metadata structure, include source links, and provide enough context for review.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Review and revision</div>
+        <p class="mb-0">Contributors and maintainers review for quality, attribution, consistency, and licensing clarity.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-title">Merge and credit</div>
+        <p class="mb-0">Approved changes are merged into the catalog and credited in the public platform history.</p>
       </div>
     </div>
   </section>
 
-  <!-- Technical Guidelines -->
+  <!-- Standards -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Technical Guidelines</div>
+    <div class="oc-kicker mb-2">Standards</div>
     <div class="oc-card">
       <div class="oc-card-body">
         <h3 class="oc-card-title mb-2">Contribution Standards</h3>
         <ul class="mb-3">
-          <li>Use the standardized metadata schemas. These templates ensure that resources are discoverable and interoperable.</li>
-          <li>Ensure your resource includes a clear license (e.g., CC BY 4.0 for datasets, MIT for code).</li>
-          <li>Provide descriptive titles, abstracts and keywords. Include file counts, modalities, tasks and object classes where applicable.</li>
-          <li>Cite sources and give proper attribution to original authors and institutions.</li>
-          <li>Respect privacy and ethical considerations; anonymize personal data and obtain necessary consents.</li>
-		  <li>
-		  Contributions may also include improvements to schemas, validation scripts,
-		  benchmarks, and documentation that support the platform.
-		</li>
-
+          <li>Use the standardized metadata schemas so resources stay discoverable and interoperable.</li>
+          <li>Include a clear license and preserve attribution to original authors, institutions, and sources.</li>
+          <li>Provide descriptive titles, abstracts, tasks, modalities, and other structured metadata where applicable.</li>
+          <li>Respect privacy, consent, and ethical sharing expectations for any data-related contribution.</li>
+		  <li>Platform contributions can also improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
         </ul>
-        <p class="mb-0">Templates and validation scripts are available in our GitHub repository. </p>
+        <p class="mb-0">Templates and validation scripts are available in the GitHub repository, and unclear cases can be discussed before submission.</p>
       </div>
     </div>
   </section>
 
-  <!-- Community Roadmap -->
+  <!-- Get started -->
   <section class="oc-section">
-    <div class="oc-kicker mb-2">Community Roadmap</div>
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <h3 class="oc-card-title mb-2">Shape the Future</h3>
-        <p>The OpenConstruction roadmap is built by its community. Proposed features, module improvements and tooling enhancements are tracked publicly. Anyone can suggest an item or volunteer to lead an effort.</p>
-        <p>See our current roadmap and open issues on GitHub Projects or our <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a>. Major roadmap milestones are ratified through our governance process and scheduled into quarterly or biannual releases.</p>
-        <p class="mb-0">To suggest a roadmap item or volunteer for an initiative, create a new discussion post or open an issue. Your ideas help guide where OpenConstruction goes next.</p>
+    <div class="oc-kicker mb-2">Get Started</div>
+    <div class="link-cards">
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Open a Submission</h3>
+          <p>Use the GitHub issue templates to propose a dataset, model, workflow, OER, or platform improvement.</p>
+        </div>
+      </div>
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Ask Questions</h3>
+          <p>Join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a> if you want feedback before preparing a full contribution.</p>
+        </div>
+      </div>
+      <div class="oc-card h-100">
+        <div class="oc-card-body">
+          <h3 class="oc-card-title h6 mb-2">Shape the Roadmap</h3>
+          <p>Suggest roadmap items, volunteer for improvements, or coordinate community efforts through discussions and issues.</p>
+        </div>
       </div>
     </div>
   </section>
