@@ -1582,11 +1582,11 @@
         description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
         meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
         year: r.year,
-        href: r.source || 'oer.html',
+        href: `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`,
         image: r.image || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(r.added || r.added_date),
-        cta: 'View resource',
-        external: true
+        cta: 'View Details',
+        external: false
       }));
 
       return [...datasets, ...models, ...usecases, ...oers]
