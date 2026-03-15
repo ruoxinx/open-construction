@@ -808,6 +808,8 @@ async function initDetail(){
     const datasetTaskList = normalizeList(ds.potential_tasks);
     const datasetClassList = normalizeList(ds.classes);
     const datasetModalityList = normalizeList(ds.data_modality);
+    const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
+    const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
     const quickFacts = [
       { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
       { label: 'Images', value: escapeHtml(safeFormatInt(ds.num_images)) },
@@ -959,15 +961,11 @@ async function initDetail(){
             <div class="ds-body">
               <h1 class="ds-title">${ds.name}</h1>
               <div class="ds-year">(${ds.year ?? '—'})</div>
-              <dl class="meta">
-                ${metaRow('Summary', escapeHtml(truncateText([
-                  normalizeList(ds.data_modality)[0],
-                  normalizeList(ds.potential_tasks)[0],
-                  safeText(ds.resolution) !== '—' ? safeText(ds.resolution) : ''
-                ].filter(Boolean).join(' • ') || 'Structured dataset metadata and access information', 120)))}
-                ${metaRow('Access', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
-                ${metaRow('License', formatLicense(ds.license) || '—')}
-              </dl>
+              <div class="chip-lane">
+                ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                ${((ds.num_images || ds.num_classes) ? `<span class="chip">${escapeHtml(`${safeFormatInt(ds.num_images)} images · ${safeFormatInt(ds.num_classes)} classes`)}</span>` : '')}
+              </div>
             </div>
           </div>
         </div>
@@ -992,7 +990,10 @@ async function initDetail(){
         <div class="detail-kicker">Access & Usage</div>
         <h2 class="detail-heading">How to use this dataset</h2>
         <dl class="meta mb-0">
+          ${metaRow('Associated paper', datasetPaperTitle !== '—' ? escapeHtml(datasetPaperTitle) : '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
+          ${metaRow('Download', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
+          ${metaRow('License', formatLicense(ds.license) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
         </dl>
       </section>
@@ -1044,7 +1045,7 @@ async function initDetail(){
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
               ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
-              ${ds.doi ? `<a class="btn btn-outline-secondary btn-sm" href="${ds.doi}" target="_blank" rel="noopener">View paper</a>` : ''}
+              ${datasetPaperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${datasetPaperUrl}" target="_blank" rel="noopener">View paper</a>` : ''}
             </div>
           </div>
         </div>
