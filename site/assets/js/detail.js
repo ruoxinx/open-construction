@@ -509,6 +509,7 @@ async function initDetail(){
           .ds-body{ padding:24px 28px; }
           .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
           .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
+          .ds-meta-line{ color:var(--oc-sub); margin-bottom:.9rem; line-height:1.45; }
           .meta{ margin:0; }
           .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
           .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
@@ -590,12 +591,17 @@ async function initDetail(){
             <div class="col-lg-6">
               <div class="ds-body">
                 <h1 class="ds-title">${escapeHtml(modelTitle)}</h1>
-                <div class="ds-year">(${escapeHtml(year)})</div>
-                <dl class="meta">
-                  ${metaRow('Modalities', chipLane(modality))}
-                  ${metaRow('Tasks', chipLane(tasks))}
-                  ${metaRow('Applications', chipLane(applications))}
-                </dl>
+                <div class="ds-meta-line">${escapeHtml(
+                  [
+                    Array.isArray(m.authors) ? m.authors.join(', ') : safeText(m.authors || ''),
+                    year && year !== '—' ? year : ''
+                  ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
+                )}</div>
+                <div class="chip-lane">
+                  ${chipLane(modality).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                  ${chipLane(tasks.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                  ${chipLane(applications.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                </div>
               </div>
             </div>
           </div>
@@ -897,6 +903,7 @@ async function initDetail(){
         .ds-body{ padding:24px 28px; }
         .ds-title{ font-size:clamp(1.35rem,1.05rem + 1.2vw,2rem); font-weight:800; color:var(--oc-ink); margin-bottom:.25rem; }
         .ds-year{ color:var(--oc-sub); margin-bottom:1rem; }
+        .ds-meta-line{ color:var(--oc-sub); margin-bottom:.9rem; line-height:1.45; }
         .meta{ margin:0; }
         .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
         .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
@@ -960,7 +967,12 @@ async function initDetail(){
             <div class="col-lg-6">
             <div class="ds-body">
               <h1 class="ds-title">${ds.name}</h1>
-              <div class="ds-year">(${ds.year ?? '—'})</div>
+              <div class="ds-meta-line">${escapeHtml(
+                [
+                  Array.isArray(ds.authors) ? ds.authors.join(', ') : safeText(ds.authors || ''),
+                  safeText(ds.year ?? '') !== '—' ? safeText(ds.year ?? '') : ''
+                ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
+              )}</div>
               <div class="chip-lane">
                 ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
                 ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
