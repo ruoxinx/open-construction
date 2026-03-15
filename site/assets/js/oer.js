@@ -27,6 +27,7 @@
   const tokens = v => arrify(v).map(x => String(x || '').trim()).filter(Boolean);
   const has    = (h, n) => String(h || '').toLowerCase().includes(String(n || '').toLowerCase());
   const cssId  = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const detailHref = r => `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`;
 
   function showSkeleton(){ if(els.skeleton){ els.skeleton.removeAttribute('hidden'); } if(els.grid){ els.grid.setAttribute('hidden',''); } }
   function hideSkeleton(){ if(els.skeleton){ els.skeleton.setAttribute('hidden',''); } if(els.grid){ els.grid.removeAttribute('hidden'); } }
@@ -70,6 +71,7 @@
     const contributor_url = r.contributor_url || r.submitter_url || r.user_url || r.profile || '';
 
     return {
+      id: r.id || '',
       title, provider, image, source,
       language: tokens(language),
       topics: tokens(topics),
@@ -160,6 +162,7 @@
 
     list.forEach(r=>{
       const img   = r.image || placeholderImg;
+      const href  = detailHref(r);
       const langs = r.language.map(x=>`<span class="tag">${x}</span>`).join('');
       const tops  = r.topics.map(x=>`<span class="tag">${x}</span>`).join('');
       const meds  = r.media.map(x=>`<span class="tag">${x}</span>`).join('');
@@ -186,7 +189,7 @@
 
               <div class="flex-grow-1">
                 <h3 class="h6 title mb-1">
-                  <a href="${r.source}" target="_blank" rel="noopener" class="text-decoration-none text-dark">
+                  <a href="${href}" class="text-decoration-none text-dark">
                     ${r.title}
                   </a>
                 </h3>
@@ -200,6 +203,7 @@
                 <div class="small mb-3"><strong>License:</strong> <span class="tag ms-1">${lic}</span></div>
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+                  <a class="btn btn-sm btn-outline-secondary" href="${href}">View Details</a>
                   <a class="btn btn-sm btn-primary" href="${r.source}" target="_blank" rel="noopener">View Resource</a>
                   ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
                 </div>
