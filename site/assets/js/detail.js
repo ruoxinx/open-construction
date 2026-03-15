@@ -960,10 +960,13 @@ async function initDetail(){
               <h1 class="ds-title">${ds.name}</h1>
               <div class="ds-year">(${ds.year ?? '—'})</div>
               <dl class="meta">
-                ${metaRow('Modality', chipLane(ds.data_modality))}
-                ${metaRow('Resolution', safeText(ds.resolution))}
-                ${metaRow('Location', chipLane(ds.geographical_location))}
-                ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
+                ${metaRow('Summary', escapeHtml(truncateText([
+                  normalizeList(ds.data_modality)[0],
+                  normalizeList(ds.potential_tasks)[0],
+                  safeText(ds.resolution) !== '—' ? safeText(ds.resolution) : ''
+                ].filter(Boolean).join(' • ') || 'Structured dataset metadata and access information', 120)))}
+                ${metaRow('Access', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
+                ${metaRow('License', formatLicense(ds.license) || '—')}
               </dl>
             </div>
           </div>
@@ -975,8 +978,12 @@ async function initDetail(){
         <h2 class="detail-heading">What this dataset contains</h2>
         <dl class="meta mb-0">
           ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} images · ${safeFormatInt(ds.num_classes)} classes` : '')}
+          ${metaRow('Modality', chipLane(ds.data_modality))}
+          ${metaRow('Associated tasks', chipLane(ds.potential_tasks))}
           ${metaRow('Classes', chipLane(ds.classes))}
           ${metaRow('Annotations', chipLane(ds.annotation_types))}
+          ${metaRow('IFC / Source files', chipLane(ds.data_type || ds.file_types || ds.formats || ''))}
+          ${metaRow('Resolution', safeText(ds.resolution))}
           ${metaRow('Geographic context', chipLane(ds.geographical_location))}
         </dl>
       </section>
@@ -985,9 +992,7 @@ async function initDetail(){
         <div class="detail-kicker">Access & Usage</div>
         <h2 class="detail-heading">How to use this dataset</h2>
         <dl class="meta mb-0">
-          ${metaRow('License', formatLicense(ds.license) || '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
-          ${metaRow('Download', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
         </dl>
       </section>
