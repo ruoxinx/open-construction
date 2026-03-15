@@ -57,6 +57,9 @@
       background:var(--oc-card);border:1px solid var(--oc-border);border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);padding:1rem;height:100%
     }
+    .paper-card.clickable{cursor:pointer;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+    .paper-card.clickable:hover{transform:translateY(-1px);border-color:#d7e1eb;box-shadow:0 10px 26px rgba(15,46,75,.09)}
+    .paper-card.clickable:focus-visible{outline:3px solid rgba(11,102,195,.18);outline-offset:2px}
     .paper-card .left{
       width:160px;height:120px;flex:0 0 160px;border-radius:12px;background:#f4f7fb;
       display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--oc-border);
@@ -789,12 +792,17 @@ function render(items){
     const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
 
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
+    const detailHref = `models/details.html?id=${encodeURIComponent(m.id)}`;
 
     const safeFull  = esc(abstract);
     const safeShort = esc(shortAbs);
 
     const el = document.createElement('div');
-    el.className = 'paper-card';
+    el.className = 'paper-card clickable';
+    el.tabIndex = 0;
+    el.setAttribute('role', 'link');
+    el.setAttribute('aria-label', `View details for ${m.title || 'this model'}`);
+    el.dataset.detailHref = detailHref;
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
         <div class="left position-relative">
@@ -809,7 +817,7 @@ function render(items){
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="models/details.html?id=${encodeURIComponent(m.id)}">${m.title || 'Untitled'}</a></h3>
+          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${m.title || 'Untitled'}</a></h3>
 			${(() => {
 			  const licHTML = licenseLinkHTML(m.license);
 			  return `
@@ -850,7 +858,7 @@ function render(items){
 
           <!-- Actions + Added note -->
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-            <a class="btn btn-sm btn-primary" href="models/details.html?id=${encodeURIComponent(m.id)}">View details</a>
+            <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
             ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
           </div>
         </div>
@@ -886,6 +894,24 @@ document.addEventListener('click', (e)=>{
     btn.setAttribute('aria-expanded','true');
     const fade = p.querySelector('.abstract-fade'); if(fade) fade.remove();
   }
+});
+
+document.addEventListener('click', (e)=>{
+  const card = e.target.closest('.paper-card.clickable');
+  if(!card) return;
+  if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+  const href = card.dataset.detailHref;
+  if(href) window.location.href = href;
+});
+
+document.addEventListener('keydown', (e)=>{
+  const card = e.target.closest('.paper-card.clickable');
+  if(!card) return;
+  if(e.target.closest('a, button, input, label, select, textarea, summary')) return;
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  const href = card.dataset.detailHref;
+  if(href) window.location.href = href;
 });
 
 /* ---------------------------
