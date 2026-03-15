@@ -468,8 +468,8 @@ function render(items){
 			})()}
           ${tagsHTML}
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-            <a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View Details</a>
-            ${o.source?`<a class="btn btn-sm btn-primary" href="${o.source}" target="_blank" rel="noopener">View resource</a>`:''}
+            ${o.source?`<a class="btn btn-sm btn-outline-secondary" href="${o.source}" target="_blank" rel="noopener">Source</a>`:''}
+            <a class="btn btn-sm btn-primary" href="${detailHref}">View Details</a>
             ${o._added_fmt?`<span class="added-note ms-auto">${addedTxt}</span>`:''}
           </div>
         </div>

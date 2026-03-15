@@ -307,7 +307,7 @@ async function initOerDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">OER Links</h2>
                 <div class="d-grid gap-2">
-                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener">View Resource</a>` : ''}
+                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener">Source</a>` : ''}
                 </div>
               </div>
             </div>

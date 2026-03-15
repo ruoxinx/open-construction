@@ -203,8 +203,8 @@
                 <div class="small mb-3"><strong>License:</strong> <span class="tag ms-1">${lic}</span></div>
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-                  <a class="btn btn-sm btn-outline-secondary" href="${href}">View Details</a>
-                  <a class="btn btn-sm btn-primary" href="${r.source}" target="_blank" rel="noopener">View Resource</a>
+                  <a class="btn btn-sm btn-outline-secondary" href="${r.source}" target="_blank" rel="noopener">Source</a>
+                  <a class="btn btn-sm btn-primary" href="${href}">View Details</a>
                   ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
                 </div>
               </div>
