@@ -647,6 +647,7 @@ function render(items){
 
   items.forEach((u, idx)=>{
     const addedTxt = fmtAdded(u.added_date) ? `Added ${fmtAdded(u.added_date)}` : null;
+    const detailHref = `workflows/details.html?id=${encodeURIComponent(u.title || '')}`;
 
     const comps = companyLinks(u).map(c=>{
       return c.url
@@ -660,6 +661,7 @@ function render(items){
     const paperBtn = u.links?.paper  ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.paper}" target="_blank" rel="noopener">Paper</a>` : '';
     const codeBtn  = u.links?.code   ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.code}" target="_blank" rel="noopener">Code</a>` : '';
     const doiBtn   = u.links?.doi    ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>` : '';
+    const detailBtn = `<a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View details</a>`;
 
     const detailId = `uc-${idx}`;
     const detailsBtn = `<button class="btn btn-sm btn-link px-0 details-toggle" data-bs-toggle="collapse" data-bs-target="#${detailId}" aria-expanded="false" aria-controls="${detailId}">Show details</button>`;
@@ -686,7 +688,7 @@ function render(items){
         </div>
 
         <div class="d-flex flex-column gap-1">
-          <h3 class="h6 title mb-1">${escapeHTML(u.title || 'Untitled workflow')}</h3>
+          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${escapeHTML(u.title || 'Untitled workflow')}</a></h3>
 
           <div class="meta">
             ${typeof u.year==='number' ? u.year : '—'}${u.geography? (' • ' + escapeHTML(u.geography)):''}${comps? (' • ' + comps):''}
@@ -699,7 +701,7 @@ function render(items){
           ${u.summary ? `<p class="small m-0">${escapeHTML(u.summary)}</p>` : ''}
 
           <div class="actions mt-2">
-            ${srcBtn}${paperBtn}${codeBtn}${doiBtn}
+            ${srcBtn}${paperBtn}${codeBtn}${doiBtn}${detailBtn}
             ${detailsBtn}
             ${addedTxt ? `<span class="added-note ms-md-auto">${addedTxt}</span>` : ''}
           </div>
