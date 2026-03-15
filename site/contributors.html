@@ -147,9 +147,10 @@
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
     .section-intro{
-      max-width:68ch;
+      max-width:82ch;
       color:var(--oc-subtle);
       margin-bottom:1rem;
+      line-height:1.45;
     }
     .community-links{
       display:grid;
@@ -171,6 +172,21 @@
       height:100%;
     }
     .news-card .card-body{ padding:1.15rem 1.2rem; }
+    .news-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:1rem;
+      align-items:start;
+    }
+    .news-thumb{
+      width:100%;
+      max-width:220px;
+      aspect-ratio:16/10;
+      object-fit:cover;
+      border-radius:12px;
+      border:1px solid var(--oc-border);
+      background:#f6f9fc;
+    }
     .news-eyebrow{
       display:flex;
       align-items:center;
@@ -203,35 +219,14 @@
     }
     .news-summary{
       color:var(--oc-text);
-      margin-bottom:.85rem;
-    }
-    .news-list{
-      margin:0;
-      padding-left:1.15rem;
-      color:var(--oc-text);
-    }
-    .news-list li + li{ margin-top:.35rem; }
-    .news-speakers{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.4rem;
-      margin-top:.4rem;
-    }
-    .news-speaker{
-      display:inline-flex;
-      align-items:center;
-      padding:.26rem .6rem;
-      border-radius:999px;
-      background:var(--oc-muted);
-      border:1px solid var(--oc-border);
-      font-size:.8rem;
-      color:var(--oc-text);
+      margin-bottom:.7rem;
+      line-height:1.55;
     }
     .news-price-row{
       display:flex;
       gap:.5rem;
       flex-wrap:wrap;
-      margin:.85rem 0 0;
+      margin:.1rem 0 0;
     }
     .news-price{
       display:inline-flex;
@@ -376,6 +371,11 @@
       .news-meta{font-size:.88rem}
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
+    }
+    @media (min-width: 900px){
+      .news-layout.has-thumb{
+        grid-template-columns:220px minmax(0,1fr);
+      }
     }
   </style>
 
@@ -661,7 +661,7 @@
   <!-- Community Contributors -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Contributors/Labs</div>
-    <p class="section-intro">Researchers, labs, and practitioners who strengthen the catalog through submissions, validation, curation, and shared infrastructure.</p>
+    <p class="section-intro">Researchers, labs, and practitioners who strengthen the catalog through submissions, review, curation, and shared infrastructure.</p>
 
     <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
       <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
@@ -770,7 +770,7 @@
     <div class="mb-2">
       <div class="oc-kicker">News &amp; Events</div>
       <h3 class="oc-card-title mb-1">Workshops, talks, and community updates</h3>
-      <p class="text-muted mb-0">A lightweight feed of workshops, presentations, and milestones connected to the OpenConstruction community.</p>
+      <p class="text-muted mb-0">A lightweight feed of workshops, talks, and milestones connected to the OpenConstruction community.</p>
     </div>
     <div class="row g-4" id="newsEventsGrid">
       <div class="col-12">
@@ -1349,48 +1349,36 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     }
 
     grid.innerHTML = events.map((item) => {
-      const objectives = Array.isArray(item.objectives) ? item.objectives : [];
-      const speakers = Array.isArray(item.speakers) ? item.speakers : [];
       const pricing = Array.isArray(item.pricing) ? item.pricing : [];
       const statusClass = item.status ? `news-pill ${String(item.status).toLowerCase().includes('sold') ? 'status-live' : ''}` : 'news-pill';
+      const hasThumb = !!item.image_url;
       return `
         <div class="col-12">
           <article class="news-card">
             <div class="card-body">
-              <div class="news-eyebrow">
-                ${item.category ? `<span class="news-pill">${escapeHtml(item.category)}</span>` : ''}
-                ${item.status ? `<span class="${statusClass}">${escapeHtml(item.status)}</span>` : ''}
-                ${item.is_featured ? '<span class="news-pill">Featured</span>' : ''}
-              </div>
-              <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
-              <div class="news-meta">
-                ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' · ')}
-              </div>
-              ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
-              ${objectives.length ? `
-                <div class="mb-3">
-                  <div class="small fw-semibold text-uppercase text-muted mb-2">Workshop objectives</div>
-                  <ul class="news-list">
-                    ${objectives.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}
-                  </ul>
-                </div>
-              ` : ''}
-              ${speakers.length ? `
-                <div class="mb-3">
-                  <div class="small fw-semibold text-uppercase text-muted mb-2">Meet the panel</div>
-                  <div class="news-speakers">
-                    ${speakers.map((speaker) => `<span class="news-speaker">${escapeHtml(speaker)}</span>`).join('')}
+              <div class="news-layout ${hasThumb ? 'has-thumb' : ''}">
+                ${hasThumb ? `<img class="news-thumb" src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title || 'Event image')}">` : ''}
+                <div>
+                  <div class="news-eyebrow">
+                    ${item.category ? `<span class="news-pill">${escapeHtml(item.category)}</span>` : ''}
+                    ${item.status ? `<span class="${statusClass}">${escapeHtml(item.status)}</span>` : ''}
+                    ${item.is_featured ? '<span class="news-pill">Featured</span>' : ''}
+                  </div>
+                  <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
+                  <div class="news-meta">
+                    ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' · ')}
+                  </div>
+                  ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
+                  ${pricing.length ? `
+                    <div class="news-price-row">
+                      ${pricing.map((entry) => `<span class="news-price"><strong>${escapeHtml(entry.label || '')}</strong> ${escapeHtml(entry.price || '')}</span>`).join('')}
+                    </div>
+                  ` : ''}
+                  <div class="d-flex flex-wrap gap-2 mt-3">
+                    ${item.registration_url ? `<a class="btn-ink btn-sm" href="${escapeHtml(item.registration_url)}" target="_blank" rel="noopener">View event</a>` : ''}
+                    ${item.source_url ? `<a class="btn-accent btn-sm" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}
                   </div>
                 </div>
-              ` : ''}
-              ${pricing.length ? `
-                <div class="news-price-row">
-                  ${pricing.map((entry) => `<span class="news-price"><strong>${escapeHtml(entry.label || '')}</strong> ${escapeHtml(entry.price || '')}</span>`).join('')}
-                </div>
-              ` : ''}
-              <div class="d-flex flex-wrap gap-2 mt-3">
-                ${item.registration_url ? `<a class="btn-ink btn-sm" href="${escapeHtml(item.registration_url)}" target="_blank" rel="noopener">View event</a>` : ''}
-                ${item.source_url ? `<a class="btn-accent btn-sm" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}
               </div>
             </div>
           </article>

@@ -151,34 +151,11 @@
       margin:.7rem 0 .55rem;
     }
     .hero p.lead{ max-width:54ch; margin:0 auto; color:var(--oc-subtle); font-size:1.06rem; line-height:1.55; }
-    .hero-note{
-      max-width:58ch;
-      margin:0 auto;
-      color:var(--oc-subtle);
-      font-size:.93rem;
-      line-height:1.5;
-    }
     .hero-actions{
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:.85rem;
-    }
-    .hero-links{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:.5rem 1rem;
-      font-size:.92rem;
-    }
-    .hero-links a{
-      color:var(--oc-brand-ink);
-      font-weight:700;
-      text-decoration:none;
-    }
-    .hero-links a:hover{
-      text-decoration:underline;
-      text-underline-offset:3px;
     }
     .hero-search{
       width:min(760px, 100%);
@@ -585,7 +562,6 @@
     @media (max-width: 575.98px){
       .featured-grid{ grid-template-columns:1fr; }
       .hero .content{ padding:48px 0 36px; }
-      .hero-note{ font-size:.9rem; }
       .hero-actions{ align-items:stretch; }
       .cta-group{ width:100%; justify-content:center; }
       .cta-group .btn{ flex:1 1 180px; }
@@ -867,15 +843,7 @@
           <a class="btn btn-ink btn-sm" href="deployments.html" aria-describedby="countUsecases">Browse Workflows</a>
           <a class="btn btn-accent btn-sm" href="oer.html" aria-describedby="countOERs">Browse OERs</a>
         </div>
-        <div class="hero-links" aria-label="Quick links">
-          <a href="benchmarks.html">Benchmarks</a>
-          <a href="contributors.html">Community</a>
-          <a href="contribute.html">Contribute</a>
-        </div>
       </div>
-      <p class="hero-note">
-        Open infrastructure with linked benchmarks and structured metadata.
-      </p>
     </div><!-- /hero-center -->
   </div>
 </header>
