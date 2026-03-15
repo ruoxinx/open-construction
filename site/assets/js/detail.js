@@ -551,6 +551,22 @@ async function initDetail(){
       const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Preview';
+      const paperUrl = (m.paper_url || m.paper || '').trim();
+      const codeUrl  = (m.code_url  || m.code  || '').trim();
+      const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
+      const doiUrl = doiSource
+        ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
+        : '';
+      const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
+      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
+      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
+      const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
+      const badgeIdSource = (m.doi && String(m.doi).trim()) ? m.doi : paperUrl;
+      const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
+        altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
+        dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
+      });
+      const modelPaperTitle = safeText(m.paper_title || m.paper_name || m.publication || '');
       const taskList = uniquePrettyTerms(tasks);
       const appList = uniquePrettyTerms(applications);
       const modalityList = normalizeList(modality);
@@ -757,6 +773,9 @@ async function initDetail(){
             ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
             ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
+            ${metaRow('Associated paper', modelPaperTitle !== '—' ? escapeHtml(modelPaperTitle) : '—')}
+            ${metaRow('Code URL', codeUrl ? `<a href="${safeHref(codeUrl)}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}
+            ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license) || '—')}
           </dl>
         </section>
@@ -777,32 +796,6 @@ async function initDetail(){
           </div>
         </div>
       `;
-
-      // ---- Links + DOI normalization (avoid duplicate DOI button when paper_url is already doi.org) ----
-      const paperUrl = (m.paper_url || m.paper || '').trim();
-      const codeUrl  = (m.code_url  || m.code  || '').trim();
-
-      // Prefer explicit DOI field; otherwise infer DOI from paper_url if it's already a doi.org link
-      const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
-      const doiUrl = doiSource
-        ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
-        : '';
-
-      // If paper_url is already the DOI link, don't show a separate DOI button
-      const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
-
-      // Reference bits
-      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
-      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
-      const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
-
-      // IMPORTANT: badges should work even when arXiv is stored in paper_url (and doi is empty)
-      const badgeIdSource = (m.doi && String(m.doi).trim()) ? m.doi : paperUrl;
-
-      const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
-        altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
-        dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
-      });
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
