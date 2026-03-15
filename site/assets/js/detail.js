@@ -524,17 +524,15 @@ async function initDetail(){
           .detail-section p:last-child{ margin-bottom:0; }
           .section-nav a{ color:var(--oc-link); text-decoration:none; }
           .section-nav a:hover{ text-decoration:underline; }
-          .quickfact-grid{ display:grid; gap:.85rem; }
+          .quickfact-grid{ display:grid; gap:0; }
           .quickfact-row{
             display:grid;
-            gap:.28rem;
-            padding:.85rem .95rem;
-            border:1px solid var(--oc-border);
-            border-radius:12px;
-            background:linear-gradient(180deg, #fff, #fbfdff);
+            gap:.16rem;
+            padding:.55rem 0;
           }
+          .quickfact-row + .quickfact-row{ border-top:1px solid var(--oc-border); }
           .quickfact-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
-          .quickfact-value{ font-weight:700; line-height:1.45; }
+          .quickfact-value{ font-weight:700; line-height:1.35; }
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:800; color:var(--oc-ink); margin-bottom:.8rem; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
@@ -900,17 +898,15 @@ async function initDetail(){
         .detail-heading{ font-size:1.1rem; font-weight:800; color:var(--oc-ink); margin:0 0 .85rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
-        .quickfact-grid{ display:grid; gap:.85rem; }
+        .quickfact-grid{ display:grid; gap:0; }
         .quickfact-row{
           display:grid;
-          gap:.28rem;
-          padding:.85rem .95rem;
-          border:1px solid var(--oc-border);
-          border-radius:12px;
-          background:linear-gradient(180deg, #fff, #fbfdff);
+          gap:.16rem;
+          padding:.55rem 0;
         }
+        .quickfact-row + .quickfact-row{ border-top:1px solid var(--oc-border); }
         .quickfact-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
-        .quickfact-value{ font-weight:700; line-height:1.45; }
+        .quickfact-value{ font-weight:700; line-height:1.35; }
         .detail-subcard{ padding:1rem; }
         .detail-subhead{ font-size:.92rem; font-weight:800; color:var(--oc-ink); margin-bottom:.8rem; }
         .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
