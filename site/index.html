@@ -189,11 +189,11 @@
       display:grid;
       grid-template-columns:minmax(0, 1fr) auto;
       gap:.75rem;
-      padding:.75rem;
-      border:1px solid var(--oc-border);
-      border-radius:20px;
-      background:#fff;
-      box-shadow:var(--oc-shadow);
+      padding:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
     }
     .hero-search-field{
       display:flex;
@@ -760,7 +760,6 @@
           <button class="hero-search-chip" type="button" data-scope="workflow" aria-pressed="false">Workflows</button>
           <button class="hero-search-chip" type="button" data-scope="oer" aria-pressed="false">OERs</button>
         </div>
-        <div class="hero-search-meta">Search the full catalog from one place.</div>
         <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
       </div>
 
