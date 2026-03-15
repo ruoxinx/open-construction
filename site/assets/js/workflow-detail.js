@@ -18,6 +18,16 @@ function safeHref(href){
   return '';
 }
 
+function resolveMediaUrl(url){
+  const raw = String(url || '').trim();
+  if (!raw) return '';
+  if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('../') || raw.startsWith('./') || raw.startsWith('/')) {
+    return raw;
+  }
+  if (raw.startsWith('assets/')) return `../${raw}`;
+  return raw;
+}
+
 function normalizeList(val){
   if (!val && val !== 0) return [];
   if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean);
@@ -92,7 +102,8 @@ function getMediaEmbed(item){
 
   if (image) {
     const href = safeHref(item.links?.source) || safeHref(video?.url) || safeHref(image.url);
-    const imgTag = `<img src="${escapeHtml(image.url)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin">`;
+    const imgSrc = resolveMediaUrl(image.url);
+    const imgTag = `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';">`;
     return `<div class="media-wrap">${href ? `<a class="d-block h-100" href="${href}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>`;
   }
 
@@ -108,10 +119,10 @@ function getMediaEmbed(item){
       return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
     }
     if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(video.url)) {
-      return `<div class="media-wrap"><video src="${escapeHtml(video.url)}" controls playsinline preload="metadata"></video></div>`;
+      return `<div class="media-wrap"><video src="${escapeHtml(resolveMediaUrl(video.url))}" controls playsinline preload="metadata"></video></div>`;
     }
     if (video.thumb) {
-      return `<div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(video.thumb)}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async"></a></div>`;
+      return `<div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(resolveMediaUrl(video.thumb))}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"></a></div>`;
     }
   }
 
