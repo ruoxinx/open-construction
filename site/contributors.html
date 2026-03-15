@@ -87,7 +87,7 @@
       font-size:clamp(1.6rem,1.1rem + 2.2vw,2.2rem);
       margin:.25rem 0 .35rem;
     }
-    .hero p.lead{ max-width:70ch; margin:0 auto; color:var(--oc-subtle); }
+    .hero p.lead{ margin:0 auto; color:var(--oc-subtle); }
 
     /* Metrics */
     .metrics{
@@ -147,7 +147,6 @@
     .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
     .person-card .affil{ font-size:.92rem; }
     .section-intro{
-      max-width:82ch;
       color:var(--oc-subtle);
       margin-bottom:1rem;
       line-height:1.45;
@@ -207,11 +206,6 @@
       padding:.18rem .55rem;
       text-transform:uppercase;
     }
-    .news-pill.status-live{
-      background:#fff7e9;
-      border-color:#f1d6aa;
-      color:#84550f;
-    }
     .news-meta{
       color:var(--oc-subtle);
       font-size:.92rem;
@@ -221,23 +215,6 @@
       color:var(--oc-text);
       margin-bottom:.7rem;
       line-height:1.55;
-    }
-    .news-price-row{
-      display:flex;
-      gap:.5rem;
-      flex-wrap:wrap;
-      margin:.1rem 0 0;
-    }
-    .news-price{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      border-radius:999px;
-      border:1px solid var(--oc-border);
-      background:#fff;
-      padding:.28rem .65rem;
-      font-size:.82rem;
-      color:var(--oc-text);
     }
     .news-empty{
       border:1px dashed var(--oc-border);
@@ -770,7 +747,7 @@
     <div class="mb-2">
       <div class="oc-kicker">News &amp; Events</div>
       <h3 class="oc-card-title mb-1">Workshops, talks, and community updates</h3>
-      <p class="text-muted mb-0">A lightweight feed of workshops, talks, and milestones connected to the OpenConstruction community.</p>
+      <p class="text-muted mb-0">Feed of workshops, talks, and milestones connected to the OpenConstruction community.</p>
     </div>
     <div class="row g-4" id="newsEventsGrid">
       <div class="col-12">
@@ -1349,8 +1326,6 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     }
 
     grid.innerHTML = events.map((item) => {
-      const pricing = Array.isArray(item.pricing) ? item.pricing : [];
-      const statusClass = item.status ? `news-pill ${String(item.status).toLowerCase().includes('sold') ? 'status-live' : ''}` : 'news-pill';
       const hasThumb = !!item.image_url;
       return `
         <div class="col-12">
@@ -1361,7 +1336,6 @@ marquee.querySelectorAll('.logo img').forEach(img => {
                 <div>
                   <div class="news-eyebrow">
                     ${item.category ? `<span class="news-pill">${escapeHtml(item.category)}</span>` : ''}
-                    ${item.status ? `<span class="${statusClass}">${escapeHtml(item.status)}</span>` : ''}
                     ${item.is_featured ? '<span class="news-pill">Featured</span>' : ''}
                   </div>
                   <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
@@ -1369,11 +1343,6 @@ marquee.querySelectorAll('.logo img').forEach(img => {
                     ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' · ')}
                   </div>
                   ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
-                  ${pricing.length ? `
-                    <div class="news-price-row">
-                      ${pricing.map((entry) => `<span class="news-price"><strong>${escapeHtml(entry.label || '')}</strong> ${escapeHtml(entry.price || '')}</span>`).join('')}
-                    </div>
-                  ` : ''}
                   <div class="d-flex flex-wrap gap-2 mt-3">
                     ${item.registration_url ? `<a class="btn-ink btn-sm" href="${escapeHtml(item.registration_url)}" target="_blank" rel="noopener">View event</a>` : ''}
                     ${item.source_url ? `<a class="btn-accent btn-sm" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}
