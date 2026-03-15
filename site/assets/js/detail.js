@@ -107,6 +107,59 @@ function safeHref(href){
   return '';
 }
 
+function detailPageUrl(){
+  try {
+    return window.location.href;
+  } catch {
+    return '';
+  }
+}
+
+async function copyTextValue(text){
+  if (!text) return false;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+  try {
+    window.prompt('Copy link: Ctrl/Cmd+C, Enter', text);
+    return true;
+  } catch {}
+  return false;
+}
+
+async function shareResourceLink({ title, text, url }){
+  const shareUrl = url || detailPageUrl();
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: title || document.title,
+        text: text || '',
+        url: shareUrl
+      });
+      return 'shared';
+    }
+  } catch (err) {
+    if (err?.name === 'AbortError') return 'cancelled';
+  }
+  return (await copyTextValue(shareUrl)) ? 'copied' : 'failed';
+}
+
+function shareCardHtml(label){
+  return `
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-muted mb-3">Share</h2>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-oc-share data-share-label="${escapeHtml(label)}">Share or Copy Link</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function normalizeList(val){
   if (!val && val !== 0) return [];
   if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean);
@@ -824,6 +877,8 @@ async function initDetail(){
             </div>
           </div>
 
+          ${shareCardHtml(modelTitle)}
+
           <div class="card border-0 shadow-sm mb-3">
             <div class="card-body section-nav">
               <h2 class="h6 text-uppercase text-muted mb-3">On This Page</h2>
@@ -886,6 +941,21 @@ async function initDetail(){
           btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
         });
       });
+
+      const shareBtn = root.querySelector('[data-oc-share]');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const original = shareBtn.textContent;
+          const label = shareBtn.getAttribute('data-share-label') || modelTitle;
+          const result = await shareResourceLink({
+            title: label,
+            text: `OpenConstruction resource: ${label}`
+          });
+          if (result === 'cancelled') return;
+          shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
+          window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+        });
+      }
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -1199,6 +1269,8 @@ async function initDetail(){
           </div>
         </div>
 
+        ${shareCardHtml(ds.name || ds.id || 'Dataset')}
+
         <div class="card border-0 shadow-sm mb-3">
           <div class="card-body section-nav">
             <h2 class="h6 text-uppercase text-muted mb-3">On This Page</h2>
@@ -1251,6 +1323,20 @@ async function initDetail(){
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');
+    const shareBtn = root.querySelector('[data-oc-share]');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', async () => {
+        const original = shareBtn.textContent;
+        const label = shareBtn.getAttribute('data-share-label') || ds.name || 'Dataset';
+        const result = await shareResourceLink({
+          title: label,
+          text: `OpenConstruction resource: ${label}`
+        });
+        if (result === 'cancelled') return;
+        shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
+        window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+      });
+    }
     if (imgEl && modalEl) {
       imgEl.addEventListener('click', () => {
         const modalImg = modalEl.querySelector('.modal-img');
