@@ -145,12 +145,15 @@
       background:var(--oc-brand-accent);
       box-shadow:0 0 0 4px rgba(242,162,56,.16);
     }
-    .hero h1{
+    .hero-title{
       font-weight:800; letter-spacing:.2px; line-height:1.12;
       font-size:clamp(1.6rem, 1.1rem + 1.8vw, 2.35rem);
       margin:.7rem 0 .55rem;
       max-width:26ch;
       margin-inline:auto;
+    }
+    .hero-title-line{
+      display:block;
     }
     .hero p.lead{ max-width:54ch; margin:0 auto; color:var(--oc-subtle); font-size:1.06rem; line-height:1.55; }
     .hero-search{
@@ -737,7 +740,10 @@
 <header class="hero">
   <div class="container oc-container content">
     <div class="hero-kicker">Open AEC Resource Library</div>
-    <h1 class="mb-1">Discover open digital assets<br><span style="white-space:nowrap;">for the AEC community</span></h1>
+    <h1 class="hero-title mb-1">
+      <span class="hero-title-line">Discover open digital assets</span>
+      <span class="hero-title-line">for the AEC community</span>
+    </h1>
       <div class="hero-search" aria-labelledby="home-search-heading">
         <div id="home-search-heading" class="visually-hidden">Search the OpenConstruction catalog</div>
         <form class="hero-search-form" id="homeSearchForm">
