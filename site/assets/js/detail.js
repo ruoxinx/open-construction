@@ -595,8 +595,6 @@ async function initDetail(){
                   ${metaRow('Modalities', chipLane(modality))}
                   ${metaRow('Tasks', chipLane(tasks))}
                   ${metaRow('Applications', chipLane(applications))}
-                  ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
-                  ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
                 </dl>
               </div>
             </div>
@@ -962,9 +960,7 @@ async function initDetail(){
               <h1 class="ds-title">${ds.name}</h1>
               <div class="ds-year">(${ds.year ?? '—'})</div>
               <dl class="meta">
-                ${metaRow('Data · Classes', (ds.num_images || ds.num_classes) ? `${safeFormatInt(ds.num_images)} · ${safeFormatInt(ds.num_classes)}` : '')}
                 ${metaRow('Modality', chipLane(ds.data_modality))}
-                ${metaRow('Annotations', chipLane(ds.annotation_types))}
                 ${metaRow('Resolution', safeText(ds.resolution))}
                 ${metaRow('Location', chipLane(ds.geographical_location))}
                 ${metaRow('Associated Tasks', chipLane(ds.potential_tasks))}
