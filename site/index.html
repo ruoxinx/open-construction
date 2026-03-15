@@ -747,7 +747,7 @@
               id="homeSearchInput"
               class="hero-search-input"
               type="search"
-              placeholder="Search datasets, models, workflows, and OERs"
+              placeholder="Search resources, authors, or paper titles"
               aria-label="Search the catalog"
               autocomplete="off">
           </div>
@@ -867,7 +867,7 @@
   <section class="oc-section" aria-labelledby="featured-resources-heading">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Featured Resources</div>
+        <div class="oc-kicker mb-2">Latest Updates</div>
         <h2 id="featured-resources-heading" class="oc-card-title mb-2">Latest updates from the catalog</h2>
         <div class="featured-header-meta">
           <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
@@ -910,7 +910,7 @@
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Milestones</div>
-        <h3 id="milestones-heading" class="oc-card-title mb-3">Development & Achievements</h3>
+        <h3 id="milestones-heading" class="oc-card-title mb-3">Platform milestones</h3>
 
         <div class="oc-tl-wrap">
           <!-- Prev -->
@@ -1413,9 +1413,9 @@
         label: 'Dataset',
         title: ds.name || ds.id || 'Untitled dataset',
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
-        meta: [ds.year, ds.data_modality].filter(Boolean).join(' • '),
+        meta: [ds.year, ds.data_modality, ds.authors ? String(ds.authors).split(',')[0].trim() : null].filter(Boolean).join(' • '),
         text: [
-          ds.name, ds.id, ds.data_modality,
+          ds.name, ds.id, ds.data_modality, ds.authors, ds.paper, ds.doi,
           ...(Array.isArray(ds.potential_tasks) ? ds.potential_tasks : []),
           ...(Array.isArray(ds.classes) ? ds.classes : [])
         ].join(' ')
@@ -1425,9 +1425,9 @@
         label: 'Model',
         title: m.title || m.id || 'Untitled model',
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
-        meta: [m.year, Array.isArray(m.tasks) ? m.tasks[0] : m.task].filter(Boolean).join(' • '),
+        meta: [m.year, Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' • '),
         text: [
-          m.title, m.id, m.abstract,
+          m.title, m.id, m.abstract, m.paper, m.paper_title, m.paper_url, m.doi, Array.isArray(m.authors) ? m.authors.join(' ') : m.authors,
           ...(Array.isArray(m.tasks) ? m.tasks : normalizeText(m.task) ? [m.task] : []),
           ...(Array.isArray(m.applications) ? m.applications : normalizeText(m.application) ? [m.application] : []),
           ...(Array.isArray(m.modalities) ? m.modalities : normalizeText(m.modality) ? [m.modality] : [])
@@ -1440,7 +1440,9 @@
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
         meta: [u.year, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
         text: [
-          u.title, u.summary, u.phase,
+          u.title, u.summary, u.phase, u.provider,
+          ...(Array.isArray(u.organizations) ? u.organizations : []),
+          ...(Array.isArray(u.companies) ? u.companies.map(c => c && c.name).filter(Boolean) : []),
           ...(Array.isArray(u.stakeholders) ? u.stakeholders : []),
           ...(Array.isArray(u.applications) ? u.applications : [])
         ].join(' ')
@@ -1453,7 +1455,7 @@
         external: true,
         meta: [r.year, r.provider || r.publisher].filter(Boolean).join(' • '),
         text: [
-          r.title, r.provider, r.publisher,
+          r.title, r.provider, r.publisher, r.authors,
           ...(Array.isArray(r.topics) ? r.topics : []),
           ...(Array.isArray(r.institutions) ? r.institutions : [])
         ].join(' ')
