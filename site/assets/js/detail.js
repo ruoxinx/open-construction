@@ -107,6 +107,22 @@ function safeHref(href){
   return '';
 }
 
+function normalizeList(val){
+  if (!val && val !== 0) return [];
+  if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean);
+  return String(val).split(',').map(v => v.trim()).filter(Boolean);
+}
+
+function normKey(val){
+  return String(val || '').trim().toLowerCase();
+}
+
+function truncateText(val, max = 180){
+  const text = String(val || '').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  return text.length > max ? `${text.slice(0, max - 3).trimEnd()}...` : text;
+}
+
 
 /* ---------- abstract show more/less (model detail) ---------- */
 function abstractToggleHtml(text, opts = {}){
@@ -361,9 +377,18 @@ async function initDetail(){
 
   try{
     if (type === 'model') {
-      const res = await fetch('../data/models.json', { cache: 'no-cache' });
-      const payload = res.ok ? await res.json() : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
+      const [modelsRes, datasetsRes] = await Promise.all([
+        fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null),
+        fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null)
+      ]);
+      const payload = modelsRes?.ok
+        ? await modelsRes.json()
+        : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
+      const datasetPayload = datasetsRes?.ok
+        ? await datasetsRes.json()
+        : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
       const arr = normalizeModelPayload(payload);
+      const datasets = Object.values(datasetPayload || {});
       const m = findModelById(arr, id);
 
       if (!m){
@@ -393,10 +418,93 @@ async function initDetail(){
       const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Preview';
+      const taskList = normalizeList(tasks);
+      const appList = normalizeList(applications);
+      const modalityList = normalizeList(modality);
+      const trainingList = normalizeList(m.training_data || m.datasets || m.dataset || '');
+      const quickFacts = [
+        { label: 'Year', value: escapeHtml(safeText(year)) },
+        { label: 'Primary task', value: taskList.length ? escapeHtml(taskList[0]) : '—' },
+        { label: 'Application', value: appList.length ? escapeHtml(appList[0]) : '—' },
+        { label: 'Modality', value: modalityList.length ? escapeHtml(modalityList[0]) : '—' },
+        { label: 'Framework', value: escapeHtml(safeText(m.framework || m.library || m.backbone || '')) },
+        { label: 'License', value: formatLicense(m.license) || '—' }
+      ];
+
+      function datasetHref(ds){
+        return `../datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`;
+      }
+      function modelHref(model){
+        return `details.html?id=${encodeURIComponent(model.id || model.title || '')}`;
+      }
+      function scoreOverlap(a, b){
+        const setA = new Set(normalizeList(a).map(normKey));
+        const setB = new Set(normalizeList(b).map(normKey));
+        let score = 0;
+        setA.forEach(v => { if (setB.has(v)) score += 1; });
+        return score;
+      }
+      const relatedDatasets = datasets
+        .map(ds => {
+          const trainMatch = trainingList.some(name => {
+            const target = normKey(name);
+            return target && [ds.id, ds.name].some(v => normKey(v) === target);
+          });
+          const taskScore = scoreOverlap(taskList, ds.potential_tasks);
+          const modalityScore = scoreOverlap(modalityList, ds.data_modality);
+          const score = (trainMatch ? 5 : 0) + taskScore * 2 + modalityScore;
+          return score > 0 ? { ds, score } : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.score - a.score || (b.ds.year || 0) - (a.ds.year || 0))
+        .slice(0, 3)
+        .map(({ ds }) => ds);
+
+      const relatedModels = arr
+        .filter(other => other && other !== m)
+        .map(other => {
+          const score = scoreOverlap(taskList, other.tasks || other.task)
+            + scoreOverlap(appList, other.applications || other.application)
+            + scoreOverlap(modalityList, other.modalities || other.modality || other.data_modalities);
+          return score > 0 ? { other, score } : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.score - a.score || (b.other.year || 0) - (a.other.year || 0))
+        .slice(0, 3)
+        .map(({ other }) => other);
+
+      const relatedItemsHtml = `
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div class="detail-subcard h-100">
+              <div class="detail-subhead">Related datasets</div>
+              ${relatedDatasets.length ? relatedDatasets.map(ds => `
+                <a class="related-link" href="${datasetHref(ds)}">
+                  <span class="related-link-type">Dataset</span>
+                  <span class="related-link-title">${escapeHtml(ds.name || ds.id || 'Untitled dataset')}</span>
+                  <span class="related-link-meta">${escapeHtml(truncateText([normalizeList(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
+                </a>
+              `).join('') : '<p class="text-muted small mb-0">No closely related datasets were found from the current catalog metadata.</p>'}
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="detail-subcard h-100">
+              <div class="detail-subhead">Related models</div>
+              ${relatedModels.length ? relatedModels.map(other => `
+                <a class="related-link" href="${modelHref(other)}">
+                  <span class="related-link-type">Model</span>
+                  <span class="related-link-title">${escapeHtml(other.title || other.id || 'Untitled model')}</span>
+                  <span class="related-link-meta">${escapeHtml(truncateText([normalizeList(other.tasks || other.task)[0], normalizeList(other.applications || other.application)[0]].filter(Boolean).join(' • ') || 'Similar task or application area', 90))}</span>
+                </a>
+              `).join('') : '<p class="text-muted small mb-0">No related models were identified from shared task, modality, or application metadata.</p>'}
+            </div>
+          </div>
+        </div>
+      `;
 
       const mainHero = `
         <style>
-          .ds-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); }
+          .ds-card,.detail-section,.detail-subcard,.quickfact-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); background:#fff; }
           .ds-img{ width:100%; height:auto; max-height:clamp(260px,48vh,560px); object-fit:contain; display:block; border-radius:10px; background:#fff; cursor:zoom-in; }
           .ds-cap{ line-height:1.25; }
           .ds-body{ padding:24px 28px; }
@@ -410,6 +518,27 @@ async function initDetail(){
           .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-wrap; }
+          .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
+          .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
+          .detail-heading{ font-size:1.1rem; font-weight:800; color:var(--oc-ink); margin:0 0 .85rem; }
+          .detail-section p:last-child{ margin-bottom:0; }
+          .section-nav a{ color:var(--oc-link); text-decoration:none; }
+          .section-nav a:hover{ text-decoration:underline; }
+          .quickfact-grid{ display:grid; gap:.8rem; }
+          .quickfact-row{ display:grid; gap:.2rem; }
+          .quickfact-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+          .quickfact-value{ font-weight:700; line-height:1.35; }
+          .detail-subcard{ padding:1rem; }
+          .detail-subhead{ font-size:.92rem; font-weight:800; color:var(--oc-ink); margin-bottom:.8rem; }
+          .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
+          .related-link + .related-link{ border-top:1px solid var(--oc-border); }
+          .related-link:hover .related-link-title{ color:var(--oc-link); }
+          .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+          .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
+          .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+          @media (max-width: 991.98px){
+            .meta-row{ grid-template-columns:1fr; gap:.35rem; }
+          }
 
 /* Abstract show more/less */
 .oc-abs-wrap{ position:relative; }
@@ -451,14 +580,35 @@ async function initDetail(){
                   ${metaRow('Tasks', chipLane(tasks))}
                   ${metaRow('Applications', chipLane(applications))}
                   ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
-                  ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
                   ${metaRow('Training Data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
-                  ${metaRow('Abstract', abstractToggleHtml(m.abstract, { collapsedLines: 6, minCharsForToggle: 320 }))}
                 </dl>
               </div>
             </div>
           </div>
         </div>
+
+        <section id="overview" class="detail-section">
+          <div class="detail-kicker">Overview</div>
+          <h2 class="detail-heading">What this model is for</h2>
+          ${m.abstract ? abstractToggleHtml(m.abstract, { collapsedLines: 7, minCharsForToggle: 320 }) : '<p class="text-muted mb-0">No abstract is available for this model yet.</p>'}
+        </section>
+
+        <section id="technical-profile" class="detail-section">
+          <div class="detail-kicker">Technical Profile</div>
+          <h2 class="detail-heading">Key implementation details</h2>
+          <dl class="meta mb-0">
+            ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
+            ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
+            ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
+            ${metaRow('License', formatLicense(m.license) || '—')}
+          </dl>
+        </section>
+
+        <section id="related-resources" class="detail-section">
+          <div class="detail-kicker">Related Resources</div>
+          <h2 class="detail-heading">Keep exploring from here</h2>
+          ${relatedItemsHtml}
+        </section>
 
         <div class="modal fade" id="imgModal" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -499,6 +649,20 @@ async function initDetail(){
 
       const sidebar = `
         <div class="position-sticky" style="top:88px">
+          <div class="quickfact-card mb-3">
+            <div class="card-body">
+              <h2 class="h6 text-uppercase text-muted mb-3">Quick Facts</h2>
+              <div class="quickfact-grid">
+                ${quickFacts.map(item => `
+                  <div class="quickfact-row">
+                    <div class="quickfact-label">${escapeHtml(item.label)}</div>
+                    <div class="quickfact-value">${item.value}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
           <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
@@ -506,6 +670,17 @@ async function initDetail(){
                 ${paperUrl ? `<a class="btn btn-primary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
                 ${codeUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${codeUrl}" target="_blank" rel="noopener">View Code</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body section-nav">
+              <h2 class="h6 text-uppercase text-muted mb-3">On This Page</h2>
+              <div class="d-grid gap-2 small">
+                <a href="#overview">Overview</a>
+                <a href="#technical-profile">Technical Profile</a>
+                <a href="#related-resources">Related Resources</a>
               </div>
             </div>
           </div>
@@ -544,8 +719,8 @@ async function initDetail(){
 
       root.innerHTML = `
         <div class="row g-3">
-          <div class="col-lg-9">${mainHero}</div>
-          <div class="col-lg-3">${sidebar}</div>
+          <div class="col-lg-8">${mainHero}</div>
+          <div class="col-lg-4">${sidebar}</div>
         </div>
       `;
 
