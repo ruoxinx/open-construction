@@ -1360,10 +1360,13 @@
     function parseDate(value){
       if (!value) return null;
       const raw = String(value).trim();
-      const normalized = raw.replace(/^(\d{4})-(\d{1,2})-(\d{1,2})$/, (_, y, m, d) =>
-        `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
-      );
-      const ts = Date.parse(normalized);
+      const dateOnlyMatch = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (dateOnlyMatch){
+        const [, year, month, day] = dateOnlyMatch;
+        // Store date-only metadata at local noon so formatting stays on the same calendar day.
+        return new Date(Number(year), Number(month) - 1, Number(day), 12).getTime();
+      }
+      const ts = Date.parse(raw);
       return Number.isNaN(ts) ? null : ts;
     }
 
