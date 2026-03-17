@@ -807,9 +807,32 @@
     "link_url": "https://yigediao.github.io/",
 	"image": "https://yigediao.github.io/avatar.jpg",
   "type": "person"
+  },
+    {
+    "id": "Carbon Leadership Forum",
+    "name": "Carbon Leadership Forum",
+    "role": "Dataset Contributor",
+    "link_url": "https://carbonleadershipforum.org/",
+	"image": "https://carbonleadershipforum.org/wp-content/uploads/2023/03/CLF-Logo-RGB.png"
+  "type": "org"
+  },
+    {
+    "id": "Kate Simonen, FAIA, SE",
+    "name": "Kate Simonen, FAIA, SE",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Washington (US)",
+    "link_url": "https://arch.be.uw.edu/people/kate-simonen/",
+	"image": "https://arch.be.uw.edu/wp-content/uploads/sites/5/2023/02/Simonen.K_2023.02_4x6.jpg",
+  "type": "person"
+  },
+      {
+    "id": "Brad Benke",
+    "name": "Brad Benke",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Washington (US)",
+    "link_url": "https://carbonleadershipforum.org/team/brad-benke/",
+	"image": "https://carbonleadershipforum.org/wp-content/uploads/2020/11/Brad-CLF-21-768x768-1.jpg",
+  "type": "person"
   }
-  
-  
-  
 
 ]

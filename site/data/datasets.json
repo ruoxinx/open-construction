@@ -3229,7 +3229,7 @@
 },
 "wblca-benchmark-v2-data": {
     "name": "Whole-building Life Cycle Assessment (WBLCA) Dataset",
-    "authors": "Brad Benke, Manuel Chafart, Yang Shen, Milad Ashtiani, Stephanie Carlisle, Kathrina Simonen ",
+    "authors": "Brad Benke, Manuel Chafart, Yang Shen, Milad Ashtiani, Stephanie Carlisle, Kathrina Simonen",
     "doi": "https://doi.org/10.1038/s41597-025-05216-0",
     "year": 2025,
     "data_modality": "tabular",
