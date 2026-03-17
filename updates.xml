@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Whole-building Life Cycle Assessment (WBLCA) Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=wblca-benchmark-v2-data</link>
+    <guid isPermaLink="false">datasets:wblca-benchmark-v2-data:2026-03-17</guid>
+    <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: WFC Pose Estimation Dataset: 6-DOF Pose Estimation in Wood-Frame Construction]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=wfcdataset</link>
     <guid isPermaLink="false">datasets:wfcdataset:2026-03-06</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:bim2sim:2026-02-05</guid>
     <pubDate>Thu, 05 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[The manual creation of Building Energy Performance Simulation (BEPS) models is time-consuming and error-prone, hindering the implementation of energy-efficient building designs. This paper explores how to automate the generation of BEPS models from Building Information Modeling (BIM) data while addressing challenges of data imperfection and tool compatibility. bim2sim is presented as an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools, including Modelica/TEASER and EnergyPlusWe present bim2sim, an open-source Python framework with a modular plugin architecture that processes Industry Foundation Classes (IFC) files to generate simulation models for various tools including Modelica/TEASER and EnergyPlus. The application to a non-residential building case study demonstrates the framework’s capability to produce functional simulation models at different levels of detail with significant time savings, reducing the time for generating simulation results from a BIM model to less than one hour. The framework benefits architects, building services engineers, and simulation engineers by streamlining the simulation workflow while maintaining OpenBIM compatibility. Future research should address remaining limitations in geometry processing and material mapping to further facilitate seamless information exchange between building design and simulation domains.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Roadway Worker Trajectory and Context Data from VR Simulator]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=smart-safety-trajectory</link>
-    <guid isPermaLink="false">datasets:smart-safety-trajectory:2026-02-04</guid>
-    <pubDate>Wed, 04 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
