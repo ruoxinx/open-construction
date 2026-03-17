@@ -3226,6 +3226,34 @@
     "added_date": "2026-03-06",
     "contributor": "Smart IDC Lab",
     "contributor_url": "https://sites.google.com/view/smart-idc-lab/home"
+},
+"wblca-benchmark-v2-data": {
+    "name": "Whole-building Life Cycle Assessment (WBLCA) Dataset",
+    "authors": "Brad Benke, Manuel Chafart, Yang Shen, Milad Ashtiani, Stephanie Carlisle, Kathrina Simonen ",
+    "doi": "https://doi.org/10.1038/s41597-025-05216-0",
+    "year": 2025,
+    "data_modality": "tabular",
+    "num_images": "292 building projects",
+    "num_classes": "92",
+    "annotation_types": [
+      "Building Characteristics",
+      "LCA Modeling Parameters",
+	  "Life Cycle Inventory (LCI) Data",
+	  "Life Cycle Impact Assessment (LCIA) Results"
+    ],
+    "geographical_location": "United States, Canada",
+    "potential_tasks": [
+      "embodied carbon estimation",
+      "life cycle assessment modeling"
+    ],
+    "license": "CC BY 4.0",
+    "paper": "A Harmonized Dataset of High-Resolution Embodied Life Cycle Assessment Results for Buildings in North America",
+    "access": "https://doi.org/10.6084/m9.figshare.28462145",
+    "id": "wblca-benchmark-v2-data",
+    "image_url": "assets/img/datasets/wblca-benchmark-v2-data.png",
+    "added_date": "2026-03-17",
+    "contributor": "Carbon Leadership Forum",
+    "contributor_url": "https://carbonleadershipforum.org/"
 }
 
 
