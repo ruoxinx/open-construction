@@ -215,6 +215,36 @@ function canonicalizeModalityLabels(raw){
   return Array.from(labels);
 }
 
+function datasetCountLabel(modalityVal){
+  const modalities = Array.isArray(modalityVal)
+    ? modalityVal.map(v => normKey(v))
+    : String(modalityVal || '').split(',').map(v => normKey(v));
+
+  if (!modalities.length) return 'Samples';
+
+  const has = pattern => modalities.some(v => pattern.test(v));
+
+  if (has(/point\s*cloud|lidar|laser\s*scan|3d\s*scan/)) return 'Point Clouds';
+  if (has(/video|clip/)) return 'Videos';
+  if (has(/document|text|pdf|report|specification|contract/)) return 'Documents';
+  if (has(/audio|speech|sound/)) return 'Audio Files';
+  if (has(/bim|ifc|cad|mesh|graph/)) return 'Models';
+  if (has(/timeseries|time\s*series|sensor|tabular|table|csv|database|sql/)) return 'Records';
+  if (has(/image|rgb|thermal|satellite|aerial|depth/)) return 'Images';
+
+  return 'Samples';
+}
+
+function datasetCountSummary(ds){
+  const raw = ds?.num_images;
+  if (raw == null || raw === '') return '—';
+
+  const text = String(raw).trim();
+  if (/[a-zA-Z]/.test(text)) return text;
+
+  return `${formatInt(raw)} ${datasetCountLabel(ds?.data_modalities?.length ? ds.data_modalities : ds?.data_modality).toLowerCase()}`;
+}
+
 // licenses
 function formatLicenseLabel(raw){
   if (raw == null) return '';
@@ -589,7 +619,7 @@ function cardHTML(ds){
           <span>${ds.data_modalities?.join(', ') || ds.data_modality || '—'}</span>
         </div>
         <div class="small text-muted mb-2">
-          Data <strong>${formatInt(ds.num_images)}</strong> · Classes <strong>${formatInt(ds.num_classes)}</strong>
+          ${datasetCountSummary(ds)} · Classes <strong>${formatInt(ds.num_classes)}</strong>
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
           <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>

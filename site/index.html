@@ -1401,6 +1401,37 @@
       return String(text || '').toLowerCase();
     }
 
+    function datasetCountLabel(modalityVal){
+      const modalities = Array.isArray(modalityVal)
+        ? modalityVal.map(value => normalizeText(value).trim())
+        : String(modalityVal || '').split(',').map(value => normalizeText(value).trim());
+
+      if (!modalities.length) return 'samples';
+
+      const has = (pattern) => modalities.some(value => pattern.test(value));
+
+      if (has(/point\s*cloud|lidar|laser\s*scan|3d\s*scan/)) return 'point clouds';
+      if (has(/video|clip/)) return 'videos';
+      if (has(/document|text|pdf|report|specification|contract/)) return 'documents';
+      if (has(/audio|speech|sound/)) return 'audio files';
+      if (has(/bim|ifc|cad|mesh|graph/)) return 'models';
+      if (has(/timeseries|time\s*series|sensor|tabular|table|csv|database|sql/)) return 'records';
+      if (has(/image|rgb|thermal|satellite|aerial|depth/)) return 'images';
+
+      return 'samples';
+    }
+
+    function datasetCountSummary(ds){
+      const raw = ds && ds.num_images;
+      if (raw == null || raw === '') return '';
+
+      const text = String(raw).trim();
+      if (/[a-zA-Z]/.test(text)) return text;
+
+      const formatted = typeof raw === 'number' ? raw.toLocaleString() : text;
+      return `${formatted} ${datasetCountLabel(ds.data_modality)}`;
+    }
+
     function buildSearchIndex(datasetsJson, modelsJson, usecasesJson, oersJson){
       const datasets = Object.values(datasetsJson || {}).map(ds => ({
         type: 'dataset',
@@ -1544,7 +1575,7 @@
         type: 'Dataset',
         title: ds.name || 'Untitled dataset',
         description: [ds.potential_tasks?.[0], ds.annotation_types?.[0]].filter(Boolean).join(' with ') || 'Structured catalog entry for AEC data reuse.',
-        meta: [ds.data_modality, ds.num_images ? `${ds.num_images.toLocaleString()} images` : null].filter(Boolean).join(' • '),
+        meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
         year: ds.year,
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
         image: ds.image_url || 'assets/img/placeholder/placeholder.png',
