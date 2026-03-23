@@ -3,6 +3,8 @@
   <span style="vertical-align: top; margin-left: 10px;">OpenConstruction Open Science Platform</span>
 </h1>
 
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.dibe.2026.100909-blue)](https://doi.org/10.1016/j.dibe.2026.100909)
+
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
 **distributed development, validation, and discovery** of datasets, AI models,
 workflows, and open educational resources (OERs) for the
@@ -91,6 +93,23 @@ community-driven roles**, including:
 
 OpenConstruction respects all intellectual property and does not redistribute
 restricted or proprietary content.
+
+## Citation
+
+If OpenConstruction is helpful in your research, you may cite:
+*Xiong, R., Wang, Y., Cai, J., Liu, K., Zhu, Y., Tang, P., El-Gohary, N., and Gibson Jr, G. E. (2026).* "Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse." *Developments in the Built Environment*, 26, 100909. [https://doi.org/10.1016/j.dibe.2026.100909](https://doi.org/10.1016/j.dibe.2026.100909)
+
+```bibtex
+@article{xiong2026toward,
+  title={Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse},
+  author={Xiong, Ruoxin and Wang, Yanyu and Cai, Jiannan and Liu, Kaijian and Zhu, Yuansheng and Tang, Pingbo and El-Gohary, Nora and Gibson Jr, George Edward},
+  journal={Developments in the Built Environment},
+  volume={26},
+  pages={100909},
+  year={2026},
+  publisher={Elsevier}
+}
+```
 
 
 ## Acknowledgment
