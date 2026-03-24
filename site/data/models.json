@@ -1372,10 +1372,33 @@
   "added_date": "2026-02-27",
   "contributor": "Huamei Zhu",
     "contributor_url": "https://scholar.google.com/citations?hl=en&user=yGxI4poAAAAJ&view_op=list_works&sortby=pubdate"
+},
+{
+  "id": "GED-building-layout",
+  "title": "Function-aware graph-based layout retrieval for academic libraries",
+  "authors": [
+    "Song Guo",
+    "Tris Kee",
+    "Weimin Zhuang"
+  ],
+  "abstract": "In contemporary architectural practices, case studies are used for learning from precedents and improving design efficiency and quality. However, the complexities of public building layouts pose considerable challenges, such as difficulty in interpreting designs and quantifying associated constraints. Existing automated retrieval methods often focus on simpler residential layouts and overlook the complexity of the constraints associated with public buildings. This paper proposes a graph-based layout retrieval approach that leverages similarities between the function and topology of building layouts and user requirements. The proposed approach is applied to a self-compiled library dataset and validated through professional architect evaluations. Results show that the proposed method aligns with evaluations of experienced architects, while providing more consistent recommendations than inexperienced architects in terms of design quality and behavioral suitability. This study advances machine understanding of complex layouts, enhancing automation and rationality in early-phase design and improving the integration of design information with construction materials.",
+  "year": 2026,
+  "modalities": [
+    "Rasterized CAD images"
+  ],
+  "tasks": [
+    "Layout retrieval"
+  ],
+  "applications": [
+    "Architectural design"
+  ],
+  "license": "CC BY-NC-4.0",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2026.106881",
+  "code_url": "https://github.com/songguoarchitect/GED-building-layout",
+  "thumbnail": "assets/img/models/GED-building-layout.png",
+  "added_date": "2026-03-24",
+  "contributor": "Song Guo",
+  "contributor_url": "https://songguoarchitect.github.io/"
 }
-
-
-
-
 
 ]
