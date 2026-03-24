@@ -3262,7 +3262,7 @@
     "year": 2026,
     "data_modality": "Rasterized CAD images",
     "num_images": "47 floor plans",
-    "num_classes": "14 functional areas + connections",
+    "num_classes": "14 functional areas + 2 connections",
     "classes": [
       "Courtyard/Terrace",
       "Information/Service",
@@ -3277,7 +3277,8 @@
 	  "Stair/Elevator/Escalator",
 	  "Restroom/Toilet",
 	  "Corridor",
-	  "Meeting/Office/Others"
+	  "Meeting/Office/Others",
+	  "converted to graph edges", "doors and adjacency"
     ],
     "annotation_types": [
       "Graph representation"
