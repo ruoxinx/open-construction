@@ -3254,10 +3254,45 @@
     "added_date": "2026-03-17",
     "contributor": "Carbon Leadership Forum",
     "contributor_url": "https://carbonleadershipforum.org/"
-}
-
-
-
-
-
+},
+    "layout_behavior_graph_dataset": {
+    "name": "Function-aware Graph-based Layout Retrieval Dataset for Academic Libraries",
+    "authors": "Song Guo, Tris Kee, Weimin Zhuang",
+    "doi": "https://doi.org/10.1016/j.autcon.2026.106881",
+    "year": 2026,
+    "data_modality": "Rasterized CAD images",
+    "num_images": "47 floor plans",
+    "num_classes": "14 functional areas + connections",
+    "classes": [
+      "Courtyard/Terrace",
+      "Information/Service",
+      "Collection",
+	  "Reading Seats/Learning Commons",
+	  "Lounge/Recreation",
+	  "Group Study",
+	  "Self-study/Individual Study",
+	  "Classroom",
+	  "Auditorium",
+	  "Specialized Room/Studio/Workshop/Exhibition",
+	  "Stair/Elevator/Escalator",
+	  "Restroom/Toilet",
+	  "Corridor",
+	  "Meeting/Office/Others"
+    ],
+    "annotation_types": [
+      "Graph representation"
+    ],
+    "geographical_location": "Open-source architectural website",
+    "potential_tasks": [
+      "Layout retrieval"
+    ],
+    "license": "CC BY-NC-4.0",
+    "paper": "Function-aware graph-based layout retrieval for academic libraries",
+    "access": "https://data.mendeley.com/datasets/xk9n6jnvp7/1",
+    "id": "layout_behavior_graph_dataset",
+    "image_url": "assets/img/datasets/layout_behavior_graph_dataset.png",
+    "added_date": "2026-03-24",
+    "contributor": "Song Guo",
+    "contributor_url": "https://songguoarchitect.github.io/"
+  }
 }
