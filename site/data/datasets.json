@@ -3286,7 +3286,7 @@
     "potential_tasks": [
       "Layout retrieval"
     ],
-    "license": "CC BY-NC-4.0",
+    "license": "CC BY-NC 4.0",
     "paper": "Function-aware graph-based layout retrieval for academic libraries",
     "access": "https://data.mendeley.com/datasets/xk9n6jnvp7/1",
     "id": "layout_behavior_graph_dataset",

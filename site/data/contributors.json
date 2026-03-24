@@ -833,6 +833,15 @@
     "link_url": "https://carbonleadershipforum.org/team/brad-benke/",
 	"image": "https://carbonleadershipforum.org/wp-content/uploads/2020/11/Brad-CLF-21-768x768-1.jpg",
   "type": "person"
+  },
+        {
+    "id": "Song GUO",
+    "name": "Song Guo",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "MIT · Tsinghua University",
+    "link_url": "https://songguoarchitect.github.io/",
+	"image": "https://songguoarchitect.github.io/assets/img/prof_pic1-480.webp",
+  "type": "person"
   }
 
 ]
