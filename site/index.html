@@ -291,10 +291,55 @@
 
     .hero-center { display:flex; flex-direction:column; align-items:center; gap:.55rem; }
 
+    .updates-carousel{
+      position:relative;
+    }
+    .updates-carousel-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+    .updates-carousel-actions{
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+      flex-shrink:0;
+    }
+    .updates-carousel-btn{
+      width:42px;
+      height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      border:1px solid #dbe6f0;
+      background:#fff;
+      color:var(--oc-brand-ink);
+      box-shadow:var(--oc-shadow);
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .updates-carousel-btn:hover:not(:disabled){
+      transform:translateY(-1px);
+      border-color:#bfd1e1;
+      box-shadow:0 12px 26px rgba(12, 47, 79, .12);
+    }
+    .updates-carousel-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+    .updates-carousel-viewport{
+      overflow:hidden;
+    }
     .featured-grid{
       display:grid;
-      grid-template-columns:repeat(4, minmax(0, 1fr));
+      grid-auto-flow:column;
+      grid-auto-columns:calc((100% - 2.3rem) / 3);
       gap:1.15rem;
+      transition:transform .28s ease;
+      will-change:transform;
     }
     .featured-card{
       background:#fff;
@@ -315,12 +360,40 @@
       aspect-ratio:16 / 9;
       background:#f3f6fa;
       overflow:hidden;
+      position:relative;
     }
     .featured-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
+    }
+    .featured-media .submitted-by{
+      position:absolute;
+      left:.6rem;
+      right:.6rem;
+      bottom:.6rem;
+      z-index:2;
+      display:inline-flex;
+      justify-content:center;
+      padding:.35rem .55rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(219,230,240,.95);
+      box-shadow:0 8px 18px rgba(15,46,75,.12);
+      color:#1e2a36;
+      font-size:.75rem;
+      font-weight:600;
+      line-height:1.2;
+      backdrop-filter:blur(6px);
+    }
+    .featured-media .submitted-by a{
+      color:#1e2a36;
+      text-decoration:none;
+    }
+    .featured-media .submitted-by a:hover{
+      color:#0f2e4b;
+      text-decoration:underline;
     }
     .featured-body{
       padding:1rem 1.05rem 1.05rem;
@@ -409,6 +482,31 @@
       color:var(--oc-link);
       font-weight:700;
       font-size:.9rem;
+    }
+    .featured-added{
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .updates-carousel-dots{
+      display:flex;
+      justify-content:center;
+      gap:.45rem;
+      margin-top:1rem;
+    }
+    .updates-carousel-dot{
+      width:9px;
+      height:9px;
+      border:0;
+      border-radius:999px;
+      background:#cbd7e3;
+      padding:0;
+      transition:transform .18s ease, background-color .18s ease;
+    }
+    .updates-carousel-dot[aria-current="true"]{
+      background:var(--oc-brand-accent);
+      transform:scale(1.15);
     }
 
     /* Sections & cards */
@@ -575,11 +673,12 @@
     }
 
     @media (max-width: 991.98px){
-      .featured-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+      .featured-grid{ grid-auto-columns:calc((100% - 1.15rem) / 2); }
     }
 
     @media (max-width: 575.98px){
-      .featured-grid{ grid-template-columns:1fr; }
+      .updates-carousel-head{ flex-direction:column; align-items:flex-start; }
+      .featured-grid{ grid-auto-columns:100%; gap:.9rem; }
       .hero .content{ padding:48px 0 36px; }
       .hero-search-field{
         flex-wrap:wrap;
@@ -861,16 +960,37 @@
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Latest Updates</div>
-        <div class="featured-header-meta">
-          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
-          <span>Recently added across datasets, models, workflows, and OERs.</span>
+        <div class="updates-carousel-head">
+          <div class="featured-header-meta">
+            <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
+            <span>Recently added across datasets, models, workflows, and OERs.</span>
+          </div>
+          <div class="updates-carousel-actions">
+            <button class="updates-carousel-btn" id="updatesPrev" type="button" aria-label="Previous updates">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="updates-carousel-btn" id="updatesNext" type="button" aria-label="Next updates">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
-          <div class="featured-card">
-            <div class="featured-body">
-              <span class="featured-type">Loading</span>
-              <p class="featured-meta">Pulling the latest updates from the catalog…</p>
+        <div class="updates-carousel" aria-label="Latest catalog updates">
+          <div class="updates-carousel-viewport">
+            <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
+              <div class="featured-card">
+                <div class="featured-body">
+                  <span class="featured-type">Loading</span>
+                  <p class="featured-meta">Pulling the latest updates from the catalog…</p>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="updates-carousel-dots" id="updatesDots" aria-label="Latest update pages">
+            <button class="updates-carousel-dot" type="button" aria-current="true" aria-label="Go to update page 1"></button>
           </div>
         </div>
       </div>
@@ -1360,12 +1480,18 @@
   // ===== Homepage featured resources =====
   (function(){
     const grid = document.getElementById('featuredResourcesGrid');
+    const viewport = document.querySelector('.updates-carousel-viewport');
     const freshnessEl = document.getElementById('catalogFreshness');
+    const prevBtn = document.getElementById('updatesPrev');
+    const nextBtn = document.getElementById('updatesNext');
+    const dotsEl = document.getElementById('updatesDots');
     const searchForm = document.getElementById('homeSearchForm');
     const searchInput = document.getElementById('homeSearchInput');
     const searchScopeSelect = document.getElementById('homeSearchScope');
     const searchResults = document.getElementById('homeSearchResults');
     if (!grid) return;
+    let currentPage = 0;
+    let currentItems = [];
 
     function esc(s){
       return String(s ?? '')
@@ -1414,6 +1540,30 @@
       const match = clean.match(/^.*?[.!?](?:\s|$)/);
       const sentence = match ? match[0].trim() : clean;
       return sentence.length > 140 ? `${sentence.slice(0, 137).trimEnd()}...` : sentence;
+    }
+
+    function contributorInfo(item){
+      if (item && (item.contributor || item.contributor_url)){
+        const raw = String(item.contributor || 'contributor').trim();
+        return {
+          label: raw.startsWith('@') ? raw : `@${raw}`,
+          url: item.contributor_url || ''
+        };
+      }
+      const submitted = item && (item.submitted_by || item.added_by);
+      if (!submitted) return null;
+      if (typeof submitted === 'string'){
+        const raw = submitted.trim();
+        return { label: raw.startsWith('@') ? raw : `@${raw}`, url: '' };
+      }
+      if (typeof submitted === 'object'){
+        const raw = String(submitted.handle || submitted.name || submitted.username || 'contributor').trim();
+        return {
+          label: raw.startsWith('@') ? raw : `@${raw}`,
+          url: submitted.url || submitted.link || ''
+        };
+      }
+      return null;
     }
 
     function normalizeText(text){
@@ -1596,6 +1746,8 @@
         description: [ds.potential_tasks?.[0], ds.annotation_types?.[0]].filter(Boolean).join(' with ') || 'Structured catalog entry for AEC data reuse.',
         meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
         year: ds.year,
+        addedLabel: formatDate(parseDate(ds.added_date || ds.added)),
+        contributor: contributorInfo(ds),
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
         image: ds.image_url || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(ds.added_date || ds.added),
@@ -1609,6 +1761,8 @@
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
         meta: [Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
         year: m.year,
+        addedLabel: formatDate(parseDate(m.added_date || m.added)),
+        contributor: contributorInfo(m),
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
         ts: parseDate(m.added_date || m.added),
@@ -1622,6 +1776,8 @@
         description: firstLine(u.summary) || 'Applied workflow connecting AI methods to field deployment.',
         meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
         year: u.year,
+        addedLabel: formatDate(parseDate(u.added_date || u.added)),
+        contributor: contributorInfo(u),
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
         image: (Array.isArray(u.media) && u.media.find(media => media && media.type === 'image')?.url) || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(u.added_date || u.added),
@@ -1635,6 +1791,8 @@
         description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
         meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
         year: r.year,
+        addedLabel: formatDate(parseDate(r.added || r.added_date)),
+        contributor: contributorInfo(r),
         href: `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`,
         image: r.image || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(r.added || r.added_date),
@@ -1650,7 +1808,7 @@
           if (bTime !== aTime) return bTime - aTime;
           return (b.year || 0) - (a.year || 0);
         })
-        .slice(0, 4);
+        .slice(0, 6);
     }
 
     function latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson){
@@ -1662,7 +1820,38 @@
       return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
     }
 
+    function itemsPerPage(){
+      if (window.innerWidth <= 575.98) return 1;
+      if (window.innerWidth <= 991.98) return 2;
+      return 3;
+    }
+
+    function pageCount(){
+      return Math.max(1, Math.ceil(currentItems.length / itemsPerPage()));
+    }
+
+    function updateCarousel(){
+      const pages = pageCount();
+      currentPage = Math.max(0, Math.min(currentPage, pages - 1));
+      const width = viewport ? viewport.clientWidth : grid.clientWidth;
+      grid.style.transform = `translateX(-${currentPage * width}px)`;
+      if (prevBtn) prevBtn.disabled = currentPage === 0;
+      if (nextBtn) nextBtn.disabled = currentPage >= pages - 1;
+      if (dotsEl){
+        dotsEl.innerHTML = Array.from({ length: pages }, (_, i) => `
+          <button class="updates-carousel-dot" type="button" aria-label="Go to update page ${i + 1}" aria-current="${i === currentPage ? 'true' : 'false'}"></button>
+        `).join('');
+        Array.from(dotsEl.querySelectorAll('button')).forEach((dot, i) => {
+          dot.addEventListener('click', () => {
+            currentPage = i;
+            updateCarousel();
+          });
+        });
+      }
+    }
+
     function render(items){
+      currentItems = items.slice();
       if (!items.length){
         grid.innerHTML = `
           <div class="featured-card">
@@ -1673,6 +1862,7 @@
               <p class="featured-meta">Featured resources will appear here as data loads.</p>
             </div>
           </div>`;
+        updateCarousel();
         return;
       }
 
@@ -1682,6 +1872,13 @@
             <div class="featured-media">
               <img src="${esc(item.image)}" alt="${esc(item.title)}"
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+              ${item.contributor ? `
+                <div class="submitted-by">
+                  ${item.contributor.url
+                    ? `<a href="${esc(item.contributor.url)}" target="_blank" rel="noopener">Proposed by <strong>${esc(item.contributor.label)}</strong></a>`
+                    : `Proposed by <strong>${esc(item.contributor.label)}</strong>`}
+                </div>
+              ` : ''}
             </div>
             <div class="featured-body">
               <div class="featured-topline">
@@ -1691,12 +1888,24 @@
               <h3 class="featured-title">${esc(item.title)}</h3>
               <p class="featured-desc">${esc(item.description || 'OpenConstruction catalog resource')}</p>
               <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
+              ${item.addedLabel ? `<p class="featured-added">Added ${esc(item.addedLabel)}</p>` : ''}
               <span class="featured-link">${esc(item.cta)}</span>
             </div>
           </a>
         </article>
       `).join('');
+      updateCarousel();
     }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+      currentPage -= 1;
+      updateCarousel();
+    });
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      currentPage += 1;
+      updateCarousel();
+    });
+    window.addEventListener('resize', debounce(() => updateCarousel(), 120));
 
     (async function(){
       try{
