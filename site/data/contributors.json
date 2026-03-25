@@ -842,6 +842,24 @@
     "link_url": "https://songguoarchitect.github.io/",
 	"image": "https://songguoarchitect.github.io/assets/img/prof_pic1-480.webp",
   "type": "person"
+  },
+          {
+    "id": "Gang Jiang",
+    "name": "Gang Jiang",
+    "role": "Model Contributor",
+    "affiliation": "University of Utah",
+    "link_url": "https://gangjiang1.github.io/",
+	"image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=RGjcgyEAAAAJ&citpid=1",
+  "type": "person"
+  },
+            {
+    "id": "Jianli Chen",
+    "name": "Jianli Chen",
+    "role": "Model Contributor",
+    "affiliation": "University of Utah",
+    "link_url": "https://profiles.faculty.utah.edu/u6031298",
+	"image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=Y0ycryUAAAAJ&citpid=7",
+  "type": "person"
   }
 
 ]
