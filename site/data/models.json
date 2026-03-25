@@ -1399,6 +1399,63 @@
   "added_date": "2026-03-24",
   "contributor": "Song Guo",
   "contributor_url": "https://songguoarchitect.github.io/"
+},
+{
+  "id": "EPlus-LLM",
+  "title": "EPlus-LLM: A large language model-based computing platform for automated building energy modeling",
+  "authors": [
+    "Gang Jiang",
+    "Zhihao Ma",
+    "Liang Zhang",
+	"Jianli Chen"
+  ],
+  "abstract":"Establishing building energy models (BEMs) for building design and analysis poses significant challenges due to demanding modeling efforts, expertise to use simulation software, and building science knowledge in practice. These make building modeling labor-intensive, hindering its widespread adoptions in building development. Therefore, to overcome these challenges in building modeling with enhanced automation in modeling practice, this paper proposes Eplus-LLM (EnergyPlus-Large Language Model) as the auto-building modeling platform, building on a fine-tuned large language model (LLM) to directly translate natural language description of buildings to established building models of various geometries, occupancy scenarios, and equipment loads. Through fine-tuning, the LLM (i.e., T5) is customized to digest natural language and simulation demands from users and convert human descriptions into EnergyPlus modeling files. Then, the Eplus-LLM platform realizes the automated building modeling through invoking the API of simulation software (i.e., the EnergyPlus engine) to simulate the auto-generated model files and output simulation results of interest. The validation process, involving four different types of prompts, demonstrates that Eplus-LLM reduces over 95% modeling efforts and achieves 100% accuracy in establishing BEMs while being robust to interference in usage, including but not limited to different tones, misspells, omissions, and redundancies. Overall, this research serves as the pioneering effort to customize LLM for auto-modeling purpose (directly build-up building models from natural language), aiming to provide a user-friendly human-AI interface that significantly reduces building modeling efforts. This work also further facilitates large-scale building model efforts, e.g., urban building energy modeling (UBEM), in modeling practice.",
+  "year": 2024,
+  "modalities": [
+    "Text",
+	"Building energy models"
+  ],
+  "tasks": [
+    "Building energy modeling"
+  ],
+  "applications": [
+    "Building energy simulation"
+  ],
+  "license": "Apache 2.0",
+  "paper_url": "https://doi.org/10.1016/j.apenergy.2024.123431",
+  "code_url": "https://github.com/Gangjiang1/EPlus-LLM",
+  "thumbnail": "assets/img/models/EPlus-LLM.png",
+  "added_date": "2026-03-25",
+  "contributor": "Gang Jiang",
+  "contributor_url": "https://gangjiang1.github.io/"
+},
+{
+  "id": "Prompting-for-Auto-building-Modeling",
+  "title": "Prompt engineering to inform large language models in automated building energy modeling",
+  "authors": [
+    "Gang Jiang",
+    "Zhihao Ma",
+    "Liang Zhang",
+	"Jianli Chen"
+  ],
+  "abstract":"",
+  "year": 2024,
+  "modalities": [
+    "Text",
+	"Building energy models"
+  ],
+  "tasks": [
+    "Building energy modeling"
+  ],
+  "applications": [
+    "Building energy simulation"
+  ],
+  "license": "Not specified",
+  "paper_url": "https://doi.org/10.1016/j.energy.2025.134548",
+  "code_url": "https://github.com/Gangjiang1/Prompting-for-Auto-building-Modeling",
+  "thumbnail": "assets/img/models/Prompting-for-Auto-building-Modeling.png",
+  "added_date": "2026-03-25",
+    "contributor": "Gang Jiang",
+  "contributor_url": "https://gangjiang1.github.io/"
 }
-
 ]
