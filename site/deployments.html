@@ -328,6 +328,8 @@ let USECASES = [];
 
 const byId = id => document.getElementById(id);
 function normKey(s){ return (s==null?'':String(s)).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+const FACET_LIMIT = 5;
+const showAllFacets = { phases:false, stakeholders:false, techs:false, apps:false, modalities:false, evidences:false };
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
 function yearExtent(items){
   const ys = items.map(d=>d.year).filter(y=>typeof y==='number' && !isNaN(y));
@@ -491,6 +493,36 @@ function setCheckedValues(containerId, values){
     input.checked = wanted.has(input.value);
   });
 }
+function filterFacetItems(items, query){
+  if (!query) return items;
+  const q = String(query).trim().toLowerCase();
+  if (!q) return items;
+  return items.filter(item => item.label.toLowerCase().includes(q));
+}
+function getVisibleFacetItems(items, selectedSet, expanded, query){
+  if (query) return items;
+  if (expanded) return items;
+  const selected = items.filter(item => selectedSet.has(item.value));
+  const selectedValues = new Set(selected.map(item => item.value));
+  const remaining = items.filter(item => !selectedValues.has(item.value));
+  return selected.concat(remaining.slice(0, Math.max(0, FACET_LIMIT - selected.length)));
+}
+function ensureFacetToggleButton(containerId, buttonId, facetKey, renderFn, totalCount, query){
+  let btn = byId(buttonId);
+  if(!btn){
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = buttonId;
+    btn.className = 'btn btn-link p-0 facet-toggle';
+    const container = byId(containerId);
+    if (container) container.insertAdjacentElement('afterend', btn);
+  }
+  const shouldShow = totalCount > FACET_LIMIT && !query;
+  btn.hidden = !shouldShow;
+  btn.setAttribute('aria-expanded', showAllFacets[facetKey] ? 'true' : 'false');
+  btn.textContent = showAllFacets[facetKey] ? 'Show less' : 'Show all';
+  btn.onclick = ()=>{ showAllFacets[facetKey] = !showAllFacets[facetKey]; renderFn(); };
+}
 function restoreStateFromUrl(){
   syncingUrlState = true;
   const params = new URLSearchParams(location.search);
@@ -512,12 +544,12 @@ function restoreStateFromUrl(){
   state.modalities = new Set(splitParam(params.get('modalities')));
   state.evidences = new Set(splitParam(params.get('evidence')));
 
-  setCheckedValues('filter-phase', state.phases);
-  setCheckedValues('filter-stakeholder', state.stakeholders);
-  setCheckedValues('filter-tech', state.techs);
-  setCheckedValues('filter-app', state.apps);
-  setCheckedValues('filter-modality', state.modalities);
-  setCheckedValues('filter-evidence', state.evidences);
+  renderFacetById('filter-phase');
+  renderFacetById('filter-stakeholder');
+  renderFacetById('filter-tech');
+  renderFacetById('filter-app');
+  renderFacetById('filter-modality');
+  renderFacetById('filter-evidence');
 
   if(rmin && rmax){
     const nextMin = params.get('yearMin');
@@ -535,6 +567,35 @@ function makeCheckbox(id, label, value){
   const lab=document.createElement('label'); lab.className='form-check-label'; lab.setAttribute('for',id); lab.textContent=label;
   wrap.appendChild(input); wrap.appendChild(lab); return wrap;
 }
+function renderFacetCheckboxes(containerId, items, selectedSet, prefix){
+  const el = byId(containerId); if(!el) return;
+  el.innerHTML='';
+  items.forEach((item,i)=>{
+    const node = makeCheckbox(`${prefix}_${i}`, item.label, item.value);
+    const input = node.querySelector('input');
+    if (input) input.checked = selectedSet.has(item.value);
+    el.appendChild(node);
+  });
+}
+function renderFacetList(containerId, map, selectedSet, prefix, buttonId, facetKey, query=''){
+  const items = filterFacetItems(
+    Array.from(map.entries()).map(([value,label])=>({ value, label })).sort((a,b)=> a.label.localeCompare(b.label)),
+    query
+  );
+  const visible = getVisibleFacetItems(items, selectedSet, showAllFacets[facetKey], query);
+  renderFacetCheckboxes(containerId, visible, selectedSet, prefix);
+  ensureFacetToggleButton(containerId, buttonId, facetKey, ()=>renderFacetById(containerId), items.length, query);
+}
+function renderFacetById(containerId){
+  switch(containerId){
+    case 'filter-phase': return renderFacetList('filter-phase', PHASE_MAP, state.phases, 'filter-phase', 'togglePhase', 'phases');
+    case 'filter-stakeholder': return renderFacetList('filter-stakeholder', STAKE_MAP, state.stakeholders, 'filter-stakeholder', 'toggleStakeholders', 'stakeholders', byId('stakeSearch')?.value || '');
+    case 'filter-tech': return renderFacetList('filter-tech', TECH_MAP, state.techs, 'filter-tech', 'toggleTech', 'techs', byId('techSearch')?.value || '');
+    case 'filter-app': return renderFacetList('filter-app', APP_MAP, state.apps, 'filter-app', 'toggleApps', 'apps', byId('appSearch')?.value || '');
+    case 'filter-modality': return renderFacetList('filter-modality', MOD_MAP, state.modalities, 'filter-modality', 'toggleModalities', 'modalities', byId('modSearch')?.value || '');
+    case 'filter-evidence': return renderFacetList('filter-evidence', EVID_MAP, state.evidences, 'filter-evidence', 'toggleEvidence', 'evidences', byId('evidenceSearch')?.value || '');
+  }
+}
 function buildFacets(){
   PHASE_MAP=new Map(); STAKE_MAP=new Map(); TECH_MAP=new Map(); APP_MAP=new Map(); MOD_MAP=new Map(); EVID_MAP=new Map();
 
@@ -547,18 +608,12 @@ function buildFacets(){
     if(u.evidence_level){ const k=normKey(u.evidence_level); if(!EVID_MAP.has(k)) EVID_MAP.set(k,u.evidence_level); }
   });
 
-  function fill(containerId, map){
-    const el = byId(containerId); if(!el) return;
-    el.innerHTML='';
-    Array.from(map.entries()).map(([k,l])=>({k,l})).sort((a,b)=> a.l.localeCompare(b.l))
-      .forEach((it,i)=> el.appendChild(makeCheckbox(`${containerId}_${i}`, it.l, it.k)));
-  }
-  fill('filter-phase', PHASE_MAP);
-  fill('filter-stakeholder', STAKE_MAP);
-  fill('filter-tech', TECH_MAP);
-  fill('filter-app', APP_MAP);
-  fill('filter-modality', MOD_MAP);
-  fill('filter-evidence', EVID_MAP);
+  renderFacetById('filter-phase');
+  renderFacetById('filter-stakeholder');
+  renderFacetById('filter-tech');
+  renderFacetById('filter-app');
+  renderFacetById('filter-modality');
+  renderFacetById('filter-evidence');
 
   const [minY,maxY]=yearExtent(USECASES);
   const rmin=byId('yearRangeMin'), rmax=byId('yearRangeMax');
@@ -724,14 +779,7 @@ function attachFacetHandlers(){
   function attachSearch(inputId, containerId){
     const inp = byId(inputId);
     if(!inp) return;
-    inp.addEventListener('input', debounce(e=>{
-      const q = e.target.value.toLowerCase();
-      const root = byId(containerId); if(!root) return;
-      root.querySelectorAll('.form-check').forEach(w=>{
-        const label = w.querySelector('label').textContent.toLowerCase();
-        w.style.display = label.includes(q)?'':'none';
-      });
-    }, 120));
+    inp.addEventListener('input', debounce(()=>{ renderFacetById(containerId); }, 120));
   }
   attachSearch('stakeSearch','filter-stakeholder');
   attachSearch('techSearch','filter-tech');

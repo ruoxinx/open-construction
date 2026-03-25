@@ -883,6 +883,10 @@ async function initDetail(){
         </div>
       `;
 
+      if (modalityList.length) {
+        quickFacts[3] = { label: 'Modalities', value: chipLane(modalityList) };
+      }
+
       const sidebar = `
         <div class="position-sticky" style="top:88px">
           <div class="quickfact-card mb-3">

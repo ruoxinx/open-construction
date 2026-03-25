@@ -1,5 +1,7 @@
 // OER loader & renderer — mirrors Models page layout (horizontal paper-card)
 (function () {
+  const FACET_LIMIT = 5;
+  const showAllFacets = { language:false, topics:false, licenses:false, media:false };
   const state = { all: [], filtered: [] };
   let syncingUrlState = false;
   const els = {
@@ -172,6 +174,43 @@
       input.checked = wanted.has(input.value);
     });
   }
+  function filterFacetItems(items, query){
+    if (!query) return items;
+    const q = String(query).trim().toLowerCase();
+    if (!q) return items;
+    return items.filter(item => item.toLowerCase().includes(q));
+  }
+  function getVisibleFacetItems(items, selectedValues, expanded, query){
+    if (query) return items;
+    if (expanded) return items;
+    const selected = items.filter(item => selectedValues.includes(item));
+    const selectedSet = new Set(selected);
+    const remaining = items.filter(item => !selectedSet.has(item));
+    return selected.concat(remaining.slice(0, Math.max(0, FACET_LIMIT - selected.length)));
+  }
+  function ensureToggleButton(container, btnId, facetKey, renderFn, totalCount, query){
+    if (!container) return;
+    let btn = document.getElementById(btnId);
+    if (!btn){
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = btnId;
+      btn.className = 'btn btn-link p-0 facet-toggle';
+      container.insertAdjacentElement('afterend', btn);
+    }
+    const shouldShow = totalCount > FACET_LIMIT && !query;
+    btn.hidden = !shouldShow;
+    btn.setAttribute('aria-expanded', showAllFacets[facetKey] ? 'true' : 'false');
+    btn.textContent = showAllFacets[facetKey] ? 'Show less' : 'Show all';
+    btn.onclick = ()=>{ showAllFacets[facetKey] = !showAllFacets[facetKey]; renderFn(); };
+  }
+  function renderFacet(container, prefix, items, selectedValues, btnId, facetKey, renderFn, query=''){
+    if (!container) return;
+    const visible = getVisibleFacetItems(items, selectedValues, showAllFacets[facetKey], query);
+    container.innerHTML = facetHtml(prefix, visible);
+    setChecked(container, selectedValues);
+    ensureToggleButton(container, btnId, facetKey, renderFn, items.length, query);
+  }
   function syncUrlState(){
     if (syncingUrlState) return;
     const params = new URLSearchParams();
@@ -206,14 +245,30 @@
     if (els.topicSearch) els.topicSearch.value = params.get('topicQuery') || '';
     if (els.licenseSearch) els.licenseSearch.value = params.get('licenseQuery') || '';
 
-    setChecked(els.lang, splitParam(params.get('language')));
-    setChecked(els.topics, splitParam(params.get('topics')));
-    setChecked(els.license, splitParam(params.get('licenses')));
-    setChecked(els.media, splitParam(params.get('media')));
+    renderLanguageFacet(splitParam(params.get('language')));
+    renderTopicFacet(splitParam(params.get('topics')));
+    renderLicenseFacet(splitParam(params.get('licenses')));
+    renderMediaFacet(splitParam(params.get('media')));
     syncingUrlState = false;
   }
   function allFacetValues(list, key){
     return uniq(list.flatMap(r => tokens(r[key]))).sort((a,b)=>a.localeCompare(b));
+  }
+  function renderLanguageFacet(selectedValues = readChecked(els.lang)){
+    renderFacet(els.lang, 'lang', allFacetValues(state.all,'language'), selectedValues, 'toggleLanguage', 'language', ()=>renderLanguageFacet());
+  }
+  function renderTopicFacet(selectedValues = readChecked(els.topics)){
+    const q = (els.topicSearch?.value || '').trim();
+    const items = filterFacetItems(allFacetValues(state.all,'topics'), q);
+    renderFacet(els.topics, 'topic', items, selectedValues, 'toggleTopics', 'topics', ()=>renderTopicFacet(), q);
+  }
+  function renderLicenseFacet(selectedValues = readChecked(els.license)){
+    const q = (els.licenseSearch?.value || '').trim();
+    const items = filterFacetItems(uniq(state.all.map(r=>r.license || 'See source')).sort((a,b)=>a.localeCompare(b)), q);
+    renderFacet(els.license, 'lic', items, selectedValues, 'toggleLicenses', 'licenses', ()=>renderLicenseFacet(), q);
+  }
+  function renderMediaFacet(selectedValues = readChecked(els.media)){
+    renderFacet(els.media, 'media', allFacetValues(state.all,'media'), selectedValues, 'toggleMedia', 'media', ()=>renderMediaFacet());
   }
 
   // ---------- renderer (mirrors Models “paper-card”) ----------
@@ -334,17 +389,17 @@
   }
 
   function buildFacets(){
-    if (els.lang)    els.lang.innerHTML    = facetHtml('lang',  allFacetValues(state.all,'language'));
-    if (els.license) els.license.innerHTML = facetHtml('lic',   uniq(state.all.map(r=>r.license || 'See source')));
-    if (els.media)   els.media.innerHTML   = facetHtml('media', allFacetValues(state.all,'media'));
-    if (els.topics)  els.topics.innerHTML  = facetHtml('topic', allFacetValues(state.all,'topics'));
+    renderLanguageFacet();
+    renderLicenseFacet();
+    renderMediaFacet();
+    renderTopicFacet();
 
     [els.lang, els.license, els.media, els.topics]
       .filter(Boolean)
       .forEach(el => el.addEventListener('change', applyFilters));
 
-    els.topicSearch?.addEventListener('input', applyFilters);
-    els.licenseSearch?.addEventListener('input', applyFilters);
+    els.topicSearch?.addEventListener('input', ()=>{ renderTopicFacet(); applyFilters(); });
+    els.licenseSearch?.addEventListener('input', ()=>{ renderLicenseFacet(); applyFilters(); });
     els.q?.addEventListener('input', applyFilters);
     els.qDock?.addEventListener('input', ()=>{
       if (els.q) els.q.value = els.qDock.value;
