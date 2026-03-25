@@ -1502,6 +1502,14 @@
         .replace(/'/g, '&#39;');
     }
 
+    function debounce(fn, ms){
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), ms);
+      };
+    }
+
     function parseDate(value){
       if (!value) return null;
       const raw = String(value).trim();
