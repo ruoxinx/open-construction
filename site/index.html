@@ -315,7 +315,6 @@
       aspect-ratio:16 / 9;
       background:#f3f6fa;
       overflow:hidden;
-      position:relative;
     }
     .featured-media img{
       width:100%;
@@ -323,16 +322,6 @@
       object-fit:cover;
       display:block;
     }
-    .featured-media .submitted-by{
-      position:absolute; right:6px; bottom:6px;
-      background:rgba(255,255,255,.96);
-      border:1px solid #e0e6ef; border-radius:10px;
-      padding:2px 8px; font-size:.75rem; line-height:1.25;
-      color:#1e2a36; font-weight:500; box-shadow:0 2px 6px rgba(0,0,0,.06);
-      max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .featured-media .submitted-by a{ color:#1e2a36; text-decoration:none; }
-    .featured-media .submitted-by a:hover{ text-decoration:underline; color:#0f2e4b; }
     .featured-body{
       padding:1rem 1.05rem 1.05rem;
       display:flex;
@@ -1426,17 +1415,6 @@
       return sentence.length > 140 ? `${sentence.slice(0, 137).trimEnd()}...` : sentence;
     }
 
-    function contributorInfo(item){
-      if (item && (item.contributor || item.contributor_url)){
-        const raw = String(item.contributor || 'contributor').trim();
-        return {
-          label: raw.startsWith('@') ? raw : `@${raw}`,
-          url: item.contributor_url || ''
-        };
-      }
-      return null;
-    }
-
     function normalizeText(text){
       return String(text || '').toLowerCase();
     }
@@ -1617,7 +1595,6 @@
         description: [ds.potential_tasks?.[0], ds.annotation_types?.[0]].filter(Boolean).join(' with ') || 'Structured catalog entry for AEC data reuse.',
         meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
         year: ds.year,
-        contributor: contributorInfo(ds),
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
         image: ds.image_url || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(ds.added_date || ds.added),
@@ -1631,7 +1608,6 @@
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
         meta: [Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
         year: m.year,
-        contributor: contributorInfo(m),
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
         ts: parseDate(m.added_date || m.added),
@@ -1645,7 +1621,6 @@
         description: firstLine(u.summary) || 'Applied workflow connecting AI methods to field deployment.',
         meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
         year: u.year,
-        contributor: contributorInfo(u),
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
         image: (Array.isArray(u.media) && u.media.find(media => media && media.type === 'image')?.url) || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(u.added_date || u.added),
@@ -1659,7 +1634,6 @@
         description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
         meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
         year: r.year,
-        contributor: contributorInfo(r),
         href: `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`,
         image: r.image || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(r.added || r.added_date),
@@ -1707,13 +1681,6 @@
             <div class="featured-media">
               <img src="${esc(item.image)}" alt="${esc(item.title)}"
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
-              ${item.contributor ? `
-                <div class="submitted-by">
-                  ${item.contributor.url
-                    ? `<a href="${esc(item.contributor.url)}" target="_blank" rel="noopener">Proposed by <strong>${esc(item.contributor.label)}</strong></a>`
-                    : `Proposed by <strong>${esc(item.contributor.label)}</strong>`}
-                </div>
-              ` : ''}
             </div>
             <div class="featured-body">
               <div class="featured-topline">
