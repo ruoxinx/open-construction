@@ -358,15 +358,21 @@
     }
     .featured-media{
       aspect-ratio:16 / 9;
-      background:#f3f6fa;
+      background:
+        linear-gradient(180deg, #f7fafc 0%, #edf3f8 100%);
       overflow:hidden;
       position:relative;
+      padding:.75rem;
     }
     .featured-media img{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit:contain;
+      object-position:center;
       display:block;
+      border-radius:12px;
+      background:#fff;
+      box-shadow:inset 0 0 0 1px rgba(219,230,240,.9);
     }
     .featured-media .submitted-by{
       position:absolute;
