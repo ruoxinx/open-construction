@@ -367,6 +367,43 @@ function formatLicense(licVal){
   return norm;
 }
 
+function formatLicense(licVal){
+  const norm = safeText(licVal);
+  if (norm === 'â€”') return '';
+
+  const key = String(licVal).trim().toUpperCase();
+  const licenseMap = {
+    'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'CC0': 'https://creativecommons.org/public-domain/cc0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'MIT': 'https://opensource.org/licenses/MIT',
+    'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
+    'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause',
+    'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+    'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
+    'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
+    'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md'
+  };
+
+  if (licenseMap[key]) {
+    return `<a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a>`;
+  }
+  return norm;
+}
+
 /* ---------- publication badges (Altmetric / Dimensions) ---------- */
 function ensureExternalScript(src, id){
   if (!src) return;
