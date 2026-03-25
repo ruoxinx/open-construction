@@ -858,6 +858,7 @@ async function initDetail(){
           <dl class="meta mb-0">
             ${metaRow('Framework', escapeHtml(safeText(m.framework || m.library || m.backbone || '')))}
             ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
+            ${metaRow('Modalities', chipLane(modalityList))}
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
             ${metaRow('Associated paper', modelPaperTitle !== '—' ? escapeHtml(modelPaperTitle) : '—')}
             ${metaRow('Code URL', codeUrl ? `<a href="${safeHref(codeUrl)}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}

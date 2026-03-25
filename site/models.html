@@ -565,6 +565,7 @@ function canonicalizeModalityLabel(raw){
   const hasVideo   = has(/\bvideo\b|\bsequence\b|\bstream\b/);
   const hasSat     = has(/\bsatellite\b|\blandsat\b|\bsentinel\b/);
   const hasAerial  = has(/\baerial\b|\bdrone\b|\buav\b|\bauv\b/);
+  const hasEgocentric = has(/\begocentric\b|\bego\b|\bfirst[\s-]?person\b|\bwearable\b|\bbodycam\b|\bheadcam\b|\bhelmet camera\b/);
   const hasGround  = has(/\bground\b|\bhandheld\b|\bphone\b|\bmobile\b|\bvehicle\b|\brover\b/);
   const hasRGB     = has(/\brgb\b|\bimage\b|\bphoto\b/);
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
@@ -585,6 +586,7 @@ function canonicalizeModalityLabel(raw){
   if (hasVideo)   return 'Video Clips';
   if (hasSat)     return hasRGB ? 'Satellite RGB' : 'Satellite';
   if (hasAerial)  return hasRGB ? 'Aerial RGB'    : 'Aerial';
+  if (hasEgocentric) return hasRGB ? 'Egocentric RGB' : 'Egocentric';
   if (hasGround)  return hasRGB ? 'Ground RGB'    : 'Ground';
   if (hasSynthetic) return 'Synthetic';
   if (hasRasterCAD) return 'Rasterized CAD';
