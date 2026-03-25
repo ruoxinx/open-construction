@@ -291,55 +291,10 @@
 
     .hero-center { display:flex; flex-direction:column; align-items:center; gap:.55rem; }
 
-    .updates-carousel{
-      position:relative;
-    }
-    .updates-carousel-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-      margin-bottom:1rem;
-    }
-    .updates-carousel-actions{
-      display:flex;
-      align-items:center;
-      gap:.5rem;
-      flex-shrink:0;
-    }
-    .updates-carousel-btn{
-      width:42px;
-      height:42px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      border:1px solid #dbe6f0;
-      background:#fff;
-      color:var(--oc-brand-ink);
-      box-shadow:var(--oc-shadow);
-      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-    .updates-carousel-btn:hover:not(:disabled){
-      transform:translateY(-1px);
-      border-color:#bfd1e1;
-      box-shadow:0 12px 26px rgba(12, 47, 79, .12);
-    }
-    .updates-carousel-btn:disabled{
-      opacity:.45;
-      cursor:not-allowed;
-      box-shadow:none;
-    }
-    .updates-carousel-viewport{
-      overflow:hidden;
-    }
     .featured-grid{
       display:grid;
-      grid-auto-flow:column;
-      grid-auto-columns:calc((100% - 2.3rem) / 3);
+      grid-template-columns:repeat(4, minmax(0, 1fr));
       gap:1.15rem;
-      transition:transform .28s ease;
-      will-change:transform;
     }
     .featured-card{
       background:#fff;
@@ -495,26 +450,6 @@
       font-size:.82rem;
       font-weight:700;
     }
-    .updates-carousel-dots{
-      display:flex;
-      justify-content:center;
-      gap:.45rem;
-      margin-top:1rem;
-    }
-    .updates-carousel-dot{
-      width:9px;
-      height:9px;
-      border:0;
-      border-radius:999px;
-      background:#cbd7e3;
-      padding:0;
-      transition:transform .18s ease, background-color .18s ease;
-    }
-    .updates-carousel-dot[aria-current="true"]{
-      background:var(--oc-brand-accent);
-      transform:scale(1.15);
-    }
-
     /* Sections & cards */
     .oc-section{ margin-top:48px; }
     .oc-card{
@@ -679,12 +614,11 @@
     }
 
     @media (max-width: 991.98px){
-      .featured-grid{ grid-auto-columns:calc((100% - 1.15rem) / 2); }
+      .featured-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 575.98px){
-      .updates-carousel-head{ flex-direction:column; align-items:flex-start; }
-      .featured-grid{ grid-auto-columns:100%; gap:.9rem; }
+      .featured-grid{ grid-template-columns:1fr; }
       .hero .content{ padding:48px 0 36px; }
       .hero-search-field{
         flex-wrap:wrap;
@@ -966,37 +900,16 @@
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Latest Updates</div>
-        <div class="updates-carousel-head">
-          <div class="featured-header-meta">
-            <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
-            <span>Recently added across datasets, models, workflows, and OERs.</span>
-          </div>
-          <div class="updates-carousel-actions">
-            <button class="updates-carousel-btn" id="updatesPrev" type="button" aria-label="Previous updates">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="updates-carousel-btn" id="updatesNext" type="button" aria-label="Next updates">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
+        <div class="featured-header-meta">
+          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
+          <span>Recently added across datasets, models, workflows, and OERs.</span>
         </div>
-        <div class="updates-carousel" aria-label="Latest catalog updates">
-          <div class="updates-carousel-viewport">
-            <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
-              <div class="featured-card">
-                <div class="featured-body">
-                  <span class="featured-type">Loading</span>
-                  <p class="featured-meta">Pulling the latest updates from the catalog…</p>
-                </div>
-              </div>
+        <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
+          <div class="featured-card">
+            <div class="featured-body">
+              <span class="featured-type">Loading</span>
+              <p class="featured-meta">Pulling the latest updates from the catalog…</p>
             </div>
-          </div>
-          <div class="updates-carousel-dots" id="updatesDots" aria-label="Latest update pages">
-            <button class="updates-carousel-dot" type="button" aria-current="true" aria-label="Go to update page 1"></button>
           </div>
         </div>
       </div>
@@ -1486,18 +1399,12 @@
   // ===== Homepage featured resources =====
   (function(){
     const grid = document.getElementById('featuredResourcesGrid');
-    const viewport = document.querySelector('.updates-carousel-viewport');
     const freshnessEl = document.getElementById('catalogFreshness');
-    const prevBtn = document.getElementById('updatesPrev');
-    const nextBtn = document.getElementById('updatesNext');
-    const dotsEl = document.getElementById('updatesDots');
     const searchForm = document.getElementById('homeSearchForm');
     const searchInput = document.getElementById('homeSearchInput');
     const searchScopeSelect = document.getElementById('homeSearchScope');
     const searchResults = document.getElementById('homeSearchResults');
     if (!grid) return;
-    let currentPage = 0;
-    let currentItems = [];
 
     function esc(s){
       return String(s ?? '')
@@ -1506,14 +1413,6 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
-    }
-
-    function debounce(fn, ms){
-      let t;
-      return (...args) => {
-        clearTimeout(t);
-        t = setTimeout(() => fn(...args), ms);
-      };
     }
 
     function parseDate(value){
@@ -1822,7 +1721,7 @@
           if (bTime !== aTime) return bTime - aTime;
           return (b.year || 0) - (a.year || 0);
         })
-        .slice(0, 6);
+        .slice(0, 4);
     }
 
     function latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson){
@@ -1834,38 +1733,7 @@
       return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
     }
 
-    function itemsPerPage(){
-      if (window.innerWidth <= 575.98) return 1;
-      if (window.innerWidth <= 991.98) return 2;
-      return 3;
-    }
-
-    function pageCount(){
-      return Math.max(1, Math.ceil(currentItems.length / itemsPerPage()));
-    }
-
-    function updateCarousel(){
-      const pages = pageCount();
-      currentPage = Math.max(0, Math.min(currentPage, pages - 1));
-      const width = viewport ? viewport.clientWidth : grid.clientWidth;
-      grid.style.transform = `translateX(-${currentPage * width}px)`;
-      if (prevBtn) prevBtn.disabled = currentPage === 0;
-      if (nextBtn) nextBtn.disabled = currentPage >= pages - 1;
-      if (dotsEl){
-        dotsEl.innerHTML = Array.from({ length: pages }, (_, i) => `
-          <button class="updates-carousel-dot" type="button" aria-label="Go to update page ${i + 1}" aria-current="${i === currentPage ? 'true' : 'false'}"></button>
-        `).join('');
-        Array.from(dotsEl.querySelectorAll('button')).forEach((dot, i) => {
-          dot.addEventListener('click', () => {
-            currentPage = i;
-            updateCarousel();
-          });
-        });
-      }
-    }
-
     function render(items){
-      currentItems = items.slice();
       if (!items.length){
         grid.innerHTML = `
           <div class="featured-card">
@@ -1876,7 +1744,6 @@
               <p class="featured-meta">Featured resources will appear here as data loads.</p>
             </div>
           </div>`;
-        updateCarousel();
         return;
       }
 
@@ -1908,18 +1775,7 @@
           </a>
         </article>
       `).join('');
-      updateCarousel();
     }
-
-    if (prevBtn) prevBtn.addEventListener('click', () => {
-      currentPage -= 1;
-      updateCarousel();
-    });
-    if (nextBtn) nextBtn.addEventListener('click', () => {
-      currentPage += 1;
-      updateCarousel();
-    });
-    window.addEventListener('resize', debounce(() => updateCarousel(), 120));
 
     (async function(){
       try{
