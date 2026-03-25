@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: EPlus-LLM: A large language model-based computing platform for automated building energy modeling]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:EPlus-LLM:2026-03-25</guid>
+    <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Establishing building energy models (BEMs) for building design and analysis poses significant challenges due to demanding modeling efforts, expertise to use simulation software, and building science knowledge in practice. These make building modeling labor-intensive, hindering its widespread adoptions in building development. Therefore, to overcome these challenges in building modeling with enhanced automation in modeling practice, this paper proposes Eplus-LLM (EnergyPlus-Large Language Model) as the auto-building modeling platform, building on a fine-tuned large language model (LLM) to directly translate natural language description of buildings to established building models of various geometries, occupancy scenarios, and equipment loads. Through fine-tuning, the LLM (i.e., T5) is customized to digest natural language and simulation demands from users and convert human descriptions into EnergyPlus modeling files. Then, the Eplus-LLM platform realizes the automated building modeling through invoking the API of simulation software (i.e., the EnergyPlus engine) to simulate the auto-generated model files and output simulation results of interest. The validation process, involving four different types of prompts, demonstrates that Eplus-LLM reduces over 95% modeling efforts and achieves 100% accuracy in establishing BEMs while being robust to interference in usage, including but not limited to different tones, misspells, omissions, and redundancies. Overall, this research serves as the pioneering effort to customize LLM for auto-modeling purpose (directly build-up building models from natural language), aiming to provide a user-friendly human-AI interface that significantly reduces building modeling efforts. This work also further facilitates large-scale building model efforts, e.g., urban building energy modeling (UBEM), in modeling practice.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: Prompt engineering to inform large language models in automated building energy modeling]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:Prompting-for-Auto-building-Modeling:2026-03-25</guid>
+    <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New model added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Function-aware Graph-based Layout Retrieval Dataset for Academic Libraries]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=layout_behavior_graph_dataset</link>
     <guid isPermaLink="false">datasets:layout_behavior_graph_dataset:2026-03-24</guid>
@@ -68,22 +84,6 @@
     <guid isPermaLink="false">datasets:CSeg:2026-02-17</guid>
     <pubDate>Tue, 17 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: ADPT: Agent-based Defect Pattern Tagger (ADPT) Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=ADPT_Dataset</link>
-    <guid isPermaLink="false">datasets:ADPT_Dataset:2026-02-06</guid>
-    <pubDate>Fri, 06 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: ADPT: Agent-based defect pattern tagger for category-level structural defect annotation]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:ADPT:2026-02-06</guid>
-    <pubDate>Fri, 06 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Automated structural defect annotation is a critical yet challenging prerequisite for infrastructure inspection, particularly under conditions of limited labeled data, severe class imbalance, and heterogeneous visual appearances. Existing learning-based or semi-automatic annotation methods often rely on manually labeled samples, human-in-the-loop correction, or task-specific model fine-tuning, which limits their scalability and applicability in practical inspection scenarios. To address this problem, we propose Agent-based Defect Pattern Tagger (ADPT), a training-free, zero-shot reasoning-based annotation workflow that organizes agentic large vision-language model (LVLM) inference via prompt engineering into a multi-stage reasoning and verification process. ADPT integrates semantic pattern matching with an iterative self-questioning refinement mechanism to structure and consolidate LVLM outputs into standardized defect labels, without assuming human-provided labels or in-loop supervision during annotation generation. Extensive experiments on both class-balanced and class-imbalanced datasets demonstrate that ADPT achieves up to 98 % accuracy in binary defect discrimination and up to 90 % mean F1-score across four defect categories under balanced settings, with 89 % mean F1-score under class-imbalanced conditions. These results indicate that ADPT can substantially reduce manual annotation effort while providing structured, reusable annotations that support downstream tasks such as dataset bootstrapping, transfer learning, and domain adaptation in structural damage assessment.]]></description>
   </item>
   </channel>
 </rss>
