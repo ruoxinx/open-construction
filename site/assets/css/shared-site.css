@@ -13,6 +13,25 @@
   --oc-accent:#f2a238;
 }
 
+.skip-link{
+  position:absolute;
+  left:1rem;
+  top:-3rem;
+  z-index:2000;
+  padding:.7rem 1rem;
+  border-radius:999px;
+  background:var(--oc-ink);
+  color:#fff;
+  text-decoration:none;
+  box-shadow:var(--oc-shadow);
+  transition:top .18s ease;
+}
+
+.skip-link:focus{
+  top:1rem;
+  color:#fff;
+}
+
 html,
 body{
   background:var(--oc-bg);

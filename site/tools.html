@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="shortcut icon" href="/favicon.ico">
-	<meta name="theme-color" content="#0f2e4b">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Tools</title>
-  <meta name="description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenConstruction - Tools</title>
+  <meta name="description" content="Explore open tools for annotation, reproducible experiments, publishing, and geospatial delivery in AEC research.">
   <link rel="canonical" href="https://www.openconstruction.org/tools.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Tools">
-  <meta property="og:description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <meta property="og:title" content="OpenConstruction - Tools">
+  <meta property="og:description" content="Find open tools for annotation, reproducibility, publishing, and 3D or GIS workflows in AEC research.">
   <meta property="og:url" content="https://www.openconstruction.org/tools.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,61 +26,456 @@
       --oc-radius:14px; --oc-accent:#f2a238;
     }
     .oc-container{ max-width:1080px; }
-    /* shared shell styles live in assets/css/shared-site.css */
-
-    /* Highlight */
-    .hl{background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700;}
-
-    /* Filter chips (selective boxes like dataset/models) */
-    .filters-wrap{border-bottom:1px solid var(--oc-border); background:#fff}
-    .filters{ padding:12px 0; display:flex; flex-wrap:wrap; gap:8px 10px; align-items:center }
-    .chip {
-      --pad-x: 14px; --pad-y: 7px;
+    .hl{
+      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
+      padding:0 .06em;
+      font-weight:700;
+    }
+    .tools-panel,
+    .tool-section,
+    .tool-card,
+    .empty-state{
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
+    .tools-panel{ padding:1rem; }
+    .panel-kicker,
+    .section-kicker{
+      font-size:.78rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--oc-sub);
+      font-weight:800;
+      margin-bottom:.25rem;
+    }
+    .panel-title,
+    .section-title{
+      font-weight:800;
+      color:var(--oc-ink);
+      margin-bottom:.2rem;
+    }
+    .panel-subtitle,
+    .section-subtitle{
+      color:var(--oc-sub);
+      margin-bottom:.85rem;
+    }
+    .panel-header,
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:.75rem;
+      flex-wrap:wrap;
+    }
+    .section-meta{
+      color:var(--oc-sub);
+      font-size:.9rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .hero-stats{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-top:1rem;
+    }
+    .stat-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.34rem .8rem;
+      background:var(--oc-card);
       border:1px solid var(--oc-border);
       border-radius:999px;
-      padding:var(--pad-y) var(--pad-x);
-      font-weight:600; font-size:.92rem; color:#0f2e4b; background:#fff;
-      box-shadow:0 1px 2px rgba(15,46,75,.04);
-      user-select:none; cursor:pointer;
+      font-size:.9rem;
+      color:var(--oc-sub);
     }
-    .chip:hover{ background:#f7fafc }
-    .chip.active{
-      background:#0d6efd; color:#fff; border-color:#0d6efd;
-      box-shadow:0 2px 8px rgba(13,110,253,.25);
+    .stat-pill strong{ color:var(--oc-ink); }
+    .controls-grid{
+      display:grid;
+      grid-template-columns:minmax(0, 1.6fr) minmax(180px, .8fr) auto auto;
+      gap:.75rem;
+      align-items:center;
     }
-    .chip .count{ opacity:.85; font-weight:600; margin-left:.3rem; }
-    .filters-note{ font-size:.85rem; color:var(--oc-sub); margin-left:auto }
-
-    /* Sections */
-    .oc-section{ margin-top:24px }
-    .tools-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
-    .tools-card .card-body{ padding:1.25rem 1.25rem }
-    .kicker{ font-size:.82rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-sub); margin-bottom:.25rem }
-    .title{ font-weight:800; color:#0f2e4b; margin-bottom:.2rem }
-    .subtitle{ color:#6b7b8c; margin-bottom:.9rem }
-    .tool-block + .tool-block{ margin-top:1rem; padding-top:1rem; border-top:1px dashed var(--oc-border); }
-    .tool-name{ font-weight:700; color:#0f2e4b; margin-bottom:.15rem }
-    .tool-summary{ color:#2a3946; margin-bottom:.35rem }
-    .links a{ margin-right:.75rem }
-    .small-muted{ color:var(--oc-sub) }
-
-    /* Floating submit */
-    .issue-btn{ position:fixed;bottom:20px;right:20px;z-index:1050;background:#0d6efd;color:#fff;padding:12px 20px;border-radius:999px;font-weight:600;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.25);text-decoration:none;transition:background .2s,transform .2s }
-    .issue-btn:hover{ background:#0b5ed7; transform:translateY(-2px); color:#fff; text-decoration:none }
+    .search-shell{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      min-height:50px;
+      padding:0 .9rem;
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      background:#fff;
+    }
+    .search-shell input{
+      border:0;
+      width:100%;
+      min-width:0;
+      background:transparent;
+      color:var(--oc-text);
+    }
+    .search-shell input:focus{ outline:none; }
+    .tool-sort{
+      min-height:50px;
+      border-radius:999px;
+      border-color:var(--oc-border);
+      font-weight:600;
+    }
+    .tool-action{
+      min-height:50px;
+      border-radius:999px;
+      border:1px solid #d6dde6;
+      background:#fff;
+      color:#24384d;
+      padding:0 1rem;
+      font-weight:700;
+    }
+    .tool-action:hover{ background:#f4f7fb; border-color:#cbd6e3; color:#0f2e4b; }
+    .shortcut-hint{
+      color:var(--oc-sub);
+      font-size:.9rem;
+      margin:.8rem 0 0;
+    }
+    .shortcut-hint kbd{
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      padding:.12rem .42rem;
+      background:#fff;
+      font:inherit;
+      font-weight:700;
+      color:var(--oc-ink);
+    }
+    .filters-wrap{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-top:1rem;
+    }
+    .tool-chip,
+    .stack-chip{
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      padding:.46rem .8rem;
+      font-size:.9rem;
+      font-weight:600;
+      background:#fff;
+      color:var(--oc-ink);
+    }
+    .tool-chip.active,
+    .stack-chip.active{
+      background:#0d6efd;
+      border-color:#0d6efd;
+      color:#fff;
+    }
+    .tool-chip-count{
+      display:inline-block;
+      margin-left:.35rem;
+      color:inherit;
+      opacity:.82;
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .filters-note{
+      color:var(--oc-sub);
+      font-size:.9rem;
+      font-weight:700;
+      margin-top:.8rem;
+    }
+    .stack-picks{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-bottom:.9rem;
+    }
+    .stack-meta{
+      color:var(--oc-sub);
+      font-size:.88rem;
+      font-weight:700;
+    }
+    .stack-output{
+      display:grid;
+      gap:.85rem;
+    }
+    .stack-summary{
+      border-bottom:1px solid var(--oc-border);
+      padding-bottom:.85rem;
+    }
+    .stack-summary h3{
+      margin:0 0 .3rem;
+      font-size:1.05rem;
+      font-weight:800;
+      color:var(--oc-ink);
+    }
+    .stack-summary p{
+      margin:0;
+      color:var(--oc-sub);
+      line-height:1.55;
+    }
+    .stack-cards{
+      display:grid;
+      gap:.75rem;
+    }
+    .stack-card{
+      border:1px solid var(--oc-border);
+      border-radius:12px;
+      padding:.9rem;
+      background:#fff;
+    }
+    .stack-card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:.65rem;
+      margin-bottom:.55rem;
+    }
+    .stack-card h4{
+      margin:0 0 .2rem;
+      font-size:1rem;
+      font-weight:700;
+      color:var(--oc-ink);
+    }
+    .stack-card h4 a{ color:inherit; text-decoration:none; }
+    .stack-card p{
+      margin:0;
+      color:var(--oc-sub);
+      font-size:.92rem;
+      line-height:1.5;
+    }
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:1rem;
+      margin-top:.9rem;
+    }
+    .tool-section{
+      padding:1rem;
+      margin-top:1rem;
+    }
+    .tool-card{
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.8rem;
+      min-height:100%;
+    }
+    .tool-card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:.75rem;
+    }
+    .tool-badge{
+      display:inline-flex;
+      align-items:center;
+      padding:.18rem .55rem;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #dbe6f0;
+      color:var(--oc-ink);
+      font-size:.75rem;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .tool-name{
+      margin:.55rem 0 0;
+      font-size:1.08rem;
+      font-weight:700;
+      color:var(--oc-ink);
+    }
+    .tool-name a{ color:inherit; text-decoration:none; }
+    .tool-name a:hover{ color:var(--oc-link); }
+    .tool-summary{
+      color:var(--oc-sub);
+      margin:0;
+      line-height:1.55;
+    }
+    .tool-points{
+      margin:0;
+      padding-left:1.1rem;
+      color:var(--oc-text);
+    }
+    .tool-points li + li{ margin-top:.35rem; }
+    .tool-card-actions{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:.65rem;
+      flex-wrap:wrap;
+    }
+    .tool-link-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.45rem;
+    }
+    .mini-link{
+      display:inline-flex;
+      align-items:center;
+      padding:.36rem .7rem;
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      color:var(--oc-link);
+      text-decoration:none;
+      font-size:.84rem;
+      font-weight:700;
+      background:#fff;
+    }
+    .mini-link:hover{ background:#f8fbff; color:var(--oc-link); }
+    .bookmark-btn,
+    .stack-save{
+      border:1px solid #d6dde6;
+      border-radius:999px;
+      background:#fff;
+      color:#24384d;
+      padding:.38rem .8rem;
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .bookmark-btn.active,
+    .stack-save.active{
+      background:#fff3de;
+      border-color:#f2d4a0;
+      color:#8b5c07;
+    }
+    .shortlist-bar{
+      position:sticky;
+      top:86px;
+      display:block;
+      padding:1rem;
+      background:var(--oc-card);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
+    .shortlist-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:.75rem;
+      margin-bottom:.6rem;
+    }
+    .shortlist-title{
+      margin:0;
+      font-size:1.05rem;
+      font-weight:800;
+      color:var(--oc-ink);
+    }
+    .shortlist-subtitle{
+      margin:.12rem 0 0;
+      color:var(--oc-sub);
+      font-size:.9rem;
+    }
+    .shortlist-list{
+      display:grid;
+      gap:.6rem;
+      max-height:260px;
+      overflow:auto;
+      margin-top:.85rem;
+    }
+    .shortlist-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:.75rem;
+      border:1px solid var(--oc-border);
+      border-radius:12px;
+      padding:.75rem .8rem;
+      background:#fff;
+    }
+    .shortlist-name{
+      font-weight:700;
+      color:var(--oc-ink);
+    }
+    .shortlist-meta{
+      color:var(--oc-sub);
+      font-size:.84rem;
+    }
+    .shortlist-remove{
+      border:0;
+      background:transparent;
+      color:var(--oc-link);
+      font-size:.84rem;
+      font-weight:700;
+      padding:0;
+    }
+    .shortlist-actions{
+      display:flex;
+      gap:.6rem;
+      margin-top:.85rem;
+    }
+    .shortlist-actions .tool-action{
+      min-height:44px;
+      flex:1 1 0;
+    }
+    .empty-state{
+      padding:1.4rem;
+      text-align:center;
+    }
+    .empty-state h2{
+      margin:0 0 .35rem;
+      font-size:1.15rem;
+      font-weight:800;
+      color:var(--oc-ink);
+    }
+    .empty-state p{
+      margin:0;
+      color:var(--oc-sub);
+    }
+    .issue-btn{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      z-index:1050;
+      background:#0d6efd;
+      color:#fff;
+      padding:12px 20px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:.9rem;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
+      text-decoration:none;
+      transition:background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover{
+      background:#0b5ed7;
+      transform:translateY(-2px);
+      color:#fff;
+      text-decoration:none;
+    }
+    @media (max-width: 991.98px){
+      .tool-grid{ grid-template-columns:1fr; }
+      .controls-grid{ grid-template-columns:1fr; }
+      .shortlist-bar{
+        position:static;
+        top:auto;
+        margin-top:1rem;
+      }
+    }
+    @media (max-width: 575.98px){
+      .issue-btn{
+        right:14px;
+        bottom:14px;
+        padding:10px 14px;
+        font-size:.82rem;
+      }
+    }
   </style>
 </head>
 <body>
+<a class="skip-link" href="#mainContent">Skip to tools</a>
 
-<!-- NAV -->
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
       <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
-    <span class="brand-wordmark">
-      <span class="oc-open">OpenConstruction</span>
-      <span class="oc-construction">Open Science</span>
-    </span>
-
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
     </a>
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -88,16 +483,16 @@
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
-		<li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries">
             <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
             <li><a class="dropdown-item" href="models.html">Models</a></li>
             <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
-			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
@@ -109,20 +504,15 @@
         </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
-        <!-- GitHub -->
         <li class="nav-item">
           <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener" aria-label="OpenConstruction on GitHub" title="View on GitHub">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.59-.17 1.22-.27 2-.27s1.41.1 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"></path></svg>
           </a>
         </li>
-        <!-- Subscribe -->
         <li class="nav-item">
           <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon" data-bs-toggle="modal" data-bs-target="#subscribeModal" aria-label="Subscribe for updates" title="Subscribe">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0
-                       7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417
-                       c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
             </svg>
           </button>
         </li>
@@ -134,46 +524,108 @@
 <header class="hero">
   <div class="container oc-container content">
     <h1>Tools &amp; Infrastructure</h1>
-    <p class="lead">A curated collection of <span class="hl">open-source tools</span> for <span class="hl">data annotation</span>, <span class="hl">versioning</span>, <span class="hl">management</span>.</p>
+    <p class="lead">Explore <span class="hl">open tools</span> for annotation, reproducible experiments, publishing, and web or geospatial delivery.</p>
+    <div class="hero-stats" aria-label="Catalog statistics">
+      <span class="stat-pill"><strong id="statTools">--</strong> tools</span>
+      <span class="stat-pill"><strong id="statCategories">--</strong> categories</span>
+    </div>
   </div>
 </header>
 
-<!-- Selective boxes (chips) -->
-<div class="filters-wrap">
-  <div class="container oc-container">
-    <div class="filters" id="filters" role="group" aria-label="Filter tools by category">
-      <!-- Chips injected from JSON -->
-      <span id="filtersNote" class="filters-note"></span>
+<main class="container oc-container my-4" id="mainContent">
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <section class="tools-panel" aria-labelledby="toolControlsTitle">
+        <div class="panel-kicker">Discovery Controls</div>
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title h4 mb-1" id="toolControlsTitle">Search, filter, and compare tools</h2>
+            <p class="panel-subtitle mb-0">Use the controls below to find tools by category, workflow, or capability.</p>
+          </div>
+        </div>
+        <div class="controls-grid">
+          <label class="search-shell" for="toolSearch">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.398 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.866-3.834zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10"/>
+            </svg>
+            <input id="toolSearch" type="search" placeholder="Search by tool, category, workflow, or capability">
+          </label>
+          <select id="toolSort" class="form-select tool-sort" aria-label="Sort tools">
+            <option value="featured">Featured order</option>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+            <option value="category-asc">Category A-Z</option>
+            <option value="docs-first">Documentation first</option>
+          </select>
+          <button type="button" class="tool-action" id="clearFiltersBtn">Clear filters</button>
+          <button type="button" class="tool-action" id="copyToolsPageBtn">Copy page link</button>
+        </div>
+        <div class="shortcut-hint">Tip: press <kbd>/</kbd> anywhere on this page to jump into search.</div>
+        <div class="filters-wrap" id="filters" role="group" aria-label="Filter tools by category"></div>
+        <div class="filters-note" id="filtersNote"></div>
+      </section>
+
+      <div id="tools-root"></div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="shortlist-bar" id="shortlistBar" hidden aria-labelledby="shortlistTitle">
+        <div class="shortlist-head">
+          <div>
+            <h2 class="shortlist-title" id="shortlistTitle">Shortlist</h2>
+            <p class="shortlist-subtitle"><span id="shortlistCount">0</span> saved tools for sharing or follow-up</p>
+          </div>
+        </div>
+        <div class="empty-state" id="shortlistEmpty" hidden>
+          <h2>No saved tools yet</h2>
+          <p>Use the save buttons on tool cards or stack recommendations.</p>
+        </div>
+        <div class="shortlist-list" id="shortlistList"></div>
+        <div class="shortlist-actions">
+          <button type="button" class="tool-action" id="copyShortlistBtn">Copy shortlist</button>
+          <button type="button" class="tool-action" id="clearShortlistBtn">Clear</button>
+        </div>
+      </div>
+
+      <section class="tools-panel mt-3" aria-labelledby="stackBuilderTitle">
+        <div class="panel-kicker">Starter Stacks</div>
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title h4 mb-1" id="stackBuilderTitle">Suggested starting combinations</h2>
+            <p class="panel-subtitle mb-0">Choose a common workflow and get a practical set of tools to begin with.</p>
+          </div>
+          <div class="stack-meta" id="stackMeta">--</div>
+        </div>
+        <div class="stack-picks" role="group" aria-label="Recommended tool stacks">
+          <button type="button" class="stack-chip active" data-stack="starter" aria-pressed="true">Labeling pilot</button>
+          <button type="button" class="stack-chip" data-stack="reproducible" aria-pressed="false">Reproducible research</button>
+          <button type="button" class="stack-chip" data-stack="geospatial" aria-pressed="false">3D / geospatial</button>
+          <button type="button" class="stack-chip" data-stack="publishing" aria-pressed="false">Open release</button>
+        </div>
+        <div class="stack-output" id="stackOutput"></div>
+      </section>
     </div>
   </div>
-</div>
+</main>
 
-<main class="container oc-container my-4" id="tools-root"></main>
-
-<!-- Floating submit -->
-<a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_tool.yml"
-   class="issue-btn" target="_blank" rel="noopener">Add New Tool</a>
+<a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_tool.yml" class="issue-btn" target="_blank" rel="noopener">Add New Tool</a>
 
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
-    <div>
-      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
-    </div>
+    <div>&copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
     <div class="mt-2">
       <small>
-        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides 
-        links to original sources. We do not host or distribute datasets, models, code, or paywalled content. 
+        <strong>Disclaimer:</strong> OpenConstruction indexes publicly accessible research metadata and provides
+        links to original sources. We do not host or distribute datasets, models, code, or paywalled content.
         All rights remain with the original authors, creators, and publishers.
       </small>
     </div>
   </div>
 </footer>
 
-
-<script>document.getElementById('yearNow').textContent=new Date().getFullYear();</script>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
     <div class="modal-content p-3 rounded-3 shadow">
@@ -181,188 +633,17 @@
         <h6 class="m-0 fw-semibold">Subscribe</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
-            method="post" target="_blank" novalidate>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
         <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
         <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
         <div style="position:absolute; left:-5000px" aria-hidden="true"><input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value=""></div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+        <p class="small text-muted mt-2 mb-0">We'll email only when new datasets or models are added. Unsubscribe anytime.</p>
       </form>
     </div>
   </div>
 </div>
 
-<script>
-(() => {
-  const root = document.getElementById('tools-root');
-  const filtersEl = document.getElementById('filters');
-  const filtersNote = document.getElementById('filtersNote');
-
-  const link = (label, url) => url ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>` : '';
-
-  const toolBlock = (t) => `
-    <div class="tool-block">
-      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-        <div class="tool-name"><a href="${t.url}" target="_blank" rel="noopener">${t.name}</a></div>
-        <div class="links small-muted">
-          ${t.docs ? link('Docs', t.docs) : ''}${t.docs && t.repo ? ' · ' : ''}${t.repo ? link('Repo', t.repo) : ''}
-        </div>
-      </div>
-      <p class="tool-summary">${t.summary||''}</p>
-      ${Array.isArray(t.details) && t.details.length ? `<ul class="mb-0">${t.details.map(d=>`<li class="small-muted">${d}</li>`).join('')}</ul>` : ''}
-    </div>`;
-
-  const sectionCard = (s) => `
-    <section class="oc-section" data-cat="${slugify(s.title)}" data-toolcount="${(s.items||[]).length}">
-      <div class="tools-card">
-        <div class="card-body">
-          ${s.kicker ? `<div class="kicker">${s.kicker}</div>` : ''}
-          <h3 class="title">${s.title||''}</h3>
-          ${s.subtitle ? `<div class="subtitle">${s.subtitle}</div>` : ''}
-          ${(s.items||[]).map(toolBlock).join('')}
-        </div>
-      </div>
-    </section>`;
-
-  function slugify(str){ return (str||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
-
-  function buildChips(sections){
-    // "All" chip first
-    const totalTools = sections.reduce((acc,s)=>acc+(s.items?.length||0),0);
-    const allChip = document.createElement('button');
-    allChip.type = 'button';
-    allChip.className = 'chip active';
-    allChip.dataset.value = '__all__';
-    allChip.setAttribute('aria-pressed','true');
-    allChip.textContent = 'All';
-    const cnt = document.createElement('span'); cnt.className='count'; cnt.textContent = totalTools;
-    allChip.appendChild(cnt);
-    filtersEl.insertBefore(allChip, filtersNote);
-
-    // Section chips
-    sections.forEach(s => {
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'chip';
-      chip.dataset.value = slugify(s.title);
-      chip.setAttribute('aria-pressed','false');
-      chip.innerHTML = `${s.title}<span class="count">${s.items?.length||0}</span>`;
-      filtersEl.insertBefore(chip, filtersNote);
-    });
-  }
-
-  function renderAll(sections){
-    root.innerHTML = sections.map(sectionCard).join('');
-  }
-
-	function applyFilter(selected){
-	  const sections = Array.from(root.querySelectorAll('.oc-section'));
-	  let shownTools = 0;
-
-	  if (selected.size === 0 || selected.has('__all__')) {
-		sections.forEach(sec => {
-		  sec.style.display = '';
-		  shownTools += Number(sec.dataset.toolcount || 0);
-		});
-		// Show ONLY the number of tools (remove section count)
-		filtersNote.textContent = `${shownTools} tool${shownTools !== 1 ? 's' : ''}`;
-		return;
-	  }
-
-  sections.forEach(sec => {
-    const match = selected.has(sec.dataset.cat);
-    sec.style.display = match ? '' : 'none';
-    if (match) shownTools += Number(sec.dataset.toolcount || 0);
-  });
-
-  // Show ONLY the number of tools (remove section count)
-  filtersNote.textContent = `${shownTools} tool${shownTools !== 1 ? 's' : ''}`;
-}
-
-  function syncFromHash(){
-    const m = location.hash.match(/cats=([^&]+)/i);
-    const set = new Set();
-    if(m){
-      decodeURIComponent(m[1]).split(',').forEach(slug => { if(slug) set.add(slug); });
-    }
-    // update chip UI
-    const chips = filtersEl.querySelectorAll('.chip');
-    chips.forEach(ch => {
-      const v = ch.dataset.value;
-      const active = (set.size===0 && v==='__all__') || (set.size>0 && set.has(v));
-      ch.classList.toggle('active', active);
-      ch.setAttribute('aria-pressed', active ? 'true':'false');
-    });
-    return set;
-  }
-
-  function syncToHash(selected){
-    const u = new URL(location);
-    if(selected.size===0 || selected.has('__all__')){ u.hash=''; }
-    else{ u.hash = 'cats=' + encodeURIComponent(Array.from(selected).join(',')); }
-    history.replaceState(null,'',u);
-  }
-
-  function wireChips(){
-    filtersEl.addEventListener('click', (e)=>{
-      const chip = e.target.closest('.chip');
-      if(!chip) return;
-
-      const value = chip.dataset.value;
-      const chips = Array.from(filtersEl.querySelectorAll('.chip'));
-      const selected = new Set(
-        chips.filter(c => c.classList.contains('active')).map(c=>c.dataset.value)
-      );
-
-      if(value==='__all__'){
-        // Turn All on, others off
-        chips.forEach(c => {
-          const active = (c.dataset.value==='__all__');
-          c.classList.toggle('active', active);
-          c.setAttribute('aria-pressed', active ? 'true':'false');
-        });
-        applyFilter(new Set(['__all__']));
-        syncToHash(new Set(['__all__']));
-        return;
-      }
-
-      // Toggle this category
-      const willActivate = !chip.classList.contains('active');
-      if(willActivate) selected.add(value); else selected.delete(value);
-      // remove __all__ if any specific selected
-      selected.delete('__all__');
-
-      // If nothing selected, fall back to ALL
-      if(selected.size===0) selected.add('__all__');
-
-      // Update chip visuals
-      chips.forEach(c => {
-        const v = c.dataset.value;
-        const active = selected.has('__all__') ? (v==='__all__') : selected.has(v);
-        c.classList.toggle('active', active);
-        c.setAttribute('aria-pressed', active ? 'true':'false');
-      });
-
-      applyFilter(selected);
-      syncToHash(selected);
-    });
-  }
-
-  // Init
-  fetch('data/tools.json',{cache:'no-store'})
-    .then(r => { if(!r.ok) throw new Error('Failed to load tools.json'); return r.json(); })
-    .then(data => {
-      const sections = data?.sections || [];
-      buildChips(sections);
-      renderAll(sections);
-      wireChips();
-      // Start from hash (deep-link)
-      const selected = syncFromHash();
-      applyFilter(selected);
-    })
-    .catch(() => { root.innerHTML = `<div class="alert alert-danger">Couldn’t load tools. Please check <code>assets/data/tools.json</code>.</div>`; });
-})();
-</script>
+<script src="assets/js/tools-page.js"></script>
 </body>
 </html>
