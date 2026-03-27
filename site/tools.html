@@ -20,349 +20,458 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/shared-site.css" rel="stylesheet">
   <style>
-    :root{
-      --oc-bg:#fff; --oc-text:#1e2a36; --oc-sub:#6b7b8c; --oc-border:#e7edf3;
-      --oc-ink:#0f2e4b; --oc-link:#0b66c3; --oc-card:#fff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-accent:#f2a238;
-    }
     .oc-container{ max-width:1080px; }
-    .hl{
-      background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0);
-      padding:0 .06em;
-      font-weight:700;
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(242,162,56,.16), transparent 24rem),
+        linear-gradient(180deg, #f6f9fc 0%, #ffffff 24rem);
     }
-    .tools-panel,
-    .tool-section,
-    .tool-card,
-    .empty-state{
-      background:var(--oc-card);
+    .hl{ background:linear-gradient(180deg, transparent 60%, rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700; }
+    .tools-hero{
+      border-bottom:1px solid var(--oc-border);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(242,162,56,.2), transparent 20rem),
+        radial-gradient(circle at 88% 18%, rgba(11,102,195,.12), transparent 22rem),
+        linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.9));
+    }
+    .tools-hero .content{ padding:3.8rem 0 2.8rem; }
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.42rem .85rem;
+      border-radius:999px;
+      background:#eef5fb;
+      border:1px solid #d8e5f1;
+      color:var(--oc-ink);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+    .hero-kicker::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--oc-accent);
+      box-shadow:0 0 0 4px rgba(242,162,56,.14);
+    }
+    .hero-title{
+      margin:.9rem 0 .7rem;
+      font-size:clamp(2rem, 1.4rem + 2vw, 3.3rem);
+      line-height:1.04;
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:var(--oc-ink);
+      max-width:12ch;
+    }
+    .hero-copy{
+      max-width:58ch;
+      color:var(--oc-sub);
+      font-size:1.05rem;
+      line-height:1.65;
+      margin-bottom:0;
+    }
+    .hero-metrics{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:1rem;
+    }
+    .metric-card{
+      padding:1.1rem 1.15rem;
       border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
+      border-radius:20px;
+      background:rgba(255,255,255,.86);
+      box-shadow:var(--oc-shadow);
+      backdrop-filter:blur(8px);
+    }
+    .metric-label{
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--oc-sub);
+    }
+    .metric-value{
+      display:block;
+      margin-top:.2rem;
+      font-size:1.7rem;
+      font-weight:900;
+      color:var(--oc-ink);
+    }
+    .hero-meta{
+      margin-top:1.2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:.7rem;
+      color:var(--oc-sub);
+      font-size:.95rem;
+    }
+    .hero-meta strong{ color:var(--oc-ink); }
+    .stack-builder,
+    .controls-panel,
+    .tool-section,
+    .empty-state{
+      border:1px solid var(--oc-border);
+      border-radius:22px;
+      background:rgba(255,255,255,.94);
       box-shadow:var(--oc-shadow);
     }
-    .tools-panel{ padding:1rem; }
+    .stack-builder{
+      margin-top:-1.1rem;
+      padding:1.2rem;
+      position:relative;
+      z-index:2;
+    }
     .panel-kicker,
     .section-kicker{
       font-size:.78rem;
-      letter-spacing:.16em;
+      font-weight:800;
+      letter-spacing:.12em;
       text-transform:uppercase;
       color:var(--oc-sub);
-      font-weight:800;
-      margin-bottom:.25rem;
     }
-    .panel-title,
-    .section-title{
-      font-weight:800;
-      color:var(--oc-ink);
-      margin-bottom:.2rem;
-    }
-    .panel-subtitle,
-    .section-subtitle{
-      color:var(--oc-sub);
-      margin-bottom:.85rem;
-    }
-    .panel-header,
+    .stack-head,
     .section-head{
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap:.75rem;
+      justify-content:space-between;
+      gap:1rem;
       flex-wrap:wrap;
     }
-    .section-meta{
-      color:var(--oc-sub);
-      font-size:.9rem;
-      font-weight:700;
-      white-space:nowrap;
-    }
-    .hero-stats{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:.55rem;
-      margin-top:1rem;
-    }
-    .stat-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      padding:.34rem .8rem;
-      background:var(--oc-card);
-      border:1px solid var(--oc-border);
-      border-radius:999px;
-      font-size:.9rem;
-      color:var(--oc-sub);
-    }
-    .stat-pill strong{ color:var(--oc-ink); }
-    .controls-grid{
-      display:grid;
-      grid-template-columns:minmax(0, 1.6fr) minmax(180px, .8fr) auto auto;
-      gap:.75rem;
-      align-items:center;
-    }
-    .search-shell{
-      display:flex;
-      align-items:center;
-      gap:.6rem;
-      min-height:50px;
-      padding:0 .9rem;
-      border:1px solid var(--oc-border);
-      border-radius:999px;
-      background:#fff;
-    }
-    .search-shell input{
-      border:0;
-      width:100%;
-      min-width:0;
-      background:transparent;
-      color:var(--oc-text);
-    }
-    .search-shell input:focus{ outline:none; }
-    .tool-sort{
-      min-height:50px;
-      border-radius:999px;
-      border-color:var(--oc-border);
-      font-weight:600;
-    }
-    .tool-action{
-      min-height:50px;
-      border-radius:999px;
-      border:1px solid #d6dde6;
-      background:#fff;
-      color:#24384d;
-      padding:0 1rem;
-      font-weight:700;
-    }
-    .tool-action:hover{ background:#f4f7fb; border-color:#cbd6e3; color:#0f2e4b; }
-    .shortcut-hint{
-      color:var(--oc-sub);
-      font-size:.9rem;
-      margin:.8rem 0 0;
-    }
-    .shortcut-hint kbd{
-      border:1px solid var(--oc-border);
-      border-radius:8px;
-      padding:.12rem .42rem;
-      background:#fff;
-      font:inherit;
-      font-weight:700;
+    .stack-title,
+    .section-title{
+      margin:.2rem 0 0;
+      font-size:1.45rem;
+      font-weight:900;
+      letter-spacing:-.03em;
       color:var(--oc-ink);
     }
-    .filters-wrap{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.55rem;
-      margin-top:1rem;
-    }
-    .tool-chip,
-    .stack-chip{
-      border:1px solid var(--oc-border);
-      border-radius:999px;
-      padding:.46rem .8rem;
-      font-size:.9rem;
-      font-weight:600;
-      background:#fff;
-      color:var(--oc-ink);
-    }
-    .tool-chip.active,
-    .stack-chip.active{
-      background:#0d6efd;
-      border-color:#0d6efd;
-      color:#fff;
-    }
-    .tool-chip-count{
-      display:inline-block;
-      margin-left:.35rem;
-      color:inherit;
-      opacity:.82;
-      font-size:.82rem;
-      font-weight:700;
-    }
-    .filters-note{
+    .stack-subtitle,
+    .section-subtitle{
+      margin:.5rem 0 0;
       color:var(--oc-sub);
-      font-size:.9rem;
-      font-weight:700;
-      margin-top:.8rem;
+      line-height:1.6;
     }
     .stack-picks{
       display:flex;
       flex-wrap:wrap;
-      gap:.55rem;
-      margin-bottom:.9rem;
+      gap:.65rem;
+      margin-top:1rem;
     }
-    .stack-meta{
+    .stack-chip,
+    .tool-chip{
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      background:#fff;
+      color:var(--oc-ink);
+      padding:.7rem .95rem;
+      font-size:.93rem;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      box-shadow:0 1px 2px rgba(15,46,75,.04);
+      transition:.18s ease;
+    }
+    .stack-chip:hover,
+    .tool-chip:hover{
+      background:#f8fbff;
+      transform:translateY(-1px);
+    }
+    .stack-chip.active,
+    .tool-chip.active{
+      background:var(--oc-ink);
+      border-color:var(--oc-ink);
+      color:#fff;
+      box-shadow:0 10px 20px rgba(15,46,75,.14);
+    }
+    .tool-chip-count{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:1.7rem;
+      height:1.7rem;
+      padding:0 .35rem;
+      border-radius:999px;
+      background:#eef5fb;
+      color:var(--oc-ink);
+      font-size:.8rem;
+      font-weight:800;
+    }
+    .tool-chip.active .tool-chip-count{
+      background:rgba(255,255,255,.18);
+      color:#fff;
+    }
+    .stack-meta,
+    .section-meta{
       color:var(--oc-sub);
-      font-size:.88rem;
       font-weight:700;
     }
     .stack-output{
+      margin-top:1rem;
       display:grid;
-      gap:.85rem;
-    }
-    .stack-summary{
-      border-bottom:1px solid var(--oc-border);
-      padding-bottom:.85rem;
+      gap:1rem;
     }
     .stack-summary h3{
-      margin:0 0 .3rem;
-      font-size:1.05rem;
+      margin:0 0 .4rem;
+      font-size:1.15rem;
       font-weight:800;
       color:var(--oc-ink);
     }
     .stack-summary p{
       margin:0;
       color:var(--oc-sub);
-      line-height:1.55;
+      line-height:1.6;
     }
     .stack-cards{
       display:grid;
-      gap:.75rem;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:1rem;
     }
     .stack-card{
       border:1px solid var(--oc-border);
-      border-radius:12px;
-      padding:.9rem;
-      background:#fff;
+      border-radius:18px;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      padding:1rem;
     }
     .stack-card-top{
       display:flex;
+      align-items:center;
       justify-content:space-between;
-      align-items:flex-start;
-      gap:.65rem;
-      margin-bottom:.55rem;
+      gap:.75rem;
+      margin-bottom:.7rem;
     }
     .stack-card h4{
-      margin:0 0 .2rem;
-      font-size:1rem;
-      font-weight:700;
-      color:var(--oc-ink);
+      margin:0 0 .4rem;
+      font-size:1.05rem;
+      font-weight:800;
     }
-    .stack-card h4 a{ color:inherit; text-decoration:none; }
+    .stack-card h4 a{
+      color:inherit;
+      text-decoration:none;
+    }
     .stack-card p{
       margin:0;
       color:var(--oc-sub);
+      line-height:1.55;
+      font-size:.94rem;
+    }
+    .stack-save,
+    .bookmark-btn{
+      border:1px solid var(--oc-border);
+      background:#fff;
+      color:var(--oc-ink);
+      border-radius:999px;
+      padding:.45rem .8rem;
+      font-size:.83rem;
+      font-weight:800;
+    }
+    .stack-save.active,
+    .bookmark-btn.active{
+      background:#fff3de;
+      border-color:#ffd59b;
+      color:#9a5b00;
+    }
+    .controls-panel{
+      padding:1rem 1.1rem;
+      margin-top:1rem;
+    }
+    .controls-row{
+      display:grid;
+      grid-template-columns:minmax(0, 1.5fr) minmax(180px, .7fr) auto auto;
+      gap:.85rem;
+      align-items:center;
+    }
+    .search-shell{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      min-height:56px;
+      padding:0 .9rem;
+      border:1px solid var(--oc-border);
+      border-radius:16px;
+      background:#fff;
+      box-shadow:inset 0 1px 0 rgba(15,46,75,.03);
+    }
+    .search-shell input{
+      border:0;
+      background:transparent;
+      width:100%;
+      min-width:0;
+      color:var(--oc-text);
+      font-size:1rem;
+    }
+    .search-shell input:focus{ outline:none; }
+    .tool-sort{
+      min-height:56px;
+      border-radius:16px;
+      border:1px solid var(--oc-border);
+      font-weight:700;
+    }
+    .ghost-btn{
+      min-height:56px;
+      border-radius:16px;
+      border:1px solid var(--oc-border);
+      background:#fff;
+      color:var(--oc-ink);
+      font-weight:800;
+      padding:0 1rem;
+    }
+    .ghost-btn:hover{ background:#f8fbff; }
+    .shortcut-hint{
+      margin-top:.8rem;
+      color:var(--oc-sub);
+      font-size:.9rem;
+    }
+    .shortcut-hint kbd{
+      font:inherit;
+      padding:.16rem .42rem;
+      border-radius:8px;
+      border:1px solid var(--oc-border);
+      background:#fff;
+      color:var(--oc-ink);
+      font-weight:800;
+    }
+    .filters-wrap{
+      margin-top:1rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:.65rem;
+      align-items:center;
+    }
+    .filters-note{
+      margin-top:.9rem;
+      color:var(--oc-sub);
+      font-weight:700;
       font-size:.92rem;
-      line-height:1.5;
+    }
+    .tool-section{
+      padding:1.2rem;
+      margin-top:1rem;
     }
     .tool-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
       gap:1rem;
-      margin-top:.9rem;
-    }
-    .tool-section{
-      padding:1rem;
       margin-top:1rem;
     }
     .tool-card{
-      padding:1rem;
       display:flex;
       flex-direction:column;
-      gap:.8rem;
+      gap:.85rem;
+      padding:1rem;
+      border:1px solid var(--oc-border);
+      border-radius:18px;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
       min-height:100%;
-    }
-    .tool-card-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:.75rem;
     }
     .tool-badge{
       display:inline-flex;
       align-items:center;
-      padding:.18rem .55rem;
+      padding:.24rem .58rem;
       border-radius:999px;
-      background:#eef4fb;
-      border:1px solid #dbe6f0;
+      background:#eef5fb;
+      border:1px solid #dbe7f2;
       color:var(--oc-ink);
-      font-size:.75rem;
-      font-weight:700;
+      font-size:.77rem;
+      font-weight:800;
       letter-spacing:.06em;
       text-transform:uppercase;
     }
     .tool-name{
-      margin:.55rem 0 0;
-      font-size:1.08rem;
-      font-weight:700;
+      margin:.65rem 0 0;
+      font-size:1.15rem;
+      font-weight:900;
+      letter-spacing:-.02em;
       color:var(--oc-ink);
     }
-    .tool-name a{ color:inherit; text-decoration:none; }
+    .tool-name a{
+      color:inherit;
+      text-decoration:none;
+    }
     .tool-name a:hover{ color:var(--oc-link); }
     .tool-summary{
-      color:var(--oc-sub);
       margin:0;
-      line-height:1.55;
+      color:var(--oc-sub);
+      line-height:1.62;
     }
     .tool-points{
       margin:0;
       padding-left:1.1rem;
       color:var(--oc-text);
     }
-    .tool-points li + li{ margin-top:.35rem; }
+    .tool-points li + li{ margin-top:.38rem; }
     .tool-card-actions{
       margin-top:auto;
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:.65rem;
+      justify-content:space-between;
+      gap:.8rem;
       flex-wrap:wrap;
+      padding-top:.2rem;
     }
     .tool-link-row{
       display:flex;
       flex-wrap:wrap;
-      gap:.45rem;
+      gap:.5rem;
     }
     .mini-link{
       display:inline-flex;
       align-items:center;
-      padding:.36rem .7rem;
-      border:1px solid var(--oc-border);
+      padding:.42rem .72rem;
       border-radius:999px;
+      background:#fff;
+      border:1px solid var(--oc-border);
       color:var(--oc-link);
       text-decoration:none;
-      font-size:.84rem;
-      font-weight:700;
-      background:#fff;
+      font-size:.86rem;
+      font-weight:800;
     }
-    .mini-link:hover{ background:#f8fbff; color:var(--oc-link); }
-    .bookmark-btn,
-    .stack-save{
-      border:1px solid #d6dde6;
-      border-radius:999px;
-      background:#fff;
-      color:#24384d;
-      padding:.38rem .8rem;
-      font-size:.82rem;
-      font-weight:700;
+    .mini-link:hover{
+      background:#f8fbff;
+      color:var(--oc-link);
     }
-    .bookmark-btn.active,
-    .stack-save.active{
-      background:#fff3de;
-      border-color:#f2d4a0;
-      color:#8b5c07;
+    .empty-state{
+      padding:2rem 1.4rem;
+      text-align:center;
+      margin-top:1rem;
+    }
+    .empty-state h2{
+      margin:0 0 .4rem;
+      color:var(--oc-ink);
+      font-size:1.25rem;
+      font-weight:900;
+    }
+    .empty-state p{
+      margin:0;
+      color:var(--oc-sub);
     }
     .shortlist-bar{
-      position:sticky;
-      top:86px;
-      display:block;
+      position:fixed;
+      right:1rem;
+      bottom:1rem;
+      width:min(380px, calc(100vw - 2rem));
       padding:1rem;
-      background:var(--oc-card);
       border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow);
+      border-radius:22px;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 18px 42px rgba(15,46,75,.18);
+      backdrop-filter:blur(12px);
+      z-index:1045;
     }
     .shortlist-head{
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap:.75rem;
-      margin-bottom:.6rem;
+      justify-content:space-between;
+      gap:1rem;
     }
     .shortlist-title{
       margin:0;
-      font-size:1.05rem;
-      font-weight:800;
       color:var(--oc-ink);
+      font-size:1.05rem;
+      font-weight:900;
     }
     .shortlist-subtitle{
       margin:.12rem 0 0;
@@ -371,74 +480,60 @@
     }
     .shortlist-list{
       display:grid;
-      gap:.6rem;
-      max-height:260px;
+      gap:.65rem;
+      margin-top:.95rem;
+      max-height:220px;
       overflow:auto;
-      margin-top:.85rem;
     }
     .shortlist-item{
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:.75rem;
+      justify-content:space-between;
+      gap:.85rem;
+      padding:.8rem .85rem;
       border:1px solid var(--oc-border);
-      border-radius:12px;
-      padding:.75rem .8rem;
+      border-radius:16px;
       background:#fff;
     }
     .shortlist-name{
-      font-weight:700;
+      font-weight:800;
       color:var(--oc-ink);
     }
     .shortlist-meta{
       color:var(--oc-sub);
-      font-size:.84rem;
+      font-size:.88rem;
     }
     .shortlist-remove{
       border:0;
       background:transparent;
       color:var(--oc-link);
-      font-size:.84rem;
-      font-weight:700;
+      font-size:.86rem;
+      font-weight:800;
       padding:0;
     }
     .shortlist-actions{
       display:flex;
-      gap:.6rem;
-      margin-top:.85rem;
+      gap:.65rem;
+      margin-top:.9rem;
     }
-    .shortlist-actions .tool-action{
-      min-height:44px;
+    .shortlist-actions .ghost-btn{
+      min-height:48px;
       flex:1 1 0;
-    }
-    .empty-state{
-      padding:1.4rem;
-      text-align:center;
-    }
-    .empty-state h2{
-      margin:0 0 .35rem;
-      font-size:1.15rem;
-      font-weight:800;
-      color:var(--oc-ink);
-    }
-    .empty-state p{
-      margin:0;
-      color:var(--oc-sub);
     }
     .issue-btn{
       position:fixed;
-      bottom:20px;
-      right:20px;
-      z-index:1050;
+      left:1rem;
+      bottom:1rem;
+      z-index:1040;
       background:#0d6efd;
       color:#fff;
-      padding:12px 20px;
+      padding:.9rem 1.15rem;
       border-radius:999px;
-      font-weight:600;
+      font-weight:700;
       font-size:.9rem;
-      box-shadow:0 4px 12px rgba(0,0,0,.25);
+      box-shadow:0 12px 26px rgba(13,110,253,.26);
       text-decoration:none;
-      transition:background .2s ease, transform .2s ease;
+      transition:transform .2s ease, background .2s ease;
     }
     .issue-btn:hover{
       background:#0b5ed7;
@@ -447,20 +542,24 @@
       text-decoration:none;
     }
     @media (max-width: 991.98px){
-      .tool-grid{ grid-template-columns:1fr; }
-      .controls-grid{ grid-template-columns:1fr; }
-      .shortlist-bar{
-        position:static;
-        top:auto;
-        margin-top:1rem;
-      }
+      .hero-title{ max-width:none; }
+      .hero-metrics{ margin-top:1rem; }
+      .controls-row{ grid-template-columns:1fr; }
+      .tool-grid,
+      .stack-cards{ grid-template-columns:1fr; }
     }
-    @media (max-width: 575.98px){
+    @media (max-width: 767.98px){
+      .tools-hero .content{ padding:3rem 0 2.2rem; }
+      .hero-metrics{ grid-template-columns:1fr; }
+      .shortlist-bar{
+        left:1rem;
+        right:1rem;
+        width:auto;
+      }
       .issue-btn{
-        right:14px;
-        bottom:14px;
-        padding:10px 14px;
-        font-size:.82rem;
+        left:auto;
+        right:1rem;
+        bottom:calc(1rem + 300px);
       }
     }
   </style>
@@ -521,94 +620,103 @@
   </div>
 </nav>
 
-<header class="hero">
+<header class="tools-hero">
   <div class="container oc-container content">
-    <h1>Tools &amp; Infrastructure</h1>
-    <p class="lead">Explore <span class="hl">open tools</span> for annotation, reproducible experiments, publishing, and web or geospatial delivery.</p>
-    <div class="hero-stats" aria-label="Catalog statistics">
-      <span class="stat-pill"><strong id="statTools">--</strong> tools</span>
-      <span class="stat-pill"><strong id="statCategories">--</strong> categories</span>
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-7">
+        <div class="hero-kicker">Tool Finder</div>
+        <h1 class="hero-title">Build a stronger AEC research stack faster.</h1>
+        <p class="hero-copy">Explore a curated set of <span class="hl">open-source tools</span> for annotation, reproducible experiments, publishing, and geospatial delivery. Search quickly, compare categories, and save a shortlist you can share with your team.</p>
+        <div class="hero-meta">
+          <span><strong>/</strong> focuses search</span>
+          <span><strong>Save</strong> tools into a portable shortlist</span>
+          <span><strong>Starter stacks</strong> suggest a practical setup</span>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-metrics">
+          <article class="metric-card">
+            <span class="metric-label">Curated Tools</span>
+            <strong class="metric-value" id="statTools">--</strong>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Categories</span>
+            <strong class="metric-value" id="statCategories">--</strong>
+          </article>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
 <main class="container oc-container my-4" id="mainContent">
-  <div class="row g-3">
-    <div class="col-lg-8">
-      <section class="tools-panel" aria-labelledby="toolControlsTitle">
-        <div class="panel-kicker">Discovery Controls</div>
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title h4 mb-1" id="toolControlsTitle">Search, filter, and compare tools</h2>
-            <p class="panel-subtitle mb-0">Use the controls below to find tools by category, workflow, or capability.</p>
-          </div>
-        </div>
-        <div class="controls-grid">
-          <label class="search-shell" for="toolSearch">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.398 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.866-3.834zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10"/>
-            </svg>
-            <input id="toolSearch" type="search" placeholder="Search by tool, category, workflow, or capability">
-          </label>
-          <select id="toolSort" class="form-select tool-sort" aria-label="Sort tools">
-            <option value="featured">Featured order</option>
-            <option value="name-asc">Name A-Z</option>
-            <option value="name-desc">Name Z-A</option>
-            <option value="category-asc">Category A-Z</option>
-            <option value="docs-first">Documentation first</option>
-          </select>
-          <button type="button" class="tool-action" id="clearFiltersBtn">Clear filters</button>
-          <button type="button" class="tool-action" id="copyToolsPageBtn">Copy page link</button>
-        </div>
-        <div class="shortcut-hint">Tip: press <kbd>/</kbd> anywhere on this page to jump into search.</div>
-        <div class="filters-wrap" id="filters" role="group" aria-label="Filter tools by category"></div>
-        <div class="filters-note" id="filtersNote"></div>
-      </section>
-
-      <div id="tools-root"></div>
-    </div>
-
-    <div class="col-lg-4">
-      <div class="shortlist-bar" id="shortlistBar" hidden aria-labelledby="shortlistTitle">
-        <div class="shortlist-head">
-          <div>
-            <h2 class="shortlist-title" id="shortlistTitle">Shortlist</h2>
-            <p class="shortlist-subtitle"><span id="shortlistCount">0</span> saved tools for sharing or follow-up</p>
-          </div>
-        </div>
-        <div class="empty-state" id="shortlistEmpty" hidden>
-          <h2>No saved tools yet</h2>
-          <p>Use the save buttons on tool cards or stack recommendations.</p>
-        </div>
-        <div class="shortlist-list" id="shortlistList"></div>
-        <div class="shortlist-actions">
-          <button type="button" class="tool-action" id="copyShortlistBtn">Copy shortlist</button>
-          <button type="button" class="tool-action" id="clearShortlistBtn">Clear</button>
-        </div>
-      </div>
-
-      <section class="tools-panel mt-3" aria-labelledby="stackBuilderTitle">
+  <section class="stack-builder" aria-labelledby="stackBuilderTitle">
+    <div class="stack-head">
+      <div>
         <div class="panel-kicker">Starter Stacks</div>
-        <div class="panel-header">
-          <div>
-            <h2 class="panel-title h4 mb-1" id="stackBuilderTitle">Suggested starting combinations</h2>
-            <p class="panel-subtitle mb-0">Choose a common workflow and get a practical set of tools to begin with.</p>
-          </div>
-          <div class="stack-meta" id="stackMeta">--</div>
-        </div>
-        <div class="stack-picks" role="group" aria-label="Recommended tool stacks">
-          <button type="button" class="stack-chip active" data-stack="starter" aria-pressed="true">Labeling pilot</button>
-          <button type="button" class="stack-chip" data-stack="reproducible" aria-pressed="false">Reproducible research</button>
-          <button type="button" class="stack-chip" data-stack="geospatial" aria-pressed="false">3D / geospatial</button>
-          <button type="button" class="stack-chip" data-stack="publishing" aria-pressed="false">Open release</button>
-        </div>
-        <div class="stack-output" id="stackOutput"></div>
-      </section>
+        <h2 class="stack-title" id="stackBuilderTitle">Pick a workflow and get a sensible starting toolkit.</h2>
+        <p class="stack-subtitle">These recommendations are lightweight starting points you can adapt, not rigid prescriptions.</p>
+      </div>
+      <div class="stack-meta" id="stackMeta">--</div>
     </div>
-  </div>
+    <div class="stack-picks" role="group" aria-label="Recommended tool stacks">
+      <button type="button" class="stack-chip active" data-stack="starter" aria-pressed="true">Labeling pilot</button>
+      <button type="button" class="stack-chip" data-stack="reproducible" aria-pressed="false">Reproducible research</button>
+      <button type="button" class="stack-chip" data-stack="geospatial" aria-pressed="false">3D / geospatial</button>
+      <button type="button" class="stack-chip" data-stack="publishing" aria-pressed="false">Open release</button>
+    </div>
+    <div class="stack-output" id="stackOutput"></div>
+  </section>
+
+  <section class="controls-panel" aria-labelledby="toolControlsTitle">
+    <div class="panel-kicker">Discovery Controls</div>
+    <div class="stack-head">
+      <h2 class="stack-title" id="toolControlsTitle">Search, filter, sort, and save a shortlist.</h2>
+    </div>
+    <div class="controls-row">
+      <label class="search-shell" for="toolSearch">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.398 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.866-3.834zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10"/>
+        </svg>
+        <input id="toolSearch" type="search" placeholder="Search by tool, category, workflow, or capability">
+      </label>
+      <select id="toolSort" class="form-select tool-sort" aria-label="Sort tools">
+        <option value="featured">Featured order</option>
+        <option value="name-asc">Name A-Z</option>
+        <option value="name-desc">Name Z-A</option>
+        <option value="category-asc">Category A-Z</option>
+        <option value="docs-first">Documentation first</option>
+      </select>
+      <button type="button" class="ghost-btn" id="clearFiltersBtn">Clear filters</button>
+      <button type="button" class="ghost-btn" id="copyToolsPageBtn">Copy page link</button>
+    </div>
+    <div class="shortcut-hint">Tip: press <kbd>/</kbd> anywhere on this page to jump into search.</div>
+    <div class="filters-wrap" id="filters" role="group" aria-label="Filter tools by category"></div>
+    <div class="filters-note" id="filtersNote"></div>
+  </section>
+
+  <div id="tools-root"></div>
 </main>
 
 <a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_tool.yml" class="issue-btn" target="_blank" rel="noopener">Add New Tool</a>
+
+<aside class="shortlist-bar" id="shortlistBar" hidden aria-labelledby="shortlistTitle">
+  <div class="shortlist-head">
+    <div>
+      <h2 class="shortlist-title" id="shortlistTitle">Shortlist</h2>
+      <p class="shortlist-subtitle"><span id="shortlistCount">0</span> saved tools for sharing or follow-up</p>
+    </div>
+  </div>
+  <div class="empty-state" id="shortlistEmpty" hidden>
+    <h2>No saved tools yet</h2>
+    <p>Use the save buttons on tool cards or stack suggestions.</p>
+  </div>
+  <div class="shortlist-list" id="shortlistList"></div>
+  <div class="shortlist-actions">
+    <button type="button" class="ghost-btn" id="copyShortlistBtn">Copy shortlist</button>
+    <button type="button" class="ghost-btn" id="clearShortlistBtn">Clear</button>
+  </div>
+</aside>
 
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
