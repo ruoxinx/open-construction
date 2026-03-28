@@ -4,7 +4,7 @@
 
 If you discover a security vulnerability in OpenConstruction Open Science Initiative, **please do not open a public GitHub issue**.
 
-Instead, report it by emailing the maintainers directly. You can find contact information via the contributor profiles listed in the [README](README.md) or the [contributors catalog](site/data/contributors.json).
+Instead, report it by emailing **support@openconstruction.org**.
 
 Please include:
 - A description of the vulnerability

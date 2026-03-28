@@ -93,3 +93,8 @@ await oc.search("tools", "annotation", { limit: 20 });
 - All catalogs are **read-only** and served as static JSON.
 - This SDK performs no authentication and makes no assumptions about backend services.
 - The SDK is optional — OpenConstruction catalogs can always be accessed directly via `fetch()`.
+
+## License
+
+This package is licensed under Apache 2.0. See the repository root `LICENSE` and
+`NOTICE` files for full terms and attribution information.
