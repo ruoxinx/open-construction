@@ -1,0 +1,52 @@
+cff-version: 1.2.0
+message: "If you use OpenConstruction in your research, please cite both the software and the associated publication."
+title: "OpenConstruction"
+abstract: "A community-governed, open-source platform for discovering, cataloging, and sharing AI/ML datasets, models, and resources for the Architecture, Engineering, and Construction (AEC) domain."
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/ruoxinx/open-construction"
+authors:
+  - family-names: Xiong
+    given-names: Ruoxin
+  - family-names: Wang
+    given-names: Yanyu
+  - family-names: Cai
+    given-names: Jiannan
+  - family-names: Liu
+    given-names: Kaijian
+  - family-names: Zhu
+    given-names: Yuansheng
+  - family-names: Tang
+    given-names: Pingbo
+  - family-names: El-Gohary
+    given-names: Nora
+  - family-names: Gibson Jr
+    given-names: George Edward
+preferred-citation:
+  type: article
+  title: "Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse"
+  authors:
+    - family-names: Xiong
+      given-names: Ruoxin
+    - family-names: Wang
+      given-names: Yanyu
+    - family-names: Cai
+      given-names: Jiannan
+    - family-names: Liu
+      given-names: Kaijian
+    - family-names: Zhu
+      given-names: Yuansheng
+    - family-names: Tang
+      given-names: Pingbo
+    - family-names: El-Gohary
+      given-names: Nora
+    - family-names: Gibson Jr
+      given-names: George Edward
+  journal: "Developments in the Built Environment"
+  volume: 26
+  pages: "100909"
+  year: 2026
+  publisher:
+    name: Elsevier
+  doi: "10.1016/j.dibe.2026.100909"
+  url: "https://doi.org/10.1016/j.dibe.2026.100909"

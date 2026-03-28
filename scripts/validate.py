@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2024-2026 OpenConstruction Open Science Initiative
+# SPDX-License-Identifier: Apache-2.0
+
 import json, sys, os
 from jsonschema import Draft202012Validator
 

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2024-2026 OpenConstruction Open Science Initiative
+# SPDX-License-Identifier: Apache-2.0
 """
 Lightweight link checker for URLs inside OpenConstruction JSON.
 

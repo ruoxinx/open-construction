@@ -53,6 +53,7 @@ Modules are registered and maintained by the community.
 ## Code of Conduct
 
 By participating, you agree to follow the project’s Code of Conduct.
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for the full policy.
 We are committed to a respectful, inclusive, and collaborative community.
 
 

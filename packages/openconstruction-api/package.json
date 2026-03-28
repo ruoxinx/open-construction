@@ -2,7 +2,7 @@
   "name": "@openconstruction/api",
   "version": "0.1.0",
   "description": "OpenConstruction catalog client SDK (datasets, models, use-cases, tools, guides, OER, contributors, taxonomy).",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

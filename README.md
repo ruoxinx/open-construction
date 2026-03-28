@@ -87,12 +87,23 @@ community-driven roles**, including:
 - **Community Contributors** – anyone participating in development or review
 
 👉 See **[GOVERNANCE.md](GOVERNANCE.md)** for full governance details.
+Community participation is also guided by **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** and **[SECURITY.md](SECURITY.md)**.
 
 
-## Licensing
+## Rights & License
 
-OpenConstruction respects all intellectual property and does not redistribute
-restricted or proprietary content.
+**Copyright (c) 2024-2026 OpenConstruction Open Science Initiative**
+
+The website source code, JavaScript/TypeScript SDK (`@openconstruction/api`), JSON schemas, and validation scripts are licensed under the **[Apache License 2.0](LICENSE)**. See the [NOTICE](NOTICE) file for full attribution.
+
+**How to attribute this project in derivative works:**
+> OpenConstruction Open Science Initiative. *OpenConstruction* [Software]. Available at: https://github.com/ruoxinx/open-construction. Licensed under Apache 2.0.
+
+**Academic use:** If you use OpenConstruction in research, please cite the associated peer-reviewed publication (see [Citation](#citation) below). A machine-readable [CITATION.cff](CITATION.cff) is also provided — GitHub will show a "Cite this repository" button automatically.
+
+**Catalog data:** Metadata entries in `site/data/` are contributed by the community and attributed to their respective authors. All catalog entries must include a valid open license as a condition of contribution.
+
+**Images and thumbnails:** Images in `site/assets/img/` are © their respective creators unless otherwise noted. OpenConstruction respects all intellectual property and does not redistribute restricted or proprietary content.
 
 ## Citation
 
