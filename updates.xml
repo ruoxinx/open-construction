@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: SemanticBridge: 3D Bridge Component Semantic Segmentation]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:3d_bridge_segmentation_model:2026-03-31</guid>
+    <pubDate>Tue, 31 Mar 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[This paper proposes a novel dataset that has been specifically designed for 3D semantic segmentation of bridges and the domain gap analysis caused by varying sensors. This addresses a critical need in the field of infrastructure inspection and maintenance, which is essential for modern society. The dataset comprises high-resolution 3D scans of a diverse range of bridge structures from various countries, with detailed semantic labels provided for each. The initial objective is to facilitate accurate and automated segmentation of bridge components, thereby advancing the structural health monitoring practice. To evaluate the effectiveness of existing 3D deep learning models on this novel dataset, a comprehensive analysis of three distinct state-of-the-art architectures is conducted. Additionally, data was acquired through various sensors to quantify the domain gap resulting from sensor variations. The findings indicate that all architectures demonstrate robust performance on the specified task. However, the domain gap can potentially lead to a decline in the performance of up to 11.4% mIoU. Code and data are available at https://github.com/mvg-inatech/3d_bridge_segmentation.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: EPlus-LLM: A large language model-based computing platform for automated building energy modeling]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:EPlus-LLM:2026-03-25</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:C-scan_Simulation:2026-02-27</guid>
     <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Civil infrastructure requires continuous assessments to address aging, deterioration, and climate change impacts. Subsurface assets present particular challenges due to their invisibilities and the highly uncertain ground conditions. Ground Penetrating Radar (GPR) is widely employed for infrastructure inspection while its interpretation often demands significant expert knowledge. This paper presents an integrated framework for efficiently simulating dense GPR B-scans to support C-scan imaging and data-driven applications. Using pipeline leakage detection as a demonstration, the framework couples digital modelling, hydromechanical (HM) simulation, and finite-difference time-domain (FDTD) electromagnetic (EM) simulation. Automated data sharing between digital models and multi-physics solvers eliminates manual model setup. Simulated B-scans and C-scans capturing water-induced changes are validated against field experiments, with reality gap sources analysed. The framework enables scalable generation of physically informed synthetic GPR datasets for complex scenarios requiring geospatially registered inputs, supporting efficient C-scan imaging and data-driven interpretation.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: IFC-Bench v2: BIM Comprehension & Reasoning Benchmark]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=ifc-bench</link>
-    <guid isPermaLink="false">datasets:ifc-bench:2026-02-17</guid>
-    <pubDate>Tue, 17 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
