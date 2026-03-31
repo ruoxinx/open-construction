@@ -3295,5 +3295,45 @@
     "added_date": "2026-03-24",
     "contributor": "Song Guo",
     "contributor_url": "https://songguoarchitect.github.io/"
+  },
+  "3d_bridge_segmentation":{
+    "name": "3D Bridge Segmentation Dataset",
+    "authors": "Moritz Vögtle; Matthias Riedlinger; Markus König; Contributors",
+    "doi": "https://doi.org/10.1016/j.dibe.2026.100912",
+    "year": 2026,
+    "data_modality": "3D point clouds, synthetic point clouds, Ground RGB",
+    "num_images": "20 real-world bridges + 23 synthetic bridges",
+    "num_classes": 9,
+    "classes": [
+      "Abutment",
+      "Superstructure",
+      "Deck",
+      "Railing",
+      "Pillar",
+	  "Ground","High Vegetation", "Traffic Sign", "Unlabeled"
+    ],
+    "annotation_types": [
+      "Point cloud segmetation"
+    ],
+    "geographical_location": "Germany, UK",
+    "potential_tasks": [
+      "3D semantic segmentation"
+    ],
+    "license": "CC BY-NC 4.0",
+    "paper": "SemanticBridge—A dataset for 3D semantic segmentation of bridges and domain gap analysis",
+    "access": "https://github.com/mvg-inatech/3d_bridge_segmentation.png",
+    "id": "3d_bridge_segmentation",
+    "image_url": "assets/img/datasets/layout_behavior_graph_dataset.png",
+    "added_date": "2026-03-31",
+    "contributor": "Maximilian Kellner",
+    "contributor_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57"
   }
+}
+  
+  
+  
+  
+  
+  
+  
 }
