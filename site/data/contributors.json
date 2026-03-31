@@ -847,7 +847,7 @@
     "id": "Gang Jiang",
     "name": "Gang Jiang",
     "role": "Model Contributor",
-    "affiliation": "University of Utah",
+    "affiliation": "University of Utah (U.S)",
     "link_url": "https://gangjiang1.github.io/",
 	"image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=RGjcgyEAAAAJ&citpid=1",
   "type": "person"
@@ -856,9 +856,18 @@
     "id": "Jianli Chen",
     "name": "Jianli Chen",
     "role": "Model Contributor",
-    "affiliation": "University of Utah",
+    "affiliation": "University of Utah (U.S)",
     "link_url": "https://profiles.faculty.utah.edu/u6031298",
 	"image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=Y0ycryUAAAAJ&citpid=7",
+  "type": "person"
+  },
+              {
+    "id": "Maximilian Kellner",
+    "name": "Maximilian Kellner",
+    "role": "Dataset and Model Contributor",
+    "affiliation": "Fraunhofer Institute for Physical Measurement Techniques IPM ·  University of Freiburg (Germany)",
+    "link_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57",
+	"image": "assets/img/contributors/avatar.png",
   "type": "person"
   }
 
