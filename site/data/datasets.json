@@ -3297,8 +3297,8 @@
     "contributor_url": "https://songguoarchitect.github.io/"
   },
   "3d_bridge_segmentation":{
-    "name": "3D Bridge Segmentation Dataset",
-    "authors": "Moritz Vögtle; Matthias Riedlinger; Markus König; Contributors",
+    "name": "SemanticBridge: 3D semantic segmentation of bridge dataset",
+    "authors": "Maximilian Kellner, Mariana Ferrandon Cervantes, Yuandong Pan, Ruodan Lu, Ioannis Brilakis, Alexander Reiterer",
     "doi": "https://doi.org/10.1016/j.dibe.2026.100912",
     "year": 2026,
     "data_modality": "3D point clouds, synthetic point clouds, Ground RGB",
@@ -3321,7 +3321,7 @@
     ],
     "license": "CC BY-NC 4.0",
     "paper": "SemanticBridge—A dataset for 3D semantic segmentation of bridges and domain gap analysis",
-    "access": "https://github.com/mvg-inatech/3d_bridge_segmentation.png",
+    "access": "https://github.com/mvg-inatech/3d_bridge_segmentation",
     "id": "3d_bridge_segmentation",
     "image_url": "assets/img/datasets/layout_behavior_graph_dataset.png",
     "added_date": "2026-03-31",
