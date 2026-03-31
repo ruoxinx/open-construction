@@ -3323,7 +3323,7 @@
     "paper": "SemanticBridge—A dataset for 3D semantic segmentation of bridges and domain gap analysis",
     "access": "https://github.com/mvg-inatech/3d_bridge_segmentation",
     "id": "3d_bridge_segmentation",
-    "image_url": "assets/img/datasets/layout_behavior_graph_dataset.png",
+    "image_url": "assets/img/datasets/3d_bridge_segmentation.png",
     "added_date": "2026-03-31",
     "contributor": "Maximilian Kellner",
     "contributor_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57"
