@@ -2477,7 +2477,7 @@
   "annotation_types": ["Named entities","Relations"],
   "geographical_location": "England & Finland",
   "potential_tasks": [
-    "Named Entity Recognition (NER)",
+    "Named Entity Recognition",
     "Relation extraction",
     "Automatic compliance checking"
   ],
@@ -2684,7 +2684,7 @@
   "potential_tasks": [
     "CAD Generation",
 	"Behavior cloning",
-	"Video QA"
+	"Visual Question Answering"
   ],
   "license": "CC0",
   "paper": "VideoCAD: A Dataset and Model for Learning Long-Horizon 3D CAD UI Interactions from Video",
@@ -3327,5 +3327,34 @@
     "added_date": "2026-03-31",
     "contributor": "Maximilian Kellner",
     "contributor_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57"
+  },
+  "LLM4BIM_Benchmark_Data":{
+    "name": "LLM4BIM Benchmark Dataset",
+    "authors": "Zaid Alwashah, Bo Xiao, Hexu Liu, Shane T. Mueller, Xiaoyun Shao",
+    "doi": "https://doi.org/10.1016/j.autcon.2026.106910",
+    "year": 2026,
+    "data_modality": "Text",
+    "num_images": "11+10+10",
+    "num_classes": 3,
+    "classes": [
+      "Component-level tasks:",
+      "Assembly-level tasks",
+      "System-level tasks"
+    ],
+    "annotation_types": [
+      "Task results",
+      "Task errors"
+    ],
+    "potential_tasks": [
+      "BIM automation"
+    ],
+    "license": "Not Specified",
+    "paper": "Reliable LLM-driven BIM automation through capability-based multi-dimensional evaluation",
+    "access": "https://github.com/DiSC-Research/LLM4BIM_Benchmark_Data",
+    "id": "3d_bridge_segmentation",
+    "image_url": "assets/img/datasets/LLM4BIM_Benchmark_Data.png",
+    "added_date": "2026-04-01",
+    "contributor": "Digital & Smart Construction Laboratory",
+    "contributor_url": "https://sites.google.com/view/dsc-lab/home"
   }
 }
