@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: LLM4BIM Benchmark Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=3d_bridge_segmentation</link>
+    <guid isPermaLink="false">datasets:3d_bridge_segmentation:2026-04-01</guid>
+    <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: SemanticBridge: 3D semantic segmentation of bridge dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=3d_bridge_segmentation</link>
     <guid isPermaLink="false">datasets:3d_bridge_segmentation:2026-03-31</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:CUBIT:2026-02-27</guid>
     <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Automating dense GPR simulations for C-scan imaging of subsurface infrastructure]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:C-scan_Simulation:2026-02-27</guid>
-    <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Civil infrastructure requires continuous assessments to address aging, deterioration, and climate change impacts. Subsurface assets present particular challenges due to their invisibilities and the highly uncertain ground conditions. Ground Penetrating Radar (GPR) is widely employed for infrastructure inspection while its interpretation often demands significant expert knowledge. This paper presents an integrated framework for efficiently simulating dense GPR B-scans to support C-scan imaging and data-driven applications. Using pipeline leakage detection as a demonstration, the framework couples digital modelling, hydromechanical (HM) simulation, and finite-difference time-domain (FDTD) electromagnetic (EM) simulation. Automated data sharing between digital models and multi-physics solvers eliminates manual model setup. Simulated B-scans and C-scans capturing water-induced changes are validated against field experiments, with reality gap sources analysed. The framework enables scalable generation of physically informed synthetic GPR datasets for complex scenarios requiring geospatially registered inputs, supporting efficient C-scan imaging and data-driven interpretation.]]></description>
   </item>
   </channel>
 </rss>
