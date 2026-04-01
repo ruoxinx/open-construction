@@ -869,6 +869,23 @@
     "link_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57",
 	"image": "assets/img/contributors/avatar.png",
   "type": "person"
+  },
+                {
+    "id": "Digital & Smart Construction Laboratory",
+    "name": "Digital & Smart Construction Laboratory",
+    "role": "Dataset Contributor",
+    "affiliation": "Western Michigan University (U.S)",
+    "link_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57",
+  "image": "assets/img/contributors/avatar.png",
+  "type": "organization"
+  },
+                {
+    "id": "Hexu Liu",
+    "name": "Hexu Liu",
+    "role": "Dataset Contributor",
+    "affiliation": "Western Michigan University (U.S)",
+    "link_url": "https://wmich.edu/civil-construction/directory/liu",
+  "image": "https://files.wmich.edu/s3fs-public/2025-10/liu_hexu_-_engineering.jpg",
+  "type": "person"
   }
-
 ]
