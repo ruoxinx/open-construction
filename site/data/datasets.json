@@ -3351,7 +3351,7 @@
     "license": "Not Specified",
     "paper": "Reliable LLM-driven BIM automation through capability-based multi-dimensional evaluation",
     "access": "https://github.com/DiSC-Research/LLM4BIM_Benchmark_Data",
-    "id": "3d_bridge_segmentation",
+    "id": "LLM4BIM_Benchmark_Data",
     "image_url": "assets/img/datasets/LLM4BIM_Benchmark_Data.png",
     "added_date": "2026-04-01",
     "contributor": "Digital & Smart Construction Laboratory",
