@@ -8,8 +8,8 @@
 
   <item>
     <title><![CDATA[Dataset: LLM4BIM Benchmark Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=3d_bridge_segmentation</link>
-    <guid isPermaLink="false">datasets:3d_bridge_segmentation:2026-04-01</guid>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=LLM4BIM_Benchmark_Data</link>
+    <guid isPermaLink="false">datasets:LLM4BIM_Benchmark_Data:2026-04-01</guid>
     <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
