@@ -10,6 +10,7 @@ const outputPath = path.join(webRoot, "sitemap.xml");
 // Public top-level pages you want indexed:
 const staticPages = [
   "/", "/index.html",
+  "/benchmarks.html", "/benchmark_task.html", "/benchmark_application.html", "/benchmark_results.html",
   "/datasets.html", "/models.html", "/usecases.html", "/tools.html", "/oer.html",
   "/contributors.html", "/community.html", "/about.html", "/contact.html"
 ];

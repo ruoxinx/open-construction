@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0.0",
+  "benchmarks": [
+    {
+      "id": "semanticbridge-benchmark-results",
+      "name": "SemanticBridge: 3D Bridge Component Semantic Segmentation",
+      "task": "3D semantic segmentation",
+      "dataset_id": "3d_bridge_segmentation",
+      "dataset_name": "SemanticBridge: 3D semantic segmentation of bridge dataset",
+      "page_title": "SemanticBridge: 3D Bridge Component Semantic Segmentation",
+      "summary": "Reported benchmark results for the SemanticBridge dataset and the tested 3D segmentation models released in the source repository.",
+      "task_description": "",
+      "source_label": "SemanticBridge paper",
+      "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+      "dataset_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+      "primary_metric_key": "miou",
+      "metric_columns": [
+        { "key": "unlabeled", "label": "Unlabeled", "direction": "higher", "precision": 3 },
+        { "key": "underground", "label": "Underground", "direction": "higher", "precision": 3 },
+        { "key": "high_vegetation", "label": "High Vegetation", "direction": "higher", "precision": 3 },
+        { "key": "abutment", "label": "Abutment", "direction": "higher", "precision": 3 },
+        { "key": "superstructure", "label": "Superstructure", "direction": "higher", "precision": 3 },
+        { "key": "deck", "label": "Deck", "direction": "higher", "precision": 3 },
+        { "key": "railing", "label": "Railing", "direction": "higher", "precision": 3 },
+        { "key": "traffic_sign", "label": "Traffic Sign", "direction": "higher", "precision": 3 },
+        { "key": "pillar", "label": "Pillar", "direction": "higher", "precision": 3 },
+        { "key": "miou", "label": "mIoU", "direction": "higher", "precision": 3 }
+      ],
+      "results": [
+        {
+          "data_source": "TLS",
+          "method": "UNet3D",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.888,
+            "underground": 0.786,
+            "high_vegetation": 0.877,
+            "abutment": 0.508,
+            "superstructure": 0.894,
+            "deck": 0.880,
+            "railing": 0.759,
+            "traffic_sign": 0.186,
+            "pillar": 0.583,
+            "miou": 0.707
+          },
+          "notes": "Reported TLS benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "TLS",
+          "method": "KPConv",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.895,
+            "underground": 0.784,
+            "high_vegetation": 0.872,
+            "abutment": 0.599,
+            "superstructure": 0.898,
+            "deck": 0.890,
+            "railing": 0.796,
+            "traffic_sign": 0.064,
+            "pillar": 0.544,
+            "miou": 0.705
+          },
+          "notes": "Reported TLS benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "TLS",
+          "method": "PTv2",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.812,
+            "underground": 0.758,
+            "high_vegetation": 0.884,
+            "abutment": 0.502,
+            "superstructure": 0.705,
+            "deck": 0.756,
+            "railing": 0.752,
+            "traffic_sign": 0.158,
+            "pillar": 0.389,
+            "miou": 0.635
+          },
+          "notes": "Reported TLS benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "TLS 13, 17, 19",
+          "method": "UNet3D",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.691,
+            "underground": 0.722,
+            "high_vegetation": 0.853,
+            "abutment": 0.687,
+            "superstructure": 0.894,
+            "deck": 0.882,
+            "railing": 0.700,
+            "traffic_sign": 0.196,
+            "pillar": 0.514,
+            "miou": 0.682
+          },
+          "notes": "Reported TLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "TLS 13, 17, 19",
+          "method": "KPConv",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.763,
+            "underground": 0.714,
+            "high_vegetation": 0.850,
+            "abutment": 0.796,
+            "superstructure": 0.892,
+            "deck": 0.853,
+            "railing": 0.711,
+            "traffic_sign": 0.105,
+            "pillar": 0.697,
+            "miou": 0.709
+          },
+          "notes": "Reported TLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "TLS 13, 17, 19",
+          "method": "PTv2",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.661,
+            "underground": 0.727,
+            "high_vegetation": 0.857,
+            "abutment": 0.663,
+            "superstructure": 0.884,
+            "deck": 0.869,
+            "railing": 0.672,
+            "traffic_sign": 0.083,
+            "pillar": 0.382,
+            "miou": 0.644
+          },
+          "notes": "Reported TLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "MLS 13, 17, 19",
+          "method": "UNet3D",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.505,
+            "underground": 0.733,
+            "high_vegetation": 0.856,
+            "abutment": 0.578,
+            "superstructure": 0.730,
+            "deck": 0.618,
+            "railing": 0.625,
+            "traffic_sign": 0.130,
+            "pillar": 0.387,
+            "miou": 0.574
+          },
+          "notes": "Reported MLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "MLS 13, 17, 19",
+          "method": "KPConv",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.613,
+            "underground": 0.731,
+            "high_vegetation": 0.864,
+            "abutment": 0.642,
+            "superstructure": 0.737,
+            "deck": 0.631,
+            "railing": 0.636,
+            "traffic_sign": 0.069,
+            "pillar": 0.431,
+            "miou": 0.595
+          },
+          "notes": "Reported MLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        },
+        {
+          "data_source": "MLS 13, 17, 19",
+          "method": "PTv2",
+          "model_id": "3d_bridge_segmentation_model",
+          "year": 2026,
+          "paper_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "code_url": "https://github.com/mvg-inatech/3d_bridge_segmentation",
+          "source_label": "SemanticBridge paper",
+          "source_url": "https://doi.org/10.1016/j.dibe.2026.100912",
+          "metrics": {
+            "unlabeled": 0.526,
+            "underground": 0.732,
+            "high_vegetation": 0.852,
+            "abutment": 0.547,
+            "superstructure": 0.737,
+            "deck": 0.631,
+            "railing": 0.607,
+            "traffic_sign": 0.161,
+            "pillar": 0.377,
+            "miou": 0.575
+          },
+          "notes": "Reported MLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
+        }
+      ]
+    }
+  ]
+}

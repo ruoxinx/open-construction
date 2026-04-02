@@ -34,6 +34,7 @@ DEFAULT_PAIRS: List[Tuple[str, str]] = [
     ("site/data/models.json", "schemas/models.schema.json"),
     ("site/data/use-cases.json", "schemas/use-cases.schema.json"),
     ("site/data/oer.json", "schemas/oer.schema.json"),
+    ("site/data/benchmark-results.json", "schemas/benchmark-results.schema.json"),
 ]
 
 

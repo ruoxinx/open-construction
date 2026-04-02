@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction - Benchmark Results</title>
+  <meta name="description" content="Explore benchmark result pages for OpenConstruction datasets and models.">
+  <link rel="canonical" href="https://www.openconstruction.org/benchmark_results.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="OpenConstruction - Benchmark Results">
+  <meta property="og:description" content="Compare reported benchmark results for specific OpenConstruction datasets and tasks.">
+  <meta property="og:url" content="https://www.openconstruction.org/benchmark_results.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --oc-text:#1e2a36;
+      --oc-subtle:#6b7b8c;
+      --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b;
+      --oc-link:#0b66c3;
+      --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px;
+      --oc-focus:#86b7fe;
+      --oc-gold:#f2a238;
+    }
+    .oc-container{ max-width:1240px; }
+    .oc-section{ margin-top:28px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
+    .card-shell,.table-wrap,.dataset-hero,.empty-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
+    .dataset-hero{
+      display:grid;
+      grid-template-columns:minmax(300px, 1.02fr) minmax(360px, .98fr);
+      overflow:hidden;
+    }
+    .dataset-media{
+      background:#f8fbff;
+      border-right:1px solid var(--oc-border);
+      min-height:320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .dataset-media img{
+      width:100%;
+      height:100%;
+      max-height:420px;
+      object-fit:contain;
+      display:block;
+    }
+    .dataset-copy{ padding:1.35rem 1.35rem 1.2rem; }
+    .facts-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:.8rem 1rem; }
+    .fact{ border-top:1px solid var(--oc-border); padding-top:.7rem; }
+    .fact-label{ color:var(--oc-subtle); font-size:.76rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.2rem; }
+    .fact-value{ font-weight:700; line-height:1.35; }
+    .card-shell{ padding:1.1rem 1.25rem; }
+    .metric-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:.45rem .75rem;
+      border-radius:999px;
+      border:1px solid var(--oc-border);
+      background:#fff;
+      font-weight:600;
+    }
+    .figure-shell{
+      width:100%;
+      max-width:760px;
+      margin:0 auto;
+      overflow:hidden;
+    }
+    .figure-shell svg{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .figure-caption{ color:var(--oc-subtle); font-size:.92rem; margin-top:.75rem; }
+    .results-table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.88rem; }
+    .results-table th,.results-table td{
+      padding:.72rem .7rem;
+      border-top:1px solid var(--oc-border);
+      vertical-align:middle;
+    }
+    .results-table thead th{
+      border-top:0;
+      color:var(--oc-ink);
+      font-weight:700;
+      background:#f7fbff;
+      white-space:nowrap;
+    }
+    .results-table th.compact,.results-table td.compact{
+      width:58px;
+      min-width:58px;
+      text-align:center;
+    }
+    .muted-note{ color:var(--oc-subtle); font-size:.95rem; }
+    .issue-btn{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      z-index:1050;
+      background:#0d6efd;
+      color:#fff;
+      padding:12px 20px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:.9rem;
+      box-shadow:0 4px 12px rgba(0,0,0,.25);
+      text-decoration:none;
+      transition:background .2s ease, transform .2s ease;
+    }
+    .issue-btn:hover{
+      background:#0b5ed7;
+      transform:translateY(-2px);
+      color:#fff;
+      text-decoration:none;
+    }
+    :focus-visible{
+      outline:2px solid var(--oc-focus);
+      outline-offset:2px;
+      border-radius:6px;
+    }
+    @media (max-width: 991.98px){
+      .dataset-hero{ grid-template-columns:1fr; }
+      .dataset-media{
+        border-right:0;
+        border-bottom:1px solid var(--oc-border);
+        min-height:240px;
+      }
+      .facts-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries">
+            <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="models.html">Models</a></li>
+            <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="d-flex justify-content-end flex-wrap gap-2">
+      <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html">&larr; All benchmarks</a>
+      <a class="btn btn-sm btn-outline-dark rounded-pill" id="taskBackLink" href="benchmarks.html">Related task</a>
+    </div>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <section class="oc-section" id="contentMount">
+    <div class="empty-card p-4 text-center text-muted">Loading benchmark results...</div>
+  </section>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div>&copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1">
+      <small>
+        Licensed under Apache 2.0.
+        Images and thumbnails are &copy; their respective creators unless otherwise noted.
+      </small>
+    </div>
+    <div class="mt-1">
+      <small>
+        <a href="contribute.html#terms" class="text-muted">Terms</a> &middot;
+        <a href="contribute.html#privacy" class="text-muted">Privacy</a> &middot;
+        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> &middot;
+        <a href="contribute.html#citation" class="text-muted">Citation</a>
+      </small>
+    </div>
+  </div>
+</footer>
+
+<a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml"
+   class="issue-btn" target="_blank" rel="noopener">
+  Suggest a benchmark?
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script>
+  const esc = (s) => String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#39;");
+  const normStr = (v) => (v == null ? '' : String(v).trim());
+  const canonKey = (s) => normStr(s).toLowerCase().replace(/\s+/g, ' ').trim();
+
+  async function loadJson(url){
+    const res = await fetch(url, { cache: 'no-store' });
+    if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return res.json();
+  }
+
+  function getBenchmarks(payload){ return Array.isArray(payload?.benchmarks) ? payload.benchmarks : []; }
+  function getDatasets(payload){ return (payload && typeof payload === 'object' && !Array.isArray(payload)) ? payload : {}; }
+  function getModels(payload){ return Array.isArray(payload) ? payload : []; }
+  function getTaskDefinitions(payload){ return (payload && typeof payload === 'object' && !Array.isArray(payload)) ? (payload.definitions || {}) : {}; }
+
+  function metricLookup(board){
+    const map = new Map();
+    (board.metric_columns || []).forEach(col => map.set(col.key, col));
+    return map;
+  }
+
+  function githubIcon(){
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+      </svg>`;
+  }
+
+  function formatMetric(metricDef, value){
+    if (value == null || value === '') return '<span class="text-muted">&mdash;</span>';
+    if (typeof value === 'number') {
+      const digits = Number.isInteger(metricDef?.precision) ? metricDef.precision : 2;
+      return value.toFixed(digits);
+    }
+    return esc(value);
+  }
+
+  function sortedResults(board){
+    return (board.results || []).slice();
+  }
+
+  function buildCompareRows(board){
+    const byMethod = new Map();
+    (board.results || []).forEach(row => {
+      const source = normStr(row.data_source);
+      const metric = row.metrics?.[board.primary_metric_key];
+      if (!source || typeof metric !== 'number') return;
+      if (!byMethod.has(row.method)) byMethod.set(row.method, new Map());
+      byMethod.get(row.method).set(source, metric);
+    });
+    const series = Array.from(new Set((board.results || []).map(r => normStr(r.data_source)).filter(Boolean)));
+    if (!series.length) return { series: [], rows: [] };
+    const rows = Array.from(byMethod.entries()).map(([name, vals]) => ({
+      name,
+      values: series.map(seriesName => vals.get(seriesName))
+    })).filter(row => row.values.some(v => typeof v === 'number'));
+    return { series, rows };
+  }
+
+  function compareCard(board){
+    const { series, rows } = buildCompareRows(board);
+    const metricDef = metricLookup(board).get(board.primary_metric_key) || { label: board.primary_metric_key };
+    if (!rows.length || !series.length) return '';
+
+    const width = 760;
+    const height = 320;
+    const left = 58;
+    const right = 20;
+    const top = 52;
+    const bottom = 74;
+    const chartW = width - left - right;
+    const chartH = height - top - bottom;
+    const maxV = Math.min(1, Math.max(...rows.flatMap(row => row.values.filter(v => typeof v === 'number'))) + 0.06);
+    const yAt = (val) => top + chartH - ((val / Math.max(maxV, 0.001)) * chartH);
+    const groupW = chartW / Math.max(rows.length, 1);
+    const gap = 8;
+    const barW = Math.min(26, (groupW - (series.length - 1) * gap - 18) / Math.max(series.length, 1));
+    const totalBarsW = (barW * series.length) + (gap * Math.max(series.length - 1, 0));
+    const colors = ['#0b66c3', '#5c7cfa', '#f2a238'];
+
+    return `
+      <div class="card-shell">
+        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
+          <div>
+            <div class="oc-kicker">Result Figure</div>
+            <div class="muted-note">${esc(metricDef.label)} reported for each model across the three SemanticBridge subsets.</div>
+          </div>
+          <div class="metric-pill">${esc(metricDef.label)}</div>
+        </div>
+        <div class="figure-shell">
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(metricDef.label)} grouped bar chart">
+            ${Array.from({ length: 5 }, (_, i) => {
+              const value = maxV * i / 4;
+              const y = yAt(value);
+              return `
+                <g>
+                  <line x1="${left}" x2="${width - right}" y1="${y}" y2="${y}" stroke="#e7edf3" stroke-width="1"/>
+                  <text x="${left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#6b7b8c">${value.toFixed(3)}</text>
+                </g>
+              `;
+            }).join('')}
+            <line x1="${left}" x2="${left}" y1="${top}" y2="${top + chartH}" stroke="#9fb6cc" stroke-width="1.2"/>
+            <line x1="${left}" x2="${width - right}" y1="${top + chartH}" y2="${top + chartH}" stroke="#9fb6cc" stroke-width="1.2"/>
+            ${rows.map((row, idx) => {
+              const cx = left + groupW * idx + groupW / 2;
+              const startX = cx - totalBarsW / 2;
+              const labelY = top + chartH + 22;
+              return `
+                <g>
+                  ${row.values.map((value, seriesIdx) => {
+                    if (typeof value !== 'number') return '';
+                    const x = startX + seriesIdx * (barW + gap);
+                    const y = yAt(value);
+                    return `
+                      <rect x="${x}" y="${y}" width="${barW}" height="${top + chartH - y}" rx="6" fill="${colors[seriesIdx % colors.length]}"/>
+                      <text x="${x + barW / 2}" y="${y - 7}" text-anchor="middle" font-size="11" fill="#1e2a36">${value.toFixed(3)}</text>
+                    `;
+                  }).join('')}
+                  <text x="${cx}" y="${labelY}" text-anchor="middle" font-size="12" fill="#1e2a36">${esc(row.name)}</text>
+                </g>
+              `;
+            }).join('')}
+            <g transform="translate(${left}, 18)">
+              ${series.map((seriesName, idx) => `
+                <g transform="translate(${idx * 172}, 0)">
+                  <rect x="0" y="-10" width="14" height="14" rx="3" fill="${colors[idx % colors.length]}"/>
+                  <text x="22" y="1" font-size="12" fill="#1e2a36">${esc(seriesName)}</text>
+                </g>
+              `).join('')}
+            </g>
+          </svg>
+        </div>
+        <div class="figure-caption">Overall ${esc(metricDef.label)} comparison across the reported TLS, TLS 13, 17, 19, and MLS 13, 17, 19 subsets.</div>
+      </div>
+    `;
+  }
+
+  function boardHtml(board, dataset, models, taskDefinitions){
+    const results = sortedResults(board);
+    const metricDefs = board.metric_columns || [];
+    const primaryDef = metricDefs.find(col => col.key === board.primary_metric_key) || metricDefs[0];
+    const modelMap = new Map((models || []).map(model => [model.id, model]));
+    const taskDefinition = taskDefinitions?.[canonKey(board.task)]?.description || board.task_description || board.summary;
+    const datasetHref = dataset?.id ? `datasets/detail.html?id=${encodeURIComponent(dataset.id)}` : (board.dataset_url || '#');
+    const datasetLabel = normStr(dataset?.name || board.dataset_name || board.dataset_id);
+    const datasetImg = dataset?.id ? `assets/img/datasets/${encodeURIComponent(dataset.id)}.png` : 'assets/img/placeholder/placeholder.png';
+    const datasetFacts = [
+      { label: 'Task', value: board.task },
+      { label: 'Year', value: dataset?.year || '-' },
+      { label: 'Modality', value: dataset?.data_modality || '-' },
+      { label: 'Classes', value: dataset?.num_classes || '-' },
+      { label: 'Metric', value: 'Class IoU and mIoU' }
+    ];
+    const taskKey = canonKey(board.task);
+    document.getElementById('taskBackLink').href = taskKey ? `benchmark_task.html?key=${encodeURIComponent(taskKey)}&label=${encodeURIComponent(board.task)}` : 'benchmarks.html';
+    document.title = `OpenConstruction - ${board.dataset_name || board.page_title || board.name}`;
+
+    return `
+      <div class="dataset-hero">
+        <div class="dataset-media">
+          <img src="${esc(datasetImg)}" alt="${esc(datasetLabel)} preview" onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+        </div>
+        <div class="dataset-copy">
+          <div class="oc-kicker mb-2">Benchmark Dataset</div>
+          <h2 class="h3 mb-2">${datasetHref && datasetHref !== '#'
+            ? `<a href="${esc(datasetHref)}">${esc(datasetLabel)}</a>`
+            : esc(datasetLabel)}</h2>
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge badge-oc rounded-pill">${esc(board.task)}</span>
+            <span class="badge badge-oc rounded-pill">${results.length} reported result${results.length === 1 ? '' : 's'}</span>
+            <span class="badge badge-oc rounded-pill">${esc(primaryDef?.label || 'mIoU')}</span>
+          </div>
+          <div class="facts-grid">
+            ${datasetFacts.map(fact => `
+              <div class="fact">
+                <div class="fact-label">${esc(fact.label)}</div>
+                <div class="fact-value">${esc(fact.value)}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            ${datasetHref && datasetHref !== '#'
+              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(datasetHref)}">View dataset</a>`
+              : ''}
+            ${board.source_url
+              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.source_url)}" target="_blank" rel="noopener">View paper</a>`
+              : ''}
+            ${board.dataset_url
+              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.dataset_url)}" target="_blank" rel="noopener">Source repository</a>`
+              : ''}
+          </div>
+        </div>
+      </div>
+
+      <section class="oc-section">
+        <div class="card-shell">
+          <div class="oc-kicker mb-2">What This Task Is</div>
+          <p class="mb-0">${esc(taskDefinition)}</p>
+        </div>
+      </section>
+
+      ${compareCard(board) ? `<section class="oc-section">${compareCard(board)}</section>` : ''}
+
+      <section class="oc-section">
+        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
+          <div>
+            <div class="oc-kicker">Results</div>
+            <div class="muted-note">Reported SemanticBridge benchmark rows from the source repository and paper.</div>
+          </div>
+          <div class="metric-pill">${esc(primaryDef?.label || board.primary_metric_key)}</div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-responsive">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th style="min-width:88px;">Data</th>
+                  <th style="min-width:132px;">Model</th>
+                  <th class="compact">Year</th>
+                  ${metricDefs.map(col => `<th class="compact">${esc(col.label)}</th>`).join('')}
+                  <th class="compact">Code</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${results.map((row) => {
+                  const externalModelLinks = {
+                    'UNet3D': 'https://github.com/traveller59/spconv',
+                    'KPConv': 'https://openaccess.thecvf.com/content_ICCV_2019/html/Thomas_KPConv_Flexible_and_Deformable_Convolution_for_Point_Clouds_ICCV_2019_paper.html',
+                    'PTv2': 'https://proceedings.neurips.cc/paper_files/paper/2022/hash/d78ece6613953f46501b958b7bb4582f-Abstract-Conference.html'
+                  };
+                  const model = modelMap.get(row.model_id);
+                  const modelHref = externalModelLinks[row.method] || (model?.id ? `models/details.html?id=${encodeURIComponent(model.id)}` : null);
+                  return `
+                    <tr>
+                      <td class="fw-semibold">${esc(row.data_source || '-')}</td>
+                      <td class="fw-semibold">${modelHref ? `<a href="${esc(modelHref)}" ${modelHref.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(row.method)}</a>` : esc(row.method)}</td>
+                      <td class="compact">${normStr(row.year) ? esc(row.year) : '<span class="text-muted">&mdash;</span>'}</td>
+                      ${metricDefs.map(col => `<td class="compact">${formatMetric(col, row.metrics?.[col.key])}</td>`).join('')}
+                      <td class="compact">${row.code_url ? `<a href="${esc(row.code_url)}" target="_blank" rel="noopener" aria-label="Open repository" title="Open repository">${githubIcon()}</a>` : '<span class="text-muted">&mdash;</span>'}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  async function init(){
+    try{
+      const params = new URLSearchParams(location.search);
+      const boardId = normStr(params.get('id'));
+      const [benchmarkPayload, datasetPayload, modelPayload, taskDefinitionPayload] = await Promise.all([
+        loadJson('data/benchmark-results.json'),
+        loadJson('data/datasets.json'),
+        loadJson('data/models.json'),
+        loadJson('data/task-definitions.json')
+      ]);
+      const boards = getBenchmarks(benchmarkPayload);
+      const datasets = getDatasets(datasetPayload);
+      const models = getModels(modelPayload);
+      const taskDefinitions = getTaskDefinitions(taskDefinitionPayload);
+      const board = boards.find(item => item.id === boardId) || boards[0];
+      if (!board) throw new Error('No benchmark results were found.');
+      const dataset = datasets?.[board.dataset_id] || null;
+      document.getElementById('contentMount').innerHTML = boardHtml(board, dataset, models, taskDefinitions);
+    }catch(err){
+      console.error(err);
+      document.getElementById('contentMount').innerHTML = `
+        <div class="empty-card p-4 text-center">
+          <h2 class="h5 mb-2">Benchmark results unavailable</h2>
+          <p class="text-muted mb-0">We could not load this benchmark board right now.</p>
+        </div>`;
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>

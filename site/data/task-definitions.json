@@ -1,0 +1,8 @@
+{
+  "definitions": {
+    "3d semantic segmentation": {
+      "name": "3D semantic segmentation",
+      "description": "3D semantic segmentation assigns a semantic class label to each point in a 3D scene or point cloud, enabling the scene to be parsed into meaningful object or component categories."
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/benchmark-results.schema.json",
+  "title": "OpenConstruction Benchmark Results Schema",
+  "type": "object",
+  "required": ["schema_version", "benchmarks"],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "benchmarks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "task",
+          "dataset_id",
+          "summary",
+          "comparison_scope",
+          "split",
+          "protocol",
+          "submission_policy",
+          "primary_metric_key",
+          "metric_columns",
+          "results"
+        ],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "name": { "type": "string" },
+          "task": { "type": "string" },
+          "dataset_id": { "$ref": "schema.common.json#/definitions/id" },
+          "dataset_name": { "type": "string" },
+          "page_title": { "type": "string" },
+          "summary": { "type": "string" },
+          "task_description": { "type": "string" },
+          "comparison_scope": { "type": "string" },
+          "split": { "type": "string" },
+          "protocol": { "type": "string" },
+          "submission_policy": { "type": "string" },
+          "source_label": { "type": "string" },
+          "source_url": { "$ref": "schema.common.json#/definitions/url" },
+          "dataset_url": { "$ref": "schema.common.json#/definitions/url" },
+          "primary_metric_key": { "type": "string" },
+          "metric_columns": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["key", "label", "direction"],
+              "properties": {
+                "key": { "type": "string" },
+                "label": { "type": "string" },
+                "unit": { "type": "string" },
+                "direction": { "enum": ["higher", "lower"] },
+                "precision": { "type": "integer", "minimum": 0, "maximum": 6 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["method", "metrics"],
+              "properties": {
+                "method": { "type": "string" },
+                "model_id": { "$ref": "schema.common.json#/definitions/id" },
+                "data_source": { "type": "string" },
+                "authors": {
+                  "oneOf": [
+                    { "type": "string" },
+                    {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  ]
+                },
+                "year": { "$ref": "schema.common.json#/definitions/year" },
+                "paper_url": { "$ref": "schema.common.json#/definitions/url" },
+                "code_url": { "$ref": "schema.common.json#/definitions/url" },
+                "source_label": { "type": "string" },
+                "source_url": { "$ref": "schema.common.json#/definitions/url" },
+                "date": { "type": "string" },
+                "metrics": {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": { "type": ["number", "string", "null"] }
+                },
+                "notes": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
