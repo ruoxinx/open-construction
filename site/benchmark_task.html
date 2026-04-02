@@ -113,7 +113,7 @@
       <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
         <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
 		<li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddCatalogs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddCatalogs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddCatalogs">
             <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
             <li><a class="dropdown-item" href="models.html">Models</a></li>
@@ -413,7 +413,9 @@
       ? `<a href="${esc(href)}" ${href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
       : esc(title);
 
-    const code  = codeUrl ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
+    const code  = codeUrl
+      ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener" title="Open GitHub repository" aria-label="Open GitHub repository">${githubIcon()}</a>`
+      : '<span class="text-muted">—</span>';
 
     return `
       <tr data-row="model">
@@ -502,3 +504,4 @@
 </script>
 </body>
 </html>
+
