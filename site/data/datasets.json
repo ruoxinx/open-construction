@@ -3302,7 +3302,7 @@
     "authors": "Maximilian Kellner, Mariana Ferrandon Cervantes, Yuandong Pan, Ruodan Lu, Ioannis Brilakis, Alexander Reiterer",
     "doi": "https://doi.org/10.1016/j.dibe.2026.100912",
     "year": 2026,
-    "data_modality": "3D point clouds, synthetic point clouds, Ground RGB",
+    "data_modality": "3D point clouds, Synthetic point clouds, Ground RGB",
     "num_images": "20 real-world bridges + 23 synthetic bridges",
     "num_classes": 9,
     "classes": [
