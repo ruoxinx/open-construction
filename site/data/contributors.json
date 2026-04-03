@@ -887,5 +887,23 @@
     "link_url": "https://wmich.edu/civil-construction/directory/liu",
   "image": "https://files.wmich.edu/s3fs-public/2025-10/liu_hexu_-_engineering.jpg",
   "type": "person"
+  },
+                  {
+    "id": "Resilient and Intelligent Structures Technology Lab (RESiST)",
+    "name": "Resilient and Intelligent Structures Technology Lab (RESiST)",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Kansas (U.S)",
+    "link_url": "https://shm.ku.edu/",
+  "image": "assets/img/contributors/avatar.png",
+  "type": "org"
+  },
+                  {
+    "id": "Jian Li",
+    "name": "Jian Li,Ph.D., P.E., F.ASCE",
+    "role": "Dataset Contributor",
+    "affiliation": "University of Kansas (U.S)",
+    "link_url": "https://ceae.ku.edu/people/jian-li",
+  "image": "https://ceae.ku.edu/sites/ceae/files/styles/portrait_col_xl_6/public/images/person-profile/faculty-jian-li.png?h=5a7b2f21&itok=q3q5LI-b",
+  "type": "person"
   }
 ]
