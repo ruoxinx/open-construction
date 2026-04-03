@@ -313,11 +313,27 @@
                            : [s.trim()].filter(Boolean);
   }
 
-  function pills(values, limit = Infinity){
+  function taskHref(label){
+    const key = window.normalizeOcTaskKey ? window.normalizeOcTaskKey(label) : String(label || '').trim().toLowerCase();
+    const entry = window.OC_TASK_VOCAB?.aliasToTask?.get(key);
+    const canonical = entry?.canonical_key || key;
+    if (!canonical) return '';
+    return `../benchmark_task.html?key=${encodeURIComponent(canonical)}`;
+  }
+
+  function pills(values, limit = Infinity, kind = ''){
     const arr = tokenize(values);
     if (!arr.length) return "";
     const shown = arr.slice(0, limit)
-      .map(t => `<span class="badge rounded-pill">${t}</span>`)
+      .map(t => {
+        if (kind === 'task') {
+          const href = taskHref(t);
+          return href
+            ? `<a class="badge rounded-pill text-decoration-none" href="${href}" title="View task benchmark for ${t}">${t}</a>`
+            : `<span class="badge rounded-pill">${t}</span>`;
+        }
+        return `<span class="badge rounded-pill">${t}</span>`;
+      })
       .join("");
     const more = arr.length > limit
       ? `<span class="badge rounded-pill">+${arr.length - limit} more</span>`
@@ -325,10 +341,10 @@
     return shown + more;
   }
 
-  function putAsPills(id, values, limit){
+  function putAsPills(id, values, limit, kind = ''){
     const host = document.getElementById(id);
     if (!host) return;
-    const html = pills(values, limit);
+    const html = pills(values, limit, kind);
     if (html){
       host.innerHTML = html;
       host.hidden = false;
@@ -340,7 +356,7 @@
   window.OC = {
     setBadges({modality, tasks, license} = {}){
       putAsPills('badge-modality', modality, 2);
-      putAsPills('badge-tasks', tasks, 4);
+      putAsPills('badge-tasks', tasks, 4, 'task');
       putAsPills('badge-license', license, 1);
     },
     clearSkeleton(){

@@ -309,7 +309,43 @@
   const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   const normStr = (v) => (v == null ? '' : String(v).trim());
   function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
-  function getTaskDefinitions(payload){ return (payload && typeof payload === 'object' && !Array.isArray(payload)) ? (payload.definitions || {}) : {}; }
+  function emptyTaskVocabulary(){ return { byCanonical: new Map(), byAlias: new Map() }; }
+  function buildTaskVocabulary(payload){
+    const vocab = emptyTaskVocabulary();
+    const tasks = Array.isArray(payload?.tasks) ? payload.tasks : [];
+    tasks.forEach(task => {
+      const canonical = canonKey(task.canonical_key || task.preferred_label || '');
+      if(!canonical) return;
+      const entry = {
+        ...task,
+        canonical_key: canonical,
+        preferred_label: normStr(task.preferred_label || task.canonical_key || '')
+      };
+      vocab.byCanonical.set(canonical, entry);
+      [entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)].forEach(alias => {
+        const aliasKey = canonKey(alias);
+        if(aliasKey) vocab.byAlias.set(aliasKey, entry);
+      });
+    });
+    return vocab;
+  }
+  function normalizeTaskTerm(raw, vocab){
+    const rawText = normStr(raw);
+    const rawCanon = canonKey(rawText);
+    const entry = vocab?.byAlias?.get(rawCanon) || null;
+    if(entry){
+      return {
+        canon: entry.canonical_key,
+        label: entry.preferred_label || rawText,
+        entry
+      };
+    }
+    return {
+      canon: rawCanon,
+      label: rawText,
+      entry: null
+    };
+  }
 
   function getDatasetTasks(ds){
     return [...normArray(ds.tasks), ...normArray(ds.task), ...normArray(ds.potential_tasks)]
@@ -436,13 +472,9 @@
 
   async function init(){
     const params = new URLSearchParams(location.search);
-    const key = canonKey(params.get('key') || '');
-    const label = normStr(params.get('label') || '') || key || 'Task';
+    const requested = normStr(params.get('label') || params.get('key') || '');
 
-    document.title = `OpenConstruction · Task Benchmark · ${label}`;
-    document.getElementById('pageTitle').textContent = label;
-
-    const [datasets, models, benchmarkPayload, taskDefinitionPayload] = await Promise.all([
+    const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
       loadJsonSafe('data/models.json'),
       (async () => {
@@ -457,27 +489,34 @@
       })(),
       (async () => {
         try {
-          const res = await fetch('data/task-definitions.json', { cache:'no-store' });
+          const res = await fetch('data/task-vocabulary.json', { cache:'no-store' });
           if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
           return await res.json();
         } catch (err) {
-          console.warn('Could not load task-definitions.json', err);
-          return { definitions: {} };
+          console.warn('Could not load task-vocabulary.json', err);
+          return {};
         }
       })()
     ]);
-    const taskDefinitions = getTaskDefinitions(taskDefinitionPayload);
-    const taskDefinition = taskDefinitions[canonKey(label)]?.description || taskDefinitions[key]?.description || '';
+    const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
+    const normalizedRequested = normalizeTaskTerm(requested, taskVocabulary);
+    const key = normalizedRequested.canon || canonKey(requested);
+    const label = normalizedRequested.label || requested || key || 'Task';
+
+    document.title = `OpenConstruction · Task Benchmark · ${label}`;
+    document.getElementById('pageTitle').textContent = label;
+
+    const taskDefinition = normalizedRequested.entry?.description || '';
     if(taskDefinition){
       document.getElementById('pageSubtitle').textContent = taskDefinition;
     }
 
-    const dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => canonKey(t) === key));
+    const dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key));
     const mMatched  = models
-      .filter(m => getModelTasks(m).some(t => canonKey(t) === key))
+      .filter(m => getModelTasks(m).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key))
       .filter(m => !/^semanticbridge-(unet3d|kpconv|ptv2)$/i.test(normStr(m.id)));
     const boards = (Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [])
-      .filter(board => canonKey(board.task) === key);
+      .filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
     const boardByDatasetId = new Map(boards.map(board => [board.dataset_id, board]));
 
     dsMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
@@ -504,4 +543,5 @@
 </script>
 </body>
 </html>
+
 

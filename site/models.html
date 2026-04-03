@@ -454,6 +454,8 @@ function esc(s){
 /* ===== Normalizers & splitters ===== */
 function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
 function prettyTermLabel(raw){
+  const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
+  if (vocabLabel) return vocabLabel;
   const key = normKey(raw);
   if (!key) return '';
   const preferred = {
@@ -1081,6 +1083,7 @@ async function loadModels(){
   const grid = byId('modelGrid');
   const errorBox = byId('errorState');
   try{
+    if (window.loadTaskVocabulary) await window.loadTaskVocabulary();
     const res = await fetch(`${DATA_URL}?v=${Date.now()}`, {cache:'no-store'});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();

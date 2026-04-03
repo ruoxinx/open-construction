@@ -170,6 +170,8 @@ function normalizeList(val){
 }
 
 function prettyTermLabel(raw){
+  const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
+  if (vocabLabel) return vocabLabel;
   const key = normKey(raw).replace(/[_-]+/g, ' ');
   if (!key) return '';
   const preferred = {
@@ -552,6 +554,29 @@ function chipLane(list){
   return `<div class="chip-lane">${items.map(x => `<span class="chip">${x}</span>`).join('')}</div>`;
 }
 
+function getTaskVocabularyEntry(raw){
+  const key = normalizeOcTaskKey(raw);
+  if (!key) return null;
+  return window.OC_TASK_VOCAB?.aliasToTask?.get(key) || null;
+}
+
+function taskBenchmarkHref(raw){
+  const entry = getTaskVocabularyEntry(raw);
+  const key = entry?.canonical_key || normalizeOcTaskKey(raw);
+  if (!key) return '';
+  return `../benchmark_task.html?key=${encodeURIComponent(key)}`;
+}
+
+function linkedTaskChipLane(list){
+  const items = tokenize(list);
+  if (!items.length) return '';
+  return `<div class="chip-lane">${items.map(label => {
+    const href = taskBenchmarkHref(label);
+    if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
+    return `<a class="chip chip-link" href="${href}" title="View benchmark page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+  }).join('')}</div>`;
+}
+
 /* ---------- conditional meta-row ---------- */
 function metaRow(label, valueHTML) {
   if (!valueHTML || valueHTML === '—' || !valueHTML.trim()) return '';
@@ -594,6 +619,7 @@ function findModelById(modelsArr, id){
 
 async function initDetail(){
   const type = getDetailType();
+  if (window.loadTaskVocabulary) await window.loadTaskVocabulary();
 
   const id = decodeURIComponent((typeof getParam === 'function'
     ? getParam('id')
@@ -1084,18 +1110,19 @@ async function initDetail(){
     const relatedDatasets = Object.values(dataObj || {})
       .filter(other => other && other !== ds)
       .map(other => {
-        const taskScore = scoreOverlap(datasetTaskList, uniquePrettyTerms(other.potential_tasks));
+        const otherTaskList = uniquePrettyTerms(other.potential_tasks);
+        const sharedTasks = datasetTaskList.filter(task => otherTaskList.some(otherTask => normKey(otherTask) === normKey(task)));
+        const taskScore = sharedTasks.length;
         const applicationScore = scoreOverlap(datasetApplicationList, uniquePrettyTerms(other.applications || other.application || other.use_cases || other.use_case));
         const modalityScore = scoreOverlap(datasetModalityList, other.data_modality);
         const classScore = Math.min(scoreOverlap(datasetClassList, other.classes), 2);
         const score = taskScore * 4 + applicationScore * 2 + modalityScore + classScore;
-        const hasStrongSignal = taskScore > 0 || applicationScore > 0;
-        return hasStrongSignal ? { other, score } : null;
+        const hasStrongSignal = taskScore > 0;
+        return hasStrongSignal ? { other, score, sharedTasks } : null;
       })
       .filter(Boolean)
       .sort((a, b) => b.score - a.score || (b.other.year || 0) - (a.other.year || 0))
-      .slice(0, 3)
-      .map(({ other }) => other);
+      .slice(0, 4);
 
     const relatedModels = modelArr
       .map(model => {
@@ -1131,14 +1158,14 @@ async function initDetail(){
         </div>
         <div class="col-lg-6">
           <div class="detail-subcard h-100">
-            <div class="detail-subhead">Related datasets</div>
-            ${relatedDatasets.length ? relatedDatasets.map(other => `
+            <div class="detail-subhead">Related datasets with shared tasks</div>
+            ${relatedDatasets.length ? relatedDatasets.map(({ other, sharedTasks }) => `
               <a class="related-link" href="${datasetHref(other)}">
                 <span class="related-link-type">Dataset</span>
                 <span class="related-link-title">${escapeHtml(other.name || other.id || 'Untitled dataset')}</span>
-                <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.potential_tasks)[0], normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task or modality coverage', 90))}</span>
+                <span class="related-link-meta">${escapeHtml(truncateText([`Shared tasks: ${sharedTasks.join(', ')}`, normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task coverage', 110))}</span>
               </a>
-            `).join('') : '<p class="text-muted small mb-0">No related datasets were found from shared task, class, or modality metadata.</p>'}
+            `).join('') : '<p class="text-muted small mb-0">No related datasets were found with overlapping standardized task labels.</p>'}
           </div>
         </div>
       </div>
@@ -1183,6 +1210,8 @@ async function initDetail(){
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+        .chip-link{ text-decoration:none; transition:background .15s ease, border-color .15s ease, color .15s ease; }
+        .chip-link:hover{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
         .ds-note-inline{ margin:0 .9rem .9rem; padding:.75rem .9rem; border-radius:12px; background:#fff8f0; border:1px solid #f2e1c8; color:#5e4a1a; font-size:.92rem; }
         .ds-note-label{ font-weight:800; margin-right:.25rem; }
         @media (max-width: 991.98px){
@@ -1221,7 +1250,7 @@ async function initDetail(){
           )}</div>
           <div class="chip-lane">
             ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-            ${chipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+            ${linkedTaskChipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
           </div>
         </div>
       </div>
@@ -1232,7 +1261,7 @@ async function initDetail(){
         <dl class="meta mb-0">
           ${metaRow('Data · Classes', datasetCountSummary(ds))}
           ${metaRow('Modality', chipLane(ds.data_modality))}
-          ${metaRow('Tasks', chipLane(datasetTaskList))}
+          ${metaRow('Tasks', linkedTaskChipLane(datasetTaskList))}
           ${metaRow('Classes', chipLane(ds.classes))}
           ${metaRow('Annotations', chipLane(ds.annotation_types))}
           ${metaRow('IFC / Source files', chipLane(ds.data_type || ds.file_types || ds.formats || ''))}

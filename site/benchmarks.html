@@ -478,19 +478,64 @@
     }
   }
 
-  function buildMergedIndex({datasets, models, extractor, imageGetter}){
+  function emptyTaskVocabulary(){
+    return { byCanonical: new Map(), byAlias: new Map() };
+  }
+
+  function buildTaskVocabulary(payload){
+    const vocab = emptyTaskVocabulary();
+    const tasks = Array.isArray(payload?.tasks) ? payload.tasks : [];
+    tasks.forEach(task => {
+      const canonical = canonKey(task.canonical_key || task.preferred_label || '');
+      if(!canonical) return;
+      const entry = {
+        ...task,
+        canonical_key: canonical,
+        preferred_label: normStr(task.preferred_label || task.canonical_key || '')
+      };
+      vocab.byCanonical.set(canonical, entry);
+      [entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)].forEach(alias => {
+        const aliasKey = canonKey(alias);
+        if(aliasKey) vocab.byAlias.set(aliasKey, entry);
+      });
+    });
+    return vocab;
+  }
+
+  function normalizeTaskTerm(raw, vocab){
+    const rawText = normStr(raw);
+    const rawCanon = canonKey(rawText);
+    const entry = vocab?.byAlias?.get(rawCanon) || null;
+    if(entry){
+      return {
+        canon: entry.canonical_key,
+        label: entry.preferred_label || niceLabel(rawText),
+        taskId: entry.id || '',
+        entry
+      };
+    }
+    return {
+      canon: rawCanon,
+      label: niceLabel(rawText),
+      taskId: '',
+      entry: null
+    };
+  }
+
+  function buildMergedIndex({datasets, models, extractor, imageGetter, normalizer}){
     // canonical -> { label, canon, dsCount, modelCount, imgPrimary, imgFallback }
     const map = new Map();
 
     function touch(raw){
-      const canon = canonKey(raw);
+      const normalized = normalizer ? normalizer(raw) : { canon: canonKey(raw), label: niceLabel(raw), taskId: '', entry: null };
+      const canon = normalized.canon;
       if(!canon) return null;
       if(!map.has(canon)){
-        const label = niceLabel(raw);
         map.set(canon, {
           canon,
-          label,
-          idSlug: slugifyKey(label || canon),
+          label: normalized.label,
+          idSlug: slugifyKey(normalized.label || canon),
+          taskId: normalized.taskId || '',
           dsCount:0,
           modelCount:0,
           imgPrimary:'',
@@ -677,8 +722,21 @@
     // Keep your existing site paths:
     // - data/datasets.json is an object keyed by id (we read Object.values)
     // - data/models.json is an array
-    const datasets = await loadJsonSafe('data/datasets.json');
-    const models   = await loadJsonSafe('data/models.json');
+    const [datasets, models, taskVocabularyPayload] = await Promise.all([
+      loadJsonSafe('data/datasets.json'),
+      loadJsonSafe('data/models.json'),
+      (async () => {
+        try{
+          const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});
+          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          return await res.json();
+        }catch(err){
+          console.warn('Could not load task-vocabulary.json', err);
+          return {};
+        }
+      })()
+    ]);
+    const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
 
     document.getElementById('statDatasets').textContent = String(datasets.length || 0);
     document.getElementById('statModels').textContent   = String(models.length || 0);
@@ -689,8 +747,9 @@
 	  models,
 	  extractor: (obj, kind) =>
 		kind === 'dataset'
-		  ? getDatasetTasks(obj)   // datasets.json → potential_tasks / tasks
-		  : getModelTasks(obj),    // models.json   → tasks ONLY
+		  ? getDatasetTasks(obj)
+		  : getModelTasks(obj),
+	  normalizer: (raw) => normalizeTaskTerm(raw, taskVocabulary),
 	  imageGetter: (obj, kind) =>
 		kind === 'dataset'
 		  ? (obj.image_url || obj.thumbnail || '')
@@ -770,3 +829,4 @@
 </script>
 </body>
 </html>
+

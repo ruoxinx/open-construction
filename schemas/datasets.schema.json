@@ -41,9 +41,15 @@
           "tasks": {
             "$ref": "schema.common.json#/definitions/tags"
           },
-          "modalities": {
+          "task": {
+            "type": "string"
+          },
+          "potential_tasks": {
             "$ref": "schema.common.json#/definitions/tags"
           },
+          "modalities": {
+            "$ref": "schema.common.json#/definitions/tags"
+          }
         },
         "additionalProperties": false
       }

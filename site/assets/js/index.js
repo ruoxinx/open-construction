@@ -20,6 +20,8 @@ function normKey(s){
   return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
 }
 function prettyLabel(raw){
+  const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
+  if (vocabLabel) return vocabLabel;
   const k = normKey(raw);
   const preferred = {
     'object detection': 'Object Detection',
@@ -705,6 +707,7 @@ function injectThumbStyles(){
 // ---------- init ----------
 async function init(){
   injectThumbStyles();
+  if (window.loadTaskVocabulary) await window.loadTaskVocabulary();
 
   const raw = await fetchDatasets();
   ALL = raw;

@@ -131,6 +131,7 @@
 	"authors": "Dominic Roberts, Mani Golparvar-Fard",
 	"doi": "https://doi.org/10.1016/j.autcon.2019.04.006",
     "year": 2019,
+    "num_images": "10 videos",
     "data_modality": "Video clips",
     "num_classes": 7,
     "classes": [
@@ -416,6 +417,7 @@
 	"authors": "Muhammad Ibrahim, Naveed Akhtar, Michael Wise, Ajmal Mian",
 	"doi": "http://dx.doi.org/10.1109/ACCESS.2021.3062547",
     "year": 2021,
+    "num_images": "66,425 frames",
     "data_modality": "Point Cloud",
     "num_classes": 25,
     "classes": [
@@ -864,7 +866,8 @@
 	"authors": "Maciej Trzeciak, Kacper Pluta, Yasmin Fathy, Lucio Alcalde, Stanley Chee, Antony Bromley, Ioannis Brilakis, Pierre Alliez",
 	"doi": "https://doi.org/10.1061/JCCEE5.CPENG-5212",
     "year": 2023,
-    "data_modality": "Ground RGB, Point Cloud",
+    "num_images": "5 sequences",
+    "data_modality": "Ground RGB, Point Cloud, IMU",
     "resolution": "Not Specified",
     "annotation_types": [
       "Ground-truth trajectories"
@@ -1129,8 +1132,8 @@
 	"authors": "Dongjae Lee, Minwoo Jung, Ayoung Kim",
 	"doi": "https://doi.org/10.48550/arXiv.2407.03684",
     "year": 2023,
-    "data_modality": "Ground RGB,Point Cloud",
-    "resolution": "Not Specified",
+    "num_images": "12 sequences",
+    "data_modality": "Ground RGB,Point Cloud, IMU, GPS",
     "annotation_types": [
       "Not Specified"
     ],
@@ -1946,8 +1949,7 @@
     ],
     "geographical_location": "China",
     "potential_tasks": [
-	"semantic segmentation",
-	"3D reconstruction"
+	"Point cloud segmentation"
     ],
     "license": "CC BY 4.0",
     "paper": "A point cloud dataset and deep learning method for semantic segmentation of underground garages",
@@ -2355,6 +2357,7 @@
   "doi": "https://doi.org/10.1016/j.autcon.2025.106609",
   "year": 2026,
   "data_modality": "3D Point Cloud",
+  "num_images": "3 buildings",
   "num_classes": 1,
   "classes": ["piping systems"],
   "annotation_types": ["Point cloud segmetation", "BIM model"],
@@ -2608,7 +2611,7 @@
   "geographical_location": "Switzerland",
   "potential_tasks": [
     "LOD4 building model generation",
-    "3D reconstruction",
+    "BIM reconstruction",
     "Structure from Motion"
   ],
   "license": "CC BY 4.0",
@@ -2683,7 +2686,6 @@
   "classes": ["mouse", "keyboard", "typed input", "extrude", "sketch"],
   "potential_tasks": [
     "CAD Generation",
-	"Behavior cloning",
 	"Visual Question Answering"
   ],
   "license": "CC0",
@@ -3014,8 +3016,7 @@
     ],
     "geographical_location": "South Korea",
     "potential_tasks": [
-      "Object segmentation",
-      "Pseudo label generation"
+      "Object segmentation"
     ],
     "license": "MIT",
 	 "doi":"https://doi.org/10.1016/j.autcon.2026.106772",
@@ -3337,7 +3338,7 @@
     "num_images": "11+10+10",
     "num_classes": 3,
     "classes": [
-      "Component-level tasks:",
+      "Component-level tasks",
       "Assembly-level tasks",
       "System-level tasks"
     ],

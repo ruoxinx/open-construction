@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/task-vocabulary.schema.json",
+  "title": "OpenConstruction Task Vocabulary Schema",
+  "type": "object",
+  "required": ["schema_version", "categories", "tasks"],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "canonical_key", "preferred_label", "category_id", "description"],
+        "properties": {
+          "id": { "$ref": "schema.common.json#/definitions/id" },
+          "canonical_key": { "type": "string" },
+          "preferred_label": { "type": "string" },
+          "category_id": { "$ref": "schema.common.json#/definitions/id" },
+          "aliases": { "$ref": "schema.common.json#/definitions/tags" },
+          "description": { "type": "string" },
+          "scope_note": { "type": "string" },
+          "broader_task_id": { "$ref": "schema.common.json#/definitions/id" },
+          "related_task_ids": {
+            "type": "array",
+            "items": { "$ref": "schema.common.json#/definitions/id" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
