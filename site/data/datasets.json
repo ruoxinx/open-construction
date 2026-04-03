@@ -3357,5 +3357,76 @@
     "added_date": "2026-04-01",
     "contributor": "Digital & Smart Construction Laboratory",
     "contributor_url": "https://sites.google.com/view/dsc-lab/home"
-  }
+  },
+  "DamCrack": {
+  "name": "DamCrack: A Drone and Smartphone Image Dataset for 2D/3D Damage Assessment in Concrete Dams",
+  "authors": "Vahidreza Gharehbaghi, Caroline Bennett, Rémy D. Lequesne, Hang Zhao, Jian Li",
+  "doi": "https://doi.org/10.1016/j.dib.2026.112737",
+  "year": 2026,
+  "data_modality": "Ground RGB, Aerial RGB",
+  "num_images": 11288,
+  "num_classes": 3,
+  "classes": [
+    "Non-Crack",
+    "Crack",
+    "Spalling"
+  ],
+  "resolution": "640×640",
+  "annotation_types": [
+    "Image classification",
+    "Bounding boxes",
+    "Pixel-level masks"
+  ],
+  "geographical_location": "Spokane, Washington, United States",
+  "potential_tasks": [
+    "Image classification",
+    "Object detection",
+    "Semantic segmentation",
+	"3D reconstruction"
+  ],
+  "license": "CC BY-NC 4.0",
+  "paper": "DamCrack: A Drone and Smartphone Image Dataset for 2D and 3D Damage Assessment in Concrete Dams",
+  "access": "https://zenodo.org/records/17274707",
+  "id": "DamCrack",
+  "image_url": "assets/img/datasets/DamCrack.png",
+  "added_date": "2026-04-03",
+  "contributor": "Resilient and Intelligent Structures Technology Lab (RESiST)",
+  "contributor_url": "https://shm.ku.edu/"
+},
+
+"DamSegment": {
+  "name": "DamSegment: A curriculum-structured image dataset for damage assessment of concrete dams",
+  "authors": "Vahidreza Gharehbaghi, Caroline Bennett, Rémy D. Lequesne, Hang Zhao, Jian Li",
+  "doi": "https://doi.org/10.1016/j.dib.2026.112671",
+  "year": 2026,
+  "data_modality": "Ground RGB",
+  "num_images": 3500,
+  "num_classes": 3,
+  "classes": [
+    "Non-Crack",
+    "Crack",
+    "Spalling"
+  ],
+  "resolution": "512×512, 640×640",
+  "annotation_types": [
+    "Image classification",
+    "Bounding boxes",
+    "Pixel-level masks",
+	"Polygons"
+  ],
+  "geographical_location": "U.S",
+  "potential_tasks": [
+    "Image classification",
+    "Object detection",
+    "Semantic segmentation"
+  ],
+  "license": "CC BY-NC 4.0",
+  "paper": "DamSegment: A curriculum-structured image dataset for damage assessment of concrete dams",
+  "access": "https://data.mendeley.com/datasets/z5z6gtt5t4/1",
+  "id": "DamSegment",
+  "image_url": "assets/img/datasets/DamSegment.png",
+  "added_date": "2026-04-03",
+  "contributor": "Resilient and Intelligent Structures Technology Lab (RESiST)",
+  "contributor_url": "https://shm.ku.edu/"
+}
 }
