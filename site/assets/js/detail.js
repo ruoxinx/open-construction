@@ -1093,6 +1093,8 @@ async function initDetail(){
       { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
       { label: 'License', value: formatLicense(ds.license) || '—' }
     ];
+    quickFacts[3] = { label: 'Tasks', value: datasetTaskList.length ? linkedTaskChipLane(datasetTaskList) : 'â€”' };
+    quickFacts[4] = { label: 'Modalities', value: datasetModalityList.length ? chipLane(datasetModalityList) : 'â€”' };
 
     function datasetHref(item){
       return `../datasets/detail.html?id=${encodeURIComponent(item.id || item.name || '')}`;
@@ -1250,7 +1252,7 @@ async function initDetail(){
           )}</div>
           <div class="chip-lane">
             ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-            ${linkedTaskChipLane(datasetTaskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+            ${linkedTaskChipLane(datasetTaskList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
           </div>
         </div>
       </div>
@@ -1260,7 +1262,7 @@ async function initDetail(){
         <h2 class="detail-heading">What this dataset contains</h2>
         <dl class="meta mb-0">
           ${metaRow('Data · Classes', datasetCountSummary(ds))}
-          ${metaRow('Modality', chipLane(ds.data_modality))}
+          ${metaRow('Modalities', chipLane(ds.data_modality))}
           ${metaRow('Tasks', linkedTaskChipLane(datasetTaskList))}
           ${metaRow('Classes', chipLane(ds.classes))}
           ${metaRow('Annotations', chipLane(ds.annotation_types))}

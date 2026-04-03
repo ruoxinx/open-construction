@@ -355,8 +355,8 @@
 
   window.OC = {
     setBadges({modality, tasks, license} = {}){
-      putAsPills('badge-modality', modality, 2);
-      putAsPills('badge-tasks', tasks, 4, 'task');
+      putAsPills('badge-modality', modality, Infinity);
+      putAsPills('badge-tasks', tasks, Infinity, 'task');
       putAsPills('badge-license', license, 1);
     },
     clearSkeleton(){

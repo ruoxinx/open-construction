@@ -3377,7 +3377,7 @@
     "Bounding boxes",
     "Pixel-level masks"
   ],
-  "geographical_location": "Spokane, Washington, United States",
+  "geographical_location": "U.S",
   "potential_tasks": [
     "Image classification",
     "Object detection",

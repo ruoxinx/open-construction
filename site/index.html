@@ -390,7 +390,7 @@
     .featured-title{
       margin:0;
       font-size:1.02rem;
-      font-weight:800;
+      font-weight:400;
       color:var(--oc-brand-ink);
       line-height:1.35;
     }
@@ -1602,7 +1602,6 @@
       const datasets = Object.values(datasetsJson || {}).map(ds => ({
         type: 'Dataset',
         title: ds.name || 'Untitled dataset',
-        description: [ds.potential_tasks?.[0], ds.annotation_types?.[0]].filter(Boolean).join(' with ') || 'Structured catalog entry for AEC data reuse.',
         meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
         year: ds.year,
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
@@ -1698,7 +1697,6 @@
                 ${item.year ? `<span class="featured-year">${esc(item.year)}</span>` : ''}
               </div>
               <h3 class="featured-title">${esc(item.title)}</h3>
-              <p class="featured-desc">${esc(item.description || 'OpenConstruction catalog resource')}</p>
               <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
               <span class="featured-link">${esc(item.cta)}</span>
             </div>
