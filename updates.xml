@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: DamCrack: A Drone and Smartphone Image Dataset for 2D/3D Damage Assessment in Concrete Dams]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DamCrack</link>
+    <guid isPermaLink="false">datasets:DamCrack:2026-04-03</guid>
+    <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: DamSegment: A curriculum-structured image dataset for damage assessment of concrete dams]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DamSegment</link>
+    <guid isPermaLink="false">datasets:DamSegment:2026-04-03</guid>
+    <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: LLM4BIM Benchmark Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=LLM4BIM_Benchmark_Data</link>
     <guid isPermaLink="false">datasets:LLM4BIM_Benchmark_Data:2026-04-01</guid>
@@ -67,22 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=wblca-benchmark-v2-data</link>
     <guid isPermaLink="false">datasets:wblca-benchmark-v2-data:2026-03-17</guid>
     <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: WFC Pose Estimation Dataset: 6-DOF Pose Estimation in Wood-Frame Construction]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=wfcdataset</link>
-    <guid isPermaLink="false">datasets:wfcdataset:2026-03-06</guid>
-    <pubDate>Fri, 06 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CUBIT-Det Dataset: High-Resolution Infrastructure Defect Detection Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CUBIT</link>
-    <guid isPermaLink="false">datasets:CUBIT:2026-02-27</guid>
-    <pubDate>Fri, 27 Feb 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
