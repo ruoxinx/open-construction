@@ -1,0 +1,162 @@
+# =============================================================================
+# OpenConstruction Construction Domain Ontology — Core
+# OCCO v1.0.0  |  https://openconstruction.org/ontology/
+# License: CC-BY 4.0  |  https://creativecommons.org/licenses/by/4.0/
+#
+# Standards: OWL 2 DL · SKOS · RDF 1.1 · Dublin Core Terms
+# Serialisation: Turtle (W3C)
+#
+# This file declares the ontology metadata, all namespace prefixes, the
+# top-level SKOS ConceptScheme, and the 14 top-level OWL/SKOS classes.
+# Import the domain modules (oc-ppe.ttl, oc-equipment.ttl …) for the
+# full concept hierarchy.
+# =============================================================================
+
+@prefix oc:      <https://openconstruction.org/ontology/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix vann:    <http://purl.org/vocab/vann/> .
+
+# ── Ontology metadata ─────────────────────────────────────────────────────────
+
+<https://openconstruction.org/ontology/> a owl:Ontology ;
+    dcterms:title        "OpenConstruction Construction Domain Ontology"@en ;
+    dcterms:description  """A SKOS/OWL ontology for construction-site object labels,
+enabling semantic interoperability across AI datasets in the AEC domain.
+Inspired by the Brick Schema approach (https://brickschema.org/): every concept
+receives a stable URI, canonical preferred label, and zero-or-more alternative
+labels (skos:altLabel) that capture the raw synonyms found across 96+ datasets."""@en ;
+    owl:versionInfo      "1.0.0" ;
+    dcterms:created      "2026-04-02"^^xsd:date ;
+    dcterms:creator      <https://openconstruction.org> ;
+    dcterms:license      <https://creativecommons.org/licenses/by/4.0/> ;
+    vann:preferredNamespacePrefix "oc" ;
+    vann:preferredNamespaceUri    "https://openconstruction.org/ontology/" ;
+    owl:imports <http://www.w3.org/2004/02/skos/core> .
+
+# ── Top-level SKOS Concept Scheme ─────────────────────────────────────────────
+
+oc:ConceptScheme a skos:ConceptScheme ;
+    skos:prefLabel   "OpenConstruction Object Taxonomy"@en ;
+    dcterms:description """Controlled vocabulary of object/class labels for
+construction-site AI datasets. Covers personnel, PPE, equipment, vehicles,
+structural elements, architectural components, materials, MEP systems, defects,
+activities, environment, signage, temporary works, and tools."""@en .
+
+# ── Top-level concepts (hasTopConcept) ───────────────────────────────────────
+
+oc:ConceptScheme skos:hasTopConcept
+    oc:Person ,
+    oc:PPE ,
+    oc:ConstructionEquipment ,
+    oc:Vehicle ,
+    oc:StructuralElement ,
+    oc:ArchitecturalElement ,
+    oc:Material ,
+    oc:MEPComponent ,
+    oc:Defect ,
+    oc:Activity ,
+    oc:EnvironmentPhenomenon ,
+    oc:SafetySignage ,
+    oc:TemporaryWork ,
+    oc:Tool .
+
+# ── Top-level OWL classes / SKOS top concepts ─────────────────────────────────
+#
+# Each top-level class is both an owl:Class (for reasoner-based inference) and
+# a skos:Concept (for vocabulary/browsing tools). Narrower concepts are defined
+# in the domain-specific module files.
+
+oc:Person a owl:Class, skos:Concept ;
+    skos:prefLabel    "Person"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Any human present on or around a construction site."@en .
+
+oc:PPE a owl:Class, skos:Concept ;
+    skos:prefLabel    "Personal Protective Equipment"@en ;
+    skos:altLabel     "PPE"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Wearable safety equipment required on construction sites."@en .
+
+oc:ConstructionEquipment a owl:Class, skos:Concept ;
+    skos:prefLabel    "Construction Equipment"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      """Heavy machinery and powered equipment used on construction
+and earthmoving sites. Note: some legacy datasets use 'vehicles' as a parent
+label for excavators and cranes — in OCCO those concepts are narrower terms of
+oc:ConstructionEquipment, not oc:Vehicle."""@en .
+
+oc:Vehicle a owl:Class, skos:Concept ;
+    skos:prefLabel    "Vehicle"@en ;
+    skos:altLabel     "vehicles"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Road or site transport vehicles not primarily classified as construction equipment (cars, buses, dump trucks, motorcycles)."@en .
+
+oc:StructuralElement a owl:Class, skos:Concept ;
+    skos:prefLabel    "Structural Element"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Load-bearing or structural building elements (beams, columns, slabs, walls, footings)."@en .
+
+oc:ArchitecturalElement a owl:Class, skos:Concept ;
+    skos:prefLabel    "Architectural Element"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Non-structural building envelope and interior components (doors, windows, façades, balconies)."@en .
+
+oc:Material a owl:Class, skos:Concept ;
+    skos:prefLabel    "Material"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Construction materials, surfaces, and substances."@en .
+
+oc:MEPComponent a owl:Class, skos:Concept ;
+    skos:prefLabel    "MEP Component"@en ;
+    skos:altLabel     "Mechanical Electrical Plumbing"@en, "MEP"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Mechanical, electrical, plumbing, and fire-protection system components."@en .
+
+oc:Defect a owl:Class, skos:Concept ;
+    skos:prefLabel    "Defect"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Structural or surface defects, damage, and deterioration phenomena."@en .
+
+oc:Activity a owl:Class, skos:Concept ;
+    skos:prefLabel    "Activity"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Actions, work tasks, postures, or construction process states."@en .
+
+oc:EnvironmentPhenomenon a owl:Class, skos:Concept ;
+    skos:prefLabel    "Environment & Phenomenon"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Environmental conditions, airborne phenomena, and contextual scene elements (dust, smoke, fire, vegetation)."@en .
+
+oc:SafetySignage a owl:Class, skos:Concept ;
+    skos:prefLabel    "Safety Signage & Controls"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Safety signs, barriers, road markings, cones, and traffic control devices."@en .
+
+oc:TemporaryWork a owl:Class, skos:Concept ;
+    skos:prefLabel    "Temporary Work"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Scaffolding, formwork, fencing, and other temporary site infrastructure."@en .
+
+oc:Tool a owl:Class, skos:Concept ;
+    skos:prefLabel    "Tool"@en ;
+    skos:inScheme     oc:ConceptScheme ;
+    skos:topConceptOf oc:ConceptScheme ;
+    rdfs:comment      "Hand tools, power tools, and small handheld equipment."@en .

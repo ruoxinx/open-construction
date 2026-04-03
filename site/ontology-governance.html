@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Ontology Governance</title>
+  <meta name="description" content="Governance rules for the OpenConstruction ontology, including taxonomy structure, mapping rules, and standards alignment for AEC semantic interoperability.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
+  <style>
+    :root{--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-subtle:#6b7b8c;--oc-shadow:0 10px 28px rgba(15,46,75,.08);--oc-radius:16px}
+    .oc-container{max-width:1040px}.hero{border-bottom:1px solid var(--oc-border);background:linear-gradient(180deg,#fff,#fbfdff)}.hero .content{padding:50px 0 30px;text-align:center}.hero h1{font-weight:900;color:var(--oc-ink);margin:0 0 .5rem}.hero p{max-width:68ch;margin:0 auto;color:var(--oc-subtle)}.oc-section{margin-top:28px}.oc-kicker{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--oc-subtle)}.oc-card{border:1px solid var(--oc-border);border-radius:var(--oc-radius);box-shadow:var(--oc-shadow);background:#fff}.oc-card-body{padding:1.2rem 1.25rem}.rule-list li,.plain-list li{margin:.45rem 0}.section-title{font-weight:900;color:var(--oc-ink);margin-bottom:.65rem}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--oc-border);border-radius:999px;padding:.35rem .7rem;background:#fff;color:var(--oc-ink);font-weight:800;font-size:.87rem}.grid-note{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}@media (max-width:767.98px){.grid-note{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+    <div class="container oc-container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+        <span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span>
+      </a>
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarsExample">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+          <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+              <li><a class="dropdown-item" href="schema.html">Schema</a></li>
+              <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+              <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+              <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><span class="nav-link plain active" aria-current="page">Ontology Test</span></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container oc-container content">
+      <div class="oc-kicker mb-2">Ontology Governance</div>
+      <h1>How OpenConstruction Should Structure the Taxonomy</h1>
+      <p>The ontology should be extensible, dataset-aware, and aligned with existing AEC standards. This page turns the governance Markdown into a proper site document and adds a clearer recommended structure.</p>
+    </div>
+  </header>
+
+  <main class="container oc-container">
+    <section class="oc-section">
+      <div class="grid-note">
+        <div class="oc-card"><div class="oc-card-body"><div class="section-title">Source Of Truth</div><p class="mb-0 text-muted">`ontology/*.ttl` defines canonical concepts and hierarchy. Dataset labels map into it. Website taxonomies are derived views, not the authority.</p></div></div>
+        <div class="oc-card"><div class="oc-card-body"><div class="section-title">Standards Strategy</div><p class="mb-0 text-muted">Use Brick as the governance pattern, IFC and related buildingSMART concepts for AEC interoperability, and schema.org for web publication only.</p></div></div>
+      </div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">Recommended Taxonomy Layers</div>
+        <ul class="plain-list">
+          <li><strong>Layer 1: Top concepts</strong> such as `Person`, `PPE`, `Construction Equipment`, `Vehicle`, `Structural Element`, `Architectural Element`, `Material`, `MEP Component`, `Defect`, and `Activity`.</li>
+          <li><strong>Layer 2: Taxonomy classes</strong> such as `Crane`, `Wall`, `Rebar`, or `Hard Hat` families that organize semantically coherent branches.</li>
+          <li><strong>Layer 3: Leaf concepts</strong> such as `Tower Crane`, `CMU Wall`, `Hard Hat (Blue)`, and `Asphalt` that can be mapped directly to dataset labels.</li>
+          <li><strong>Layer 4: Mapping evidence</strong> where raw labels like `human`, `people-no-helmet`, or `vehicles > excavator` are recorded in dataset mapping files instead of being promoted to ontology canonicals.</li>
+        </ul>
+      </div></div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">Canonical Label Rules</div>
+        <ul class="rule-list">
+          <li>Use singular, durable preferred labels: `Worker`, `Excavator`, `Hard Hat`.</li>
+          <li>Use `skos:altLabel` for true synonyms only.</li>
+          <li>Create narrower concepts when the semantics are more specific, not just because a dataset used a longer string.</li>
+          <li>Keep ambiguous labels such as `hat`, `pedestrian`, or generic `operator` separate until reviewed.</li>
+        </ul>
+      </div></div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">Decision Order For New Labels</div>
+        <ol class="plain-list">
+          <li>Check whether the raw label is an exact synonym of an existing concept.</li>
+          <li>If not, decide whether it is a narrower concept that deserves its own class.</li>
+          <li>If the dataset uses a bad parent bucket, preserve that in mapping metadata rather than changing ontology truth.</li>
+          <li>If the meaning is ambiguous, leave it unmapped or reviewed instead of forcing a false equivalence.</li>
+        </ol>
+      </div></div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">AEC Standards Alignment</div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="pill">Brick-inspired governance</span>
+          <span class="pill">IFC / buildingSMART alignment</span>
+          <span class="pill">schema.org publication</span>
+          <span class="pill">SKOS + OWL modeling</span>
+        </div>
+        <ul class="plain-list">
+          <li><strong>Brick</strong> is the pattern for stable URIs, preferred labels, synonyms, and a browsable concept graph.</li>
+          <li><strong>IFC / buildingSMART</strong> should inform structural, architectural, and MEP concepts when semantics truly match.</li>
+          <li><strong>schema.org</strong> is appropriate for website metadata and discoverability, not as the core construction ontology.</li>
+          <li><strong>OpenConstruction mappings</strong> should remain the bridge between raw dataset labels and the canonical semantic layer.</li>
+        </ul>
+      </div></div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">Current High-Risk Terms</div>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="pill">pedestrian</span>
+          <span class="pill">hat</span>
+          <span class="pill">hook</span>
+          <span class="pill">vehicle</span>
+          <span class="pill">operator</span>
+          <span class="pill">person</span>
+          <span class="pill">wall</span>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="oc-section">
+      <div class="oc-card"><div class="oc-card-body">
+        <div class="section-title">Practical Rule For Contributors</div>
+        <ul class="plain-list">
+          <li>Add ontology concepts in Turtle only when they represent stable domain meaning.</li>
+          <li>Add raw dataset labels to mapping files, not directly into the ontology as canonicals.</li>
+          <li>Keep the explorer and taxonomy views generated from or validated against the ontology.</li>
+        </ul>
+      </div></div>
+    </section>
+  </main>
+
+  <footer class="py-4 mt-3 oc-site-footer">
+    <div class="container oc-container small text-muted text-center">
+      <div>
+        © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+      </div>
+      <div class="mt-1">
+        <small>
+          Licensed under Apache 2.0.
+          Images and thumbnails are © their respective creators unless otherwise noted.
+        </small>
+      </div>
+      <div class="mt-1">
+        <small>
+          <a href="contribute.html#terms" class="text-muted">Terms</a> ·
+          <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
+          <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+          <a href="contribute.html#citation" class="text-muted">Citation</a>
+        </small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+</body>
+</html>

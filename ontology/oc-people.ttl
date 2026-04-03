@@ -1,0 +1,82 @@
+# =============================================================================
+# OCCO — People & Personnel Module
+# Imports: oc-core.ttl
+# =============================================================================
+
+@prefix oc:     <https://openconstruction.org/ontology/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+
+# ── Construction Personnel ────────────────────────────────────────────────────
+#
+# KEY NORMALISATION:
+#   "human", "person", "people", and "workers" often denote the same
+#   construction-site subject class and can map to oc:Worker when the dataset
+#   intent is site labor/personnel.
+#   "pedestrian" SHOULD NOT be auto-normalised to oc:Worker because roadway and
+#   urban-scene datasets often use it for non-worker public persons. It has its
+#   own concept below.
+
+oc:Worker a owl:Class, skos:Concept ;
+    skos:prefLabel "Worker"@en ;
+    skos:altLabel  "human"@en, "person"@en, "people"@en,
+                   "workers"@en, "laborer"@en, "labourer"@en,
+                   "starting-and-following-the-worker"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "General construction worker or on-site labor role. Canonical label resolves the common 'human / person / people / worker' synonym cluster only when the dataset semantics indicate construction personnel rather than generic public persons."@en ;
+    skos:exactMatch schema:Person .
+
+oc:Pedestrian a owl:Class, skos:Concept ;
+    skos:prefLabel "Pedestrian"@en ;
+    skos:altLabel  "pedestrian"@en, "pedestrians"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "A generic walking public person, especially in roadway, urban, or traffic-scene datasets. This concept is kept distinct from oc:Worker to avoid false equivalence."@en .
+
+oc:Foreman a owl:Class, skos:Concept ;
+    skos:prefLabel "Foreman"@en ;
+    skos:altLabel  "foreman"@en, "site foreman"@en, "supervisor"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:EquipmentOperator a owl:Class, skos:Concept ;
+    skos:prefLabel "Equipment Operator"@en ;
+    skos:altLabel  "operator"@en, "machine operator"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Inspector a owl:Class, skos:Concept ;
+    skos:prefLabel "Inspector"@en ;
+    skos:altLabel  "inspector"@en, "safety inspector"@en, "site inspector"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:LeaningPerson a owl:Class, skos:Concept ;
+    skos:prefLabel "Leaning Person"@en ;
+    skos:altLabel  "leaning-person"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Body Parts (used in keypoint / body-part datasets) ───────────────────────
+
+oc:Head a owl:Class, skos:Concept ;
+    skos:prefLabel "Head"@en ;
+    skos:altLabel  "head"@en, "person-head"@en, "head-protection"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Human head, used in keypoint and body-part detection datasets."@en .
+
+oc:Face a owl:Class, skos:Concept ;
+    skos:prefLabel "Face"@en ;
+    skos:altLabel  "face"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:PersonBody a owl:Class, skos:Concept ;
+    skos:prefLabel "Person Body"@en ;
+    skos:altLabel  "body"@en, "person-body"@en, "body-end"@en ;
+    skos:broader   oc:Person ;
+    skos:inScheme  oc:ConceptScheme .

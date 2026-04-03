@@ -31,6 +31,20 @@ resources and focuses on the **platform and standards** that make them reusable,
 interoperable, and sustainable.
 
 
+## Semantic Interoperability
+
+OpenConstruction is developing an ontology layer for harmonizing
+inconsistent dataset labels across the AEC domain.
+
+The intended architecture is:
+
+- `ontology/*.ttl` for canonical concepts and concept hierarchy
+- `site/data/object-label-mappings.json` for dataset-specific raw-label mappings
+- website taxonomies and vocabularies as derived presentation artifacts
+
+See [ontology/GOVERNANCE.md](ontology/GOVERNANCE.md) for modeling rules and review guidance.
+
+
 ## Contribution Model
 OpenConstruction follows a **distributed development model**. Anyone may participate by proposing contributions, reviewing changes, and helping
 maintain both **the cataloged resources** and **the platform infrastructure**.

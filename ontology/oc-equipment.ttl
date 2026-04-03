@@ -1,0 +1,199 @@
+# =============================================================================
+# OCCO — Construction Equipment & Vehicles Module
+# Imports: oc-core.ttl
+# =============================================================================
+
+@prefix oc:   <https://openconstruction.org/ontology/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# =============================================================================
+# CONSTRUCTION EQUIPMENT  (oc:ConstructionEquipment)
+# KEY NORMALISATION:
+#   "dozer" / "bulldozer" → oc:Bulldozer
+#   "roller" / "compactor" / "road-roller" → oc:Compactor
+#   "mixer" / "concrete-mixer-truck" / "concrete_mixer_truck" / "mixer-truck" /
+#   "concrete-transport-mixer" → oc:ConcreteMixer
+#   Some datasets label excavators under a parent "vehicles" —
+#   in OCCO, oc:Excavator is narrower than oc:ConstructionEquipment.
+# =============================================================================
+
+# ── Earthmoving ───────────────────────────────────────────────────────────────
+
+oc:Excavator a owl:Class, skos:Concept ;
+    skos:prefLabel "Excavator"@en ;
+    skos:altLabel  "excavator"@en, "excavators"@en, "digger"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Hydraulic track or wheeled excavator. Note: some datasets use 'vehicles' as a parent label for this concept — in OCCO it is narrower than oc:ConstructionEquipment."@en .
+
+oc:Bulldozer a owl:Class, skos:Concept ;
+    skos:prefLabel "Bulldozer"@en ;
+    skos:altLabel  "bulldozer"@en, "dozer"@en, "bull dozer"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "'dozer' and 'bulldozer' are synonyms — both resolve to oc:Bulldozer."@en .
+
+oc:Loader a owl:Class, skos:Concept ;
+    skos:prefLabel "Loader"@en ;
+    skos:altLabel  "loader"@en, "wheel loader"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:narrower  oc:BackhoeLoader ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:BackhoeLoader a owl:Class, skos:Concept ;
+    skos:prefLabel "Backhoe Loader"@en ;
+    skos:altLabel  "backhoe-loader"@en, "backhoe loader"@en, "backhoe"@en ;
+    skos:broader   oc:Loader ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Grader a owl:Class, skos:Concept ;
+    skos:prefLabel "Grader"@en ;
+    skos:altLabel  "grader"@en, "motor grader"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:SkidSteer a owl:Class, skos:Concept ;
+    skos:prefLabel "Skid Steer Loader"@en ;
+    skos:altLabel  "skid-steer"@en, "skid steer"@en, "skid_steer"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Lifting & Hoisting ────────────────────────────────────────────────────────
+
+oc:Crane a owl:Class, skos:Concept ;
+    skos:prefLabel "Crane"@en ;
+    skos:altLabel  "crane"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:narrower  oc:TowerCrane, oc:MobileCrane ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:TowerCrane a owl:Class, skos:Concept ;
+    skos:prefLabel "Tower Crane"@en ;
+    skos:altLabel  "tower-crane"@en, "tower crane"@en, "tower_crane"@en ;
+    skos:broader   oc:Crane ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:MobileCrane a owl:Class, skos:Concept ;
+    skos:prefLabel "Mobile Crane"@en ;
+    skos:altLabel  "mobile-crane"@en, "mobile crane"@en, "truck crane"@en ;
+    skos:broader   oc:Crane ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Forklift a owl:Class, skos:Concept ;
+    skos:prefLabel "Forklift"@en ;
+    skos:altLabel  "forklift"@en, "fork lift"@en, "fork-lift"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Compaction & Paving ───────────────────────────────────────────────────────
+
+oc:Compactor a owl:Class, skos:Concept ;
+    skos:prefLabel "Compactor"@en ;
+    skos:altLabel  "compactor"@en, "roller"@en, "road-roller"@en,
+                   "road roller"@en, "road_roller"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Soil or asphalt compaction equipment. 'roller', 'road-roller', and 'compactor' are treated as synonyms."@en .
+
+# ── Concrete Equipment ────────────────────────────────────────────────────────
+
+oc:ConcreteMixer a owl:Class, skos:Concept ;
+    skos:prefLabel "Concrete Mixer"@en ;
+    skos:altLabel  "concrete-mixer"@en, "concrete mixer"@en, "mixer"@en,
+                   "mixer-truck"@en, "concrete-mixer-truck"@en,
+                   "concrete mixer truck"@en, "concrete_mixer_truck"@en,
+                   "concrete-transport-mixer"@en, "concrete-mixer-trucks"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "All spacing/delimiter variants of 'concrete mixer truck' resolve here."@en .
+
+oc:PumpTruck a owl:Class, skos:Concept ;
+    skos:prefLabel "Concrete Pump Truck"@en ;
+    skos:altLabel  "pump-truck"@en, "pump truck"@en, "concrete pump"@en,
+                   "pump_truck"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Foundation & Drilling ─────────────────────────────────────────────────────
+
+oc:PileDriver a owl:Class, skos:Concept ;
+    skos:prefLabel "Pile Driver"@en ;
+    skos:altLabel  "pile-driver"@en, "pile driver"@en, "pile_driver"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:CrawlerDrill a owl:Class, skos:Concept ;
+    skos:prefLabel "Crawler Drill"@en ;
+    skos:altLabel  "crawler-drill"@en, "crawler drill"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:EarthAuger a owl:Class, skos:Concept ;
+    skos:prefLabel "Earth Auger"@en ;
+    skos:altLabel  "earth-auger"@en, "earth auger"@en, "auger"@en ;
+    skos:broader   oc:ConstructionEquipment ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Equipment Parts / Attachments ─────────────────────────────────────────────
+
+oc:ExcavatorBucket a owl:Class, skos:Concept ;
+    skos:prefLabel "Excavator Bucket"@en ;
+    skos:altLabel  "arm-bucket"@en, "excavators-load-bucket"@en,
+                   "excavators-swing-bucket"@en, "left-bucket-end"@en,
+                   "right-bucket-end"@en ;
+    skos:broader   oc:Excavator ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:BoomArm a owl:Class, skos:Concept ;
+    skos:prefLabel "Boom Arm"@en ;
+    skos:altLabel  "boom-arm"@en, "boom arm"@en, "cab-boom"@en ;
+    skos:broader   oc:Excavator ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:CraneHook a owl:Class, skos:Concept ;
+    skos:prefLabel "Crane Hook"@en ;
+    skos:altLabel  "crane-hook"@en, "hook"@en, "hanging-hook"@en ;
+    skos:broader   oc:Crane ;
+    skos:inScheme  oc:ConceptScheme .
+
+# =============================================================================
+# VEHICLES  (oc:Vehicle)
+# Road and site transport vehicles — not primarily construction equipment.
+# KEY NORMALISATION:
+#   "cars" (plural) → oc:Car
+#   "dump truck" / "dump-truck" / "dump_truck" → oc:DumpTruck
+# =============================================================================
+
+oc:DumpTruck a owl:Class, skos:Concept ;
+    skos:prefLabel "Dump Truck"@en ;
+    skos:altLabel  "dump-truck"@en, "dump truck"@en, "dump_truck"@en,
+                   "tipper"@en, "tipper truck"@en ;
+    skos:broader   oc:Vehicle ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Truck a owl:Class, skos:Concept ;
+    skos:prefLabel "Truck"@en ;
+    skos:altLabel  "truck"@en, "pc-truck"@en ;
+    skos:broader   oc:Vehicle ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Car a owl:Class, skos:Concept ;
+    skos:prefLabel "Car"@en ;
+    skos:altLabel  "car"@en, "cars"@en, "automobile"@en, "spraying-car"@en ;
+    skos:broader   oc:Vehicle ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Singular and plural forms ('car', 'cars') both resolve to oc:Car."@en .
+
+oc:Bus a owl:Class, skos:Concept ;
+    skos:prefLabel "Bus"@en ;
+    skos:altLabel  "bus"@en ;
+    skos:broader   oc:Vehicle ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Motorcycle a owl:Class, skos:Concept ;
+    skos:prefLabel "Motorcycle"@en ;
+    skos:altLabel  "motorcycle"@en, "cycles"@en, "bike"@en ;
+    skos:broader   oc:Vehicle ;
+    skos:inScheme  oc:ConceptScheme .

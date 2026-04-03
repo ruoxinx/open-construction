@@ -1,0 +1,96 @@
+# =============================================================================
+# OCCO — Structural Elements Module
+# Imports: oc-core.ttl
+# External alignment: IFC 4 (buildingSMART)
+# =============================================================================
+
+@prefix oc:   <https://openconstruction.org/ontology/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+oc:Beam a owl:Class, skos:Concept ;
+    skos:prefLabel "Beam"@en ;
+    skos:altLabel  "beam"@en, "girder"@en, "i-beam"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:narrower  oc:BeamBendingFailure ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:BeamBendingFailure a owl:Class, skos:Concept ;
+    skos:prefLabel "Beam Bending Failure"@en ;
+    skos:altLabel  "beam-bending-failure"@en ;
+    skos:broader   oc:Beam ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Column a owl:Class, skos:Concept ;
+    skos:prefLabel "Column"@en ;
+    skos:altLabel  "column"@en, "pillar"@en, "post"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:narrower  oc:ColumnFailure ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:ColumnFailure a owl:Class, skos:Concept ;
+    skos:prefLabel "Column Failure"@en ;
+    skos:altLabel  "column-type2-failure"@en, "column-type3-failure"@en,
+                   "column-type4-failure"@en, "column-type5-failure"@en ;
+    skos:broader   oc:Column ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Slab a owl:Class, skos:Concept ;
+    skos:prefLabel "Slab"@en ;
+    skos:altLabel  "slab"@en, "deck"@en, "concrete slab"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Wall a owl:Class, skos:Concept ;
+    skos:prefLabel "Wall"@en ;
+    skos:altLabel  "wall"@en, "partition"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:narrower  oc:CMUWall, oc:CurtainWall ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:CMUWall a owl:Class, skos:Concept ;
+    skos:prefLabel "CMU Wall"@en ;
+    skos:altLabel  "cmu-wall"@en, "cmu wall"@en,
+                   "concrete masonry unit wall"@en, "block wall"@en ;
+    skos:broader   oc:Wall ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:CurtainWall a owl:Class, skos:Concept ;
+    skos:prefLabel "Curtain Wall"@en ;
+    skos:altLabel  "curtain-wall"@en, "curtain wall"@en,
+                   "glass-curtain-wall"@en, "glass curtain wall"@en ;
+    skos:broader   oc:Wall ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Footing a owl:Class, skos:Concept ;
+    skos:prefLabel "Footing"@en ;
+    skos:altLabel  "footing"@en, "foundation"@en, "spread footing"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Pile a owl:Class, skos:Concept ;
+    skos:prefLabel "Pile"@en ;
+    skos:altLabel  "pile"@en, "driven pile"@en, "concrete pile"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Stair a owl:Class, skos:Concept ;
+    skos:prefLabel "Stair"@en ;
+    skos:altLabel  "stair"@en, "stairs"@en, "staircase"@en, "stairway"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Railing a owl:Class, skos:Concept ;
+    skos:prefLabel "Railing"@en ;
+    skos:altLabel  "railing"@en, "handrail"@en, "guardrail"@en, "balustrade"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Rebar a owl:Class, skos:Concept ;
+    skos:prefLabel "Rebar"@en ;
+    skos:altLabel  "rebar"@en, "reinforcing bar"@en, "reinforcement bar"@en,
+                   "hoop-rebar"@en, "hoop rebar"@en, "steel reinforcement"@en,
+                   "mesh"@en, "reinforcing mesh"@en ;
+    skos:broader   oc:StructuralElement ;
+    skos:inScheme  oc:ConceptScheme .

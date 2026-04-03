@@ -1,0 +1,113 @@
+# =============================================================================
+# OCCO — Materials Module
+# Imports: oc-core.ttl
+# =============================================================================
+
+@prefix oc:   <https://openconstruction.org/ontology/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# KEY NORMALISATION:
+#   "bricks" (plural) → oc:Brick
+#   "timber" → oc:Wood
+#   "plasterboard" / "drywall" → oc:Gypsum
+
+oc:Concrete a owl:Class, skos:Concept ;
+    skos:prefLabel "Concrete"@en ;
+    skos:altLabel  "concrete"@en, "chiseled-concrete"@en,
+                   "concrete-casting-work"@en, "cement"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Brick a owl:Class, skos:Concept ;
+    skos:prefLabel "Brick"@en ;
+    skos:altLabel  "brick"@en, "bricks"@en, "masonry unit"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Singular and plural forms ('brick', 'bricks') both resolve to oc:Brick."@en .
+
+oc:Steel a owl:Class, skos:Concept ;
+    skos:prefLabel "Steel"@en ;
+    skos:altLabel  "steel"@en, "metal"@en, "structural steel"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Wood a owl:Class, skos:Concept ;
+    skos:prefLabel "Wood"@en ;
+    skos:altLabel  "wood"@en, "timber"@en, "lumber"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Glass a owl:Class, skos:Concept ;
+    skos:prefLabel "Glass"@en ;
+    skos:altLabel  "glass"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Stone a owl:Class, skos:Concept ;
+    skos:prefLabel "Stone"@en ;
+    skos:altLabel  "stone"@en, "polishedstone"@en, "polished stone"@en,
+                   "granite"@en, "marble"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Tile a owl:Class, skos:Concept ;
+    skos:prefLabel "Tile"@en ;
+    skos:altLabel  "tile"@en, "ceramic tile"@en, "floor tile"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Plaster a owl:Class, skos:Concept ;
+    skos:prefLabel "Plaster"@en ;
+    skos:altLabel  "plaster"@en, "first-coat-plaster"@en, "second-coat-plaster"@en,
+                   "base-coat-plaster"@en, "finish-coat-plaster"@en,
+                   "first coat plaster"@en, "base coat plaster"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "All plaster coat variants ('first coat plaster', 'base coat plaster', etc.) are altLabels."@en .
+
+oc:Gypsum a owl:Class, skos:Concept ;
+    skos:prefLabel "Gypsum"@en ;
+    skos:altLabel  "gypsum"@en, "gypsum board"@en, "drywall"@en,
+                   "plasterboard"@en, "gypsum-board"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Plastic a owl:Class, skos:Concept ;
+    skos:prefLabel "Plastic"@en ;
+    skos:altLabel  "plastic"@en, "hard-plastic"@en, "polymer"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Insulation a owl:Class, skos:Concept ;
+    skos:prefLabel "Insulation"@en ;
+    skos:altLabel  "insulation"@en, "foaming-insulation"@en,
+                   "thermal insulation"@en, "pe-membrane"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Asphalt a owl:Class, skos:Concept ;
+    skos:prefLabel "Asphalt"@en ;
+    skos:altLabel  "asphalt"@en, "bitumen"@en, "tarmac"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Ceramic a owl:Class, skos:Concept ;
+    skos:prefLabel "Ceramic"@en ;
+    skos:altLabel  "ceramic"@en, "porcelain"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Fabric a owl:Class, skos:Concept ;
+    skos:prefLabel "Fabric"@en ;
+    skos:altLabel  "fabric"@en, "mulching-fabric"@en, "geotextile"@en,
+                   "canvas"@en, "leather"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:Paper a owl:Class, skos:Concept ;
+    skos:prefLabel "Paper"@en ;
+    skos:altLabel  "paper"@en, "cardboard"@en ;
+    skos:broader   oc:Material ;
+    skos:inScheme  oc:ConceptScheme .

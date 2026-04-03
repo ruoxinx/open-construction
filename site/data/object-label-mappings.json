@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "type": "openconstruction.object_label_mappings",
+  "ontology_uri": "https://openconstruction.org/ontology/",
+  "ontology_version": "1.0.0",
+  "description": "Seed mappings from raw dataset class labels to canonical OpenConstruction ontology concepts. This file is intended to grow as label harmonization is reviewed.",
+  "mappings": [
+    {
+      "dataset_id": "CPPE",
+      "raw_label": "worker",
+      "normalized_label": "worker",
+      "canonical_uri": "https://openconstruction.org/ontology/Worker",
+      "canonical_label": "Worker",
+      "mapping_relation": "exact",
+      "status": "approved",
+      "confidence": 1.0
+    },
+    {
+      "dataset_id": "VCVW-3D",
+      "raw_label": "human",
+      "normalized_label": "human",
+      "canonical_uri": "https://openconstruction.org/ontology/Worker",
+      "canonical_label": "Worker",
+      "mapping_relation": "close",
+      "status": "reviewed",
+      "confidence": 0.86,
+      "notes": "Mapped to Worker because the dataset context is construction-site personnel rather than generic public persons."
+    },
+    {
+      "dataset_id": "Hardhat-Wearing",
+      "raw_label": "person with helmet",
+      "normalized_label": "person with helmet",
+      "canonical_uri": "https://openconstruction.org/ontology/Hardhat",
+      "canonical_label": "Hard Hat",
+      "mapping_relation": "close",
+      "status": "reviewed",
+      "confidence": 0.92,
+      "notes": "Composite raw label expresses a person wearing construction head PPE; mapped to the PPE concept for label harmonization."
+    },
+    {
+      "dataset_id": "Hardhat-Wearing",
+      "raw_label": "person no helmet",
+      "normalized_label": "person no helmet",
+      "canonical_uri": "https://openconstruction.org/ontology/NoHardhat",
+      "canonical_label": "No Hard Hat",
+      "mapping_relation": "close",
+      "status": "reviewed",
+      "confidence": 0.92
+    },
+    {
+      "dataset_id": "CHV",
+      "raw_label": "helmet",
+      "normalized_label": "helmet",
+      "canonical_uri": "https://openconstruction.org/ontology/Hardhat",
+      "canonical_label": "Hard Hat",
+      "mapping_relation": "exact",
+      "status": "approved",
+      "confidence": 0.98,
+      "notes": "In construction PPE datasets, helmet and hardhat are treated as equivalent."
+    },
+    {
+      "dataset_id": "MOCS",
+      "raw_label": "Tower_crane",
+      "normalized_label": "tower crane",
+      "canonical_uri": "https://openconstruction.org/ontology/TowerCrane",
+      "canonical_label": "Tower Crane",
+      "mapping_relation": "exact",
+      "status": "approved",
+      "confidence": 1.0
+    },
+    {
+      "dataset_id": "Construction-Equipment-Pose",
+      "raw_label": "excavator",
+      "normalized_label": "excavator",
+      "raw_parent_labels": [
+        "vehicles"
+      ],
+      "raw_context": "Dataset-local parent uses vehicles as a broad bucket.",
+      "canonical_uri": "https://openconstruction.org/ontology/Excavator",
+      "canonical_label": "Excavator",
+      "mapping_relation": "broader_context",
+      "status": "approved",
+      "confidence": 0.97,
+      "notes": "Canonical broader concept remains Construction Equipment even if the dataset groups excavator under vehicles."
+    },
+    {
+      "dataset_id": "Peru-Construction",
+      "raw_label": "Truck_crane",
+      "normalized_label": "truck crane",
+      "canonical_uri": "https://openconstruction.org/ontology/MobileCrane",
+      "canonical_label": "Mobile Crane",
+      "mapping_relation": "close",
+      "status": "reviewed",
+      "confidence": 0.84,
+      "notes": "Truck crane is treated as a mobile crane subtype in the ontology."
+    },
+    {
+      "dataset_id": "PC-Urban",
+      "raw_label": "pedestrians",
+      "normalized_label": "pedestrian",
+      "canonical_uri": "https://openconstruction.org/ontology/Pedestrian",
+      "canonical_label": "Pedestrian",
+      "mapping_relation": "exact",
+      "status": "approved",
+      "confidence": 1.0,
+      "notes": "Kept distinct from Worker because this is an urban-scene context."
+    },
+    {
+      "dataset_id": "SODA",
+      "raw_label": "hat",
+      "normalized_label": "hat",
+      "canonical_uri": "https://openconstruction.org/ontology/",
+      "canonical_label": "UNMAPPED",
+      "mapping_relation": "unmapped",
+      "status": "reviewed",
+      "confidence": 0.0,
+      "notes": "Generic hat should not be auto-normalized to Hard Hat without stronger PPE context."
+    }
+  ]
+}

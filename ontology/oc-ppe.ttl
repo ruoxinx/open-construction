@@ -1,0 +1,125 @@
+# =============================================================================
+# OCCO — Personal Protective Equipment (PPE) Module
+# Imports: oc-core.ttl
+# =============================================================================
+
+@prefix oc:   <https://openconstruction.org/ontology/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ── Head Protection ───────────────────────────────────────────────────────────
+#
+# KEY NORMALISATION:
+#   "helmet" and "hardhat" are treated as EQUIVALENT in OCCO.
+#   Both map to oc:Hardhat via skos:altLabel.
+#   Colour variants are narrower concepts.
+#   Generic "hat" SHOULD NOT be auto-normalised to oc:Hardhat because many
+#   datasets use it for non-safety headwear.
+
+oc:Hardhat a owl:Class, skos:Concept ;
+    skos:prefLabel "Hard Hat"@en ;
+    skos:altLabel  "hardhat"@en, "helmet"@en, "hard hat"@en, "safety helmet"@en,
+                   "head-with-helmet"@en, "people-helmet"@en,
+                   "wear-helmet"@en, "person-with-helmet"@en ;
+    skos:broader   oc:PPE ;
+    skos:narrower  oc:HardhatBlue, oc:HardhatRed, oc:HardhatWhite, oc:HardhatYellow ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "Rigid protective headgear (hard hat / safety helmet). The terms 'helmet' and 'hardhat' are synonyms in this ontology when the dataset context is construction PPE. Generic fashion or sports hats are intentionally excluded."@en .
+
+oc:HardhatBlue a owl:Class, skos:Concept ;
+    skos:prefLabel "Hard Hat (Blue)"@en ;
+    skos:altLabel  "colored-hardhat-blue"@en, "colored-helmet-blue"@en,
+                   "Colored hardhat (Blue)"@en, "blue hardhat"@en ;
+    skos:broader   oc:Hardhat ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:HardhatRed a owl:Class, skos:Concept ;
+    skos:prefLabel "Hard Hat (Red)"@en ;
+    skos:altLabel  "colored-hardhat-red"@en, "colored-helmet-red"@en,
+                   "Colored hardhat (Red)"@en, "red hardhat"@en ;
+    skos:broader   oc:Hardhat ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:HardhatWhite a owl:Class, skos:Concept ;
+    skos:prefLabel "Hard Hat (White)"@en ;
+    skos:altLabel  "colored-hardhat-white"@en, "colored-helmet-white"@en,
+                   "Colored hardhat (White)"@en, "white hardhat"@en ;
+    skos:broader   oc:Hardhat ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:HardhatYellow a owl:Class, skos:Concept ;
+    skos:prefLabel "Hard Hat (Yellow)"@en ;
+    skos:altLabel  "colored-hardhat-yellow"@en, "colored-helmet-yellow"@en,
+                   "Colored hardhat (Yellow)"@en, "yellow hardhat"@en ;
+    skos:broader   oc:Hardhat ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Negative PPE states (compliance monitoring) ───────────────────────────────
+
+oc:NoHardhat a owl:Class, skos:Concept ;
+    skos:prefLabel "No Hard Hat"@en ;
+    skos:altLabel  "no-hardhat"@en, "no-head-protection"@en,
+                   "person-no-helmet"@en, "people-no-helmet"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme ;
+    rdfs:comment   "A person detected without a hard hat — used in safety compliance detection datasets."@en .
+
+# ── Eye & Face Protection ─────────────────────────────────────────────────────
+
+oc:SafetyGlasses a owl:Class, skos:Concept ;
+    skos:prefLabel "Safety Glasses"@en ;
+    skos:altLabel  "goggles"@en, "safety-glass"@en, "safety glass"@en,
+                   "face shield"@en, "face-protection"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+oc:NoFaceProtection a owl:Class, skos:Concept ;
+    skos:prefLabel "No Face Protection"@en ;
+    skos:altLabel  "no-face-protection"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Respiratory Protection ────────────────────────────────────────────────────
+
+oc:Mask a owl:Class, skos:Concept ;
+    skos:prefLabel "Mask"@en ;
+    skos:altLabel  "mask"@en, "respirator"@en, "dust mask"@en, "face mask"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Hand Protection ───────────────────────────────────────────────────────────
+
+oc:Gloves a owl:Class, skos:Concept ;
+    skos:prefLabel "Gloves"@en ;
+    skos:altLabel  "gloves"@en, "work gloves"@en, "safety gloves"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Foot Protection ───────────────────────────────────────────────────────────
+
+oc:SafetyBoots a owl:Class, skos:Concept ;
+    skos:prefLabel "Safety Boots"@en ;
+    skos:altLabel  "safety-boots"@en, "boots"@en, "work boots"@en,
+                   "steel-toe boots"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Body / High-Visibility Clothing ──────────────────────────────────────────
+
+oc:SafetyVest a owl:Class, skos:Concept ;
+    skos:prefLabel "Safety Vest"@en ;
+    skos:altLabel  "vest"@en, "hi-vis vest"@en, "high visibility vest"@en,
+                   "reflective vest"@en, "protective vest"@en, "hi vis"@en,
+                   "hi-vis"@en, "hi_vis"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .
+
+# ── Fall Protection ───────────────────────────────────────────────────────────
+
+oc:SafetyHarness a owl:Class, skos:Concept ;
+    skos:prefLabel "Safety Harness"@en ;
+    skos:altLabel  "harness"@en, "safety-harness"@en, "fall harness"@en,
+                   "full body harness"@en, "fall protection harness"@en ;
+    skos:broader   oc:PPE ;
+    skos:inScheme  oc:ConceptScheme .

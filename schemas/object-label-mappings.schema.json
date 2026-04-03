@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openconstruction.org/schemas/object-label-mappings.schema.json",
+  "title": "OpenConstruction Object Label Mappings",
+  "description": "Maps raw dataset class labels to canonical OpenConstruction ontology concepts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "type",
+    "ontology_uri",
+    "mappings"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "type": {
+      "const": "openconstruction.object_label_mappings"
+    },
+    "ontology_uri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ontology_version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    }
+  },
+  "$defs": {
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "raw_label",
+        "canonical_uri",
+        "canonical_label",
+        "mapping_relation",
+        "status"
+      ],
+      "properties": {
+        "dataset_id": {
+          "$ref": "#/$defs/dataset_id"
+        },
+        "raw_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalized_label": {
+          "type": "string"
+        },
+        "raw_parent_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "raw_context": {
+          "type": "string"
+        },
+        "canonical_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "canonical_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mapping_relation": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "close",
+            "narrower",
+            "broader_context",
+            "ambiguous",
+            "unmapped"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "reviewed",
+            "approved",
+            "rejected"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notes": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
