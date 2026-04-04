@@ -3435,7 +3435,7 @@
   "doi": "https://doi.org/10.48550/arXiv.2603.29199",
   "year": 2026,
   "data_modality": "Text, Tabular, 2D Drawings",
-  "num_images": "196 task instance",
+  "num_images": "196 task instances",
   "num_classes": 9,
   "classes": [
     "Detail Technical Review (Intra-Sheet)",
@@ -3462,7 +3462,7 @@
   "paper": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction",
   "access": "https://github.com/nomic-ai/aec-bench",
   "id": "aec-bench",
-  "image_url": "",
+  "image_url": "assets/img/datasets/aec-bench.png",
   "added_date": "2026-04-04",
   "contributor": "Nomic AI",
   "contributor_url": "https://www.nomic.ai/"
