@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: aec-bench]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=aec-bench</link>
+    <guid isPermaLink="false">datasets:aec-bench:2026-04-04</guid>
+    <pubDate>Sat, 04 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: DamCrack: A Drone and Smartphone Image Dataset for 2D/3D Damage Assessment in Concrete Dams]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=DamCrack</link>
     <guid isPermaLink="false">datasets:DamCrack:2026-04-03</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:GED-building-layout:2026-03-24</guid>
     <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[In contemporary architectural practices, case studies are used for learning from precedents and improving design efficiency and quality. However, the complexities of public building layouts pose considerable challenges, such as difficulty in interpreting designs and quantifying associated constraints. Existing automated retrieval methods often focus on simpler residential layouts and overlook the complexity of the constraints associated with public buildings. This paper proposes a graph-based layout retrieval approach that leverages similarities between the function and topology of building layouts and user requirements. The proposed approach is applied to a self-compiled library dataset and validated through professional architect evaluations. Results show that the proposed method aligns with evaluations of experienced architects, while providing more consistent recommendations than inexperienced architects in terms of design quality and behavioral suitability. This study advances machine understanding of complex layouts, enhancing automation and rationality in early-phase design and improving the integration of design information with construction materials.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Whole-building Life Cycle Assessment (WBLCA) Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=wblca-benchmark-v2-data</link>
-    <guid isPermaLink="false">datasets:wblca-benchmark-v2-data:2026-03-17</guid>
-    <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
