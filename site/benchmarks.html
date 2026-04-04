@@ -547,9 +547,11 @@
 
     datasets.forEach(ds=>{
       const img = toPngFirst(imageGetter(ds, 'dataset'));
+      const seen = new Set();
       extractor(ds, 'dataset').forEach(k=>{
         const node = touch(k);
-        if(node){
+        if(node && !seen.has(node.canon)){
+          seen.add(node.canon);
           node.dsCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
@@ -559,9 +561,11 @@
 
     models.forEach(m=>{
       const img = toPngFirst(imageGetter(m, 'model'));
+      const seen = new Set();
       extractor(m, 'model').forEach(k=>{
         const node = touch(k);
-        if(node){
+        if(node && !seen.has(node.canon)){
+          seen.add(node.canon);
           node.modelCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
@@ -570,7 +574,7 @@
     });
 
     const arr = Array.from(map.values());
-    arr.sort((a,b)=> (b.dsCount+b.modelCount)-(a.dsCount+a.modelCount) || a.label.localeCompare(b.label));
+    arr.sort((a,b)=> a.label.localeCompare(b.label));
     return arr;
   }
 

@@ -135,6 +135,15 @@
       "description": "Classifies the action occurring in an image sequence or video clip."
     },
     {
+      "id": "task.agentic-blueprint-reading",
+      "canonical_key": "agentic blueprint reading",
+      "preferred_label": "Agentic blueprint reading",
+      "category_id": "reasoning-qa-ie",
+      "aliases": ["Blueprint understanding"],
+      "related_task_ids": ["task.visual-question-answering", "task.vision-language-reasoning"],
+      "description": "Evaluates agents on reading, navigating, and reasoning over architectural drawing sets and related project documents."
+    },
+    {
       "id": "task.activity-detection",
       "canonical_key": "activity detection",
       "preferred_label": "Activity detection",

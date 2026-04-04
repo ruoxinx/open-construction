@@ -371,6 +371,10 @@
     return (board.results || []).slice();
   }
 
+  function uniqueValues(rows, key){
+    return Array.from(new Set(rows.map(row => normStr(row?.[key])).filter(Boolean)));
+  }
+
   function buildCompareRows(board){
     const byMethod = new Map();
     (board.results || []).forEach(row => {
@@ -389,7 +393,135 @@
     return { series, rows };
   }
 
+  function compareRange(board, values){
+    const chartConfig = board.comparison_chart || {};
+    const numericValues = values.filter(v => typeof v === 'number' && Number.isFinite(v));
+    const fallbackMax = numericValues.length ? Math.max(...numericValues) : 1;
+    const minValue = Number.isFinite(chartConfig.min_value) ? chartConfig.min_value : 0;
+    const maxValue = Number.isFinite(chartConfig.max_value)
+      ? chartConfig.max_value
+      : (fallbackMax <= 1 ? Math.min(1, fallbackMax + 0.06) : Math.ceil((fallbackMax + 5) / 10) * 10);
+    const safeMax = maxValue > minValue ? maxValue : (minValue + 1);
+    return { minValue, maxValue: safeMax };
+  }
+
+  function horizontalCompareCard(board){
+    const rows = sortedResults(board);
+    const chartConfig = board.comparison_chart || {};
+    const metricDef = metricLookup(board).get(board.primary_metric_key) || { label: board.primary_metric_key };
+    const categories = chartConfig.category_order?.length ? chartConfig.category_order : uniqueValues(rows, 'data_source');
+    const series = chartConfig.series_order?.length ? chartConfig.series_order : uniqueValues(rows, 'method');
+    if (!categories.length || !series.length) return '';
+
+    const seriesColors = chartConfig.series_colors || {};
+    const defaultColors = ['#d9c4a7', '#f5c48a', '#a7f195', '#8f8de6', '#ee9999', '#8cc6ff'];
+    const values = rows.map(row => row.metrics?.[board.primary_metric_key]);
+    const { minValue, maxValue } = compareRange(board, values);
+    const valueRange = maxValue - minValue;
+
+    const width = 880;
+    const height = Math.max(360, 180 + categories.length * 150);
+    const left = 176;
+    const right = 28;
+    const top = 118;
+    const bottom = 92;
+    const chartW = width - left - right;
+    const chartH = height - top - bottom;
+    const groupH = chartH / Math.max(categories.length, 1);
+    const barGap = 8;
+    const innerPad = 12;
+    const availableBarH = Math.max(groupH - innerPad * 2 - Math.max(series.length - 1, 0) * barGap, 10);
+    const barH = Math.min(30, availableBarH / Math.max(series.length, 1));
+    const xAt = (value) => {
+      const clipped = Math.max(minValue, Math.min(maxValue, value));
+      return left + ((clipped - minValue) / Math.max(valueRange, 0.001)) * chartW;
+    };
+    const fmt = (value) => {
+      if (typeof value !== 'number') return '';
+      const digits = Number.isInteger(metricDef?.precision) ? metricDef.precision : (Number.isInteger(value) ? 0 : 1);
+      return value.toFixed(digits).replace(/\.0+$/,'');
+    };
+    const lookup = new Map(rows.map(row => [`${normStr(row.data_source)}||${normStr(row.method)}`, row.metrics?.[board.primary_metric_key]]));
+    const ticks = Array.from({ length: 7 }, (_, i) => {
+      const raw = minValue + (valueRange * i / 6);
+      return valueRange > 12 ? Math.round(raw / 5) * 5 : raw;
+    }).filter((value, index, arr) => index === 0 || value !== arr[index - 1]);
+
+    return `
+      <div class="card-shell">
+        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
+          <div>
+            <div class="oc-kicker">Performance</div>
+          </div>
+          <div class="metric-pill">${esc(chartConfig.metric_label || metricDef.label)}</div>
+        </div>
+        <div class="figure-shell" style="max-width:880px;">
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(metricDef.label)} grouped horizontal bar chart">
+            <defs>
+              <marker id="axis-arrow-x" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#1e2a36"></path>
+              </marker>
+            </defs>
+            <g transform="translate(${left}, 24)">
+              ${series.map((seriesName, idx) => {
+                const color = seriesColors[seriesName] || defaultColors[idx % defaultColors.length];
+                const col = idx % 2;
+                const row = Math.floor(idx / 2);
+                const tx = col * 220;
+                const ty = row * 30;
+                return `
+                  <g transform="translate(${tx}, ${ty})">
+                    <rect x="0" y="-10" width="18" height="10" fill="${color}" stroke="#5b4221" stroke-width="1"/>
+                    <text x="26" y="-1" font-size="12" fill="#1e2a36">${esc(seriesName)}</text>
+                  </g>
+                `;
+              }).join('')}
+            </g>
+            ${ticks.map(tick => {
+              const x = xAt(tick);
+              const label = Number.isInteger(tick) ? String(tick) : tick.toFixed(1);
+              return `
+                <g>
+                  <line x1="${x}" x2="${x}" y1="${top}" y2="${top + chartH}" stroke="#e7edf3" stroke-width="1"/>
+                  <text x="${x}" y="${height - 30}" text-anchor="middle" font-size="12" fill="#1e2a36">${esc(label)}</text>
+                </g>
+              `;
+            }).join('')}
+            <line x1="${left}" x2="${left}" y1="${top + chartH}" y2="${top}" stroke="#1e2a36" stroke-width="1.3"/>
+            <line x1="${left}" x2="${width - right + 8}" y1="${top + chartH}" y2="${top + chartH}" stroke="#1e2a36" stroke-width="1.3" marker-end="url(#axis-arrow-x)"/>
+            ${categories.map((category, categoryIdx) => {
+              const topY = top + categoryIdx * groupH + innerPad;
+              const blockH = barH * series.length + barGap * Math.max(series.length - 1, 0);
+              const labelY = top + categoryIdx * groupH + groupH / 2 + 6;
+              return `
+                <g>
+                  <text x="${left - 12}" y="${labelY}" text-anchor="end" font-size="14" fill="#1e2a36">${esc(category)}</text>
+                  ${series.map((seriesName, seriesIdx) => {
+                    const value = lookup.get(`${category}||${seriesName}`);
+                    if (typeof value !== 'number') return '';
+                    const y = topY + seriesIdx * (barH + barGap);
+                    const x = xAt(value);
+                    const color = seriesColors[seriesName] || defaultColors[seriesIdx % defaultColors.length];
+                    return `
+                      <rect x="${left}" y="${y}" width="${Math.max(x - left, 0)}" height="${barH}" fill="${color}" stroke="#5b4221" stroke-width="1"/>
+                      <text x="${Math.min(x + 14, width - right + 2)}" y="${y + barH / 2 + 4}" font-size="12" fill="#1e2a36">${esc(fmt(value))}</text>
+                    `;
+                  }).join('')}
+                </g>
+              `;
+            }).join('')}
+            <text x="${left + chartW / 2}" y="${height - 4}" text-anchor="middle" font-size="13" fill="#1e2a36">${esc(chartConfig.x_axis_label || metricDef.label)}</text>
+          </svg>
+        </div>
+        <div class="figure-caption">${esc(chartConfig.caption || `Comparison of reported ${metricDef.label} across the benchmark subsets.`)}</div>
+      </div>
+    `;
+  }
+
   function compareCard(board){
+    if ((board.comparison_chart?.orientation || '').toLowerCase() === 'horizontal-grouped') {
+      return horizontalCompareCard(board);
+    }
     const { series, rows } = buildCompareRows(board);
     const metricDef = metricLookup(board).get(board.primary_metric_key) || { label: board.primary_metric_key };
     if (!rows.length || !series.length) return '';
@@ -402,8 +534,9 @@
     const bottom = 74;
     const chartW = width - left - right;
     const chartH = height - top - bottom;
-    const maxV = Math.min(1, Math.max(...rows.flatMap(row => row.values.filter(v => typeof v === 'number'))) + 0.06);
-    const yAt = (val) => top + chartH - ((val / Math.max(maxV, 0.001)) * chartH);
+    const allValues = rows.flatMap(row => row.values.filter(v => typeof v === 'number'));
+    const { minValue, maxValue } = compareRange(board, allValues);
+    const yAt = (val) => top + chartH - (((val - minValue) / Math.max(maxValue - minValue, 0.001)) * chartH);
     const groupW = chartW / Math.max(rows.length, 1);
     const gap = 8;
     const barW = Math.min(26, (groupW - (series.length - 1) * gap - 18) / Math.max(series.length, 1));
@@ -421,12 +554,12 @@
         <div class="figure-shell">
           <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(metricDef.label)} grouped bar chart">
             ${Array.from({ length: 5 }, (_, i) => {
-              const value = maxV * i / 4;
+              const value = minValue + ((maxValue - minValue) * i / 4);
               const y = yAt(value);
               return `
                 <g>
                   <line x1="${left}" x2="${width - right}" y1="${y}" y2="${y}" stroke="#e7edf3" stroke-width="1"/>
-                  <text x="${left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#6b7b8c">${value.toFixed(3)}</text>
+                  <text x="${left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#6b7b8c">${value.toFixed(value > 1 ? 0 : 3)}</text>
                 </g>
               `;
             }).join('')}
@@ -476,12 +609,15 @@
     const datasetHref = dataset?.id ? `datasets/detail.html?id=${encodeURIComponent(dataset.id)}` : (board.dataset_url || '#');
     const datasetLabel = normStr(dataset?.name || board.dataset_name || board.dataset_id);
     const datasetImg = dataset?.id ? `assets/img/datasets/${encodeURIComponent(dataset.id)}.png` : 'assets/img/placeholder/placeholder.png';
+    const metricSummary = metricDefs.length
+      ? metricDefs.map(col => col.label).join(', ')
+      : (primaryDef?.label || '-');
     const datasetFacts = [
       { label: 'Task', value: normalizedTask.label || board.task },
       { label: 'Year', value: dataset?.year || '-' },
       { label: 'Modality', value: dataset?.data_modality || '-' },
       { label: 'Classes', value: dataset?.num_classes || '-' },
-      { label: 'Metric', value: 'Class IoU and mIoU' }
+      { label: 'Metric', value: metricSummary }
     ];
     const taskKey = normalizedTask.canon || canonKey(board.task);
     const taskLabel = normalizedTask.label || board.task;

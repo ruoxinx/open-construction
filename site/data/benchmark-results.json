@@ -235,6 +235,192 @@
           "notes": "Reported MLS 13, 17, 19 benchmark row transcribed from the provided SemanticBridge results table."
         }
       ]
+    },
+    {
+      "id": "aec-bench-agentic-blueprint-reading-results",
+      "name": "AEC-Bench: Agentic Blueprint Reading",
+      "task": "Agentic blueprint reading",
+      "dataset_id": "aec-bench",
+      "dataset_name": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction",
+      "page_title": "AEC-Bench: Agentic Blueprint Reading",
+      "summary": "AEC-Bench mean reward by task, model, and setup. Rows are grouped by benchmark category and task; each model has two columns: H (base agent harness) and H+N (base agent harness augmented with Nomic tools and models).",
+      "task_description": "Mean reward by AEC-Bench category for agentic blueprint reading, comparing model performance under the base harness and the harness augmented with Nomic tools and models.",
+      "source_label": "AEC-Bench paper",
+      "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+      "dataset_url": "https://github.com/nomic-ai/aec-bench",
+      "primary_metric_key": "mean_reward",
+      "comparison_chart": {
+        "orientation": "horizontal-grouped",
+        "metric_label": "Mean Performance (Reward)",
+        "x_axis_label": "Mean Performance (Reward)",
+        "min_value": 25,
+        "max_value": 90,
+        "category_order": ["Intra-Sheet", "Intra-Drawing", "Intra-Project"],
+        "series_order": ["Codex (H+N)", "Claude (H)", "Claude (H+N)", "Nomic Agent (N)", "Codex (H)"],
+        "series_colors": {
+          "Codex (H+N)": "#dfccb1",
+          "Claude (H)": "#f5c48a",
+          "Claude (H+N)": "#abf19b",
+          "Nomic Agent (N)": "#8e8be6",
+          "Codex (H)": "#ee9898"
+        },
+        "caption": "AEC-Bench mean reward by task, model, and setup. Rows are grouped by benchmark category and task; each model has two columns: H (base agent harness) and H+N (base agent harness augmented with Nomic tools and models)."
+      },
+      "metric_columns": [
+        { "key": "mean_reward", "label": "Mean Reward", "direction": "higher", "precision": 1 }
+      ],
+      "results": [
+        {
+          "data_source": "Intra-Sheet",
+          "method": "Codex (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 50.0 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Sheet",
+          "method": "Claude (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 44.3 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Sheet",
+          "method": "Claude (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 62.5 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Sheet",
+          "method": "Nomic Agent (N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 70.6 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Sheet",
+          "method": "Codex (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 45.6 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Drawing",
+          "method": "Codex (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 77.2 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Drawing",
+          "method": "Claude (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 68.8 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Drawing",
+          "method": "Claude (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 72.3 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Drawing",
+          "method": "Nomic Agent (N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 88.3 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Drawing",
+          "method": "Codex (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 82.3 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Project",
+          "method": "Codex (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 57.2 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Project",
+          "method": "Claude (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 38.1 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Project",
+          "method": "Claude (H+N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 57.8 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Project",
+          "method": "Nomic Agent (N)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 62.0 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        },
+        {
+          "data_source": "Intra-Project",
+          "method": "Codex (H)",
+          "year": 2026,
+          "code_url": "https://github.com/nomic-ai/aec-bench",
+          "source_label": "AEC-Bench paper",
+          "source_url": "https://doi.org/10.48550/arXiv.2603.29199",
+          "metrics": { "mean_reward": 46.0 },
+          "notes": "Reported mean reward from the benchmark comparison figure."
+        }
+      ]
     }
   ]
 }

@@ -3460,6 +3460,13 @@
   "license": "Apache-2.0",
   "paper": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction",
   "access": "https://github.com/nomic-ai/aec-bench",
+  "blog_url": "https://www.nomic.ai/news/aec-bench-a-multimodal-benchmark-for-agentic-systems-in-architecture-engineering-and-construction",
+  "blog_posts": [
+    {
+      "url": "https://www.nomic.ai/news/aec-bench-a-multimodal-benchmark-for-agentic-systems-in-architecture-engineering-and-construction",
+      "title": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction"
+    }
+  ],
   "id": "aec-bench",
   "image_url": "assets/img/datasets/aec-bench.png",
   "added_date": "2026-04-04",
