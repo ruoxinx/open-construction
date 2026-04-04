@@ -3451,7 +3451,6 @@
   "annotation_types": [
     "task instructions",
     "execution logs",
-    "evaluation metrics",
     "agent responses"
   ],
   "potential_tasks": [
