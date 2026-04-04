@@ -905,5 +905,31 @@
     "link_url": "https://ceae.ku.edu/people/jian-li",
   "image": "https://ceae.ku.edu/sites/ceae/files/styles/portrait_col_xl_6/public/images/person-profile/faculty-jian-li.png?h=5a7b2f21&itok=q3q5LI-b",
   "type": "person"
+  },
+     {
+    "id": "Nomic AI",
+    "name": "Nomic AI",
+    "role": "Dataset Contributor",
+    "link_url": "https://www.nomic.ai/",
+  "image": "https://avatars.githubusercontent.com/u/102670180?s=200&v=4",
+  "type": "org"
+  },
+                    {
+    "id": "Harsh Mankodiya",
+    "name": "Harsh Mankodiya",
+    "role": "Dataset Contributor",
+    "affiliation": "Nomic AI (U.S)",
+    "link_url": "https://hmankodiya.github.io/",
+  "image": "https://hmankodiya.github.io/images/profile.jpg",
+  "type": "person"
+  },
+                      {
+    "id": "Andriy Mulyar",
+    "name": "Andriy Mulyar",
+    "role": "Dataset Contributor",
+    "affiliation": "Nomic AI (U.S)",
+    "link_url": "https://www.linkedin.com/in/andriymulyar/",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=4IgwzX4AAAAJ&citpid=5",
+  "type": "person"
   }
 ]

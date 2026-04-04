@@ -3428,5 +3428,43 @@
   "added_date": "2026-04-03",
   "contributor": "Resilient and Intelligent Structures Technology Lab (RESiST)",
   "contributor_url": "https://shm.ku.edu/"
+},
+"aec-bench": {
+  "name": "aec-bench",
+  "authors": "Harsh Mankodiya, Chase Gallik, Theodoros Galanos, Andriy Mulyar",
+  "doi": "https://doi.org/10.48550/arXiv.2603.29199",
+  "year": 2026,
+  "data_modality": "Text, Tabular, 2D Drawings",
+  "num_images": "196 task instance",
+  "num_classes": 9,
+  "classes": [
+    "Detail Technical Review (Intra-Sheet)",
+    "Detail Title Accuracy (Intra-Sheet)",
+    "Note Callout Accuracy (Intra-Sheet)",
+    "Cross-Ref Resolution (Intra-Drawing)",
+	"Cross-Ref Tracing (Intra-Drawing)",
+	"Sheet Index Consistency (Intra-Drawing)",
+	"Drawing Navigation (Intra-Project)",
+	"Spec-Drawing Sync (Intra-Project)",
+	"Submittal Review (Intra-Project)"
+  ],
+  "annotation_types": [
+    "task instructions",
+    "execution logs",
+    "evaluation metrics",
+    "agent responses"
+  ],
+  "potential_tasks": [
+    "Agentic blueprint reading",
+	"Blueprint understanding"
+  ],
+  "license": "Apache-2.0",
+  "paper": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction",
+  "access": "https://github.com/nomic-ai/aec-bench",
+  "id": "aec-bench",
+  "image_url": "",
+  "added_date": "2026-04-04",
+  "contributor": "Nomic AI",
+  "contributor_url": "https://www.nomic.ai/"
 }
 }
