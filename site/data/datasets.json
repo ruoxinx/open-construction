@@ -3430,7 +3430,7 @@
   "contributor_url": "https://shm.ku.edu/"
 },
 "aec-bench": {
-  "name": "aec-bench",
+  "name": "AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction",
   "authors": "Harsh Mankodiya, Chase Gallik, Theodoros Galanos, Andriy Mulyar",
   "doi": "https://doi.org/10.48550/arXiv.2603.29199",
   "year": 2026,
