@@ -1488,5 +1488,37 @@
   "added_date": "2026-03-31",
   "contributor": "Maximilian Kellner",
   "contributor_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57"
+},
+{
+  "id": "masse",
+  "title": "MASSE: Automating Structural Engineering Workflows with Large Language Model Agents",
+  "authors": [
+    "Haoran Liang", 
+	"Yufa Zhou", 
+	"Mohammad Talebi Kalaleh", 
+	"Qipei Mei"
+  ],
+  "abstract": "We introduce MASSE, the first Multi-Agent System for Structural Engineering, effectively integrating large language model (LLM)-based agents with real-world engineering workflows. Structural engineering is a fundamental yet traditionally stagnant domain, with core workflows remaining largely unchanged for decades despite its substantial economic impact and global market size. Recent advancements in LLMs have significantly enhanced their ability to perform complex reasoning, long-horizon planning, and precise tool utilization -- capabilities well aligned with structural engineering tasks such as interpreting design codes, executing load calculations, and verifying structural capacities. We present a proof-of-concept showing that most real-world structural engineering workflows can be fully automated through a training-free LLM-based multi-agent system. MASSE enables immediate deployment in professional environments, and our comprehensive validation on real-world case studies demonstrates that it can reduce expert workload from approximately two hours to mere minutes, while enhancing both reliability and accuracy in practical engineering scenarios.",
+  "year": 2025,
+  "modalities": [
+    "Text",
+    "Engineering documents"
+  ],
+  "tasks": [
+    "Analyst (data and code extraction)",
+    "Engineer (modeling and limit-state checks)",
+    "Manager (coordination and final adequacy decision)"
+  ],
+  "applications": [
+    "Structural design workflows"
+  ],
+  "license": "Research and Educational Purpose Only",
+  "paper_url": "https://doi.org/10.48550/arXiv.2510.11004",
+  "code_url": "https://github.com/DelosLiang/masse",
+  "thumbnail": "assets/img/models/masse.png",
+  "added_date": "2026-04-05",
+  "contributor": "Smart Infrastructure TEchnologies (SITE) Lab",
+  "contributor_url": "https://publica.fraunhofer.de/entities/person/6aa0188b-5023-4f46-ac07-0512c34e4c57"
 }
+
 ]
