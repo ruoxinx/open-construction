@@ -538,9 +538,20 @@ function prettyTermLabel(raw){
     'subsurface infrastructure monitoring': 'Subsurface Infrastructure Monitoring'
   };
   if (preferred[key]) return preferred[key];
-  return key.split(' ').map(tok=>{
-    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i.test(tok)) return tok.toUpperCase();
-    return tok.charAt(0).toUpperCase()+tok.slice(1);
+  const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs', 'with']);
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+  const tokens = key.split(/\s+/).filter(Boolean);
+  return tokens.map((token, index) => {
+    const parts = token.match(/^([^a-z0-9]*)([a-z0-9-]+)([^a-z0-9]*)$/i);
+    if (!parts) return token;
+    const [, prefix, core, suffix] = parts;
+    if (acronymPattern.test(core)) return `${prefix}${core.toUpperCase()}${suffix}`;
+    if (index > 0 && minorWords.has(core)) return `${prefix}${core}${suffix}`;
+    const titleCore = core
+      .split('-')
+      .map(part => acronymPattern.test(part) ? part.toUpperCase() : `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+      .join('-');
+    return `${prefix}${titleCore}${suffix}`;
   }).join(' ');
 }
 /* Split by comma / slash / pipe / ampersand / plus — DO NOT split the word "and" */

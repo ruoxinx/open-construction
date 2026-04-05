@@ -254,11 +254,20 @@ function prettyTermLabel(raw){
     'subsurface infrastructure monitoring': 'Subsurface Infrastructure Monitoring'
   };
   if (preferred[key]) return preferred[key];
-  return key.split(' ').map(token => {
-    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod3|ui|pcd)$/i.test(token)) {
-      return token.toUpperCase();
-    }
-    return token.charAt(0).toUpperCase() + token.slice(1);
+  const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs', 'with']);
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+  const tokens = key.split(/\s+/).filter(Boolean);
+  return tokens.map((token, index) => {
+    const parts = token.match(/^([^a-z0-9]*)([a-z0-9-]+)([^a-z0-9]*)$/i);
+    if (!parts) return token;
+    const [, prefix, core, suffix] = parts;
+    if (acronymPattern.test(core)) return `${prefix}${core.toUpperCase()}${suffix}`;
+    if (index > 0 && minorWords.has(core)) return `${prefix}${core}${suffix}`;
+    const titleCore = core
+      .split('-')
+      .map(part => acronymPattern.test(part) ? part.toUpperCase() : `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+      .join('-');
+    return `${prefix}${titleCore}${suffix}`;
   }).join(' ');
 }
 
@@ -577,6 +586,22 @@ function linkedTaskChipLane(list){
   }).join('')}</div>`;
 }
 
+function applicationBenchmarkHref(raw){
+  const key = normKey(raw);
+  if (!key) return '';
+  return `../benchmark_application.html?key=${encodeURIComponent(key)}&label=${encodeURIComponent(String(raw).trim())}`;
+}
+
+function linkedApplicationChipLane(list){
+  const items = tokenize(list);
+  if (!items.length) return '';
+  return `<div class="chip-lane">${items.map(label => {
+    const href = applicationBenchmarkHref(label);
+    if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
+    return `<a class="chip chip-link" href="${href}" title="View benchmark page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+  }).join('')}</div>`;
+}
+
 /* ---------- conditional meta-row ---------- */
 function metaRow(label, valueHTML) {
   if (!valueHTML || valueHTML === '—' || !valueHTML.trim()) return '';
@@ -693,8 +718,8 @@ async function initDetail(){
       const trainingList = normalizeList(m.training_data || m.datasets || m.dataset || '');
       const quickFacts = [
         { label: 'Year', value: escapeHtml(safeText(year)) },
-        { label: 'Primary Task', value: taskList.length ? escapeHtml(taskList[0]) : '—' },
-        { label: 'Primary Application', value: appList.length ? escapeHtml(appList[0]) : '—' },
+        { label: 'Tasks', value: taskList.length ? linkedTaskChipLane(taskList) : '—' },
+        { label: 'Primary Application', value: appList.length ? linkedApplicationChipLane(appList.slice(0, 1)) : '—' },
         { label: 'Modality', value: modalityList.length ? escapeHtml(modalityList[0]) : '—' },
         { label: 'License', value: formatLicense(m.license) || '—' }
       ];
@@ -745,21 +770,34 @@ async function initDetail(){
         .slice(0, 3)
         .map(({ other }) => other);
 
+      const blogEntries = (() => {
+        const entries = [];
+        const pushEntry = (item) => {
+          if (!item) return;
+          const url = typeof item === 'string' ? item : (item.url || item.href || '');
+          const href = safeHref(url);
+          if (!href) return;
+          entries.push({
+            href,
+            title: (typeof item === 'object' && item.title) ? String(item.title).trim() : '',
+            description: (typeof item === 'object' && item.description) ? String(item.description).trim() : '',
+            image: (typeof item === 'object' && item.image) ? String(item.image).trim() : ''
+          });
+        };
+        (Array.isArray(m.blog_posts) ? m.blog_posts : []).forEach(pushEntry);
+        pushEntry(m.blog_url);
+        normalizeList(m.blog_urls).forEach(pushEntry);
+        const seen = new Set();
+        return entries.filter(entry => {
+          if (seen.has(entry.href)) return false;
+          seen.add(entry.href);
+          return true;
+        });
+      })();
+
       const relatedItemsHtml = `
         <div class="row g-3">
-          <div class="col-lg-6">
-            <div class="detail-subcard h-100">
-              <div class="detail-subhead">Related datasets</div>
-              ${relatedDatasets.length ? relatedDatasets.map(ds => `
-                <a class="related-link" href="${datasetHref(ds)}">
-                  <span class="related-link-type">Dataset</span>
-                  <span class="related-link-title">${escapeHtml(ds.name || ds.id || 'Untitled dataset')}</span>
-                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
-                </a>
-              `).join('') : '<p class="text-muted small mb-0">No closely related datasets were found from the current catalog metadata.</p>'}
-            </div>
-          </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <div class="detail-subcard h-100">
               <div class="detail-subhead">Related models</div>
               ${relatedModels.length ? relatedModels.map(other => `
@@ -768,7 +806,38 @@ async function initDetail(){
                   <span class="related-link-title">${escapeHtml(other.title || other.id || 'Untitled model')}</span>
                   <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.tasks || other.task)[0], uniquePrettyTerms(other.applications || other.application)[0]].filter(Boolean).join(' • ') || 'Similar task or application area', 90))}</span>
                 </a>
-              `).join('') : '<p class="text-muted small mb-0">No related models were identified from shared task, modality, or application metadata.</p>'}
+              `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="detail-subcard h-100">
+              <div class="detail-subhead">Related datasets</div>
+              ${relatedDatasets.length ? relatedDatasets.map(ds => `
+                <a class="related-link" href="${datasetHref(ds)}">
+                  <span class="related-link-type">Dataset</span>
+                  <span class="related-link-title">${escapeHtml(ds.name || ds.id || 'Untitled dataset')}</span>
+                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
+                </a>
+              `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="detail-subcard h-100">
+              <div class="detail-subhead">Related posts</div>
+              ${blogEntries.length ? blogEntries.map((entry, idx) => {
+                let host = '';
+                try { host = new URL(entry.href).hostname.replace(/^www\./, ''); } catch {}
+                const title = entry.title || (idx === 0 ? 'Project blog post' : `Additional blog post ${idx + 1}`);
+                const meta = entry.description || truncateText(host || entry.href, 90);
+                const previewSrc = safeHref(entry.image || '') || imgBase + '.png';
+                return `
+                <a class="related-link" href="${entry.href}" target="_blank" rel="noopener">
+                  ${previewSrc ? `<img class="related-link-preview" src="${previewSrc}" alt="${escapeHtml(title)} preview" onerror="this.onerror=null;this.style.display='none';">` : ''}
+                  <span class="related-link-title">${escapeHtml(title)}</span>
+                  <span class="related-link-meta">${escapeHtml(meta)}</span>
+                </a>
+              `;
+              }).join('') : '<p class="text-muted small mb-0">No blog posts are linked for this model yet.</p>'}
             </div>
           </div>
         </div>
@@ -815,6 +884,9 @@ async function initDetail(){
           .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
           .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
           .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+          .chip-link{ display:inline-flex; align-items:center; color:var(--oc-text); text-decoration:none !important; transition:background .15s ease, border-color .15s ease, color .15s ease; }
+          .chip-link:hover, .chip-link:focus, .chip-link:active, .chip-link:visited{ text-decoration:none !important; }
+          .chip-link:hover, .chip-link:focus{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
           @media (max-width: 991.98px){
             .meta-row{ grid-template-columns:1fr; gap:.35rem; }
             .ds-body{ padding:20px 18px; }
@@ -889,7 +961,7 @@ async function initDetail(){
             ${metaRow('Parameters', escapeHtml(safeText(m.parameters || m.num_parameters || '')))}
             ${metaRow('Modalities', chipLane(modalityList))}
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
-            ${metaRow('Associated paper', modelPaperTitle !== '—' ? escapeHtml(modelPaperTitle) : '—')}
+            ${metaRow('Associated paper', modelPaperTitle !== '—' ? ((doiUrl || safeHref(paperUrl || '')) ? `<a href="${doiUrl || safeHref(paperUrl || '')}" target="_blank" rel="noopener">${escapeHtml(modelPaperTitle)}</a>` : escapeHtml(modelPaperTitle)) : '—')}
             ${metaRow('Code URL', codeUrl ? `<a href="${safeHref(codeUrl)}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}
             ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license) || '—')}
@@ -1210,7 +1282,7 @@ async function initDetail(){
                   <span class="related-link-meta">${escapeHtml(meta)}</span>
                 </a>
               `;
-            }).join('') : '<p class="text-muted small mb-0">No blog posts or explainers are linked for this dataset yet.</p>'}
+            }).join('') : '<p class="text-muted small mb-0">No blog posts are linked for this dataset yet.</p>'}
           </div>
         </div>
       </div>
@@ -1256,8 +1328,9 @@ async function initDetail(){
         .related-link-preview{ width:100%; aspect-ratio:16/9; object-fit:contain; border-radius:12px; border:1px solid var(--oc-border); background:#f8fbff; margin:.1rem 0 .45rem; }
         .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
-        .chip-link{ text-decoration:none; transition:background .15s ease, border-color .15s ease, color .15s ease; }
-        .chip-link:hover{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
+        .chip-link{ display:inline-flex; align-items:center; color:var(--oc-text); text-decoration:none !important; transition:background .15s ease, border-color .15s ease, color .15s ease; }
+        .chip-link:hover, .chip-link:focus, .chip-link:active, .chip-link:visited{ text-decoration:none !important; }
+        .chip-link:hover, .chip-link:focus{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
         .ds-note-inline{ margin:0 .9rem .9rem; padding:.75rem .9rem; border-radius:12px; background:#fff8f0; border:1px solid #f2e1c8; color:#5e4a1a; font-size:.92rem; }
         .ds-note-label{ font-weight:800; margin-right:.25rem; }
         @media (max-width: 991.98px){
@@ -1320,7 +1393,7 @@ async function initDetail(){
         <div class="detail-kicker">Access & Usage</div>
         <h2 class="detail-heading">How to use this dataset</h2>
         <dl class="meta mb-0">
-          ${metaRow('Associated paper', datasetPaperTitle !== '—' ? escapeHtml(datasetPaperTitle) : '—')}
+          ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
           ${metaRow('Download', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}

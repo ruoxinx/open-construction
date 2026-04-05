@@ -317,6 +317,7 @@
       text-decoration:none;
     }
     .featured-media{
+      position:relative;
       aspect-ratio:16 / 9;
       background:#f3f6fa;
       overflow:hidden;
@@ -326,6 +327,32 @@
       height:100%;
       object-fit:cover;
       display:block;
+    }
+    .featured-media .submitted-by{
+      position:absolute;
+      right:8px;
+      bottom:8px;
+      background:rgba(255,255,255,.96);
+      border:1px solid #e0e6ef;
+      border-radius:10px;
+      padding:2px 8px;
+      font-size:.75rem;
+      line-height:1.25;
+      color:#1e2a36;
+      font-weight:500;
+      box-shadow:0 2px 6px rgba(0,0,0,.06);
+      max-width:90%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .featured-media .submitted-by.is-clickable{
+      cursor:pointer;
+    }
+    .featured-media .submitted-by.is-clickable:hover{
+      color:#0f2e4b;
+      border-color:#cfd8e6;
+      box-shadow:0 4px 10px rgba(0,0,0,.08);
     }
     .featured-body{
       padding:1rem 1.05rem 1.05rem;
@@ -1478,7 +1505,7 @@
         label: 'Model',
         title: m.title || m.id || 'Untitled model',
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
-        meta: [m.year, Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' • '),
+        meta: [m.year, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' • '),
         text: [
           m.title, m.id, m.abstract, m.paper, m.paper_title, m.paper_url, m.doi, Array.isArray(m.authors) ? m.authors.join(' ') : m.authors,
           ...(Array.isArray(m.tasks) ? m.tasks : normalizeText(m.task) ? [m.task] : []),
@@ -1608,20 +1635,24 @@
         image: ds.image_url || 'assets/img/placeholder/placeholder.png',
         ts: parseDate(ds.added_date || ds.added),
         cta: 'View dataset',
-        external: false
+        external: false,
+        contributor: ds.contributor || '',
+        contributor_url: ds.contributor_url || ''
       }));
 
       const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
         type: 'Model',
         title: m.title || 'Untitled model',
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
-        meta: [Array.isArray(m.tasks) ? m.tasks[0] : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
+        meta: [Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
         year: m.year,
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
         ts: parseDate(m.added_date || m.added),
         cta: 'View model',
-        external: false
+        external: false,
+        contributor: m.contributor || '',
+        contributor_url: m.contributor_url || ''
       }));
 
       const usecases = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
@@ -1690,6 +1721,11 @@
             <div class="featured-media">
               <img src="${esc(item.image)}" alt="${esc(item.title)}"
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+              ${item.contributor ? `
+                <div class="submitted-by${item.contributor_url ? ' is-clickable' : ''}"${item.contributor_url ? ` onclick="event.preventDefault(); event.stopPropagation(); window.open('${esc(item.contributor_url)}', '_blank', 'noopener')"` : ''}>
+                  Proposed by <strong>${esc(String(item.contributor).startsWith('@') ? item.contributor : '@' + item.contributor)}</strong>
+                </div>
+              ` : ''}
             </div>
             <div class="featured-body">
               <div class="featured-topline">
