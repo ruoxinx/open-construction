@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: MASSE: Automating Structural Engineering Workflows with Large Language Model Agents]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:masse:2026-04-05</guid>
+    <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[We introduce MASSE, the first Multi-Agent System for Structural Engineering, effectively integrating large language model (LLM)-based agents with real-world engineering workflows. Structural engineering is a fundamental yet traditionally stagnant domain, with core workflows remaining largely unchanged for decades despite its substantial economic impact and global market size. Recent advancements in LLMs have significantly enhanced their ability to perform complex reasoning, long-horizon planning, and precise tool utilization -- capabilities well aligned with structural engineering tasks such as interpreting design codes, executing load calculations, and verifying structural capacities. We present a proof-of-concept showing that most real-world structural engineering workflows can be fully automated through a training-free LLM-based multi-agent system. MASSE enables immediate deployment in professional environments, and our comprehensive validation on real-world case studies demonstrates that it can reduce expert workload from approximately two hours to mere minutes, while enhancing both reliability and accuracy in practical engineering scenarios.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=aec-bench</link>
     <guid isPermaLink="false">datasets:aec-bench:2026-04-04</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:layout_behavior_graph_dataset:2026-03-24</guid>
     <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Function-aware graph-based layout retrieval for academic libraries]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:GED-building-layout:2026-03-24</guid>
-    <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[In contemporary architectural practices, case studies are used for learning from precedents and improving design efficiency and quality. However, the complexities of public building layouts pose considerable challenges, such as difficulty in interpreting designs and quantifying associated constraints. Existing automated retrieval methods often focus on simpler residential layouts and overlook the complexity of the constraints associated with public buildings. This paper proposes a graph-based layout retrieval approach that leverages similarities between the function and topology of building layouts and user requirements. The proposed approach is applied to a self-compiled library dataset and validated through professional architect evaluations. Results show that the proposed method aligns with evaluations of experienced architects, while providing more consistent recommendations than inexperienced architects in terms of design quality and behavioral suitability. This study advances machine understanding of complex layouts, enhancing automation and rationality in early-phase design and improving the integration of design information with construction materials.]]></description>
   </item>
   </channel>
 </rss>
