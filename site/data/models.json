@@ -49,7 +49,7 @@
     "year": 2021,
     "modalities": ["Ground RGB (real and synthetic)"],
     "tasks": ["Object detection"],
-	"applications": ["Compliance checking"],
+	"applications": ["Site understanding"],
     "license": "MIT",
     "paper_url": "https://doi.org/10.1108/SASBE-04-2021-0066",
     "code_url": "https://github.com/ruoxinx/site-dust-detect",
@@ -864,7 +864,7 @@
     "year": 2025,
     "modalities": ["Ground RGB"],
     "tasks": ["BIM reconstruction", "Semantic Segmentation", "Structure from motion"],
-	"applications": ["LOD3 Building Model Generation"],
+	"applications": ["Building Model Generation"],
     "license": "GNU 3.0",
     "paper_url": "https://doi.org/10.1016/j.autcon.2022.104430",
     "code_url": "https://github.com/eesd-epfl/LOD3_buildings",
@@ -1307,13 +1307,10 @@
         "BIM/IFC"
     ],
     "tasks": [
-        "simulation model generation"
+        "Building energy modeling"
     ],
     "applications": [
-        "Building Performance Simulation",
-        "energy modelling",
-        "HVAC model generation",
-        "Life Cycle Assessment"
+        "Building Performance Simulation"
     ],
     "license": "LGPL-3.0",
     "paper_url": "https://doi.org/10.1016/j.autcon.2025.106427",

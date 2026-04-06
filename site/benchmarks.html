@@ -462,6 +462,10 @@
     return [...normArray(m.applications), ...normArray(m.application), ...normArray(m.use_cases)]
       .map(normStr).filter(Boolean);
   }
+  function getModelCardImage(m){
+    return normStr(m.thumbnail || m.image_url || '')
+      || (m.id ? `assets/img/models/${encodeURIComponent(m.id)}.png` : '');
+  }
 
   async function loadJsonSafe(url){
     try{
@@ -517,6 +521,36 @@
     return {
       canon: rawCanon,
       label: niceLabel(rawText),
+      taskId: '',
+      entry: null
+    };
+  }
+  function formatApplicationLabel(raw){
+    const key = canonKey(raw);
+    if(!key) return '';
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui)$/i;
+    let isFirstWord = true;
+    return key.split(' ').map(word => {
+      const rendered = word.split('/').map(segment =>
+        segment.split('-').map(part => {
+          if(!part) return part;
+          if (acronymPattern.test(part)) return part.toUpperCase();
+          if (isFirstWord) {
+            isFirstWord = false;
+            return `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
+          }
+          return part;
+        }).join('-')
+      ).join('/');
+      if (rendered) isFirstWord = false;
+      return rendered;
+    }).join(' ');
+  }
+  function normalizeApplicationTerm(raw){
+    const rawText = normStr(raw);
+    return {
+      canon: canonKey(rawText),
+      label: formatApplicationLabel(rawText),
       taskId: '',
       entry: null
     };
@@ -757,16 +791,17 @@
 	  imageGetter: (obj, kind) =>
 		kind === 'dataset'
 		  ? (obj.image_url || obj.thumbnail || '')
-		  : (obj.thumbnail || obj.image_url || '')
+		  : getModelCardImage(obj)
 	})
 
     // Build PNG-first index for APPLICATIONS
     const apps = buildMergedIndex({
       datasets, models,
       extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj),
+      normalizer: normalizeApplicationTerm,
       imageGetter: (obj, kind) => kind === 'dataset'
         ? (obj.image_url || obj.thumbnail || '')
-        : (obj.thumbnail || obj.image_url || '')
+        : getModelCardImage(obj)
     });
 
     document.getElementById('statTasks').textContent = String(tasks.length || 0);

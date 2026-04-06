@@ -108,6 +108,37 @@ function prettyLabel(raw){
     return tok.charAt(0).toUpperCase()+tok.slice(1);
   }).join(' ');
 }
+function formatDatasetTitle(raw){
+  const text = String(raw || '').trim();
+  if (!text) return '';
+  const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+
+  return text.split(/\s+/).map((token, index, arr) => {
+    const parts = token.match(/^([^A-Za-z0-9]*)([A-Za-z0-9][A-Za-z0-9-]*)([^A-Za-z0-9]*)$/);
+    if (!parts) return token;
+    const [, prefix, core, suffix] = parts;
+
+    if ((/[A-Z].*[a-z]|[a-z].*[A-Z]/).test(core) && !/^[a-z]+$/.test(core)) {
+      return `${prefix}${core}${suffix}`;
+    }
+    if (/[A-Z]{2,}/.test(core) && !/[a-z]/.test(core)) {
+      return `${prefix}${core}${suffix}`;
+    }
+
+    const rendered = core.split('-').map(part => {
+      if (!part) return part;
+      if (acronymPattern.test(part)) return part.toUpperCase();
+      const lower = part.toLowerCase();
+      const previousToken = index > 0 ? arr[index - 1] : '';
+      const startsSegment = index === 0 || /[:.!?]["')\]]*$/.test(previousToken);
+      if (!core.includes('-') && !startsSegment && index < arr.length - 1 && minorWords.has(lower)) return lower;
+      return `${lower.charAt(0).toUpperCase()}${lower.slice(1)}`;
+    }).join('-');
+
+    return `${prefix}${rendered}${suffix}`;
+  }).join(' ');
+}
 
 // --- singularize last token only (lightweight) ---
 function singularizeToken(t){
@@ -598,6 +629,7 @@ function cardHTML(ds){
   const slug = encodeURIComponent(id);
   const img  = ds.image_url || 'assets/img/placeholder/placeholder.png';
   const detailHref = `datasets/detail.html?id=${slug}`;
+  const displayTitle = formatDatasetTitle(ds.name);
 
   // Build the overlay tag only when contributor info exists
   const submittedByHTML = ds.contributor
@@ -609,15 +641,15 @@ function cardHTML(ds){
     : '';
 
   return `<div class="col-md-6 col-xl-4">
-    <div class="card dataset-card clickable h-100 shadow-sm" tabindex="0" role="link" aria-label="View details for ${ds.name}" data-detail-href="${detailHref}">
+    <div class="card dataset-card clickable h-100 shadow-sm" tabindex="0" role="link" aria-label="View details for ${displayTitle}" data-detail-href="${detailHref}">
       <div class="thumb">
-        <img src="${img}" alt="${ds.name} preview" loading="lazy" decoding="async"
+        <img src="${img}" alt="${displayTitle} preview" loading="lazy" decoding="async"
              onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
         ${submittedByHTML}
       </div>
       <div class="card-body d-flex flex-column">
         <div class="d-flex justify-content-between align-items-start">
-          <h6 class="card-title me-2"><a class="text-decoration-none text-dark" href="${detailHref}">${ds.name}</a></h6>
+          <h6 class="card-title me-2"><a class="text-decoration-none text-dark" href="${detailHref}">${displayTitle}</a></h6>
           <span class="badge text-bg-light">${ds.year ?? '—'}</span>
         </div>
         <div class="small text-muted mb-1">

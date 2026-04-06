@@ -453,6 +453,37 @@ function esc(s){
 
 /* ===== Normalizers & splitters ===== */
 function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+function formatModelTitle(raw){
+  const text = String(raw || '').trim();
+  if (!text) return '';
+  const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+
+  return text.split(/\s+/).map((token, index, arr) => {
+    const parts = token.match(/^([^A-Za-z0-9]*)([A-Za-z0-9][A-Za-z0-9-]*)([^A-Za-z0-9]*)$/);
+    if (!parts) return token;
+    const [, prefix, core, suffix] = parts;
+
+    if ((/[A-Z].*[a-z]|[a-z].*[A-Z]/).test(core) && !/^[a-z]+$/.test(core)) {
+      return `${prefix}${core}${suffix}`;
+    }
+    if (/[A-Z]{2,}/.test(core) && !/[a-z]/.test(core)) {
+      return `${prefix}${core}${suffix}`;
+    }
+
+    const rendered = core.split('-').map(part => {
+      if (!part) return part;
+      if (acronymPattern.test(part)) return part.toUpperCase();
+      const lower = part.toLowerCase();
+      const previousToken = index > 0 ? arr[index - 1] : '';
+      const startsSegment = index === 0 || /[:.!?]["')\]]*$/.test(previousToken);
+      if (!core.includes('-') && !startsSegment && index < arr.length - 1 && minorWords.has(lower)) return lower;
+      return `${lower.charAt(0).toUpperCase()}${lower.slice(1)}`;
+    }).join('-');
+
+    return `${prefix}${rendered}${suffix}`;
+  }).join(' ');
+}
 function prettyTermLabel(raw){
   const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
   if (vocabLabel) return vocabLabel;
@@ -885,6 +916,7 @@ function render(items){
     const MAX = 320;
     const isLong = abstract.length > MAX;
     const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
+    const displayTitle = formatModelTitle(m.title || 'Untitled');
 
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
     const detailHref = `models/details.html?id=${encodeURIComponent(m.id)}`;
@@ -896,12 +928,12 @@ function render(items){
     el.className = 'paper-card clickable';
     el.tabIndex = 0;
     el.setAttribute('role', 'link');
-    el.setAttribute('aria-label', `View details for ${m.title || 'this model'}`);
+    el.setAttribute('aria-label', `View details for ${displayTitle || 'this model'}`);
     el.dataset.detailHref = detailHref;
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
         <div class="left position-relative">
-          <img src="${thumb}" alt="${m.title||'thumbnail'}"
+          <img src="${thumb}" alt="${displayTitle || 'thumbnail'}"
                onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
           ${m.contributor || m.contributor_url ? `
             <div class="submitted-by">
@@ -912,7 +944,7 @@ function render(items){
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${m.title || 'Untitled'}</a></h3>
+          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${displayTitle || 'Untitled'}</a></h3>
 			${(() => {
 			  const licHTML = licenseLinkHTML(m.license);
 			  return `

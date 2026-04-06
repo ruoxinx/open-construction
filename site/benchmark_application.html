@@ -170,7 +170,7 @@
       <div>
         <div class="oc-kicker">Benchmark</div>
         <h1 id="pageTitle">Application</h1>
-        <p class="lead">Models associated with this application label.</p>
+        <p class="lead" id="pageSubtitle">Models associated with this application label.</p>
       </div>
       <div class="pill-row">
         <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html" style="border-radius:999px;">← Back</a>
@@ -272,6 +272,88 @@
   const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   const normStr = (v) => (v == null ? '' : String(v).trim());
   function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+  function formatApplicationLabel(raw){
+    const key = canonKey(raw);
+    if(!key) return '';
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui)$/i;
+    return key.split(' ').map(word =>
+      word.split('/').map(segment =>
+        segment.split('-').map(part => {
+          if(!part) return part;
+          return acronymPattern.test(part)
+            ? part.toUpperCase()
+            : `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
+        }).join('-')
+      ).join('/')
+    ).join(' ');
+  }
+  const applicationDefinitions = {
+    '3d building mesh generation': 'Generates 3D building mesh representations from imagery, geometry, or other spatial inputs.',
+    '3d reconstruction': 'Recovers 3D geometry or structure from images, video, scans, or other observations.',
+    'architectural design': 'Supports architectural design exploration, generation, evaluation, or refinement across building projects.',
+    'as-built bim generation': 'Creates as-built BIM representations from field observations, scans, imagery, or progress data.',
+    'asset inspection': 'Assesses asset condition, defects, and maintenance needs using visual, sensor, or model-based evidence.',
+    'asset management': 'Supports lifecycle tracking, maintenance planning, and operational decision-making for built assets.',
+    'automated structural design': 'Automates parts of structural system design, sizing, layout, or engineering decision support.',
+    'bim authoring assistance': 'Assists with BIM creation, editing, checking, or authoring workflows inside modeling tools.',
+    'blockchain-enabled bim management': 'Supports BIM data exchange, traceability, governance, or collaboration using blockchain-enabled workflows.',
+    'bridge inspection and maintenance': 'Supports bridge condition assessment, defect review, maintenance prioritization, and inspection workflows.',
+    'building energy analysis': 'Analyzes building energy use, thermal behavior, loads, or efficiency improvement opportunities.',
+    'building energy simulation': 'Creates, runs, or supports simulation workflows for estimating building energy performance.',
+    'building model generation': 'Generates digital building models from structured inputs such as drawings, text, scans, or examples.',
+    'building performance simulation': 'Simulates or predicts operational performance such as energy, comfort, or environmental behavior in buildings.',
+    'change detection': 'Identifies meaningful changes between project states, observations, BIM versions, or site conditions over time.',
+    'city model generation': 'Generates urban-scale or city-scale digital models from geospatial, visual, or semantic inputs.',
+    'compliance checking': 'Checks designs, models, or workflows against codes, regulations, rules, or project requirements.',
+    'computer-aided design': 'Supports CAD drafting, editing, generation, or geometry creation for design workflows.',
+    'conceptual design': 'Supports early-stage concept generation, option exploration, and high-level design reasoning.',
+    'cost/controls': 'Improves estimating, forecasting, budget oversight, and commercial risk management across projects.',
+    'crack kinematics': 'Analyzes crack motion, geometry, or displacement behavior to support structural assessment and monitoring.',
+    'cross-platform bim data exchange': 'Enables transfer, alignment, or interoperability of BIM data across software platforms and systems.',
+    'design assistance': 'Assists with design generation, review, permitting, coordination, or constructability analysis.',
+    'design brief automation': 'Automates creation, interpretation, or structured extraction of design briefs and project requirements.',
+    'design change auditing': 'Tracks, explains, and reviews design changes across model versions, documents, or collaboration workflows.',
+    'digital twin enrichment': 'Adds semantics, status, analytics, or contextual information to digital twin representations.',
+    'digital twin generation': 'Creates digital twin representations of buildings, assets, or sites from multimodal project data.',
+    'earthwork/survey': 'Supports terrain measurement, quantity takeoff, grading analysis, and site surveying workflows.',
+    'energy modelling': 'Builds or supports energy models for analyzing operational performance, loads, and efficiency strategies.',
+    'ergonomic assessment': 'Evaluates worker posture, motion, and task ergonomics to reduce strain and safety risk.',
+    'floorplan generation': 'Generates floor plan layouts, room arrangements, or building spatial configurations.',
+    'historic digital survey': 'Supports documentation, reconstruction, and analysis of heritage or historic built environments.',
+    'hvac model generation': 'Builds HVAC system models or related simulation-ready representations from design information.',
+    'knowledge management': 'Organizes, links, and surfaces project knowledge for reuse, search, and operational decision support.',
+    'knowledge retrieval': 'Finds and summarizes relevant project knowledge, documents, standards, or prior decisions.',
+    'life cycle assessment': 'Estimates lifecycle impacts, carbon, or sustainability outcomes across materials, systems, or projects.',
+    'lod3 building model generation': 'Generates detailed LOD3-scale building models with facade and geometry detail suitable for downstream use.',
+    'logistics': 'Optimizes materials, equipment, site access, and operational flows across the jobsite.',
+    'pipeline leakage detection': 'Detects leakage conditions or related anomalies in pipeline and utility infrastructure systems.',
+    'plan recognition': 'Identifies symbols, spaces, components, or structure in plans, drawings, and floor plan documents.',
+    'post-disaster assessment': 'Supports rapid assessment of damage, conditions, and recovery needs after disaster events.',
+    'post-disaster damage assessment': 'Evaluates and classifies disaster-related building or infrastructure damage from observations.',
+    'productivity monitoring': 'Tracks labor, equipment, or workflow productivity to support site management and performance improvement.',
+    'progress monitoring': 'Monitors project progress, installed work, and schedule status using field and project data.',
+    'progress tracking': 'Tracks project status, installed work, and field progress against plans, schedules, or digital twins.',
+    'quality control': 'Detects defects, deviations, or workmanship issues to support inspection and closeout quality workflows.',
+    'quality/closeout': 'Supports punch lists, defect tracking, verification, and turnover workflows for completed work.',
+    'safety monitoring': 'Detects hazards, unsafe conditions, or compliance issues to support safer construction and operations.',
+    'scan-to-bim': 'Converts scans or point cloud observations into BIM geometry, structure, or semantic building models.',
+    'scheduling': 'Supports planning, sequencing, resource coordination, and schedule optimization for project delivery.',
+    'shear wall layout generation': 'Generates or optimizes shear wall placement and layout for structural design workflows.',
+    'site mapping and navigation': 'Supports mapping, localization, navigation, and spatial understanding for construction sites.',
+    'site understanding': 'Builds situational awareness of site conditions, activities, assets, and spatial context from observations.',
+    'structural condition monitoring': 'Tracks structural health, condition, and behavior over time using sensing or inspection data.',
+    'structural defect detection': 'Detects structural defects such as cracks, corrosion, damage, or deterioration in assets.',
+    'structural design workflows': 'Supports structural engineering workflows spanning concept generation, analysis, and documentation.',
+    'subsurface infrastructure monitoring': 'Supports monitoring, detection, and assessment of buried or underground infrastructure systems.',
+    'video-based ui understanding': 'Interprets software interface behavior from screen recordings or demonstrations to support automation.',
+    'work package generation': 'Creates structured work packages, task bundles, or execution-ready project instructions.',
+    'workforce training': 'Improves workforce readiness through simulation, coaching, instruction, or performance feedback.'
+  };
+  function getApplicationDefinition(key, label){
+    return applicationDefinitions[key]
+      || applicationDefinitions[canonKey(label)]
+      || '';
+  }
 
   function getDatasetApps(ds){
     return [...normArray(ds.applications), ...normArray(ds.application), ...normArray(ds.use_cases)]
@@ -306,6 +388,19 @@
     return normStr(authors);
   }
 
+  function githubIcon(){
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+      </svg>`;
+  }
+
   function modelRow(m){
     const title = normStr(m.title || m.name || m.id || 'Untitled model');
     const year = normStr(m.year || '');
@@ -321,7 +416,9 @@
       ? `<a href="${esc(href)}" ${href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
       : esc(title);
 
-    const code  = codeUrl ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener">Code</a>` : '<span class="text-muted">—</span>';
+    const code  = codeUrl
+      ? `<a href="${esc(codeUrl)}" target="_blank" rel="noopener" title="Open GitHub repository" aria-label="Open GitHub repository">${githubIcon()}</a>`
+      : '<span class="text-muted">—</span>';
 
     return `
       <tr data-row="model">
@@ -346,11 +443,16 @@
   async function init(){
     const params = new URLSearchParams(location.search);
     const key = canonKey(params.get('key') || '');
-    const label = normStr(params.get('label') || '') || key || 'Application';
+    const requestedLabel = normStr(params.get('label') || '') || key || 'Application';
+    const label = formatApplicationLabel(requestedLabel) || 'Application';
 
     document.title = `OpenConstruction · Application Benchmark · ${label}`;
     const titleEl = document.getElementById('pageTitle');
     if(titleEl) titleEl.textContent = label;
+    const subtitleEl = document.getElementById('pageSubtitle');
+    if(subtitleEl){
+      subtitleEl.textContent = getApplicationDefinition(key, label) || 'Application definition not available yet.';
+    }
 
     const datasets = await loadJsonSafe('data/datasets.json');
     const models   = await loadJsonSafe('data/models.json');

@@ -1456,6 +1456,38 @@
       return String(text || '').toLowerCase();
     }
 
+    function formatCatalogTitle(raw){
+      const text = String(raw || '').trim();
+      if (!text) return '';
+      const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
+      const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+
+      return text.split(/\s+/).map((token, index, arr) => {
+        const parts = token.match(/^([^A-Za-z0-9]*)([A-Za-z0-9][A-Za-z0-9-]*)([^A-Za-z0-9]*)$/);
+        if (!parts) return token;
+        const [, prefix, core, suffix] = parts;
+
+        if ((/[A-Z].*[a-z]|[a-z].*[A-Z]/).test(core) && !/^[a-z]+$/.test(core)) {
+          return `${prefix}${core}${suffix}`;
+        }
+        if (/[A-Z]{2,}/.test(core) && !/[a-z]/.test(core)) {
+          return `${prefix}${core}${suffix}`;
+        }
+
+        const rendered = core.split('-').map(part => {
+          if (!part) return part;
+          if (acronymPattern.test(part)) return part.toUpperCase();
+          const lower = part.toLowerCase();
+          const previousToken = index > 0 ? arr[index - 1] : '';
+          const startsSegment = index === 0 || /[:.!?]["')\]]*$/.test(previousToken);
+          if (!core.includes('-') && !startsSegment && index < arr.length - 1 && minorWords.has(lower)) return lower;
+          return `${lower.charAt(0).toUpperCase()}${lower.slice(1)}`;
+        }).join('-');
+
+        return `${prefix}${rendered}${suffix}`;
+      }).join(' ');
+    }
+
     function datasetCountLabel(modalityVal){
       const modalities = Array.isArray(modalityVal)
         ? modalityVal.map(value => normalizeText(value).trim())
@@ -1491,7 +1523,7 @@
       const datasets = Object.values(datasetsJson || {}).map(ds => ({
         type: 'dataset',
         label: 'Dataset',
-        title: ds.name || ds.id || 'Untitled dataset',
+        title: formatCatalogTitle(ds.name || ds.id || 'Untitled dataset'),
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
         meta: [ds.year, ds.data_modality, ds.authors ? String(ds.authors).split(',')[0].trim() : null].filter(Boolean).join(' • '),
         text: [
@@ -1503,7 +1535,7 @@
       const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
         type: 'model',
         label: 'Model',
-        title: m.title || m.id || 'Untitled model',
+        title: formatCatalogTitle(m.title || m.id || 'Untitled model'),
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         meta: [m.year, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' • '),
         text: [
@@ -1516,7 +1548,7 @@
       const workflows = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
         type: 'workflow',
         label: 'Workflow',
-        title: u.title || 'Untitled workflow',
+        title: formatCatalogTitle(u.title || 'Untitled workflow'),
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
         meta: [u.year, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
         text: [
@@ -1530,7 +1562,7 @@
       const oers = ((oersJson && oersJson.resources) || []).map(r => ({
         type: 'oer',
         label: 'OER',
-        title: r.title || 'Untitled resource',
+        title: formatCatalogTitle(r.title || 'Untitled resource'),
         href: r.source || 'oer.html',
         external: true,
         meta: [r.year, r.provider || r.publisher].filter(Boolean).join(' • '),
@@ -1628,7 +1660,7 @@
     function pickItems(datasetsJson, modelsJson, usecasesJson, oersJson){
       const datasets = Object.values(datasetsJson || {}).map(ds => ({
         type: 'Dataset',
-        title: ds.name || 'Untitled dataset',
+        title: formatCatalogTitle(ds.name || 'Untitled dataset'),
         meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
         year: ds.year,
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
@@ -1642,7 +1674,7 @@
 
       const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
         type: 'Model',
-        title: m.title || 'Untitled model',
+        title: formatCatalogTitle(m.title || 'Untitled model'),
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
         meta: [Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
         year: m.year,
@@ -1657,7 +1689,7 @@
 
       const usecases = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
         type: 'Workflow',
-        title: u.title || 'Untitled workflow',
+        title: formatCatalogTitle(u.title || 'Untitled workflow'),
         description: firstLine(u.summary) || 'Applied workflow connecting AI methods to field deployment.',
         meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
         year: u.year,
@@ -1670,7 +1702,7 @@
 
       const oers = ((oersJson && oersJson.resources) || []).map(r => ({
         type: 'OER',
-        title: r.title || 'Untitled resource',
+        title: formatCatalogTitle(r.title || 'Untitled resource'),
         description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
         meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
         year: r.year,
