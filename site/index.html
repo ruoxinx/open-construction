@@ -124,7 +124,8 @@
 
     /* Hero */
     .hero{
-      background:#fff; color:var(--oc-brand-ink);
+      background:linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      color:var(--oc-brand-ink);
       border-bottom:1px solid var(--oc-border);
     }
     .hero .content{ padding:64px 0 48px; text-align:center; }
@@ -308,6 +309,11 @@
       box-shadow:var(--oc-shadow);
       overflow:hidden;
       height:100%;
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .featured-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(15,46,75,.1);
     }
     .featured-card a{
       display:flex;
@@ -442,8 +448,83 @@
       font-weight:700;
       font-size:.9rem;
     }
+    .logo-marquee{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+      display:grid;
+      gap:4px;
+      padding:8px 0;
+    }
+    .row-marquee{ position:relative; overflow:hidden; }
+    .logo-track{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      padding:6px 12px;
+      width:max-content;
+      will-change:transform;
+    }
+    .logo-marquee:hover .logo-track { animation-play-state: paused; }
+    .logo{
+      flex:0 0 auto;
+      display:grid;
+      place-items:center;
+      height:84px;
+      width:168px;
+      overflow:hidden;
+      position:relative;
+    }
+    .logo::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, #f6f8fb 0%, #eef3f8 50%, #f6f8fb 100%);
+      background-size:200% 100%;
+      animation:oc-skeleton 1.2s ease-in-out infinite;
+    }
+    .logo.loaded::before { opacity:0; transition:opacity .2s ease; }
+    .logo img{
+      max-height:60px;
+      max-width:150px;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      filter:grayscale(8%);
+      transition:transform .16s ease, opacity .2s ease;
+      display:block;
+      opacity:0;
+    }
+    .logo.loaded img{ opacity:1; }
+    .logo img:hover{ transform:scale(1.03); }
+    @keyframes oc-marquee-left {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes oc-marquee-right {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+    @keyframes oc-skeleton {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-track { animation:none; }
+    }
+    @media (min-width: 992px) {
+      .logo { height:92px; width:184px; }
+      .logo img { max-height:66px; max-width:160px; }
+    }
+    @media (max-width: 767.98px){
+      .logo{ width:132px; height:72px; }
+      .logo img{ max-width:118px; max-height:50px; }
+    }
     /* Sections & cards */
-    .oc-section{ margin-top:48px; }
+    .oc-section{ margin-top:56px; }
     .oc-card{
       background:var(--oc-card);
       border:1px solid var(--oc-border);
@@ -464,92 +545,212 @@
       border-radius:10px; padding:1rem; overflow:auto;
     }
 
+    /* About section – icon bullets */
+    .about-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .about-list li{
+      display:flex;
+      align-items:flex-start;
+      gap:.7rem;
+      margin:.55rem 0;
+      font-size:.95rem;
+      line-height:1.5;
+    }
+    .about-list .about-icon{
+      flex-shrink:0;
+      width:32px;
+      height:32px;
+      border-radius:8px;
+      background:var(--oc-muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:.1rem;
+    }
+    .about-list .about-icon svg{
+      width:18px;
+      height:18px;
+      color:var(--oc-brand-ink);
+    }
+
+    /* Policy & Feedback – two-column */
+    .pf-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+    }
+    .pf-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:16px;
+      padding:1.45rem;
+      box-shadow:var(--oc-shadow);
+    }
+    .pf-card h4{
+      font-size:1.1rem;
+      font-weight:700;
+      color:var(--oc-brand-ink);
+      margin-bottom:.5rem;
+    }
+    .pf-card p{
+      font-size:.95rem;
+      color:var(--oc-subtle);
+      margin:0;
+      line-height:1.6;
+    }
+    @media (max-width:575.98px){
+      .pf-grid{ grid-template-columns:1fr; }
+    }
+
+    /* ===== Milestones – stepper ===== */
+
+    .ms-stepper{
+      display:flex;
+      align-items:stretch;
+      gap:0;
+      position:relative;
+      counter-reset:ms;
+      padding-top:.6rem;
+    }
+
+    .ms-step{
+      flex:1 1 0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      padding:0 .5rem;
+      counter-increment:ms;
+    }
+
+    /* ---- connector line ---- */
+    .ms-step + .ms-step::before{
+      content:"";
+      position:absolute;
+      top:32px;
+      right:50%;
+      width:100%;
+      height:3px;
+      background:linear-gradient(90deg, rgba(15,46,75,.12), rgba(15,46,75,.08));
+      border-radius:2px;
+      z-index:0;
+    }
+    .ms-step.ms-upcoming + .ms-step.ms-upcoming::before,
+    .ms-step + .ms-step.ms-upcoming::before{
+      background:repeating-linear-gradient(90deg, #d9e3ee 0 6px, transparent 6px 12px);
+    }
+
+    /* ---- node circle ---- */
+    .ms-node{
+      position:relative;
+      z-index:1;
+      width:64px;
+      height:64px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:1.1rem;
+      color:#fff;
+      background:linear-gradient(135deg, var(--oc-brand-ink), var(--oc-brand-accent-2));
+      box-shadow:0 4px 14px rgba(15,46,75,.18);
+      margin-bottom:.75rem;
+      transition:transform .25s ease, box-shadow .25s ease;
+      flex-shrink:0;
+    }
+    .ms-node::after{ content:counter(ms); }
+    .ms-step:hover .ms-node{
+      transform:scale(1.08);
+      box-shadow:0 6px 22px rgba(15,46,75,.25);
+    }
+    .ms-node svg{ width:28px; height:28px; }
+    .ms-node.ms-has-icon::after{ content:none; }
+
+    /* upcoming node – brand accent */
+    .ms-upcoming .ms-node{
+      background:linear-gradient(135deg, var(--oc-brand-accent), #e08c1e);
+      animation:ms-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes ms-pulse{
+      0%,100%{ box-shadow:0 4px 14px rgba(242,162,56,.2); }
+      50%{ box-shadow:0 6px 28px rgba(242,162,56,.4); }
+    }
+
+    /* ---- card panel ---- */
+    .ms-card{
+      flex:1;
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:16px;
+      padding:1rem .9rem 1.1rem;
+      width:100%;
+      box-shadow:var(--oc-shadow);
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .ms-step:hover .ms-card{
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(15,46,75,.1);
+    }
+
+    /* ---- year pill ---- */
+    .ms-year{
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:#fff;
+      background:var(--oc-brand-ink);
+      display:inline-block;
+      padding:.2rem .6rem;
+      border-radius:999px;
+      margin-bottom:.4rem;
+    }
+    .ms-upcoming .ms-year{
+      background:var(--oc-brand-accent);
+    }
+
+    /* ---- title + desc ---- */
+    .ms-title{
+      font-weight:700;
+      font-size:.95rem;
+      color:var(--oc-brand-ink);
+      line-height:1.3;
+      margin-bottom:.25rem;
+    }
+    .ms-desc{
+      font-size:.82rem;
+      color:var(--oc-subtle);
+      line-height:1.5;
+      margin:0;
+    }
+    .ms-desc a{ color:var(--oc-link); }
+
+    /* ---- responsive ---- */
+    @media (max-width:767.98px){
+      .ms-stepper{ flex-wrap:wrap; justify-content:center; gap:1.1rem .6rem; }
+      .ms-step{ flex:0 0 calc(33.33% - .4rem); }
+      .ms-step + .ms-step::before{ display:none; }
+      .ms-node{ width:52px; height:52px; }
+      .ms-node svg{ width:24px; height:24px; }
+      .ms-card{ padding:.8rem .7rem; }
+      .ms-title{ font-size:.88rem; }
+      .ms-desc{ font-size:.76rem; }
+    }
+    @media (max-width:479px){
+      .ms-step{ flex:0 0 calc(50% - .4rem); }
+    }
+
     /* Footer */
     footer{
       border-top:1px solid var(--oc-border);
       background:linear-gradient(180deg, transparent, rgba(0,0,0,.02));
     }
     .icon{ width:1.15em; height:1.15em; display:inline-block; vertical-align:-.2em; }
-
-    .oc-tl-wrap{ position:relative; padding:.25rem 2.75rem; }
-    .oc-tl-wrap::before,
-    .oc-tl-wrap::after{
-      content:""; position:absolute; top:0; bottom:0; width:34px; pointer-events:none; z-index:2;
-    }
-    .oc-tl-wrap::before{
-      left:0; background:linear-gradient(90deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-left-radius:var(--oc-radius); border-bottom-left-radius:var(--oc-radius);
-    }
-    .oc-tl-wrap::after{
-      right:0; background:linear-gradient(270deg, var(--oc-card), rgba(255,255,255,0));
-      border-top-right-radius:var(--oc-radius); border-bottom-right-radius:var(--oc-radius);
-    }
-
-    .oc-timeline{
-      display:flex;
-      gap:1.25rem;
-      overflow-x:auto;
-      overflow-y:hidden;
-      scroll-snap-type:x mandatory;
-      scroll-behavior:smooth;
-      padding:.5rem 0 1rem;
-      scrollbar-width:thin;
-      flex-wrap:nowrap;
-      align-items:flex-start;
-    }
-
-    .oc-tl-item{
-      scroll-snap-align:center;
-      flex:0 0 auto;
-      width:280px;
-      max-width:85vw;
-      background:linear-gradient(180deg, #ffffff, #fbfdff);
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow);
-      padding:1rem .95rem;
-      position:relative;
-      margin:0;
-    }
-
-    .oc-tl-date{
-      display:inline-block;
-      font-weight:800; letter-spacing:.02em;
-      color:var(--oc-brand-ink);
-      background:#eef4fb; border:1px solid #dfe8f3;
-      padding:.25rem .55rem; border-radius:999px; margin-bottom:.55rem; font-size:.9rem;
-    }
-    .oc-tl-title{ font-weight:700; color:var(--oc-text); margin-bottom:.25rem; }
-    .oc-tl-content{ color:var(--oc-subtle); font-size:.95rem; }
-
-    .oc-tl-title-row{ display:flex; align-items:center; gap:.5rem; margin-bottom:.15rem; }
-    .oc-tl-icon{
-      flex:0 0 auto; width:22px; height:22px; border-radius:8px;
-      display:inline-flex; align-items:center; justify-content:center;
-      background:#eef4fb; border:1px solid #dfe8f3; color:var(--oc-brand-ink);
-      box-shadow:0 1px 2px rgba(15,46,75,.04);
-    }
-
-    .oc-tl-item::after{
-      content:""; position:absolute; left:50%; transform:translateX(-50%);
-      bottom:-18px; width:2px; height:14px; background:#dfe6ee; border-radius:2px;
-    }
-
-    .oc-tl-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; }
-    .oc-tl-btn{
-      display:flex; align-items:center; justify-content:center;
-      width:38px; height:38px; border-radius:999px;
-      background:#ffffff; border:1px solid var(--oc-border);
-      box-shadow:var(--oc-shadow); color:var(--oc-brand-ink);
-    }
-    .oc-tl-btn:hover{ filter:brightness(1.03); }
-    .oc-tl-btn[disabled]{ opacity:.45; cursor:not-allowed; }
-    .oc-tl-prev{ left:.5rem; }
-    .oc-tl-next{ right:.5rem; }
-
-    .oc-tl-dots{ display:flex; gap:.35rem; justify-content:center; margin-top:.6rem; }
-    .oc-tl-dot{ width:8px; height:8px; border-radius:999px; background:#d9e3ee; transition:.2s; }
-    .oc-tl-dot[aria-current="true"]{ background:var(--oc-brand-ink); }
 
     /* ==============================
        Hero Metrics (rings)
@@ -583,7 +784,7 @@
       box-shadow:0 12px 28px rgba(15,46,75,.12);
       transform:translateY(-1px);
     }
-    .metric svg{ width:98px; height:98px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
+    .metric svg{ width:120px; height:120px; filter:drop-shadow(0 4px 10px rgba(15,46,75,.08)); }
     .metric .ring-bg{ stroke:#e7edf3; stroke-width:4; }
     .metric .ring-val{
       stroke:var(--oc-brand-accent);
@@ -592,16 +793,15 @@
     }
     .ring-ready .ring-val{ transition:stroke-dashoffset .9s ease; }
     .metric .label{ display:flex; flex-direction:column; line-height:1.05; }
-    .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.42rem; }
-    .metric .name{ font-size:.82rem; color:var(--oc-subtle); letter-spacing:.1em; text-transform:uppercase; }
+    .metric .value{ font-weight:800; color:var(--oc-brand-ink); font-size:1.28rem; }
+    .metric .name{ font-size:.78rem; color:var(--oc-subtle); letter-spacing:.12em; text-transform:uppercase; }
 
-    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
     .metric[data-kind="datasets"] .ring-val{ stroke: var(--oc-brand-accent); }
+    .metric[data-kind="models"]  .ring-val{ stroke: var(--oc-brand-accent); }
     .metric[data-kind="usecases"] .ring-val{ stroke: var(--oc-brand-accent); }
-    .metric[data-kind="oers"]    .ring-val{ stroke: var(--oc-brand-accent); } /* NEW */
+    .metric[data-kind="oers"]    .ring-val{ stroke: var(--oc-brand-accent); }
 
     @media (prefers-reduced-motion: reduce){
-      .oc-timeline{ scroll-behavior:auto; }
       .ring-ready .ring-val{ transition:none; }
     }
 
@@ -628,13 +828,16 @@
       .hero-search-results{ left:0; right:0; }
       .metrics{ gap:.65rem; }
       .metric{ gap:.7rem; min-width:min(100%, 280px); padding:.35rem .2rem; }
-      .metric svg{ width:84px; height:84px; }
+      .metric svg{ width:94px; height:94px; }
       .metric .value{ font-size:1.14rem; }
-      .metric .name{ font-size:.74rem; }
-      .oc-tl-wrap{ padding:.25rem 2.2rem; }
-      .oc-tl-btn{ width:34px; height:34px; }
+      .metric .name{ font-size:.72rem; }
       .oc-card .oc-card-body{ padding:1.2rem; }
-      .oc-section{ margin-top:36px; }
+      .oc-section{ margin-top:40px; }
+      .logo{ width:132px; height:72px; }
+      .logo img{ max-width:118px; max-height:50px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-track { animation: none !important; }
     }
 
     html, body, .oc-container { transform: none !important; }
@@ -650,16 +853,6 @@
     .btn-subscribe-icon:focus-visible{ outline: 2px solid var(--oc-focus); outline-offset: 2px; border-radius: 999px; }
     .icon-bell{ fill: var(--oc-brand-accent); }
 
-    /* On-brand highlight for the teaser card */
-    .oc-tl-item[data-title="New Features & Updates"]{
-      background: linear-gradient(180deg, var(--oc-card), #fff8f0);
-      border-color: var(--oc-border);
-    }
-    .oc-tl-item[data-title="New Features & Updates"] .oc-tl-date{
-      background: color-mix(in srgb, var(--oc-brand-accent) 12%, white);
-      border-color: color-mix(in srgb, var(--oc-brand-accent) 28%, white);
-      color: var(--oc-brand-ink);
-    }
 	/* Dark buttons */
 	.btn-ink,
 	.btn-ink:visited,
@@ -726,7 +919,7 @@
               <li><a class="dropdown-item" href="schema.html">Schema</a></li>
               <li><a class="dropdown-item" href="tools.html">Tools</a></li>
               <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-              <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+              <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
             </ul>
           </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
@@ -775,36 +968,6 @@
       <span class="hero-title-line">Discover open digital assets</span>
       <span class="hero-title-line">for the AEC community</span>
     </h1>
-      <div class="hero-search" aria-labelledby="home-search-heading">
-        <div id="home-search-heading" class="visually-hidden">Search the OpenConstruction catalog</div>
-        <form class="hero-search-form" id="homeSearchForm">
-          <div class="hero-search-field">
-            <span class="hero-search-icon" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </span>
-            <label class="visually-hidden" for="homeSearchScope">Filter search by resource type</label>
-            <select id="homeSearchScope" class="hero-search-scope" aria-label="Filter search by resource type">
-              <option value="all">All resources</option>
-              <option value="dataset">Datasets</option>
-              <option value="model">Models</option>
-              <option value="workflow">Workflows</option>
-              <option value="oer">OERs</option>
-            </select>
-            <input
-              id="homeSearchInput"
-              class="hero-search-input"
-              type="search"
-              placeholder="Search resources, authors, titles, or keywords ..."
-              aria-label="Search the catalog"
-              autocomplete="off">
-          </div>
-        </form>
-        <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
-      </div>
-
     <!-- grouped metrics -->
     <div class="hero-center">
       <!-- metrics -->
@@ -884,23 +1047,56 @@
 
       </div><!-- /metrics -->
     </div><!-- /hero-center -->
+
+      <div class="hero-search" aria-labelledby="home-search-heading">
+        <div id="home-search-heading" class="visually-hidden">Search the OpenConstruction catalog</div>
+        <form class="hero-search-form" id="homeSearchForm">
+          <div class="hero-search-field">
+            <span class="hero-search-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <label class="visually-hidden" for="homeSearchScope">Filter search by resource type</label>
+            <select id="homeSearchScope" class="hero-search-scope" aria-label="Filter search by resource type">
+              <option value="all">All resources</option>
+              <option value="dataset">Datasets</option>
+              <option value="model">Models</option>
+              <option value="workflow">Workflows</option>
+              <option value="oer">OERs</option>
+            </select>
+            <input
+              id="homeSearchInput"
+              class="hero-search-input"
+              type="search"
+              placeholder="Search resources, authors, titles, or keywords ..."
+              aria-label="Search the catalog"
+              autocomplete="off">
+          </div>
+        </form>
+        <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
+      </div>
+
   </div>
 </header>
 
 <main class="container oc-container">
+
+  <!-- 1. Latest Updates — clickable resources first -->
   <section class="oc-section" aria-labelledby="featured-resources-heading">
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Latest Updates</div>
         <div class="featured-header-meta">
-          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog…</span>
+          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
           <span>Recently added across datasets, models, workflows, and OERs.</span>
         </div>
         <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
           <div class="featured-card">
             <div class="featured-body">
               <span class="featured-type">Loading</span>
-              <p class="featured-meta">Pulling the latest updates from the catalog…</p>
+              <p class="featured-meta">Pulling the latest updates from the catalog...</p>
             </div>
           </div>
         </div>
@@ -908,266 +1104,153 @@
     </div>
   </section>
 
+  <!-- 2. Overview — about the platform -->
   <section class="oc-section">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Overview</div>
+        <div class="oc-kicker mb-2">About the Platform</div>
         <h3 class="oc-card-title mb-3">Open infrastructure for reusable AEC resources</h3>
-        <p class="mb-3">
-          OpenConstruction brings AEC datasets, models, workflows, and educational resources into one open catalog.
-        </p>
-		<ul class="oc-ul">
-		  <li>Standardized metadata and validation for consistent discovery</li>
-		  <li>Benchmarks and linked context for research, educational use, and deployment</li>
-		  <li>Open contribution, review, and governance for long-term stewardship</li>
+        <ul class="about-list">
+          <li>
+            <span class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+            Standardized metadata and validation for consistent discovery
+          </li>
+          <li>
+            <span class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 5-6"/></svg></span>
+            Benchmarks and linked context for research, teaching, and deployment decisions
+          </li>
+          <li>
+            <span class="about-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            Open contribution, review, and governance for long-term stewardship
+          </li>
         </ul>
         <p class="mt-3 mb-0 small text-muted">
-          Help improve the platform through <a href="contribute.html">Contribute</a> or <a href="contributors.html">Community</a>.
+          Visit <a href="contribute.html">Contribute</a> for beginner-friendly next steps or meet the people behind the project in <a href="contributors.html">Community</a>.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Development & Achievements -->
+  <!-- 3. Institutions — social proof -->
+  <section class="oc-section">
+    <div class="oc-kicker mb-1">Contributing Institutions & Organizations</div>
+    <p class="small text-muted mt-0 mb-2"><span id="institutionCount"></span> institutions and organizations worldwide</p>
+    <div class="logo-marquee" id="indexInstitutionMarquee" aria-label="Affiliated institutions and organizations">
+      <div class="row-marquee" data-direction="right">
+        <div class="logo-track" role="list" data-speed="46"></div>
+      </div>
+      <div class="row-marquee" data-direction="left">
+        <div class="logo-track" role="list" data-speed="46"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Development Timeline -->
   <section class="oc-section" aria-labelledby="milestones-heading">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Milestones</div>
+        <div class="oc-kicker mb-2">Development Timeline</div>
 
-        <div class="oc-tl-wrap">
-          <!-- Prev -->
-          <div class="oc-tl-nav oc-tl-prev">
-            <button class="oc-tl-btn" id="tlPrev" aria-label="Previous milestone">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <div class="ms-stepper" role="list" aria-label="OpenConstruction milestones">
+
+          <div class="ms-step" role="listitem">
+            <span class="ms-node ms-has-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M12 2a7 7 0 0 1 7 7c0 2.6-1.4 4.4-3 5.6V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.4C6.4 13.4 5 11.6 5 9a7 7 0 0 1 7-7Z"/>
+                <path d="M9 21h6"/>
               </svg>
-            </button>
-          </div>
-
-          <!-- Timeline -->
-          <div class="oc-timeline" id="ocTimeline" tabindex="0" role="list" aria-label="OpenConstruction milestones">
-            <!-- Origin Story -->
-            <div class="oc-tl-item" role="listitem" data-title="Origin Story">
-              <div class="oc-tl-date">2022.10</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- spark/lightbulb -->
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2a7 7 0 0 1 7 7c0 2.6-1.4 4.4-3 5.6V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.4C6.4 13.4 5 11.6 5 9a7 7 0 0 1 7-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">A Rough Idea Takes Shape</div>
-              </div>
-              <div class="oc-tl-content">
-                Sparked at ECCV’22, the idea of lifelong learning to a larger vision - <a href="https://doi.org/10.1007/978-3-031-25082-8_15" target="_blank" rel="noopener">sharing and reusing AEC knowledge for community</a>.
-              </div>
-            </div>
-
-            <!-- Team Established -->
-            <div class="oc-tl-item" role="listitem" data-title="Project Team Established">
-              <div class="oc-tl-date">2024.11</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Project Team Established</div>
-              </div>
-              <div class="oc-tl-content">
-                Two years later, the idea matured into action. A core team was assembled to turn the concept into a real platform for OpenConstruction.
-              </div>
-            </div>
-
-            <!-- First Paper Submitted -->
-            <div class="oc-tl-item" role="listitem" data-title="First Paper Submitted">
-              <div class="oc-tl-date">2025.03</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M8 13h8M8 17h8M8 9h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Work Documented</div>
-              </div>
-              <div class="oc-tl-content">
-                Our work is described in 
-                <a href="https://arxiv.org/abs/2508.11482" target="_blank" rel="noopener">
-                  a synthesis of open construction datasets
-                </a>, 
-                shared to support and inspire ongoing community efforts.
-              </div>
-            </div>
-
-            <!-- Dataset Catalog Online -->
-            <div class="oc-tl-item" role="listitem" data-title="Dataset Catalog Online">
-              <div class="oc-tl-date">2025.09</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                    <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Dataset Catalog Online</div>
-              </div>
-              <div class="oc-tl-content">
-                The first major resource went live: a catalog of open datasets designed for researchers, educators, and practitioners.
-              </div>
-            </div>
-
-            <!-- Model Catalog Online -->
-            <div class="oc-tl-item" role="listitem" data-title="Model Catalog Online">
-              <div class="oc-tl-date">2025.10</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
-                    <path d="M7 3v4M17 3v4M3 7h4M3 17h4M17 21v-4M7 21v-4M21 7h-4M21 17h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Model Catalog Online</div>
-              </div>
-              <div class="oc-tl-content">
-                Building on the datasets, a curated model catalog was launched, showcasing AI tools ready to transform AEC workflows.
-              </div>
-            </div>
-
-            <div class="oc-tl-item" role="listitem" data-title="Workflow Catalog Online">
-              <div class="oc-tl-date">2025.10</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <!-- briefcase -->
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
-                    <path d="M9 7V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">Workflow Catalog Online</div>
-              </div>
-              <div class="oc-tl-content">
-                Launched the curated catalog of <em>real-world workflows</em>, showcasing practical applications from stakeholders.
-              </div>
-            </div>
-			
-			<div class="oc-tl-item" role="listitem" data-title="Open Educational Resources Catalog Online">
-			  <div class="oc-tl-date">2025.11</div>
-			  <div class="oc-tl-title-row">
-				<span class="oc-tl-icon" aria-hidden="true">
-				  <!-- book-open -->
-				  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-					<path d="M3 5a2 2 0 0 1 2-2h6v16H5a2 2 0 0 1-2-2V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-					<path d="M21 5a2 2 0 0 0-2-2h-6v16h6a2 2 0 0 0 2-2V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-				  </svg>
-				</span>
-				<div class="oc-tl-title">OER Catalog Online</div>
-			  </div>
-			  <div class="oc-tl-content">
-				Launched the <em>OER catalog</em>, providing curated open-access learning materials for AEC education.
-			  </div>
-			</div>
-			
-			<!-- Benchmark Tool Launched -->
-			<div class="oc-tl-item" role="listitem" data-title="Benchmark Tool Launched">
-			  <div class="oc-tl-date">2026.01</div>
-			  <div class="oc-tl-title-row">
-				<span class="oc-tl-icon" aria-hidden="true">
-				  <!-- gauge / benchmark icon -->
-				  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-					<path d="M20 13a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-					<path d="M12 13l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path d="M7 13h.01M17 13h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-				  </svg>
-				</span>
-				<div class="oc-tl-title">Benchmark Tool Launched</div>
-			  </div>
-			  <div class="oc-tl-content">
-				Released an AEC benchmark tool for evaluating tasks and real-world applications —
-				<a href="https://www.openconstruction.org/benchmarks.html" target="_blank" rel="noopener">explore benchmarks</a>.
-			  </div>
-			</div>
-
-			<div class="oc-tl-item" role="listitem" data-title="Paper Published">
-			  <div class="oc-tl-date">2026.03</div>
-			  <div class="oc-tl-title-row">
-				<span class="oc-tl-icon" aria-hidden="true">
-				  <!-- document check -->
-				  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-					<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-					<path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-					<path d="m9 14 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-				  </svg>
-				</span>
-				<div class="oc-tl-title">Paper Published</div>
-			  </div>
-			  <div class="oc-tl-content">
-				Published our OpenConstruction paper in <em>Developments in the Built Environment</em>:
-				<a href="https://www.sciencedirect.com/science/article/pii/S2666165926000670" target="_blank" rel="noopener">read the article</a>.
-			  </div>
-			</div>
-
-            <!-- New Features & Updates -->
-            <div class="oc-tl-item" role="listitem" data-title="New Features & Updates">
-              <div class="oc-tl-date">Soon</div>
-              <div class="oc-tl-title-row">
-                <span class="oc-tl-icon" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 11v2a2 2 0 0 0 2 2h2l6 4V5L7 9H5a2 2 0 0 0-2 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M19 7a5 5 0 0 1 0 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <div class="oc-tl-title">New Features & Updates</div>
-              </div>
-              <div class="oc-tl-content">
-                The story continues. More features and collaborations are in the pipeline — stay tuned for the next chapter.
-              </div>
+            </span>
+            <div class="ms-card">
+              <div class="ms-year">2022</div>
+              <div class="ms-title">Idea Sparked</div>
+              <div class="ms-desc">Vision born at <a href="https://doi.org/10.1007/978-3-031-25082-8_15" target="_blank" rel="noopener">ECCV’22</a> around lifelong learning and sharing AEC knowledge</div>
             </div>
           </div>
 
-          <!-- Next -->
-          <div class="oc-tl-nav oc-tl-next">
-            <button class="oc-tl-btn" id="tlNext" aria-label="Next milestone">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class="ms-step" role="listitem">
+            <span class="ms-node ms-has-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
-            </button>
+            </span>
+            <div class="ms-card">
+              <div class="ms-year">2024</div>
+              <div class="ms-title">Team Formed</div>
+              <div class="ms-desc">A core team assembled across institutions to turn the concept into a real platform</div>
+            </div>
           </div>
 
-          <!-- dots -->
-          <div class="oc-tl-dots" id="tlDots" role="tablist" aria-label="Milestone pagination"></div>
+          <div class="ms-step" role="listitem">
+            <span class="ms-node ms-has-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+              </svg>
+            </span>
+            <div class="ms-card">
+              <div class="ms-year">2025</div>
+              <div class="ms-title">Platform Live</div>
+              <div class="ms-desc">Launched catalogs for datasets, models, workflows, and OERs</div>
+            </div>
+          </div>
+
+          <div class="ms-step" role="listitem">
+            <span class="ms-node ms-has-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6"/>
+                <path d="m9 14 2 2 4-4"/>
+              </svg>
+            </span>
+            <div class="ms-card">
+              <div class="ms-year">2026</div>
+              <div class="ms-title">Paper Published</div>
+              <div class="ms-desc">Check our study: <a href="https://www.sciencedirect.com/science/article/pii/S2666165926000670" target="_blank" rel="noopener"><em>Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse</em></a></div>
+            </div>
+          </div>
+
+          <div class="ms-step ms-upcoming" role="listitem">
+            <span class="ms-node ms-has-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </span>
+            <div class="ms-card">
+              <div class="ms-year">Next</div>
+              <div class="ms-title">What’s Ahead</div>
+              <div class="ms-desc">More features, integrations, and community collaborations in the pipeline</div>
+            </div>
+          </div>
 
         </div>
       </div>
     </div>
   </section>
 
+  <!-- 5. Policy & Feedback -->
   <section class="oc-section">
-    <div class="oc-card">
-      <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Policy & Feedback</div>
-        <h3 class="oc-card-title mb-2">Questions, corrections, or removal requests</h3>
-        <p class="mb-2">
-          OpenConstruction indexes publicly available metadata and links to original sources. We do not host datasets, models, code, or proprietary materials, and inclusion does not imply endorsement or warranty.
-        </p>
-        <p class="mb-0">
-          For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. For product feedback or feature ideas, <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">create a suggestion</a> or join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a>.
-        </p>
+    <div class="oc-kicker mb-3">Policy & Feedback</div>
+    <div class="pf-grid">
+      <div class="pf-card">
+        <h4>Content Policy</h4>
+        <p>OpenConstruction indexes publicly available metadata and links to original sources. We do not host datasets, models, code, or proprietary materials, and inclusion does not imply endorsement or warranty. For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+      </div>
+      <div class="pf-card">
+        <h4>Feedback & Ideas</h4>
+        <p>Have a question or suggestion? <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Create a suggestion</a> on GitHub, join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a>, or reach out at <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
       </div>
     </div>
   </section>
-  
+
 </main>
 
 <footer class="py-4 mt-5" role="contentinfo" aria-label="Site footer">
   <div class="container oc-container small text-muted text-center">
     <div>
+      <img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;">
       © <span id="yearNow"></span> OpenConstruction Open Science Initiative
     </div>
     <div class="mt-1">
@@ -1205,82 +1288,7 @@
     });
   }
 
-  /* ===== Timeline navigation, dots, snap-centering, and a11y ===== */
-  (function(){
-    const scroller = document.getElementById('ocTimeline');
-    const items = Array.from(scroller.querySelectorAll('.oc-tl-item'));
-    const prevBtn = document.getElementById('tlPrev');
-    const nextBtn = document.getElementById('tlNext');
-    const dotsWrap = document.getElementById('tlDots');
-
-    const canScroll = () => scroller.scrollWidth > scroller.clientWidth + 8;
-    const updateNavVisibility = () => {
-      const show = canScroll();
-      prevBtn.parentElement.style.display = show ? '' : 'none';
-      nextBtn.parentElement.style.display = show ? '' : 'none';
-      dotsWrap.style.display = show ? '' : 'none';
-    };
-
-    // Build dots
-    items.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.type = 'button';
-      d.className = 'oc-tl-dot';
-      d.setAttribute('role', 'tab');
-      d.setAttribute('aria-label', `Go to milestone ${i+1}`);
-      d.addEventListener('click', () => scrollToIndex(i));
-      dotsWrap.appendChild(d);
-    });
-    const dots = Array.from(dotsWrap.children);
-
-    let index = 0;
-
-    function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
-
-    function scrollToIndex(i){
-      index = clamp(i, 0, items.length - 1);
-      const target = items[index];
-      const offset = Math.max(0, target.offsetLeft - (scroller.clientWidth/2 - target.clientWidth/2));
-      scroller.scrollTo({ left: offset, behavior: 'smooth' });
-      refresh();
-    }
-
-    function refresh(){
-      prevBtn.disabled = (index === 0);
-      nextBtn.disabled = (index === items.length - 1);
-      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
-    }
-
-    prevBtn.addEventListener('click', () => scrollToIndex(index - 1));
-    nextBtn.addEventListener('click', () => scrollToIndex(index + 1));
-
-    // Keyboard nav
-    scroller.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft'){ e.preventDefault(); scrollToIndex(index - 1); }
-      if (e.key === 'ArrowRight'){ e.preventDefault(); scrollToIndex(index + 1); }
-    });
-
-    // Update index on manual scroll
-    let t;
-    scroller.addEventListener('scroll', () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        const center = scroller.scrollLeft + scroller.clientWidth/2;
-        const nearest = items.reduce((best, el, i) => {
-          const c = el.offsetLeft + el.clientWidth/2;
-          const d = Math.abs(c - center);
-          return (d < best.d) ? { i, d } : best;
-        }, { i: 0, d: Infinity });
-        if (nearest.i !== index){ index = nearest.i; refresh(); }
-      }, 80);
-    });
-
-    const initial = items.length > 1 ? Math.floor(items.length/2) : 0;
-    scrollToIndex(initial);
-    updateNavVisibility();
-    window.addEventListener('load', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(initial); }, 120));
-    window.addEventListener('resize', () => setTimeout(() => { updateNavVisibility(); scrollToIndex(index); }, 80));
-  })();
+  /* no timeline JS needed — horizontal layout is pure CSS */
 
   // ===== Hero Metrics: counts + re-animating rings on view =====
   (function(){
@@ -1377,7 +1385,6 @@
         countUp(countElModels,   mCount);
         countUp(countElUsecases, uCount);
         countUp(countElOERs,     oCount); // NEW
-
         const rect = metrics.getBoundingClientRect();
         const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
         if (inView) {
@@ -1525,7 +1532,7 @@
         label: 'Dataset',
         title: formatCatalogTitle(ds.name || ds.id || 'Untitled dataset'),
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
-        meta: [ds.year, ds.data_modality, ds.authors ? String(ds.authors).split(',')[0].trim() : null].filter(Boolean).join(' • '),
+        meta: [ds.year, ds.data_modality, ds.authors ? String(ds.authors).split(',')[0].trim() : null].filter(Boolean).join(' · '),
         text: [
           ds.name, ds.id, ds.data_modality, ds.authors, ds.paper, ds.doi,
           ...(Array.isArray(ds.potential_tasks) ? ds.potential_tasks : []),
@@ -1537,7 +1544,7 @@
         label: 'Model',
         title: formatCatalogTitle(m.title || m.id || 'Untitled model'),
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
-        meta: [m.year, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' • '),
+        meta: [m.year, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' · '),
         text: [
           m.title, m.id, m.abstract, m.paper, m.paper_title, m.paper_url, m.doi, Array.isArray(m.authors) ? m.authors.join(' ') : m.authors,
           ...(Array.isArray(m.tasks) ? m.tasks : normalizeText(m.task) ? [m.task] : []),
@@ -1550,7 +1557,7 @@
         label: 'Workflow',
         title: formatCatalogTitle(u.title || 'Untitled workflow'),
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
-        meta: [u.year, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
+        meta: [u.year, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' · '),
         text: [
           u.title, u.summary, u.phase, u.provider,
           ...(Array.isArray(u.organizations) ? u.organizations : []),
@@ -1565,7 +1572,7 @@
         title: formatCatalogTitle(r.title || 'Untitled resource'),
         href: r.source || 'oer.html',
         external: true,
-        meta: [r.year, r.provider || r.publisher].filter(Boolean).join(' • '),
+        meta: [r.year, r.provider || r.publisher].filter(Boolean).join(' · '),
         text: [
           r.title, r.provider, r.publisher, r.authors,
           ...(Array.isArray(r.topics) ? r.topics : []),
@@ -1597,7 +1604,7 @@
         searchResults.hidden = false;
         searchResults.innerHTML = `
           <div class="search-results-head">
-            <span>No results for “${esc(query)}”</span>
+            <span>No results for "${esc(query)}"</span>
             <span>${esc(label)}</span>
           </div>
           <div class="search-results-list">
@@ -1610,7 +1617,7 @@
       searchResults.hidden = false;
       searchResults.innerHTML = `
         <div class="search-results-head">
-          <span>${items.length} result${items.length === 1 ? '' : 's'} for “${esc(query)}”</span>
+          <span>${items.length} result${items.length === 1 ? '' : 's'} for "${esc(query)}"</span>
           <span>${esc(label)}</span>
         </div>
         <div class="search-results-list">
@@ -1661,7 +1668,7 @@
       const datasets = Object.values(datasetsJson || {}).map(ds => ({
         type: 'Dataset',
         title: formatCatalogTitle(ds.name || 'Untitled dataset'),
-        meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' • '),
+        meta: [ds.data_modality, datasetCountSummary(ds) || null].filter(Boolean).join(' · '),
         year: ds.year,
         href: `datasets/detail.html?id=${encodeURIComponent(ds.id || ds.name || '')}`,
         image: ds.image_url || 'assets/img/placeholder/placeholder.png',
@@ -1676,7 +1683,7 @@
         type: 'Model',
         title: formatCatalogTitle(m.title || 'Untitled model'),
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
-        meta: [Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' • '),
+        meta: [Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' · '),
         year: m.year,
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
@@ -1691,7 +1698,7 @@
         type: 'Workflow',
         title: formatCatalogTitle(u.title || 'Untitled workflow'),
         description: firstLine(u.summary) || 'Applied workflow connecting AI methods to field deployment.',
-        meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' • '),
+        meta: [u.phase, Array.isArray(u.stakeholders) ? u.stakeholders[0] : null].filter(Boolean).join(' · '),
         year: u.year,
         href: `deployments.html?q=${encodeURIComponent(u.title || '')}`,
         image: (Array.isArray(u.media) && u.media.find(media => media && media.type === 'image')?.url) || 'assets/img/placeholder/placeholder.png',
@@ -1703,8 +1710,8 @@
       const oers = ((oersJson && oersJson.resources) || []).map(r => ({
         type: 'OER',
         title: formatCatalogTitle(r.title || 'Untitled resource'),
-        description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' • ') || 'Open educational material for AEC teaching and training.',
-        meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' • '),
+        description: [Array.isArray(r.topics) ? r.topics[0] : null, Array.isArray(r.media) ? r.media[0] : null].filter(Boolean).join(' · ') || 'Open educational material for AEC teaching and training.',
+        meta: [r.provider || r.publisher, Array.isArray(r.institutions) ? r.institutions[0] : null].filter(Boolean).join(' · '),
         year: r.year,
         href: `oers/details.html?id=${encodeURIComponent(r.id || r.title || '')}`,
         image: r.image || 'assets/img/placeholder/placeholder.png',
@@ -1818,6 +1825,25 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/institutions.js"></script>
+<script>
+  (function(){
+    var api = window.OpenConstructionInstitutions;
+    var marquee = document.getElementById('indexInstitutionMarquee');
+    if (!api || !marquee) return;
+    api.renderInstitutionMarquee({
+      target: marquee,
+      url: 'data/institutions.json',
+      speed: 46
+    }).then(function(result){
+      var el = document.getElementById('institutionCount');
+      if (el && result && result.count) {
+        var rounded = Math.floor(result.count / 10) * 10;
+        el.textContent = rounded + '+';
+      }
+    }).catch(function(){});
+  })();
+</script>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">

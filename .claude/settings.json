@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; data=json.load\\(open\\('site/data/institutions.json'\\)\\); print\\(len\\(data\\)\\)\")",
+      "Bash(python3 -c ':*)"
+    ]
+  }
+}

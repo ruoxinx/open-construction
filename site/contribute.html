@@ -9,13 +9,13 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OpenConstruction · Contribution Policy and Terms of Use</title>
-  <meta name="description" content="Contribute resources to OpenConstruction and review the platform's contribution policy, terms of use, privacy, data usage, and citation guidance.">
+    <title>OpenConstruction · Contribute</title>
+  <meta name="description" content="Contribute datasets, models, workflows, OERs, and platform improvements to OpenConstruction, with beginner-friendly starting points and policy guidance.">
   <link rel="canonical" href="https://www.openconstruction.org/contribute.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Contribution Policy and Terms of Use">
-  <meta property="og:description" content="Contribute resources to OpenConstruction and review the platform's contribution policy, terms of use, privacy, data usage, and citation guidance.">
+  <meta property="og:title" content="OpenConstruction · Contribute">
+  <meta property="og:description" content="Contribute datasets, models, workflows, OERs, and platform improvements to OpenConstruction, with beginner-friendly starting points and policy guidance.">
   <meta property="og:url" content="https://www.openconstruction.org/contribute.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
@@ -101,6 +101,39 @@
     .path-card .oc-card-body{ padding:1.1rem 1.15rem; }
     .path-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
     .path-list li + li{ margin-top:.35rem; }
+    .quickstart-grid{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .quickstart-card{
+      height:100%;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
+    .quickstart-card .oc-card-body{ padding:1.1rem 1.15rem; }
+    .quickstart-label{
+      display:inline-flex;
+      align-items:center;
+      padding:.22rem .55rem;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #dbe6f0;
+      color:var(--oc-ink);
+      font-size:.74rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .quickstart-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.65rem;
+      margin-top:1rem;
+    }
+    .quickstart-actions .btn-ink,
+    .quickstart-actions .btn-accent{
+      padding:.5rem .9rem;
+      font-size:.92rem;
+    }
     .step-grid{ display:grid; gap:1rem; grid-template-columns:repeat(4,minmax(0,1fr)); }
     .step-card{
       background:#fff;
@@ -259,6 +292,7 @@
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       .path-grid,
+      .quickstart-grid,
       .step-grid,
       .link-cards{ grid-template-columns:1fr; }
       .issue-btn{
@@ -352,7 +386,7 @@
             <li><a class="dropdown-item" href="schema.html">Schema</a></li>
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain active" href="contribute.html" data-route="contribute">Contribute</a></li>
@@ -394,19 +428,57 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Contribution Policy and Terms of Use</h1>
+    <h1>Contribute to OpenConstruction</h1>
 	<p class="lead">
-	  Contribute resources, improve metadata, and review the platform's <span class="hl">contribution guidance and policy terms</span> for OpenConstruction.
+	  Add resources, improve metadata, or help build the platform. Start with a <span class="hl">beginner-friendly contribution path</span>, then review the policy details when you need them.
 	</p>
 
   </div>
 </header>
 
 <main class="container oc-container">
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Quick Start</div>
+    <p class="section-intro">If this is your first time here, choose the path that matches your goal. You do not need to understand the whole platform before helping.</p>
+    <div class="quickstart-grid">
+      <div class="quickstart-card">
+        <div class="oc-card-body">
+          <span class="quickstart-label">Fastest path</span>
+          <h2 class="oc-card-title h5 mt-3 mb-2">Propose a new resource</h2>
+          <p class="mb-0">Use a GitHub template to suggest a dataset, model, workflow, OER, or tool. This is the easiest way to add value quickly.</p>
+          <div class="quickstart-actions">
+            <a class="btn-ink" href="https://github.com/ruoxinx/open-construction/issues/new/choose" target="_blank" rel="noopener">Open templates</a>
+          </div>
+        </div>
+      </div>
+      <div class="quickstart-card">
+        <div class="oc-card-body">
+          <span class="quickstart-label">Low-risk edit</span>
+          <h2 class="oc-card-title h5 mt-3 mb-2">Improve an existing record</h2>
+          <p class="mb-0">Fix a broken link, add a license, clarify tags, or improve discoverability. Small metadata improvements compound across the catalog.</p>
+          <div class="quickstart-actions">
+            <a class="btn-ink" href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Suggest a fix</a>
+          </div>
+        </div>
+      </div>
+      <div class="quickstart-card">
+        <div class="oc-card-body">
+          <span class="quickstart-label">Need context?</span>
+          <h2 class="oc-card-title h5 mt-3 mb-2">Ask before you contribute</h2>
+          <p class="mb-0">Use discussions if you want feedback on fit, scope, or metadata expectations before opening a full submission.</p>
+          <div class="quickstart-actions">
+            <a class="btn-accent" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Open discussions</a>
+            <a class="btn-accent" href="#terms">Review policies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Ways to help -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Ways to Help</div>
-    <p class="section-intro">OpenConstruction is designed to support clear documentation and efficient review of contributions. Most contributors begin with one of the following paths.</p>
+    <p class="section-intro">Once you know where to start, these are the main ways people contribute over time.</p>
     <div class="path-grid">
       <div class="oc-card path-card">
         <div class="oc-card-body">
@@ -504,7 +576,7 @@
       <div class="oc-card h-100">
         <div class="oc-card-body">
           <h3 class="oc-card-title h6 mb-2">Open a Submission</h3>
-          <p>Use the GitHub issue templates to propose a dataset, model, workflow, OER, or platform improvement.</p>
+          <p>Use the GitHub issue templates to propose a dataset, model, workflow, OER, tool, or platform improvement.</p>
         </div>
       </div>
       <div class="oc-card h-100">
@@ -526,7 +598,7 @@
     <div class="oc-kicker mb-2">Policies</div>
     <div class="oc-card">
       <div class="oc-card-body">
-        <h3 class="oc-card-title mb-2">Terms of Use</h3>
+        <h3 class="oc-card-title mb-2">Terms of Use and Contribution Policies</h3>
         <p>OpenConstruction is an open research infrastructure developed to support the discovery and reuse of Architecture, Engineering, and Construction digital resources.</p>
         <p>OpenConstruction indexes publicly accessible research metadata and links to original sources. Unless explicitly noted otherwise, the platform does not host or redistribute third-party datasets, models, code, or paywalled publications.</p>
         <p>Website source code, metadata schemas, documentation, and other project-owned software components are licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache License, Version 2.0</a>, unless otherwise noted.</p>
@@ -584,7 +656,7 @@
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
-      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+      <img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative
     </div>
     <div class="mt-1">
       <small>
@@ -606,7 +678,7 @@
 <!-- Floating button -->
 <a href="https://github.com/ruoxinx/open-construction/discussions"
    class="issue-btn" target="_blank" rel="noopener">
-  Join us
+  Join discussions
 </a>
 
 <!-- Subscribe Modal -->
@@ -625,7 +697,7 @@
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
         </div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+        <p class="small text-muted mt-2 mb-0">We'll email only when new datasets or models are added. Unsubscribe anytime.</p>
       </form>
     </div>
   </div>

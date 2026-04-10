@@ -9,12 +9,12 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Community</title>
+  <title>OpenConstruction &middot; Community</title>
   <meta name="description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
   <link rel="canonical" href="https://www.openconstruction.org/contributors.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Community">
+  <meta property="og:title" content="OpenConstruction &middot; Community">
   <meta property="og:description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
   <meta property="og:url" content="https://www.openconstruction.org/contributors.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
@@ -33,7 +33,7 @@
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
-      --oc-brand-model:#4e6ce8; /* blue used on Home models ring—kept for consistency if needed */
+      --oc-brand-model:#4e6ce8; /* blue used on Home models ring - kept for consistency if needed */
     }
     .oc-container{ max-width:1080px; }
 
@@ -416,7 +416,7 @@
             <li><a class="dropdown-item" href="schema.html">Schema</a></li>
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
             <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item" href="mcp.html">MCP Docs</a></li>
+            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
@@ -460,7 +460,7 @@
   <div class="container oc-container content">
     <h1>Community &amp; Collaboration</h1>
     <p class="lead">
-      Together, we’re building an <span class="hl">open-science</span> community for <span class="hl">AI in AEC</span>,
+      Together, we're building an <span class="hl">open-science</span> community for <span class="hl">AI in AEC</span>,
       connecting researchers, practitioners, and innovators to share knowledge.
     </p>
 
@@ -488,7 +488,7 @@
 			</g>
 		  </svg>
 		  <span class="label">
-			<span class="value" id="countContrib">—</span>
+			<span class="value" id="countContrib">&mdash;</span>
 			<span class="name">Contributors/Labs</span>
 		  </span>
 		</div>
@@ -518,7 +518,7 @@
 			</g>
 		  </svg>
 		  <span class="label">
-			<span class="value" id="countInst">—</span>
+			<span class="value" id="countInst">&mdash;</span>
 			<span class="name">Institutions</span>
 		  </span>
 		</div>
@@ -526,11 +526,9 @@
 
     <!-- CTA buttons -->
     <div class="cta-row">
-      <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/open-construction/issues/new?template=new_dataset.yml" target="_blank" rel="noopener">Propose a Dataset</a>
-      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/open-construction/issues/new?template=new_model.yml" target="_blank" rel="noopener">Propose a Model</a>
-	  <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/open-construction/issues/new?template=new_use_case.yml" target="_blank" rel="noopener">Propose a Workflow</a>
-      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/open-construction/issues/new?template=new_OER.yml" target="_blank" rel="noopener">Propose an OER</a>
-	  <a class="btn-ink btn-sm" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Join Discussions</a>
+      <a class="btn-ink btn-sm" href="contribute.html">Contribute a Resource</a>
+      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Join discussions</a>
+	  <button type="button" class="btn-accent btn-sm" data-bs-toggle="modal" data-bs-target="#subscribeModal">Subscribe for updates</button>
     </div>
 
   </div>
@@ -640,14 +638,14 @@
     <div class="oc-kicker mb-2">Contributors/Labs</div>
 
     <div class="occ-carousel" id="occContrib" aria-roledescription="carousel">
-      <button class="occ-btn prev" aria-label="Previous page" title="Previous">‹</button>
+      <button class="occ-btn prev" aria-label="Previous page" title="Previous">&#8249;</button>
 
       <div class="occ-viewport" aria-live="polite">
         <!-- Cards are injected from data/contributors.json -->
         <div class="row g-4" id="contributorsGrid"></div>
       </div>
 
-      <button class="occ-btn next" aria-label="Next page" title="Next">›</button>
+      <button class="occ-btn next" aria-label="Next page" title="Next">&#8250;</button>
 
       <div class="occ-dots mt-2" id="occDots" role="tablist" aria-label="Contributors pages"></div>
       <div class="occ-progress mt-1" aria-hidden="true"><div class="bar" id="occBar"></div></div>
@@ -657,7 +655,7 @@
 <section class="oc-section">
   <div class="oc-kicker mb-2">Affiliations and Organizations</div>
 
-  <div class="logo-marquee three-rows" aria-label="Affiliated institutions and organizations">
+  <div class="logo-marquee three-rows" id="communityInstitutionMarquee" aria-label="Affiliated institutions and organizations">
 
     <div class="row-marquee" data-direction="right">
       <div class="logo-track" role="list" data-speed="45"></div>
@@ -673,81 +671,6 @@
 
   </div>
 
-
-
-	<template id="logo-seed">
-	<div class="logo" role="listitem"><img src="assets/img/institutions/kent-state.png" alt="Kent State University" loading="eager" fetchpriority="high" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/lsu.png" alt="Louisiana State University" loading="eager" fetchpriority="high" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/utsa.png" alt="University of Texas at San Antonio" loading="eager" fetchpriority="high" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/stevens.png" alt="Stevens Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/rit.png" alt="Rochester Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/cmu.png" alt="Carnegie Mellon University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/uiuc.png" alt="University of Illinois Urbana-Champaign" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/McGill.png" alt="McGill University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Benadir.png" alt="Benadir University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Kyung-Hee.png" alt="Kyung Hee University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Mälardalen.png" alt="Mälardalen University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Volvo-CE.png" alt="Volvo Construction Equipment" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/HKUST.png" alt="The Hong Kong University of Science and Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Edinburgh.png" alt="University of Edinburgh" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/SEU.png" alt="Southeast University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Loughborough.png" alt="Loughborough University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/CityU.png" alt="City University of Hong Kong" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/UCB.png" alt="University of Colorado Boulder" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/chile.png" alt="Universidad de Chile" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/ZJUT.png" alt="Zhejiang Univ. of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Columbia.png" alt="Columbia University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Tsinghua.png" alt="Tsinghua University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Taiwan.png" alt="National Taiwan University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/UAEU.png" alt="United Arab Emirates University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/INU.png" alt="Incheon National University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/LIMA.png" alt="Universidad de Lima" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/mines.png" alt="Colorado School of Mines" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Cambridge.png" alt="University of Cambridge" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/SNU.png" alt="Seoul National University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/KUET.png" alt="Khulna University of Engineering & Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/GSTU.png" alt="Gopalganj Science and Technology University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/DTU.png" alt="Technical University of Denmark" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/JHU.png" alt="Johns Hopkins University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/ETH.png" alt="ETH Zürich" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/tum.png" alt="Technical University of Munich" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Lancaster.png" alt="Lancaster University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/whu.png" alt="Wuhan University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/NTU.jpg" alt="Nanyang Technological University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/VTT.png" alt="VTT Technical Research Centre of Finland" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/UM.png" alt="University of Macau" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/MIT.png" alt="Massachusetts Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/LIGM.png" alt="Laboratoire d'Informatique Gaspard-Monge" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/UoT.png" alt="University of Toronto" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/VU.png" alt="Vrije Universiteit Amsterdam" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/HKU.png" alt="The University of Hong Kong" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/lnl.png" alt="Lawrence Berkeley National Laboratory" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/QUT.jpg" alt="Queensland University of Technology" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/Purdue.png" alt="Purdue University" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/NUS.png" alt="National University of Singapore" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/RWTH.png" alt="RWTH Aachen University" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/TU-Delft.png" alt="Delft University of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/KTU.png" alt="Karadeniz technical university" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/IU.png" alt="İnönü University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/HIT.png" alt="Harbin Institute of Technology" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Yonsei University.png" alt="Yonsei University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Tongji University.png" alt="Tongji University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/NYU.png" alt="New York University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/University of Sydney.png" alt="University of Sydney" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Chinese University of Hong Kong.png" alt="Chinese University of Hong Kong" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Durham University.png" alt="Durham University" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/University of Florida.png" alt="University of Florida" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Washington.png" alt="University of Washington" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/University of Houston.png" alt="University of Houston" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/Fraunhofer Institute for Physical Measurement Techniques IPM.png" alt="Fraunhofer Institute for Physical Measurement Techniques IPM" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/University of Utah.png" alt="University of Utah" loading="lazy" decoding="async"></div>
-	<div class="logo" role="listitem"><img src="assets/img/institutions/University of Freiburg.png" alt="University of Freiburg" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/Western Michigan University.png" alt="Western Michigan University" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/University of Kansas.png" alt="University of Kansas" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/Nomic AI.jpg" alt="Nomic AI" loading="lazy" decoding="async"></div>
-    <div class="logo" role="listitem"><img src="assets/img/institutions/university of alberta.png" alt="university of alberta" loading="lazy" decoding="async"></div>
-</template>
-	</template>
 	</section>
 
   <section class="oc-section" id="news-events">
@@ -769,20 +692,20 @@
     <div class="community-links">
       <div class="oc-card h-100">
         <div class="oc-card-body">
-          <h3 class="oc-card-title h6 mb-2">Contribute</h3>
-          <p>See the <a href="contribute.html">Contribute page</a> for templates, review expectations, and submission guidance.</p>
+          <h3 class="oc-card-title h6 mb-2">Contribute a Resource</h3>
+          <p>Use the <a href="contribute.html">Contribute page</a> to propose a dataset, model, workflow, OER, tool, or metadata improvement.</p>
         </div>
       </div>
       <div class="oc-card h-100">
         <div class="oc-card-body">
-          <h3 class="oc-card-title h6 mb-2">Work with Us</h3>
+          <h3 class="oc-card-title h6 mb-2">Collaborate With Us</h3>
           <p>For collaborations, feature ideas, or partnership conversations, join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
         </div>
       </div>
       <div class="oc-card h-100">
         <div class="oc-card-body">
-          <h3 class="oc-card-title h6 mb-2">Policy</h3>
-          <p>For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. OpenConstruction indexes metadata and links to original sources.</p>
+          <h3 class="oc-card-title h6 mb-2">Share an Update</h3>
+          <p>Have an event, release, or lab milestone relevant to open AEC research? <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Share it in discussions</a> so the community can see it.</p>
         </div>
       </div>
     </div>
@@ -805,19 +728,19 @@
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
-      © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+      <img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative
     </div>
     <div class="mt-1">
       <small>
         Licensed under Apache 2.0.
-        Images and thumbnails are © their respective creators unless otherwise noted.
+        Images and thumbnails are &copy; their respective creators unless otherwise noted.
       </small>
     </div>
     <div class="mt-1">
       <small>
-        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
-        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="contribute.html#terms" class="text-muted">Terms</a> &middot;
+        <a href="contribute.html#privacy" class="text-muted">Privacy</a> &middot;
+        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> &middot;
         <a href="contribute.html#citation" class="text-muted">Citation</a>
       </small>
     </div>
@@ -827,61 +750,19 @@
 <!-- Scripts -->
 <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/institutions.js"></script>
 
 <script>
 (function(){
-const marquee = document.querySelector('.logo-marquee.three-rows');
-if (!marquee) return;
+const api = window.OpenConstructionInstitutions;
+const marquee = document.getElementById('communityInstitutionMarquee');
+if (!api || !marquee) return;
 
-const rows = marquee.querySelectorAll('.row-marquee');
-if (rows.length !== 3) {
-  console.error("Expected 3 marquee rows, found:", rows.length);
-  return;
-}
-
-const seed = document.getElementById('logo-seed');
-if (!seed) return;
-
-// Clone all logos
-const logos = Array.from(seed.content.children).map(n => n.cloneNode(true));
-
-// Split logos into 3 equal groups
-const groupSize = Math.ceil(logos.length / 3);
-const group1 = logos.slice(0, groupSize);
-const group2 = logos.slice(groupSize, groupSize * 2);
-const group3 = logos.slice(groupSize * 2);
-
-// Helper: initialize marquee for each row
-function initTrack(row, items, dir) {
-  const track = row.querySelector('.logo-track');
-  if (!track) return;
-
-  // Populate track
-  items.forEach(i => track.appendChild(i));
-  items.forEach(i => track.appendChild(i.cloneNode(true))); // double for infinite scroll
-
-  const speed = Number(track.getAttribute('data-speed')) || 46;
-  const duration = Math.min(90, speed + Math.max(0, items.length - 8) * 1.5);
-
-  track.style.animationDuration = duration + 's';
-  track.style.animationTimingFunction = 'linear';
-  track.style.animationIterationCount = 'infinite';
-  track.style.animationName = dir === 'right' ? 'oc-marquee-right' : 'oc-marquee-left';
-}
-
-// Initialize rows
-initTrack(rows[0], group1, 'right');
-initTrack(rows[1], group2, 'left');
-initTrack(rows[2], group3, 'right');
-
-// Fade-in loading
-marquee.querySelectorAll('.logo img').forEach(img => {
-  const parent = img.closest('.logo');
-  const done = () => parent && parent.classList.add('loaded');
-
-  if (img.complete && img.naturalWidth > 0) done();
-  else img.addEventListener('load', done, { once: true });
-});
+api.renderInstitutionMarquee({
+  target: marquee,
+  url: 'data/institutions.json',
+  speed: 46
+}).catch(() => {});
 })();
 </script>
 
@@ -1051,14 +932,11 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     });
   }
 
-  function countInstitutionsFromTemplate() {
-    const tpl = document.getElementById("logo-seed");
-    if (!tpl || !tpl.content) return 0;
-    const imgs = [...tpl.content.querySelectorAll("img")];
-    const keys = imgs
-      .map(img => img.getAttribute("src")?.trim() || img.getAttribute("alt")?.trim())
-      .filter(Boolean);
-    return new Set(keys).size;
+  async function countInstitutionsFromJSON() {
+    const api = window.OpenConstructionInstitutions;
+    if (!api || typeof api.loadInstitutions !== "function") return 0;
+    const data = await api.loadInstitutions('data/institutions.json');
+    return data.length;
   }
 
   async function countContributorsFromJSON() {
@@ -1076,13 +954,13 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     initRing(ringContrib);
     initRing(ringInst);
 
-    const institutions = countInstitutionsFromTemplate();
-
+    let institutions = 0;
     let contributors = 0;
     try {
+      institutions = await countInstitutionsFromJSON();
       contributors = await countContributorsFromJSON();
     } catch (e) {
-      console.warn("[stats] contributors.json error:", e);
+      console.warn("[stats] community stats error:", e);
     }
 
     // Set numbers
@@ -1129,13 +1007,13 @@ marquee.querySelectorAll('.logo img').forEach(img => {
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
         </div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+        <p class="small text-muted mt-2 mb-0">We'll email only when new datasets or models are added. Unsubscribe anytime.</p>
       </form>
     </div>
   </div>
 </div>
 
-<!-- 🔁 Contributors JSON loader + carousel (added) -->
+<!-- Contributors JSON loader + carousel -->
 <script>
 (async function(){
   const JSON_URL = 'data/contributors.json';
@@ -1261,7 +1139,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     };
 
     track.addEventListener('pointerdown', e => {
-      // Don’t hijack clicks on links, buttons, inputs, etc.
+      // Don't hijack clicks on links, buttons, inputs, etc.
       if (e.button !== 0) return; // left button only
       if (e.target.closest('a, button, input, textarea, select, label')) return;
 
@@ -1307,7 +1185,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
     track.addEventListener('pointerleave', endDrag);
   })();
 
-  window.addEventListener('resize', ()=>{ /* keep cards’ size; page size fixed */ goTo(current,false); });
+  window.addEventListener('resize', ()=>{ /* keep cards' size; page size fixed */ goTo(current,false); });
   buildSlides();
 })();
 </script>
@@ -1355,7 +1233,7 @@ marquee.querySelectorAll('.logo img').forEach(img => {
                   </div>
                   <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
                   <div class="news-meta">
-                    ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' · ')}
+                    ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' &middot; ')}
                   </div>
                   ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
                   <div class="d-flex flex-wrap gap-2 mt-3">
@@ -1390,3 +1268,4 @@ marquee.querySelectorAll('.logo img').forEach(img => {
 
 </body>
 </html>
+

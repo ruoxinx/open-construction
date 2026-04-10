@@ -383,7 +383,7 @@ function formatLicense(licVal){
 
 function formatLicense(licVal){
   const norm = safeText(licVal);
-  if (norm === 'â€”') return '';
+  if (norm === '—') return '';
 
   const key = String(licVal).trim().toUpperCase();
   const licenseMap = {
@@ -1165,8 +1165,8 @@ async function initDetail(){
       { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
       { label: 'License', value: formatLicense(ds.license) || '—' }
     ];
-    quickFacts[3] = { label: 'Tasks', value: datasetTaskList.length ? linkedTaskChipLane(datasetTaskList) : 'â€”' };
-    quickFacts[4] = { label: 'Modalities', value: datasetModalityList.length ? chipLane(datasetModalityList) : 'â€”' };
+    quickFacts[3] = { label: 'Tasks', value: datasetTaskList.length ? linkedTaskChipLane(datasetTaskList) : '—' };
+    quickFacts[4] = { label: 'Modalities', value: datasetModalityList.length ? chipLane(datasetModalityList) : '—' };
 
     function datasetHref(item){
       return `../datasets/detail.html?id=${encodeURIComponent(item.id || item.name || '')}`;
