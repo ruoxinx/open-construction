@@ -850,22 +850,12 @@
       display:flex;
       flex-direction:column;
       gap:.35rem;
-      padding:1.15rem 1.1rem;
-      border-radius:12px;
-      background:#fff;
-      border:1px solid var(--oc-border);
+      padding:.25rem 1.25rem;
     }
-    .fi-icon{
-      width:36px; height:36px;
-      border-radius:9px;
-      background:var(--oc-brand-ink);
-      display:flex; align-items:center; justify-content:center;
-      margin-bottom:.2rem;
-      flex-shrink:0;
-    }
-    .fi-icon svg{ width:18px; height:18px; color:#fff; stroke:currentColor; }
-    .fi-title{ font-weight:700; font-size:.95rem; color:var(--oc-brand-ink); }
-    .fi-desc{ font-size:.85rem; color:var(--oc-subtle); line-height:1.55; margin:0; }
+    .fi:first-child{ padding-left:0; }
+    .fi + .fi{ border-left:1px solid var(--oc-border); }
+    .fi-title{ font-weight:700; font-size:1rem; color:var(--oc-brand-ink); }
+    .fi-desc{ font-size:.95rem; color:var(--oc-subtle); line-height:1.55; margin:0; }
     @media(max-width:575.98px){ .feature-grid{ grid-template-columns:1fr; } }
     @media(max-width:767.98px){ .feature-grid{ grid-template-columns:1fr 1fr; } }
 
@@ -1146,23 +1136,14 @@
         <p class="small text-muted mt-0 mb-0">Built for researchers, educators, and practitioners in architecture, engineering, and construction.</p>
         <div class="feature-grid">
           <div class="fi">
-            <div class="fi-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-            </div>
             <div class="fi-title">Standardized Metadata</div>
             <p class="fi-desc">Standardized metadata and validation for consistent discovery.</p>
           </div>
           <div class="fi">
-            <div class="fi-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 5-6"/></svg>
-            </div>
             <div class="fi-title">Benchmarks &amp; Context</div>
-            <p class="fi-desc">Benchmarks and linked context for research, teaching, and deployment decisions.</p>
+            <p class="fi-desc">Benchmarks and context for research, teaching, and deployment decisions.</p>
           </div>
           <div class="fi">
-            <div class="fi-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
             <div class="fi-title">Open Governance</div>
             <p class="fi-desc">Open contribution, review, and governance for long-term stewardship.</p>
           </div>
