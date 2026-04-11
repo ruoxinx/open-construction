@@ -3501,7 +3501,7 @@
   ],
   "license": "CC BY-NC-SA 4.0",
   "paper": "BuildingWorld: A Structured 3D Building Dataset for Urban Foundation Models",
-  "access": "https://huggingface.co/datasets/BuildingWorld",
+  "access": "https://huggingface.co/BuildingWorld",
   "id": "BuildingWorld",
   "image_url": "assets/img/datasets/BuildingWorld.png",
   "added_date": "2026-04-11",

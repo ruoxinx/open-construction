@@ -297,10 +297,90 @@
 
     .hero-center { display:flex; flex-direction:column; align-items:center; gap:.55rem; }
 
+    .featured-rail-head{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+    .featured-rail-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px;
+      height:42px;
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      background:#fff;
+      color:var(--oc-brand-ink);
+      box-shadow:0 6px 16px rgba(15,46,75,.06);
+      transition:background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+    }
+    .featured-rail-btn:hover{
+      background:#f8fbff;
+      border-color:#d6e2ee;
+      transform:translateY(-1px);
+    }
+    .featured-rail-btn[disabled]{
+      opacity:.42;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+    .featured-rail-btn svg{
+      width:18px;
+      height:18px;
+    }
+    .featured-rail-viewport{
+      position:relative;
+      overflow:hidden;
+    }
+    .featured-rail-btn-floating{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:3;
+    }
+    .featured-rail-btn-floating.prev{
+      left:12px;
+    }
+    .featured-rail-btn-floating.next{
+      right:12px;
+    }
+    .featured-rail-fade{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:76px;
+      pointer-events:none;
+      z-index:2;
+      transition:opacity .18s ease;
+    }
+    .featured-rail-fade.left{
+      left:0;
+      background:linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.72) 45%, rgba(255,255,255,0) 100%);
+    }
+    .featured-rail-fade.right{
+      right:0;
+      background:linear-gradient(270deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.72) 45%, rgba(255,255,255,0) 100%);
+    }
+    .featured-rail-fade.is-hidden{
+      opacity:0;
+    }
     .featured-grid{
       display:grid;
-      grid-template-columns:repeat(4, minmax(0, 1fr));
+      grid-auto-flow:column;
+      grid-auto-columns:calc((100% - (1.15rem * 3)) / 4);
       gap:1.15rem;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+      padding-bottom:.2rem;
+    }
+    .featured-grid::-webkit-scrollbar{
+      display:none;
     }
     .featured-card{
       background:#fff;
@@ -309,6 +389,7 @@
       box-shadow:var(--oc-shadow);
       overflow:hidden;
       height:100%;
+      scroll-snap-align:start;
       transition:transform .2s ease, box-shadow .2s ease;
     }
     .featured-card:hover{
@@ -599,6 +680,31 @@
     }
     @media (max-width:575.98px){
       .pf-grid{ grid-template-columns:1fr; }
+    }
+
+    @media (max-width:991.98px){
+      .featured-grid{
+        grid-auto-columns:calc((100% - 1.15rem) / 2);
+      }
+    }
+
+    @media (max-width:767.98px){
+      .featured-rail-head{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .featured-grid{
+        grid-auto-columns:100%;
+      }
+      .featured-rail-fade{
+        width:52px;
+      }
+      .featured-rail-btn-floating.prev{
+        left:8px;
+      }
+      .featured-rail-btn-floating.next{
+        right:8px;
+      }
     }
 
     /* ===== Milestones – stepper ===== */
@@ -1111,17 +1217,33 @@
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Latest Updates</div>
-        <div class="featured-header-meta">
-          <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
-          <span>Recently added across datasets, models, workflows, and OERs.</span>
+        <div class="featured-rail-head">
+          <div class="featured-header-meta">
+            <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
+            <span>Recently added across datasets, models, workflows, and OERs.</span>
+          </div>
         </div>
-        <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
-          <div class="featured-card">
-            <div class="featured-body">
-              <span class="featured-type">Loading</span>
-              <p class="featured-meta">Pulling the latest updates from the catalog...</p>
+        <div class="featured-rail-viewport">
+          <div class="featured-rail-fade left is-hidden" id="featuredLeftFade" aria-hidden="true"></div>
+          <button class="featured-rail-btn featured-rail-btn-floating prev" id="featuredPrevBtn" type="button" aria-label="Show earlier updates" disabled>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M14.5 6.5 9 12l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="featured-grid" id="featuredResourcesGrid" aria-live="polite">
+            <div class="featured-card">
+              <div class="featured-body">
+                <span class="featured-type">Loading</span>
+                <p class="featured-meta">Pulling the latest updates from the catalog...</p>
+              </div>
             </div>
           </div>
+          <div class="featured-rail-fade right" id="featuredRightFade" aria-hidden="true"></div>
+          <button class="featured-rail-btn featured-rail-btn-floating next" id="featuredNextBtn" type="button" aria-label="Show more updates">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9.5 6.5 15 12l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -1805,7 +1927,7 @@
           if (bTime !== aTime) return bTime - aTime;
           return (b.year || 0) - (a.year || 0);
         })
-        .slice(0, 4);
+        .slice(0, 12);
     }
 
     function latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson){
@@ -1855,6 +1977,46 @@
       `).join('');
     }
 
+    const prevBtn = document.getElementById('featuredPrevBtn');
+    const nextBtn = document.getElementById('featuredNextBtn');
+    const leftFade = document.getElementById('featuredLeftFade');
+    const rightFade = document.getElementById('featuredRightFade');
+
+    function featuredCardStep(){
+      if (!grid) return 0;
+      const firstCard = grid.querySelector('.featured-card');
+      if (!firstCard) return 0;
+      const styles = window.getComputedStyle(grid);
+      const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+      return firstCard.getBoundingClientRect().width + gap;
+    }
+
+    function updateFeaturedControls(){
+      if (!grid || !prevBtn || !nextBtn) return;
+      const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+      const atStart = grid.scrollLeft <= 4;
+      const atEnd = grid.scrollLeft >= maxScroll - 4 || maxScroll <= 0;
+      prevBtn.disabled = atStart;
+      nextBtn.disabled = atEnd;
+      if (leftFade) leftFade.classList.toggle('is-hidden', atStart);
+      if (rightFade) rightFade.classList.toggle('is-hidden', atEnd);
+    }
+
+    function scrollFeatured(direction){
+      if (!grid) return;
+      const step = featuredCardStep();
+      if (!step) return;
+      grid.scrollBy({ left: direction * step, behavior: 'smooth' });
+      window.setTimeout(updateFeaturedControls, 220);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => scrollFeatured(-1));
+    if (nextBtn) nextBtn.addEventListener('click', () => scrollFeatured(1));
+    if (grid){
+      grid.addEventListener('scroll', () => window.requestAnimationFrame(updateFeaturedControls), { passive:true });
+      window.addEventListener('resize', updateFeaturedControls);
+    }
+
     (async function(){
       try{
         const [datasetsJson, modelsJson, usecasesJson, oersJson] = await Promise.all([
@@ -1870,9 +2032,11 @@
         if (freshnessEl && freshest) freshnessEl.textContent = `Last updated: ${formatDate(freshest)}`;
         wireSearch(buildSearchIndex(datasetsJson, modelsJson, usecasesJson, oersJson));
         render(pickItems(datasetsJson, modelsJson, usecasesJson, oersJson));
+        updateFeaturedControls();
       }catch(_){
         if (freshnessEl) freshnessEl.textContent = 'Last updated: unavailable';
         render([]);
+        updateFeaturedControls();
       }
     })();
   })();
