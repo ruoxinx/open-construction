@@ -958,5 +958,40 @@
     "link_url": "https://apps.ualberta.ca/directory/person/hliang7",
   "image": "https://apps.ualberta.ca/profile/photo/hliang7",
   "type": "person"
+  },
+         {
+    "id": "Spatial Intelligence Lab",
+    "name": "Spatial Intelligence Lab",
+    "role": "Dataset Contributor",
+    "link_url": "https://ucalgary.ca/labs/spatial-intelligence",
+	"affiliation": "University of Calgary (Canada)",
+  "image": "assets/img/contributors/avatar.png",
+  "type": "org"
+  },
+                          {
+    "id": "Ruisheng Wang",
+    "name": "Ruisheng Wang, Ph.D",
+    "role": "Dataset Contributor",
+    "link_url": "https://ruishengwang.github.io/",
+  "image": "https://ruishengwang.github.io/images/WangRuisheng.gif",
+  "type": "person"
+  },
+                            {
+    "id": "Ruisheng Wang",
+    "name": "Ruisheng Wang, Ph.D",
+    "role": "Dataset Contributor",
+	"affiliation": "Shenzhen University (China)",
+    "link_url": "https://ruishengwang.github.io/",
+  "image": "https://ruishengwang.github.io/images/WangRuisheng.gif",
+  "type": "person"
+  },
+                              {
+    "id": "Shangfeng Huang",
+    "name": "Shangfeng Huang",
+    "role": "Dataset Contributor",
+    "link_url": "https://shangfenghuang.github.io/",
+	"affiliation": "University of Calgary (Canada)",
+  "image": "https://shangfenghuang.github.io/images/shang.png",
+  "type": "person"
   }
 ]

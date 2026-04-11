@@ -315,7 +315,7 @@
       transform:translateY(-3px);
       box-shadow:0 12px 32px rgba(15,46,75,.1);
     }
-    .featured-card a{
+    .featured-card .featured-card-link{
       display:flex;
       flex-direction:column;
       height:100%;
@@ -1486,6 +1486,62 @@
       return String(text || '').toLowerCase();
     }
 
+    function normalizeContributorHandle(name){
+      const text = String(name || '').trim();
+      if (!text) return '';
+      return text.startsWith('@') ? text : `@${text}`;
+    }
+
+    function normalizeContributors(item){
+      const list = [];
+      const pushContributor = (name, url) => {
+        const cleanName = String(name || '').trim();
+        const cleanUrl = String(url || '').trim();
+        if (!cleanName) return;
+        list.push({ name: cleanName, url: cleanUrl });
+      };
+
+      if (Array.isArray(item && item.contributors)){
+        item.contributors.forEach((entry) => {
+          if (!entry) return;
+          if (typeof entry === 'string'){
+            pushContributor(entry, '');
+            return;
+          }
+          if (typeof entry === 'object'){
+            pushContributor(
+              entry.name || entry.contributor || entry.handle,
+              entry.url || entry.contributor_url || entry.profile || ''
+            );
+          }
+        });
+      }
+
+      pushContributor(item && item.contributor, item && item.contributor_url);
+      pushContributor(item && item.contributor_2, item && item.contributor_url_2);
+      pushContributor(item && item.contributor_3, item && item.contributor_url_3);
+
+      return list.filter((entry, index, arr) => arr.findIndex((other) =>
+        normalizeText(other.name) === normalizeText(entry.name) &&
+        normalizeText(other.url) === normalizeText(entry.url)
+      ) === index).slice(0, 3);
+    }
+
+    function contributorOverlayHtml(contributors){
+      if (!Array.isArray(contributors) || !contributors.length) return '';
+      const names = contributors.map((entry) => {
+        const label = `<strong>${esc(normalizeContributorHandle(entry.name))}</strong>`;
+        return entry.url
+          ? `<a href="${esc(entry.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${label}</a>`
+          : label;
+      }).join(', ');
+      return `
+        <div class="submitted-by">
+          Proposed by ${names}
+        </div>
+      `;
+    }
+
     function formatCatalogTitle(raw){
       const text = String(raw || '').trim();
       if (!text) return '';
@@ -1698,8 +1754,7 @@
         ts: parseDate(ds.added_date || ds.added),
         cta: 'View dataset',
         external: false,
-        contributor: ds.contributor || '',
-        contributor_url: ds.contributor_url || ''
+        contributors: normalizeContributors(ds)
       }));
 
       const models = (Array.isArray(modelsJson) ? modelsJson : []).map(m => ({
@@ -1713,8 +1768,7 @@
         ts: parseDate(m.added_date || m.added),
         cta: 'View model',
         external: false,
-        contributor: m.contributor || '',
-        contributor_url: m.contributor_url || ''
+        contributors: normalizeContributors(m)
       }));
 
       const usecases = ((usecasesJson && usecasesJson.use_cases) || []).map(u => ({
@@ -1779,15 +1833,13 @@
 
       grid.innerHTML = items.map(item => `
         <article class="featured-card">
-          <a href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''}>
+          <div class="featured-card-link" role="link" tabindex="0"
+               onclick="${item.external ? `window.open('${esc(item.href)}', '_blank', 'noopener')` : `window.location.href='${esc(item.href)}'`}"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); ${item.external ? `window.open('${esc(item.href)}', '_blank', 'noopener')` : `window.location.href='${esc(item.href)}'`};}">
             <div class="featured-media">
               <img src="${esc(item.image)}" alt="${esc(item.title)}"
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
-              ${item.contributor ? `
-                <div class="submitted-by${item.contributor_url ? ' is-clickable' : ''}"${item.contributor_url ? ` onclick="event.preventDefault(); event.stopPropagation(); window.open('${esc(item.contributor_url)}', '_blank', 'noopener')"` : ''}>
-                  Proposed by <strong>${esc(String(item.contributor).startsWith('@') ? item.contributor : '@' + item.contributor)}</strong>
-                </div>
-              ` : ''}
+              ${contributorOverlayHtml(item.contributors)}
             </div>
             <div class="featured-body">
               <div class="featured-topline">
@@ -1796,9 +1848,9 @@
               </div>
               <h3 class="featured-title">${esc(item.title)}</h3>
               <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
-              <span class="featured-link">${esc(item.cta)}</span>
+              <a class="featured-link" href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''} onclick="event.stopPropagation()">${esc(item.cta)}</a>
             </div>
-          </a>
+          </div>
         </article>
       `).join('');
     }

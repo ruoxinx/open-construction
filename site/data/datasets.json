@@ -3472,5 +3472,43 @@
   "added_date": "2026-04-04",
   "contributor": "Nomic AI",
   "contributor_url": "https://www.nomic.ai/"
+},
+"BuildingWorld": {
+  "name": "BuildingWorld Dataset",
+  "authors": "Shangfeng Huang, Ruisheng Wang, Xin Wang",
+  "doi": "https://doi.org/10.1609/aaai.v40i7.37422",
+  "year": 2026,
+  "data_modality": "LoD2 building models, Aerial LiDAR point clouds",
+  "num_images": "5 million LOD2 building models",
+  "num_classes": 6,
+  "classes": [
+    "Facades",
+    "Roofs",
+    "Buildings",
+    "Vegetation",
+	"Bridges",
+	"Terrain"
+  ],
+  "annotation_types": [
+    "LoD3 building models",
+    "Point cloud segmentation"
+  ],
+  "geographical_location": "Global",
+  "potential_tasks": [
+    "3D reconstruction",
+    "Semantic and Instance Segmentation",
+	"Roof structure segmentation"
+  ],
+  "license": "CC BY-NC-SA 4.0",
+  "paper": "BuildingWorld: A Structured 3D Building Dataset for Urban Foundation Models",
+  "access": "https://huggingface.co/datasets/BuildingWorld",
+  "id": "BuildingWorld",
+  "image_url": "assets/img/datasets/BuildingWorld.png",
+  "added_date": "2026-04-11",
+  "contributors": [
+    { "name": "Shangfeng Huang", "url": "https://shangfenghuang.github.io/" },
+    { "name": "Ruisheng Wang", "url": "https://ruishengwang.github.io/" },
+    { "name": "Xin Wang", "url": "https://ucalgary.ca/labs/intelligent-geospatial-data-mining" }
+  ]
 }
 }

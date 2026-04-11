@@ -140,6 +140,71 @@ function formatDatasetTitle(raw){
   }).join(' ');
 }
 
+function normalizeContributorHandle(name){
+  const text = String(name || '').trim();
+  if (!text) return '';
+  return text.startsWith('@') ? text : `@${text}`;
+}
+
+function escapeHtml(text){
+  return String(text || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizeContributors(item){
+  const list = [];
+  const pushContributor = (name, url) => {
+    const cleanName = String(name || '').trim();
+    const cleanUrl = String(url || '').trim();
+    if (!cleanName) return;
+    list.push({ name: cleanName, url: cleanUrl });
+  };
+
+  if (Array.isArray(item?.contributors)){
+    item.contributors.forEach(entry => {
+      if (!entry) return;
+      if (typeof entry === 'string'){
+        pushContributor(entry, '');
+        return;
+      }
+      if (typeof entry === 'object'){
+        pushContributor(
+          entry.name || entry.contributor || entry.handle,
+          entry.url || entry.contributor_url || entry.profile || ''
+        );
+      }
+    });
+  }
+
+  pushContributor(item?.contributor, item?.contributor_url);
+  pushContributor(item?.contributor_2, item?.contributor_url_2);
+  pushContributor(item?.contributor_3, item?.contributor_url_3);
+
+  return list.filter((entry, index, arr) => arr.findIndex(other =>
+    normKey(other.name) === normKey(entry.name) && normKey(other.url) === normKey(entry.url)
+  ) === index).slice(0, 3);
+}
+
+function contributorOverlayHTML(item){
+  const contributors = normalizeContributors(item);
+  if (!contributors.length) return '';
+
+  const names = contributors.map(entry => {
+    const label = `<strong>${escapeHtml(normalizeContributorHandle(entry.name))}</strong>`;
+    return entry.url
+      ? `<a href="${escapeHtml(entry.url)}" target="_blank" rel="noopener">${label}</a>`
+      : label;
+  }).join(', ');
+
+  return `<div class="submitted-by">
+    Proposed by ${names}
+  </div>`;
+}
+
 // --- singularize last token only (lightweight) ---
 function singularizeToken(t){
   const irr = { people:'person', men:'man', women:'woman', children:'child', feet:'foot', geese:'goose', mice:'mouse', teeth:'tooth' };
@@ -631,14 +696,7 @@ function cardHTML(ds){
   const detailHref = `datasets/detail.html?id=${slug}`;
   const displayTitle = formatDatasetTitle(ds.name);
 
-  // Build the overlay tag only when contributor info exists
-  const submittedByHTML = ds.contributor
-    ? `<div class="submitted-by">
-         ${ds.contributor_url
-           ? `<a href="${ds.contributor_url}" target="_blank" rel="noopener">Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong></a>`
-           : `Proposed by <strong>${ds.contributor.startsWith('@') ? ds.contributor : '@' + ds.contributor}</strong>`}
-       </div>`
-    : '';
+  const submittedByHTML = contributorOverlayHTML(ds);
 
   return `<div class="col-md-6 col-xl-4">
     <div class="card dataset-card clickable h-100 shadow-sm" tabindex="0" role="link" aria-label="View details for ${displayTitle}" data-detail-href="${detailHref}">

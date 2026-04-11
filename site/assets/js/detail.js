@@ -169,6 +169,27 @@ function normalizeList(val){
   return String(val).split(',').map(v => v.trim()).filter(Boolean);
 }
 
+function modalityFamilies(val){
+  const raw = normalizeList(val).join(' ').toLowerCase();
+  if (!raw) return [];
+
+  const families = new Set();
+  const add = (label, pattern) => { if (pattern.test(raw)) families.add(label); };
+
+  add('point-cloud', /point\s*cloud|lidar|laser\s*scan|3d\s*scan/);
+  add('bim-model', /\bbim\b|\bifc\b|revit|lod\d|building model|building models/);
+  add('mesh-model', /\bmesh\b|geometry model|surface model/);
+  add('ground-rgb', /ground\s*rgb|street\s*view|smartphone|camera|photo|image/);
+  add('aerial-rgb', /aerial\s*rgb|drone|uav|satellite|orthophoto/);
+  add('rgbd-depth', /rgb-?d|depth|stereo/);
+  add('thermal', /thermal|infrared|\bir\b/);
+  add('document-text', /document|text|pdf|report|specification|contract/);
+  add('tabular-timeseries', /timeseries|time\s*series|sensor|tabular|table|csv|database|sql/);
+  add('geospatial', /geospatial|gis|geojson|shapefile|dem|dsm|dtm/);
+
+  return Array.from(families);
+}
+
 function prettyTermLabel(raw){
   const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
   if (vocabLabel) return vocabLabel;
@@ -282,6 +303,70 @@ function uniquePrettyTerms(val){
     output.push(pretty);
   });
   return output;
+}
+
+function taskFamilies(val){
+  const rawTerms = normalizeList(val);
+  const families = new Set();
+
+  rawTerms.forEach(term => {
+    const raw = String(term || '').toLowerCase();
+    if (!raw) return;
+    if (/segment/.test(raw)) families.add('segmentation');
+    if (/reconstruction|structure from motion|scan-to-bim|2d-to-bim|bim reconstruction|model generation/.test(raw)) families.add('reconstruction');
+    if (/detect/.test(raw)) families.add('detection');
+    if (/classif/.test(raw)) families.add('classification');
+    if (/caption|retrieval/.test(raw)) families.add('vision-language');
+    if (/slam|localization|mapping/.test(raw)) families.add('spatial-mapping');
+    if (/change detection|change segmentation/.test(raw)) families.add('change-analysis');
+    if (/pose/.test(raw)) families.add('pose');
+    if (/question answering|qa|querying/.test(raw)) families.add('qa');
+  });
+
+  return Array.from(families);
+}
+
+function applicationFamilies(val){
+  const rawTerms = normalizeList(val);
+  const families = new Set();
+
+  rawTerms.forEach(term => {
+    const raw = String(term || '').toLowerCase();
+    if (!raw) return;
+    if (/building model|mesh generation|digital twin generation|bim authoring|bim reconstruction|scan-to-bim|text-to-bim|floorplan-to-bim|design brief automation|lod3|lod4/.test(raw)) families.add('building-generation');
+    if (/structural condition monitoring|damage|defect|inspection|assessment|bridge inspection/.test(raw)) families.add('inspection-monitoring');
+    if (/safety/.test(raw)) families.add('safety');
+    if (/site understanding|progress monitoring|productivity monitoring|knowledge management/.test(raw)) families.add('site-operations');
+    if (/mapping|navigation|localization/.test(raw)) families.add('mapping-navigation');
+    if (/energy|hvac|building performance simulation|energy modelling/.test(raw)) families.add('energy-performance');
+    if (/design|cad|conceptual design|automated structural design|layout generation|plan recognition/.test(raw)) families.add('design-automation');
+    if (/compliance/.test(raw)) families.add('compliance');
+    if (/asset management/.test(raw)) families.add('asset-management');
+    if (/post-disaster/.test(raw)) families.add('disaster-response');
+  });
+
+  return Array.from(families);
+}
+
+function domainFamilies(val){
+  const raw = Array.isArray(val)
+    ? val.map(item => String(item || '')).join(' ').toLowerCase()
+    : String(val || '').toLowerCase();
+  if (!raw.trim()) return [];
+
+  const families = new Set();
+  const add = (label, pattern) => { if (pattern.test(raw)) families.add(label); };
+
+  add('building', /\bbuilding(s)?\b|facade|roof(s)?|storey|indoor|outdoor built environment/);
+  add('bridge', /\bbridge(s)?\b/);
+  add('dam', /\bdam(s)?\b/);
+  add('road', /\broad(s)?\b|highway|pavement|asphalt|street/);
+  add('pipe-mep', /\bpiping\b|\bpipe(s)?\b|\bmep\b|\bhvac\b|\bduct(s)?\b/);
+  add('construction-site', /\bconstruction site\b|\bsite\b|\bjobsite\b/);
+  add('damage-defect', /\bdamage\b|\bdefect\b|\bcrack\b|\bspalling\b|\brust\b|\binspection\b|\bmaintenance\b/);
+  add('digital-twin-bim', /\bdigital twin\b|\bbim\b|\bifc\b|\bas-built\b/);
+
+  return Array.from(families);
 }
 
 function datasetCountLabel(modalityVal){
@@ -713,8 +798,11 @@ async function initDetail(){
       });
       const modelPaperTitle = safeText(m.title || m.paper_title || m.paper_name || m.publication || m.name || '');
       const taskList = uniquePrettyTerms(tasks);
+      const taskFamilyList = taskFamilies(tasks);
       const appList = uniquePrettyTerms(applications);
+      const appFamilyList = applicationFamilies(applications);
       const modalityList = normalizeList(modality);
+      const modalityFamilyList = modalityFamilies(modality);
       const trainingList = normalizeList(m.training_data || m.datasets || m.dataset || '');
       const quickFacts = [
         { label: 'Year', value: escapeHtml(safeText(year)) },
@@ -744,10 +832,18 @@ async function initDetail(){
           return target && [ds.id, ds.name].some(v => normKey(v) === target);
         });
         const taskScore = scoreOverlap(taskList, uniquePrettyTerms(ds.potential_tasks));
+        const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(ds.potential_tasks || ds.tasks || ds.task));
         const applicationScore = scoreOverlap(appList, uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case));
+        const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(ds.applications || ds.application || ds.use_cases || ds.use_case));
         const modalityScore = scoreOverlap(modalityList, ds.data_modality);
-        const score = (trainMatch ? 8 : 0) + taskScore * 4 + applicationScore * 2 + modalityScore;
-        const hasStrongSignal = trainMatch || taskScore > 0 || applicationScore > 0;
+        const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(ds.data_modality || ds.data_modalities));
+        const score = (trainMatch ? 10 : 0) + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
+        const hasStrongSignal =
+          trainMatch ||
+          (taskScore > 0 && modalityFamilyScore > 0) ||
+          (taskScore > 0 && applicationScore > 0) ||
+          (taskFamilyScore > 0 && modalityFamilyScore > 0) ||
+          (applicationScore > 0 && modalityFamilyScore > 0);
         return hasStrongSignal ? { ds, score } : null;
       })
       .filter(Boolean)
@@ -759,10 +855,19 @@ async function initDetail(){
         .filter(other => other && other !== m)
         .map(other => {
           const taskScore = scoreOverlap(taskList, uniquePrettyTerms(other.tasks || other.task));
+          const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(other.tasks || other.task || other.potential_tasks));
           const applicationScore = scoreOverlap(appList, uniquePrettyTerms(other.applications || other.application));
+          const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(other.applications || other.application));
           const modalityScore = scoreOverlap(modalityList, other.modalities || other.modality || other.data_modalities);
-          const score = taskScore * 4 + applicationScore * 2 + modalityScore;
-          const hasStrongSignal = taskScore > 0 || applicationScore > 0;
+          const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(other.modalities || other.modality || other.data_modalities));
+          const sharedTrainingScore = scoreOverlap(trainingList, other.training_data || other.datasets || other.dataset);
+          const score = sharedTrainingScore * 6 + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
+          const hasStrongSignal =
+            sharedTrainingScore > 0 ||
+            (taskScore > 0 && modalityFamilyScore > 0) ||
+            (taskScore > 0 && applicationScore > 0) ||
+            (taskFamilyScore > 0 && modalityFamilyScore > 0) ||
+            (applicationScore > 0 && modalityFamilyScore > 0);
           return hasStrongSignal ? { other, score } : null;
         })
         .filter(Boolean)
@@ -1152,9 +1257,28 @@ async function initDetail(){
       ? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
       : '';
     const datasetTaskList = uniquePrettyTerms(ds.potential_tasks);
+    const datasetTaskFamilies = taskFamilies(ds.potential_tasks);
     const datasetApplicationList = uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case);
+    const datasetApplicationFamilies = applicationFamilies(ds.applications || ds.application || ds.use_cases || ds.use_case);
     const datasetClassList = normalizeList(ds.classes);
     const datasetModalityList = normalizeList(ds.data_modality);
+    const datasetModalityFamilies = modalityFamilies(ds.data_modality);
+    const datasetFocusDomains = domainFamilies([
+      ds.id,
+      ds.name,
+      ds.paper,
+      ds.paper_title,
+      ...(normalizeList(ds.data_modality))
+    ]);
+    const datasetDomainFamilies = domainFamilies([
+      ds.id,
+      ds.name,
+      ds.paper,
+      ds.paper_title,
+      ...(normalizeList(ds.classes)),
+      ...(normalizeList(ds.annotation_types)),
+      ...(normalizeList(ds.data_modality))
+    ]);
     const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
@@ -1186,13 +1310,19 @@ async function initDetail(){
       .filter(other => other && other !== ds)
       .map(other => {
         const otherTaskList = uniquePrettyTerms(other.potential_tasks);
+        const otherTaskFamilies = taskFamilies(other.potential_tasks || other.tasks || other.task);
         const sharedTasks = datasetTaskList.filter(task => otherTaskList.some(otherTask => normKey(otherTask) === normKey(task)));
         const taskScore = sharedTasks.length;
+        const taskFamilyScore = scoreOverlap(datasetTaskFamilies, otherTaskFamilies);
         const applicationScore = scoreOverlap(datasetApplicationList, uniquePrettyTerms(other.applications || other.application || other.use_cases || other.use_case));
         const modalityScore = scoreOverlap(datasetModalityList, other.data_modality);
+        const modalityFamilyScore = scoreOverlap(datasetModalityFamilies, modalityFamilies(other.data_modality || other.data_modalities));
         const classScore = Math.min(scoreOverlap(datasetClassList, other.classes), 2);
-        const score = taskScore * 4 + applicationScore * 2 + modalityScore + classScore;
-        const hasStrongSignal = taskScore > 0;
+        const score = taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + modalityFamilyScore * 2 + modalityScore + classScore;
+        const hasStrongSignal =
+          taskScore > 1 ||
+          (taskScore > 0 && (applicationScore > 0 || modalityFamilyScore > 0 || classScore > 0)) ||
+          (taskFamilyScore > 0 && modalityFamilyScore > 0);
         return hasStrongSignal ? { other, score, sharedTasks } : null;
       })
       .filter(Boolean)
@@ -1202,14 +1332,44 @@ async function initDetail(){
     const relatedModels = modelArr
       .map(model => {
         const taskScore = scoreOverlap(datasetTaskList, uniquePrettyTerms(model.tasks || model.task || model.potential_tasks));
+        const taskFamilyScore = scoreOverlap(datasetTaskFamilies, taskFamilies(model.tasks || model.task || model.potential_tasks));
         const applicationScore = scoreOverlap(datasetApplicationList, uniquePrettyTerms(model.applications || model.application));
+        const applicationFamilyScore = scoreOverlap(datasetApplicationFamilies, applicationFamilies(model.applications || model.application));
         const modalityScore = scoreOverlap(datasetModalityList, model.modalities || model.modality || model.data_modalities);
+        const modalityFamilyScore = scoreOverlap(datasetModalityFamilies, modalityFamilies(model.modalities || model.modality || model.data_modalities));
+        const domainFamilyScore = scoreOverlap(datasetDomainFamilies, domainFamilies([
+          model.id,
+          model.title,
+          model.abstract,
+          ...(normalizeList(model.applications || model.application)),
+          ...(normalizeList(model.modalities || model.modality || model.data_modalities))
+        ]));
         const trainMatch = normalizeList(model.training_data || model.datasets || model.dataset).some(v => {
             const key = normKey(v);
             return key && [ds.id, ds.name].some(name => normKey(name) === key);
           });
-        const score = (trainMatch ? 8 : 0) + taskScore * 4 + applicationScore * 2 + modalityScore;
-        const hasStrongSignal = trainMatch || taskScore > 0 || applicationScore > 0;
+        let penalty = 0;
+        const modelDomains = domainFamilies([
+          model.id,
+          model.title,
+          model.abstract,
+          ...(normalizeList(model.applications || model.application)),
+          ...(normalizeList(model.modalities || model.modality || model.data_modalities))
+        ]);
+        if (modelDomains.includes('bridge') && !datasetFocusDomains.includes('bridge')) penalty += 4;
+        if (modelDomains.includes('dam') && !datasetFocusDomains.includes('dam')) penalty += 4;
+        if (modelDomains.includes('road') && !datasetFocusDomains.includes('road')) penalty += 3;
+        if (modelDomains.includes('pipe-mep') && !datasetFocusDomains.includes('pipe-mep')) penalty += 2;
+        if (modelDomains.includes('damage-defect') && !datasetFocusDomains.includes('damage-defect')) penalty += 2;
+
+        const score = (trainMatch ? 10 : 0) + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore + domainFamilyScore * 3 - penalty;
+        const hasStrongSignal =
+          trainMatch ||
+          (taskScore > 0 && modalityFamilyScore > 0) ||
+          (taskScore > 0 && applicationScore > 0) ||
+          (taskFamilyScore > 0 && modalityFamilyScore > 0 && domainFamilyScore > 0) ||
+          (applicationScore > 0 && modalityFamilyScore > 0) ||
+          (domainFamilyScore > 0 && modalityFamilyScore > 0);
         return hasStrongSignal ? { model, score } : null;
       })
       .filter(Boolean)
