@@ -796,7 +796,7 @@ async function initDetail(){
       })();
 
       const relatedItemsHtml = `
-        <div class="row g-3">
+        <div class="row g-4">
           <div class="col-lg-4">
             <div class="detail-subcard h-100">
               <div class="detail-subhead">Related models</div>
@@ -860,13 +860,14 @@ async function initDetail(){
           .meta-val{ font-weight:600; line-height:1.4; }
           .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
-          .abs{ white-space:pre-wrap; }
+          .abs{ white-space:pre-line; }
           .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
           .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
           .detail-heading{ font-size:1.1rem; font-weight:800; color:var(--oc-ink); margin:0 0 .85rem; }
           .detail-section p:last-child{ margin-bottom:0; }
           .section-nav a{ color:var(--oc-link); text-decoration:none; }
           .section-nav a:hover{ text-decoration:underline; }
+          .quickfact-card .card-body{ padding:1.35rem 1.4rem; }
           .quickfact-grid{ display:grid; gap:0; }
           .quickfact-row{
             display:grid;
@@ -905,7 +906,7 @@ async function initDetail(){
 
 /* Abstract show more/less */
 .oc-abs-wrap{ position:relative; }
-.oc-abs-text{ white-space:pre-wrap; text-align:left; font-weight:400; } /* non-bold + no indent look */
+.oc-abs-text{ white-space:pre-line; text-align:left; font-weight:400; } /* non-bold + no indent look */
 .oc-abs-text.is-collapsed{
   display:-webkit-box;
   -webkit-box-orient:vertical;
@@ -992,7 +993,7 @@ async function initDetail(){
       const sidebar = `
         <div class="position-sticky" style="top:88px">
           <div class="quickfact-card mb-3">
-            <div class="card-body">
+            <div class="card-body" style="padding:1.4rem 1.5rem;">
               <h2 class="h6 text-uppercase text-muted mb-3">Quick Facts</h2>
               <div class="quickfact-grid">
                 ${quickFacts.map(item => `
@@ -1062,7 +1063,7 @@ async function initDetail(){
       `;
 
       root.innerHTML = `
-        <div class="row g-3">
+        <div class="row g-4">
           <div class="col-lg-8">${mainHero}</div>
           <div class="col-lg-4">${sidebar}</div>
         </div>
@@ -1241,7 +1242,7 @@ async function initDetail(){
     })();
 
     const relatedItemsHtml = `
-      <div class="row g-3">
+      <div class="row g-4">
         <div class="col-lg-4">
           <div class="detail-subcard h-100">
             <div class="detail-subhead">Related models</div>
@@ -1310,6 +1311,7 @@ async function initDetail(){
         .detail-heading{ font-size:1.1rem; font-weight:800; color:var(--oc-ink); margin:0 0 .85rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
+        .quickfact-card .card-body{ padding:1.35rem 1.4rem; }
         .quickfact-grid{ display:grid; gap:0; }
         .quickfact-row{
           display:grid;
@@ -1431,7 +1433,7 @@ async function initDetail(){
     const sidebar = `
       <div class="position-sticky" style="top:88px">
         <div class="quickfact-card mb-3">
-          <div class="card-body">
+          <div class="card-body" style="padding:1.4rem 1.5rem;">
             <h2 class="h6 text-uppercase text-muted mb-3">Quick Facts</h2>
             <div class="quickfact-grid">
               ${quickFacts.map(item => `
@@ -1501,7 +1503,7 @@ async function initDetail(){
     `;
 
     root.innerHTML = `
-      <div class="row g-3">
+      <div class="row g-4">
         <div class="col-lg-8">${mainHero}</div>
         <div class="col-lg-4">${sidebar}</div>
       </div>

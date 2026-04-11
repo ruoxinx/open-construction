@@ -299,7 +299,7 @@ async function initWorkflowDetail(){
         @media (max-width: 991.98px){ .meta-row{ grid-template-columns:1fr; gap:.35rem; } .detail-body{ padding:20px 18px; } .detail-section{ padding:1.05rem 1rem; } .detail-subcard{ padding:.9rem; } }
       </style>
 
-      <div class="row g-3">
+      <div class="row g-4">
         <div class="col-lg-8">
           <div class="detail-card mb-3">
             ${getMediaEmbed(item)}
@@ -351,7 +351,7 @@ async function initWorkflowDetail(){
           <section id="related-resources" class="detail-section">
             <div class="detail-kicker">Related Resources</div>
             <h2 class="detail-heading">Keep exploring from here</h2>
-            <div class="row g-3">
+            <div class="row g-4">
               <div class="col-lg-6">
                 <div class="detail-subcard h-100">
                   <div class="detail-subhead">Related workflows</div>
@@ -371,7 +371,7 @@ async function initWorkflowDetail(){
         <div class="col-lg-4">
           <div class="position-sticky" style="top:88px">
             <div class="quickfact-card mb-3">
-              <div class="card-body">
+              <div class="card-body" style="padding:1.4rem 1.5rem;">
                 <h2 class="h6 text-uppercase text-muted mb-3">Quick Facts</h2>
                 <div class="quickfact-grid">
                   ${quickFacts.map(f => `<div class="quickfact-row"><div class="quickfact-label">${escapeHtml(f.label)}</div><div class="quickfact-value">${f.value}</div></div>`).join('')}
