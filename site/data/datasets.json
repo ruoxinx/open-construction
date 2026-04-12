@@ -3510,5 +3510,40 @@
     { "name": "Ruisheng Wang", "url": "https://ruishengwang.github.io/" },
     { "name": "Xin Wang", "url": "https://ucalgary.ca/labs/intelligent-geospatial-data-mining" }
   ]
+},
+"wikiarch": {
+  "name": "WikiArch Dataset",
+  "authors": "Danrui Li, Yichao Shi, Mathew Schwartz, Mubbasir Kapadia",
+  "doi": "https://doi.org/10.1016/j.autcon.2025.106756",
+  "year": 2026,
+  "data_modality": "image, text",
+  "num_images": "70 architectural design cases",
+  "classes": [
+    "form",
+    "style",
+    "material",
+    "emotional feeling",
+	"passive design",
+	"general highlights"
+  ],
+  "annotation_types": [
+    "Design strategies and goals"
+  ],
+  "geographical_location": " Wikipedia",
+  "potential_tasks": [
+    "Retrieval-augmented generation",
+    "Information retrieval",
+    "Architecture design assistance"
+  ],
+  "license": "Not specified",
+  "paper": "Early-stage architecture design assistance by LLMs and knowledge graphs",
+  "access": "https://github.com/danruili/ArchLogicRAG",
+  "id": "wikiarch",
+  "image_url": "assets/img/datasets/wikiarch.png",
+  "added_date": "2026-04-12",
+  "contributor": "Danrui Li",
+  "contributor_url": "https://danruili.github.io/danruili/"
 }
+
+
 }

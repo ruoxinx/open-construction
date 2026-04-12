@@ -796,7 +796,7 @@ async function initDetail(){
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
-      const modelPaperTitle = safeText(m.title || m.paper_title || m.paper_name || m.publication || m.name || '');
+      const modelPaperTitle = safeText(m.Paper || m.title || m.paper_title || m.paper_name || m.publication || m.name || '');
       const taskList = uniquePrettyTerms(tasks);
       const taskFamilyList = taskFamilies(tasks);
       const appList = uniquePrettyTerms(applications);

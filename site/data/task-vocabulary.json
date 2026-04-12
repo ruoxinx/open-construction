@@ -144,6 +144,15 @@
       "description": "Evaluates agents on reading, navigating, and reasoning over architectural drawing sets and related project documents."
     },
     {
+      "id": "task.architecture-design-assistance",
+      "canonical_key": "architecture design assistance",
+      "preferred_label": "Architecture design assistance",
+      "category_id": "reasoning-qa-ie",
+      "aliases": ["Architectural design assistance"],
+      "related_task_ids": ["task.case-based-retrieval", "task.layout-retrieval", "task.vision-language-reasoning"],
+      "description": "Supports early-stage architectural design by retrieving, organizing, reasoning over, or generating precedent knowledge, layout alternatives, and design guidance from multimodal architectural data."
+    },
+    {
       "id": "task.activity-detection",
       "canonical_key": "activity detection",
       "preferred_label": "Activity detection",
@@ -471,6 +480,15 @@
       "category_id": "retrieval-search",
       "aliases": ["Information Retrieval"],
       "description": "Retrieves relevant documents, passages, records, or knowledge items for a query."
+    },
+    {
+      "id": "task.retrieval-augmented-generation",
+      "canonical_key": "retrieval augmented generation",
+      "preferred_label": "Retrieval-augmented generation",
+      "category_id": "reasoning-qa-ie",
+      "aliases": ["Retrieval Augmented Generation", "RAG"],
+      "related_task_ids": ["task.information-retrieval", "task.question-answering", "task.vision-language-reasoning"],
+      "description": "Combines retrieval of relevant external knowledge with generative modeling so outputs are grounded in documents, records, or other retrieved evidence."
     },
     {
       "id": "task.instance-segmentation",

@@ -1516,6 +1516,37 @@
   "added_date": "2026-04-05",
   "contributor": "Smart Infrastructure TEchnologies (SITE) Lab",
   "contributor_url": "https://www.mei-lab.com/"
+},
+{
+  "id": "archlogicrag",
+  "title": "ArchLogicRAG: A Knowledge Graph-Enhanced Multimodal Retrieval-Augmented Generation Framework for Architectural Design Reasoning",
+  "authors": [
+    "Danrui Li",
+    "Yichao Shi",
+    "Mathew Schwartz",
+    "Mubbasir Kapadia"
+  ],
+  "abstract": "Early-stage architectural design relies heavily on precedent cases and domain knowledge, yet existing assistance methods struggle with the dominance of visual data and the linguistic diversity of design descriptions. In this paper, a retrieval-augmented generation framework with a custom knowledge graph tailored to architecture is proposed. The approach features: (1) a lightweight graph structure representing design logic; (2) a knowledge extraction pipeline for visual and textual data; and (3) aggregation and question answering methods that consolidate precedent knowledge for design support. Experiments show improved retrieval accuracy, more comprehensive precedent recommendations, and enhanced user experience, advancing precedent-based assistance for early design.",
+  "year": 2026,
+  "modalities": [
+    "image",
+    "text"
+  ],
+  "tasks": [
+    "Retrieval-augmented generation",
+    "Information retrieval"
+  ],
+  "applications": [
+    "architectural design assistance"
+  ],
+  "license": "GPL-3.0",
+  "Paper": "Early-stage architecture design assistance by LLMs and knowledge graphs",
+  "paper_url": "https://doi.org/10.1016/j.autcon.2025.106756",
+  "code_url": "https://github.com/danruili/ArchLogicRAG",
+  "thumbnail": "assets/img/models/archlogicrag.png",
+  "added_date": "2026-04-12",
+  "contributor": "Danrui Li",
+  "contributor_url": "https://danruili.github.io/danruili/"
 }
 
 ]

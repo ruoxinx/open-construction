@@ -1747,7 +1747,7 @@
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         meta: [m.year, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.authors) ? m.authors[0] : m.authors].filter(Boolean).join(' · '),
         text: [
-          m.title, m.id, m.abstract, m.paper, m.paper_title, m.paper_url, m.doi, Array.isArray(m.authors) ? m.authors.join(' ') : m.authors,
+          m.title, m.id, m.abstract, m.Paper, m.paper, m.paper_title, m.paper_url, m.doi, Array.isArray(m.authors) ? m.authors.join(' ') : m.authors,
           ...(Array.isArray(m.tasks) ? m.tasks : normalizeText(m.task) ? [m.task] : []),
           ...(Array.isArray(m.applications) ? m.applications : normalizeText(m.application) ? [m.application] : []),
           ...(Array.isArray(m.modalities) ? m.modalities : normalizeText(m.modality) ? [m.modality] : [])
