@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: WikiArch Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=wikiarch</link>
+    <guid isPermaLink="false">datasets:wikiarch:2026-04-12</guid>
+    <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: ArchLogicRAG: A Knowledge Graph-Enhanced Multimodal Retrieval-Augmented Generation Framework for Architectural Design Reasoning]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:archlogicrag:2026-04-12</guid>
+    <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Early-stage architectural design relies heavily on precedent cases and domain knowledge, yet existing assistance methods struggle with the dominance of visual data and the linguistic diversity of design descriptions. In this paper, a retrieval-augmented generation framework with a custom knowledge graph tailored to architecture is proposed. The approach features: (1) a lightweight graph structure representing design logic; (2) a knowledge extraction pipeline for visual and textual data; and (3) aggregation and question answering methods that consolidate precedent knowledge for design support. Experiments show improved retrieval accuracy, more comprehensive precedent recommendations, and enhanced user experience, advancing precedent-based assistance for early design.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BuildingWorld Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BuildingWorld</link>
     <guid isPermaLink="false">datasets:BuildingWorld:2026-04-11</guid>
@@ -68,22 +84,6 @@
     <guid isPermaLink="false">models:3d_bridge_segmentation_model:2026-03-31</guid>
     <pubDate>Tue, 31 Mar 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[This paper proposes a novel dataset that has been specifically designed for 3D semantic segmentation of bridges and the domain gap analysis caused by varying sensors. This addresses a critical need in the field of infrastructure inspection and maintenance, which is essential for modern society. The dataset comprises high-resolution 3D scans of a diverse range of bridge structures from various countries, with detailed semantic labels provided for each. The initial objective is to facilitate accurate and automated segmentation of bridge components, thereby advancing the structural health monitoring practice. To evaluate the effectiveness of existing 3D deep learning models on this novel dataset, a comprehensive analysis of three distinct state-of-the-art architectures is conducted. Additionally, data was acquired through various sensors to quantify the domain gap resulting from sensor variations. The findings indicate that all architectures demonstrate robust performance on the specified task. However, the domain gap can potentially lead to a decline in the performance of up to 11.4% mIoU. Code and data are available at https://github.com/mvg-inatech/3d_bridge_segmentation.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: EPlus-LLM: A large language model-based computing platform for automated building energy modeling]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:EPlus-LLM:2026-03-25</guid>
-    <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Establishing building energy models (BEMs) for building design and analysis poses significant challenges due to demanding modeling efforts, expertise to use simulation software, and building science knowledge in practice. These make building modeling labor-intensive, hindering its widespread adoptions in building development. Therefore, to overcome these challenges in building modeling with enhanced automation in modeling practice, this paper proposes Eplus-LLM (EnergyPlus-Large Language Model) as the auto-building modeling platform, building on a fine-tuned large language model (LLM) to directly translate natural language description of buildings to established building models of various geometries, occupancy scenarios, and equipment loads. Through fine-tuning, the LLM (i.e., T5) is customized to digest natural language and simulation demands from users and convert human descriptions into EnergyPlus modeling files. Then, the Eplus-LLM platform realizes the automated building modeling through invoking the API of simulation software (i.e., the EnergyPlus engine) to simulate the auto-generated model files and output simulation results of interest. The validation process, involving four different types of prompts, demonstrates that Eplus-LLM reduces over 95% modeling efforts and achieves 100% accuracy in establishing BEMs while being robust to interference in usage, including but not limited to different tones, misspells, omissions, and redundancies. Overall, this research serves as the pioneering effort to customize LLM for auto-modeling purpose (directly build-up building models from natural language), aiming to provide a user-friendly human-AI interface that significantly reduces building modeling efforts. This work also further facilitates large-scale building model efforts, e.g., urban building energy modeling (UBEM), in modeling practice.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Prompt engineering to inform large language models in automated building energy modeling]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:Prompting-for-Auto-building-Modeling:2026-03-25</guid>
-    <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Application of large language models (LLMs) to facilitate auto-building energy modeling (ABEM) is complex and resource-intensive. This paper presents practical guidelines for ABEM using prompt engineering with LLMs. Unlike training LLMs for ABEM with fine-tuning (involving model weight adjustment), prompt engineering is to provide specific prompts along with modeling descriptions and demonstrations, informing LLMs to automatically generate building energy models (BEMs) through natural language expression, and enabling users to perform ABEM without specialized building knowledge or software proficiency. In this study, the capabilities of prompt engineering for ABEM using LLMs are investigated. To achieve this, six types of prompts are designed, encompassing two exploratory tasks and one real-world task with a total of 648 case studies. The results from the case studies suggest that prompt engineering is feasible to automatically obtain the desired BEMs using one-shot learning (one demonstration), few-shot learning (few-demonstration), and chain-of-thought strategies (i.e., task explanation and division). Finally, the modeling comparison between the tested lightweighted LLMs with GPT-4o suggests that compact LLMs with an appropriate context window are suitable to be deployed for various building applications. The source codes for prompt engineering are available on GitHub (https://github.com/Gangjiang1/Prompting-for-Auto-building-Modeling.git).]]></description>
   </item>
   </channel>
 </rss>
