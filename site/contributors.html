@@ -186,6 +186,86 @@
       color:var(--oc-subtle);
       background:#fff;
     }
+    .monthly-teaser{
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at top right, rgba(242,162,56,.18), transparent 32%),
+        linear-gradient(135deg, #f8fbff 0%, #ffffff 52%, #f7fbff 100%);
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      box-shadow:var(--oc-shadow);
+    }
+    .monthly-teaser::after{
+      content:"";
+      position:absolute;
+      inset:auto -80px -80px auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:rgba(15,46,75,.05);
+      pointer-events:none;
+    }
+    .monthly-teaser .card-body{
+      position:relative;
+      padding:1.25rem 1.25rem 1.2rem;
+      z-index:1;
+    }
+    .monthly-teaser-head{
+      display:grid;
+      grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);
+      gap:1rem;
+      align-items:end;
+    }
+    .monthly-teaser-copy p{
+      margin:0;
+      color:var(--oc-subtle);
+      line-height:1.6;
+      max-width:58ch;
+    }
+    .monthly-teaser-metrics{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.7rem;
+    }
+    .monthly-teaser-metric{
+      border:1px solid var(--oc-border);
+      border-radius:12px;
+      background:rgba(255,255,255,.92);
+      padding:.75rem .8rem;
+      text-align:center;
+    }
+    .monthly-teaser-metric strong{
+      display:block;
+      color:var(--oc-ink);
+      font-size:1.22rem;
+      font-weight:800;
+      line-height:1.05;
+    }
+    .monthly-teaser-metric span{
+      display:block;
+      margin-top:.2rem;
+      color:var(--oc-subtle);
+      font-size:.75rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+    .monthly-teaser-actions{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:1rem;
+      padding-top:1rem;
+      border-top:1px solid rgba(231,237,243,.9);
+    }
+    .monthly-teaser-note{
+      color:var(--oc-subtle);
+      font-size:.93rem;
+      margin:0;
+    }
 
     /* Logo wall */
     .logo-wall{
@@ -338,6 +418,8 @@
       .metrics{gap:1rem}
       .metric{gap:.75rem}
       .metric svg{width:94px;height:94px}
+      .monthly-teaser-head{grid-template-columns:1fr}
+      .monthly-teaser-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       .reach-map-head{padding:.9rem 1rem .75rem}
@@ -535,6 +617,37 @@
 </header>
 
 <main class="container oc-container">
+  <section class="oc-section" id="community-monthly">
+    <div class="monthly-teaser">
+      <div class="card-body">
+        <div class="monthly-teaser-head">
+          <div class="monthly-teaser-copy">
+            <div class="oc-kicker">What’s New This Month</div>
+            <h2 class="oc-card-title h4 mt-2 mb-2" id="communityMonthlyHeading">Loading monthly highlights...</h2>
+            <p id="communityMonthlySummary">Browse the latest month of activity across OpenConstruction, including newly added datasets, models, and the contributors behind them.</p>
+          </div>
+          <div class="monthly-teaser-metrics" id="communityMonthlyStats" aria-label="Monthly community activity">
+            <div class="monthly-teaser-metric">
+              <strong>&mdash;</strong>
+              <span>Datasets</span>
+            </div>
+            <div class="monthly-teaser-metric">
+              <strong>&mdash;</strong>
+              <span>Models</span>
+            </div>
+            <div class="monthly-teaser-metric">
+              <strong>&mdash;</strong>
+              <span>Contributors</span>
+            </div>
+          </div>
+        </div>
+        <div class="monthly-teaser-actions">
+          <a class="btn-ink btn-sm" href="monthly-highlights.html">View monthly highlights</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Core Team -->
   <section class="oc-section">
     <div class="oc-kicker mb-2">Core Team</div>
@@ -728,7 +841,7 @@
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
     <div>
-      <img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative
+      <img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative
     </div>
     <div class="mt-1">
       <small>
@@ -1192,6 +1305,127 @@ api.renderInstitutionMarquee({
 
 <script>
 (function(){
+  const headingEl = document.getElementById('communityMonthlyHeading');
+  const summaryEl = document.getElementById('communityMonthlySummary');
+  const statsEl = document.getElementById('communityMonthlyStats');
+  if (!headingEl || !summaryEl || !statsEl) return;
+
+  const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month:'long', year:'numeric' });
+
+  function safeText(value){ return String(value ?? '').trim(); }
+  function parseDate(value){
+    const raw = safeText(value);
+    if (!raw) return null;
+    const d = new Date(`${raw}T12:00:00`);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+  function monthKey(date){
+    return date ? `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}` : '';
+  }
+  function contributorKey(name){
+    return safeText(name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function aliasKey(name){
+    return contributorKey(name)
+      .replace(/\b(phd|ph d|dr|prof|professor|msc|ms|ma|bs|ba|md)\b/g, '')
+      .replace(/\b(lab|team|group|project|center|centre|laboratory|research|institute)\b/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function parenKeys(name){
+    const raw = safeText(name);
+    const matches = Array.from(raw.matchAll(/\(([^)]+)\)/g)).map((m) => contributorKey(m[1]));
+    return matches.filter(Boolean);
+  }
+  function normalizeArrayPayload(payload){
+    if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.models)) return payload.models;
+    if (payload && Array.isArray(payload.resources)) return payload.resources;
+    if (payload && typeof payload === 'object') return Object.values(payload);
+    return [];
+  }
+  function authorNames(item){
+    const authors = item?.authors;
+    if (Array.isArray(authors)){
+      return authors.map((entry) => safeText(entry?.name || entry)).filter(Boolean);
+    }
+    if (typeof authors === 'string'){
+      return authors.split(/[,;]+/).map((part) => safeText(part)).filter(Boolean);
+    }
+    return [];
+  }
+  function contributorNames(item, registry){
+    const names = [];
+    if (Array.isArray(item.contributors) && item.contributors.length){
+      names.push(...item.contributors.map((entry) => safeText(entry?.name || entry)).filter(Boolean));
+    }
+    const single = safeText(item.contributor);
+    if (single) names.push(single);
+    if (registry){
+      authorNames(item).forEach((name) => {
+        const key = contributorKey(name);
+        const alt = aliasKey(name);
+        if (registry.get(key) || registry.get(alt)) names.push(name);
+      });
+    }
+    return Array.from(new Set(names.map((name) => safeText(name)).filter(Boolean)));
+  }
+  function setStats(values){
+    Array.from(statsEl.querySelectorAll('strong')).forEach((node, idx) => {
+      node.textContent = String(values[idx] ?? 0);
+    });
+  }
+
+  Promise.all([
+    fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
+    fetch('data/models.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : []),
+    fetch('data/contributors.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : [])
+  ]).then(([datasetsPayload, modelsPayload, contributorsPayload]) => {
+    const registry = new Map();
+    (Array.isArray(contributorsPayload) ? contributorsPayload : []).forEach((row) => {
+      const key = contributorKey(row?.name);
+      const alt = aliasKey(row?.name);
+      const idKey = contributorKey(row?.id);
+      if (key) registry.set(key, row);
+      if (alt && !registry.has(alt)) registry.set(alt, row);
+      if (idKey && !registry.has(idKey)) registry.set(idKey, row);
+      parenKeys(row?.name).forEach((parenKey) => {
+        if (!registry.has(parenKey)) registry.set(parenKey, row);
+        const stripped = aliasKey(parenKey);
+        if (stripped && !registry.has(stripped)) registry.set(stripped, row);
+      });
+    });
+    const datasetEntries = normalizeArrayPayload(datasetsPayload).map((item) => ({ type:'dataset', item, added: parseDate(item.added_date || item.added) }));
+    const modelEntries = normalizeArrayPayload(modelsPayload).map((item) => ({ type:'model', item, added: parseDate(item.added_date || item.added) }));
+    const allEntries = [...datasetEntries, ...modelEntries].filter((entry) => entry.added);
+    const latest = allEntries.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
+    if (!latest){
+      headingEl.textContent = 'Monthly highlights coming soon';
+      summaryEl.textContent = 'Monthly highlights will appear here as dated additions are added to the catalog.';
+      setStats([0,0,0]);
+      return;
+    }
+    const key = monthKey(latest.added);
+    const monthly = allEntries.filter((entry) => monthKey(entry.added) === key);
+    const contributorCount = new Set(monthly.flatMap((entry) => contributorNames(entry.item, registry).map(contributorKey).filter(Boolean))).size;
+    headingEl.textContent = `What’s new in the community for ${MONTH_FORMATTER.format(latest.added)}`;
+    summaryEl.textContent = `${MONTH_FORMATTER.format(latest.added)} includes ${monthly.filter((entry) => entry.type === 'dataset').length} new datasets, ${monthly.filter((entry) => entry.type === 'model').length} new models, and ${contributorCount} contributors across the OpenConstruction community.`;
+    setStats([
+      monthly.filter((entry) => entry.type === 'dataset').length,
+      monthly.filter((entry) => entry.type === 'model').length,
+      contributorCount
+    ]);
+  }).catch((err) => {
+    console.error('Failed to load community teaser', err);
+    headingEl.textContent = 'Monthly highlights unavailable right now';
+    summaryEl.textContent = 'The teaser could not be loaded at the moment.';
+    setStats([0,0,0]);
+  });
+})();
+</script>
+
+<script>
+(function(){
   const DATA_URL = 'data/news-events.json';
   const grid = document.getElementById('newsEventsGrid');
   if (!grid) return;
@@ -1268,4 +1502,5 @@ api.renderInstitutionMarquee({
 
 </body>
 </html>
+
 

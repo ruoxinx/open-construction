@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python -c \"import json; data=json.load\\(open\\('site/data/institutions.json'\\)\\); print\\(len\\(data\\)\\)\")",
-      "Bash(python3 -c ':*)"
+      "Bash(python3 -c ':*)",
+      "Bash(python -c \"import json; data=json.load\\(open\\('site/data/contributors.json'\\)\\); print\\(f'Total entries in contributors.json: {len\\(data\\)}'\\); print\\(f'Community page count \\(length + 7\\): {len\\(data\\) + 7}'\\)\")"
     ]
   }
 }

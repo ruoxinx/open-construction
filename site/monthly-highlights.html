@@ -1,0 +1,1006 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenConstruction · Monthly Community Snapshot</title>
+  <meta name="description" content="Explore monthly community additions from OpenConstruction, including new datasets, models, and contributors.">
+  <link rel="canonical" href="https://www.openconstruction.org/monthly-highlights.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="OpenConstruction · Monthly Community Snapshot">
+  <meta property="og:description" content="A monthly record of new datasets, models, and contributors from the OpenConstruction community.">
+  <meta property="og:url" content="https://www.openconstruction.org/monthly-highlights.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+    }
+    .oc-container{ max-width:1120px; }
+    .hero{
+      border-bottom:1px solid var(--oc-border);
+      background:
+        radial-gradient(circle at top right, rgba(242,162,56,.18), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    }
+    .hero .content{ padding:56px 0 40px; }
+    .hero-toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom:1rem;
+      flex-wrap:wrap;
+    }
+    .hero-toolbar-actions{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      flex-wrap:wrap;
+    }
+    .hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .8rem;
+      border:1px solid #dbe6f0;
+      border-radius:999px;
+      background:#f8fbff;
+      color:var(--oc-ink);
+      font-size:.78rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .hero-kicker::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--oc-accent);
+      box-shadow:0 0 0 4px rgba(242,162,56,.16);
+    }
+    .hero-top{
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:1.2rem;
+      align-items:start;
+    }
+    .hero-title{
+      font-weight:800;
+      color:var(--oc-ink);
+      letter-spacing:-.03em;
+      line-height:1.1;
+      font-size:clamp(1.5rem, 1rem + 2.5vw, 2.4rem);
+      margin:0;
+    }
+    .hero-subtitle{
+      color:var(--oc-subtle);
+      font-size:1rem;
+      line-height:1.6;
+      max-width:64ch;
+      margin:0;
+    }
+    .hero-subtitle:empty{
+      display:none;
+    }
+    .share-icon-btn{
+      width:38px;
+      height:38px;
+      border-radius:10px;
+      border:1px solid var(--oc-border);
+      background:#fff;
+      color:var(--oc-ink);
+      box-shadow:0 6px 18px rgba(15,46,75,.06);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      transition:background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .share-icon-btn:hover{
+      background:#f8fbff;
+      border-color:#d6e2ee;
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(15,46,75,.08);
+    }
+    .archive-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-top:1rem;
+      padding-top:.2rem;
+    }
+    .archive-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:.34rem .72rem;
+      border-radius:999px;
+      border:1px solid var(--oc-border);
+      background:rgba(255,255,255,.82);
+      color:var(--oc-ink);
+      font-weight:650;
+      font-size:.83rem;
+      text-decoration:none;
+      box-shadow:none;
+      backdrop-filter:blur(4px);
+    }
+    .archive-chip:hover{
+      text-decoration:none;
+      background:#fff;
+      border-color:#d6e2ee;
+    }
+    .archive-chip.is-active{
+      background:var(--oc-ink);
+      border-color:var(--oc-ink);
+      color:#fff;
+      box-shadow:0 10px 24px rgba(15,46,75,.12);
+    }
+    .metric-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.9rem;
+      max-width:1120px;
+    }
+    .metric-card{
+      position:relative;
+      border:1px solid var(--oc-border);
+      border-radius:18px;
+      box-shadow:0 10px 28px rgba(15,46,75,.06);
+      padding:1.05rem 1.05rem 1rem;
+      text-align:left;
+      background:
+        radial-gradient(circle at top right, rgba(242,162,56,.12), transparent 36%),
+        linear-gradient(180deg, rgba(248,251,255,.95) 0%, rgba(255,255,255,1) 100%);
+    }
+    .metric-card::before{
+      content:"";
+      display:block;
+      width:34px;
+      height:3px;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--oc-accent), rgba(242,162,56,.15));
+      margin-bottom:.7rem;
+    }
+    .metric-value{
+      display:block;
+      font-size:.98rem;
+      line-height:1.45;
+      font-weight:750;
+      color:var(--oc-ink);
+      max-width:34ch;
+    }
+    .metric-label{
+      display:block;
+      margin-bottom:.45rem;
+      font-size:.72rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--oc-subtle);
+      font-weight:800;
+    }
+    .metric-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.42rem;
+      margin-top:.7rem;
+    }
+    .metric-tag{
+      display:inline-flex;
+      align-items:center;
+      padding:.26rem .62rem;
+      border-radius:999px;
+      border:1px solid #dbe6f0;
+      background:#fff;
+      color:var(--oc-ink);
+      font-size:.79rem;
+      font-weight:700;
+      line-height:1.2;
+    }
+    .oc-section{ margin-top:34px; }
+    .oc-kicker{
+      font-size:.8rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--oc-subtle);
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:end;
+      flex-wrap:wrap;
+      margin-bottom:1rem;
+    }
+    .highlight-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:.9rem;
+    }
+    .highlight-group + .highlight-group{
+      margin-top:1.4rem;
+    }
+    .highlight-subhead{
+      margin:0 0 .9rem;
+      font-size:1.02rem;
+      font-weight:700;
+      color:var(--oc-ink);
+      letter-spacing:-.01em;
+    }
+    .featured-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:16px;
+      box-shadow:var(--oc-shadow);
+      overflow:hidden;
+      height:100%;
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .featured-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(15,46,75,.1);
+    }
+    .featured-card-link{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      color:inherit;
+      text-decoration:none;
+    }
+    .featured-media{
+      position:relative;
+      aspect-ratio:1.45/1;
+      background:#f3f6fa;
+      overflow:hidden;
+    }
+    .featured-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .featured-media .submitted-by{
+      position:absolute;
+      right:8px;
+      bottom:8px;
+      background:rgba(255,255,255,.96);
+      border:1px solid #e0e6ef;
+      border-radius:10px;
+      padding:2px 8px;
+      font-size:.75rem;
+      line-height:1.25;
+      color:#1e2a36;
+      font-weight:500;
+      box-shadow:0 2px 6px rgba(0,0,0,.06);
+      max-width:90%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .featured-body{
+      padding:.85rem .9rem .95rem;
+      display:flex;
+      flex-direction:column;
+      gap:.38rem;
+      flex:1;
+      min-width:0;
+    }
+    .featured-topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      flex-wrap:wrap;
+    }
+    .featured-type{
+      display:inline-flex;
+      align-self:flex-start;
+      padding:.2rem .55rem;
+      border-radius:999px;
+      background:#eef4fb;
+      border:1px solid #dbe6f0;
+      color:var(--oc-ink);
+      font-size:.74rem;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .featured-year{
+      color:var(--oc-subtle);
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .featured-title{
+      margin:0;
+      font-size:.93rem;
+      font-weight:700;
+      color:var(--oc-ink);
+      line-height:1.35;
+    }
+    .featured-desc{
+      margin:0;
+      color:var(--oc-text);
+      font-size:.88rem;
+      line-height:1.42;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .featured-meta{
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.88rem;
+    }
+    .contrib-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1rem;
+    }
+    .contrib-card-link{
+      display:block;
+      height:100%;
+      color:inherit;
+      text-decoration:none;
+    }
+    .person-card{ transition:transform .12s ease; }
+    .person-card:hover{ transform:translateY(-1px); }
+    .person-card .card-body{ padding:1rem 1.1rem; }
+    .team-card .card-body{ padding:.9rem 1rem; }
+    .contrib-card-wrap{
+      display:flex;
+      gap:.75rem;
+      align-items:center;
+      min-width:0;
+    }
+    .headshot{
+      width:86px; height:86px; object-fit:cover; border-radius:50%;
+      border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
+      background:#eef3f8;
+    }
+    .team-card .headshot{ width:72px; height:72px; }
+    .headshot.is-initials{
+      display:none;
+      place-items:center;
+      color:var(--oc-ink);
+      font-weight:800;
+      font-size:.95rem;
+    }
+    .contrib-name,
+    .contrib-name a{
+      color:var(--oc-ink);
+      font-weight:800;
+      text-decoration:none;
+    }
+    .contrib-name a:hover{ text-decoration:underline; }
+    .contrib-role{
+      font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem;
+    }
+    .contrib-affil{
+      font-size:.92rem; line-height:1.45;
+    }
+    .empty-state{
+      border:1px dashed var(--oc-border);
+      border-radius:var(--oc-radius);
+      background:#fff;
+      color:var(--oc-subtle);
+      padding:1.1rem 1.2rem;
+    }
+    :focus-visible{
+      outline:2px solid var(--oc-focus);
+      outline-offset:2px;
+      border-radius:6px;
+    }
+    @media (max-width: 991.98px){
+      .hero .content{ padding:42px 0 34px; }
+      .metric-grid{ grid-template-columns:1fr; }
+      .highlight-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .contrib-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .hero-title{ }
+    }
+    @media (max-width: 767.98px){
+      .metric-grid{ grid-template-columns:1fr; }
+      .highlight-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .contrib-grid{ grid-template-columns:1fr; }
+      .hero-toolbar{ align-items:flex-start; }
+      .hero-title{
+        font-size:clamp(1.3rem, 1rem + 2vw, 2rem);
+      }
+      .archive-row{
+        gap:.42rem;
+      }
+      .archive-chip{
+        font-size:.8rem;
+      }
+    }
+    @media (max-width: 575.98px){
+      .highlight-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries">
+            <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="models.html">Models</a></li>
+            <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item">
+          <a class="nav-link px-2 icon-only" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener"
+             aria-label="OpenConstruction on GitHub" title="View on GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
+                       1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
+                       8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+            </svg>
+          </a>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon" data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0
+                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379
+                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7
+                       7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="hero-top">
+      <div>
+        <div class="hero-toolbar">
+          <div class="hero-kicker">Monthly Community Snapshot</div>
+          <div class="hero-toolbar-actions">
+            <a class="btn btn-dark btn-sm rounded-pill" href="contributors.html">Back to community</a>
+            <button type="button" class="share-icon-btn" id="shareNativeBtn" aria-label="Share monthly community snapshot" title="Share">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v3.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.1a.5.5 0 0 1 1 0v3.1A2 2 0 0 1 14 15.5H2a2 2 0 0 1-2-2v-3.1a.5.5 0 0 1 .5-.5"/>
+                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V10.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <h1 class="hero-title" id="pageTitle">Loading community snapshot...</h1>
+        <p class="hero-subtitle" id="pageSummary"></p>
+        <div class="archive-row" id="archiveRow" aria-label="Monthly community archive"></div>
+      </div>
+      <div class="metric-grid" id="metricGrid" aria-label="Monthly activity summary">
+        <div class="metric-card">
+          <span class="metric-label">Scope</span>
+          <span class="metric-value">Loading monthly summary...</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Tasks</span>
+          <span class="metric-value">Loading monthly summary...</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Applications</span>
+          <span class="metric-value">Loading monthly summary...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <section class="oc-section">
+    <div class="section-head">
+      <div>
+        <div class="oc-kicker">Community Contributors</div>
+        <h2 class="h4 mb-2" id="contribHeading">Contributors this month</h2>
+      </div>
+    </div>
+    <div class="contrib-grid" id="contribGrid">
+      <div class="empty-state">Loading contributors...</div>
+    </div>
+  </section>
+
+  <section class="oc-section mb-5">
+    <div class="section-head">
+      <div>
+        <div class="oc-kicker">Monthly Additions</div>
+        <h2 class="h4 mb-2" id="featuredHeading">Community additions</h2>
+      </div>
+    </div>
+    <div id="featuredSections">
+      <div class="empty-state">Loading monthly additions...</div>
+    </div>
+  </section>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div><img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1">
+      <small>
+        Licensed under Apache 2.0.
+        Images and thumbnails are &copy; their respective creators unless otherwise noted.
+      </small>
+    </div>
+    <div class="mt-1">
+      <small>
+        <a href="contribute.html#terms" class="text-muted">Terms</a> &middot;
+        <a href="contribute.html#privacy" class="text-muted">Privacy</a> &middot;
+        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> &middot;
+        <a href="contribute.html#citation" class="text-muted">Citation</a>
+      </small>
+    </div>
+  </div>
+</footer>
+
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
+            method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We'll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script>
+(function(){
+  const pageTitleEl = document.getElementById('pageTitle');
+  const pageSummaryEl = document.getElementById('pageSummary');
+  const metricGrid = document.getElementById('metricGrid');
+  const featuredSections = document.getElementById('featuredSections');
+  const contribGrid = document.getElementById('contribGrid');
+  const archiveRow = document.getElementById('archiveRow');
+  const shareNativeBtn = document.getElementById('shareNativeBtn');
+  const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month:'long', year:'numeric' });
+
+  function safeText(value){ return String(value ?? '').trim(); }
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function safeHref(value){
+    const raw = safeText(value);
+    if (!raw) return '';
+    try{
+      const u = new URL(raw, window.location.href);
+      return u.href;
+    }catch{
+      return '';
+    }
+  }
+  function parseDate(value){
+    const raw = safeText(value);
+    if (!raw) return null;
+    const d = new Date(`${raw}T12:00:00`);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+  function monthKey(date){
+    return date ? `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}` : '';
+  }
+  function parseMonthParam(value){
+    const raw = safeText(value);
+    return /^\d{4}-\d{2}$/.test(raw) ? raw : '';
+  }
+  function contributorKey(name){
+    return safeText(name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+  function aliasKey(name){
+    return contributorKey(name)
+      .replace(/\b(phd|ph d|dr|prof|professor|msc|ms|ma|bs|ba|md)\b/g, '')
+      .replace(/\b(lab|team|group|project|center|centre|laboratory|research|institute)\b/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function parenKeys(name){
+    const raw = safeText(name);
+    const matches = Array.from(raw.matchAll(/\(([^)]+)\)/g)).map((m) => contributorKey(m[1]));
+    return matches.filter(Boolean);
+  }
+  function initials(name){
+    return safeText(name).split(/\s+/).slice(0, 2).map(part => part.charAt(0).toUpperCase()).join('') || 'OC';
+  }
+  function normalizeArrayPayload(payload){
+    if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.models)) return payload.models;
+    if (payload && typeof payload === 'object') return Object.values(payload);
+    return [];
+  }
+  function authorNames(item){
+    const authors = item?.authors;
+    if (Array.isArray(authors)){
+      return authors.map((entry) => safeText(entry?.name || entry)).filter(Boolean);
+    }
+    if (typeof authors === 'string'){
+      return authors.split(/[,;]+/).map((part) => safeText(part)).filter(Boolean);
+    }
+    return [];
+  }
+  function contributorNames(item, registry){
+    const names = [];
+    if (Array.isArray(item.contributors) && item.contributors.length){
+      names.push(...item.contributors.map((entry) => safeText(entry?.name || entry)).filter(Boolean));
+    }
+    const single = safeText(item.contributor);
+    if (single) names.push(single);
+    if (registry){
+      authorNames(item).forEach((name) => {
+        const key = contributorKey(name);
+        const alt = aliasKey(name);
+        if (registry.get(key) || registry.get(alt)) names.push(name);
+      });
+    }
+    return Array.from(new Set(names.map((name) => safeText(name)).filter(Boolean)));
+  }
+  function itemHref(type, item){
+    const id = encodeURIComponent(item.id || item.title || item.name || '');
+    return type === 'dataset' ? `datasets/detail.html?id=${id}` : `models/details.html?id=${id}`;
+  }
+  function itemTitle(item){
+    return safeText(item.title || item.name || item.id || 'Untitled resource');
+  }
+  function itemSummary(item){
+    return safeText(item.abstract || item.description || item.summary || '');
+  }
+  function truncate(text, max){
+    const raw = safeText(text);
+    if (!raw || raw.length <= max) return raw;
+    return `${raw.slice(0, max - 1).trimEnd()}…`;
+  }
+  function monthHref(month){
+    const url = new URL(window.location.href);
+    url.searchParams.set('month', month);
+    return `${url.pathname}${url.search}`;
+  }
+  function summarizeTop(values, limit = 4){
+    const counts = new Map();
+    values.map(safeText).filter(Boolean).forEach((value) => {
+      counts.set(value, (counts.get(value) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit)
+      .map(([label]) => label);
+  }
+  function listValues(type, item){
+    if (type === 'dataset'){
+      const tasks = Array.isArray(item.tasks) ? item.tasks : item.potential_tasks;
+      const applications = Array.isArray(item.applications) ? item.applications : [];
+      return { tasks, applications };
+    }
+    return {
+      tasks: Array.isArray(item.tasks) ? item.tasks : [],
+      applications: Array.isArray(item.applications) ? item.applications : []
+    };
+  }
+  function renderMetricCard(card){
+    const tags = Array.isArray(card.tags) ? card.tags.filter(Boolean) : [];
+    return `
+      <div class="metric-card">
+        <span class="metric-label">${escapeHtml(card.label)}</span>
+        ${card.value ? `<span class="metric-value">${escapeHtml(card.value)}</span>` : ''}
+        ${tags.length ? `<div class="metric-tags">${tags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+      </div>
+    `;
+  }
+  function setMetricCards(cards){
+    metricGrid.innerHTML = cards.map(renderMetricCard).join('');
+  }
+  async function copyText(text){
+    if (!text) return false;
+    try{
+      if (navigator.clipboard?.writeText){
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    }catch{}
+    try{
+      window.prompt('Copy link: Ctrl/Cmd+C, Enter', text);
+      return true;
+    }catch{}
+    return false;
+  }
+  async function shareLink(){
+    const url = window.location.href;
+    try{
+      if (navigator.share){
+        await navigator.share({ title: document.title, url });
+        return;
+      }
+    }catch(err){
+      if (err?.name === 'AbortError') return;
+    }
+    const ok = await copyText(url);
+    if (ok) shareNativeBtn.title = 'Link copied';
+    setTimeout(() => { shareNativeBtn.title = 'Share'; }, 1800);
+  }
+
+  shareNativeBtn.addEventListener('click', () => { shareLink(); });
+
+  Promise.all([
+    fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
+    fetch('data/models.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : []),
+    fetch('data/contributors.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : [])
+  ]).then(([datasetsPayload, modelsPayload, contributorsPayload]) => {
+    const registry = new Map();
+    (Array.isArray(contributorsPayload) ? contributorsPayload : []).forEach((row) => {
+      const key = contributorKey(row?.name);
+      const alt = aliasKey(row?.name);
+      const idKey = contributorKey(row?.id);
+      if (key) registry.set(key, row);
+      if (alt && !registry.has(alt)) registry.set(alt, row);
+      if (idKey && !registry.has(idKey)) registry.set(idKey, row);
+      parenKeys(row?.name).forEach((parenKey) => {
+        if (!registry.has(parenKey)) registry.set(parenKey, row);
+        const stripped = aliasKey(parenKey);
+        if (stripped && !registry.has(stripped)) registry.set(stripped, row);
+      });
+    });
+    const datasets = normalizeArrayPayload(datasetsPayload).map((item) => ({ type:'dataset', item, added: parseDate(item.added_date || item.added) }));
+    const models = normalizeArrayPayload(modelsPayload).map((item) => ({ type:'model', item, added: parseDate(item.added_date || item.added) }));
+    const all = [...datasets, ...models].filter((entry) => entry.added);
+    const latest = all.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
+
+    if (!latest){
+      pageTitleEl.textContent = 'Monthly community snapshot coming soon';
+      pageSummaryEl.textContent = '';
+      setMetricCards([
+        { label:'Scope', value:'No monthly additions yet' },
+        { label:'Tasks', value:'—' },
+        { label:'Applications', value:'—' }
+      ]);
+      featuredSections.innerHTML = '<div class="empty-state">No monthly additions are available yet.</div>';
+      contribGrid.innerHTML = '<div class="empty-state">Contributors will appear here once monthly additions are available.</div>';
+      return;
+    }
+
+    const archiveMonths = Array.from(new Set(all.map((entry) => monthKey(entry.added)).filter(Boolean))).sort((a,b) => b.localeCompare(a));
+    const requestedMonth = parseMonthParam(new URLSearchParams(window.location.search).get('month'));
+    const featuredMonthKey = archiveMonths.includes(requestedMonth) ? requestedMonth : monthKey(latest.added);
+    const monthLabel = MONTH_FORMATTER.format(new Date(`${featuredMonthKey}-01T12:00:00`));
+
+    if (archiveRow){
+      archiveRow.innerHTML = archiveMonths.slice(0, 12).map((month) => {
+        const isActive = month === featuredMonthKey;
+        const date = new Date(`${month}-01T12:00:00`);
+        return `<a class="archive-chip${isActive ? ' is-active' : ''}" href="${escapeHtml(monthHref(month))}">${escapeHtml(MONTH_FORMATTER.format(date))}</a>`;
+      }).join('');
+    }
+
+    const monthly = all
+      .filter((entry) => monthKey(entry.added) === featuredMonthKey)
+      .sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0));
+
+    const datasetCount = monthly.filter((entry) => entry.type === 'dataset').length;
+    const modelCount = monthly.filter((entry) => entry.type === 'model').length;
+    const contributorMap = new Map();
+    monthly.forEach((entry) => {
+      contributorNames(entry.item, registry).forEach((name) => {
+        const key = contributorKey(name);
+        if (!key) return;
+        if (!contributorMap.has(key)) contributorMap.set(key, { name });
+      });
+    });
+    const contributors = Array.from(contributorMap.values())
+      .sort((a,b) => a.name.localeCompare(b.name));
+    const tasks = [];
+    const applications = [];
+    monthly.forEach(({ type, item }) => {
+      const values = listValues(type, item);
+      tasks.push(...(Array.isArray(values.tasks) ? values.tasks : [values.tasks]));
+      applications.push(...(Array.isArray(values.applications) ? values.applications : [values.applications]));
+    });
+    const topTasks = summarizeTop(tasks);
+    const topApplications = summarizeTop(applications);
+
+    document.title = `OpenConstruction · Monthly Community Snapshot · ${monthLabel}`;
+    pageTitleEl.textContent = `${monthLabel} community snapshot`;
+    pageSummaryEl.textContent = '';
+    const featuredHeading = document.getElementById('featuredHeading');
+    const contribHeading = document.getElementById('contribHeading');
+    if (featuredHeading) featuredHeading.textContent = `Community additions in ${monthLabel}`;
+    if (contribHeading) contribHeading.textContent = `Contributors in ${monthLabel}`;
+    setMetricCards([
+      {
+        label:'Scope',
+        value:`${datasetCount} datasets, ${modelCount} models, ${contributors.length} contributors`,
+        tags:[]
+      },
+      {
+        label:'Tasks',
+        value: topTasks.length ? '' : 'Tasks not specified',
+        tags: topTasks
+      },
+      {
+        label:'Applications',
+        value: topApplications.length ? '' : 'Applications not specified',
+        tags: topApplications
+      }
+    ]);
+
+    const primaryContributor = (item) => {
+      if (Array.isArray(item.contributors) && item.contributors.length){
+        const first = item.contributors[0];
+        const name = safeText(first?.name || first);
+        const url = safeHref(first?.url || first?.link_url || item.contributor_url || '');
+        return { name, url };
+      }
+      const contributor = safeText(item.contributor);
+      if (contributor){
+        const match = registry.get(contributorKey(contributor)) || registry.get(aliasKey(contributor));
+        return {
+          name: contributor,
+          url: safeHref(item.contributor_url || match?.link_url || '')
+        };
+      }
+      return { name:'', url:'' };
+    };
+    const renderFeaturedCards = (entries) => entries.map(({ type, item }) => {
+      const title = itemTitle(item);
+      const proposer = primaryContributor(item);
+      const summary = type === 'model' ? '' : truncate(itemSummary(item), 170);
+      const media = safeText(item.thumbnail || item.image_url) || 'assets/img/models/_placeholder.png';
+      const detailHref = itemHref(type, item);
+      return `
+        <article class="featured-card">
+          <div class="featured-card-link">
+            <div class="featured-media">
+              <a href="${escapeHtml(detailHref)}">
+                <img src="${escapeHtml(media)}" alt="${escapeHtml(title)}">
+              </a>
+              ${proposer.name ? `${proposer.url ? `<a class="submitted-by" href="${escapeHtml(proposer.url)}" target="_blank" rel="noopener">Proposed by ${escapeHtml(proposer.name)}</a>` : `<div class="submitted-by">Proposed by ${escapeHtml(proposer.name)}</div>`}` : ''}
+            </div>
+            <div class="featured-body">
+              <div class="featured-topline">
+                <span class="featured-type">${escapeHtml(type)}</span>
+                ${safeText(item.year) ? `<span class="featured-year">${escapeHtml(item.year)}</span>` : ''}
+              </div>
+              <h3 class="featured-title"><a href="${escapeHtml(detailHref)}">${escapeHtml(title)}</a></h3>
+              ${summary ? `<p class="featured-desc">${escapeHtml(summary)}</p>` : ''}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+      const featuredDatasets = monthly.filter((entry) => entry.type === 'dataset').slice(0, 12);
+      const featuredModels = monthly.filter((entry) => entry.type === 'model').slice(0, 12);
+    const groups = [];
+    if (featuredDatasets.length){
+      groups.push(`
+        <div class="highlight-group">
+          <h3 class="highlight-subhead">Datasets</h3>
+          <div class="highlight-grid">${renderFeaturedCards(featuredDatasets)}</div>
+        </div>
+      `);
+    }
+    if (featuredModels.length){
+      groups.push(`
+        <div class="highlight-group">
+          <h3 class="highlight-subhead">Models</h3>
+          <div class="highlight-grid">${renderFeaturedCards(featuredModels)}</div>
+        </div>
+      `);
+    }
+    featuredSections.innerHTML = groups.length ? groups.join('') : '<div class="empty-state">No datasets or models are available for this month yet.</div>';
+
+    contribGrid.innerHTML = contributors.length ? contributors.map((entry) => {
+      const match = registry.get(contributorKey(entry.name)) || registry.get(aliasKey(entry.name));
+      const image = safeText(match?.image);
+      const link = safeHref(match?.link_url || '');
+      const monthlyItems = monthly.filter((row) => contributorNames(row.item, registry).some((name) => contributorKey(name) === contributorKey(entry.name)));
+      const hasDataset = monthlyItems.some((row) => row.type === 'dataset');
+      const hasModel = monthlyItems.some((row) => row.type === 'model');
+      const derivedRole = hasDataset && hasModel
+        ? 'Dataset and model contributor'
+        : hasDataset
+          ? 'Dataset contributor'
+          : hasModel
+            ? 'Model contributor'
+            : 'Contributor';
+      const role = safeText(match?.role || derivedRole);
+      const affiliation = safeText(match?.affiliation);
+      const nameHtml = escapeHtml(entry.name);
+      const avatar = image
+        ? `<img class="headshot" src="${escapeHtml(image)}" alt="${escapeHtml(entry.name)}" loading="lazy" onerror="if(this.dataset.fallback!=='avatar'){this.dataset.fallback='avatar';this.src='assets/img/contributors/avatar.png';return;} this.style.display='none';this.nextElementSibling.style.display='grid';"><div class="headshot is-initials" aria-hidden="true">${escapeHtml(initials(entry.name))}</div>`
+        : `<img class="headshot" src="assets/img/contributors/avatar.png" alt="${escapeHtml(entry.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"><div class="headshot is-initials" aria-hidden="true">${escapeHtml(initials(entry.name))}</div>`;
+      const cardInner = `
+        <div class="card-body contrib-card-wrap">
+          ${avatar}
+          <div>
+            <h5 class="card-title contrib-name">${nameHtml}</h5>
+            ${role ? `<div class="contrib-role">${escapeHtml(role)}</div>` : ''}
+            ${affiliation ? `<div class="affil contrib-affil">${escapeHtml(affiliation)}</div>` : ''}
+          </div>
+        </div>
+      `;
+      return `
+        <article class="card oc-card person-card team-card contrib-card h-100">
+          ${link ? `<a class="contrib-card-link" href="${escapeHtml(link)}" target="_blank" rel="noopener">${cardInner}</a>` : cardInner}
+        </article>
+      `;
+    }).join('') : '<div class="empty-state">Contributors are not available yet for this month.</div>';
+  }).catch((err) => {
+    console.error('Failed to load monthly community snapshot', err);
+    pageTitleEl.textContent = 'Monthly community snapshot unavailable right now';
+    pageSummaryEl.textContent = '';
+    setMetricCards([
+      { label:'Scope', value:'Summary unavailable' },
+      { label:'Tasks', value:'Summary unavailable' },
+      { label:'Applications', value:'Summary unavailable' }
+    ]);
+    featuredSections.innerHTML = '<div class="empty-state">We could not load monthly additions right now.</div>';
+    contribGrid.innerHTML = '<div class="empty-state">We could not load contributors right now.</div>';
+  });
+})();
+</script>
+</body>
+</html>
+
