@@ -300,8 +300,41 @@
     .featured-rail-head{
       display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:1rem;
       margin-bottom:1rem;
+    }
+    .featured-rail-copy{
+      min-width:0;
+      flex:1;
+    }
+    .featured-rail-footer{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top:1rem;
+    }
+    .featured-digest-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      white-space:nowrap;
+      padding:.28rem .72rem;
+      border:1px solid #dbe6f0;
+      border-radius:999px;
+      background:#f8fbff;
+      color:var(--oc-brand-ink);
+      font-size:.88rem;
+      font-weight:700;
+      line-height:1.2;
+      box-shadow:none;
+      text-decoration:none;
+    }
+    .featured-digest-link:hover{
+      background:#f3f8fd;
+      border-color:#cfdeec;
+      color:var(--oc-brand-ink);
+      text-decoration:none;
     }
     .featured-rail-btn{
       display:inline-flex;
@@ -460,7 +493,7 @@
       align-items:center;
       flex-wrap:wrap;
       gap:.5rem .75rem;
-      margin:0 0 .9rem;
+      margin:0;
       color:var(--oc-subtle);
       font-size:.9rem;
     }
@@ -692,6 +725,10 @@
       .featured-rail-head{
         align-items:flex-start;
         flex-direction:column;
+      }
+      .featured-rail-footer{
+        width:100%;
+        justify-content:flex-start;
       }
       .featured-grid{
         grid-auto-columns:100%;
@@ -1225,9 +1262,11 @@
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Latest Updates</div>
         <div class="featured-rail-head">
-          <div class="featured-header-meta">
-            <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
-            <span>Recently added across datasets, models, workflows, and OERs.</span>
+          <div class="featured-rail-copy">
+            <div class="featured-header-meta">
+              <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
+              <span>Recently added across datasets, models, workflows, and OERs.</span>
+            </div>
           </div>
         </div>
         <div class="featured-rail-viewport">
@@ -1251,6 +1290,9 @@
               <path d="M9.5 6.5 15 12l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
+        </div>
+        <div class="featured-rail-footer">
+          <a class="featured-digest-link" href="monthly-highlights.html">Community digest <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
