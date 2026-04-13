@@ -1,62 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
   <url>
     <loc>https://www.openconstruction.org/</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <!-- Catalog pages (update frequently) -->
-  <url>
-    <loc>https://www.openconstruction.org/dataset.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://www.openconstruction.org/models.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.openconstruction.org/benchmark_application.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/benchmark_results.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/benchmark_task.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/benchmarks.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/contribute.html</loc>
+    <lastmod>2026-04-13</lastmod>
   </url>
   <url>
     <loc>https://www.openconstruction.org/contributors.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2026-04-13</lastmod>
   </url>
-
-  <!-- Other sections (slower cadence) -->
+  <url>
+    <loc>https://www.openconstruction.org/dataset.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/datasets/detail.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
   <url>
     <loc>https://www.openconstruction.org/deployments.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.openconstruction.org/oer.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.openconstruction.org/tools.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2026-04-13</lastmod>
   </url>
   <url>
     <loc>https://www.openconstruction.org/guides.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2026-04-13</lastmod>
   </url>
   <url>
     <loc>https://www.openconstruction.org/mcp.html</loc>
-    <lastmod>2025-11-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/models.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/models/details.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/monthly-highlights.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/object_class.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/oer.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/oers/details.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/ontology-governance.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/ontology.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/schema.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/taxonomy.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/tools.html</loc>
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/workflows/details.html</loc>
+    <lastmod>2026-04-13</lastmod>
   </url>
 </urlset>

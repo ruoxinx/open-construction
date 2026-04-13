@@ -513,7 +513,7 @@
     <div class="hero-top">
       <div>
         <div class="hero-toolbar">
-          <div class="hero-kicker">Monthly Highlights</div>
+          <div class="hero-kicker">Community Digests</div>
           <div class="hero-toolbar-actions">
             <a class="btn btn-dark btn-sm rounded-pill" href="contributors.html">Back to community</a>
             <button type="button" class="share-icon-btn" id="shareNativeBtn" aria-label="Share monthly highlights" title="Share">
@@ -728,10 +728,43 @@
     url.searchParams.set('month', month);
     return `${url.pathname}${url.search}`;
   }
-  function summarizeTop(values, limit = 4){
+  function labelKey(value){
+    return safeText(value).toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+  function startCaseLabel(value){
+    const raw = safeText(value);
+    if (!raw) return '';
+    return raw
+      .split(/\s+/)
+      .map((token) => token ? `${token.charAt(0).toUpperCase()}${token.slice(1).toLowerCase()}` : '')
+      .join(' ');
+  }
+  function buildTaskLabelLookup(vocabularyPayload){
+    const lookup = new Map();
+    const tasks = Array.isArray(vocabularyPayload?.tasks) ? vocabularyPayload.tasks : [];
+    tasks.forEach((task) => {
+      const preferred = safeText(task?.preferred_label);
+      const keys = [
+        task?.canonical_key,
+        preferred,
+        ...(Array.isArray(task?.aliases) ? task.aliases : [])
+      ]
+        .map(labelKey)
+        .filter(Boolean);
+      keys.forEach((key) => {
+        if (!lookup.has(key)) lookup.set(key, preferred || safeText(task?.canonical_key));
+      });
+    });
+    return lookup;
+  }
+  function summarizeTop(values, limit = Infinity, options = {}){
+    const { lookup = null, formatter = null } = options;
     const counts = new Map();
     values.map(safeText).filter(Boolean).forEach((value) => {
-      counts.set(value, (counts.get(value) || 0) + 1);
+      const key = labelKey(value);
+      if (!key) return;
+      const label = (lookup && lookup.get(key)) || (typeof formatter === 'function' ? formatter(value) : value);
+      counts.set(label, (counts.get(label) || 0) + 1);
     });
     return Array.from(counts.entries())
       .sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]))
@@ -796,8 +829,10 @@
   Promise.all([
     fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
     fetch('data/models.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : []),
-    fetch('data/contributors.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : [])
-  ]).then(([datasetsPayload, modelsPayload, contributorsPayload]) => {
+    fetch('data/contributors.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : []),
+    fetch('data/task-vocabulary.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {})
+  ]).then(([datasetsPayload, modelsPayload, contributorsPayload, taskVocabularyPayload]) => {
+    const taskLabelLookup = buildTaskLabelLookup(taskVocabularyPayload);
     const registry = new Map();
     (Array.isArray(contributorsPayload) ? contributorsPayload : []).forEach((row) => {
       const key = contributorKey(row?.name);
@@ -873,12 +908,11 @@
       tasks.push(...(Array.isArray(values.tasks) ? values.tasks : [values.tasks]));
       applications.push(...(Array.isArray(values.applications) ? values.applications : [values.applications]));
     });
-    const topTasks = summarizeTop(tasks);
-    const topApplications = summarizeTop(applications);
+    const topTasks = summarizeTop(tasks, Infinity, { lookup: taskLabelLookup });
+    const topApplications = summarizeTop(applications, Infinity, { formatter: startCaseLabel });
 
     document.title = `Monthly Highlights · ${monthLabel} · OpenConstruction Open Science Initiative`;
     pageTitleEl.textContent = `${monthLabel} Community Highlights`;
-    pageSummaryEl.textContent = '';
     const featuredHeading = document.getElementById('featuredHeading');
     const contribHeading = document.getElementById('contribHeading');
     if (featuredHeading) featuredHeading.textContent = `Community highlights in ${monthLabel}`;

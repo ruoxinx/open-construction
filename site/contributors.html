@@ -260,15 +260,21 @@
     }
     .monthly-teaser-head{
       display:grid;
-      grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);
-      gap:1rem;
-      align-items:end;
+      grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);
+      gap:1.1rem;
+      align-items:start;
     }
     .monthly-teaser-copy p{
       margin:0;
       color:var(--oc-subtle);
       line-height:1.6;
       max-width:58ch;
+    }
+    .monthly-teaser-side{
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      gap:.9rem;
     }
     .monthly-teaser-metrics{
       display:grid;
@@ -300,13 +306,11 @@
     }
     .monthly-teaser-actions{
       display:flex;
-      justify-content:space-between;
-      gap:1rem;
+      justify-content:flex-end;
+      gap:.75rem;
       align-items:center;
       flex-wrap:wrap;
-      margin-top:1rem;
-      padding-top:1rem;
-      border-top:1px solid rgba(231,237,243,.9);
+      margin-top:1.8rem;
     }
     .monthly-teaser-note{
       color:var(--oc-subtle);
@@ -466,7 +470,9 @@
       .metric{gap:.75rem}
       .metric svg{width:94px;height:94px}
       .monthly-teaser-head{grid-template-columns:1fr}
+      .monthly-teaser-side{align-items:stretch}
       .monthly-teaser-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .monthly-teaser-actions{justify-content:flex-start}
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       .reach-map-head{padding:.9rem 1rem .75rem}
@@ -596,10 +602,9 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Community &amp; Collaboration</h1>
+    <h1>Meet the OpenConstruction Community</h1>
     <p class="lead">
-      Together, we're building an <span class="hl">open-science</span> community for <span class="hl">AI in AEC</span>,
-      connecting researchers, practitioners, and innovators to share knowledge.
+      Explore the researchers, practitioners, labs, and institutions growing an <span class="hl">open-science</span> ecosystem for <span class="hl">AI in AEC</span>.
     </p>
 
     <!-- Metric circles -->
@@ -682,23 +687,25 @@
             <h2 class="oc-card-title h4 mt-2 mb-2" id="communityMonthlyHeading">Loading monthly highlights...</h2>
             <p id="communityMonthlySummary">Browse the latest month of activity across OpenConstruction, including newly added datasets, models, and the contributors behind them.</p>
           </div>
-          <div class="monthly-teaser-metrics" id="communityMonthlyStats" aria-label="Monthly community activity">
-            <div class="monthly-teaser-metric">
-              <strong>&mdash;</strong>
-              <span>Datasets</span>
+          <div class="monthly-teaser-side">
+            <div class="monthly-teaser-metrics" id="communityMonthlyStats" aria-label="Monthly community activity">
+              <div class="monthly-teaser-metric">
+                <strong>&mdash;</strong>
+                <span>Datasets</span>
+              </div>
+              <div class="monthly-teaser-metric">
+                <strong>&mdash;</strong>
+                <span>Models</span>
+              </div>
+              <div class="monthly-teaser-metric">
+                <strong>&mdash;</strong>
+                <span>Contributors</span>
+              </div>
             </div>
-            <div class="monthly-teaser-metric">
-              <strong>&mdash;</strong>
-              <span>Models</span>
-            </div>
-            <div class="monthly-teaser-metric">
-              <strong>&mdash;</strong>
-              <span>Contributors</span>
+            <div class="monthly-teaser-actions">
+              <a class="btn-ink btn-sm" href="monthly-highlights.html">View community digests</a>
             </div>
           </div>
-        </div>
-        <div class="monthly-teaser-actions">
-          <a class="btn-ink btn-sm" href="monthly-highlights.html">View monthly highlights</a>
         </div>
       </div>
     </div>
@@ -1463,12 +1470,14 @@ api.renderInstitutionMarquee({
     }
     const key = monthKey(latest.added);
     const monthly = allEntries.filter((entry) => monthKey(entry.added) === key);
+    const datasetCount = monthly.filter((entry) => entry.type === 'dataset').length;
+    const modelCount = monthly.filter((entry) => entry.type === 'model').length;
     const contributorCount = new Set(monthly.flatMap((entry) => contributorNames(entry.item, registry).map(contributorKey).filter(Boolean))).size;
-    headingEl.textContent = `What’s new in the community for ${MONTH_FORMATTER.format(latest.added)}`;
+    headingEl.textContent = `Community Highlights for ${MONTH_FORMATTER.format(latest.added)}`;
     summaryEl.textContent = `${MONTH_FORMATTER.format(latest.added)} includes ${monthly.filter((entry) => entry.type === 'dataset').length} new datasets, ${monthly.filter((entry) => entry.type === 'model').length} new models, and ${contributorCount} contributors across the OpenConstruction community.`;
     setStats([
-      monthly.filter((entry) => entry.type === 'dataset').length,
-      monthly.filter((entry) => entry.type === 'model').length,
+      datasetCount,
+      modelCount,
       contributorCount
     ]);
   }).catch((err) => {

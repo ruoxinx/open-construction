@@ -81,8 +81,17 @@
     "type": "org"
   },
   {
-    "id": "yucheng-wang",
-    "name": "Yucheng Wang",
+    "id": "Infrastructure Risk & Resilience Group",
+    "name": "Infrastructure Risk & Resilience Group",
+    "role": "Dataset Contributor",
+    "affiliation": "Vrije Universiteit Amsterdam (Netherlands)",
+    "link_url": "https://infrastructure-risk.eu/",
+    "image": "https://infrastructure-risk.eu/",
+    "type": "org"
+  },
+  {
+    "id": "yuchen-wang",
+    "name": "Yuchen Wang",
     "role": "Dataset and Model Contributor",
     "affiliation": "Southeast University (China)",
     "link_url": "https://github.com/YuchenWang1",
@@ -647,6 +656,14 @@
   "type": "person"
   },
      {
+    "id": "Laboratoire d'Informatique Gaspard-Monge",
+    "name": "Laboratoire d'Informatique Gaspard-Monge (LIGM)",
+    "role": "Model Contributor",
+    "link_url": "https://ligm.univ-eiffel.fr/",
+  "image": "http://igm.univ-mlv.fr/IGM_V2/mentions/images/LIGM.png",
+  "type": "org"
+  },
+       {
     "id": "Hongjo Kim",
     "name": "Hongjo Kim",
     "role": "Dataset and Model Contributor",

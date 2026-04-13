@@ -254,7 +254,7 @@
     "code_url": "https://github.com/clementinboittiaux/buildee",
     "thumbnail": "assets/img/models/Buildee.gif",
 	"added_date": "2025-09-28",
-  "contributor": "Laboratoire d'Informatique Gaspard-Monge",
+  "contributor": "Laboratoire d'Informatique Gaspard-Monge (LIGM)",
     "contributor_url": "https://ligm.univ-eiffel.fr/"
   },
     {
@@ -700,7 +700,7 @@
     "code_url": "https://github.com/ITalab/client-to-bim",
     "thumbnail": "assets/img/models/client-to-bim.png",
 	"added_date": "2025-10-15",
-	"contributor": "Haseeb",
+	"contributor": "Syed Haseeb Shah",
 	"contributor_url": "https://github.com/QuantumNovice"
   },
   {
@@ -717,7 +717,7 @@
     "code_url": "https://github.com/RogerLiang0725/ResBIM",
     "thumbnail": "assets/img/models/ResBIM.png",
 	"added_date": "2025-10-20",
-	"contributor": "XingLiang",
+	"contributor": "Xing Liang",
     "contributor_url": "https://github.com/RogerLiang0725"
   },
   {
@@ -1292,7 +1292,7 @@
     "code_url": "https://github.com/bilab-nyu/smart-safety-trajectory",
     "thumbnail": "assets/img/models/smart-safety-trajectory.png",
     "added_date": "2026-02-05",
-    "contributor": "biLAB",
+    "contributor": "Building Informatics and Visualization Lab",
     "contributor_url": "https://bilab.engineering.nyu.edu/about"
 },
 {

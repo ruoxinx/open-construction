@@ -13,6 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -31,6 +36,14 @@ jobs:
       - name: Check links (sampled for speed)
         run: |
           python scripts/check_links.py --report reports/links.json --max-urls 250 --fail-threshold 1
+
+      - name: Validate site structure
+        run: |
+          node site/scripts/validate-site-structure.mjs
+
+      - name: Check sitemap freshness
+        run: |
+          node site/scripts/generate-sitemap.mjs --check
 
       - name: Create Markdown CI summary
         run: |

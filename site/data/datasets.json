@@ -1931,7 +1931,7 @@
     "id": "VPM",
     "image_url": "assets/img/datasets/VPM.gif",
 	"added_date": "2025-09-23",
-	"contributor": "yantaolab",
+	"contributor": "HIC Lab",
     "contributor_url": "https://github.com/yantaolab"
   },
     "UGD": {
@@ -2084,7 +2084,7 @@
   "id": "mep2bim",
   "image_url": "assets/img/datasets/mep2bim.png",
   "added_date": "2025-09-28",
-  "contributor": "yantaolab",
+  "contributor": "HIC Lab",
   "contributor_url": "https://github.com/yantaolab"
 },
 "bfa-yolo-dataset": {
@@ -2301,8 +2301,8 @@
   "id": "ConstScene",
   "image_url": "assets/img/datasets/ConstScene.png",
   "added_date": "2025-10-18",
-  "contributor": "RobustInsight",
-  "contributor_url": "https://github.com/RobustInsight"
+  "contributor": "Maghsood Salimi",
+  "contributor_url": "https://github.com/MaghsoodSalimi"
 },
 "ResBIM": {
   "name": "ResBIM: Residential Unit BIM dataset",
@@ -2325,7 +2325,7 @@
   "id": "ResBIM",
   "image_url": "assets/img/datasets/ResBIM.png",
   "added_date": "2025-10-20",
-  "contributor": "XingLiang",
+  "contributor": "Xing Liang",
   "contributor_url": "https://github.com/RogerLiang0725"
 },
 "BMKG": {
@@ -3085,7 +3085,7 @@
     "id": "smart-safety-trajectory",
     "image_url": "assets/img/datasets/smart-safety-trajectory.png",
     "added_date": "2026-02-04",
-    "contributor": "biLAB",
+    "contributor": "Building Informatics and Visualization Lab",
     "contributor_url": "https://bilab.engineering.nyu.edu/about"
 },
 "ADPT_Dataset": {
