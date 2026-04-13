@@ -59,6 +59,35 @@
 	  gap:16px;
 	  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 per row */
 	}
+    .index-grid.is-loading{
+      min-height:248px;
+    }
+    .index-grid-skeleton{
+      display:grid;
+      gap:16px;
+      grid-template-columns:inherit;
+      grid-column:1 / -1;
+    }
+    .index-skeleton-card{
+      min-height:104px;
+      border:1px solid var(--oc-border);
+      border-radius:14px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.7) 50%, rgba(255,255,255,0) 100%),
+        var(--oc-muted);
+      background-size:220px 100%, auto;
+      animation:benchSkeleton 1.2s ease-in-out infinite;
+      box-shadow:var(--oc-shadow);
+    }
+    .stat-value{
+      min-height:2.5rem;
+      display:flex;
+      align-items:center;
+    }
+    @keyframes benchSkeleton{
+      from{ background-position:-220px 0, 0 0; }
+      to{ background-position:220px 0, 0 0; }
+    }
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
       padding:14px 14px 12px; text-decoration:none; color:inherit;
@@ -272,7 +301,7 @@
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Tasks</div>
-			  <div class="display-6 fw-bold mb-1" id="statTasks">—</div>
+			  <div class="display-6 fw-bold mb-1 stat-value" id="statTasks">—</div>
 			</div>
 		  </div>
 		</div>
@@ -281,7 +310,7 @@
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Applications</div>
-			  <div class="display-6 fw-bold mb-1" id="statApps">—</div>
+			  <div class="display-6 fw-bold mb-1 stat-value" id="statApps">—</div>
 			</div>
 		  </div>
 		</div>
@@ -290,7 +319,7 @@
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Datasets / Models</div>
-			  <div class="display-6 fw-bold mb-1">
+			  <div class="display-6 fw-bold mb-1 stat-value">
 				<span id="statDatasets">—</span> / <span id="statModels">—</span>
 			  </div>
 			</div>
@@ -302,14 +331,26 @@
   <section class="oc-section">
     <div class="oc-kicker mb-2">Browse</div>
     <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Task index</h2>
-    <div class="index-grid" id="taskGrid"></div>
+    <div class="index-grid is-loading" id="taskGrid">
+      <div class="index-grid-skeleton" aria-hidden="true">
+        <div class="index-skeleton-card"></div>
+        <div class="index-skeleton-card"></div>
+        <div class="index-skeleton-card"></div>
+      </div>
+    </div>
     <div class="mt-3 text-center text-muted small" id="taskGridNote"></div>
   </section>
 
   <section class="oc-section">
     <div class="oc-kicker mb-2">Browse</div>
     <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Application index</h2>
-    <div class="index-grid" id="appGrid"></div>
+    <div class="index-grid is-loading" id="appGrid">
+      <div class="index-grid-skeleton" aria-hidden="true">
+        <div class="index-skeleton-card"></div>
+        <div class="index-skeleton-card"></div>
+        <div class="index-skeleton-card"></div>
+      </div>
+    </div>
     <div class="mt-3 text-center text-muted small" id="appGridNote"></div>
   </section>
 </main>
@@ -630,6 +671,7 @@
   function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
     const el = document.getElementById(elId);
     const note = document.getElementById(noteId);
+    if(el) el.classList.remove('is-loading');
 
     if(reset){
       gridState[kind].all = items.slice();
@@ -710,6 +752,7 @@
 
       const el = document.getElementById(elId);
       const note = document.getElementById(noteId);
+      if(el) el.classList.remove('is-loading');
 
       if(!filtered.length){
         el.innerHTML = `<div class="text-muted">No matches.</div>`;

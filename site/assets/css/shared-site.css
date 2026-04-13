@@ -38,6 +38,14 @@ body{
   color:var(--oc-text);
 }
 
+html{
+  scrollbar-gutter:stable;
+}
+
+body{
+  overflow-y:scroll;
+}
+
 a{ color:var(--oc-link); }
 
 .oc-nav{ backdrop-filter:saturate(120%) blur(6px); }
