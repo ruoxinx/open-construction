@@ -711,7 +711,7 @@
   },
           {
     "id": "Semiha Ergan",
-    "name": "Semiha Ergan, Ph.D.",
+    "name": "Semiha Ergan",
     "role": "Dataset and Model Contributor",
     "affiliation": "New York University (U.S)",
     "link_url": "https://engineering.nyu.edu/faculty/semiha-ergan",
@@ -737,8 +737,8 @@
   "type": "person"
   },
         {
-    "id": "Vedhus Hoskere, Ph.D.",
-    "name": "Vedhus Hoskere, Ph.D.",
+    "id": "Vedhus Hoskere",
+    "name": "Vedhus Hoskere",
     "role": "Dataset Contributor",
     "affiliation": "University of Houston (U.S)",
     "link_url": "https://www.cive.uh.edu/faculty/hoskere",
@@ -792,7 +792,7 @@
   },
                   {
     "id": "Aladdin Alwisy",
-    "name": "Aladdin Alwisy, PhD",
+    "name": "Aladdin Alwisy",
     "role": "Dataset Contributor",
     "affiliation": "University of Florida (US)",
     "link_url": "https://dcp.ufl.edu/faculties/aladdin-alwisy/",
@@ -818,7 +818,7 @@
   },
     {
     "id": "Kate Simonen, FAIA, SE",
-    "name": "Kate Simonen, FAIA, SE",
+    "name": "Kathrina Simonen",
     "role": "Dataset Contributor",
     "affiliation": "University of Washington (US)",
     "link_url": "https://arch.be.uw.edu/people/kate-simonen/",
@@ -899,7 +899,7 @@
   },
                   {
     "id": "Jian Li",
-    "name": "Jian Li, Ph.D., P.E., F.ASCE",
+    "name": "Jian Li",
     "role": "Dataset Contributor",
     "affiliation": "University of Kansas (U.S)",
     "link_url": "https://ceae.ku.edu/people/jian-li",
@@ -943,7 +943,7 @@
   },
          {
     "id": "Qipei (Gavin) Mei",
-    "name": "Qipei (Gavin) Mei, Ph.D",
+    "name": "Qipei Mei",
     "role": "Model Contributor",
     "link_url": "https://www.mei-lab.com/pi",
 	"affiliation": "University of Alberta (Canada)",
@@ -952,7 +952,7 @@
   },
                         {
     "id": "Haoran (Nate) Liang",
-    "name": "Haoran (Nate) Liang",
+    "name": "Haoran Liang",
     "role": "Model Contributor",
     "affiliation": "University of Alberta (Canada)",
     "link_url": "https://apps.ualberta.ca/directory/person/hliang7",
@@ -970,7 +970,7 @@
   },
                             {
     "id": "Ruisheng Wang",
-    "name": "Ruisheng Wang, Ph.D",
+    "name": "Ruisheng Wang",
     "role": "Dataset Contributor",
 	"affiliation": "Shenzhen University (China)",
     "link_url": "https://ruishengwang.github.io/",

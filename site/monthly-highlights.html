@@ -9,12 +9,12 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Monthly Community Snapshot</title>
-  <meta name="description" content="Explore monthly community additions from OpenConstruction, including new datasets, models, and contributors.">
+  <title>OpenConstruction · Monthly Highlights</title>
+  <meta name="description" content="Explore monthly community highlights from OpenConstruction, including new datasets, models, and contributors.">
   <link rel="canonical" href="https://www.openconstruction.org/monthly-highlights.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Monthly Community Snapshot">
+  <meta property="og:title" content="Monthly Highlights">
   <meta property="og:description" content="A monthly record of new datasets, models, and contributors from the OpenConstruction community.">
   <meta property="og:url" content="https://www.openconstruction.org/monthly-highlights.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
@@ -331,6 +331,15 @@
       color:var(--oc-ink);
       line-height:1.35;
     }
+    .featured-title a{
+      color:inherit;
+      text-decoration:none;
+    }
+    .featured-title a:hover,
+    .featured-title a:focus-visible{
+      color:inherit;
+      text-decoration:none;
+    }
     .featured-desc{
       margin:0;
       color:var(--oc-text);
@@ -459,7 +468,7 @@
         </li>
         <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
             <li><a class="dropdown-item" href="schema.html">Schema</a></li>
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
@@ -504,10 +513,10 @@
     <div class="hero-top">
       <div>
         <div class="hero-toolbar">
-          <div class="hero-kicker">Monthly Community Snapshot</div>
+          <div class="hero-kicker">Monthly Highlights</div>
           <div class="hero-toolbar-actions">
             <a class="btn btn-dark btn-sm rounded-pill" href="contributors.html">Back to community</a>
-            <button type="button" class="share-icon-btn" id="shareNativeBtn" aria-label="Share monthly community snapshot" title="Share">
+            <button type="button" class="share-icon-btn" id="shareNativeBtn" aria-label="Share monthly highlights" title="Share">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v3.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.1a.5.5 0 0 1 1 0v3.1A2 2 0 0 1 14 15.5H2a2 2 0 0 1-2-2v-3.1a.5.5 0 0 1 .5-.5"/>
                 <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V10.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
@@ -515,7 +524,7 @@
             </button>
           </div>
         </div>
-        <h1 class="hero-title" id="pageTitle">Loading community snapshot...</h1>
+        <h1 class="hero-title" id="pageTitle">Loading monthly highlights...</h1>
         <p class="hero-subtitle" id="pageSummary"></p>
         <div class="archive-row" id="archiveRow" aria-label="Monthly community archive"></div>
       </div>
@@ -553,12 +562,12 @@
   <section class="oc-section mb-5">
     <div class="section-head">
       <div>
-        <div class="oc-kicker">Monthly Additions</div>
-        <h2 class="h4 mb-2" id="featuredHeading">Community additions</h2>
+        <div class="oc-kicker">Monthly Highlights</div>
+        <h2 class="h4 mb-2" id="featuredHeading">Community highlights</h2>
       </div>
     </div>
     <div id="featuredSections">
-      <div class="empty-state">Loading monthly additions...</div>
+      <div class="empty-state">Loading monthly highlights...</div>
     </div>
   </section>
 </main>
@@ -809,15 +818,15 @@
     const latest = all.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
 
     if (!latest){
-      pageTitleEl.textContent = 'Monthly community snapshot coming soon';
+      pageTitleEl.textContent = 'Monthly highlights coming soon';
       pageSummaryEl.textContent = '';
       setMetricCards([
-        { label:'Scope', value:'No monthly additions yet' },
+        { label:'Scope', value:'No monthly highlights yet' },
         { label:'Tasks', value:'—' },
         { label:'Applications', value:'—' }
       ]);
-      featuredSections.innerHTML = '<div class="empty-state">No monthly additions are available yet.</div>';
-      contribGrid.innerHTML = '<div class="empty-state">Contributors will appear here once monthly additions are available.</div>';
+      featuredSections.innerHTML = '<div class="empty-state">No monthly highlights are available yet.</div>';
+      contribGrid.innerHTML = '<div class="empty-state">Contributors will appear here once monthly highlights are available.</div>';
       return;
     }
 
@@ -848,8 +857,15 @@
         if (!contributorMap.has(key)) contributorMap.set(key, { name });
       });
     });
+    const contributorSortRank = (name) => {
+      const match = registry.get(contributorKey(name)) || registry.get(aliasKey(name));
+      return safeText(match?.type).toLowerCase() === 'person' ? 0 : 1;
+    };
     const contributors = Array.from(contributorMap.values())
-      .sort((a,b) => a.name.localeCompare(b.name));
+      .sort((a,b) => {
+        const rankDiff = contributorSortRank(a.name) - contributorSortRank(b.name);
+        return rankDiff || a.name.localeCompare(b.name);
+      });
     const tasks = [];
     const applications = [];
     monthly.forEach(({ type, item }) => {
@@ -860,12 +876,12 @@
     const topTasks = summarizeTop(tasks);
     const topApplications = summarizeTop(applications);
 
-    document.title = `OpenConstruction · Monthly Community Snapshot · ${monthLabel}`;
-    pageTitleEl.textContent = `${monthLabel} community snapshot`;
+    document.title = `Monthly Highlights · ${monthLabel} · OpenConstruction Open Science Initiative`;
+    pageTitleEl.textContent = `${monthLabel} Community Highlights`;
     pageSummaryEl.textContent = '';
     const featuredHeading = document.getElementById('featuredHeading');
     const contribHeading = document.getElementById('contribHeading');
-    if (featuredHeading) featuredHeading.textContent = `Community additions in ${monthLabel}`;
+    if (featuredHeading) featuredHeading.textContent = `Community highlights in ${monthLabel}`;
     if (contribHeading) contribHeading.textContent = `Contributors in ${monthLabel}`;
     setMetricCards([
       {
@@ -988,15 +1004,15 @@
       `;
     }).join('') : '<div class="empty-state">Contributors are not available yet for this month.</div>';
   }).catch((err) => {
-    console.error('Failed to load monthly community snapshot', err);
-    pageTitleEl.textContent = 'Monthly community snapshot unavailable right now';
+    console.error('Failed to load monthly highlights', err);
+    pageTitleEl.textContent = 'Monthly highlights unavailable right now';
     pageSummaryEl.textContent = '';
     setMetricCards([
       { label:'Scope', value:'Summary unavailable' },
       { label:'Tasks', value:'Summary unavailable' },
       { label:'Applications', value:'Summary unavailable' }
     ]);
-    featuredSections.innerHTML = '<div class="empty-state">We could not load monthly additions right now.</div>';
+    featuredSections.innerHTML = '<div class="empty-state">We could not load monthly highlights right now.</div>';
     contribGrid.innerHTML = '<div class="empty-state">We could not load contributors right now.</div>';
   });
 })();

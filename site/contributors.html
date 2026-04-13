@@ -97,18 +97,65 @@
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
 
     /* People cards */
-    .person-card{ transition:transform .12s ease; }
+    .person-card{
+      transition:transform .12s ease, box-shadow .12s ease;
+      min-height:100%;
+    }
     .person-card:hover{ transform:translateY(-1px); }
-    .person-card .card-body{ padding:1rem 1.1rem; }
-    .team-card .card-body{ padding:.9rem 1rem; }
+    .person-card .card-body{ padding:.82rem .9rem; }
+    .team-card .card-body{ padding:.78rem .86rem; }
+    .person-card .card-body.compact-body{
+      align-items:flex-start;
+      gap:.78rem !important;
+    }
     .headshot{
       width:86px; height:86px; object-fit:cover; border-radius:50%;
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
     }
-    .team-card .headshot{ width:72px; height:72px; }
-    .person-card .card-title{ margin-bottom:.15rem; font-weight:700; }
-    .person-card .role{ font-size:.82rem; color:var(--oc-subtle); margin-bottom:.15rem; }
-    .person-card .affil{ font-size:.92rem; }
+    .team-card .headshot,
+    .person-card .headshot,
+    .headshot.is-initials{ width:64px; height:64px; }
+    .person-card .person-meta{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:.24rem;
+      flex:1 1 auto;
+    }
+    .person-card .card-title{
+      margin-bottom:0;
+      font-weight:700;
+      font-size:1.08rem;
+      line-height:1.28;
+    }
+    .person-card .role{
+      font-size:.92rem;
+      color:var(--oc-subtle);
+      margin-bottom:0;
+      line-height:1.4;
+    }
+    .person-card .affil{
+      font-size:.94rem;
+      line-height:1.42;
+      color:var(--oc-text);
+    }
+    .person-card .card-title,
+    .person-card .role,
+    .person-card .affil{
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .person-card .card-title{ -webkit-line-clamp:2; }
+    .person-card .role,
+    .person-card .affil{ -webkit-line-clamp:2; }
+    .team-card .card-title,
+    .team-card .role,
+    .team-card .affil{
+      display:block;
+      overflow:visible;
+      -webkit-line-clamp:unset;
+    }
     .section-intro{
       color:var(--oc-subtle);
       margin-bottom:1rem;
@@ -440,23 +487,32 @@
 
   <style>
     .occ-carousel{ position:relative; background:#fff; border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:14px 44px; }
-    .occ-viewport{ overflow:hidden; }
+      border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); padding:14px 14px 12px; }
+    .occ-viewport{
+      overflow:hidden;
+      border-radius:calc(var(--oc-radius) - 4px);
+      padding-inline:2px;
+    }
     .occ-track{ display:flex; gap:0; will-change:transform; }
     .occ-slide{ flex:0 0 100%; padding:2px; }
     .occ-btn{ position:absolute; top:50%; transform:translateY(-50%); z-index:2;
-      width:36px; height:36px; border-radius:999px; border:1px solid var(--oc-border);
-      background:#fff; box-shadow:var(--oc-shadow); font-weight:800; color:var(--oc-ink);
+      width:40px; height:40px; border-radius:999px; border:1px solid rgba(231,237,243,.95);
+      background:rgba(255,255,255,.96); box-shadow:0 10px 22px rgba(15,46,75,.12); font-weight:800; color:var(--oc-ink);
       display:grid; place-items:center; line-height:1; }
     .occ-btn:hover{ filter:brightness(1.02); }
-    .occ-btn.prev{ left:8px; } .occ-btn.next{ right:8px; }
+    .occ-btn.prev{ left:10px; } .occ-btn.next{ right:10px; }
+    .occ-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
     .occ-dots{ display:flex; gap:8px; justify-content:center; }
     .occ-dots button{ width:10px; height:10px; border-radius:999px; border:0; background:#d9e3ee; }
     .occ-dots button[aria-selected="true"]{ background:var(--oc-accent); width:28px; border-radius:8px; }
     .occ-progress{ height:6px; background:#eef3f8; border-radius:999px; overflow:hidden; }
     .occ-progress .bar{ height:100%; width:0%; background:var(--oc-ink); opacity:.25; }
     .headshot.is-initials{
-      display:grid; place-items:center; width:86px; height:86px; border-radius:50%;
+      display:grid; place-items:center; width:64px; height:64px; border-radius:50%;
       background:#eef3f8; color:var(--oc-ink); font-weight:800; font-size:1rem;
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06);
     }
@@ -493,7 +549,7 @@
         </li>
         <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
             <li><a class="dropdown-item" href="schema.html">Schema</a></li>
             <li><a class="dropdown-item" href="tools.html">Tools</a></li>
@@ -660,7 +716,7 @@
             <div>
               <h5 class="card-title">Ruoxin Xiong, Ph.D.</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (OH, USA)</div>
+              <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (Ohio, USA)</div>
             </div>
           </div>
         </div>
@@ -673,7 +729,7 @@
             <div>
               <h5 class="card-title">Yanyu Wang, Ph.D.</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">Bert S. Turner Dept. of Construction Management, Louisiana State University (LA, USA)</div>
+              <div class="affil">Bert S. Turner Department of Construction Management, Louisiana State University (Louisiana, USA)</div>
             </div>
           </div>
         </div>
@@ -686,7 +742,7 @@
             <div>
               <h5 class="card-title">Jiannan Cai, Ph.D.</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, and Construction Management, UT San Antonio (TX, USA)</div>
+              <div class="affil">School of Civil and Environmental Engineering, and Construction Management, The University of Texas at San Antonio (Texas, USA)</div>
             </div>
           </div>
         </div>
@@ -699,7 +755,7 @@
             <div>
               <h5 class="card-title">Kaijian Liu, Ph.D.</h5>
               <div class="role">Assistant Professor</div>
-              <div class="affil">Civil, Environmental &amp; Ocean Engineering, Stevens Institute of Technology (NJ, USA)</div>
+              <div class="affil">Department of Civil, Environmental and Ocean Engineering, Stevens Institute of Technology (New Jersey, USA)</div>
             </div>
           </div>
         </div>
@@ -712,7 +768,7 @@
             <div>
               <h5 class="card-title">Yuansheng Zhu</h5>
               <div class="role">Researcher</div>
-              <div class="affil">Computing &amp; Information Sciences, Rochester Institute of Technology (NY, USA)</div>
+              <div class="affil">Golisano College of Computing and Information Sciences, Rochester Institute of Technology (New York, USA)</div>
             </div>
           </div>
         </div>
@@ -725,7 +781,7 @@
             <div>
               <h5 class="card-title">Pingbo Tang, Ph.D.</h5>
               <div class="role">Associate Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, Carnegie Mellon University (PA, USA)</div>
+              <div class="affil">Department of Civil and Environmental Engineering, Carnegie Mellon University (Pennsylvania, USA)</div>
             </div>
           </div>
         </div>
@@ -738,7 +794,7 @@
             <div>
               <h5 class="card-title">Nora El-Gohary, Ph.D.</h5>
               <div class="role">Professor</div>
-              <div class="affil">Civil &amp; Environmental Engineering, University of Illinois Urbana-Champaign (IL, USA)</div>
+              <div class="affil">Department of Civil and Environmental Engineering, University of Illinois Urbana-Champaign (Illinois, USA)</div>
             </div>
           </div>
         </div>
@@ -755,7 +811,7 @@
 
       <div class="occ-viewport" aria-live="polite">
         <!-- Cards are injected from data/contributors.json -->
-        <div class="row g-4" id="contributorsGrid"></div>
+        <div class="row g-3" id="contributorsGrid"></div>
       </div>
 
       <button class="occ-btn next" aria-label="Next page" title="Next">&#8250;</button>
@@ -904,9 +960,9 @@ api.renderInstitutionMarquee({
   const isTools = /tools(\.html)?$/.test(file);
   const isGuides = /guides(\.html)?$/.test(file);
   if (isTools || isGuides) {
-    // highlight "Resources"
+    // highlight "Docs"
     document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.textContent.trim()==='Resources') a.classList.add('active');
+      if(a.textContent.trim()==='Docs') a.classList.add('active');
     });
     // mark the chosen dropdown item
     document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(d=>{
@@ -1161,8 +1217,8 @@ api.renderInstitutionMarquee({
     const img = c.image ? `<img class="headshot" src="${c.image}" alt="">`
                         : `<div class="headshot is-initials">${initials(c.name)}</div>`;
     const body = `<div class="card oc-card person-card h-100">
-        <div class="card-body d-flex gap-3">${img}
-          <div><h5 class="card-title mb-1">${c.name||''}</h5>
+        <div class="card-body compact-body d-flex">${img}
+          <div class="person-meta"><h5 class="card-title">${c.name||''}</h5>
           <div class="role">${c.role||''}</div>
           <div class="affil">${c.affiliation||''}</div></div></div></div>`;
     return c.link_url
@@ -1228,7 +1284,7 @@ api.renderInstitutionMarquee({
     const groups = chunk(nodes, PAGE_SIZE_DESKTOP);
     groups.forEach(g=>{
       const s=document.createElement('div'); s.className='occ-slide';
-      const r=document.createElement('div'); r.className='row g-4';
+      const r=document.createElement('div'); r.className='row g-3';
       g.forEach(n=>r.appendChild(n)); s.appendChild(r); track.appendChild(s); slides.push(s);
     });
     buildDots(); goTo(Math.min(current, slides.length) || 1, false);
@@ -1401,7 +1457,7 @@ api.renderInstitutionMarquee({
     const latest = allEntries.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
     if (!latest){
       headingEl.textContent = 'Monthly highlights coming soon';
-      summaryEl.textContent = 'Monthly highlights will appear here as dated additions are added to the catalog.';
+      summaryEl.textContent = 'Monthly highlights will appear here as dated highlights are added to the catalog.';
       setStats([0,0,0]);
       return;
     }
