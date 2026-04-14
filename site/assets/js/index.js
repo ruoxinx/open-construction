@@ -269,9 +269,13 @@ function canonicalizeModalityLabel(raw){
   const hasIMU = has(/\bimu\b|inertial\s+measurement\s+unit|accelerometer|gyroscope|magnetometer/);
   const hasGeospatial = has(/\bgeospatial\b|\bgis\b|shapefile|geojson|geodatabase|geopackage|orthomosaic|orthophoto|dem\b|dsm\b|dtm\b|georeferenc(?:e|ed)|topograph(?:y|ic)|cartograph(?:y|ic)/);
   const hasTabular = has(/\btabular\b|\btable\b|\bspreadsheet\b|\bcsv\b|\bxls\b|\bxlsx\b|\bparquet\b|\btsv\b|\brelational\b|\bdatabase\b|\bsql\b/);
+  const hasBuildingModel = has(/\bbuilding\s*model\b|\bbuilding\s*models\b/);
+  const hasLod2 = has(/\blod\s*2\b|\blod2\b/);
 
 
 
+  if (hasAerial && hasLidar && hasPC) return 'Aerial LiDAR Point Clouds';
+  if (hasLod2 && hasBuildingModel) return 'LoD2 Building Models';
   if (hasLidar)   return 'LiDAR';
   if (hasGPR)     return 'GPR Radargram';
   if (hasIMU)       return 'IMU';
@@ -314,6 +318,12 @@ function canonicalizeModalityLabels(raw){
   if (labels.size > 1 && labels.has('Other')) labels.delete('Other');
 
   return Array.from(labels);
+}
+
+function modalityDisplayLabels(raw){
+  if (raw == null) return [];
+  const parts = Array.isArray(raw) ? raw.slice() : String(raw).split(',');
+  return parts.map(part => String(part || '').trim()).filter(Boolean);
 }
 
 function datasetCountLabel(modalityVal){
@@ -394,8 +404,11 @@ function canonicalizeAllDatasets(){
     }
 
     // Modalities
-    const arr = canonicalizeModalityLabels(ds.data_modality ?? ds.data_modalities ?? '');
+    const rawModality = ds.data_modality ?? ds.data_modalities ?? '';
+    const arr = canonicalizeModalityLabels(rawModality);
+    const displayArr = modalityDisplayLabels(rawModality);
     ds.data_modalities = arr;                // array of pretty labels
+    ds.data_modality_display = displayArr.join(', ');
     ds._mod_keys = arr.map(m => normKey(m)); // normalized keys for filtering
     // Back-compat display string if referenced elsewhere
     ds.data_modality = arr.join(', ');
@@ -711,7 +724,7 @@ function cardHTML(ds){
           <span class="badge text-bg-light">${ds.year ?? '—'}</span>
         </div>
         <div class="small text-muted mb-1">
-          <span>${ds.data_modalities?.join(', ') || ds.data_modality || '—'}</span>
+          <span>${ds.data_modality_display || ds.data_modalities?.join(', ') || ds.data_modality || '—'}</span>
         </div>
         <div class="small text-muted mb-2">
           ${datasetCountSummary(ds)} · Classes <strong>${formatInt(ds.num_classes)}</strong>

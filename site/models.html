@@ -622,8 +622,12 @@ function canonicalizeModalityLabel(raw){
   const hasRasterCAD = has(/\b(cad|autocad|revit|ifc|dwg|dxf|vectorworks|microstation|dgn)\b|blueprint|floor\s*plan|plan\s*view|construction\s*drawing|technical\s*drawing|shop\s*drawing|as[-\s]*built|\belevation\b|\bsection\b/);
   const hasBIM  = has(/\bbim\b|\bifc\b|building\s*information\s*model(?:ing)?|revit|archicad|open\s*bim/);
   const hasLogs = has(/\blog\b|\blogs\b|event\s*log|change\s*log|audit\s*trail|version\s*history|ledger/);
+  const hasBuildingModel = has(/\bbuilding\s*model\b|\bbuilding\s*models\b/);
+  const hasLod2 = has(/\blod\s*2\b|\blod2\b/);
 
 
+  if (hasAerial && hasLidar && hasPC) return 'Aerial LiDAR Point Clouds';
+  if (hasLod2 && hasBuildingModel) return 'LoD2 Building Models';
   if (hasBIM)     return 'BIM';
   if (hasLogs)    return 'Logs';
   if (hasText)    return 'Text';

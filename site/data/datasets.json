@@ -3532,10 +3532,9 @@
   "geographical_location": " Wikipedia",
   "potential_tasks": [
     "Retrieval-augmented generation",
-    "Information retrieval",
-    "Architecture design assistance"
+    "Information retrieval"
   ],
-  "license": "Not specified",
+  "license": "CC0",
   "paper": "Early-stage architecture design assistance by LLMs and knowledge graphs",
   "access": "https://github.com/danruili/ArchLogicRAG",
   "id": "wikiarch",
@@ -3543,7 +3542,32 @@
   "added_date": "2026-04-12",
   "contributor": "Danrui Li",
   "contributor_url": "https://danruili.github.io/danruili/"
+},
+"archseek": {
+  "name": "ArchSeek Dataset",
+  "authors": "Danrui Li, Yichao Shi, Yaluo Wang, Ziying Shi, Mubbasir Kapadia",
+  "doi": "https://doi.org/10.48550/arXiv.2503.18680",
+  "year": 2025,
+  "data_modality": "image, text",
+  "num_images": "54 architectural design cases",
+  "classes": [
+    "newly constructed art galleries",
+    "museums"
+  ],
+  "annotation_types": [
+    "text descriptions"
+  ],
+  "potential_tasks": [
+    "Information retrieval",
+	"Design recommendations"
+  ],
+  "license": "CC BY-SA 4.0",
+  "paper": "ArchSeek: Retrieving Architectural Case Studies Using Vision-Language Models",
+  "access": "https://danruili.github.io/ArchSeek/",
+  "id": "archseek",
+  "image_url": "assets/img/datasets/archseek.png",
+  "added_date": "2026-04-13",
+  "contributor": "Danrui Li",
+  "contributor_url": "https://danruili.github.io/danruili/"
 }
-
-
 }

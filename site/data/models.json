@@ -1547,6 +1547,36 @@
   "added_date": "2026-04-12",
   "contributor": "Danrui Li",
   "contributor_url": "https://danruili.github.io/danruili/"
+},
+{
+  "id": "archseek",
+  "title": "ArchSeek: Retrieving Architectural Case Studies Using Vision-Language Models",
+  "authors": [
+    "Danrui Li",
+    "Yichao Shi",
+    "Yaluo Wang",
+    "Ziying Shi",
+    "Mubbasir Kapadia"
+  ],
+  "abstract":"Efficiently searching for relevant case studies is critical in architectural design, as designers rely on precedent examples to guide or inspire their ongoing projects. However, traditional text-based search tools struggle to capture the inherently visual and complex nature of architectural knowledge, often leading to time-consuming and imprecise exploration. This paper introduces ArchSeek, an innovative case study search system with recommendation capability, tailored for architecture design professionals. Powered by the visual understanding capabilities from vision-language models and cross-modal embeddings, it enables text and image queries with fine-grained control, and interaction-based design case recommendations. It offers architects a more efficient, personalized way to discover design inspirations, with potential applications across other visually driven design fields. The source code is available at this https://github.com/danruili/ArchSeek.",
+  "year": 2025,
+  "modalities": [
+    "image",
+    "text"
+  ],
+  "tasks": [
+    "Information retrieval",
+	"Design recommendations"
+  ],
+  "applications": [
+   "architectural design assistance"
+  ],
+  "license": "GPL-3.0",
+  "paper_url": "https://doi.org/10.1145/3604915.3608889",
+  "code_url": "https://github.com/danruili/ArchSeek",
+  "thumbnail": "assets/img/models/archseek.png",
+  "added_date": "2026-04-13",
+  "contributor": "Danrui Li",
+  "contributor_url": "https://danruili.github.io/danruili/"
 }
-
 ]
