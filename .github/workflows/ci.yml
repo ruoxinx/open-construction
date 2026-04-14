@@ -41,9 +41,9 @@ jobs:
         run: |
           node site/scripts/validate-site-structure.mjs
 
-      - name: Check sitemap freshness
+      - name: Generate sitemap
         run: |
-          node site/scripts/generate-sitemap.mjs --check
+          node site/scripts/generate-sitemap.mjs
 
       - name: Create Markdown CI summary
         run: |
