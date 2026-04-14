@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: ArchSeek Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=archseek</link>
+    <guid isPermaLink="false">datasets:archseek:2026-04-13</guid>
+    <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: ArchSeek: Retrieving Architectural Case Studies Using Vision-Language Models]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:archseek:2026-04-13</guid>
+    <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Efficiently searching for relevant case studies is critical in architectural design, as designers rely on precedent examples to guide or inspire their ongoing projects. However, traditional text-based search tools struggle to capture the inherently visual and complex nature of architectural knowledge, often leading to time-consuming and imprecise exploration. This paper introduces ArchSeek, an innovative case study search system with recommendation capability, tailored for architecture design professionals. Powered by the visual understanding capabilities from vision-language models and cross-modal embeddings, it enables text and image queries with fine-grained control, and interaction-based design case recommendations. It offers architects a more efficient, personalized way to discover design inspirations, with potential applications across other visually driven design fields. The source code is available at this https://github.com/danruili/ArchSeek.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: WikiArch Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=wikiarch</link>
     <guid isPermaLink="false">datasets:wikiarch:2026-04-12</guid>
@@ -68,22 +84,6 @@
     <guid isPermaLink="false">datasets:LLM4BIM_Benchmark_Data:2026-04-01</guid>
     <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: SemanticBridge: 3D semantic segmentation of bridge dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=3d_bridge_segmentation</link>
-    <guid isPermaLink="false">datasets:3d_bridge_segmentation:2026-03-31</guid>
-    <pubDate>Tue, 31 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: SemanticBridge: 3D Bridge Component Semantic Segmentation]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:3d_bridge_segmentation_model:2026-03-31</guid>
-    <pubDate>Tue, 31 Mar 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[This paper proposes a novel dataset that has been specifically designed for 3D semantic segmentation of bridges and the domain gap analysis caused by varying sensors. This addresses a critical need in the field of infrastructure inspection and maintenance, which is essential for modern society. The dataset comprises high-resolution 3D scans of a diverse range of bridge structures from various countries, with detailed semantic labels provided for each. The initial objective is to facilitate accurate and automated segmentation of bridge components, thereby advancing the structural health monitoring practice. To evaluate the effectiveness of existing 3D deep learning models on this novel dataset, a comprehensive analysis of three distinct state-of-the-art architectures is conducted. Additionally, data was acquired through various sensors to quantify the domain gap resulting from sensor variations. The findings indicate that all architectures demonstrate robust performance on the specified task. However, the domain gap can potentially lead to a decline in the performance of up to 11.4% mIoU. Code and data are available at https://github.com/mvg-inatech/3d_bridge_segmentation.]]></description>
   </item>
   </channel>
 </rss>
