@@ -71,5 +71,8 @@
   { "name": "University of Alberta", "logo": "assets/img/institutions/university of alberta.png" },
   { "name": "Shenzhen University", "logo": "assets/img/institutions/Shenzhen University.png" },
   { "name": "University of Calgary", "logo": "assets/img/institutions/University of Calgary.png" },
-  { "name": "Rutgers University", "logo": "assets/img/institutions/Rutgers University.png" }
+  { "name": "Rutgers University", "logo": "assets/img/institutions/Rutgers University.png" },
+  { "name": "Arab Academy for Science, Technology and Maritime Transport", "logo": "assets/img/institutions/AASTMT.png" },
+  { "name": "Mansoura University", "logo": "assets/img/institutions/Mansoura University.png" },
+  { "name": "Port Said University", "logo": "assets/img/institutions/Port Said University.png" }
 ]

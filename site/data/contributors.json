@@ -1003,7 +1003,7 @@
   "image": "https://shangfenghuang.github.io/images/shang.png",
   "type": "person"
   },
-                                {
+    {
     "id": "Xin Wang",
     "name": "Xin Wang",
     "role": "Dataset Contributor",
@@ -1012,7 +1012,7 @@
   "image": "https://ucalgary.ca/sites/default/files/styles/ucws_image_desktop/public/2024-10/DSC_0037-xi%20wang.webp?h=f8d7500a&itok=EB3jSBTJ",
   "type": "person"
   },
-                                  {
+    {
     "id": "Danrui Li",
     "name": "Danrui Li",
     "role": "Dataset and Model Contributor",
@@ -1020,5 +1020,42 @@
 	"affiliation": "Rutgers University (U.S)",
   "image": "assets/img/contributors/avatar.png",
   "type": "person"
+  },
+    {
+    "id": "Mahmoud Donia",
+    "name": "Mahmoud Donia",
+    "role": "Model Contributor",
+    "link_url": "https://sciprofiles.com/profile/MahmoudDonia1",
+	"affiliation": "Arab Academy for Science, Technology and Maritime Transport (AASTMT) (Egypt)",
+  "image": "https://sciprofiles.com/profiles/4930787/Mahmoud_Donia.jpeg?1776358114",
+  "type": "person"
+  },
+      {
+    "id": "Emad Elbeltagi",
+    "name": "Emad Elbeltagi",
+    "role": "Model Contributor",
+    "link_url": "https://scholar.google.com/citations?user=j2cctDYAAAAJ&hl=en",
+	"affiliation": "Mansoura University (Egypt)",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=j2cctDYAAAAJ&citpid=3",
+  "type": "person"
+  },
+        {
+    "id": "Ahmed Elhakeem",
+    "name": "Ahmed Elhakeem",
+    "role": "Model Contributor",
+    "link_url": "https://scholar.google.com/citations?hl=en&user=iNyWl3QAAAAJ&view_op=list_works&sortby=pubdate",
+	"affiliation": "Arab Academy for Science, Technology and Maritime Transport (AASTMT) (Egypt)",
+  "image": "https://aast.edu/getData/retreiveOnePICStaff.php?img=350_1031_Ahmed%20Elhakeem.jpg",
+  "type": "person"
+  },
+          {
+    "id": "Hossam Wefki",
+    "name": "Hossam Wefki",
+    "role": "Model Contributor",
+    "link_url": "https://scholar.google.com/citations?user=c53rEvEAAAAJ&hl=en",
+	"affiliation": "Port Said University (Egypt)",
+  "image": "https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=c53rEvEAAAAJ&citpid=8",
+  "type": "person"
   }
+  
 ]
