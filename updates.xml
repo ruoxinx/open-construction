@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: An Integrated BIM–NLP Framework for Design-Informed Automated Construction Schedule Generation]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
+    <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Artificial intelligence has attracted increasing attention in the construction industry; however, automated time scheduling remains limited in practical applications. Schedule development remains manual, requiring planners to analyze project documents, define activities, estimate durations, and identify relationships based on logical sequence. This process primarily depends on individual experience and skills, making it both time-consuming and prone to human error. From an engineering design perspective, delayed or inconsistent schedule development weakens design-to-construction feedback, limiting the ability to evaluate constructability and time implications of alternative design decisions during early-stage planning. This study proposes an integrated BIM–Natural Language Processing (NLP) framework to automate activity identification, duration estimation, and logical sequencing for construction scheduling. The framework extracts project data from Revit, organizes it into a bill of quantities format, and then generates an activity list, each activity with a unique ID. Using Sentence-BERT (SBERT) embeddings, the framework estimates activity durations based on semantic similarity. The same semantic process is combined with rule-based reasoning to identify logical relationships, including sequences, supported by an Excel-based reference dictionary that includes logical relationships, productivity, and ID structure. Finally, the framework incorporates a crashing module that proportionally adjusts the duration of activities on the longest path to target the project’s completion time without violating relationships. The proposed framework was validated using real construction project data and produced reliable results. By producing a tool-ready schedule directly from design-model information, the proposed workflow enables earlier schedule feedback loops and supports design-informed planning by allowing designers and planners to assess the time consequences of model-driven scope changes. The results demonstrate that integrating BIM and NLP can transform conventional schedules into faster, more consistent processes, thereby supporting the construction industry.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: ArchSeek Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=archseek</link>
     <guid isPermaLink="false">datasets:archseek:2026-04-13</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=DamSegment</link>
     <guid isPermaLink="false">datasets:DamSegment:2026-04-03</guid>
     <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: LLM4BIM Benchmark Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=LLM4BIM_Benchmark_Data</link>
-    <guid isPermaLink="false">datasets:LLM4BIM_Benchmark_Data:2026-04-01</guid>
-    <pubDate>Wed, 01 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
