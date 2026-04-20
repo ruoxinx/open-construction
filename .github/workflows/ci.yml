@@ -9,9 +9,23 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      HAS_DATA_TOKEN: ${{ secrets.DATA_REPO_TOKEN != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Checkout catalog data
+        if: env.HAS_DATA_TOKEN == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ruoxinx/open-construction-data
+          token: ${{ secrets.DATA_REPO_TOKEN }}
+          path: _catalog-data
+
+      - name: Copy catalog data into site/data
+        if: env.HAS_DATA_TOKEN == 'true'
+        run: cp _catalog-data/*.json site/data/
 
       - name: Set up Node
         uses: actions/setup-node@v4

@@ -6,8 +6,6 @@ permissions:
 on:
   push:
     paths:
-      - site/data/datasets.json
-      - site/data/models.json
       - site/data/generate-updates.js
       - .github/workflows/updates-rss.yml
   workflow_dispatch:
@@ -18,6 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout catalog data
+        uses: actions/checkout@v4
+        with:
+          repository: ruoxinx/open-construction-data
+          token: ${{ secrets.DATA_REPO_TOKEN }}
+          path: _catalog-data
+
+      - name: Copy catalog data into site/data
+        run: cp _catalog-data/*.json site/data/
 
       - uses: actions/setup-node@v4
         with:
