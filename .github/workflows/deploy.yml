@@ -31,10 +31,15 @@ jobs:
       - name: Copy catalog data into site/data
         run: cp _catalog-data/*.json site/data/
 
+      - name: Debug private repo structure
+        run: ls -la _catalog-data/ && ls -la _catalog-data/img/ 2>/dev/null || echo "No img/ folder found"
+
       - name: Copy images into site/assets/img
         run: |
           if [ -d _catalog-data/img ]; then
-            rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
+            cp -r _catalog-data/img/. site/assets/img/
+          else
+            echo "WARNING: No img/ folder in private repo"
           fi
 
       # If your site is pure static HTML/CSS/JS, no build step is needed.
