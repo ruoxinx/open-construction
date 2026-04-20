@@ -8,6 +8,8 @@ on:
     paths:
       - site/data/generate-updates.js
       - .github/workflows/updates-rss.yml
+  repository_dispatch:
+    types: [data-repo-update]
   schedule:
     - cron: '0 2 * * *'   # daily at 02:00 UTC
   workflow_dispatch:
