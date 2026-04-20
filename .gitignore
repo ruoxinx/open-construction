@@ -1,4 +1,8 @@
 .DS_Store
+.claude/
 .tools/
 *.log
 site/data/*.json
+site/assets/img/
+!site/assets/img/details/Rebar-Counting.mp4
+!site/assets/img/models/Buildee.gif
