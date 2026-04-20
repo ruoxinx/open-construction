@@ -29,7 +29,10 @@ jobs:
 
       - name: Copy images into site/assets/img
         if: env.HAS_DATA_TOKEN == 'true'
-        run: rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
+        run: |
+          if [ -d _catalog-data/img ]; then
+            rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
+          fi
 
       - name: Set up Node
         uses: actions/setup-node@v4

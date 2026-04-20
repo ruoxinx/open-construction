@@ -32,7 +32,10 @@ jobs:
         run: cp _catalog-data/*.json site/data/
 
       - name: Copy images into site/assets/img
-        run: rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
+        run: |
+          if [ -d _catalog-data/img ]; then
+            rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
+          fi
 
       # If your site is pure static HTML/CSS/JS, no build step is needed.
       # If you later add a build step, put it here and output to ./site (or ./dist).
