@@ -4,5 +4,6 @@
 *.log
 site/data/*.json
 site/assets/img/
+!site/assets/img/icon.png
 !site/assets/img/details/Rebar-Counting.mp4
 !site/assets/img/models/Buildee.gif
