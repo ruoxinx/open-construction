@@ -184,7 +184,7 @@ function modalityFamilies(val){
   add('rgbd-depth', /rgb-?d|depth|stereo/);
   add('thermal', /thermal|infrared|\bir\b/);
   add('document-text', /document|text|pdf|report|specification|contract/);
-  add('tabular-timeseries', /timeseries|time\s*series|sensor|tabular|table|csv|database|sql/);
+  add('tabular-timeseries', /timeseries|time\s*series|sensor|tabular|table|csv|database|sql|imu|inertial\s*measurement/);
   add('geospatial', /geospatial|gis|geojson|shapefile|dem|dsm|dtm/);
 
   return Array.from(families);
@@ -1321,7 +1321,7 @@ async function initDetail(){
         const score = taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + modalityFamilyScore * 2 + modalityScore + classScore;
         const hasStrongSignal =
           taskScore > 1 ||
-          (taskScore > 0 && (applicationScore > 0 || modalityFamilyScore > 0 || classScore > 0)) ||
+          (taskScore > 0 && (applicationScore > 0 || modalityFamilyScore > 0 || modalityScore > 0 || classScore > 0)) ||
           (taskFamilyScore > 0 && modalityFamilyScore > 0);
         return hasStrongSignal ? { other, score, sharedTasks } : null;
       })

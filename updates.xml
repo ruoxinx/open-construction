@@ -11,7 +11,7 @@
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
     <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Artificial intelligence has attracted increasing attention in the construction industry; however, automated time scheduling remains limited in practical applications. Schedule development remains manual, requiring planners to analyze project documents, define activities, estimate durations, and identify relationships based on logical sequence. This process primarily depends on individual experience and skills, making it both time-consuming and prone to human error. From an engineering design perspective, delayed or inconsistent schedule development weakens design-to-construction feedback, limiting the ability to evaluate constructability and time implications of alternative design decisions during early-stage planning. This study proposes an integrated BIM–Natural Language Processing (NLP) framework to automate activity identification, duration estimation, and logical sequencing for construction scheduling. The framework extracts project data from Revit, organizes it into a bill of quantities format, and then generates an activity list, each activity with a unique ID. Using Sentence-BERT (SBERT) embeddings, the framework estimates activity durations based on semantic similarity. The same semantic process is combined with rule-based reasoning to identify logical relationships, including sequences, supported by an Excel-based reference dictionary that includes logical relationships, productivity, and ID structure. Finally, the framework incorporates a crashing module that proportionally adjusts the duration of activities on the longest path to target the project’s completion time without violating relationships. The proposed framework was validated using real construction project data and produced reliable results. By producing a tool-ready schedule directly from design-model information, the proposed workflow enables earlier schedule feedback loops and supports design-informed planning by allowing designers and planners to assess the time consequences of model-driven scope changes. The results demonstrate that integrating BIM and NLP can transform conventional schedules into faster, more consistent processes, thereby supporting the construction industry.]]></description>
+    <description><![CDATA[BIM-to-schedule automation model using BIM (2026)]]></description>
   </item>
 
   <item>
@@ -27,7 +27,7 @@
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:archseek:2026-04-13</guid>
     <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Efficiently searching for relevant case studies is critical in architectural design, as designers rely on precedent examples to guide or inspire their ongoing projects. However, traditional text-based search tools struggle to capture the inherently visual and complex nature of architectural knowledge, often leading to time-consuming and imprecise exploration. This paper introduces ArchSeek, an innovative case study search system with recommendation capability, tailored for architecture design professionals. Powered by the visual understanding capabilities from vision-language models and cross-modal embeddings, it enables text and image queries with fine-grained control, and interaction-based design case recommendations. It offers architects a more efficient, personalized way to discover design inspirations, with potential applications across other visually driven design fields. The source code is available at this https://github.com/danruili/ArchSeek.]]></description>
+    <description><![CDATA[architectural design assistance model using image (2025)]]></description>
   </item>
 
   <item>
@@ -43,7 +43,7 @@
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:archlogicrag:2026-04-12</guid>
     <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Early-stage architectural design relies heavily on precedent cases and domain knowledge, yet existing assistance methods struggle with the dominance of visual data and the linguistic diversity of design descriptions. In this paper, a retrieval-augmented generation framework with a custom knowledge graph tailored to architecture is proposed. The approach features: (1) a lightweight graph structure representing design logic; (2) a knowledge extraction pipeline for visual and textual data; and (3) aggregation and question answering methods that consolidate precedent knowledge for design support. Experiments show improved retrieval accuracy, more comprehensive precedent recommendations, and enhanced user experience, advancing precedent-based assistance for early design.]]></description>
+    <description><![CDATA[architectural design assistance model using image (2026)]]></description>
   </item>
 
   <item>
@@ -59,7 +59,7 @@
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:masse:2026-04-05</guid>
     <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[We introduce MASSE, the first Multi-Agent System for Structural Engineering, effectively integrating large language model (LLM)-based agents with real-world engineering workflows. Structural engineering is a fundamental yet traditionally stagnant domain, with core workflows remaining largely unchanged for decades despite its substantial economic impact and global market size. Recent advancements in LLMs have significantly enhanced their ability to perform complex reasoning, long-horizon planning, and precise tool utilization -- capabilities well aligned with structural engineering tasks such as interpreting design codes, executing load calculations, and verifying structural capacities. We present a proof-of-concept showing that most real-world structural engineering workflows can be fully automated through a training-free LLM-based multi-agent system. MASSE enables immediate deployment in professional environments, and our comprehensive validation on real-world case studies demonstrates that it can reduce expert workload from approximately two hours to mere minutes, while enhancing both reliability and accuracy in practical engineering scenarios.]]></description>
+    <description><![CDATA[Structural design workflows model using Text (2025)]]></description>
   </item>
 
   <item>

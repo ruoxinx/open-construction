@@ -89,15 +89,34 @@ function getAdded(x) {
   if (x.year) return `${x.year}-01-01`;
   return new Date().toISOString();
 }
+function toStringArray(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v.map(String);
+  if (typeof v === 'string') return [v];
+  return [];
+}
+
+function synthesizeModelDesc(x) {
+  const app  = toStringArray(x.applications)[0];
+  const task = toStringArray(x.tasks)[0];
+  const mod  = toStringArray(x.modalities)[0];
+  const label = app || task || '';
+  const parts = label ? [label + ' model'] : ['Model'];
+  if (mod)    parts.push('using ' + mod);
+  if (x.year) parts.push('(' + x.year + ')');
+  return parts.join(' ');
+}
+
 function getAbstract(x, type) {
-  return (
-    x.abstract ||
-    x.description ||
-    x.summary ||
-    (type === 'datasets'
-      ? 'New dataset added to OpenConstruction.'
-      : 'New model added to OpenConstruction.')
-  );
+  if (type === 'datasets') {
+    return (
+      x.abstract ||
+      x.description ||
+      x.summary ||
+      'New dataset added to OpenConstruction.'
+    );
+  }
+  return synthesizeModelDesc(x);
 }
 function getLink(x, type, idOrSlug) {
   // Respect explicit link if provided
