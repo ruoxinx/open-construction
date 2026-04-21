@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Rethinking Scientific Modeling: Toward Physically Consistent and Simulation-Executable Programmatic Generation]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:AutoBM:2026-04-20</guid>
+    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Automatic Building Modeling model using text (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: An Integrated BIM–NLP Framework for Design-Informed Automated Construction Schedule Generation]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:masse:2026-04-05</guid>
     <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Structural design workflows model using Text (2025)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: AEC-Bench: A Multimodal Benchmark for Agentic Systems in Architecture, Engineering, and Construction]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=aec-bench</link>
-    <guid isPermaLink="false">datasets:aec-bench:2026-04-04</guid>
-    <pubDate>Sat, 04 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
