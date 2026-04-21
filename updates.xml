@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: BuildingMultiView]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:buildingmultiview:2026-04-20</guid>
+    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Built Environment Analysis model using Satellite Neighbor (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: An Integrated BIM–NLP Framework for Design-Informed Automated Construction Schedule Generation]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:BuildingWorld:2026-04-11</guid>
     <pubDate>Sat, 11 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: MASSE: Automating Structural Engineering Workflows with Large Language Model Agents]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:masse:2026-04-05</guid>
-    <pubDate>Sun, 05 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Structural design workflows model using Text (2025)]]></description>
   </item>
   </channel>
 </rss>
