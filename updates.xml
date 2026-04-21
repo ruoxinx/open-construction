@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Hong Kong University Building Image Dataset (HBD)]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=HBD</link>
+    <guid isPermaLink="false">datasets:HBD:2026-04-20</guid>
+    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: An Integrated BIM–NLP Framework for Design-Informed Automated Construction Schedule Generation]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=aec-bench</link>
     <guid isPermaLink="false">datasets:aec-bench:2026-04-04</guid>
     <pubDate>Sat, 04 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: DamCrack: A Drone and Smartphone Image Dataset for 2D/3D Damage Assessment in Concrete Dams]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=DamCrack</link>
-    <guid isPermaLink="false">datasets:DamCrack:2026-04-03</guid>
-    <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
