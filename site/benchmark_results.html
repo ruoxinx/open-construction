@@ -301,6 +301,16 @@
   function getBenchmarks(payload){ return Array.isArray(payload?.benchmarks) ? payload.benchmarks : []; }
   function getDatasets(payload){ return (payload && typeof payload === 'object' && !Array.isArray(payload)) ? payload : {}; }
   function getModels(payload){ return Array.isArray(payload) ? payload : []; }
+  function findDatasetById(datasets, id){
+    const rawId = normStr(id);
+    if(!rawId) return null;
+    if(datasets?.[rawId]) return datasets[rawId];
+    const idKey = canonKey(rawId);
+    const match = Object.entries(datasets || {}).find(([key, dataset]) =>
+      canonKey(key) === idKey || canonKey(dataset?.id) === idKey
+    );
+    return match ? match[1] : null;
+  }
   function emptyTaskVocabulary(){ return { byCanonical: new Map(), byAlias: new Map() }; }
   function buildTaskVocabulary(payload){
     const vocab = emptyTaskVocabulary();
@@ -734,7 +744,7 @@
       const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
       const board = boards.find(item => item.id === boardId) || boards[0];
       if (!board) throw new Error('No benchmark results were found.');
-      const dataset = datasets?.[board.dataset_id] || null;
+      const dataset = findDatasetById(datasets, board.dataset_id);
       document.getElementById('contentMount').innerHTML = boardHtml(board, dataset, models, taskVocabulary);
     }catch(err){
       console.error(err);
