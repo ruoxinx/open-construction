@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: ["main"]
+  repository_dispatch:
+    types: [data-repo-update]
   workflow_dispatch:
 
 jobs:
