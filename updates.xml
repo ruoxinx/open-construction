@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: VisualSiteDiary: A detector-free Vision-Language Transformer model for captioning photologs for daily construction reporting and image retrievals]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:VisualSiteDiary:2026-04-23</guid>
+    <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Site understanding model using Ground RGB (2024)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: SWIT Dataset: scaffolding worker inertial measurement unit (IMU) time-series dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=SWIT-Dataset</link>
     <guid isPermaLink="false">datasets:SWIT-Dataset:2026-04-20</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:archlogicrag:2026-04-12</guid>
     <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[architectural design assistance model using image (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BuildingWorld Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BuildingWorld</link>
-    <guid isPermaLink="false">datasets:BuildingWorld:2026-04-11</guid>
-    <pubDate>Sat, 11 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
