@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
+    <guid isPermaLink="false">datasets:O-ESD:2026-04-20</guid>
+    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: AutoBM: Toward Physically Consistent and Simulation-Executable Programmatic Generation]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:AutoBM:2026-04-20</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:wikiarch:2026-04-12</guid>
     <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: ArchLogicRAG: A Knowledge Graph-Enhanced Multimodal Retrieval-Augmented Generation Framework for Architectural Design Reasoning]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:archlogicrag:2026-04-12</guid>
-    <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[architectural design assistance model using image (2026)]]></description>
   </item>
   </channel>
 </rss>
