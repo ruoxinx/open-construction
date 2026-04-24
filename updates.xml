@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
+    <guid isPermaLink="false">datasets:O-ESD:2026-04-23</guid>
+    <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: VisualSiteDiary: A detector-free Vision-Language Transformer model for captioning photologs for daily construction reporting and image retrievals]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:VisualSiteDiary:2026-04-23</guid>
@@ -26,14 +34,6 @@
     <title><![CDATA[Dataset: Hong Kong University Building Image Dataset (HBD)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=HBD</link>
     <guid isPermaLink="false">datasets:HBD:2026-04-20</guid>
-    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
-    <guid isPermaLink="false">datasets:O-ESD:2026-04-20</guid>
     <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
