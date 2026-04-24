@@ -796,6 +796,19 @@
     .ms-step + .ms-step.ms-upcoming::before{
       background:repeating-linear-gradient(90deg, rgba(15,46,75,.22) 0 6px, transparent 6px 12px);
     }
+    /* short line extensions past the first and last dots */
+    .ms-step:first-child::before,
+    .ms-step:last-child::after{
+      content:"";
+      position:absolute;
+      top:6px;
+      width:24px;
+      height:1px;
+      background:rgba(15, 46, 75, 0.22);
+      z-index:0;
+    }
+    .ms-step:first-child::before{ right:calc(50% + 7px); }
+    .ms-step:last-child::after{ left:calc(50% + 7px); }
 
     /* ---- node dot ---- */
     .ms-node{
@@ -883,7 +896,9 @@
     @media (max-width:767.98px){
       .ms-stepper{ flex-wrap:wrap; justify-content:center; gap:1.1rem .6rem; }
       .ms-step{ flex:0 0 calc(33.33% - .4rem); }
-      .ms-step + .ms-step::before{ display:none; }
+      .ms-step + .ms-step::before,
+      .ms-step:first-child::before,
+      .ms-step:last-child::after{ display:none; }
       .ms-node{ width:12px; height:12px; border-width:1.5px; }
       .ms-card{ padding:.8rem .7rem; }
       .ms-title{ font-size:.88rem; }
