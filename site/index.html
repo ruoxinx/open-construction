@@ -785,54 +785,49 @@
     .ms-step + .ms-step::before{
       content:"";
       position:absolute;
-      top:32px;
+      top:6px;
       right:50%;
       width:100%;
-      height:3px;
-      background:linear-gradient(90deg, rgba(15,46,75,.12), rgba(15,46,75,.08));
-      border-radius:2px;
+      height:1px;
+      background:rgba(15, 46, 75, 0.22);
       z-index:0;
     }
     .ms-step.ms-upcoming + .ms-step.ms-upcoming::before,
     .ms-step + .ms-step.ms-upcoming::before{
-      background:repeating-linear-gradient(90deg, #d9e3ee 0 6px, transparent 6px 12px);
+      background:repeating-linear-gradient(90deg, rgba(15,46,75,.22) 0 6px, transparent 6px 12px);
     }
 
-    /* ---- node circle ---- */
+    /* ---- node dot ---- */
     .ms-node{
       position:relative;
       z-index:1;
-      width:64px;
-      height:64px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      font-size:1.1rem;
-      color:#fff;
-      background:linear-gradient(135deg, var(--oc-brand-ink), var(--oc-brand-accent-2));
-      box-shadow:0 4px 14px rgba(15,46,75,.18);
-      margin-bottom:.75rem;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:#fff;
+      border:2px solid var(--oc-brand-ink);
+      box-sizing:border-box;
+      margin-bottom:.9rem;
       transition:transform .25s ease, box-shadow .25s ease;
       flex-shrink:0;
     }
     .ms-node::after{ content:counter(ms); }
     .ms-step:hover .ms-node{
-      transform:scale(1.08);
-      box-shadow:0 6px 22px rgba(15,46,75,.25);
+      transform:scale(1.2);
     }
-    .ms-node svg{ width:28px; height:28px; }
+    .ms-node svg{ display:none; }
     .ms-node.ms-has-icon::after{ content:none; }
 
-    /* upcoming node – brand accent */
+    /* upcoming node – brand accent with soft halo */
     .ms-upcoming .ms-node{
-      background:linear-gradient(135deg, var(--oc-brand-accent), #e08c1e);
-      animation:ms-pulse 2.5s ease-in-out infinite;
+      background:var(--oc-brand-accent);
+      border-color:var(--oc-brand-accent);
+      box-shadow:0 0 0 6px rgba(242,162,56,.18);
+      animation:none;
     }
     @keyframes ms-pulse{
-      0%,100%{ box-shadow:0 4px 14px rgba(242,162,56,.2); }
-      50%{ box-shadow:0 6px 28px rgba(242,162,56,.4); }
+      0%,100%{ box-shadow:0 0 0 0 rgba(242,162,56,.35); }
+      50%{ box-shadow:0 0 0 8px rgba(242,162,56,0); }
     }
 
     /* ---- card panel ---- */
@@ -889,8 +884,7 @@
       .ms-stepper{ flex-wrap:wrap; justify-content:center; gap:1.1rem .6rem; }
       .ms-step{ flex:0 0 calc(33.33% - .4rem); }
       .ms-step + .ms-step::before{ display:none; }
-      .ms-node{ width:52px; height:52px; }
-      .ms-node svg{ width:24px; height:24px; }
+      .ms-node{ width:12px; height:12px; border-width:1.5px; }
       .ms-card{ padding:.8rem .7rem; }
       .ms-title{ font-size:.88rem; }
       .ms-desc{ font-size:.76rem; }
@@ -1342,21 +1336,16 @@
     </div>
   </section>
 
-  <!-- 3. Development Timeline -->
+  <!-- 3. Trajectory -->
   <section class="oc-section" aria-labelledby="milestones-heading">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Development Timeline</div>
+        <div class="oc-kicker mb-2">Trajectory</div>
 
         <div class="ms-stepper" role="list" aria-label="OpenConstruction milestones">
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M12 2a7 7 0 0 1 7 7c0 2.6-1.4 4.4-3 5.6V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.4C6.4 13.4 5 11.6 5 9a7 7 0 0 1 7-7Z"/>
-                <path d="M9 21h6"/>
-              </svg>
-            </span>
+            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
             <div class="ms-card">
               <div class="ms-year">2022</div>
               <div class="ms-title">Idea Sparked</div>
@@ -1365,14 +1354,7 @@
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="10" cy="7" r="4"/>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </span>
+            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
             <div class="ms-card">
               <div class="ms-year">2024</div>
               <div class="ms-title">Team Formed</div>
@@ -1381,12 +1363,7 @@
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
-              </svg>
-            </span>
+            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
             <div class="ms-card">
               <div class="ms-year">2025</div>
               <div class="ms-title">Platform Live</div>
@@ -1395,13 +1372,7 @@
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <path d="M14 2v6h6"/>
-                <path d="m9 14 2 2 4-4"/>
-              </svg>
-            </span>
+            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
             <div class="ms-card">
               <div class="ms-year">2026</div>
               <div class="ms-title">Paper Published</div>
@@ -1410,11 +1381,7 @@
           </div>
 
           <div class="ms-step ms-upcoming" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-              </svg>
-            </span>
+            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
             <div class="ms-card">
               <div class="ms-year">Next</div>
               <div class="ms-title">What’s Ahead</div>
@@ -1444,7 +1411,10 @@
 
   <!-- 5. Institutions — social proof -->
   <section class="oc-section oc-section">
-    <div class="oc-kicker mb-2">Contributing Institutions &amp; Organizations</div>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+      <div class="oc-kicker mb-0">Contributing Institutions &amp; Organizations</div>
+      <a class="featured-digest-link" href="contributors.html">All contributors <span aria-hidden="true">&rarr;</span></a>
+    </div>
     <div class="logo-marquee" id="indexInstitutionMarquee" aria-label="Affiliated institutions and organizations">
       <div class="row-marquee" data-direction="right">
         <div class="logo-track" role="list" data-speed="46"></div>
