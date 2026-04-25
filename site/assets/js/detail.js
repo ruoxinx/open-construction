@@ -780,7 +780,7 @@ async function initDetail(){
 
       const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
-      const captionText = m.sample_caption || m.caption || 'Preview';
+      const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
       const paperUrl = (m.paper_url || m.paper || '').trim();
       const codeUrl  = (m.code_url  || m.code  || '').trim();
       const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
@@ -1251,7 +1251,7 @@ async function initDetail(){
     });
 
     const imgSrc = `../assets/img/datasets/${encodeURIComponent(id)}.png`;
-    const captionText = ds.sample_caption || ds.caption || 'Sample from the dataset';
+    const captionText = ds.sample_caption || ds.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
     const noteText = safeText(ds.note);
     const noteInline = (noteText !== '—')
       ? `<div class="ds-note-inline"><span class="ds-note-label">Note:</span> ${escapeHtml(noteText)}</div>`
