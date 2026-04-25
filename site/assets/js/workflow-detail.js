@@ -102,12 +102,13 @@ function getMediaEmbed(item){
   const media = Array.isArray(item.media) ? item.media : [];
   const image = media.find(m => m && String(m.type || '').toLowerCase() === 'image' && m.url);
   const video = media.find(m => m && String(m.type || '').toLowerCase() === 'video' && m.url);
+  const mediaCredit = '<div class="media-credit">Media from public websites are &copy; their respective creators unless otherwise noted.</div>';
 
   if (image) {
     const href = safeHref(item.links?.source) || safeHref(video?.url) || safeHref(image.url);
     const imgSrc = resolveMediaUrl(image.url);
     const imgTag = `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';">`;
-    return `<div class="media-wrap">${href ? `<a class="d-block h-100" href="${href}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>`;
+    return `<figure class="media-figure"><div class="media-wrap">${href ? `<a class="d-block h-100" href="${href}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>${mediaCredit}</figure>`;
   }
 
   if (video) {
@@ -115,17 +116,17 @@ function getMediaEmbed(item){
     const vimeo = vimeoId(video.url);
     if (youtube) {
       const embed = `https://www.youtube.com/embed/${encodeURIComponent(youtube)}`;
-      return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
+      return `<figure class="media-figure"><div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>${mediaCredit}</figure>`;
     }
     if (vimeo) {
       const embed = `https://player.vimeo.com/video/${encodeURIComponent(vimeo)}`;
-      return `<div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
+      return `<figure class="media-figure"><div class="media-wrap"><iframe src="${embed}" title="${escapeHtml(video.alt || item.title || 'Workflow video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>${mediaCredit}</figure>`;
     }
     if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(video.url)) {
-      return `<div class="media-wrap"><video src="${escapeHtml(resolveMediaUrl(video.url))}" controls playsinline preload="metadata"></video></div>`;
+      return `<figure class="media-figure"><div class="media-wrap"><video src="${escapeHtml(resolveMediaUrl(video.url))}" controls playsinline preload="metadata"></video></div>${mediaCredit}</figure>`;
     }
     if (video.thumb) {
-      return `<div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(resolveMediaUrl(video.thumb))}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"></a></div>`;
+      return `<figure class="media-figure"><div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(resolveMediaUrl(video.thumb))}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"></a></div>${mediaCredit}</figure>`;
     }
   }
 
@@ -292,9 +293,11 @@ async function initWorkflowDetail(){
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
-        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); }
+        .media-figure{ margin:0; }
+        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px 14px 0 0; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); }
         .media-wrap img,.media-wrap iframe{ width:100%; height:100%; object-fit:cover; border:0; display:block; }
         .media-wrap.placeholder{ display:flex; align-items:center; justify-content:center; }
+        .media-credit{ padding:.55rem 1rem; color:var(--oc-sub); font-size:.82rem; line-height:1.35; text-align:center; border-bottom:1px solid var(--oc-border); }
         .placeholder-copy{ color:var(--oc-sub); font-weight:600; }
         @media (max-width: 991.98px){ .meta-row{ grid-template-columns:1fr; gap:.35rem; } .detail-body{ padding:20px 18px; } .detail-section{ padding:1.05rem 1rem; } .detail-subcard{ padding:.9rem; } }
       </style>

@@ -118,7 +118,7 @@ function getMediaEmbed(item){
   const imageUrl = resolveMediaUrl(item.image);
   if (imageUrl) {
     const imgTag = `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || 'OER preview')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';">`;
-    return `<div class="media-wrap">${sourceUrl ? `<a class="d-block h-100" href="${sourceUrl}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>`;
+    return `<figure class="media-figure"><div class="media-wrap">${sourceUrl ? `<a class="d-block h-100" href="${sourceUrl}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div><div class="media-credit">Media from public websites are &copy; their respective creators unless otherwise noted.</div></figure>`;
   }
   return `<div class="media-wrap placeholder"><div class="placeholder-copy">No preview image available</div></div>`;
 }
@@ -235,9 +235,11 @@ async function initOerDetail(){
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
-        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); }
+        .media-figure{ margin:0; }
+        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px 14px 0 0; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); }
         .media-wrap img{ width:100%; height:100%; object-fit:contain; background:#fff; display:block; }
         .media-wrap.placeholder{ display:flex; align-items:center; justify-content:center; }
+        .media-credit{ padding:.55rem 1rem; color:var(--oc-sub); font-size:.82rem; line-height:1.35; text-align:center; border-bottom:1px solid var(--oc-border); }
         .placeholder-copy{ color:var(--oc-sub); font-weight:600; }
         @media (max-width: 991.98px){ .meta-row{ grid-template-columns:1fr; gap:.35rem; } .detail-body{ padding:20px 18px; } .detail-section{ padding:1.05rem 1rem; } .detail-subcard{ padding:.9rem; } }
       </style>
