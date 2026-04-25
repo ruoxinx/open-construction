@@ -335,6 +335,16 @@ let USECASES = [];
 
 const byId = id => document.getElementById(id);
 function normKey(s){ return (s==null?'':String(s)).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+function facetLabel(value){
+  if(value == null) return '';
+  if(typeof value === 'object'){
+    return String(value.label || value.name || value.title || value.value || '').trim();
+  }
+  return String(value).trim();
+}
+function facetValues(value){
+  return (Array.isArray(value) ? value : [value]).map(facetLabel).filter(Boolean);
+}
 const FACET_LIMIT = 5;
 const showAllFacets = { phases:false, stakeholders:false, techs:false, apps:false, modalities:false, evidences:false };
 function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
@@ -424,8 +434,9 @@ function chooseMediaBlock(u){
 }
 
 function listHTML(arr, cls){
-  if(!Array.isArray(arr) || !arr.length) return '';
-  return `<ul class="${cls||'list-unstyled small m-0 ps-3'}">${arr.map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul>`;
+  const items = facetValues(arr);
+  if(!items.length) return '';
+  return `<ul class="${cls||'list-unstyled small m-0 ps-3'}">${items.map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul>`;
 }
 function detailsSection(u, idx){
   const compsArr = companyLinks(u);
@@ -504,7 +515,7 @@ function filterFacetItems(items, query){
   if (!query) return items;
   const q = String(query).trim().toLowerCase();
   if (!q) return items;
-  return items.filter(item => item.label.toLowerCase().includes(q));
+  return items.filter(item => String(item.label || '').toLowerCase().includes(q));
 }
 function getVisibleFacetItems(items, selectedSet, expanded, query){
   if (query) return items;
@@ -586,7 +597,7 @@ function renderFacetCheckboxes(containerId, items, selectedSet, prefix){
 }
 function renderFacetList(containerId, map, selectedSet, prefix, buttonId, facetKey, query=''){
   const items = filterFacetItems(
-    Array.from(map.entries()).map(([value,label])=>({ value, label })).sort((a,b)=> a.label.localeCompare(b.label)),
+    Array.from(map.entries()).map(([value,label])=>({ value, label })).sort((a,b)=> String(a.label || '').localeCompare(String(b.label || ''))),
     query
   );
   const visible = getVisibleFacetItems(items, selectedSet, showAllFacets[facetKey], query);
@@ -607,12 +618,12 @@ function buildFacets(){
   PHASE_MAP=new Map(); STAKE_MAP=new Map(); TECH_MAP=new Map(); APP_MAP=new Map(); MOD_MAP=new Map(); EVID_MAP=new Map();
 
   USECASES.forEach(u=>{
-    if(u.phase){ const k=normKey(u.phase); if(!PHASE_MAP.has(k)) PHASE_MAP.set(k,u.phase); }
-    (u.stakeholders||[]).forEach(s=>{ const k=normKey(s); if(!STAKE_MAP.has(k)) STAKE_MAP.set(k,s); });
-    (u.ai_tech||[]).forEach(t=>{ const k=normKey(t); if(!TECH_MAP.has(k)) TECH_MAP.set(k,t); });
-    (u.applications||[]).forEach(a=>{ const k=normKey(a); if(!APP_MAP.has(k)) APP_MAP.set(k,a); });
-    (u.data_modalities||[]).forEach(m=>{ const k=normKey(m); if(!MOD_MAP.has(k)) MOD_MAP.set(k,m); });
-    if(u.evidence_level){ const k=normKey(u.evidence_level); if(!EVID_MAP.has(k)) EVID_MAP.set(k,u.evidence_level); }
+    facetValues(u.phase).forEach(p=>{ const k=normKey(p); if(!PHASE_MAP.has(k)) PHASE_MAP.set(k,p); });
+    facetValues(u.stakeholders).forEach(s=>{ const k=normKey(s); if(!STAKE_MAP.has(k)) STAKE_MAP.set(k,s); });
+    facetValues(u.ai_tech).forEach(t=>{ const k=normKey(t); if(!TECH_MAP.has(k)) TECH_MAP.set(k,t); });
+    facetValues(u.applications).forEach(a=>{ const k=normKey(a); if(!APP_MAP.has(k)) APP_MAP.set(k,a); });
+    facetValues(u.data_modalities).forEach(m=>{ const k=normKey(m); if(!MOD_MAP.has(k)) MOD_MAP.set(k,m); });
+    facetValues(u.evidence_level).forEach(e=>{ const k=normKey(e); if(!EVID_MAP.has(k)) EVID_MAP.set(k,e); });
   });
 
   renderFacetById('filter-phase');
@@ -635,24 +646,24 @@ function applyFilters(){
   const q = state.q.trim().toLowerCase();
   let rows = USECASES.filter(u=>{
     const hay = [
-      u.title, u.summary, u.phase,
-      (u.stakeholders||[]).join(' '),
-      (u.ai_tech||[]).join(' '),
-      (u.data_modalities||[]).join(' '),
-      (u.applications||[]).join(' '),
+      u.title, u.summary, facetValues(u.phase).join(' '),
+      facetValues(u.stakeholders).join(' '),
+      facetValues(u.ai_tech).join(' '),
+      facetValues(u.data_modalities).join(' '),
+      facetValues(u.applications).join(' '),
       (u.tags||[]).join(' '),
       u.provider, (u.organizations||[]).join(' ')
     ].join(' ').toLowerCase();
     if(q && !hay.includes(q)) return false;
 
-    if(state.phases.size && (!u.phase || !state.phases.has(normKey(u.phase)))) return false;
+    function hasAll(set, arr){ if(!set.size) return true; const keys=new Set(facetValues(arr).map(normKey)); for(const k of set){ if(!keys.has(k)) return false; } return true; }
 
-    function hasAll(set, arr){ if(!set.size) return true; const keys=new Set((arr||[]).map(normKey)); for(const k of set){ if(!keys.has(k)) return false; } return true; }
+    if(!hasAll(state.phases,      u.phase)) return false;
     if(!hasAll(state.stakeholders, u.stakeholders)) return false;
     if(!hasAll(state.techs,        u.ai_tech))      return false;
     if(!hasAll(state.apps,         u.applications)) return false;
     if(!hasAll(state.modalities,   u.data_modalities)) return false;
-    if(state.evidences.size && (!u.evidence_level || !state.evidences.has(normKey(u.evidence_level)))) return false;
+    if(!hasAll(state.evidences,    u.evidence_level)) return false;
 
     if(typeof u.year === 'number'){
       if((u.year||0) < state.yMin || (u.year||0) > state.yMax) return false;
@@ -725,9 +736,9 @@ function render(items){
     const doiBtn   = u.links?.doi    ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>` : '';
     const detailBtn = `<a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View details</a>`;
 
-    const apps = (u.applications||[]).slice(0,2).map(a=>`<span class="badge-app">${escapeHTML(a)}</span>`).join('');
-    const tech = (u.ai_tech||[]).slice(0,1).map(t=>`<span class="badge-tech">${escapeHTML(t)}</span>`).join('');
-    const phase = u.phase ? `<span class="badge-phase">${escapeHTML(u.phase)}</span>` : '';
+    const apps = facetValues(u.applications).slice(0,2).map(a=>`<span class="badge-app">${escapeHTML(a)}</span>`).join('');
+    const tech = facetValues(u.ai_tech).slice(0,1).map(t=>`<span class="badge-tech">${escapeHTML(t)}</span>`).join('');
+    const phase = facetValues(u.phase).map(p=>`<span class="badge-phase">${escapeHTML(p)}</span>`).join('');
 
     // NEW: submitted-by overlay
     const c = pickContributor(u);
