@@ -1291,7 +1291,6 @@
           <div class="featured-rail-copy">
             <div class="featured-header-meta">
               <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
-              <span>Recently added across datasets, models, workflows, and OERs.</span>
             </div>
           </div>
         </div>
@@ -1969,7 +1968,7 @@
         external: false
       }));
 
-      return [...datasets, ...models, ...usecases, ...oers]
+      return [...datasets, ...models, ...oers]
         .filter(item => item.title && item.href)
         .sort((a, b) => {
           const aTime = a.ts || 0;
@@ -1984,7 +1983,6 @@
       const collect = [];
       Object.values(datasetsJson || {}).forEach(item => collect.push(parseDate(item.added_date || item.added)));
       (Array.isArray(modelsJson) ? modelsJson : []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
-      ((usecasesJson && usecasesJson.use_cases) || []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
       ((oersJson && oersJson.resources) || []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
       return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
     }
