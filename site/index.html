@@ -1968,7 +1968,7 @@
         external: false
       }));
 
-      return [...datasets, ...models, ...oers]
+      return [...datasets, ...models]
         .filter(item => item.title && item.href)
         .sort((a, b) => {
           const aTime = a.ts || 0;
@@ -1983,7 +1983,6 @@
       const collect = [];
       Object.values(datasetsJson || {}).forEach(item => collect.push(parseDate(item.added_date || item.added)));
       (Array.isArray(modelsJson) ? modelsJson : []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
-      ((oersJson && oersJson.resources) || []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
       return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
     }
 
