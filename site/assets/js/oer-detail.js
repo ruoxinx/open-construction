@@ -67,6 +67,36 @@ function metaRow(label, valueHTML){
   return `<div class="meta-row"><dt class="meta-label">${label}</dt><dd class="meta-val">${valueHTML}</dd></div>`;
 }
 
+function formatLicense(licenseValue){
+  const norm = String(licenseValue || '').trim();
+  if (!norm || norm === '—' || norm === 'â€”') return '';
+
+  const key = norm.toUpperCase();
+  const licenseMap = {
+    'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'CC0': 'https://creativecommons.org/public-domain/cc0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
+    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+    'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+    'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+    'MIT': 'https://opensource.org/licenses/MIT',
+    'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause'
+  };
+
+  const href = licenseMap[key];
+  return href ? `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(norm)}</a>` : escapeHtml(norm);
+}
+
 function getOerId(){
   const url = new URL(window.location.href);
   return url.searchParams.get('id') || '';
@@ -201,6 +231,7 @@ async function initOerDetail(){
       { label: 'Publisher', value: escapeHtml(item.publisher || '—') },
       { label: 'Language', value: escapeHtml(item.language.join(', ') || '—') },
       { label: 'Media', value: escapeHtml(item.media.join(', ') || '—') },
+      { label: 'License', value: formatLicense(item.license) || '—' },
       { label: 'Added', value: escapeHtml(fmtDate(item.added) || '—') }
     ];
 
@@ -282,7 +313,7 @@ async function initOerDetail(){
             <h2 class="detail-heading">How to access and verify it</h2>
             <dl class="meta mb-0">
               ${metaRow('Source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener">${escapeHtml(sourceUrl)}</a>` : '—')}
-              ${metaRow('License', escapeHtml(item.license || '—'))}
+              ${metaRow('License', formatLicense(item.license) || '—')}
               ${metaRow('Added to catalog', escapeHtml(fmtDate(item.added) || '—'))}
               ${metaRow('Submitted by', item.contributor ? (contributorUrl ? `<a href="${contributorUrl}" target="_blank" rel="noopener">${escapeHtml(item.contributor)}</a>` : escapeHtml(item.contributor)) : '—')}
             </dl>
