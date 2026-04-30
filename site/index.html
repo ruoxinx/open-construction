@@ -329,27 +329,24 @@
       justify-content:flex-end;
       margin-top:1rem;
     }
-    .featured-digest-link{
+    .section-text-link{
       display:inline-flex;
       align-items:center;
       gap:.35rem;
-      white-space:nowrap;
-      padding:.28rem .72rem;
-      border:1px solid #dbe6f0;
-      border-radius:999px;
-      background:#f8fbff;
       color:var(--oc-brand-ink);
-      font-size:.88rem;
+      font-size:.9rem;
       font-weight:700;
       line-height:1.2;
-      box-shadow:none;
       text-decoration:none;
+      white-space:nowrap;
     }
-    .featured-digest-link:hover{
-      background:#f3f8fd;
-      border-color:#cfdeec;
+    .section-text-link span[aria-hidden="true"]{
+      color:var(--oc-brand-accent);
+    }
+    .section-text-link:hover{
       color:var(--oc-brand-ink);
-      text-decoration:none;
+      text-decoration:underline;
+      text-underline-offset:3px;
     }
     .featured-rail-btn{
       display:inline-flex;
@@ -705,26 +702,93 @@
     .pf-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:1rem;
+      gap:1.15rem;
     }
     .pf-card{
-      background:#fff;
+      display:flex;
+      flex-direction:column;
+      gap:.8rem;
+      background:var(--oc-card);
       border:1px solid var(--oc-border);
       border-radius:16px;
       padding:1.45rem;
       box-shadow:var(--oc-shadow);
     }
-    .pf-card h4{
-      font-size:1.1rem;
-      font-weight:700;
+    .pf-head{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+    }
+    .pf-icon{
+      display:inline-grid;
+      place-items:center;
+      width:34px;
+      height:34px;
+      border:1px solid #dbe6f0;
+      border-radius:8px;
+      background:#f8fbff;
       color:var(--oc-brand-ink);
-      margin-bottom:.5rem;
+      flex:0 0 auto;
+    }
+    .pf-icon svg{
+      width:18px;
+      height:18px;
+    }
+    .pf-eyebrow{
+      color:var(--oc-subtle);
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .pf-card h4{
+      font-size:1.12rem;
+      font-weight:800;
+      color:var(--oc-brand-ink);
+      margin:0;
+      letter-spacing:-.01em;
     }
     .pf-card p{
       font-size:.95rem;
       color:var(--oc-text);
       margin:0;
       line-height:1.6;
+    }
+    .pf-card p a{
+      color:inherit;
+      font-weight:700;
+      text-decoration:underline;
+      text-decoration-color:rgba(15,46,75,.28);
+      text-underline-offset:3px;
+    }
+    .pf-card p a:hover{
+      color:var(--oc-brand-ink);
+      text-decoration-color:var(--oc-brand-accent);
+    }
+    .pf-actions{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:.85rem 1rem;
+      margin-top:auto;
+      padding-top:.2rem;
+    }
+    .pf-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      color:var(--oc-brand-ink);
+      font-size:.9rem;
+      font-weight:800;
+      text-decoration:none;
+    }
+    .pf-link span[aria-hidden="true"]{
+      color:var(--oc-brand-accent);
+    }
+    .pf-link:hover{
+      color:var(--oc-brand-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
     }
     @media (max-width:575.98px){
       .pf-grid{ grid-template-columns:1fr; }
@@ -759,15 +823,16 @@
       }
     }
 
-    /* ===== Milestones – stepper ===== */
+/* ===== Milestones – stepper ===== */
 
     .ms-stepper{
-      display:flex;
-      align-items:stretch;
-      gap:0;
+      display:grid;
+      grid-template-columns:repeat(6, minmax(0, 1fr));
+      gap:.8rem;
       position:relative;
       counter-reset:ms;
-      padding-top:.6rem;
+      min-height:260px;
+      padding:1rem 0;
     }
 
     .ms-step{
@@ -775,9 +840,11 @@
       display:flex;
       flex-direction:column;
       align-items:center;
+      justify-content:center;
       text-align:center;
       position:relative;
-      padding:0 .5rem;
+      min-height:230px;
+      padding:0;
       counter-increment:ms;
     }
 
@@ -785,11 +852,12 @@
     .ms-step + .ms-step::before{
       content:"";
       position:absolute;
-      top:6px;
+      top:50%;
       right:50%;
       width:100%;
       height:1px;
       background:rgba(15, 46, 75, 0.22);
+      transform:translateY(-50%);
       z-index:0;
     }
     .ms-step.ms-upcoming + .ms-step.ms-upcoming::before,
@@ -801,113 +869,213 @@
     .ms-step:last-child::after{
       content:"";
       position:absolute;
-      top:6px;
+      top:50%;
       width:24px;
       height:1px;
       background:rgba(15, 46, 75, 0.22);
+      transform:translateY(-50%);
       z-index:0;
     }
     .ms-step:first-child::before{ right:calc(50% + 7px); }
     .ms-step:last-child::after{ left:calc(50% + 7px); }
 
-    /* ---- node dot ---- */
-    .ms-node{
-      position:relative;
-      z-index:1;
-      width:14px;
-      height:14px;
-      border-radius:50%;
-      background:#fff;
-      border:2px solid var(--oc-brand-ink);
-      box-sizing:border-box;
-      margin-bottom:.9rem;
-      transition:transform .25s ease, box-shadow .25s ease;
-      flex-shrink:0;
-    }
-    .ms-node::after{ content:counter(ms); }
-    .ms-step:hover .ms-node{
-      transform:scale(1.2);
-    }
-    .ms-node svg{ display:none; }
-    .ms-node.ms-has-icon::after{ content:none; }
-
-    /* upcoming node – brand accent with soft halo */
-    .ms-upcoming .ms-node{
-      background:var(--oc-brand-accent);
-      border-color:var(--oc-brand-accent);
-      box-shadow:0 0 0 6px rgba(242,162,56,.18);
-      animation:none;
-    }
-    @keyframes ms-pulse{
-      0%,100%{ box-shadow:0 0 0 0 rgba(242,162,56,.35); }
-      50%{ box-shadow:0 0 0 8px rgba(242,162,56,0); }
-    }
-
-    /* ---- card panel ---- */
-    .ms-card{
-      flex:1;
-      background:#fff;
-      border:1px solid var(--oc-border);
-      border-radius:16px;
-      padding:1rem .9rem 1.1rem;
-      width:100%;
-      box-shadow:var(--oc-shadow);
-      transition:transform .22s ease, box-shadow .22s ease;
-    }
-    .ms-step:hover .ms-card{
-      transform:translateY(-3px);
-      box-shadow:0 12px 32px rgba(15,46,75,.1);
-    }
-
-    /* ---- year pill ---- */
+    /* ---- year pill — sits on the centre line ---- */
     .ms-year{
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      z-index:2;
       font-size:.72rem;
       font-weight:700;
       letter-spacing:.06em;
       text-transform:uppercase;
       color:#fff;
       background:var(--oc-brand-ink);
-      display:inline-block;
-      padding:.2rem .6rem;
+      padding:.22rem .65rem;
       border-radius:999px;
-      margin-bottom:.4rem;
+      white-space:nowrap;
     }
     .ms-upcoming .ms-year{
       background:var(--oc-brand-accent);
     }
 
-    /* ---- title + desc ---- */
-    .ms-title{
-      font-weight:700;
-      font-size:.95rem;
-      color:var(--oc-brand-ink);
-      line-height:1.3;
-      margin-bottom:.25rem;
+    /* ---- card panel ---- */
+    .ms-card{
+      position:absolute;
+      left:0;
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:16px;
+      padding:.6rem .65rem;
+      width:100%;
+      min-height:80px;
+      box-shadow:var(--oc-shadow);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform .22s ease, box-shadow .22s ease;
     }
+    .ms-step:nth-child(odd) .ms-card{
+      bottom:calc(50% + 1.1rem);
+    }
+    .ms-step:nth-child(even) .ms-card{
+      top:calc(50% + 1.1rem);
+    }
+    .ms-step:hover .ms-card{
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(15,46,75,.1);
+    }
+
+    /* ---- milestone text ---- */
     .ms-desc{
       font-size:.82rem;
-      color:var(--oc-subtle);
-      line-height:1.5;
+      font-weight:600;
+      color:var(--oc-brand-ink);
+      line-height:1.4;
       margin:0;
+      text-align:center;
     }
-    .ms-desc a{ color:var(--oc-link); }
+    .ms-desc a{
+      color:var(--oc-link);
+      text-decoration:none;
+    }
+    .ms-desc a:hover{ text-decoration:underline; }
 
     /* ---- responsive ---- */
     @media (max-width:767.98px){
-      .ms-stepper{ flex-wrap:wrap; justify-content:center; gap:1.1rem .6rem; }
-      .ms-step{ flex:0 0 calc(33.33% - .4rem); }
-      .ms-step + .ms-step::before,
+      .ms-stepper{
+        min-height:0;
+        overflow-x:auto;
+        overflow-y:hidden;
+        scroll-snap-type:x proximity;
+        padding:2.45rem 0 1rem;
+        scrollbar-width:thin;
+      }
+      .ms-step{
+        flex:0 0 200px;
+        min-height:0;
+        scroll-snap-align:start;
+      }
+      .ms-step:nth-child(n) .ms-card{
+        position:relative;
+        top:auto;
+        bottom:auto;
+        left:auto;
+        width:100%;
+        min-height:104px;
+        padding:.85rem .7rem;
+      }
+      .ms-step + .ms-step::before{
+        top:-1.2rem;
+        transform:none;
+      }
       .ms-step:first-child::before,
       .ms-step:last-child::after{ display:none; }
-      .ms-node{ width:12px; height:12px; border-width:1.5px; }
-      .ms-card{ padding:.8rem .7rem; }
-      .ms-title{ font-size:.88rem; }
-      .ms-desc{ font-size:.76rem; }
-    }
-    @media (max-width:479px){
-      .ms-step{ flex:0 0 calc(50% - .4rem); }
+      .ms-desc{ font-size:.8rem; }
     }
 
+    /* Story-rail treatment for the trajectory section */
+    .ms-intro{
+      max-width:none;
+      color:var(--oc-subtle);
+      line-height:1.6;
+      margin:.35rem 0 0;
+    }
+    .ms-stepper{
+      align-items:stretch;
+      grid-template-columns:repeat(6, minmax(0, 1fr));
+      gap:.8rem;
+      min-height:0;
+      margin-top:1.45rem;
+      padding:2.1rem 0 0;
+    }
+    .ms-stepper::before{
+      content:"";
+      position:absolute;
+      top:.9rem;
+      left:calc(100% / 12);
+      right:calc(100% / 12);
+      height:1px;
+      background:linear-gradient(90deg, rgba(15,46,75,.2), rgba(15,46,75,.34) 72%, rgba(242,162,56,.58));
+      z-index:0;
+    }
+    .ms-step,
+    .ms-step:first-child,
+    .ms-step:last-child{
+      display:block;
+      min-height:0;
+      padding:0;
+      text-align:left;
+    }
+    .ms-step::before,
+    .ms-step:first-child::before,
+    .ms-step:last-child::after{
+      display:none;
+    }
+    .ms-year{
+      top:-2.1rem;
+      left:50%;
+      min-width:52px;
+      min-height:28px;
+      border:2px solid #fff;
+      box-shadow:0 4px 12px rgba(15,46,75,.12);
+      font-weight:800;
+      transform:translateX(-50%);
+    }
+    .ms-upcoming .ms-year{
+      color:#17212d;
+    }
+    .ms-card{
+      position:relative;
+      top:auto !important;
+      bottom:auto !important;
+      left:auto;
+      display:block;
+      height:100%;
+      min-height:138px;
+      border-radius:12px;
+      padding:1rem .95rem;
+    }
+    .ms-step:hover .ms-card{
+      border-color:#d6e2ee;
+      transform:translateY(-2px);
+    }
+    .ms-phase{
+      display:block;
+      margin-bottom:.45rem;
+      color:var(--oc-subtle);
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.12em;
+      line-height:1.2;
+      text-transform:uppercase;
+    }
+    .ms-desc{
+      font-size:.88rem;
+      font-weight:650;
+      line-height:1.45;
+      text-align:left;
+    }
+    @media (max-width:991.98px){
+      .ms-stepper{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        row-gap:2.6rem;
+      }
+      .ms-stepper::before{ display:none; }
+      .ms-year{ top:-1.85rem; }
+    }
+    @media (max-width:767.98px){
+      .ms-stepper{
+        display:flex;
+        gap:.85rem;
+        padding:2.05rem .1rem .3rem;
+      }
+      .ms-step{ flex:0 0 220px; }
+      .ms-year{ top:-2rem; }
+      .ms-card{ min-height:132px; }
+      .ms-desc{ font-size:.86rem; }
+    }
     /* Footer */
     footer{
       border-top:1px solid var(--oc-border);
@@ -1317,7 +1485,7 @@
           </button>
         </div>
         <div class="featured-rail-footer">
-          <a class="featured-digest-link" href="monthly-highlights.html">Community digest <span aria-hidden="true">&rarr;</span></a>
+          <a class="section-text-link" href="monthly-highlights.html">Community digest <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -1355,60 +1523,54 @@
     <div class="oc-card">
       <div class="oc-card-body">
         <div class="oc-kicker mb-2">Trajectory</div>
-
+        <h3 id="milestones-heading" class="oc-card-title mb-0">From research foundations to shared AEC infrastructure</h3>
         <div class="ms-stepper" role="list" aria-label="OpenConstruction milestones">
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">2022-23</div>
             <div class="ms-card">
-              <div class="ms-year">2022</div>
-              <div class="ms-title">Idea Sparked</div>
-              <div class="ms-desc">Vision born at <a href="https://doi.org/10.1007/978-3-031-25082-8_15" target="_blank" rel="noopener">ECCV’22</a> around lifelong learning and sharing AEC knowledge</div>
+              <span class="ms-phase">Foundations</span>
+              <p class="ms-desc"><a href="https://doi.org/10.1007/978-3-031-25082-8_15" target="_blank" rel="noopener">Lifelong learning</a> and <a href="https://doi.org/10.1061/JCCEE5.CPENG-5077" target="_blank" rel="noopener">data sharing</a> frame the need for reusable AEC knowledge.</p>
             </div>
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">2024</div>
             <div class="ms-card">
-              <div class="ms-year">2024</div>
-              <div class="ms-title">Team Formed</div>
-              <div class="ms-desc">A core team assembled across institutions to turn the concept into a real platform</div>
+              <span class="ms-phase">Infrastructure</span>
+              <p class="ms-desc">Core team and open infrastructure turn the concept into a real platform.</p>
             </div>
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">2024</div>
             <div class="ms-card">
-              <div class="ms-year">2024</div>
-              <div class="ms-title">Open Dataset Synthesis Paper</div>
-              <div class="ms-desc"><a href="https://doi.org/10.48550/arXiv.2508.11482" target="_blank" rel="noopener"><em>OpenConstruction: A Systematic Synthesis of Open Visual Datasets for Data-Centric Artificial Intelligence in Construction Monitoring</em></a> (accepted by JCCEE)</div>
+              <span class="ms-phase">Landscape</span>
+              <p class="ms-desc"><a href="https://doi.org/10.48550/arXiv.2508.11482" target="_blank" rel="noopener">OpenConstruction</a> dataset survey maps the fragmented data landscape.</p>
             </div>
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">2025</div>
             <div class="ms-card">
-              <div class="ms-year">2025</div>
-              <div class="ms-title">Platform Live</div>
-              <div class="ms-desc">Launched catalogs for datasets, models, workflows, and OERs</div>
+              <span class="ms-phase">Launch</span>
+              <p class="ms-desc">Datasets, models, workflows, and OERs launch as connected catalogs.</p>
             </div>
           </div>
 
           <div class="ms-step" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">2026</div>
             <div class="ms-card">
-              <div class="ms-year">2026</div>
-              <div class="ms-title">Ecosystem Paper</div>
-              <div class="ms-desc">Published our ecosystem paper: <a href="https://www.sciencedirect.com/science/article/pii/S2666165926000670" target="_blank" rel="noopener"><em>Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse</em></a></div>
+              <span class="ms-phase">Ecosystem</span>
+              <p class="ms-desc"><a href="https://www.sciencedirect.com/science/article/pii/S2666165926000670" target="_blank" rel="noopener">Open science ecosystem</a> connects research, education, and practice.</p>
             </div>
           </div>
 
           <div class="ms-step ms-upcoming" role="listitem">
-            <span class="ms-node ms-has-icon" aria-hidden="true"></span>
+            <div class="ms-year">Next</div>
             <div class="ms-card">
-              <div class="ms-year">Next</div>
-              <div class="ms-title">What’s Ahead</div>
-              <div class="ms-desc">More features, integrations, and community collaborations in the pipeline</div>
+              <span class="ms-phase">Next</span>
+              <p class="ms-desc">Benchmarks, integrations, and community governance.</p>
             </div>
           </div>
 
@@ -1418,17 +1580,36 @@
   </section>
 
   <!-- 4. Policy & Feedback -->
+
   <section class="oc-section">
     <div class="oc-kicker mb-3">Policies &amp; Support</div>
     <div class="pf-grid">
-      <div class="pf-card">
-        <h4>Content Policy</h4>
-        <p>OpenConstruction indexes publicly available metadata and links to original sources. Inclusion does not imply endorsement or warranty. For corrections or removal requests, contact <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
-      </div>
-      <div class="pf-card">
-        <h4>Feedback & Ideas</h4>
-        <p>Have a question or suggestion? <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Create a suggestion</a> on GitHub, join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a>, or reach out at <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
-      </div>
+      <article class="pf-card">
+        <div class="pf-head">
+          <span class="pf-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
+          </span>
+          <span class="pf-eyebrow">Content Policy</span>
+        </div>
+        <h4>Open metadata, credited creators.</h4>
+        <p>OpenConstruction indexes public metadata and points back to original sources. Inclusion is descriptive, not endorsement; corrections and removal requests go to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+        <div class="pf-actions">
+          <a class="pf-link" href="contribute.html#terms">Read policy <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
+      <article class="pf-card">
+        <div class="pf-head">
+          <span class="pf-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>
+          </span>
+          <span class="pf-eyebrow">Feedback &amp; Ideas</span>
+        </div>
+        <h4>Shape what's next, in the open.</h4>
+        <p>Roadmap items, schema changes, and governance decisions happen on GitHub. <a href="https://github.com/ruoxinx/open-construction/issues/new?template=suggestion.yml" target="_blank" rel="noopener">Open a suggestion</a>, join <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussions</a>, or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+        <div class="pf-actions">
+          <a class="pf-link" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Go to GitHub <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -1436,7 +1617,7 @@
   <section class="oc-section oc-section">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
       <div class="oc-kicker mb-0">Contributing Institutions &amp; Organizations</div>
-      <a class="featured-digest-link" href="contributors.html">All contributors <span aria-hidden="true">&rarr;</span></a>
+      <a class="section-text-link" href="contributors.html">All contributors <span aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="logo-marquee" id="indexInstitutionMarquee" aria-label="Affiliated institutions and organizations">
       <div class="row-marquee" data-direction="right">
