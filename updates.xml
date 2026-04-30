@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: LiGuard: A Streamlined Open-Source Framework for Rapid & Interactive Lidar Research]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:LiGuard:2026-04-30</guid>
+    <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[LiDAR data processing model using software (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
     <guid isPermaLink="false">datasets:O-ESD:2026-04-23</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:archseek:2026-04-13</guid>
     <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: ArchSeek: Retrieving Architectural Case Studies Using Vision-Language Models]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:archseek:2026-04-13</guid>
-    <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[architectural design assistance model using image (2025)]]></description>
   </item>
   </channel>
 </rss>
