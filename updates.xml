@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: UCF UrbanTwin Dataverse]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=UrbanTwin</link>
+    <guid isPermaLink="false">datasets:UrbanTwin:2026-04-30</guid>
+    <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
     <guid isPermaLink="false">datasets:O-ESD:2026-04-23</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:archseek:2026-04-13</guid>
     <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[architectural design assistance model using image (2025)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: WikiArch Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=wikiarch</link>
-    <guid isPermaLink="false">datasets:wikiarch:2026-04-12</guid>
-    <pubDate>Sun, 12 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
