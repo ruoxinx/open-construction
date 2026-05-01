@@ -261,8 +261,43 @@
     .monthly-teaser-head{
       display:grid;
       grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);
-      gap:1.1rem;
+      gap:1.4rem;
       align-items:start;
+    }
+    .monthly-teaser-copy{
+      display:flex;
+      flex-direction:column;
+      gap:.65rem;
+    }
+    .monthly-teaser-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.3rem .7rem;
+      border:1px solid #dbe6f0;
+      border-radius:999px;
+      background:#f8fbff;
+      color:var(--oc-ink);
+      font-size:.74rem;
+      font-weight:800;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      align-self:flex-start;
+    }
+    .monthly-teaser-kicker .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--oc-accent);
+      box-shadow:0 0 0 4px rgba(242,162,56,.16);
+    }
+    .monthly-teaser h2{
+      font-size:clamp(1.35rem, .95rem + 1.6vw, 1.85rem);
+      font-weight:800;
+      letter-spacing:-.02em;
+      line-height:1.15;
+      color:var(--oc-ink);
+      margin:0;
     }
     .monthly-teaser-copy p{
       margin:0;
@@ -270,11 +305,15 @@
       line-height:1.6;
       max-width:58ch;
     }
+    .monthly-teaser-cta{
+      align-self:flex-start;
+      margin-top:.35rem;
+    }
     .monthly-teaser-side{
       display:flex;
       flex-direction:column;
       align-items:stretch;
-      gap:.9rem;
+      gap:.65rem;
     }
     .monthly-teaser-metrics{
       display:grid;
@@ -283,39 +322,43 @@
     }
     .monthly-teaser-metric{
       border:1px solid var(--oc-border);
-      border-radius:12px;
-      background:rgba(255,255,255,.92);
-      padding:.75rem .8rem;
-      text-align:center;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at top right, rgba(242,162,56,.12), transparent 36%),
+        linear-gradient(180deg, rgba(248,251,255,.95) 0%, rgba(255,255,255,1) 100%);
+      padding:.85rem .9rem;
+      text-align:left;
+    }
+    .monthly-teaser-metric::before{
+      content:"";
+      display:block;
+      width:28px;
+      height:3px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--oc-accent),rgba(242,162,56,.15));
+      margin-bottom:.55rem;
+    }
+    .monthly-teaser-metric span{
+      display:block;
+      margin-bottom:.3rem;
+      color:var(--oc-subtle);
+      font-size:.7rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-weight:800;
     }
     .monthly-teaser-metric strong{
       display:block;
       color:var(--oc-ink);
-      font-size:1.22rem;
+      font-size:1.35rem;
       font-weight:800;
-      line-height:1.05;
-    }
-    .monthly-teaser-metric span{
-      display:block;
-      margin-top:.2rem;
-      color:var(--oc-subtle);
-      font-size:.75rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-weight:700;
-    }
-    .monthly-teaser-actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:.75rem;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top:1.8rem;
+      line-height:1.1;
     }
     .monthly-teaser-note{
       color:var(--oc-subtle);
-      font-size:.93rem;
-      margin:0;
+      font-size:.82rem;
+      line-height:1.5;
+      margin:.65rem 0 0;
     }
 
     /* Logo wall */
@@ -469,10 +512,11 @@
       .metrics{gap:1rem}
       .metric{gap:.75rem}
       .metric svg{width:94px;height:94px}
-      .monthly-teaser-head{grid-template-columns:1fr}
+      .monthly-teaser-head{grid-template-columns:1fr;gap:1.1rem}
       .monthly-teaser-side{align-items:stretch}
-      .monthly-teaser-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}
-      .monthly-teaser-actions{justify-content:flex-start}
+      .monthly-teaser-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+      .monthly-teaser-metric{padding:.7rem .65rem}
+      .monthly-teaser-metric strong{font-size:1.15rem}
       .logo{width:132px;height:72px}
       .logo img{max-width:118px;max-height:50px}
       .reach-map-head{padding:.9rem 1rem .75rem}
@@ -684,28 +728,30 @@
       <div class="card-body">
         <div class="monthly-teaser-head">
           <div class="monthly-teaser-copy">
-            <div class="oc-kicker">What’s New This Month</div>
-            <h2 class="oc-card-title h4 mt-2 mb-2" id="communityMonthlyHeading">Loading monthly highlights...</h2>
-            <p id="communityMonthlySummary">Browse the latest month of activity across OpenConstruction, including newly added datasets, models, and the contributors behind them.</p>
+            <div class="monthly-teaser-kicker">
+              <span class="dot" aria-hidden="true"></span>
+              <span id="communityMonthlyKicker">This Month</span>
+            </div>
+            <h2 id="communityMonthlyHeading">New datasets, models, and contributors</h2>
+            <p id="communityMonthlySummary">A monthly digest of what just landed in the OpenConstruction catalog &mdash; the datasets, models, and people behind them.</p>
+            <a class="btn-ink btn-sm monthly-teaser-cta" href="monthly-highlights.html">View community digest <span aria-hidden="true">&rarr;</span></a>
           </div>
           <div class="monthly-teaser-side">
             <div class="monthly-teaser-metrics" id="communityMonthlyStats" aria-label="Monthly community activity">
               <div class="monthly-teaser-metric">
-                <strong>&mdash;</strong>
                 <span>Datasets</span>
+                <strong>&mdash;</strong>
               </div>
               <div class="monthly-teaser-metric">
-                <strong>&mdash;</strong>
                 <span>Models</span>
+                <strong>&mdash;</strong>
               </div>
               <div class="monthly-teaser-metric">
-                <strong>&mdash;</strong>
                 <span>Contributors</span>
+                <strong>&mdash;</strong>
               </div>
             </div>
-            <div class="monthly-teaser-actions">
-              <a class="btn-ink btn-sm" href="monthly-highlights.html">View community digests</a>
-            </div>
+            <p class="monthly-teaser-note">Counts reflect resources added in the last 30 days.</p>
           </div>
         </div>
       </div>
@@ -1372,7 +1418,11 @@ api.renderInstitutionMarquee({
   const headingEl = document.getElementById('communityMonthlyHeading');
   const summaryEl = document.getElementById('communityMonthlySummary');
   const statsEl = document.getElementById('communityMonthlyStats');
+  const kickerEl = document.getElementById('communityMonthlyKicker');
   if (!headingEl || !summaryEl || !statsEl) return;
+  const DEFAULT_HEADING = headingEl.textContent;
+  function pluralize(n, word){ return `${n} ${word}${n === 1 ? '' : 's'}`; }
+  function setKicker(text){ if (kickerEl) kickerEl.textContent = text; }
 
   const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month:'long', year:'numeric' });
 
@@ -1464,9 +1514,10 @@ api.renderInstitutionMarquee({
     const allEntries = [...datasetEntries, ...modelEntries].filter((entry) => entry.added);
     const latest = allEntries.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
     if (!latest){
-      headingEl.textContent = 'Monthly highlights coming soon';
-      summaryEl.textContent = 'Monthly highlights will appear here as dated highlights are added to the catalog.';
-      setStats([0,0,0]);
+      setKicker('Coming Soon');
+      headingEl.textContent = 'Monthly digest coming soon';
+      summaryEl.textContent = "We'll surface new datasets, models, and contributors here as soon as the catalog records new activity.";
+      setStats(['—','—','—']);
       return;
     }
     const key = monthKey(latest.added);
@@ -1474,8 +1525,10 @@ api.renderInstitutionMarquee({
     const datasetCount = monthly.filter((entry) => entry.type === 'dataset').length;
     const modelCount = monthly.filter((entry) => entry.type === 'model').length;
     const contributorCount = new Set(monthly.flatMap((entry) => contributorNames(entry.item, registry).map(contributorKey).filter(Boolean))).size;
-    headingEl.textContent = `Community Highlights for ${MONTH_FORMATTER.format(latest.added)}`;
-    summaryEl.textContent = `${MONTH_FORMATTER.format(latest.added)} includes ${monthly.filter((entry) => entry.type === 'dataset').length} new datasets, ${monthly.filter((entry) => entry.type === 'model').length} new models, and ${contributorCount} contributors across the OpenConstruction community.`;
+    const monthLabel = MONTH_FORMATTER.format(latest.added);
+    setKicker(`${monthLabel.toUpperCase()} Highlights`);
+    headingEl.textContent = DEFAULT_HEADING;
+    summaryEl.textContent = `${monthLabel} brought ${pluralize(datasetCount, 'dataset')}, ${pluralize(modelCount, 'model')}, and ${pluralize(contributorCount, 'contributor')} to OpenConstruction.`;
     setStats([
       datasetCount,
       modelCount,
@@ -1483,9 +1536,10 @@ api.renderInstitutionMarquee({
     ]);
   }).catch((err) => {
     console.error('Failed to load community teaser', err);
-    headingEl.textContent = 'Monthly highlights unavailable right now';
-    summaryEl.textContent = 'The teaser could not be loaded at the moment.';
-    setStats([0,0,0]);
+    setKicker('Catalog Offline');
+    headingEl.textContent = 'Monthly digest unavailable';
+    summaryEl.textContent = 'We could not reach the catalog. Try refreshing in a moment.';
+    setStats(['—','—','—']);
   });
 })();
 </script>
