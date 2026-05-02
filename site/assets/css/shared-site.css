@@ -1,7 +1,7 @@
 :root{
   --oc-bg:#fff;
   --oc-text:#1e2a36;
-  --oc-sub:#6b7b8c;
+  --oc-sub:#4f5d6c;
   --oc-border:#e7edf3;
   --oc-ink:#0f2e4b;
   --oc-link:#0b66c3;
@@ -36,6 +36,9 @@ html,
 body{
   background:var(--oc-bg);
   color:var(--oc-text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
 html{
@@ -133,7 +136,8 @@ header.hero .content{
 }
 
 header.hero h1{
-  font-weight:800;
+  font-weight:700;
+  line-height:1.2;
   color:var(--oc-brand);
   margin-bottom:.3rem;
 }
@@ -199,6 +203,19 @@ header.hero p{
 
 .oc-site-footer{
   border-top:1px solid var(--oc-border);
+}
+
+.oc-site-footer a.text-muted,
+.oc-site-footer a.text-muted:visited{
+  color:var(--oc-text)!important;
+  text-decoration:none;
+}
+
+.oc-site-footer a.text-muted:hover,
+.oc-site-footer a.text-muted:focus{
+  color:var(--oc-ink)!important;
+  text-decoration:underline;
+  text-underline-offset:3px;
 }
 
 @media (min-width: 992px){

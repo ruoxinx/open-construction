@@ -20,6 +20,9 @@
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
   <!-- Bootstrap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/shared-site.css" rel="stylesheet">
   <!-- D3 -->
@@ -27,14 +30,14 @@
 
   <style>
     :root{
-      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#6b7b8c; --oc-border:#e7edf3;
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#4f5d6c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
     .oc-container{ max-width:1180px; }
     /* shared shell styles live in assets/css/shared-site.css */
-    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .08em; font-weight:800; }
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .08em; font-weight:700; }
 
     .oc-section{ margin-top:26px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
@@ -55,7 +58,7 @@
       backdrop-filter: blur(6px);
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .pane-title{ font-weight:900; color:var(--oc-ink); }
+    .pane-title{ font-weight:700; color:var(--oc-ink); }
     .pane-sub{ color:var(--oc-subtle); font-size:.92rem; margin-top:2px; }
     .pane-body{ padding:14px; }
 
@@ -85,7 +88,7 @@
       background: transparent;
       padding: .2rem .2rem;
       color: var(--oc-ink);
-      font-weight: 650;
+      font-weight: 600;
     }
     .toolbox input::placeholder{ color: rgba(107,123,140,.85); font-weight: 600; }
 
@@ -113,7 +116,7 @@
       box-shadow: 0 8px 18px rgba(242,162,56,.18);
       margin-right:6px;
     }
-    .legend code{ color: var(--oc-ink); font-weight: 800; }
+    .legend code{ color: var(--oc-ink); font-weight: 700; }
 
     /* Viz container (smaller) */
     .viz-wrap{
@@ -190,7 +193,7 @@
       transition: opacity .12s ease, transform .12s ease;
       z-index: 40;
     }
-    .tip strong{ display:block; font-weight: 950; }
+    .tip strong{ display:block; font-weight: 700; }
     .tip .sub{ color: var(--oc-subtle); font-size: .92rem; margin-top:2px; }
 
     /* Names panel */
@@ -212,7 +215,7 @@
       gap:10px;
     }
     .names-title{
-      font-weight: 950;
+      font-weight: 700;
       color: var(--oc-ink);
       display:flex; align-items:center; gap:10px;
     }
@@ -251,7 +254,7 @@
       background: rgba(255,255,255,.92);
     }
     .name-item .nm{
-      font-weight: 900;
+      font-weight: 700;
       color: var(--oc-ink);
       font-size: .92rem;
     }
@@ -299,7 +302,7 @@
       width:100%;
       border-radius: 14px;
       padding: 10px 12px;
-      font-weight: 950;
+      font-weight: 700;
       border: 1px solid rgba(11,102,195,.22);
       color: #0b66c3;
       background: rgba(11,102,195,.06);
@@ -578,7 +581,7 @@
 
     <footer class="py-4 mt-3 oc-site-footer">
       <div class="container oc-container small text-muted text-center">
-        <div><img src="assets/img/icon.png" alt="" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+        <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
         <div class="mt-1">
           <small>
             Licensed under Apache 2.0.

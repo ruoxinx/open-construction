@@ -10,21 +10,6 @@
   --surface:#ffffff;
 }
 
-/* =========================
-   Hero background + headline
-   ========================= */
-.bg-hero{
-  /* gold swoosh → brand blue, like your mock */
-  background: radial-gradient(
-      ellipse at right top,
-      #f9c353 0%,
-      var(--accent) 42%,
-      var(--brand-700) 42%,
-      var(--brand-800) 100%
-  );
-  color: #fff;
-}
-
 /* Bigger, crisp logo in hero */
 .hero-logo{
   height:88px;
