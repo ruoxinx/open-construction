@@ -68,7 +68,11 @@
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 
-    html,body{ background:var(--oc-bg); color:var(--oc-text); }
+    html,body{
+      background:var(--oc-bg);
+      color:var(--oc-text);
+      font-family:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
     a{ color:var(--oc-link); }
 	.oc-container{ max-width:1080px; }
 
@@ -716,6 +720,7 @@
       border-radius:16px;
       padding:1.45rem;
       box-shadow:var(--oc-shadow);
+      color:var(--oc-text);
     }
     .pf-head{
       display:flex;
@@ -759,14 +764,14 @@
       line-height:1.6;
     }
     .pf-card p a{
-      color:inherit;
+      color:var(--oc-link);
       font-weight:600;
       text-decoration:underline;
-      text-decoration-color:rgba(15,46,75,.45);
+      text-decoration-color:rgba(11,102,195,.35);
       text-underline-offset:3px;
     }
     .pf-card p a:hover{
-      color:var(--oc-brand-ink);
+      color:var(--oc-link);
       text-decoration-color:var(--oc-brand-accent);
     }
     .pf-actions{
@@ -919,6 +924,7 @@
       align-items:center;
       justify-content:center;
       transition:transform .22s ease, box-shadow .22s ease;
+      color:var(--oc-text);
     }
     .ms-step:nth-child(odd) .ms-card{
       bottom:calc(50% + 1.1rem);
@@ -934,8 +940,8 @@
     /* ---- milestone text ---- */
     .ms-desc{
       font-size:.82rem;
-      font-weight:600;
-      color:var(--oc-brand-ink);
+      font-weight:400;
+      color:var(--oc-text);
       line-height:1.4;
       margin:0;
       text-align:center;
@@ -1049,17 +1055,20 @@
       display:block;
       margin-bottom:.45rem;
       color:var(--oc-subtle);
-      font-size:.68rem;
+      font-size:.72rem;
       font-weight:700;
-      letter-spacing:.12em;
+      letter-spacing:.14em;
       line-height:1.2;
       text-transform:uppercase;
     }
     .ms-desc{
       font-size:.88rem;
-      font-weight:600;
+      font-weight:400;
       line-height:1.45;
       text-align:left;
+    }
+    .ms-desc a{
+      font-weight:600;
     }
     @media (max-width:991.98px){
       .ms-stepper{
