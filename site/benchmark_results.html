@@ -380,6 +380,11 @@
     return esc(value);
   }
 
+  function formatResultValue(value){
+    if (value == null || value === '') return '<span class="text-muted">&mdash;</span>';
+    return esc(value);
+  }
+
   function sortedResults(board){
     return (board.results || []).slice();
   }
@@ -560,6 +565,7 @@
   }
 
   function compareCard(board){
+    if (board.comparison_chart?.enabled === false) return '';
     if ((board.comparison_chart?.orientation || '').toLowerCase() === 'horizontal-grouped') {
       return horizontalCompareCard(board);
     }
@@ -645,11 +651,14 @@
     const metricDefs = board.metric_columns || [];
     const primaryDef = metricDefs.find(col => col.key === board.primary_metric_key) || metricDefs[0];
     const modelMap = new Map((models || []).map(model => [model.id, model]));
+    const rowColumns = Array.isArray(board.row_columns) ? board.row_columns : [];
+    const showYearColumn = board.hide_year_column !== true;
+    const methodColumnLabel = board.method_column_label || 'Model';
     const normalizedTask = normalizeTaskTerm(board.task, taskVocabulary);
     const taskDefinition = normalizedTask.entry?.description || board.task_description || board.summary;
     const datasetHref = dataset?.id ? `datasets/detail.html?id=${encodeURIComponent(dataset.id)}` : (board.dataset_url || '#');
     const datasetLabel = normStr(dataset?.name || board.dataset_name || board.dataset_id);
-    const datasetImg = dataset?.id ? `assets/img/datasets/${encodeURIComponent(dataset.id)}.png` : 'assets/img/placeholder/placeholder.png';
+    const datasetImg = dataset?.image_url || (dataset?.id ? `assets/img/datasets/${encodeURIComponent(dataset.id)}.png` : 'assets/img/icon.png');
     const metricSummary = metricDefs.length
       ? metricDefs.map(col => col.label).join(', ')
       : (primaryDef?.label || '-');
@@ -669,7 +678,7 @@
       <div class="dataset-hero">
         <div class="dataset-media">
           <div class="w-100">
-            <img src="${esc(datasetImg)}" alt="${esc(datasetLabel)} preview" onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+            <img src="${esc(datasetImg)}" alt="${esc(datasetLabel)} preview" onerror="this.onerror=null;this.src='assets/img/icon.png';">
             <div class="figure-caption px-3 pb-3 text-center">Sample from the dataset</div>
           </div>
         </div>
@@ -725,9 +734,11 @@
             <table class="results-table">
               <thead>
                 <tr>
-                  <th style="min-width:88px;">Data</th>
-                  <th style="min-width:132px;">Model</th>
-                  <th class="compact">Year</th>
+                  ${rowColumns.length
+                    ? rowColumns.map(col => `<th style="min-width:${esc(col.min_width || '88px')};">${esc(col.label || col.key)}</th>`).join('')
+                    : '<th style="min-width:88px;">Data</th>'}
+                  <th style="min-width:132px;">${esc(methodColumnLabel)}</th>
+                  ${showYearColumn ? '<th class="compact">Year</th>' : ''}
                   ${metricDefs.map(col => `<th class="compact">${esc(col.label)}</th>`).join('')}
                   <th class="compact">Code</th>
                 </tr>
@@ -743,9 +754,11 @@
                   const modelHref = externalModelLinks[row.method] || (model?.id ? `models/details.html?id=${encodeURIComponent(model.id)}` : null);
                   return `
                     <tr>
-                      <td class="fw-semibold">${esc(row.data_source || '-')}</td>
+                      ${rowColumns.length
+                        ? rowColumns.map(col => `<td class="fw-semibold">${formatResultValue(row[col.key])}</td>`).join('')
+                        : `<td class="fw-semibold">${esc(row.data_source || '-')}</td>`}
                       <td class="fw-semibold">${modelHref ? `<a href="${esc(modelHref)}" ${modelHref.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(row.method)}</a>` : esc(row.method)}</td>
-                      <td class="compact">${normStr(row.year) ? esc(row.year) : '<span class="text-muted">&mdash;</span>'}</td>
+                      ${showYearColumn ? `<td class="compact">${normStr(row.year) ? esc(row.year) : '<span class="text-muted">&mdash;</span>'}</td>` : ''}
                       ${metricDefs.map(col => `<td class="compact">${formatMetric(col, row.metrics?.[col.key])}</td>`).join('')}
                       <td class="compact">${row.code_url ? `<a href="${esc(row.code_url)}" target="_blank" rel="noopener" aria-label="Open repository" title="Open repository">${githubIcon()}</a>` : '<span class="text-muted">&mdash;</span>'}</td>
                     </tr>
