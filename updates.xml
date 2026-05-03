@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: BuildingSense: Multimodal building function classification dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BuildingSense</link>
+    <guid isPermaLink="false">datasets:BuildingSense:2026-05-03</guid>
+    <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: UCF UrbanTwin Dataverse]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=UrbanTwin</link>
     <guid isPermaLink="false">datasets:UrbanTwin:2026-04-30</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BIM-NLP-Scheduling:2026-04-16</guid>
     <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[BIM-to-schedule automation model using BIM (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: ArchSeek Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=archseek</link>
-    <guid isPermaLink="false">datasets:archseek:2026-04-13</guid>
-    <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
