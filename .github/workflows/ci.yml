@@ -15,11 +15,11 @@ jobs:
       HAS_DATA_TOKEN: ${{ secrets.DATA_REPO_TOKEN != '' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Checkout catalog data
         if: env.HAS_DATA_TOKEN == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ruoxinx/open-construction-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
@@ -37,12 +37,12 @@ jobs:
           fi
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -76,7 +76,7 @@ jobs:
             --out reports/summary.md
 
       - name: Upload CI report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ci-report
           path: reports/summary.md
