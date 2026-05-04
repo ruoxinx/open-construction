@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Checkout catalog data
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ruoxinx/open-construction-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
@@ -48,14 +48,14 @@ jobs:
       # If you later add a build step, put it here and output to ./site (or ./dist).
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Generate sitemap
         run: |
           node site/scripts/generate-sitemap.mjs
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./site
 
@@ -69,4 +69,4 @@ jobs:
 
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
