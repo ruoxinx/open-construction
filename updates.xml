@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: DrafterBench: Benchmarking Large Language Models for Tasks Automation in Civil Engineering]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DrafterBench</link>
+    <guid isPermaLink="false">datasets:DrafterBench:2026-05-06</guid>
+    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: BIMUniXchange: Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:BIMUniXchange:2026-05-06</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: SWIT Dataset: scaffolding worker inertial measurement unit (IMU) time-series dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=SWIT-Dataset</link>
     <guid isPermaLink="false">datasets:SWIT-Dataset:2026-04-20</guid>
-    <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Hong Kong University Building Image Dataset (HBD)]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=HBD</link>
-    <guid isPermaLink="false">datasets:HBD:2026-04-20</guid>
     <pubDate>Mon, 20 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
