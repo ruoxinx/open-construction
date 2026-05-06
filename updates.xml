@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Component based Machine Learning for Building Energy Prediction]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:Component_based_Machine_Learning:2026-05-06</guid>
+    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Building Energy Analysis model using Tabular (2024)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CUBIT-InSeg Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CUBIT-InSeg</link>
     <guid isPermaLink="false">datasets:CUBIT-InSeg:2026-05-04</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:O-ESD:2026-04-23</guid>
     <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: VisualSiteDiary: A detector-free Vision-Language Transformer model for captioning photologs for daily construction reporting and image retrievals]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:VisualSiteDiary:2026-04-23</guid>
-    <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Site understanding model using Ground RGB (2024)]]></description>
   </item>
   </channel>
 </rss>
