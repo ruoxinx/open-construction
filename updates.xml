@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: BrickNet: Fabrication-Aware Synthetic Dataset for Brick Wall Designs]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BrickNet</link>
+    <guid isPermaLink="false">datasets:BrickNet:2026-05-07</guid>
+    <pubDate>Thu, 07 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: DrafterBench: Benchmarking Large Language Models for Tasks Automation in Civil Engineering]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=DrafterBench</link>
     <guid isPermaLink="false">datasets:DrafterBench:2026-05-06</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:LiGuard:2026-04-30</guid>
     <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[LiDAR data processing model using software (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Oriented Environmental Swiss Dwellings (O-ESD) dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=O-ESD</link>
-    <guid isPermaLink="false">datasets:O-ESD:2026-04-23</guid>
-    <pubDate>Thu, 23 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
