@@ -567,7 +567,7 @@ function licenseNoticeFor(licVal){
   const creativeCommons = {
     'CC BY 4.0': {
       title: 'Creative Commons Attribution 4.0 International',
-      intro: 'You are free to share and adapt the material as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution 4.0 International. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
         'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
@@ -582,7 +582,7 @@ function licenseNoticeFor(licVal){
     'CC-BY 4.0': null,
     'CC BY-NC 4.0': {
       title: 'Creative Commons Attribution-NonCommercial 4.0 International',
-      intro: 'You are free to share and adapt the material for noncommercial purposes as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution-NonCommercial 4.0 International. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format.',
         'Adapt — remix, transform, and build upon the material.',
@@ -598,7 +598,7 @@ function licenseNoticeFor(licVal){
     'CC-BY-NC': null,
     'CC BY-SA 4.0': {
       title: 'Creative Commons Attribution-ShareAlike 4.0 International',
-      intro: 'You are free to share and adapt the material as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution-ShareAlike 4.0 International. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
         'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
@@ -613,7 +613,7 @@ function licenseNoticeFor(licVal){
     },
     'CC BY-NC-SA 4.0': {
       title: 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
-      intro: 'You are free to share and adapt the material for noncommercial purposes as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format.',
         'Adapt — remix, transform, and build upon the material.',
@@ -629,7 +629,7 @@ function licenseNoticeFor(licVal){
     },
     'CC BY-NC-ND 4.0': {
       title: 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International',
-      intro: 'You are free to share the material as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format.',
         'The licensor cannot revoke these freedoms as long as you follow the license terms.'
@@ -644,7 +644,7 @@ function licenseNoticeFor(licVal){
     },
     'CC BY-NC-ND 3.0': {
       title: 'Creative Commons Attribution-NonCommercial-NoDerivatives 3.0',
-      intro: 'You are free to share the material as long as you follow the license terms.',
+      intro: 'This resource is made available under Creative Commons Attribution-NonCommercial-NoDerivatives 3.0. The following summary highlights key permissions and conditions from the license deed.',
       freedoms: [
         'Share — copy and redistribute the material in any medium or format.',
         'The licensor cannot revoke these freedoms as long as you follow the license terms.'
@@ -666,7 +666,7 @@ function licenseNoticeFor(licVal){
   if (key === 'CC0') {
     return {
       title: 'Creative Commons CC0 Public Domain Dedication',
-      intro: 'The provider has indicated that the material is dedicated to the public domain to the fullest extent permitted by law.',
+      intro: 'This resource is marked with the Creative Commons CC0 Public Domain Dedication. The following summary highlights the practical reuse status indicated by CC0.',
       freedoms: [
         'You may copy, modify, distribute, and perform the work, including for commercial purposes, without asking permission.'
       ],
@@ -692,40 +692,38 @@ function licenseNoticeFor(licVal){
 
 function listHtml(items){
   if (!items || !items.length) return '';
-  return `<ul class="license-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+  return `<ul class="license-list">${items.map(item => {
+    const [label, ...rest] = String(item).split(' — ');
+    const detail = rest.join(' — ');
+    return detail
+      ? `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(detail)}</span></li>`
+      : `<li><span>${escapeHtml(item)}</span></li>`;
+  }).join('')}</ul>`;
 }
 
 function datasetLicenseModalHtml(ds){
   const licenseLabel = safeText(ds.license) === '—' ? 'Unspecified license' : safeText(ds.license);
   const notice = licenseNoticeFor(ds.license);
-  const licenseRendered = formatLicense(ds.license) || escapeHtml(licenseLabel);
   const licenseUrl = licenseHrefFor(ds.license);
-  const accessUrl = safeHref(ds.access || '');
+  const licenseTerms = licenseUrl
+    ? `<a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(licenseLabel)}</a>`
+    : escapeHtml(licenseLabel);
   return `
     <div class="modal fade" id="licenseDownloadModal" tabindex="-1" aria-labelledby="licenseDownloadTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content license-modal">
           <div class="modal-header">
             <div>
-              <div class="detail-kicker mb-1">License acknowledgement</div>
-              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">${escapeHtml(licenseLabel)}</h2>
+              <div class="detail-kicker mb-1">Before you continue</div>
+              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">Review dataset license</h2>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="license-lead">${escapeHtml(notice.intro)}</p>
             <div class="license-summary">
               <div class="license-summary-row">
-                <div class="license-summary-label">Recorded license</div>
-                <div>${licenseRendered}</div>
-              </div>
-              <div class="license-summary-row">
-                <div class="license-summary-label">Original license terms</div>
-                <div>${licenseUrl ? `<a href="${licenseUrl}" target="_blank" rel="noopener">Open the original license terms</a>` : 'No license URL is available for this catalog record.'}</div>
-              </div>
-              <div class="license-summary-row">
-                <div class="license-summary-label">Dataset source</div>
-                <div>${accessUrl ? `<a href="${accessUrl}" target="_blank" rel="noopener">${escapeHtml(accessUrl)}</a>` : 'No source URL is available.'}</div>
+                <div class="license-summary-label">License terms</div>
+                <div>${licenseTerms}</div>
               </div>
             </div>
             ${notice.freedoms.length ? `
@@ -747,11 +745,11 @@ function datasetLicenseModalHtml(ds){
             <div class="form-check text-start me-auto">
               <input class="form-check-input" type="checkbox" value="" id="licenseDownloadCheck">
               <label class="form-check-label" for="licenseDownloadCheck">
-                I have read and understand the license for this resource.
+                I have reviewed the license terms for this dataset.
               </label>
             </div>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" data-license-continue disabled>Continue to dataset</button>
+            <button type="button" class="btn btn-primary" data-license-continue disabled>Open dataset source</button>
           </div>
         </div>
       </div>
@@ -1787,20 +1785,23 @@ async function initDetail(){
         .chip-link:hover, .chip-link:focus{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
         .ds-note-inline{ margin:0 .9rem .9rem; padding:.75rem .9rem; border-radius:12px; background:#fff8f0; border:1px solid #f2e1c8; color:#5e4a1a; font-size:.92rem; }
         .ds-note-label{ font-weight:700; margin-right:.25rem; }
-        .license-modal{ border:0; border-radius:16px; box-shadow:0 18px 56px rgba(15,46,75,.18); overflow:hidden; }
-        .license-modal .modal-header{ align-items:flex-start; border-bottom:1px solid var(--oc-border); padding:1.15rem 1.25rem; }
-        .license-modal .modal-body{ padding:1.15rem 1.25rem 1rem; }
-        .license-lead{ color:var(--oc-sub); margin-bottom:1rem; }
-        .license-summary{ border:1px solid var(--oc-border); border-radius:12px; background:#f8fbff; margin-bottom:1rem; overflow:hidden; }
-        .license-summary-row{ display:grid; grid-template-columns:150px 1fr; gap:1rem; padding:.75rem .85rem; }
+        .license-modal{ border:0; border-radius:14px; box-shadow:0 22px 64px rgba(15,46,75,.2); overflow:hidden; }
+        .license-modal .modal-header{ align-items:flex-start; border-bottom:1px solid var(--oc-border); padding:1.25rem 1.4rem 1.1rem; background:#fff; }
+        .license-modal .modal-body{ padding:1.15rem 1.4rem 1.1rem; }
+        .license-summary{ border:1px solid #d8e4ef; border-radius:10px; background:#f8fbff; margin-bottom:1.1rem; overflow:hidden; }
+        .license-summary-row{ display:grid; grid-template-columns:132px 1fr; gap:1rem; padding:.82rem .95rem; align-items:center; }
         .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
         .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .license-section{ margin-top:1.05rem; }
-        .license-section h3{ color:var(--oc-ink); font-size:.95rem; font-weight:700; margin:0 0 .45rem; }
-        .license-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
-        .license-list li{ margin-bottom:.45rem; line-height:1.45; }
-        .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.25rem; }
+        .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
+        .license-summary + .license-section{ border-top:0; padding-top:0; }
+        .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
+        .license-list{ display:grid; gap:.5rem; margin:0; padding:0; color:var(--oc-text); list-style:none; }
+        .license-list li{ display:grid; gap:.12rem; line-height:1.45; padding-left:.85rem; border-left:3px solid #d8e4ef; }
+        .license-list li strong{ color:var(--oc-ink); font-size:.9rem; }
+        .license-list li span{ color:#334155; }
+        .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.4rem; background:#f8fafc; }
         .license-footer .form-check{ max-width:520px; }
+        .license-footer .form-check-label{ color:#334155; font-size:.92rem; }
         @media (max-width: 991.98px){
           .meta-row{ grid-template-columns:1fr; gap:.35rem; }
           .ds-body{ padding:20px 18px; }
