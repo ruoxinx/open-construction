@@ -505,6 +505,295 @@ function formatLicense(licVal){
   return norm;
 }
 
+function licenseHrefFor(licVal){
+  const norm = safeText(licVal);
+  if (norm === '—') return '';
+  const key = String(licVal).trim().toUpperCase();
+  const licenseMap = {
+    'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'CC0': 'https://creativecommons.org/public-domain/cc0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+    'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause',
+    'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+    'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
+    'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
+    'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md'
+  };
+  return licenseMap[key] || '';
+}
+
+function licenseNoticeFor(licVal){
+  const norm = safeText(licVal);
+  const key = norm === '—' ? '' : String(licVal).trim().toUpperCase();
+  const genericNotice = [
+    'This summary is provided for convenience and is not legal advice.',
+    'License terms may be updated or supplemented by the original provider. Review the source page before downloading, reproducing, adapting, or redistributing the resource.',
+    'If any license term is unclear, please contact the dataset authors or the original provider before using the material.'
+  ];
+
+  const unspecified = {
+    title: 'License not specified',
+    intro: 'OpenConstruction does not have a clear license recorded for this resource.',
+    freedoms: [],
+    terms: [
+      'Do not assume permission to download, reuse, adapt, redistribute, or use the dataset for research, teaching, commercial, or public-facing purposes.',
+      'If you would like to know more about permitted usage, please contact the dataset authors or the original provider before using this resource.'
+    ],
+    notices: [
+      'The external source may include access terms, data use agreements, citation requirements, privacy restrictions, or other conditions not captured in this catalog record.',
+      'OpenConstruction indexes metadata and links to the original source; it does not grant additional rights to third-party resources.'
+    ]
+  };
+
+  const notices = [
+    'You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.',
+    'No warranties are given. The license may not give you all permissions necessary for your intended use; other rights such as publicity, privacy, or moral rights may limit how you use the material.',
+    'This summary highlights key license features for convenience and has no legal value. Review the original license terms before using the material.'
+  ];
+
+  const creativeCommons = {
+    'CC BY 4.0': {
+      title: 'Creative Commons Attribution 4.0 International',
+      intro: 'You are free to share and adapt the material as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
+        'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC-BY 4.0': null,
+    'CC BY-NC 4.0': {
+      title: 'Creative Commons Attribution-NonCommercial 4.0 International',
+      intro: 'You are free to share and adapt the material for noncommercial purposes as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC-BY-NC': null,
+    'CC BY-SA 4.0': {
+      title: 'Creative Commons Attribution-ShareAlike 4.0 International',
+      intro: 'You are free to share and adapt the material as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
+        'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-SA 4.0': {
+      title: 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
+      intro: 'You are free to share and adapt the material for noncommercial purposes as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-ND 4.0': {
+      title: 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International',
+      intro: 'You are free to share the material as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-ND 3.0': {
+      title: 'Creative Commons Attribution-NonCommercial-NoDerivatives 3.0',
+      intro: 'You are free to share the material as long as you follow the license terms.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    }
+  };
+  creativeCommons['CC-BY 4.0'] = creativeCommons['CC BY 4.0'];
+  creativeCommons['CC-BY-NC'] = creativeCommons['CC BY-NC 4.0'];
+
+  if (!key || /UNSPECIFIED|UNKNOWN|NOT SPECIFIED/.test(key)) return unspecified;
+  if (creativeCommons[key]) return creativeCommons[key];
+  if (key === 'CC0') {
+    return {
+      title: 'Creative Commons CC0 Public Domain Dedication',
+      intro: 'The provider has indicated that the material is dedicated to the public domain to the fullest extent permitted by law.',
+      freedoms: [
+        'You may copy, modify, distribute, and perform the work, including for commercial purposes, without asking permission.'
+      ],
+      terms: [
+        'Although attribution may not be legally required under CC0, scholarly and professional norms may still require citation of the original authors or source.',
+        'Review the source page for any additional access, privacy, or data-use notes.'
+      ],
+      notices: genericNotice
+    };
+  }
+
+  return {
+    title: norm,
+    intro: 'This resource is listed with the license shown below. Please review the original license text and source page before using the dataset.',
+    freedoms: [],
+    terms: [
+      'Follow the permissions, conditions, attribution requirements, redistribution rules, and warranty disclaimers stated by the original license.',
+      'Some licenses may restrict commercial use, redistribution, derivative works, sublicensing, patent rights, or use of associated trademarks.'
+    ],
+    notices: genericNotice
+  };
+}
+
+function listHtml(items){
+  if (!items || !items.length) return '';
+  return `<ul class="license-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
+function datasetLicenseModalHtml(ds){
+  const licenseLabel = safeText(ds.license) === '—' ? 'Unspecified license' : safeText(ds.license);
+  const notice = licenseNoticeFor(ds.license);
+  const licenseRendered = formatLicense(ds.license) || escapeHtml(licenseLabel);
+  const licenseUrl = licenseHrefFor(ds.license);
+  const accessUrl = safeHref(ds.access || '');
+  return `
+    <div class="modal fade" id="licenseDownloadModal" tabindex="-1" aria-labelledby="licenseDownloadTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content license-modal">
+          <div class="modal-header">
+            <div>
+              <div class="detail-kicker mb-1">License acknowledgement</div>
+              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">${escapeHtml(licenseLabel)}</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="license-lead">${escapeHtml(notice.intro)}</p>
+            <div class="license-summary">
+              <div class="license-summary-row">
+                <div class="license-summary-label">Recorded license</div>
+                <div>${licenseRendered}</div>
+              </div>
+              <div class="license-summary-row">
+                <div class="license-summary-label">Original license terms</div>
+                <div>${licenseUrl ? `<a href="${licenseUrl}" target="_blank" rel="noopener">Open the original license terms</a>` : 'No license URL is available for this catalog record.'}</div>
+              </div>
+              <div class="license-summary-row">
+                <div class="license-summary-label">Dataset source</div>
+                <div>${accessUrl ? `<a href="${accessUrl}" target="_blank" rel="noopener">${escapeHtml(accessUrl)}</a>` : 'No source URL is available.'}</div>
+              </div>
+            </div>
+            ${notice.freedoms.length ? `
+              <section class="license-section">
+                <h3>You are free to</h3>
+                ${listHtml(notice.freedoms)}
+              </section>` : ''}
+            <section class="license-section">
+              <h3>Under the following terms</h3>
+              ${listHtml(notice.terms)}
+            </section>
+            <section class="license-section">
+              <h3>Notices</h3>
+              ${listHtml(notice.notices)}
+              <p class="small text-muted mb-0">If any license item is unclear, please contact the dataset authors or the original provider before using this resource.</p>
+            </section>
+          </div>
+          <div class="modal-footer license-footer">
+            <div class="form-check text-start me-auto">
+              <input class="form-check-input" type="checkbox" value="" id="licenseDownloadCheck">
+              <label class="form-check-label" for="licenseDownloadCheck">
+                I have read and understand the license for this resource.
+              </label>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-license-continue disabled>Continue to dataset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function wireDatasetLicenseGate(root){
+  const modalEl = root.querySelector('#licenseDownloadModal');
+  if (!modalEl) return;
+  const checkbox = modalEl.querySelector('#licenseDownloadCheck');
+  const continueBtn = modalEl.querySelector('[data-license-continue]');
+  let pendingUrl = '';
+
+  root.querySelectorAll('[data-license-gate]').forEach(link => {
+    link.addEventListener('click', (event) => {
+      const href = link.getAttribute('href') || '';
+      if (!href || href === '#') return;
+      event.preventDefault();
+      pendingUrl = href;
+      if (checkbox) checkbox.checked = false;
+      if (continueBtn) continueBtn.disabled = true;
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    });
+  });
+
+  if (checkbox && continueBtn) {
+    checkbox.addEventListener('change', () => {
+      continueBtn.disabled = !checkbox.checked;
+    });
+  }
+
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      if (!pendingUrl || continueBtn.disabled) return;
+      window.open(pendingUrl, '_blank', 'noopener');
+      bootstrap.Modal.getInstance(modalEl)?.hide();
+    });
+  }
+}
+
 /* ---------- publication badges (Altmetric / Dimensions) ---------- */
 function ensureExternalScript(src, id){
   if (!src) return;
@@ -1284,6 +1573,7 @@ async function initDetail(){
     const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
+    const datasetAccessUrl = safeHref(ds.access || '');
     const quickFacts = [
       { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
       { label: datasetSampleLabel, value: escapeHtml(safeFormatInt(ds.num_images)) },
@@ -1497,6 +1787,20 @@ async function initDetail(){
         .chip-link:hover, .chip-link:focus{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
         .ds-note-inline{ margin:0 .9rem .9rem; padding:.75rem .9rem; border-radius:12px; background:#fff8f0; border:1px solid #f2e1c8; color:#5e4a1a; font-size:.92rem; }
         .ds-note-label{ font-weight:700; margin-right:.25rem; }
+        .license-modal{ border:0; border-radius:16px; box-shadow:0 18px 56px rgba(15,46,75,.18); overflow:hidden; }
+        .license-modal .modal-header{ align-items:flex-start; border-bottom:1px solid var(--oc-border); padding:1.15rem 1.25rem; }
+        .license-modal .modal-body{ padding:1.15rem 1.25rem 1rem; }
+        .license-lead{ color:var(--oc-sub); margin-bottom:1rem; }
+        .license-summary{ border:1px solid var(--oc-border); border-radius:12px; background:#f8fbff; margin-bottom:1rem; overflow:hidden; }
+        .license-summary-row{ display:grid; grid-template-columns:150px 1fr; gap:1rem; padding:.75rem .85rem; }
+        .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
+        .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+        .license-section{ margin-top:1.05rem; }
+        .license-section h3{ color:var(--oc-ink); font-size:.95rem; font-weight:700; margin:0 0 .45rem; }
+        .license-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
+        .license-list li{ margin-bottom:.45rem; line-height:1.45; }
+        .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.25rem; }
+        .license-footer .form-check{ max-width:520px; }
         @media (max-width: 991.98px){
           .meta-row{ grid-template-columns:1fr; gap:.35rem; }
           .ds-body{ padding:20px 18px; }
@@ -1512,6 +1816,9 @@ async function initDetail(){
           .ds-cap{ padding-inline:1rem; }
           .quickfact-label{ font-size:.76rem; }
           .related-link{ padding:.7rem 0; }
+          .license-summary-row{ grid-template-columns:1fr; gap:.2rem; }
+          .license-footer{ align-items:stretch; }
+          .license-footer .form-check{ width:100%; max-width:none; }
         }
       </style>
 
@@ -1559,7 +1866,7 @@ async function initDetail(){
         <dl class="meta mb-0">
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
-          ${metaRow('Download', ds.access ? `<a href="${safeHref(ds.access)}" target="_blank" rel="noopener">${escapeHtml(ds.access)}</a>` : '—')}
+          ${metaRow('Download', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
           ${metaRow('License', formatLicense(ds.license) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
@@ -1612,7 +1919,7 @@ async function initDetail(){
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
-              ${ds.access ? `<a class="btn btn-primary btn-sm" href="${ds.access}" target="_blank" rel="noopener">Download dataset</a>` : ''}
+              ${datasetAccessUrl ? `<a class="btn btn-primary btn-sm" href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>Download dataset</a>` : ''}
               ${datasetPaperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${datasetPaperUrl}" target="_blank" rel="noopener">View paper</a>` : ''}
               ${ds.blog_url ? `<a class="btn btn-outline-secondary btn-sm" href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">Blog</a>` : ''}
             </div>
@@ -1669,6 +1976,7 @@ async function initDetail(){
         <div class="col-lg-8">${mainHero}</div>
         <div class="col-lg-4">${sidebar}</div>
       </div>
+      ${datasetLicenseModalHtml(ds)}
     `;
 
     const imgEl = root.querySelector('.ds-img');
@@ -1687,6 +1995,7 @@ async function initDetail(){
         window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
       });
     }
+    wireDatasetLicenseGate(root);
     if (imgEl && modalEl) {
       imgEl.addEventListener('click', () => {
         const modalImg = modalEl.querySelector('.modal-img');
