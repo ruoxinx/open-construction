@@ -541,7 +541,7 @@ function licenseNoticeFor(licVal){
   const genericNotice = [
     'This summary is provided for convenience and is not legal advice.',
     'License terms may be updated or supplemented by the original provider. Review the source page before downloading, reproducing, adapting, or redistributing the resource.',
-    'If any license term is unclear, please contact the dataset authors or the original provider before using the material.'
+    'If any license term is unclear, please contact the authors or the original provider before using the material.'
   ];
 
   const unspecified = {
@@ -549,8 +549,8 @@ function licenseNoticeFor(licVal){
     intro: 'OpenConstruction does not have a clear license recorded for this resource.',
     freedoms: [],
     terms: [
-      'Do not assume permission to download, reuse, adapt, redistribute, or use the dataset for research, teaching, commercial, or public-facing purposes.',
-      'If you would like to know more about permitted usage, please contact the dataset authors or the original provider before using this resource.'
+      'Do not assume permission to download, reuse, adapt, redistribute, or use the resource for research, teaching, commercial, or public-facing purposes.',
+      'If you would like to know more about permitted usage, please contact the authors or the original provider before using this resource.'
     ],
     notices: [
       'The external source may include access terms, data use agreements, citation requirements, privacy restrictions, or other conditions not captured in this catalog record.',
@@ -559,7 +559,6 @@ function licenseNoticeFor(licVal){
   };
 
   const notices = [
-    'You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.',
     'No warranties are given. The license may not give you all permissions necessary for your intended use; other rights such as publicity, privacy, or moral rights may limit how you use the material.',
     'This summary highlights key license features for convenience and has no legal value. Review the original license terms before using the material.'
   ];
@@ -680,7 +679,7 @@ function licenseNoticeFor(licVal){
 
   return {
     title: norm,
-    intro: 'This resource is listed with the license shown below. Please review the original license text and source page before using the dataset.',
+    intro: 'This resource is listed with the license shown below. Please review the original license text and source page before using it.',
     freedoms: [],
     terms: [
       'Follow the permissions, conditions, attribution requirements, redistribution rules, and warranty disclaimers stated by the original license.',
@@ -701,10 +700,10 @@ function listHtml(items){
   }).join('')}</ul>`;
 }
 
-function datasetLicenseModalHtml(ds){
-  const licenseLabel = safeText(ds.license) === '—' ? 'Unspecified license' : safeText(ds.license);
-  const notice = licenseNoticeFor(ds.license);
-  const licenseUrl = licenseHrefFor(ds.license);
+function resourceLicenseModalHtml({ license, resourceType = 'resource', modalTitle = 'Review resource license', actionLabel = 'Open resource source' } = {}){
+  const licenseLabel = safeText(license) === '—' ? 'Unspecified license' : safeText(license);
+  const notice = licenseNoticeFor(license);
+  const licenseUrl = licenseHrefFor(license);
   const licenseTerms = licenseUrl
     ? `<a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(licenseLabel)}</a>`
     : escapeHtml(licenseLabel);
@@ -715,7 +714,7 @@ function datasetLicenseModalHtml(ds){
           <div class="modal-header">
             <div>
               <div class="detail-kicker mb-1">Before you continue</div>
-              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">Review dataset license</h2>
+              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">${escapeHtml(modalTitle)}</h2>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -738,18 +737,18 @@ function datasetLicenseModalHtml(ds){
             <section class="license-section">
               <h3>Notices</h3>
               ${listHtml(notice.notices)}
-              <p class="small text-muted mb-0">If any license item is unclear, please contact the dataset authors or the original provider before using this resource.</p>
+              <p class="small text-muted mb-0">If any license item is unclear, please contact the authors or the original provider before using this resource.</p>
             </section>
           </div>
           <div class="modal-footer license-footer">
             <div class="form-check text-start me-auto">
               <input class="form-check-input" type="checkbox" value="" id="licenseDownloadCheck">
               <label class="form-check-label" for="licenseDownloadCheck">
-                I have reviewed the license terms for this dataset.
+                I have reviewed the license terms for this ${escapeHtml(resourceType)}.
               </label>
             </div>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" data-license-continue disabled>Open dataset source</button>
+            <button type="button" class="btn btn-primary" data-license-continue disabled>${escapeHtml(actionLabel)}</button>
           </div>
         </div>
       </div>
@@ -757,7 +756,25 @@ function datasetLicenseModalHtml(ds){
   `;
 }
 
-function wireDatasetLicenseGate(root){
+function datasetLicenseModalHtml(ds){
+  return resourceLicenseModalHtml({
+    license: ds?.license,
+    resourceType: 'dataset',
+    modalTitle: 'Review dataset license',
+    actionLabel: 'Open dataset source'
+  });
+}
+
+function modelLicenseModalHtml(model){
+  return resourceLicenseModalHtml({
+    license: model?.license,
+    resourceType: 'model',
+    modalTitle: 'Review model license',
+    actionLabel: 'Open model source'
+  });
+}
+
+function wireLicenseGate(root){
   const modalEl = root.querySelector('#licenseDownloadModal');
   if (!modalEl) return;
   const checkbox = modalEl.querySelector('#licenseDownloadCheck');
@@ -790,6 +807,10 @@ function wireDatasetLicenseGate(root){
       bootstrap.Modal.getInstance(modalEl)?.hide();
     });
   }
+}
+
+function wireDatasetLicenseGate(root){
+  wireLicenseGate(root);
 }
 
 /* ---------- publication badges (Altmetric / Dimensions) ---------- */
@@ -1072,6 +1093,7 @@ async function initDetail(){
       const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
       const paperUrl = (m.paper_url || m.paper || '').trim();
       const codeUrl  = (m.code_url  || m.code  || '').trim();
+      const modelSourceUrl = safeHref(codeUrl);
       const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
       const doiUrl = doiSource
         ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
@@ -1282,6 +1304,23 @@ async function initDetail(){
           .chip-link{ display:inline-flex; align-items:center; color:var(--oc-text); text-decoration:none !important; transition:background .15s ease, border-color .15s ease, color .15s ease; }
           .chip-link:hover, .chip-link:focus, .chip-link:active, .chip-link:visited{ text-decoration:none !important; }
           .chip-link:hover, .chip-link:focus{ color:var(--oc-link); border-color:#cfe0f3; background:#f5f9ff; }
+          .license-modal{ border:0; border-radius:14px; box-shadow:0 22px 64px rgba(15,46,75,.2); overflow:hidden; }
+          .license-modal .modal-header{ align-items:flex-start; border-bottom:1px solid var(--oc-border); padding:1.25rem 1.4rem 1.1rem; background:#fff; }
+          .license-modal .modal-body{ padding:1.15rem 1.4rem 1.1rem; }
+          .license-summary{ border:1px solid #d8e4ef; border-radius:10px; background:#f8fbff; margin-bottom:1.1rem; overflow:hidden; }
+          .license-summary-row{ display:grid; grid-template-columns:132px 1fr; gap:1rem; padding:.82rem .95rem; align-items:center; }
+          .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
+          .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+          .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
+          .license-summary + .license-section{ border-top:0; padding-top:0; }
+          .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
+          .license-list{ display:grid; gap:.5rem; margin:0; padding:0; color:var(--oc-text); list-style:none; }
+          .license-list li{ display:grid; gap:.12rem; line-height:1.45; padding-left:.85rem; border-left:3px solid #d8e4ef; }
+          .license-list li strong{ color:var(--oc-ink); font-size:.9rem; }
+          .license-list li span{ color:#334155; }
+          .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.4rem; background:#f8fafc; }
+          .license-footer .form-check{ max-width:520px; }
+          .license-footer .form-check-label{ color:#334155; font-size:.92rem; }
           @media (max-width: 991.98px){
             .meta-row{ grid-template-columns:1fr; gap:.35rem; }
             .ds-body{ padding:20px 18px; }
@@ -1290,6 +1329,9 @@ async function initDetail(){
             .quickfact-card .card-body,
             .section-nav.card .card-body,
             .card.border-0.shadow-sm .card-body{ padding:1rem; }
+            .license-summary-row{ grid-template-columns:1fr; gap:.2rem; }
+            .license-footer{ align-items:stretch; }
+            .license-footer .form-check{ width:100%; max-width:none; }
           }
           @media (max-width: 575.98px){
             .ds-img{ max-height:240px; }
@@ -1357,7 +1399,7 @@ async function initDetail(){
             ${metaRow('Modalities', chipLane(modalityList))}
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
             ${metaRow('Associated paper', modelPaperTitle !== '—' ? ((doiUrl || safeHref(paperUrl || '')) ? `<a href="${doiUrl || safeHref(paperUrl || '')}" target="_blank" rel="noopener">${escapeHtml(modelPaperTitle)}</a>` : escapeHtml(modelPaperTitle)) : '—')}
-            ${metaRow('Code URL', codeUrl ? `<a href="${safeHref(codeUrl)}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}
+            ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a>` : '—')}
             ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license) || '—')}
           </dl>
@@ -1405,7 +1447,7 @@ async function initDetail(){
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
               <div class="d-grid gap-2">
                 ${paperUrl ? `<a class="btn btn-primary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
-                ${codeUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${codeUrl}" target="_blank" rel="noopener">View Code</a>` : ''}
+                ${modelSourceUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>View Code</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
@@ -1461,6 +1503,7 @@ async function initDetail(){
           <div class="col-lg-8">${mainHero}</div>
           <div class="col-lg-4">${sidebar}</div>
         </div>
+        ${modelLicenseModalHtml(m)}
       `;
 
       // Abstract toggle wiring (model detail)
@@ -1490,6 +1533,7 @@ async function initDetail(){
           window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
         });
       }
+      wireLicenseGate(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -1867,7 +1911,7 @@ async function initDetail(){
         <dl class="meta mb-0">
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
-          ${metaRow('Download', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
+          ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
           ${metaRow('License', formatLicense(ds.license) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}

@@ -81,8 +81,10 @@ function formatLicense(licenseValue){
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
     'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
@@ -95,6 +97,279 @@ function formatLicense(licenseValue){
 
   const href = licenseMap[key];
   return href ? `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(norm)}</a>` : escapeHtml(norm);
+}
+
+function licenseHrefFor(licenseValue){
+  const norm = String(licenseValue || '').trim();
+  if (!norm || norm === '—' || norm === 'â€”') return '';
+
+  const key = norm.toUpperCase();
+  const licenseMap = {
+    'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+    'CC0': 'https://creativecommons.org/public-domain/cc0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
+    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+    'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
+    'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+    'MIT': 'https://opensource.org/licenses/MIT',
+    'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause'
+  };
+  return licenseMap[key] || '';
+}
+
+function licenseNoticeFor(licenseValue){
+  const norm = String(licenseValue || '').trim();
+  const key = norm ? norm.toUpperCase() : '';
+  const notices = [
+    'No warranties are given. The license may not give you all permissions necessary for your intended use; other rights such as publicity, privacy, or moral rights may limit how you use the material.',
+    'This summary highlights key license features for convenience and has no legal value. Review the original license terms before using the material.'
+  ];
+  const unspecified = {
+    freedoms: [],
+    terms: [
+      'Do not assume permission to download, reuse, adapt, redistribute, or use the resource for research, teaching, commercial, or public-facing purposes.',
+      'If you would like to know more about permitted usage, please contact the authors or the original provider before using this resource.'
+    ],
+    notices: [
+      'The external source may include access terms, data use agreements, citation requirements, privacy restrictions, or other conditions not captured in this catalog record.',
+      'OpenConstruction indexes metadata and links to the original source; it does not grant additional rights to third-party resources.'
+    ]
+  };
+  const cc = {
+    'CC BY 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
+        'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-SA 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
+        'Adapt — remix, transform, and build upon the material for any purpose, even commercially.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-SA 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-ND 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format for any purpose, even commercially.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
+        'NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.',
+        'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-ND 4.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC-ND 3.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    }
+  };
+  cc['CC-BY 4.0'] = cc['CC BY 4.0'];
+  cc['CC-BY-NC'] = cc['CC BY-NC 4.0'];
+
+  if (!key || /UNSPECIFIED|UNKNOWN|NOT SPECIFIED/.test(key)) return unspecified;
+  if (cc[key]) return cc[key];
+  if (key === 'CC0') {
+    return {
+      freedoms: ['You may copy, modify, distribute, and perform the work, including for commercial purposes, without asking permission.'],
+      terms: [
+        'Although attribution may not be legally required under CC0, scholarly and professional norms may still require citation of the original authors or source.',
+        'Review the source page for any additional access, privacy, or data-use notes.'
+      ],
+      notices: [
+        'This summary is provided for convenience and is not legal advice.',
+        'If any license term is unclear, please contact the authors or the original provider before using the material.'
+      ]
+    };
+  }
+  return {
+    freedoms: [],
+    terms: [
+      'Follow the permissions, conditions, attribution requirements, redistribution rules, and warranty disclaimers stated by the original license.',
+      'Some licenses may restrict commercial use, redistribution, derivative works, sublicensing, patent rights, or use of associated trademarks.'
+    ],
+    notices: [
+      'This summary is provided for convenience and is not legal advice.',
+      'If any license term is unclear, please contact the authors or the original provider before using the material.'
+    ]
+  };
+}
+
+function licenseListHtml(items){
+  if (!items || !items.length) return '';
+  return `<ul class="license-list">${items.map(item => {
+    const [label, ...rest] = String(item).split(' — ');
+    const detail = rest.join(' — ');
+    return detail
+      ? `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(detail)}</span></li>`
+      : `<li><span>${escapeHtml(item)}</span></li>`;
+  }).join('')}</ul>`;
+}
+
+function oerLicenseModalHtml(item){
+  const licenseLabel = item?.license ? String(item.license).trim() : 'Unspecified license';
+  const notice = licenseNoticeFor(item?.license);
+  const licenseUrl = licenseHrefFor(item?.license);
+  const licenseTerms = licenseUrl
+    ? `<a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(licenseLabel)}</a>`
+    : escapeHtml(licenseLabel);
+  return `
+    <div class="modal fade" id="licenseDownloadModal" tabindex="-1" aria-labelledby="licenseDownloadTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content license-modal">
+          <div class="modal-header">
+            <div>
+              <div class="detail-kicker mb-1">Before you continue</div>
+              <h2 class="modal-title h5 mb-0" id="licenseDownloadTitle">Review OER license</h2>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="license-summary">
+              <div class="license-summary-row">
+                <div class="license-summary-label">License terms</div>
+                <div>${licenseTerms}</div>
+              </div>
+            </div>
+            ${notice.freedoms.length ? `
+              <section class="license-section">
+                <h3>You are free to</h3>
+                ${licenseListHtml(notice.freedoms)}
+              </section>` : ''}
+            <section class="license-section">
+              <h3>Under the following terms</h3>
+              ${licenseListHtml(notice.terms)}
+            </section>
+            <section class="license-section">
+              <h3>Notices</h3>
+              ${licenseListHtml(notice.notices)}
+              <p class="small text-muted mb-0">If any license item is unclear, please contact the authors or the original provider before using this resource.</p>
+            </section>
+          </div>
+          <div class="modal-footer license-footer">
+            <div class="form-check text-start me-auto">
+              <input class="form-check-input" type="checkbox" value="" id="licenseDownloadCheck">
+              <label class="form-check-label" for="licenseDownloadCheck">
+                I have reviewed the license terms for this OER.
+              </label>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-license-continue disabled>Open OER source</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function wireLicenseGate(root){
+  const modalEl = root.querySelector('#licenseDownloadModal');
+  if (!modalEl) return;
+  const checkbox = modalEl.querySelector('#licenseDownloadCheck');
+  const continueBtn = modalEl.querySelector('[data-license-continue]');
+  let pendingUrl = '';
+
+  root.querySelectorAll('[data-license-gate]').forEach(link => {
+    link.addEventListener('click', (event) => {
+      const href = link.getAttribute('href') || '';
+      if (!href || href === '#') return;
+      event.preventDefault();
+      pendingUrl = href;
+      if (checkbox) checkbox.checked = false;
+      if (continueBtn) continueBtn.disabled = true;
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    });
+  });
+
+  if (checkbox && continueBtn) {
+    checkbox.addEventListener('change', () => {
+      continueBtn.disabled = !checkbox.checked;
+    });
+  }
+
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      if (!pendingUrl || continueBtn.disabled) return;
+      window.open(pendingUrl, '_blank', 'noopener');
+      bootstrap.Modal.getInstance(modalEl)?.hide();
+    });
+  }
 }
 
 function getOerId(){
@@ -148,7 +423,7 @@ function getMediaEmbed(item){
   const imageUrl = resolveMediaUrl(item.image);
   if (imageUrl) {
     const imgTag = `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.title || 'OER preview')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';">`;
-    return `<figure class="media-figure"><div class="media-wrap">${sourceUrl ? `<a class="d-block h-100" href="${sourceUrl}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div><div class="media-credit">Media from public websites are &copy; their respective creators unless otherwise noted.</div></figure>`;
+    return `<figure class="media-figure"><div class="media-wrap">${sourceUrl ? `<a class="d-block h-100" href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${imgTag}</a>` : imgTag}</div><div class="media-credit">Media from public websites are &copy; their respective creators unless otherwise noted.</div></figure>`;
   }
   return `<div class="media-wrap placeholder"><div class="placeholder-copy">No preview image available</div></div>`;
 }
@@ -272,7 +547,24 @@ async function initOerDetail(){
         .media-wrap.placeholder{ display:flex; align-items:center; justify-content:center; }
         .media-credit{ padding:.55rem 1rem; color:var(--oc-sub); font-size:.82rem; line-height:1.35; text-align:center; border-bottom:1px solid var(--oc-border); }
         .placeholder-copy{ color:var(--oc-sub); font-weight:600; }
-        @media (max-width: 991.98px){ .meta-row{ grid-template-columns:1fr; gap:.35rem; } .detail-body{ padding:20px 18px; } .detail-section{ padding:1.05rem 1rem; } .detail-subcard{ padding:.9rem; } }
+        .license-modal{ border:0; border-radius:14px; box-shadow:0 22px 64px rgba(15,46,75,.2); overflow:hidden; }
+        .license-modal .modal-header{ align-items:flex-start; border-bottom:1px solid var(--oc-border); padding:1.25rem 1.4rem 1.1rem; background:#fff; }
+        .license-modal .modal-body{ padding:1.15rem 1.4rem 1.1rem; }
+        .license-summary{ border:1px solid #d8e4ef; border-radius:10px; background:#f8fbff; margin-bottom:1.1rem; overflow:hidden; }
+        .license-summary-row{ display:grid; grid-template-columns:132px 1fr; gap:1rem; padding:.82rem .95rem; align-items:center; }
+        .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
+        .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+        .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
+        .license-summary + .license-section{ border-top:0; padding-top:0; }
+        .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
+        .license-list{ display:grid; gap:.5rem; margin:0; padding:0; color:var(--oc-text); list-style:none; }
+        .license-list li{ display:grid; gap:.12rem; line-height:1.45; padding-left:.85rem; border-left:3px solid #d8e4ef; }
+        .license-list li strong{ color:var(--oc-ink); font-size:.9rem; }
+        .license-list li span{ color:#334155; }
+        .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.4rem; background:#f8fafc; }
+        .license-footer .form-check{ max-width:520px; }
+        .license-footer .form-check-label{ color:#334155; font-size:.92rem; }
+        @media (max-width: 991.98px){ .meta-row{ grid-template-columns:1fr; gap:.35rem; } .detail-body{ padding:20px 18px; } .detail-section{ padding:1.05rem 1rem; } .detail-subcard{ padding:.9rem; } .license-summary-row{ grid-template-columns:1fr; gap:.2rem; } .license-footer{ align-items:stretch; } .license-footer .form-check{ width:100%; max-width:none; } }
       </style>
 
       <div class="row g-4">
@@ -312,7 +604,7 @@ async function initOerDetail(){
             <div class="detail-kicker">Access & Usage</div>
             <h2 class="detail-heading">How to access and verify it</h2>
             <dl class="meta mb-0">
-              ${metaRow('Source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener">${escapeHtml(sourceUrl)}</a>` : '—')}
+              ${metaRow('OER source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(sourceUrl)}</a>` : '—')}
               ${metaRow('License', formatLicense(item.license) || '—')}
               ${metaRow('Added to catalog', escapeHtml(fmtDate(item.added) || '—'))}
               ${metaRow('Submitted by', item.contributor ? (contributorUrl ? `<a href="${contributorUrl}" target="_blank" rel="noopener">${escapeHtml(item.contributor)}</a>` : escapeHtml(item.contributor)) : '—')}
@@ -343,7 +635,7 @@ async function initOerDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">OER Links</h2>
                 <div class="d-grid gap-2">
-                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener">Source</a>` : ''}
+                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>Source</a>` : ''}
                 </div>
               </div>
             </div>
@@ -371,6 +663,7 @@ async function initOerDetail(){
           </div>
         </div>
       </div>
+      ${oerLicenseModalHtml(item)}
     `;
 
     const shareBtn = byId('shareOerBtn');
@@ -383,6 +676,7 @@ async function initOerDetail(){
         window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
       });
     }
+    wireLicenseGate(root);
   } catch (err) {
     console.error(err);
     root.innerHTML = '<div class="alert alert-danger">Failed to load OER details.</div>';
