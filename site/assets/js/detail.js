@@ -485,6 +485,7 @@ function formatLicense(licVal){
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
     'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
     'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
