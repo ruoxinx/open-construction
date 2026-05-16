@@ -1447,8 +1447,8 @@ async function initDetail(){
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
               <div class="d-grid gap-2">
-                ${paperUrl ? `<a class="btn btn-primary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
-                ${modelSourceUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>View Code</a>` : ''}
+                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>View Code</a>` : ''}
+                ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
