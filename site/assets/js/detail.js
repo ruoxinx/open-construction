@@ -1617,6 +1617,8 @@ async function initDetail(){
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
     const datasetAccessUrl = safeHref(ds.access || '');
+    const datasetCodeValue = ds.code || ds.code_url || '';
+    const datasetCodeUrl = safeHref(datasetCodeValue);
     const quickFacts = [
       { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
       { label: datasetSampleLabel, value: escapeHtml(safeFormatInt(ds.num_images)) },
@@ -1913,6 +1915,7 @@ async function initDetail(){
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
           ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
+          ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a>` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
           ${metaRow('License', formatLicense(ds.license) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}

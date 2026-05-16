@@ -32,6 +32,9 @@
           "url": {
             "$ref": "schema.common.json#/definitions/url"
           },
+          "code": {
+            "$ref": "schema.common.json#/definitions/url"
+          },
           "doi": {
             "type": "string"
           },
