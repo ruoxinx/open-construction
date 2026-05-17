@@ -507,34 +507,6 @@
       gap:.75rem;
       flex-wrap:wrap;
     }
-    .featured-header-meta{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:.5rem .75rem;
-      margin:0;
-      color:var(--oc-subtle);
-      font-size:.9rem;
-    }
-    .freshness-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      padding:.28rem .7rem;
-      border:1px solid #dbe6f0;
-      border-radius:999px;
-      background:#f8fbff;
-      color:var(--oc-brand-ink);
-      font-weight:700;
-    }
-    .freshness-pill::before{
-      content:"";
-      width:7px;
-      height:7px;
-      border-radius:999px;
-      background:#2f9e44;
-      box-shadow:0 0 0 4px rgba(47,158,68,.12);
-    }
     .featured-type{
       display:inline-flex;
       align-self:flex-start;
@@ -1463,18 +1435,11 @@
 
 <main class="container oc-container">
 
-  <!-- 1. Latest Updates — clickable resources first -->
+  <!-- 1. Latest catalog additions — clickable resources first -->
   <section class="oc-section" aria-labelledby="featured-resources-heading">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Latest Updates</div>
-        <div class="featured-rail-head">
-          <div class="featured-rail-copy">
-            <div class="featured-header-meta">
-              <span class="freshness-pill" id="catalogFreshness">Last updated: checking catalog...</span>
-            </div>
-          </div>
-        </div>
+        <div class="oc-kicker mb-2">Latest catalog additions</div>
         <div class="featured-rail-viewport">
           <div class="featured-rail-fade left is-hidden" id="featuredLeftFade" aria-hidden="true"></div>
           <button class="featured-rail-btn featured-rail-btn-floating prev" id="featuredPrevBtn" type="button" aria-label="Show earlier updates" disabled>
@@ -1800,7 +1765,6 @@
   // ===== Homepage featured resources =====
   (function(){
     const grid = document.getElementById('featuredResourcesGrid');
-    const freshnessEl = document.getElementById('catalogFreshness');
     const searchForm = document.getElementById('homeSearchForm');
     const searchInput = document.getElementById('homeSearchInput');
     const searchScopeSelect = document.getElementById('homeSearchScope');
@@ -1827,15 +1791,6 @@
       }
       const ts = Date.parse(raw);
       return Number.isNaN(ts) ? null : ts;
-    }
-
-    function formatDate(ts){
-      if (!ts) return '';
-      return new Date(ts).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
     }
 
     async function fetchFirst(paths){
@@ -2182,13 +2137,6 @@
         .slice(0, 12);
     }
 
-    function latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson){
-      const collect = [];
-      Object.values(datasetsJson || {}).forEach(item => collect.push(parseDate(item.added_date || item.added)));
-      (Array.isArray(modelsJson) ? modelsJson : []).forEach(item => collect.push(parseDate(item.added_date || item.added)));
-      return collect.filter(Boolean).sort((a, b) => b - a)[0] || null;
-    }
-
     function render(items){
       if (!items.length){
         grid.innerHTML = `
@@ -2278,13 +2226,10 @@
           ]),
           fetchFirst(['data/oer.json','assets/oer.json','oer.json'])
         ]);
-        const freshest = latestCatalogTimestamp(datasetsJson, modelsJson, usecasesJson, oersJson);
-        if (freshnessEl && freshest) freshnessEl.textContent = `Last updated: ${formatDate(freshest)}`;
         wireSearch(buildSearchIndex(datasetsJson, modelsJson, usecasesJson, oersJson));
         render(pickItems(datasetsJson, modelsJson, usecasesJson, oersJson));
         updateFeaturedControls();
       }catch(_){
-        if (freshnessEl) freshnessEl.textContent = 'Last updated: unavailable';
         render([]);
         updateFeaturedControls();
       }
