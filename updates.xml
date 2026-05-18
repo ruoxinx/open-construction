@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Solar PV power of 100 plants in NY]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=NYSolarForecastLab</link>
+    <guid isPermaLink="false">datasets:NYSolarForecastLab:2026-05-18</guid>
+    <pubDate>Mon, 18 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BrickNet: Fabrication-Aware Synthetic Dataset for Brick Wall Designs]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BrickNet</link>
     <guid isPermaLink="false">datasets:BrickNet:2026-05-07</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:UrbanTwin:2026-04-30</guid>
     <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: LiGuard: A Streamlined Open-Source Framework for Rapid & Interactive Lidar Research]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:LiGuard:2026-04-30</guid>
-    <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[LiDAR data processing model using software (2026)]]></description>
   </item>
   </channel>
 </rss>
