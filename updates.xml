@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Machine learning benchmarks for day-ahead photovoltaic power forecasting]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:PV-Forecasting:2026-05-18</guid>
+    <pubDate>Mon, 18 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Electricity demand management model using Tabular (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BrickNet: Fabrication-Aware Synthetic Dataset for Brick Wall Designs]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BrickNet</link>
     <guid isPermaLink="false">datasets:BrickNet:2026-05-07</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=GNI-BIM-Dataset</link>
     <guid isPermaLink="false">datasets:GNI-BIM-Dataset:2026-05-03</guid>
     <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: UCF UrbanTwin Dataverse]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=UrbanTwin</link>
-    <guid isPermaLink="false">datasets:UrbanTwin:2026-04-30</guid>
-    <pubDate>Thu, 30 Apr 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
