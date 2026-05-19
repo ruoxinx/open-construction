@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: 3DFacilities: Annotated 3D Reconstructions of Building Facilities]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=3DFacilities</link>
+    <guid isPermaLink="false">datasets:3DFacilities:2026-05-19</guid>
+    <pubDate>Tue, 19 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Solar PV power of 100 plants in NY]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=NYSolarForecastLab</link>
     <guid isPermaLink="false">datasets:NYSolarForecastLab:2026-05-18</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: BuildingSense: Multimodal building function classification dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BuildingSense</link>
     <guid isPermaLink="false">datasets:BuildingSense:2026-05-03</guid>
-    <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: GNI BIM Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=GNI-BIM-Dataset</link>
-    <guid isPermaLink="false">datasets:GNI-BIM-Dataset:2026-05-03</guid>
     <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
