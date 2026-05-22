@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: TunGPR dataset: Ground Penetrating Radar (GPR)-based tunnel lining assessment dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=TunGPR</link>
+    <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
+    <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: 3DFacilities: Annotated 3D Reconstructions of Building Facilities]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=3DFacilities</link>
     <guid isPermaLink="false">datasets:3DFacilities:2026-05-19</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=CUBIT-InSeg</link>
     <guid isPermaLink="false">datasets:CUBIT-InSeg:2026-05-04</guid>
     <pubDate>Mon, 04 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BuildingSense: Multimodal building function classification dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BuildingSense</link>
-    <guid isPermaLink="false">datasets:BuildingSense:2026-05-03</guid>
-    <pubDate>Sun, 03 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
