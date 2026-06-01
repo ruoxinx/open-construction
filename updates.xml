@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: RDD2022: A multi-national Road Damage Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=RDD2022</link>
+    <guid isPermaLink="false">datasets:RDD2022:2026-06-01</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: TunGPR dataset: Ground Penetrating Radar (GPR)-based tunnel lining assessment dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=TunGPR</link>
     <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:Component_based_Machine_Learning_data:2026-05-06</guid>
     <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: BIMUniXchange: Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:BIMUniXchange:2026-05-06</guid>
-    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Immersive BIM Visualization model using Tabular (2026)]]></description>
   </item>
   </channel>
 </rss>
