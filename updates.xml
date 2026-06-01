@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: CISOL: Construction Industry Steel Ordering List (CISOL) Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=RDD2022</link>
+    <guid isPermaLink="false">datasets:RDD2022:2026-06-01</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: TunGPR dataset: Ground Penetrating Radar (GPR)-based tunnel lining assessment dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=TunGPR</link>
     <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: DrafterBench: Benchmarking Large Language Models for Tasks Automation in Civil Engineering]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=DrafterBench</link>
     <guid isPermaLink="false">datasets:DrafterBench:2026-05-06</guid>
-    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Building Energy Prediction with Small, Inconsistent Datasets]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Component_based_Machine_Learning_data</link>
-    <guid isPermaLink="false">datasets:Component_based_Machine_Learning_data:2026-05-06</guid>
     <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
