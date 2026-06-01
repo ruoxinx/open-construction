@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: VizArQA: A Foundation for Visual Question Answering in Architectural Simulation]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=VizArQA</link>
+    <guid isPermaLink="false">datasets:VizArQA:2026-06-01</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: TunGPR dataset: Ground Penetrating Radar (GPR)-based tunnel lining assessment dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=TunGPR</link>
     <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:BIMUniXchange:2026-05-06</guid>
     <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Immersive BIM Visualization model using Tabular (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Component based Machine Learning for Building Energy Prediction]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:Component_based_Machine_Learning:2026-05-06</guid>
-    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Building Energy Analysis model using Tabular (2024)]]></description>
   </item>
   </channel>
 </rss>
