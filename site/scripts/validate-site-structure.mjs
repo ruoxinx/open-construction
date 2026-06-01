@@ -29,6 +29,7 @@ const expectedTopLevelHtml = new Set([
   "dataset.html",
   "deployments.html",
   "guides.html",
+  "maintainer.html",
   "mcp.html",
   "models.html",
   "monthly-highlights.html",
