@@ -76,6 +76,10 @@
     return Promise.resolve(false);
   }
 
+  function bookmarkIcon(){
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="oc-bookmark-fill" d="M6 3.75h12v16.5l-6-3.4-6 3.4z"></path><path d="M6 3.75h12v16.5l-6-3.4-6 3.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>`;
+  }
+
   function flattenSections(rawSections){
     return rawSections.map(section => ({
       ...section,
@@ -166,8 +170,8 @@
     return `
       <div class="tool-card-actions">
         <div class="tool-link-row">${links}</div>
-        <button type="button" class="bookmark-btn${selected ? ' active' : ''}" data-bookmark="${esc(tool.name)}" aria-pressed="${selected ? 'true' : 'false'}">
-          ${selected ? 'Saved' : 'Save'}
+        <button type="button" class="bookmark-btn${selected ? ' active' : ''}" data-bookmark="${esc(tool.name)}" aria-pressed="${selected ? 'true' : 'false'}" aria-label="${selected ? 'Remove from shortlist' : 'Save to shortlist'}" title="${selected ? 'Remove from shortlist' : 'Save to shortlist'}">
+          ${bookmarkIcon()}
         </button>
       </div>
     `;
@@ -252,8 +256,8 @@
           <article class="stack-card">
             <div class="stack-card-top">
               <span class="tool-badge">${esc(tool.category)}</span>
-              <button type="button" class="stack-save${shortlist.has(tool.name) ? ' active' : ''}" data-bookmark="${esc(tool.name)}">
-                ${shortlist.has(tool.name) ? 'Saved' : 'Save'}
+              <button type="button" class="stack-save${shortlist.has(tool.name) ? ' active' : ''}" data-bookmark="${esc(tool.name)}" aria-pressed="${shortlist.has(tool.name) ? 'true' : 'false'}" aria-label="${shortlist.has(tool.name) ? 'Remove from shortlist' : 'Save to shortlist'}" title="${shortlist.has(tool.name) ? 'Remove from shortlist' : 'Save to shortlist'}">
+                ${bookmarkIcon()}
               </button>
             </div>
             <h4><a href="${esc(tool.url || tool.docs || tool.repo || '#')}" target="_blank" rel="noopener">${esc(tool.name)}</a></h4>

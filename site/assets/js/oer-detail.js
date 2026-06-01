@@ -521,7 +521,7 @@ async function initOerDetail(){
         .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
         .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
         .meta-val{ font-weight:600; line-height:1.45; }
-        .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem; }
+        .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text); }
         .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
         .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
@@ -577,6 +577,7 @@ async function initOerDetail(){
               <div class="chip-lane">
                 ${chipLane(item.topics).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
                 ${chipLane(item.media).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+                ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'oer', id: item.id || item.title, title: item.title || 'OER', url: window.location.href }) : ''}
               </div>
             </div>
           </div>
@@ -677,6 +678,7 @@ async function initOerDetail(){
       });
     }
     wireLicenseGate(root);
+    window.OCBookmark?.mount(root);
   } catch (err) {
     console.error(err);
     root.innerHTML = '<div class="alert alert-danger">Failed to load OER details.</div>';

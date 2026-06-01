@@ -8,6 +8,7 @@ const siteRoot = path.resolve(__dirname, "..");
 
 const expectedTopLevelDirs = new Set([
   "assets",
+  "auth",
   "data",
   "datasets",
   "models",
@@ -17,6 +18,7 @@ const expectedTopLevelDirs = new Set([
 ]);
 
 const expectedTopLevelHtml = new Set([
+  "account.html",
   "index.html",
   "benchmarks.html",
   "benchmark_application.html",
@@ -37,9 +39,12 @@ const expectedTopLevelHtml = new Set([
   "schema.html",
   "taxonomy.html",
   "tools.html",
+  "verify.html",
 ]);
 
 const expectedNestedHtml = new Set([
+  "auth/callback.html",
+  "auth/sign-in.html",
   "datasets/detail.html",
   "models/details.html",
   "oers/details.html",

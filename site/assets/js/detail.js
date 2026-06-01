@@ -163,6 +163,16 @@ function shareCardHtml(label){
   `;
 }
 
+function bookmarkInlineHtml(type, id, label){
+  if (!window.OCBookmark || !id) return '';
+  return window.OCBookmark.buttonHtml({
+    type,
+    id,
+    title: label,
+    url: detailPageUrl()
+  });
+}
+
 function normalizeList(val){
   if (!val && val !== 0) return [];
   if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean);
@@ -1275,7 +1285,7 @@ async function initDetail(){
           .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
           .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
           .meta-val{ font-weight:600; line-height:1.4; }
-          .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
+          .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
           .abs{ white-space:pre-line; }
           .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
@@ -1381,6 +1391,7 @@ async function initDetail(){
               ${chipLane(modality).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               ${chipLane(taskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+              ${bookmarkInlineHtml('model', m.id || id || modelTitle, modelTitle)}
             </div>
           </div>
         </div>
@@ -1535,6 +1546,7 @@ async function initDetail(){
         });
       }
       wireLicenseGate(root);
+      window.OCBookmark?.mount(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -1801,7 +1813,7 @@ async function initDetail(){
         .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
         .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
         .meta-val{ font-weight:600; line-height:1.4; }
-        .chip-lane{ display:flex; flex-wrap:wrap; gap:.5rem .5rem; }
+        .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
         .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
         .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
@@ -1889,6 +1901,7 @@ async function initDetail(){
           <div class="chip-lane">
             ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
             ${linkedTaskChipLane(datasetTaskList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+            ${bookmarkInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
           </div>
         </div>
       </div>
@@ -2045,6 +2058,7 @@ async function initDetail(){
       });
     }
     wireDatasetLicenseGate(root);
+    window.OCBookmark?.mount(root);
     if (imgEl && modalEl) {
       imgEl.addEventListener('click', () => {
         const modalImg = modalEl.querySelector('.modal-img');

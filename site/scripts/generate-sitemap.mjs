@@ -7,7 +7,8 @@ const __dirname = path.dirname(__filename);
 const siteRoot = path.resolve(__dirname, "..");
 const outputPath = path.join(siteRoot, "sitemap.xml");
 const baseUrl = "https://www.openconstruction.org";
-const ignoredTopLevelDirs = new Set(["assets", "data", "scripts"]);
+const ignoredTopLevelDirs = new Set(["assets", "auth", "data", "scripts"]);
+const ignoredHtmlFiles = new Set(["account.html"]);
 const args = new Set(process.argv.slice(2));
 const checkOnly = args.has("--check");
 
@@ -28,7 +29,7 @@ function walkHtmlFiles(dir, acc = []) {
       walkHtmlFiles(fullPath, acc);
       continue;
     }
-    if (entry.isFile() && entry.name.endsWith(".html")) {
+    if (entry.isFile() && entry.name.endsWith(".html") && !ignoredHtmlFiles.has(path.relative(siteRoot, fullPath).split(path.sep).join("/"))) {
       acc.push(fullPath);
     }
   }

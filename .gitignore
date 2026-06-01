@@ -1,9 +1,53 @@
+# OS/editor noise
 .DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local tools and dependencies
 .claude/
 .tools/
+node_modules/
+.pnpm-store/
+
+# Environment and platform-local state
+.env
+.env.*
+!.env.example
+!.env.sample
+.vercel/
+.supabase/
+supabase/
+supabase/.branches/
+supabase/.temp/
+
+# Logs, caches, test output, and build output
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+dist/
+build/
+.next/
+.turbo/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated catalog/site assets from the data pipeline
 site/data/*.json
+site/data/img/
 site/assets/img/
 !site/assets/img/icon.png
+!site/assets/img/details/
 !site/assets/img/details/Rebar-Counting.mp4
+!site/assets/img/models/
 !site/assets/img/models/Buildee.gif
+
+# Downloaded/generated certificates
+openconstruction-*-certificate.pdf

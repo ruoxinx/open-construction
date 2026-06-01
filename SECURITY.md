@@ -15,7 +15,11 @@ We will acknowledge your report within 5 business days and work with you on a co
 
 ## Scope
 
-OpenConstruction Open Science Initiative is a platform that indexes external resources — it does not host user data or process authentication for general users. The primary security considerations are:
+OpenConstruction Open Science Initiative indexes external resources and may use Supabase Auth for optional user accounts, saved resources, contribution summaries, and badge views. OpenConstruction does not manage passwords; sign-in is delegated to OAuth providers such as GitHub and Google.
+
+The primary security considerations are:
 
 - **Data integrity**: Ensuring catalog entries are accurate and not tampered with
 - **Dependency vulnerabilities**: Third-party libraries used in the frontend or SDK
+- **Authentication and authorization**: Supabase Row Level Security must protect user-owned profile and bookmark rows
+- **Secrets handling**: Supabase service-role keys and GitHub tokens must remain in provider dashboards or GitHub Actions secrets, never in repository files

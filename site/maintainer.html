@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maintainer · OpenConstruction</title>
+  <meta name="description" content="OpenConstruction maintainer dashboard for badge management.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://www.openconstruction.org/maintainer.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to maintainer tools</a>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries">
+            <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="models.html">Models</a></li>
+            <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="mainContent" class="container oc-container py-4">
+  <div id="maintainerRoot" class="oc-auth-card">
+    <div class="skeleton" style="min-height:140px"></div>
+  </div>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1">
+      <small>
+        Licensed under Apache 2.0.
+        Images and thumbnails are © their respective creators unless otherwise noted.
+      </small>
+    </div>
+    <div class="mt-1">
+      <small>
+        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
+        <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
+        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="contribute.html#citation" class="text-muted">Citation</a>
+      </small>
+    </div>
+  </div>
+</footer>
+
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content oc-modal-compact">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+(async () => {
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+  const root = document.getElementById('maintainerRoot');
+  const esc = window.OCAuth.escapeHtml;
+  const sb = window.OCAuth.getClient();
+  let profiles = [];
+  let badges = [];
+  let suggestions = [];
+  let selectedUserId = '';
+  let currentMaintainerId = '';
+
+  const badgeDefaults = {
+    dataset_contributor: ['Dataset Contributor', 'Verified OpenConstruction platform contribution.'],
+    model_contributor: ['Model Contributor', 'Verified OpenConstruction platform contribution.'],
+    oer_contributor: ['OER Contributor', 'Verified OpenConstruction platform contribution.'],
+    workflow_contributor: ['Workflow Contributor', 'Verified OpenConstruction platform contribution.'],
+    reviewer: ['Reviewer', 'Reviewed OpenConstruction catalog or platform contributions.'],
+    steward: ['Steward', 'Provides ongoing governance, review, or resource stewardship for OpenConstruction.']
+  };
+  const contributorBadgeByType = {
+    dataset: ['dataset_contributor', 'Dataset Contributor'],
+    model: ['model_contributor', 'Model Contributor'],
+    oer: ['oer_contributor', 'OER Contributor'],
+    workflow: ['workflow_contributor', 'Workflow Contributor']
+  };
+
+  function statusBox(message, type = 'info'){
+    return `<div class="alert alert-${type} mb-0" role="status">${esc(message)}</div>`;
+  }
+
+  function userLabel(profile){
+    return profile.display_name || profile.github_username || profile.user_id;
+  }
+
+  function badgesFor(userId){
+    return badges.filter(row => row.user_id === userId);
+  }
+
+  function renderSignedOut(){
+    root.className = 'oc-auth-card';
+    root.innerHTML = `
+      <p class="oc-auth-kicker mb-2">Maintainer</p>
+      <h1 class="h3 fw-bold mb-2">Sign in required</h1>
+      <p class="text-muted">Use a maintainer-approved GitHub or Google account.</p>
+      <div class="d-flex gap-2 flex-wrap">
+        <button type="button" class="btn btn-dark" data-provider="github">Continue with GitHub</button>
+        <button type="button" class="btn btn-outline-primary" data-provider="google">Continue with Google</button>
+      </div>
+      <div id="authError" class="alert alert-danger mt-3 mb-0 d-none" role="alert"></div>
+    `;
+    root.querySelectorAll('[data-provider]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const errorBox = document.getElementById('authError');
+        errorBox.classList.add('d-none');
+        button.disabled = true;
+        try {
+          const { error } = await window.OCAuth.signInWithProvider(button.dataset.provider);
+          if (error) throw error;
+        } catch (err) {
+          errorBox.textContent = err.message || 'Sign in failed. Please try again.';
+          errorBox.classList.remove('d-none');
+          button.disabled = false;
+        }
+      });
+    });
+  }
+
+  function renderDenied(user){
+    root.className = 'oc-auth-card';
+    root.innerHTML = `
+      <p class="oc-auth-kicker mb-2">Maintainer</p>
+      <h1 class="h3 fw-bold mb-2">No maintainer access</h1>
+      <p class="text-muted">You are signed in as ${esc(user.email || 'this account')}, but this account is not listed in <code>public.maintainers</code>.</p>
+      <a class="btn btn-outline-secondary" href="account.html">Back to account</a>
+    `;
+  }
+
+  function renderDashboard(){
+    const selected = profiles.find(row => row.user_id === selectedUserId) || profiles[0] || null;
+    selectedUserId = selected?.user_id || '';
+    root.className = 'oc-maintainer-grid';
+    root.innerHTML = `
+      <aside class="oc-workspace-card">
+        <p class="oc-auth-kicker mb-2">Maintainer</p>
+        <h1 class="h4 fw-bold mb-3">Badge manager</h1>
+        <input id="userSearch" class="form-control mb-3" type="search" placeholder="Search users" aria-label="Search users">
+        <div id="profileList" class="oc-maintainer-list"></div>
+      </aside>
+      <section class="oc-workspace-card">
+        ${selected ? renderBadgeEditor(selected) : statusBox('No signed-in users yet.', 'secondary')}
+      </section>
+      <section class="oc-workspace-card oc-maintainer-suggestions">
+        ${renderSuggestions()}
+      </section>
+    `;
+    renderProfileList('');
+    document.getElementById('userSearch')?.addEventListener('input', event => renderProfileList(event.target.value));
+    bindBadgeForm();
+    bindSuggestionActions();
+  }
+
+  function renderProfileList(query){
+    const q = String(query || '').trim().toLowerCase();
+    const rows = profiles.filter(profile => {
+      const haystack = [profile.display_name, profile.github_username, profile.user_id].join(' ').toLowerCase();
+      return !q || haystack.includes(q);
+    });
+    document.getElementById('profileList').innerHTML = rows.map(profile => `
+      <button type="button" class="oc-maintainer-user ${profile.user_id === selectedUserId ? 'active' : ''}" data-user-id="${esc(profile.user_id)}">
+        <strong>${esc(userLabel(profile))}</strong>
+        <span>${esc(profile.github_username ? `@${profile.github_username}` : profile.user_id)}</span>
+      </button>
+    `).join('') || '<div class="text-muted small">No matching users.</div>';
+    document.querySelectorAll('[data-user-id]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedUserId = button.dataset.userId;
+        renderDashboard();
+      });
+    });
+  }
+
+  function renderBadgeEditor(profile){
+    const userBadges = badgesFor(profile.user_id);
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <div>
+          <p class="oc-auth-kicker mb-2">Selected user</p>
+          <h2 class="h4 fw-bold mb-1">${esc(userLabel(profile))}</h2>
+          <div class="text-muted small">${esc(profile.github_username ? `@${profile.github_username}` : profile.user_id)}</div>
+        </div>
+        <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+
+      <form id="badgeForm" class="oc-maintainer-form mb-4">
+        <input type="hidden" name="user_id" value="${esc(profile.user_id)}">
+        <div>
+          <label class="form-label small fw-bold" for="badgeKey">Badge</label>
+          <select id="badgeKey" name="badge_key" class="form-select">
+            <option value="dataset_contributor">Dataset Contributor</option>
+            <option value="model_contributor">Model Contributor</option>
+            <option value="oer_contributor">OER Contributor</option>
+            <option value="workflow_contributor">Workflow Contributor</option>
+            <option value="reviewer">Reviewer</option>
+            <option value="steward">Steward</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label small fw-bold" for="badgeLabel">Label</label>
+          <input id="badgeLabel" name="badge_label" class="form-control" value="Dataset Contributor" required>
+        </div>
+        <div class="oc-maintainer-form-wide">
+          <label class="form-label small fw-bold" for="badgeDescription">Description</label>
+          <input id="badgeDescription" name="badge_description" class="form-control" value="Verified OpenConstruction platform contribution.">
+        </div>
+        <button type="submit" class="btn btn-primary">Save badge</button>
+        <div id="badgeStatus" class="small text-muted" role="status"></div>
+      </form>
+
+      <h3 class="h6 fw-bold mb-2">Current badges</h3>
+      <div class="vstack gap-2">
+        ${userBadges.length ? userBadges.map(row => `
+          <div class="oc-account-row">
+            <span>
+              <span class="oc-account-type">${esc(row.public ? 'Public' : 'Hidden')}</span>
+              <strong>${esc(row.badge_label)}</strong>
+              <span class="oc-account-meta">${esc(row.badge_key)}${row.badge_description ? ` · ${esc(row.badge_description)}` : ''}</span>
+            </span>
+            <span class="d-flex gap-2 justify-content-end flex-wrap">
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-hide-badge="${esc(row.badge_key)}">${row.public ? 'Hide' : 'Show'}</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-remove-badge="${esc(row.badge_key)}">Remove</button>
+            </span>
+          </div>
+        `).join('') : '<div class="oc-workspace-empty"><strong>No badges yet</strong></div>'}
+      </div>
+    `;
+  }
+
+  function suggestionUser(row){
+    return profiles.find(profile => profile.user_id === row.user_id) || { user_id: row.user_id };
+  }
+
+  function renderSuggestions(){
+    const pending = suggestions.filter(row => row.status === 'pending');
+    const recent = suggestions.filter(row => row.status !== 'pending').slice(0, 6);
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <div>
+          <p class="oc-auth-kicker mb-2">Resource queue</p>
+          <h2 class="h5 fw-bold mb-1">${pending.length} pending</h2>
+        </div>
+        <button type="button" id="refreshSuggestionsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+      <div class="vstack gap-2">
+        ${pending.length ? pending.map(row => {
+          const profile = suggestionUser(row);
+          return `
+            <div class="oc-account-row">
+              <span>
+                <span class="oc-account-type">${esc(row.resource_type)}</span>
+                <strong>${esc(row.title)}</strong>
+                <span class="oc-account-meta">${esc(row.submitter_name || userLabel(profile))}${row.submitter_email ? ` · ${esc(row.submitter_email)}` : ''}${row.submitter_affiliation ? ` · ${esc(row.submitter_affiliation)}` : ''}</span>
+                <span class="oc-account-meta">${row.doi ? `DOI ${esc(row.doi)} · ` : ''}${row.license ? `License ${esc(row.license)}` : 'License not provided'}</span>
+                ${row.url ? `<span class="oc-account-meta">${esc(row.url)}</span>` : ''}
+                ${row.authorship ? `<span class="oc-account-meta">${row.authorship === 'third_party' ? 'Third-party submission' : 'Author submission'}${row.permission_statement ? ` · ${esc(row.permission_statement)}` : ''}</span>` : ''}
+                ${row.description ? `<span class="oc-account-meta">${esc(row.description)}</span>` : ''}
+              </span>
+              <span class="d-flex gap-2 justify-content-end flex-wrap">
+                <button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Mark added</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Decline</button>
+              </span>
+            </div>
+          `;
+        }).join('') : '<div class="oc-workspace-empty"><strong>No pending suggestions</strong></div>'}
+      </div>
+      ${recent.length ? `
+        <h3 class="h6 fw-bold mt-4 mb-2">Recently reviewed</h3>
+        <div class="vstack gap-2">
+          ${recent.map(row => `
+            <div class="oc-account-row">
+              <span>
+                <span class="oc-account-type">${esc(row.status)}</span>
+                <strong>${esc(row.title)}</strong>
+                <span class="oc-account-meta">${esc(row.resource_type)}${row.doi ? ` · DOI ${esc(row.doi)}` : ''}${row.license ? ` · ${esc(row.license)}` : ''}${row.reviewed_at ? ` · ${new Date(row.reviewed_at).toLocaleDateString()}` : ''}</span>
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    `;
+  }
+
+  function bindBadgeForm(){
+    document.getElementById('refreshBtn')?.addEventListener('click', loadDashboard);
+    const form = document.getElementById('badgeForm');
+    const key = document.getElementById('badgeKey');
+    key?.addEventListener('change', () => {
+      const [label, description] = badgeDefaults[key.value] || ['', ''];
+      form.elements.badge_label.value = label;
+      form.elements.badge_description.value = description;
+    });
+    form?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('badgeStatus');
+      status.textContent = 'Saving...';
+      const payload = {
+        user_id: form.elements.user_id.value,
+        badge_key: form.elements.badge_key.value,
+        badge_label: form.elements.badge_label.value.trim(),
+        badge_description: form.elements.badge_description.value.trim() || null,
+        public: true
+      };
+      const { error } = await sb.from('user_badges').upsert(payload, { onConflict: 'user_id,badge_key' });
+      if (error) {
+        status.textContent = error.message || 'Could not save badge.';
+        return;
+      }
+      status.textContent = 'Badge saved.';
+      await loadDashboard(false);
+    });
+    document.querySelectorAll('[data-hide-badge]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const badge = badges.find(row => row.user_id === selectedUserId && row.badge_key === button.dataset.hideBadge);
+        const { error } = await sb
+          .from('user_badges')
+          .update({ public: !badge.public })
+          .eq('user_id', selectedUserId)
+          .eq('badge_key', button.dataset.hideBadge);
+        if (error) alert(error.message || 'Could not update badge.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-remove-badge]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const badge = badges.find(row => row.user_id === selectedUserId && row.badge_key === button.dataset.removeBadge);
+        if (!badge || !window.confirm(`Remove ${badge.badge_label}?`)) return;
+        const { error } = await sb
+          .from('user_badges')
+          .delete()
+          .eq('user_id', selectedUserId)
+          .eq('badge_key', button.dataset.removeBadge);
+        if (error) alert(error.message || 'Could not remove badge.');
+        await loadDashboard(false);
+      });
+    });
+  }
+
+  function bindSuggestionActions(){
+    document.getElementById('refreshSuggestionsBtn')?.addEventListener('click', () => loadDashboard(false));
+    document.querySelectorAll('[data-add-suggestion]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.addSuggestion);
+        if (!suggestion) return;
+        button.disabled = true;
+        const [badgeKey, badgeLabel] = contributorBadgeByType[suggestion.resource_type] || [];
+        const { error: suggestionError } = await sb
+          .from('resource_suggestions')
+          .update({
+            status: 'added',
+            reviewed_by: currentMaintainerId,
+            reviewed_at: new Date().toISOString()
+          })
+          .eq('id', suggestion.id);
+        if (suggestionError) {
+          alert(suggestionError.message || 'Could not update suggestion.');
+          button.disabled = false;
+          return;
+        }
+        if (badgeKey) {
+          const { error: badgeError } = await sb.from('user_badges').upsert({
+            user_id: suggestion.user_id,
+            badge_key: badgeKey,
+            badge_label: badgeLabel,
+            badge_description: 'Verified OpenConstruction platform contribution.',
+            public: true
+          }, { onConflict: 'user_id,badge_key' });
+          if (badgeError) alert(badgeError.message || 'Suggestion was updated, but the badge could not be awarded.');
+        }
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-decline-suggestion]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.declineSuggestion);
+        if (!suggestion || !window.confirm(`Decline ${suggestion.title}?`)) return;
+        const { error } = await sb
+          .from('resource_suggestions')
+          .update({
+            status: 'declined',
+            reviewed_by: currentMaintainerId,
+            reviewed_at: new Date().toISOString()
+          })
+          .eq('id', suggestion.id);
+        if (error) alert(error.message || 'Could not update suggestion.');
+        await loadDashboard(false);
+      });
+    });
+  }
+
+  async function loadDashboard(resetSelection = true){
+    const [profilesRes, badgesRes, suggestionsRes] = await Promise.all([
+      sb.from('profiles').select('user_id,display_name,github_username,created_at').order('created_at', { ascending: false }).limit(200),
+      sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
+      sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200)
+    ]);
+    if (profilesRes.error) throw profilesRes.error;
+    if (badgesRes.error) throw badgesRes.error;
+    profiles = profilesRes.data || [];
+    badges = badgesRes.data || [];
+    suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
+    if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
+      selectedUserId = profiles[0]?.user_id || '';
+    }
+    renderDashboard();
+  }
+
+  try {
+    const user = await window.OCAuth.getUser();
+    if (!user) {
+      renderSignedOut();
+      return;
+    }
+    currentMaintainerId = user.id;
+    const { data, error } = await sb.rpc('is_maintainer');
+    if (error) throw error;
+    if (!data) {
+      renderDenied(user);
+      return;
+    }
+    await loadDashboard();
+  } catch (err) {
+    root.className = 'oc-auth-card';
+    root.innerHTML = statusBox(err.message || 'Could not load maintainer dashboard.', 'danger');
+  }
+})();
+</script>
+</body>
+</html>

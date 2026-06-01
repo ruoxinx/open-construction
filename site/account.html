@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Workspace · OpenConstruction</title>
+  <meta name="description" content="Manage saved OpenConstruction resources, resource suggestions, and badges.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://www.openconstruction.org/account.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css" rel="stylesheet">
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to account</a>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries">
+            <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="models.html">Models</a></li>
+            <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+            <li><a class="dropdown-item" href="oer.html">OERs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddDocs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddDocs">
+            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
+        <li class="nav-item">
+          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
+                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
+                  aria-label="Subscribe for updates" title="Subscribe">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
+              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main id="mainContent" class="container oc-container py-4">
+  <div id="accountRoot" class="oc-account-grid">
+    <div class="oc-auth-card">
+      <div class="skeleton" style="min-height:140px"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1">
+      <small>
+        Licensed under Apache 2.0.
+        Images and thumbnails are © their respective creators unless otherwise noted.
+      </small>
+    </div>
+    <div class="mt-1">
+      <small>
+        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
+        <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
+        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="contribute.html#citation" class="text-muted">Citation</a>
+      </small>
+    </div>
+  </div>
+</footer>
+
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+    <div class="modal-content oc-modal-compact">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="suggestResourceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable oc-resource-modal">
+    <div class="modal-content oc-resource-content">
+      <div class="modal-header">
+        <div>
+          <p class="oc-auth-kicker mb-1">OpenConstruction submission</p>
+          <h2 class="modal-title h5 fw-bold">Submit resource</h2>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="resourceSuggestionForm">
+        <div class="modal-body">
+          <div class="vstack gap-4">
+        <fieldset class="oc-resource-fieldset">
+          <legend>Contact information</legend>
+          <div class="oc-resource-form-grid">
+            <div>
+              <label for="suggestSubmitterName" class="form-label small fw-bold">Submitter name</label>
+              <input id="suggestSubmitterName" name="submitter_name" class="form-control" required>
+            </div>
+            <div>
+              <label for="suggestSubmitterEmail" class="form-label small fw-bold">Submitter email</label>
+              <input id="suggestSubmitterEmail" name="submitter_email" type="email" class="form-control" placeholder="name@domain.edu" required>
+            </div>
+            <div>
+              <label for="suggestSubmitterAffiliation" class="form-label small fw-bold">Affiliation</label>
+              <input id="suggestSubmitterAffiliation" name="submitter_affiliation" class="form-control" required>
+            </div>
+            <div>
+              <label for="suggestSubmitterGithub" class="form-label small fw-bold">GitHub</label>
+              <input id="suggestSubmitterGithub" name="submitter_github" class="form-control" placeholder="@username">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="oc-resource-fieldset">
+          <legend>Resource metadata</legend>
+          <div class="oc-resource-form-grid">
+            <div>
+              <label for="suggestResourceType" class="form-label small fw-bold">Type</label>
+              <select id="suggestResourceType" name="resource_type" class="form-select" required>
+                <option value="dataset">Dataset</option>
+                <option value="model">Model</option>
+                <option value="oer">OER</option>
+                <option value="workflow">Workflow</option>
+              </select>
+            </div>
+            <div>
+              <label for="suggestTitle" class="form-label small fw-bold">Title</label>
+              <input id="suggestTitle" name="title" class="form-control" required>
+            </div>
+            <div>
+              <label for="suggestDoi" class="form-label small fw-bold">DOI</label>
+              <input id="suggestDoi" name="doi" class="form-control" placeholder="10.xxxx/xxxxx">
+            </div>
+            <div>
+              <label for="suggestLicense" class="form-label small fw-bold">License</label>
+              <input id="suggestLicense" name="license" class="form-control" placeholder="CC BY 4.0, MIT, Apache 2.0..." required>
+            </div>
+            <div class="oc-resource-form-wide">
+              <label for="suggestUrl" class="form-label small fw-bold">Resource URL</label>
+              <input id="suggestUrl" name="url" type="url" class="form-control" placeholder="https://..." required>
+            </div>
+            <div class="oc-resource-form-wide">
+              <label for="suggestDescription" class="form-label small fw-bold">Short note</label>
+              <textarea id="suggestDescription" name="description" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="oc-resource-fieldset">
+          <legend>Permissions</legend>
+          <div>
+            <label for="suggestAuthorship" class="form-label small fw-bold">Authorship</label>
+            <select id="suggestAuthorship" name="authorship" class="form-select" required>
+              <option value="author">I am submitting as an author of this resource</option>
+              <option value="third_party">I am not an author but have permission to submit</option>
+            </select>
+          </div>
+          <div>
+            <label for="suggestPermissionStatement" class="form-label small fw-bold">Permission statement</label>
+            <textarea id="suggestPermissionStatement" name="permission_statement" class="form-control" rows="3" placeholder="Required for third-party submissions."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="oc-resource-fieldset">
+          <legend>Submission agreement</legend>
+          <div class="vstack gap-2">
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_contact_current" required>
+              <span class="form-check-label">My contact information is current.</span>
+            </label>
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_metadata_accurate" required>
+              <span class="form-check-label">I confirm the metadata is accurate to the best of my knowledge.</span>
+            </label>
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_license_accurate" required>
+              <span class="form-check-label">I confirm the license information is accurate.</span>
+            </label>
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_no_sensitive_info" required>
+              <span class="form-check-label">This submission contains no private or sensitive information.</span>
+            </label>
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_publish" required>
+              <span class="form-check-label">I agree this record may be published in OpenConstruction.</span>
+            </label>
+          </div>
+        </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div id="suggestionStatus" class="small text-muted me-auto" role="status"></div>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+(async () => {
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+  const root = document.getElementById('accountRoot');
+  const esc = window.OCAuth.escapeHtml;
+  const sb = window.OCAuth.getClient();
+
+  function empty(label, detail = ''){
+    return `<div class="oc-workspace-empty"><strong>${esc(label)}</strong>${detail ? `<div class="small mt-1">${esc(detail)}</div>` : ''}</div>`;
+  }
+
+  function bookmarkUrl(row){
+    if (row.url) return row.url;
+    const id = encodeURIComponent(row.id || row.resource_id || '');
+    if (row.type === 'dataset') return `datasets/detail.html?id=${id}`;
+    if (row.type === 'model') return `models/details.html?id=${id}`;
+    if (row.type === 'workflow') return `workflows/details.html?id=${id}`;
+    if (row.type === 'oer') return `oers/details.html?id=${id}`;
+    return '#';
+  }
+
+  function typeLabel(type){
+    return String(type || 'resource').replace(/^\w/, c => c.toUpperCase());
+  }
+
+  function formatDate(value){
+    return value ? new Date(value).toLocaleDateString() : '';
+  }
+
+  function statusLabel(status){
+    return {
+      pending: 'Pending review',
+      added: 'Added',
+      declined: 'Declined'
+    }[status] || 'Pending review';
+  }
+
+  function statusClass(status){
+    return `oc-status-pill oc-status-${esc(status || 'pending')}`;
+  }
+
+  function downloadFile(filename, content, type){
+    const blob = new Blob([content], { type });
+    downloadBlob(filename, blob);
+  }
+
+  function downloadBlob(filename, blob){
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function selectedResourceIndexes(){
+    return Array.from(document.querySelectorAll('[data-resource-select]:checked'))
+      .map(input => Number(input.value))
+      .filter(index => Number.isInteger(index));
+  }
+
+  const catalogCache = new Map();
+  const catalogSources = {
+    dataset: 'data/datasets.json',
+    model: 'data/models.json',
+    workflow: 'data/use-cases.json',
+    oer: 'data/oer.json',
+    tool: 'data/tools.json'
+  };
+
+  function resourceKind(type){
+    const raw = String(type || '').trim().toLowerCase();
+    if (raw === 'deployment' || raw === 'deployments' || raw === 'use-case' || raw === 'usecase') return 'workflow';
+    if (raw === 'oers' || raw === 'learning-resource' || raw === 'learning_resource') return 'oer';
+    if (raw === 'tools') return 'tool';
+    if (raw === 'datasets') return 'dataset';
+    if (raw === 'models') return 'model';
+    return raw || 'resource';
+  }
+
+  function titleOfRecord(record, fallback = ''){
+    return record?.title || record?.name || record?.resource_title || fallback || record?.id || '';
+  }
+
+  function normalizeCatalog(type, payload){
+    const kind = resourceKind(type);
+    if (kind === 'dataset' && payload && !Array.isArray(payload)) {
+      return Object.entries(payload).map(([key, value]) => ({ id: value?.id || key, ...value }));
+    }
+    if (kind === 'model') return Array.isArray(payload) ? payload : [];
+    if (kind === 'workflow') return Array.isArray(payload?.use_cases) ? payload.use_cases : (Array.isArray(payload) ? payload : []);
+    if (kind === 'oer') return Array.isArray(payload?.resources) ? payload.resources : (Array.isArray(payload) ? payload : []);
+    if (kind === 'tool') {
+      return (payload?.sections || []).flatMap(section =>
+        (section.items || []).map(item => ({ category: section.title, ...item, id: item.id || item.name }))
+      );
+    }
+    return [];
+  }
+
+  async function loadCatalog(type){
+    const kind = resourceKind(type);
+    if (!catalogSources[kind]) return [];
+    if (catalogCache.has(kind)) return catalogCache.get(kind);
+    const promise = fetch(catalogSources[kind], { cache: 'no-store' })
+      .then(response => response.ok ? response.json() : Promise.reject(new Error(`Could not load ${catalogSources[kind]}`)))
+      .then(payload => normalizeCatalog(kind, payload))
+      .catch(() => []);
+    catalogCache.set(kind, promise);
+    return promise;
+  }
+
+  function compareKey(value){
+    return String(value || '').trim().toLowerCase();
+  }
+
+  function linkKey(value){
+    try {
+      const url = new URL(String(value || ''), window.location.href);
+      url.hash = '';
+      return url.href.replace(/\/$/, '').toLowerCase();
+    } catch {
+      return compareKey(value);
+    }
+  }
+
+  async function enrichBookmark(row){
+    const kind = resourceKind(row.type);
+    const catalog = await loadCatalog(kind);
+    const wanted = new Set([
+      compareKey(row.id),
+      compareKey(row.resource_id),
+      compareKey(row.title),
+      linkKey(row.url)
+    ].filter(Boolean));
+    const record = catalog.find(item => {
+      const candidates = [
+        item.id,
+        item.name,
+        item.title,
+        item.resource_title,
+        item.source,
+        item.url,
+        item.access,
+        item.paper_url,
+        item.code_url
+      ];
+      return candidates.some(value => wanted.has(compareKey(value)) || wanted.has(linkKey(value)));
+    });
+    return { bookmark: row, kind, record: record || null };
+  }
+
+  const commonCompareFields = [
+    { label: 'Title', get: item => titleOfRecord(item.record, item.bookmark.title || item.bookmark.id), always: true },
+    { label: 'Catalog type', get: item => typeLabel(item.kind), always: true },
+    { label: 'Year', keys: ['year'] },
+    { label: 'License', keys: ['license'] },
+    { label: 'Primary link', get: item => item.record?.source || item.record?.access || item.record?.url || item.bookmark.url }
+  ];
+
+  const compareSchema = {
+    dataset: {
+      title: 'Dataset schema fields',
+      fields: [
+        { label: 'Authors', keys: ['authors'] },
+        { label: 'DOI', keys: ['doi'] },
+        { label: 'Data modality', keys: ['data_modality'] },
+        { label: 'Images / samples', keys: ['num_images'] },
+        { label: 'Class count', keys: ['num_classes'] },
+        { label: 'Classes', keys: ['classes'] },
+        { label: 'Annotation types', keys: ['annotation_types'] },
+        { label: 'Potential tasks', keys: ['potential_tasks'] },
+        { label: 'Resolution', keys: ['resolution'] },
+        { label: 'Geography', keys: ['geographical_location'] },
+        { label: 'Paper / landing page', keys: ['paper'] },
+        { label: 'Access', keys: ['access'] }
+      ]
+    },
+    model: {
+      title: 'Model schema fields',
+      fields: [
+        { label: 'Authors', keys: ['authors'] },
+        { label: 'Modalities', keys: ['modalities'] },
+        { label: 'Tasks', keys: ['tasks'] },
+        { label: 'Applications', keys: ['applications'] },
+        { label: 'Abstract', keys: ['abstract'] },
+        { label: 'Paper', keys: ['paper_url'] },
+        { label: 'Code', keys: ['code_url'] }
+      ]
+    },
+    workflow: {
+      title: 'Workflow / use-case schema fields',
+      fields: [
+        { label: 'Summary', keys: ['summary'] },
+        { label: 'Phase', keys: ['phase'] },
+        { label: 'Stakeholders', keys: ['stakeholders'] },
+        { label: 'AI technology', keys: ['ai_tech'] },
+        { label: 'Data modalities', keys: ['data_modalities'] },
+        { label: 'Applications', keys: ['applications'] },
+        { label: 'Deployment stage', keys: ['deployment_stage'] },
+        { label: 'Evidence level', keys: ['evidence_level'] },
+        { label: 'Provider', keys: ['provider'] },
+        { label: 'Companies', keys: ['companies'] },
+        { label: 'Organizations', keys: ['organizations'] },
+        { label: 'Geography', keys: ['geography'] },
+        { label: 'Outcomes', keys: ['outcomes'] },
+        { label: 'Links', keys: ['links'] },
+        { label: 'Tags', keys: ['tags'] }
+      ]
+    },
+    oer: {
+      title: 'OER schema fields',
+      fields: [
+        { label: 'Provider', keys: ['provider'] },
+        { label: 'Publisher', keys: ['publisher'] },
+        { label: 'Institutions', keys: ['institutions'] },
+        { label: 'Language', keys: ['language'] },
+        { label: 'Topics', keys: ['topics'] },
+        { label: 'Media', keys: ['media'] },
+        { label: 'Source', keys: ['source'] },
+        { label: 'Added', keys: ['added'] }
+      ]
+    },
+    tool: {
+      title: 'Tool fields',
+      fields: [
+        { label: 'Category', keys: ['category'] },
+        { label: 'Summary', keys: ['summary'] },
+        { label: 'Details', keys: ['details'] },
+        { label: 'Website', keys: ['url'] },
+        { label: 'Docs', keys: ['docs'] },
+        { label: 'Repository', keys: ['repo'] }
+      ]
+    }
+  };
+
+  function fieldValue(item, field){
+    if (typeof field.get === 'function') return field.get(item);
+    const record = item.record || {};
+    for (const key of field.keys || []) {
+      const value = record[key];
+      if (hasValue(value)) return value;
+    }
+    return '';
+  }
+
+  function hasValue(value){
+    if (value == null || value === '') return false;
+    if (Array.isArray(value)) return value.length > 0;
+    if (typeof value === 'object') return Object.keys(value).length > 0;
+    return true;
+  }
+
+  function shortUrl(urlValue){
+    try {
+      const url = new URL(String(urlValue), window.location.href);
+      return url.hostname.replace(/^www\./, '') + url.pathname.replace(/\/$/, '');
+    } catch {
+      return String(urlValue || '');
+    }
+  }
+
+  function valueHtml(value){
+    if (!hasValue(value)) return '<span class="text-muted">—</span>';
+    if (Array.isArray(value)) {
+      const items = value.map(item => valueHtml(item)).filter(Boolean);
+      return items.length ? `<div class="oc-compare-list">${items.slice(0, 10).join('')}${items.length > 10 ? `<span class="oc-compare-more">+${items.length - 10} more</span>` : ''}</div>` : '<span class="text-muted">—</span>';
+    }
+    if (typeof value === 'object') {
+      if ('name' in value || 'url' in value) {
+        const label = value.name || value.title || value.metric || value.url || '';
+        return value.url ? `<a href="${esc(value.url)}" target="_blank" rel="noopener">${esc(label || shortUrl(value.url))}</a>` : `<span>${esc(label)}</span>`;
+      }
+      if ('metric' in value || 'value' in value) {
+        return `<span>${esc([value.metric, value.value, value.note].filter(Boolean).join(': '))}</span>`;
+      }
+      return `<span>${esc(Object.entries(value).map(([key, val]) => `${key}: ${Array.isArray(val) ? val.join(', ') : val}`).join(' · '))}</span>`;
+    }
+    const text = String(value);
+    if (/^https?:\/\//i.test(text)) {
+      return `<a href="${esc(text)}" target="_blank" rel="noopener">${esc(shortUrl(text))}</a>`;
+    }
+    if (text.length > 220) return `<span>${esc(text.slice(0, 220))}<span class="text-muted">...</span></span>`;
+    return `<span>${esc(text)}</span>`;
+  }
+
+  function compareFieldRow(field, items){
+    const values = items.map(item => fieldValue(item, field));
+    if (!field.always && !values.some(hasValue)) return '';
+    return `
+      <tr>
+        <th scope="row">${esc(field.label)}</th>
+        ${values.map(value => `<td>${valueHtml(value)}</td>`).join('')}
+      </tr>
+    `;
+  }
+
+  function comparisonHtml(items){
+    const kinds = Array.from(new Set(items.map(item => item.kind))).filter(kind => compareSchema[kind]);
+    const missing = items.filter(item => !item.record);
+    const sections = [
+      { title: 'Core fields', fields: commonCompareFields },
+      ...kinds.map(kind => compareSchema[kind])
+    ];
+    return `
+      <div class="oc-compare-panel mt-3">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-2">
+          <div>
+            <h4 class="h6 fw-bold mb-1">Schema-aware comparison</h4>
+            <p class="small text-muted mb-0">Values are enriched from the public catalog JSON and grouped by the documented schema fields.</p>
+          </div>
+          ${missing.length ? `<span class="oc-status-pill">Metadata missing for ${missing.length}</span>` : ''}
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle oc-compare-table mb-0">
+            <thead>
+              <tr>
+                <th class="oc-compare-field">Field</th>
+                ${items.map(item => `
+                  <th>
+                    <span class="oc-account-type">${esc(typeLabel(item.kind))}</span>
+                    <span class="d-block">${esc(titleOfRecord(item.record, item.bookmark.title || item.bookmark.id))}</span>
+                  </th>
+                `).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${sections.map(section => `
+                <tr class="oc-compare-section"><th colspan="${items.length + 1}">${esc(section.title)}</th></tr>
+                ${section.fields.map(field => compareFieldRow(field, items)).join('')}
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  function bookmarkIcon(){
+    return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="oc-bookmark-fill" d="M6 3.75h12v16.5l-6-3.4-6 3.4z"></path><path d="M6 3.75h12v16.5l-6-3.4-6 3.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>`;
+  }
+
+  function csvCell(value){
+    const normalized = value && typeof value === 'object'
+      ? JSON.stringify(value)
+      : String(value ?? '');
+    return `"${normalized.replace(/"/g, '""')}"`;
+  }
+
+  const exportExcludedKeys = new Set([
+    'id',
+    'url',
+    'image',
+    'image_url',
+    'image_path',
+    'thumbnail',
+    'thumbnail_url',
+    'contributor',
+    'contributors',
+    'contributor_url',
+    'submitted_by',
+    'added',
+    'added_date',
+    'date_added',
+    'created_at',
+    'updated_at'
+  ]);
+
+  const exportFlatListKeys = new Set([
+    'authors',
+    'modalities',
+    'applications',
+    'tasks',
+    'topics',
+    'media',
+    'formats',
+    'keywords',
+    'data_modality',
+    'data_modalities',
+    'potential_tasks',
+    'classes',
+    'annotation_types',
+    'stakeholders',
+    'ai_tech',
+    'companies',
+    'organizations',
+    'trained_on_datasets',
+    'benchmarks',
+    'tags'
+  ]);
+
+  function exportKeyName(key){
+    return String(key || '').trim().replace(/[\s-]+/g, '_').toLowerCase();
+  }
+
+  function shouldExportField(key){
+    const normalized = exportKeyName(key);
+    if (!normalized) return false;
+    if (exportExcludedKeys.has(normalized)) return false;
+    if (normalized.includes('contributor')) return false;
+    if (normalized === 'added' || normalized.endsWith('_added') || normalized.includes('added_date')) return false;
+    if (normalized === 'image' || normalized.endsWith('_image') || normalized.includes('image_url')) return false;
+    if (normalized === 'thumbnail' || normalized.includes('thumbnail')) return false;
+    return true;
+  }
+
+  function flattenExportList(value){
+    let items = [];
+    if (Array.isArray(value)) {
+      items = value;
+    } else if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) return '';
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) items = parsed;
+      } catch (_) {}
+      if (!items.length) {
+        items = trimmed
+          .replace(/^\[/, '')
+          .replace(/\]$/, '')
+          .split(/\s*[,;]\s*/);
+      }
+    } else if (value != null) {
+      items = [value];
+    }
+
+    return items
+      .map(item => String(item ?? '').trim().replace(/^"+|"+$/g, ''))
+      .filter(Boolean)
+      .join(', ');
+  }
+
+  function exportValue(key, value){
+    if (Array.isArray(value)) return flattenExportList(value);
+    if (exportFlatListKeys.has(exportKeyName(key))) return flattenExportList(value);
+    return value;
+  }
+
+  function exportResourceRow(item){
+    const record = item.record || {};
+    const bookmark = item.bookmark || {};
+    const out = { resource_type: item.kind || resourceKind(bookmark.type) };
+    Object.keys(record).forEach(key => {
+      const value = exportValue(key, record[key]);
+      if (shouldExportField(key) && hasValue(value)) out[key] = value;
+    });
+    if (!hasValue(out.title) && !hasValue(out.name) && hasValue(bookmark.title)) out.title = bookmark.title;
+    return out;
+  }
+
+  function exportHeaders(rows){
+    const preferred = [
+      'resource_type',
+      'name',
+      'title',
+      'description',
+      'summary',
+      'abstract',
+      'year',
+      'license',
+      'source',
+      'access',
+      'paper',
+      'paper_url',
+      'Paper',
+      'doi',
+      'code',
+      'code_url',
+      'repo',
+      'docs',
+      'authors',
+      'publisher',
+      'provider',
+      'institutions',
+      'language',
+      'topics',
+      'media',
+      'formats',
+      'keywords',
+      'data_modality',
+      'modalities',
+      'data_modalities',
+      'tasks',
+      'task',
+      'potential_tasks',
+      'applications',
+      'phase',
+      'stakeholders',
+      'ai_tech',
+      'deployment_stage',
+      'evidence_level',
+      'companies',
+      'organizations',
+      'geography',
+      'geographical_location',
+      'outcomes',
+      'links',
+      'tags',
+      'notes',
+      'note',
+      'num_images',
+      'num_classes',
+      'classes',
+      'resolution',
+      'annotation_types',
+      'framework',
+      'architecture',
+      'checkpoint_url',
+      'trained_on_datasets',
+      'benchmarks',
+      'category',
+      'details',
+      'blog_url',
+      'blog_posts'
+    ].filter(shouldExportField);
+    const keys = new Set(rows.flatMap(row => Object.keys(row)));
+    const ordered = preferred.filter(key => keys.has(key));
+    const remaining = Array.from(keys).filter(key => !ordered.includes(key)).sort((a, b) => a.localeCompare(b));
+    return ordered.concat(remaining);
+  }
+
+  async function selectedExportRows(rows, status){
+    status.textContent = 'Loading catalog metadata for export...';
+    const enriched = await Promise.all(rows.map(enrichBookmark));
+    return enriched.map(exportResourceRow);
+  }
+
+  async function downloadBadgeCertificatePdf(badge, recipient){
+    const { data: sessionData } = await sb.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (!token) throw new Error('Please sign in again to download this certificate.');
+    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/issue-certificate`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ badge_id: badge.id })
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || 'Certificate could not be issued.');
+    }
+    const blob = await response.blob();
+    const filename = response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1]
+      || `openconstruction-certificate-${badge.id}.pdf`;
+    downloadBlob(filename, blob);
+  }
+
+  function bindResourceTools(bookmarks){
+    const status = document.getElementById('resourceToolStatus');
+    const compareOutput = document.getElementById('resourceCompareOutput');
+    const selectedRows = () => selectedResourceIndexes().map(index => bookmarks[index]).filter(Boolean);
+
+    document.querySelectorAll('[data-resource-unsave]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const index = Number(button.dataset.resourceUnsave);
+        const row = bookmarks[index];
+        if (!row) return;
+        button.disabled = true;
+        status.textContent = 'Removing saved resource...';
+        try {
+          const result = await window.OCBookmark.toggle({
+            type: row.type,
+            id: row.id || row.resource_id,
+            title: row.title || row.id || row.resource_id,
+            url: bookmarkUrl(row)
+          });
+          if (result.saved) throw new Error('Resource is still saved.');
+          bookmarks[index] = null;
+          button.closest('.oc-account-row')?.remove();
+          compareOutput.innerHTML = '';
+          status.textContent = 'Removed from saved resources.';
+        } catch (err) {
+          console.warn('Unsave failed', err);
+          status.textContent = err.message || 'Could not remove saved resource.';
+          button.disabled = false;
+        }
+      });
+    });
+
+    document.getElementById('exportJsonBtn')?.addEventListener('click', async () => {
+      const rows = selectedRows();
+      if (!rows.length) {
+        status.textContent = 'Select resources first.';
+        return;
+      }
+      const exportRows = await selectedExportRows(rows, status);
+      downloadFile('openconstruction-saved-resources.json', JSON.stringify(exportRows, null, 2), 'application/json');
+      status.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'} exported.`;
+    });
+
+    document.getElementById('exportCsvBtn')?.addEventListener('click', async () => {
+      const rows = selectedRows();
+      if (!rows.length) {
+        status.textContent = 'Select resources first.';
+        return;
+      }
+      const exportRows = await selectedExportRows(rows, status);
+      const header = exportHeaders(exportRows);
+      const csv = [header.join(',')]
+        .concat(exportRows.map(row => header.map(key => csvCell(row[key])).join(',')))
+        .join('\n');
+      downloadFile('openconstruction-saved-resources.csv', csv, 'text/csv');
+      status.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'} exported.`;
+    });
+
+    document.getElementById('compareResourcesBtn')?.addEventListener('click', async () => {
+      const rows = selectedRows();
+      if (rows.length < 2) {
+        status.textContent = 'Select at least two resources.';
+        compareOutput.innerHTML = '';
+        return;
+      }
+      status.textContent = 'Loading catalog metadata...';
+      compareOutput.innerHTML = '';
+      const enriched = await Promise.all(rows.map(enrichBookmark));
+      status.textContent = `${rows.length} resources compared.`;
+      compareOutput.innerHTML = comparisonHtml(enriched);
+    });
+  }
+
+  function bindBadgeCertificates(badges, recipient){
+    document.querySelectorAll('[data-badge-certificate]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const badge = badges[Number(button.dataset.badgeCertificate)];
+        if (!badge) return;
+        const original = button.textContent;
+        button.disabled = true;
+        button.textContent = 'Preparing...';
+        try {
+          await downloadBadgeCertificatePdf(badge, recipient);
+        } catch (err) {
+          console.warn('Certificate download failed', err);
+          button.textContent = 'Try again';
+          window.setTimeout(() => { button.textContent = original; }, 1800);
+        } finally {
+          button.disabled = false;
+          if (button.textContent === 'Preparing...') button.textContent = original;
+        }
+      });
+    });
+  }
+
+  function bindSuggestionForm(user){
+    const form = document.getElementById('resourceSuggestionForm');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.elements.submitter_name.value ||= user.user_metadata?.full_name || user.user_metadata?.name || '';
+    form.elements.submitter_email.value ||= user.email || '';
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('suggestionStatus');
+      if (form.elements.authorship.value === 'third_party' && !form.elements.permission_statement.value.trim()) {
+        status.textContent = 'Please add a permission statement for third-party submissions.';
+        form.elements.permission_statement.focus();
+        return;
+      }
+      status.textContent = 'Submitting...';
+      const payload = {
+        user_id: user.id,
+        submitter_name: form.elements.submitter_name.value.trim(),
+        submitter_email: form.elements.submitter_email.value.trim(),
+        submitter_affiliation: form.elements.submitter_affiliation.value.trim(),
+        submitter_github: form.elements.submitter_github.value.trim() || null,
+        resource_type: form.elements.resource_type.value,
+        title: form.elements.title.value.trim(),
+        doi: form.elements.doi.value.trim() || null,
+        url: form.elements.url.value.trim(),
+        license: form.elements.license.value.trim(),
+        description: form.elements.description.value.trim() || null,
+        authorship: form.elements.authorship.value,
+        permission_statement: form.elements.permission_statement.value.trim() || null,
+        agreement_contact_current: form.elements.agreement_contact_current.checked,
+        agreement_metadata_accurate: form.elements.agreement_metadata_accurate.checked,
+        agreement_license_accurate: form.elements.agreement_license_accurate.checked,
+        agreement_no_sensitive_info: form.elements.agreement_no_sensitive_info.checked,
+        agreement_publish: form.elements.agreement_publish.checked,
+        status: 'pending'
+      };
+      const { error } = await sb.from('resource_suggestions').insert(payload);
+      if (error) {
+        status.textContent = error.message || 'Could not submit resource';
+        return;
+      }
+      form.reset();
+      form.elements.submitter_name.value = user.user_metadata?.full_name || user.user_metadata?.name || '';
+      form.elements.submitter_email.value = user.email || '';
+      status.textContent = 'Resource submitted. Refreshing dashboard...';
+      window.setTimeout(() => window.location.reload(), 650);
+    });
+  }
+
+  function bindProfileForm(user){
+    const form = document.getElementById('profileForm');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('profileStatus');
+      const button = form.querySelector('button[type="submit"]');
+      status.textContent = 'Saving...';
+      button.disabled = true;
+      const profilePayload = {
+        user_id: user.id,
+        display_name: form.elements.display_name.value.trim() || null,
+        affiliation: form.elements.affiliation.value.trim() || null
+      };
+      let { error } = await sb.from('profiles').upsert(profilePayload, { onConflict: 'user_id' });
+      if (error && (String(error.message || '').includes("'affiliation' column") || String(error.message || '').includes('schema cache'))) {
+        const fallbackPayload = { ...profilePayload };
+        delete fallbackPayload.affiliation;
+        const fallback = await sb.from('profiles').upsert(fallbackPayload, { onConflict: 'user_id' });
+        error = fallback.error;
+        if (!error) {
+          status.textContent = 'Name saved. Run the profile database migration before saving affiliation.';
+          status.classList.remove('text-danger');
+          status.classList.add('text-muted');
+          button.disabled = false;
+          return;
+        }
+      }
+      button.disabled = false;
+      if (error) {
+        status.textContent = error.message || 'Profile could not be saved.';
+        status.classList.remove('text-muted');
+        status.classList.add('text-danger');
+        return;
+      }
+      status.textContent = 'Profile saved.';
+      status.classList.remove('text-danger');
+      status.classList.add('text-muted');
+    });
+  }
+
+  function renderSignedOut(){
+    window.location.replace('auth/sign-in.html');
+  }
+
+  try {
+    const user = await window.OCAuth.getUser();
+    if (!user) {
+      renderSignedOut();
+      return;
+    }
+
+    await window.OCAuth.syncLocalBookmarks();
+    const maintainer = await window.OCAuth.isMaintainer?.().catch(() => false);
+    const [bookmarks, profileRes, badgesRes, suggestionsRes] = await Promise.all([
+      window.OCBookmark.list(),
+      sb.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+      sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
+      sb.from('resource_suggestions').select('id,resource_type,title,doi,url,license,description,status,maintainer_note,created_at,reviewed_at').eq('user_id', user.id).order('created_at', { ascending: false })
+    ]);
+    if (profileRes.error) throw profileRes.error;
+    if (badgesRes.error) throw badgesRes.error;
+    if (suggestionsRes.error) throw suggestionsRes.error;
+
+    const profile = profileRes.data || {};
+    const badges = badgesRes.data || [];
+    const suggestions = suggestionsRes.data || [];
+    const avatar = profile.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
+    const fallbackName = window.OCAuth.displayName?.(user) || user.user_metadata?.full_name || user.user_metadata?.name || 'OpenConstruction member';
+    const genericNames = new Set(['openconstruction user', 'openconstruction member', 'oc']);
+    const name = profile.display_name && !genericNames.has(String(profile.display_name).trim().toLowerCase())
+      ? profile.display_name
+      : fallbackName;
+    const affiliation = profile.affiliation || window.OCAuth.affiliation?.(user) || '';
+    const savedByType = bookmarks.reduce((acc, row) => {
+      const key = row.type || 'resource';
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {});
+    const recentBookmarks = bookmarks;
+    const publicBadges = badges.filter(row => row.public !== false);
+    const pendingCount = suggestions.filter(row => row.status === 'pending').length;
+    const addedCount = suggestions.filter(row => row.status === 'added').length;
+
+    function badgeIcon(){
+      return `
+        <svg class="oc-badge-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 3.25 19 6v5.25c0 4.2-2.75 8.1-7 9.5-4.25-1.4-7-5.3-7-9.5V6l7-2.75Z"></path>
+          <path d="m9.25 12.1 1.75 1.75 3.9-4.05"></path>
+        </svg>
+      `;
+    }
+
+    root.className = 'oc-account-grid';
+    root.innerHTML = `
+      <aside class="oc-workspace-sidebar">
+        <section class="oc-workspace-card oc-account-profile-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            ${avatar ? `<img class="oc-account-avatar" src="${esc(avatar)}" alt="">` : ''}
+            <div>
+              <p class="oc-workspace-kicker mb-1">Workspace</p>
+              <h1 class="h4 fw-bold mb-1">${esc(name)}</h1>
+              <div class="text-muted small">${affiliation ? esc(affiliation) : 'OpenConstruction member'}</div>
+            </div>
+          </div>
+          <div class="d-grid gap-2">
+            <a class="btn btn-primary btn-sm" href="dataset.html">Explore catalog</a>
+            ${maintainer ? '<a class="btn btn-outline-primary btn-sm" href="maintainer.html">Maintainer dashboard</a>' : ''}
+            <button type="button" id="signOutBtn" class="btn btn-outline-secondary btn-sm">Sign out</button>
+          </div>
+        </section>
+
+			        <section class="oc-workspace-card">
+			          <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
+                  <div>
+                    <h2 class="h6 fw-bold mb-1">Credentials</h2>
+                    <p class="small text-muted mb-0">Download verified contribution certificates.</p>
+                  </div>
+                </div>
+			          <div class="oc-badge-grid">
+			            ${publicBadges.length ? publicBadges.map((row, index) => `
+			              <article class="oc-badge-card" title="${esc(row.badge_description || '')}">
+	                    <div class="oc-badge-card-icon">${badgeIcon()}</div>
+	                    <div class="oc-badge-card-body">
+	                      <strong>${esc(row.badge_label)}</strong>
+	                      <span>${row.awarded_at ? `Issued ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
+	                    </div>
+	                    <div class="oc-badge-card-actions">
+	                      <button type="button" class="btn btn-primary btn-sm" data-badge-certificate="${index}">Download PDF</button>
+	                    </div>
+	                  </article>
+		            `).join('') : empty('No badges yet')}
+		          </div>
+			        </section>
+
+        <section class="oc-workspace-card">
+          <h2 class="h6 fw-bold mb-3">Profile</h2>
+          <form id="profileForm" class="oc-profile-form">
+            <div>
+              <label for="profileDisplayName" class="form-label small fw-bold">Display name</label>
+              <input id="profileDisplayName" name="display_name" class="form-control form-control-sm" value="${esc(name)}">
+            </div>
+            <div>
+              <label for="profileAffiliation" class="form-label small fw-bold">Affiliation</label>
+              <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, lab, or organization">
+            </div>
+	            <div class="d-flex align-items-center gap-2">
+	              <button type="submit" class="btn btn-outline-primary btn-sm">Save profile</button>
+	              <span id="profileStatus" class="small text-muted" role="status"></span>
+            </div>
+          </form>
+        </section>
+      </aside>
+
+      <section class="oc-workspace-main">
+        <section class="oc-workspace-card">
+          <div class="oc-account-hero">
+	            <div>
+	              <p class="oc-workspace-kicker mb-2">Dashboard</p>
+	              <h2 class="h3 fw-bold mb-1">Your OpenConstruction workspace</h2>
+	              <p class="text-muted mb-0">Track saved resources, submitted additions, badges, exports, and comparisons.</p>
+	            </div>
+            <div class="d-flex gap-2 flex-wrap justify-content-end">
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
+              <a class="btn btn-outline-primary btn-sm" href="dataset.html">Browse catalog</a>
+            </div>
+          </div>
+
+          <div class="oc-account-stat-grid">
+            <div class="oc-account-stat">
+              <div class="oc-account-stat-value">${bookmarks.length}</div>
+              <div class="oc-account-stat-label">Saved</div>
+            </div>
+            <div class="oc-account-stat">
+              <div class="oc-account-stat-value">${suggestions.length}</div>
+              <div class="oc-account-stat-label">Submissions</div>
+            </div>
+            <div class="oc-account-stat">
+              <div class="oc-account-stat-value">${publicBadges.length}</div>
+              <div class="oc-account-stat-label">Badges</div>
+            </div>
+	            <div class="oc-account-stat">
+	              <div class="oc-account-stat-value">${addedCount}</div>
+	              <div class="oc-account-stat-label">Added</div>
+	            </div>
+	          </div>
+	        </section>
+
+	        <section id="saved-resources" class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+	              <div>
+	                <h3 class="h5 fw-bold mb-1">${bookmarks.length} saved</h3>
+	                <p class="text-muted mb-0 small">Resources you saved across OpenConstruction.</p>
+	              </div>
+	              <div class="small text-muted">${Object.entries(savedByType).map(([type, count]) => `${count} ${esc(typeLabel(type))}`).join(' · ') || 'No saved resources'}</div>
+	            </div>
+              ${recentBookmarks.length ? `
+                <div class="oc-resource-tools mb-3">
+                  <button type="button" id="compareResourcesBtn" class="btn btn-outline-primary btn-sm">Compare</button>
+                  <button type="button" id="exportJsonBtn" class="btn btn-outline-secondary btn-sm">Export JSON</button>
+                  <button type="button" id="exportCsvBtn" class="btn btn-outline-secondary btn-sm">Export CSV</button>
+                  <span id="resourceToolStatus" class="small text-muted" role="status"></span>
+                </div>
+              ` : ''}
+	            <div class="vstack gap-2">
+	              ${recentBookmarks.length ? recentBookmarks.map((row, index) => `
+	            <div class="oc-account-row oc-resource-select-row">
+                <label class="oc-resource-select">
+                  <input class="form-check-input" type="checkbox" value="${index}" data-resource-select aria-label="Select ${esc(row.title || row.id)}">
+                  <span>
+	                  <span class="oc-account-type">${esc(typeLabel(row.type))}</span>
+	                  <strong>${esc(row.title || row.id)}</strong>
+	                  <span class="oc-account-meta">${row.created_at ? `Saved ${formatDate(row.created_at)}` : 'Saved resource'}</span>
+                  </span>
+                </label>
+                <span class="oc-account-actions">
+                  <button type="button" class="oc-bookmark-btn active" data-resource-unsave="${index}" aria-label="Remove ${esc(row.title || row.id)} from saved resources" title="Remove from saved resources">${bookmarkIcon()}</button>
+                  <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
+                </span>
+	            </div>
+	              `).join('') : empty('No library items yet', 'Browse the catalog to add resources to this account.')}
+	            </div>
+              <div id="resourceCompareOutput"></div>
+	        </section>
+
+        <section id="submissions" class="oc-workspace-card">
+          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+            <div>
+              <h3 class="h5 fw-bold mb-1">Resource submissions</h3>
+              <p class="text-muted mb-0 small">${pendingCount} pending review · ${addedCount} added to the catalog</p>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
+          </div>
+          <div class="vstack gap-2">
+            ${suggestions.length ? suggestions.map(row => `
+              <div class="oc-account-row">
+                <span>
+                  <span class="oc-account-type">${esc(typeLabel(row.resource_type))}</span>
+                  <strong>${esc(row.title)}</strong>
+                  <span class="oc-account-meta">${row.created_at ? `Submitted ${formatDate(row.created_at)}` : 'Submitted resource'}${row.reviewed_at ? ` · Reviewed ${formatDate(row.reviewed_at)}` : ''}</span>
+                  ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
+                </span>
+                <span class="oc-account-actions">
+                  <span class="${statusClass(row.status)}">${esc(statusLabel(row.status))}</span>
+                  ${row.url ? `<a class="btn btn-outline-secondary btn-sm" href="${esc(row.url)}" target="_blank" rel="noopener">Source</a>` : ''}
+                </span>
+              </div>
+            `).join('') : empty('No submissions yet', 'Suggest a dataset, model, workflow, or OER for review.')}
+          </div>
+        </section>
+      </section>
+    `;
+
+    document.getElementById('signOutBtn')?.addEventListener('click', async () => {
+      try {
+        await window.OCAuth.signOut();
+      } finally {
+        renderSignedOut();
+      }
+    });
+    bindSuggestionForm(user);
+    bindProfileForm(user);
+    bindResourceTools(recentBookmarks);
+    bindBadgeCertificates(publicBadges, name);
+
+  } catch (err) {
+    root.className = '';
+    root.innerHTML = `<div class="alert alert-danger">Could not load your account: ${esc(err.message || err)}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

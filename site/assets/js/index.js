@@ -699,6 +699,7 @@ function renderGrid(){
   const grid=document.getElementById('datasetGrid'), count=document.getElementById('resultCount');
   if (count) count.textContent = LIST.length;
   if (grid) grid.innerHTML = LIST.map(ds=>cardHTML(ds)).join('');
+  if (grid) window.OCBookmark?.mount(grid);
 }
 
 // ---------- card UI (uniform thumbnails) ----------
@@ -718,11 +719,11 @@ function cardHTML(ds){
              onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
         ${submittedByHTML}
       </div>
-      <div class="card-body d-flex flex-column">
-        <div class="d-flex justify-content-between align-items-start">
-          <h6 class="card-title me-2"><a class="text-decoration-none text-dark" href="${detailHref}">${displayTitle}</a></h6>
-          <span class="badge text-bg-light">${ds.year ?? '—'}</span>
-        </div>
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <h6 class="card-title me-2"><a class="text-decoration-none text-dark" href="${detailHref}">${displayTitle}</a></h6>
+            <span class="badge text-bg-light">${ds.year ?? '—'}</span>
+          </div>
         <div class="small text-muted mb-1">
           <span>${ds.data_modality_display || ds.data_modalities?.join(', ') || ds.data_modality || '—'}</span>
         </div>
@@ -730,7 +731,10 @@ function cardHTML(ds){
           ${datasetCountSummary(ds)} · Classes <strong>${formatInt(ds.num_classes)}</strong>
         </div>
         <div class="mt-auto d-flex justify-content-between align-items-center">
-          <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
+          <div class="d-flex align-items-center gap-2">
+            <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
+            ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'dataset', id, title: displayTitle, url: detailHref }) : ''}
+          </div>
           ${ds.added_date ? `<span class="badge text-bg-light ms-auto fw-normal">Added ${ds.added_date}</span>` : ''}
         </div>
       </div>

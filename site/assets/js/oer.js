@@ -320,11 +320,14 @@
               </div>
 
               <div class="flex-grow-1">
-                <h3 class="h6 title mb-1">
-                  <a href="${href}" class="text-decoration-none text-dark">
-                    ${esc(r.title)}
-                  </a>
-                </h3>
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                  <h3 class="h6 title mb-1">
+                    <a href="${href}" class="text-decoration-none text-dark">
+                      ${esc(r.title)}
+                    </a>
+                  </h3>
+                  ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'oer', id: r.id || r.title, title: r.title, url: href }) : ''}
+                </div>
                 <div class="meta mb-2">
                   ${providerLine ? `${esc(providerLine)}` : ''}${year ? ` • ${esc(year)}` : ''}${licHTML ? ` · ${licHTML}` : ''}
                 </div>
@@ -342,6 +345,7 @@
         </div>
       `);
     });
+    window.OCBookmark?.mount(els.grid);
   }
 
   // ---------- filtering / sorting ----------
