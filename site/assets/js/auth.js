@@ -16,6 +16,7 @@
   let client = null;
   let currentUser = null;
   let bookmarkCache = null;
+  let roleCache = null;
 
   function ensureAuthStyles(){
     if (document.getElementById('oc-auth-runtime-style')) return;
@@ -123,6 +124,30 @@
     return value;
   }
 
+  function roleHomeHref(roles = []){
+    const roleSet = new Set(roles);
+    return roleSet.has('admin') || roleSet.has('reviewer')
+      ? relHref('maintainer.html')
+      : relHref('account.html');
+  }
+
+  async function resolvePostSignInHref(preferredHref = ''){
+    const fallback = relHref('account.html');
+    let href = preferredHref || fallback;
+    let target;
+    try {
+      target = new URL(href, window.location.href);
+    } catch {
+      href = fallback;
+      target = new URL(fallback, window.location.href);
+    }
+    const path = target.pathname || '';
+    const shouldUseRoleHome = /\/account\.html$/.test(path) || /\/auth\/(sign-in|callback)\.html$/.test(path);
+    if (!shouldUseRoleHome) return href;
+    const roles = await getRoles().catch(() => []);
+    return roleHomeHref(roles);
+  }
+
   function clearAuthStorage(){
     [localStorage, sessionStorage].forEach(storage => {
       try {
@@ -185,7 +210,7 @@
     const meta = user.user_metadata || {};
     const { data: existing } = await sb
       .from('profiles')
-      .select('*')
+      .select('display_name,github_username,affiliation')
       .eq('user_id', user.id)
       .maybeSingle();
     const profile = {
@@ -233,16 +258,46 @@
     return currentUser;
   }
 
-  async function isMaintainer(){
+  async function getRoles(){
     const sb = getClient();
     const user = currentUser || await getUser();
-    if (!sb || !user) return false;
-    const { data, error } = await sb.rpc('is_maintainer');
-    if (error) {
-      console.warn('Maintainer check failed', error);
-      return false;
+    if (!sb || !user) return [];
+    if (roleCache) return roleCache;
+
+    const roles = new Set(['user']);
+    const { data, error } = await sb.rpc('current_role_summary');
+    if (!error) {
+      (data || []).forEach(row => {
+        const role = typeof row === 'string' ? row : row?.role;
+        if (role) roles.add(role);
+      });
+    } else {
+      console.warn('Role summary failed', error);
+      const fallback = await sb.rpc('is_maintainer').catch(err => ({ error: err }));
+      if (!fallback.error && fallback.data) roles.add('admin');
     }
-    return Boolean(data);
+
+    if (roles.has('admin')) roles.add('reviewer');
+    roleCache = Array.from(roles);
+    return roleCache;
+  }
+
+  async function hasRole(role){
+    const roles = await getRoles();
+    if (role === 'reviewer') return roles.includes('reviewer') || roles.includes('admin');
+    return roles.includes(role);
+  }
+
+  async function isAdmin(){
+    return hasRole('admin');
+  }
+
+  async function isReviewer(){
+    return hasRole('reviewer');
+  }
+
+  async function isMaintainer(){
+    return isAdmin();
   }
 
   async function signInWithProvider(provider){
@@ -284,6 +339,7 @@
     }
     currentUser = null;
     bookmarkCache = null;
+    roleCache = null;
     clearAuthStorage();
     updateAuthNav(null);
     refreshBookmarkButtons();
@@ -533,11 +589,13 @@
         window.location.replace(relHref('auth/sign-in.html'));
       }
     });
-    isMaintainer().then(allowed => {
-      if (!allowed) return;
+    getRoles().then(roles => {
+      const isAdminUser = roles.includes('admin');
+      const isReviewerUser = roles.includes('reviewer') || isAdminUser;
+      if (!isReviewerUser) return;
       const signOutButton = li.querySelector('[data-oc-signout]');
       if (!signOutButton || li.querySelector('[data-oc-maintainer-link]')) return;
-      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">Maintainer</a>`);
+      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">${isAdminUser ? 'Admin console' : 'Review queue'}</a>`);
     });
   }
 
@@ -553,6 +611,7 @@
     sb?.auth.onAuthStateChange((_event, session) => {
       currentUser = session?.user || null;
       bookmarkCache = null;
+      roleCache = null;
       if (currentUser) upsertProfile(currentUser).catch(err => console.warn('Profile sync failed', err));
       updateAuthNav(currentUser);
       refreshBookmarkButtons().catch(() => {});
@@ -569,7 +628,13 @@
     signOut,
     handleCallback,
     upsertProfile,
+    getRoles,
+    hasRole,
+    isAdmin,
+    isReviewer,
     isMaintainer,
+    roleHomeHref,
+    resolvePostSignInHref,
     listBookmarks,
     syncLocalBookmarks,
     takeReturnTo,

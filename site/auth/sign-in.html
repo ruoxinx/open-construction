@@ -72,7 +72,7 @@
     <div class="oc-auth-intro">
       <p class="oc-auth-kicker mb-2">OpenConstruction Workspace</p>
       <h1 class="oc-auth-title mb-3">Access your OpenConstruction library.</h1>
-      <p class="oc-auth-lede mb-0">Sign in to save resources, suggest additions, and manage your workspace.</p>
+      <p class="oc-auth-lede mb-0">Sign in to save resources, submit catalog additions, and manage your workspace.</p>
 
       <div class="oc-auth-preview" aria-label="Workspace features">
         <div class="oc-auth-preview-item">
@@ -80,8 +80,8 @@
           <div class="oc-auth-preview-value">Saved resources</div>
         </div>
         <div class="oc-auth-preview-item">
-          <div class="oc-auth-preview-label">Submissions</div>
-          <div class="oc-auth-preview-value">Resource suggestions</div>
+          <div class="oc-auth-preview-label">Contribute</div>
+          <div class="oc-auth-preview-value">Resource submissions</div>
         </div>
         <div class="oc-auth-preview-item">
           <div class="oc-auth-preview-label">Profile</div>
@@ -91,6 +91,7 @@
 
       <ul class="oc-auth-note-list">
         <li>OpenConstruction does not manage passwords.</li>
+        <li>Reviewer and admin access appears automatically after an admin grants it.</li>
       </ul>
     </div>
 
@@ -98,7 +99,8 @@
       <p class="oc-workspace-kicker mb-2">No password required</p>
       <h2 id="signin-title" class="h4 fw-bold mb-3">Sign in to your account</h2>
       <div id="signedInNotice" class="alert alert-success d-none" role="status">
-        You are already signed in. Opening your account...
+        You are already signed in. Opening <span id="signedInDestinationLabel">your workspace</span>...
+        <a id="signedInDestinationLink" class="alert-link" href="../account.html">Open now</a>
       </div>
       <div class="d-grid gap-2">
         <button type="button" class="btn btn-dark oc-auth-provider" data-provider="github">
@@ -138,7 +140,7 @@
       </form>
       <hr>
       <div class="small text-muted">
-        Provider identity and session security are handled by Supabase Auth and the selected identity provider.
+        Provider identity and session security are handled by the selected identity provider.
       </div>
       <div id="authError" class="alert alert-danger mt-3 mb-0 d-none" role="alert"></div>
     </section>
@@ -192,11 +194,23 @@
 <script>
   document.getElementById('yearNow').textContent = new Date().getFullYear();
 
-  window.OCAuth.getUser().then((user) => {
+  window.OCAuth.getUser().then(async (user) => {
     if (!user) return;
-    document.getElementById('signedInNotice')?.classList.remove('d-none');
+    const roles = await window.OCAuth.getRoles?.().catch(() => []) || [];
+    const target = await window.OCAuth.resolvePostSignInHref('../account.html');
+    const destinationLabel = roles.includes('admin')
+      ? 'your admin console'
+      : roles.includes('reviewer')
+        ? 'your review queue'
+        : 'your workspace';
+    const notice = document.getElementById('signedInNotice');
+    const label = document.getElementById('signedInDestinationLabel');
+    const link = document.getElementById('signedInDestinationLink');
+    if (label) label.textContent = destinationLabel;
+    if (link) link.href = target;
+    notice?.classList.remove('d-none');
     window.setTimeout(() => {
-      window.location.replace('../account.html');
+      window.location.replace(target);
     }, 450);
   }).catch(() => {});
 

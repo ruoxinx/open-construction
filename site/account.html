@@ -200,8 +200,16 @@
           <legend>Submission agreement</legend>
           <div class="vstack gap-2">
             <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_contact_current" required>
+              <span class="form-check-label">I confirm the contact information is current.</span>
+            </label>
+            <label class="form-check oc-resource-check">
               <input class="form-check-input" type="checkbox" name="agreement_metadata_accurate" required>
               <span class="form-check-label">I confirm the metadata is accurate to the best of my knowledge.</span>
+            </label>
+            <label class="form-check oc-resource-check">
+              <input class="form-check-input" type="checkbox" name="agreement_license_accurate" required>
+              <span class="form-check-label">I confirm the license information is accurate.</span>
             </label>
             <label class="form-check oc-resource-check">
               <input class="form-check-input" type="checkbox" name="agreement_no_sensitive_info" required>
@@ -261,13 +269,20 @@
   function statusLabel(status){
     return {
       pending: 'Pending review',
+      in_review: 'In review',
+      needs_changes: 'Needs changes',
+      approved: 'Approved',
       added: 'Added',
-      declined: 'Declined'
+      declined: 'Declined',
+      request_pending: 'Pending',
+      request_approved: 'Approved',
+      request_declined: 'Declined'
     }[status] || 'Pending review';
   }
 
   function statusClass(status){
-    return `oc-status-pill oc-status-${esc(status || 'pending')}`;
+    const cleanStatus = String(status || 'pending').replace(/^request_/, '');
+    return `oc-status-pill oc-status-${esc(cleanStatus)}`;
   }
 
   function downloadFile(filename, content, type){
@@ -943,7 +958,7 @@
       let { error } = await sb.from('profiles').upsert(profilePayload, { onConflict: 'user_id' });
       if (error && (String(error.message || '').includes("'affiliation' column") || String(error.message || '').includes('schema cache'))) {
         const fallbackPayload = { ...profilePayload };
-        delete fallbackPayload.affiliation;
+        if (String(error.message || '').includes("'affiliation' column") || String(error.message || '').includes('schema cache')) delete fallbackPayload.affiliation;
         const fallback = await sb.from('profiles').upsert(fallbackPayload, { onConflict: 'user_id' });
         error = fallback.error;
         if (!error) {
@@ -979,10 +994,12 @@
     }
 
     await window.OCAuth.syncLocalBookmarks();
-    const maintainer = await window.OCAuth.isMaintainer?.().catch(() => false);
+    const roles = new Set(await window.OCAuth.getRoles?.().catch(() => ['user']) || ['user']);
+    const isAdmin = roles.has('admin');
+    const canReview = roles.has('reviewer') || isAdmin;
     const [bookmarks, profileRes, badgesRes, suggestionsRes] = await Promise.all([
       window.OCBookmark.list(),
-      sb.from('profiles').select('*').eq('user_id', user.id).maybeSingle(),
+      sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
       sb.from('resource_suggestions').select('id,resource_type,title,doi,url,license,description,status,maintainer_note,created_at,reviewed_at').eq('user_id', user.id).order('created_at', { ascending: false })
     ]);
@@ -999,6 +1016,7 @@
     const name = profile.display_name && !genericNames.has(String(profile.display_name).trim().toLowerCase())
       ? profile.display_name
       : fallbackName;
+    const accountEmail = user.email || '';
     const affiliation = profile.affiliation || window.OCAuth.affiliation?.(user) || '';
     const savedByType = bookmarks.reduce((acc, row) => {
       const key = row.type || 'resource';
@@ -1007,8 +1025,28 @@
     }, {});
     const recentBookmarks = bookmarks;
     const publicBadges = badges.filter(row => row.public !== false);
-    const pendingCount = suggestions.filter(row => row.status === 'pending').length;
+    const pendingCount = suggestions.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'needs_changes').length;
     const addedCount = suggestions.filter(row => row.status === 'added').length;
+    const hasContributorBadge = publicBadges.some(row => [
+      'dataset_contributor',
+      'model_contributor',
+      'oer_contributor',
+      'workflow_contributor'
+    ].includes(row.badge_key));
+    if (hasContributorBadge || addedCount > 0) roles.add('contributor');
+    if (roles.has('admin')) roles.add('reviewer');
+    const roleLabels = {
+      user: 'User',
+      contributor: 'Contributor',
+      reviewer: 'Reviewer',
+      admin: 'Admin'
+    };
+    const roleOrder = ['admin', 'reviewer', 'contributor', 'user'];
+    const shownRoles = roleOrder.filter(role => roles.has(role));
+    const roleBadgesHtml = shownRoles
+      .filter(role => role !== 'user')
+      .map(role => `<span class="oc-status-pill oc-status-role">${esc(roleLabels[role] || role)}</span>`)
+      .join('');
 
     function badgeIcon(){
       return `
@@ -1028,12 +1066,14 @@
             <div>
               <p class="oc-workspace-kicker mb-1">Workspace</p>
               <h1 class="h4 fw-bold mb-1">${esc(name)}</h1>
+              ${accountEmail ? `<div class="text-muted small">${esc(accountEmail)}</div>` : ''}
               <div class="text-muted small">${affiliation ? esc(affiliation) : 'OpenConstruction member'}</div>
+              ${roleBadgesHtml ? `<div class="d-flex gap-2 flex-wrap mt-2">${roleBadgesHtml}</div>` : ''}
             </div>
           </div>
           <div class="d-grid gap-2">
             <a class="btn btn-primary btn-sm" href="dataset.html">Explore catalog</a>
-            ${maintainer ? '<a class="btn btn-outline-primary btn-sm" href="maintainer.html">Maintainer dashboard</a>' : ''}
+            ${canReview ? `<a class="btn btn-outline-primary btn-sm" href="maintainer.html">${isAdmin ? 'Admin console' : 'Review queue'}</a>` : ''}
             <button type="button" id="signOutBtn" class="btn btn-outline-secondary btn-sm">Sign out</button>
           </div>
         </section>

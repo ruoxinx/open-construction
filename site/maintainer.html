@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maintainer · OpenConstruction</title>
-  <meta name="description" content="OpenConstruction maintainer dashboard for badge management.">
+  <title>Review & Admin · OpenConstruction</title>
+  <meta name="description" content="OpenConstruction reviewer and admin dashboard for submissions, roles, and badges.">
   <meta name="robots" content="noindex">
   <link rel="canonical" href="https://www.openconstruction.org/maintainer.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
   <link href="assets/css/shared-site.css" rel="stylesheet">
 </head>
 <body>
-<a class="skip-link" href="#mainContent">Skip to maintainer tools</a>
+<a class="skip-link" href="#mainContent">Skip to review and admin tools</a>
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
@@ -41,6 +41,15 @@
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddDocs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddDocs">
+            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
+            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
+            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
+            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+          </ul>
+        </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
         <li class="nav-item"><a class="nav-link plain" href="contributors.html">Community</a></li>
         <li class="nav-item">
@@ -119,6 +128,11 @@
   let suggestions = [];
   let selectedUserId = '';
   let currentMaintainerId = '';
+  let userRoles = [];
+  let canAdmin = false;
+  let currentUserId = '';
+  let profileRoleFilter = 'all';
+  let suggestionStatusFilter = 'active';
 
   const badgeDefaults = {
     dataset_contributor: ['Dataset Contributor', 'Verified OpenConstruction platform contribution.'],
@@ -126,6 +140,7 @@
     oer_contributor: ['OER Contributor', 'Verified OpenConstruction platform contribution.'],
     workflow_contributor: ['Workflow Contributor', 'Verified OpenConstruction platform contribution.'],
     reviewer: ['Reviewer', 'Reviewed OpenConstruction catalog or platform contributions.'],
+    admin: ['Admin', 'Provides administrative stewardship for OpenConstruction users, roles, and credentials.'],
     steward: ['Steward', 'Provides ongoing governance, review, or resource stewardship for OpenConstruction.']
   };
   const contributorBadgeByType = {
@@ -147,12 +162,47 @@
     return badges.filter(row => row.user_id === userId);
   }
 
+  function rolesFor(userId){
+    return userRoles.filter(row => row.user_id === userId).map(row => row.role);
+  }
+
+  function reviewerProfiles(){
+    return profiles.filter(profile => {
+      const roles = rolesFor(profile.user_id);
+      return roles.includes('reviewer') || roles.includes('admin');
+    });
+  }
+
+  function accountStatusLabels(userId){
+    const labels = ['User'];
+    const userBadgeKeys = new Set(badgesFor(userId).map(row => row.badge_key));
+    const userRoles = rolesFor(userId);
+    const hasAcceptedSubmission = suggestions.some(row => row.user_id === userId && row.status === 'added');
+    if (hasAcceptedSubmission || ['dataset_contributor', 'model_contributor', 'oer_contributor', 'workflow_contributor'].some(key => userBadgeKeys.has(key))) {
+      labels.push('Contributor');
+    }
+    if (userRoles.includes('reviewer') || userRoles.includes('admin')) labels.push('Reviewer');
+    if (userRoles.includes('admin')) labels.push('Admin');
+    return labels;
+  }
+
+  function roleOverviewCounts(){
+    return profiles.reduce((acc, profile) => {
+      const labels = accountStatusLabels(profile.user_id);
+      acc.users += 1;
+      if (labels.includes('Contributor')) acc.contributors += 1;
+      if (labels.includes('Reviewer')) acc.reviewers += 1;
+      if (labels.includes('Admin')) acc.admins += 1;
+      return acc;
+    }, { users: 0, contributors: 0, reviewers: 0, admins: 0 });
+  }
+
   function renderSignedOut(){
     root.className = 'oc-auth-card';
     root.innerHTML = `
-      <p class="oc-auth-kicker mb-2">Maintainer</p>
+      <p class="oc-auth-kicker mb-2">Review & admin</p>
       <h1 class="h3 fw-bold mb-2">Sign in required</h1>
-      <p class="text-muted">Use a maintainer-approved GitHub or Google account.</p>
+      <p class="text-muted">Use an account with reviewer or admin access.</p>
       <div class="d-flex gap-2 flex-wrap">
         <button type="button" class="btn btn-dark" data-provider="github">Continue with GitHub</button>
         <button type="button" class="btn btn-outline-primary" data-provider="google">Continue with Google</button>
@@ -179,47 +229,115 @@
   function renderDenied(user){
     root.className = 'oc-auth-card';
     root.innerHTML = `
-      <p class="oc-auth-kicker mb-2">Maintainer</p>
-      <h1 class="h3 fw-bold mb-2">No maintainer access</h1>
-      <p class="text-muted">You are signed in as ${esc(user.email || 'this account')}, but this account is not listed in <code>public.maintainers</code>.</p>
-      <a class="btn btn-outline-secondary" href="account.html">Back to account</a>
+      <p class="oc-auth-kicker mb-2">Review & admin</p>
+      <h1 class="h3 fw-bold mb-2">No review access</h1>
+      <p class="text-muted">You are signed in as ${esc(user.email || 'this account')}, but this account does not have reviewer or admin access.</p>
+      <p class="text-muted small">Ask an admin to grant reviewer or admin access.</p>
+      <a class="btn btn-primary" href="account.html">Back to account</a>
     `;
   }
 
   function renderDashboard(){
+    if (!canAdmin) {
+      root.className = '';
+      root.innerHTML = `
+        <section class="oc-workspace-card oc-maintainer-suggestions">
+          ${renderSuggestions()}
+        </section>
+      `;
+      bindSuggestionActions();
+      return;
+    }
+
     const selected = profiles.find(row => row.user_id === selectedUserId) || profiles[0] || null;
     selectedUserId = selected?.user_id || '';
+    const overview = roleOverviewCounts();
     root.className = 'oc-maintainer-grid';
     root.innerHTML = `
-      <aside class="oc-workspace-card">
-        <p class="oc-auth-kicker mb-2">Maintainer</p>
-        <h1 class="h4 fw-bold mb-3">Badge manager</h1>
+      <aside class="oc-workspace-card oc-maintainer-sidebar">
+        <div class="oc-maintainer-sidebar-head">
+          <p class="oc-auth-kicker mb-2">Admin</p>
+          <h1 class="h4 fw-bold mb-0">People</h1>
+        </div>
+        <div class="oc-account-stat-grid oc-maintainer-stat-grid mb-3" aria-label="Role overview">
+          <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.users}</div>
+            <div class="oc-account-stat-label">Users</div>
+          </div>
+          <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.contributors}</div>
+            <div class="oc-account-stat-label">Contributors</div>
+          </div>
+          <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.reviewers}</div>
+            <div class="oc-account-stat-label">Reviewers</div>
+          </div>
+          <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.admins}</div>
+            <div class="oc-account-stat-label">Admins</div>
+          </div>
+        </div>
+        <div class="oc-role-filter mb-3" aria-label="Filter people by role">
+          ${[
+            ['all', 'All'],
+            ['user', 'Users'],
+            ['contributor', 'Contributors'],
+            ['reviewer', 'Reviewers'],
+            ['admin', 'Admins']
+          ].map(([value, label]) => `
+            <button type="button" class="btn btn-sm ${profileRoleFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-role-filter="${value}">${label}</button>
+          `).join('')}
+        </div>
         <input id="userSearch" class="form-control mb-3" type="search" placeholder="Search users" aria-label="Search users">
         <div id="profileList" class="oc-maintainer-list"></div>
       </aside>
-      <section class="oc-workspace-card">
-        ${selected ? renderBadgeEditor(selected) : statusBox('No signed-in users yet.', 'secondary')}
-      </section>
-      <section class="oc-workspace-card oc-maintainer-suggestions">
-        ${renderSuggestions()}
+      <section class="oc-maintainer-main">
+        <div class="oc-maintainer-header">
+          <div>
+            <p class="oc-auth-kicker mb-2">Admin console</p>
+            <h2 class="h3 fw-bold mb-1">Role, badge, and review management</h2>
+            <p class="text-muted mb-0">Select an account to manage permissions and badges, then allocate resource reviews below.</p>
+          </div>
+          <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+        </div>
+        <section class="oc-workspace-card oc-maintainer-account-panel">
+          ${selected ? renderAccountManagement(selected) : statusBox('No signed-in users yet.', 'secondary')}
+        </section>
+        <section class="oc-workspace-card oc-maintainer-suggestions oc-maintainer-queue-panel">
+          ${renderSuggestions()}
+        </section>
       </section>
     `;
     renderProfileList('');
     document.getElementById('userSearch')?.addEventListener('input', event => renderProfileList(event.target.value));
+    document.querySelectorAll('[data-role-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        profileRoleFilter = button.dataset.roleFilter || 'all';
+        renderDashboard();
+      });
+    });
     bindBadgeForm();
+    bindRoleForm();
     bindSuggestionActions();
+  }
+
+  function matchesRoleFilter(profile){
+    if (profileRoleFilter === 'all') return true;
+    const labels = accountStatusLabels(profile.user_id).map(label => label.toLowerCase());
+    return labels.includes(profileRoleFilter);
   }
 
   function renderProfileList(query){
     const q = String(query || '').trim().toLowerCase();
     const rows = profiles.filter(profile => {
-      const haystack = [profile.display_name, profile.github_username, profile.user_id].join(' ').toLowerCase();
-      return !q || haystack.includes(q);
+      const haystack = [profile.display_name, profile.github_username, profile.affiliation, profile.user_id].join(' ').toLowerCase();
+      return matchesRoleFilter(profile) && (!q || haystack.includes(q));
     });
     document.getElementById('profileList').innerHTML = rows.map(profile => `
       <button type="button" class="oc-maintainer-user ${profile.user_id === selectedUserId ? 'active' : ''}" data-user-id="${esc(profile.user_id)}">
         <strong>${esc(userLabel(profile))}</strong>
-        <span>${esc(profile.github_username ? `@${profile.github_username}` : profile.user_id)}</span>
+        <span>${esc([profile.github_username ? `@${profile.github_username}` : profile.user_id, profile.affiliation].filter(Boolean).join(' · '))}</span>
+        <span>${esc(rolesFor(profile.user_id).map(role => role.replace(/^\w/, c => c.toUpperCase())).join(' · ') || 'User')}</span>
       </button>
     `).join('') || '<div class="text-muted small">No matching users.</div>';
     document.querySelectorAll('[data-user-id]').forEach(button => {
@@ -230,16 +348,89 @@
     });
   }
 
-  function renderBadgeEditor(profile){
-    const userBadges = badgesFor(profile.user_id);
+  function renderSelectedAccountHeader(profile){
+    const accountStatus = accountStatusLabels(profile.user_id);
     return `
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
-          <p class="oc-auth-kicker mb-2">Selected user</p>
+          <p class="oc-auth-kicker mb-2">Selected account</p>
           <h2 class="h4 fw-bold mb-1">${esc(userLabel(profile))}</h2>
-          <div class="text-muted small">${esc(profile.github_username ? `@${profile.github_username}` : profile.user_id)}</div>
+          <div class="text-muted small oc-account-id">${esc(profile.github_username ? `@${profile.github_username}` : profile.user_id)}</div>
+          ${profile.affiliation ? `<div class="text-muted small">${esc(profile.affiliation)}</div>` : ''}
+          <div class="d-flex gap-2 flex-wrap mt-2">
+            ${accountStatus.map(label => `<span class="oc-status-pill oc-status-role">${esc(label)}</span>`).join('')}
+          </div>
         </div>
-        <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+    `;
+  }
+
+  function renderAccountManagement(profile){
+    return `
+      ${renderSelectedAccountHeader(profile)}
+      <div class="oc-maintainer-management-grid">
+        <section class="oc-maintainer-management-section">
+          ${renderPermissionEditor(profile)}
+        </section>
+        <section class="oc-maintainer-management-section">
+          ${renderBadgeAllocation(profile)}
+        </section>
+      </div>
+    `;
+  }
+
+  function renderPermissionEditor(profile){
+    const selectedRoles = rolesFor(profile.user_id);
+    const removableRoles = selectedRoles.filter(role => role === 'reviewer' || role === 'admin');
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3 oc-section-heading">
+        <div>
+          <p class="oc-auth-kicker mb-2">People & permissions</p>
+          <h3 class="h5 fw-bold mb-1">Role allocation</h3>
+          <p class="text-muted small mb-0">Grant or remove reviewer/admin permissions for the selected account.</p>
+        </div>
+      </div>
+
+      <form id="roleForm" class="oc-maintainer-form mb-0">
+        <input type="hidden" name="user_id" value="${esc(profile.user_id)}">
+        <div class="oc-maintainer-form-wide">
+          <h4 class="h6 fw-bold mb-2">Permissions</h4>
+          <div class="d-flex gap-3 flex-wrap">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" name="reviewer" ${selectedRoles.includes('reviewer') ? 'checked' : ''}>
+              <span class="form-check-label">Reviewer</span>
+            </label>
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" name="admin" ${selectedRoles.includes('admin') ? 'checked' : ''}>
+              <span class="form-check-label">Admin</span>
+            </label>
+          </div>
+          ${removableRoles.length ? `
+            <div class="d-flex gap-2 flex-wrap mt-3">
+              ${removableRoles.map(role => {
+                const locked = profile.user_id === currentMaintainerId && role === 'admin';
+                return `<button type="button" class="btn btn-outline-danger btn-sm" data-remove-role="${esc(role)}" ${locked ? 'disabled title="You cannot remove admin access from your own active session."' : ''}>Remove ${esc(role.replace(/^\w/, c => c.toUpperCase()))}</button>`;
+              }).join('')}
+            </div>
+          ` : ''}
+          ${profile.user_id === currentMaintainerId && selectedRoles.includes('admin') ? '<p class="small text-muted mb-0 mt-2">You cannot remove admin access from your own active session here.</p>' : ''}
+          <p class="small text-muted mb-0 mt-2">Reviewer access makes this account available for resource queue assignment.</p>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Save permissions</button>
+        <div id="roleStatus" class="small text-muted" role="status"></div>
+      </form>
+    `;
+  }
+
+  function renderBadgeAllocation(profile){
+    const userBadges = badgesFor(profile.user_id);
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3 oc-section-heading">
+        <div>
+          <p class="oc-auth-kicker mb-2">Badge allocation</p>
+          <h3 class="h5 fw-bold mb-1">Badges</h3>
+          <p class="text-muted small mb-0">Award contribution, reviewer, admin, steward, or custom badges.</p>
+        </div>
       </div>
 
       <form id="badgeForm" class="oc-maintainer-form mb-4">
@@ -252,12 +443,19 @@
             <option value="oer_contributor">OER Contributor</option>
             <option value="workflow_contributor">Workflow Contributor</option>
             <option value="reviewer">Reviewer</option>
+            <option value="admin">Admin</option>
             <option value="steward">Steward</option>
+            <option value="custom">Custom badge...</option>
           </select>
         </div>
         <div>
           <label class="form-label small fw-bold" for="badgeLabel">Label</label>
           <input id="badgeLabel" name="badge_label" class="form-control" value="Dataset Contributor" required>
+        </div>
+        <div id="customBadgeKeyWrap" class="oc-maintainer-form-wide d-none">
+          <label class="form-label small fw-bold" for="customBadgeKey">Custom badge key</label>
+          <input id="customBadgeKey" name="custom_badge_key" class="form-control" placeholder="community_curator">
+          <p class="small text-muted mb-0 mt-1">Use lowercase letters, numbers, and underscores. The key identifies this badge for updates and certificates.</p>
         </div>
         <div class="oc-maintainer-form-wide">
           <label class="form-label small fw-bold" for="badgeDescription">Description</label>
@@ -290,40 +488,81 @@
     return profiles.find(profile => profile.user_id === row.user_id) || { user_id: row.user_id };
   }
 
+  function assignedReviewer(row){
+    return profiles.find(profile => profile.user_id === row.assigned_reviewer_id) || null;
+  }
+
   function renderSuggestions(){
-    const pending = suggestions.filter(row => row.status === 'pending');
-    const recent = suggestions.filter(row => row.status !== 'pending').slice(0, 6);
+    const visibleSuggestions = canAdmin
+      ? suggestions
+      : suggestions.filter(row => row.assigned_reviewer_id === currentUserId);
+    const pending = visibleSuggestions.filter(row => row.status === 'pending');
+    const inReview = visibleSuggestions.filter(row => row.status === 'in_review' || row.status === 'needs_changes' || row.status === 'approved');
+    const active = pending.concat(inReview);
+    const completed = visibleSuggestions.filter(row => row.status === 'added' || row.status === 'declined');
+    const queue = suggestionStatusFilter === 'active'
+      ? active
+      : suggestionStatusFilter === 'completed'
+        ? completed
+        : visibleSuggestions.filter(row => row.status === suggestionStatusFilter);
+    const recent = completed.slice(0, 6);
+    const reviewers = reviewerProfiles();
+    const filterOptions = [
+      ['active', 'Active', active.length],
+      ['pending', 'Pending', pending.length],
+      ['in_review', 'In review', visibleSuggestions.filter(row => row.status === 'in_review').length],
+      ['needs_changes', 'Needs changes', visibleSuggestions.filter(row => row.status === 'needs_changes').length],
+      ['approved', 'Approved', visibleSuggestions.filter(row => row.status === 'approved').length],
+      ['completed', 'Completed', completed.length]
+    ];
     return `
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
-          <p class="oc-auth-kicker mb-2">Resource queue</p>
-          <h2 class="h5 fw-bold mb-1">${pending.length} pending</h2>
+          <p class="oc-auth-kicker mb-2">${canAdmin ? 'Resource queue' : 'Review queue'}</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'active' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} pending · ${inReview.length} in review</p>
         </div>
         <button type="button" id="refreshSuggestionsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
       </div>
+      <div class="oc-role-filter mb-3" aria-label="Filter submissions by status">
+        ${filterOptions.map(([value, label, count]) => `
+          <button type="button" class="btn btn-sm ${suggestionStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-suggestion-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
+        `).join('')}
+      </div>
       <div class="vstack gap-2">
-        ${pending.length ? pending.map(row => {
+        ${queue.length ? queue.map(row => {
           const profile = suggestionUser(row);
+          const reviewer = assignedReviewer(row);
           return `
             <div class="oc-account-row">
               <span>
-                <span class="oc-account-type">${esc(row.resource_type)}</span>
+                <span class="oc-account-type">${esc(row.resource_type)} · ${esc(row.status.replace(/_/g, ' '))}</span>
                 <strong>${esc(row.title)}</strong>
                 <span class="oc-account-meta">${esc(row.submitter_name || userLabel(profile))}${row.submitter_email ? ` · ${esc(row.submitter_email)}` : ''}${row.submitter_affiliation ? ` · ${esc(row.submitter_affiliation)}` : ''}</span>
+                <span class="oc-account-meta">Reviewer: ${reviewer ? esc(userLabel(reviewer)) : 'Unassigned'}</span>
                 <span class="oc-account-meta">${row.doi ? `DOI ${esc(row.doi)} · ` : ''}${row.license ? `License ${esc(row.license)}` : 'License not provided'}</span>
                 ${row.url ? `<span class="oc-account-meta">${esc(row.url)}</span>` : ''}
                 ${row.authorship ? `<span class="oc-account-meta">${row.authorship === 'third_party' ? 'Third-party submission' : 'Author submission'}${row.permission_statement ? ` · ${esc(row.permission_statement)}` : ''}</span>` : ''}
                 ${row.description ? `<span class="oc-account-meta">${esc(row.description)}</span>` : ''}
               </span>
               <span class="d-flex gap-2 justify-content-end flex-wrap">
-                <button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Mark added</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Decline</button>
+                ${canAdmin ? `
+                  <select class="form-select form-select-sm oc-reviewer-assign" data-assign-reviewer="${esc(row.id)}" aria-label="Assign reviewer for ${esc(row.title)}">
+                    <option value="">Unassigned</option>
+                    ${reviewers.map(candidate => `<option value="${esc(candidate.user_id)}" ${candidate.user_id === row.assigned_reviewer_id ? 'selected' : ''}>${esc(userLabel(candidate))}${rolesFor(candidate.user_id).includes('admin') ? ' (admin)' : ''}</option>`).join('')}
+                  </select>
+                ` : ''}
+                ${row.status === 'pending' ? `<button type="button" class="btn btn-outline-primary btn-sm" data-review-suggestion="${esc(row.id)}">Start review</button>` : ''}
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Needs changes</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-approve-suggestion="${esc(row.id)}">Approve</button>
+                ${canAdmin ? `<button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Mark added</button>` : ''}
+                ${canAdmin ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Decline</button>` : ''}
               </span>
             </div>
           `;
-        }).join('') : '<div class="oc-workspace-empty"><strong>No pending suggestions</strong></div>'}
+        }).join('') : '<div class="oc-workspace-empty"><strong>No matching suggestions</strong></div>'}
       </div>
-      ${recent.length ? `
+      ${suggestionStatusFilter === 'active' && recent.length ? `
         <h3 class="h6 fw-bold mt-4 mb-2">Recently reviewed</h3>
         <div class="vstack gap-2">
           ${recent.map(row => `
@@ -344,18 +583,45 @@
     document.getElementById('refreshBtn')?.addEventListener('click', loadDashboard);
     const form = document.getElementById('badgeForm');
     const key = document.getElementById('badgeKey');
+    const customKeyWrap = document.getElementById('customBadgeKeyWrap');
+    const customKeyInput = document.getElementById('customBadgeKey');
+    const normalizeBadgeKey = value => String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '');
     key?.addEventListener('change', () => {
+      const custom = key.value === 'custom';
+      customKeyWrap?.classList.toggle('d-none', !custom);
+      customKeyInput.required = custom;
+      if (custom) {
+        form.elements.badge_label.value = '';
+        form.elements.badge_description.value = '';
+        customKeyInput.focus();
+        return;
+      }
       const [label, description] = badgeDefaults[key.value] || ['', ''];
       form.elements.badge_label.value = label;
       form.elements.badge_description.value = description;
     });
+    customKeyInput?.addEventListener('input', () => {
+      customKeyInput.value = normalizeBadgeKey(customKeyInput.value);
+    });
     form?.addEventListener('submit', async event => {
       event.preventDefault();
       const status = document.getElementById('badgeStatus');
+      const badgeKey = form.elements.badge_key.value === 'custom'
+        ? normalizeBadgeKey(form.elements.custom_badge_key.value)
+        : form.elements.badge_key.value;
+      if (!badgeKey) {
+        status.textContent = 'Add a custom badge key.';
+        form.elements.custom_badge_key.focus();
+        return;
+      }
       status.textContent = 'Saving...';
       const payload = {
         user_id: form.elements.user_id.value,
-        badge_key: form.elements.badge_key.value,
+        badge_key: badgeKey,
         badge_label: form.elements.badge_label.value.trim(),
         badge_description: form.elements.badge_description.value.trim() || null,
         public: true
@@ -395,28 +661,151 @@
     });
   }
 
+  function bindRoleForm(){
+    const form = document.getElementById('roleForm');
+    if (!form) return;
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('roleStatus');
+      const userId = form.elements.user_id.value;
+      const wanted = ['reviewer', 'admin'].filter(role => form.elements[role].checked);
+      const existing = rolesFor(userId);
+      const profile = profiles.find(row => row.user_id === userId) || { user_id: userId };
+      if (userId === currentMaintainerId && existing.includes('admin') && !wanted.includes('admin')) {
+        status.textContent = 'You cannot remove admin access from your own active session.';
+        form.elements.admin.checked = true;
+        return;
+      }
+      if (!existing.includes('admin') && wanted.includes('admin')) {
+        if (!window.confirm(`Grant admin access to ${userLabel(profile)}? Admins can manage users, roles, badges, and the resource queue.`)) {
+          form.elements.admin.checked = false;
+          return;
+        }
+      }
+      status.textContent = 'Saving...';
+
+      const { error } = await sb.rpc('set_user_roles', {
+        target_user_id: userId,
+        reviewer_enabled: wanted.includes('reviewer'),
+        admin_enabled: wanted.includes('admin')
+      });
+      if (error) {
+        status.textContent = error.message || 'Could not save permissions.';
+        return;
+      }
+      status.textContent = 'Permissions saved.';
+      await loadDashboard(false);
+    });
+    document.querySelectorAll('[data-remove-role]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const userId = form.elements.user_id.value;
+        const role = button.dataset.removeRole;
+        const profile = profiles.find(row => row.user_id === userId) || { user_id: userId };
+        if (userId === currentMaintainerId && role === 'admin') {
+          status.textContent = 'You cannot remove admin access from your own active session.';
+          return;
+        }
+        if (!window.confirm(`Remove ${role} permission from ${userLabel(profile)}?`)) return;
+        status.textContent = 'Removing...';
+        button.disabled = true;
+        const { error } = await sb.rpc('remove_user_role', {
+          target_user_id: userId,
+          role_name: role
+        });
+        if (error) {
+          status.textContent = error.message || 'Could not remove permission.';
+          button.disabled = false;
+          return;
+        }
+        status.textContent = 'Permission removed.';
+        await loadDashboard(false);
+      });
+    });
+  }
+
+  async function updateSuggestionStatus(suggestion, status, note = null){
+    const payload = {
+      status,
+      reviewed_by: currentUserId,
+      reviewed_at: new Date().toISOString()
+    };
+    if (note !== null) payload.maintainer_note = note;
+    return sb
+      .from('resource_suggestions')
+      .update(payload)
+      .eq('id', suggestion.id);
+  }
+
   function bindSuggestionActions(){
     document.getElementById('refreshSuggestionsBtn')?.addEventListener('click', () => loadDashboard(false));
+    document.querySelectorAll('[data-assign-reviewer]').forEach(select => {
+      select.addEventListener('change', async () => {
+        const suggestion = suggestions.find(row => row.id === select.dataset.assignReviewer);
+        if (!suggestion) return;
+        select.disabled = true;
+        const { error } = await sb
+          .from('resource_suggestions')
+          .update({ assigned_reviewer_id: select.value || null })
+          .eq('id', suggestion.id);
+        if (error) {
+          alert(error.message || 'Could not assign reviewer.');
+          select.disabled = false;
+          return;
+        }
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-suggestion-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        suggestionStatusFilter = button.dataset.suggestionFilter || 'active';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-review-suggestion]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.reviewSuggestion);
+        if (!suggestion) return;
+        button.disabled = true;
+        const { error } = await updateSuggestionStatus(suggestion, 'in_review');
+        if (error) alert(error.message || 'Could not update suggestion.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-needs-changes-suggestion]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.needsChangesSuggestion);
+        if (!suggestion) return;
+        const note = window.prompt('What should the submitter change?', suggestion.maintainer_note || '');
+        if (note === null) return;
+        button.disabled = true;
+        const { error } = await updateSuggestionStatus(suggestion, 'needs_changes', note.trim() || null);
+        if (error) alert(error.message || 'Could not update suggestion.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-approve-suggestion]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.approveSuggestion);
+        if (!suggestion) return;
+        button.disabled = true;
+        const { error } = await updateSuggestionStatus(suggestion, 'approved');
+        if (error) alert(error.message || 'Could not update suggestion.');
+        await loadDashboard(false);
+      });
+    });
     document.querySelectorAll('[data-add-suggestion]').forEach(button => {
       button.addEventListener('click', async () => {
         const suggestion = suggestions.find(row => row.id === button.dataset.addSuggestion);
         if (!suggestion) return;
         button.disabled = true;
         const [badgeKey, badgeLabel] = contributorBadgeByType[suggestion.resource_type] || [];
-        const { error: suggestionError } = await sb
-          .from('resource_suggestions')
-          .update({
-            status: 'added',
-            reviewed_by: currentMaintainerId,
-            reviewed_at: new Date().toISOString()
-          })
-          .eq('id', suggestion.id);
+        const { error: suggestionError } = await updateSuggestionStatus(suggestion, 'added');
         if (suggestionError) {
           alert(suggestionError.message || 'Could not update suggestion.');
           button.disabled = false;
           return;
         }
-        if (badgeKey) {
+        if (canAdmin && badgeKey) {
           const { error: badgeError } = await sb.from('user_badges').upsert({
             user_id: suggestion.user_id,
             badge_key: badgeKey,
@@ -433,14 +822,7 @@
       button.addEventListener('click', async () => {
         const suggestion = suggestions.find(row => row.id === button.dataset.declineSuggestion);
         if (!suggestion || !window.confirm(`Decline ${suggestion.title}?`)) return;
-        const { error } = await sb
-          .from('resource_suggestions')
-          .update({
-            status: 'declined',
-            reviewed_by: currentMaintainerId,
-            reviewed_at: new Date().toISOString()
-          })
-          .eq('id', suggestion.id);
+        const { error } = await updateSuggestionStatus(suggestion, 'declined');
         if (error) alert(error.message || 'Could not update suggestion.');
         await loadDashboard(false);
       });
@@ -448,16 +830,21 @@
   }
 
   async function loadDashboard(resetSelection = true){
-    const [profilesRes, badgesRes, suggestionsRes] = await Promise.all([
-      sb.from('profiles').select('user_id,display_name,github_username,created_at').order('created_at', { ascending: false }).limit(200),
+    const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at').order('created_at', { ascending: false }).limit(200);
+    const [profilesRes, badgesRes, suggestionsRes, rolesRes] = await Promise.all([
+      profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
-      sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200)
+      sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
+      canAdmin
+        ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
+        : Promise.resolve({ data: [], error: null })
     ]);
     if (profilesRes.error) throw profilesRes.error;
     if (badgesRes.error) throw badgesRes.error;
     profiles = profilesRes.data || [];
     badges = badgesRes.data || [];
     suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
+    userRoles = rolesRes.error ? [] : (rolesRes.data || []);
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';
     }
@@ -471,16 +858,18 @@
       return;
     }
     currentMaintainerId = user.id;
-    const { data, error } = await sb.rpc('is_maintainer');
-    if (error) throw error;
-    if (!data) {
+    currentUserId = user.id;
+    const roles = await window.OCAuth.getRoles?.().catch(() => []);
+    canAdmin = roles.includes('admin');
+    const canReview = canAdmin || roles.includes('reviewer');
+    if (!canReview) {
       renderDenied(user);
       return;
     }
     await loadDashboard();
   } catch (err) {
     root.className = 'oc-auth-card';
-    root.innerHTML = statusBox(err.message || 'Could not load maintainer dashboard.', 'danger');
+    root.innerHTML = statusBox(err.message || 'Could not load review and admin dashboard.', 'danger');
   }
 })();
 </script>

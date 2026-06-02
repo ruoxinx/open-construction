@@ -2,6 +2,11 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
 
 # Local tools and dependencies
 .claude/
@@ -16,12 +21,20 @@ node_modules/
 !.env.sample
 .vercel/
 .supabase/
-supabase/
+supabase/*
+!supabase/config.toml
+!supabase/functions/
+supabase/functions/*
+!supabase/functions/issue-certificate/
+!supabase/functions/issue-certificate/index.ts
 supabase/.branches/
 supabase/.temp/
+database/
 
 # Logs, caches, test output, and build output
 *.log
+*.tmp
+*.temp
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -51,3 +64,8 @@ site/assets/img/
 
 # Downloaded/generated certificates
 openconstruction-*-certificate.pdf
+
+# Local role-management SQL validation helpers
+site/scripts/validate-role-management.mjs
+supabase/functions/issue-certificate/index.ts
+supabase/config.toml

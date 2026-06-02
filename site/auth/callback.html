@@ -27,7 +27,8 @@
     const status = document.getElementById('statusText');
     try {
       await window.OCAuth.handleCallback();
-      window.location.replace(window.OCAuth.takeReturnTo());
+      const target = await window.OCAuth.resolvePostSignInHref(window.OCAuth.takeReturnTo());
+      window.location.replace(target);
 	    } catch (err) {
 	      status.textContent = err.message || 'Sign in could not be completed. Please try again.';
 	      status.classList.remove('text-muted');
