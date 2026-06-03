@@ -62,6 +62,8 @@
             </svg>
           </button>
         </li>
+        <li class="nav-item" id="ocAuthNavItem"><a class="nav-link plain oc-auth-link" href="auth/sign-in.html">Sign in</a></li>
+
       </ul>
     </div>
   </div>
@@ -243,6 +245,7 @@
   const root = document.getElementById('accountRoot');
   const esc = window.OCAuth.escapeHtml;
   const sb = window.OCAuth.getClient();
+  const PRIVACY_CONTACT_EMAIL = 'support@openconstruction.org';
 
   function empty(label, detail = ''){
     return `<div class="oc-workspace-empty"><strong>${esc(label)}</strong>${detail ? `<div class="small mt-1">${esc(detail)}</div>` : ''}</div>`;
@@ -299,6 +302,52 @@
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
+  }
+
+  function exportDateStamp(){
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles }){
+    return {
+      exported_at: new Date().toISOString(),
+      privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
+      account: {
+        id: user.id,
+        email: user.email || null,
+        phone: user.phone || null,
+        provider: user.app_metadata?.provider || null,
+        providers: user.app_metadata?.providers || [],
+        created_at: user.created_at || null,
+        updated_at: user.updated_at || null,
+        last_sign_in_at: user.last_sign_in_at || null,
+        email_confirmed_at: user.email_confirmed_at || null,
+        user_metadata: user.user_metadata || {}
+      },
+      profile: profile || null,
+      roles: Array.from(roles || []),
+      saved_resources: bookmarks || [],
+      local_saved_resources: window.OCBookmark.localBookmarks?.() || [],
+      badges: badges || [],
+      resource_submissions: suggestions || []
+    };
+  }
+
+  function deletionRequestHref(user){
+    const subject = 'OpenConstruction account deletion request';
+    const body = [
+      'Hello OpenConstruction team,',
+      '',
+      'Please delete my OpenConstruction account and personal account data according to the privacy notice.',
+      '',
+      `Account email: ${user.email || ''}`,
+      `Account user ID: ${user.id || ''}`,
+      '',
+      'I understand that public catalog records, citations, or contribution history may need to be retained or anonymized where required for research integrity, security, or legal reasons.',
+      '',
+      'Thank you.'
+    ].join('\n');
+    return `mailto:${PRIVACY_CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   function selectedResourceIndexes(){
@@ -869,6 +918,26 @@
     });
   }
 
+  function bindPrivacyTools(exportPayload, user){
+    const status = document.getElementById('privacyToolStatus');
+    document.getElementById('downloadAccountDataBtn')?.addEventListener('click', () => {
+      downloadFile(
+        `openconstruction-account-data-${exportDateStamp()}.json`,
+        JSON.stringify(exportPayload, null, 2),
+        'application/json'
+      );
+      if (status) status.textContent = 'Account data downloaded.';
+    });
+
+    const deletionLink = document.getElementById('requestDeletionBtn');
+    if (deletionLink) {
+      deletionLink.href = deletionRequestHref(user);
+      deletionLink.addEventListener('click', () => {
+        if (status) status.textContent = 'Deletion request email opened.';
+      });
+    }
+  }
+
   function bindBadgeCertificates(badges, recipient){
     document.querySelectorAll('[data-badge-certificate]').forEach(button => {
       button.addEventListener('click', async () => {
@@ -1001,7 +1070,7 @@
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
-      sb.from('resource_suggestions').select('id,resource_type,title,doi,url,license,description,status,maintainer_note,created_at,reviewed_at').eq('user_id', user.id).order('created_at', { ascending: false })
+      sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false })
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -1047,6 +1116,7 @@
       .filter(role => role !== 'user')
       .map(role => `<span class="oc-status-pill oc-status-role">${esc(roleLabels[role] || role)}</span>`)
       .join('');
+    const accountDataExport = accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles });
 
     function badgeIcon(){
       return `
@@ -1117,6 +1187,17 @@
 	              <span id="profileStatus" class="small text-muted" role="status"></span>
             </div>
           </form>
+        </section>
+
+        <section class="oc-workspace-card">
+          <h2 class="h6 fw-bold mb-2">Privacy and data</h2>
+          <p class="small text-muted mb-3">Download your account records or request account deletion. Privacy terms are described on the contribute page.</p>
+          <div class="d-grid gap-2">
+            <button type="button" id="downloadAccountDataBtn" class="btn btn-outline-secondary btn-sm">Download my data</button>
+            <a id="requestDeletionBtn" class="btn btn-outline-danger btn-sm" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
+            <a class="btn btn-link btn-sm p-0 text-start" href="contribute.html#privacy">Privacy notice</a>
+          </div>
+          <span id="privacyToolStatus" class="small text-muted d-block mt-2" role="status"></span>
         </section>
       </aside>
 
@@ -1230,6 +1311,7 @@
     bindProfileForm(user);
     bindResourceTools(recentBookmarks);
     bindBadgeCertificates(publicBadges, name);
+    bindPrivacyTools(accountDataExport, user);
 
   } catch (err) {
     root.className = '';

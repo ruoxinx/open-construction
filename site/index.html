@@ -128,6 +128,43 @@
       color:var(--oc-brand-ink);
       text-decoration:underline; text-underline-offset:3px;
     }
+    #ocAuthNavItem{
+      display:flex;
+      align-items:center;
+    }
+    .navbar #ocAuthNavItem .oc-auth-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:32px;
+      padding:.5rem .6rem;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--oc-brand-ink);
+      line-height:1;
+      white-space:nowrap;
+    }
+    .navbar #ocAuthNavItem .oc-auth-link:hover,
+    .navbar #ocAuthNavItem .oc-auth-link:focus{
+      color:var(--oc-brand-ink);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    .navbar #ocAuthNavItem .oc-auth-user{
+      width:34px;
+      height:34px;
+      padding:.2rem;
+      border-color:transparent;
+      background:transparent;
+    }
+    @media (min-width: 992px){
+      #ocAuthNavItem{
+        margin-left:.25rem;
+        padding-left:.4rem;
+        border-left:1px solid var(--oc-border);
+      }
+    }
     .nav-link.icon-only{
       line-height:1;
       padding-top:.375rem;
@@ -1292,6 +1329,8 @@
             </svg>
           </button>
         </li>
+        <li class="nav-item" id="ocAuthNavItem"><a class="nav-link plain oc-auth-link" href="auth/sign-in.html">Sign in</a></li>
+
       </ul>
     </div>
   </div>

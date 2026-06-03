@@ -549,7 +549,11 @@
   function renderAuthNav(user){
     ensureAuthStyles();
     const nav = document.querySelector('.navbar-nav');
-    if (!nav || document.getElementById(AUTH_NAV_ID)) return;
+    if (!nav) return;
+    if (document.getElementById(AUTH_NAV_ID)) {
+      updateAuthNav(user);
+      return;
+    }
     const li = document.createElement('li');
     li.className = 'nav-item';
     li.id = AUTH_NAV_ID;
