@@ -80,6 +80,18 @@
       .replace(/'/g, '&#39;');
   }
 
+  function authErrorMessage(error, fallback = 'Authentication could not be completed. Please try again.'){
+    const message = String(error?.message || error?.error_description || error || '').trim();
+    const lower = message.toLowerCase();
+    if (lower.includes('identity is already linked') || lower.includes('already linked to another user')) {
+      return 'This provider is already connected to another OpenConstruction account. Sign in with that provider first, or email support@openconstruction.org to merge accounts.';
+    }
+    if (lower.includes('manual linking') || lower.includes('linking is disabled')) {
+      return 'Account linking is not enabled for this OpenConstruction project yet. Please email support@openconstruction.org.';
+    }
+    return message || fallback;
+  }
+
   function cleanResource(resource){
     const type = String(resource?.type || '').trim().toLowerCase();
     const id = String(resource?.id || '').trim();
@@ -657,6 +669,7 @@
   window.OCAuth = {
     getClient,
     getUser,
+    authErrorMessage,
     displayName: userDisplayName,
     affiliation: userAffiliation,
     signInWithProvider,

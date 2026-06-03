@@ -30,7 +30,7 @@
       const target = await window.OCAuth.resolvePostSignInHref(window.OCAuth.takeReturnTo());
       window.location.replace(target);
 	    } catch (err) {
-	      status.textContent = err.message || 'Sign in could not be completed. Please try again.';
+		      status.textContent = window.OCAuth.authErrorMessage?.(err, 'Sign in could not be completed. Please try again.') || 'Sign in could not be completed. Please try again.';
 	      status.classList.remove('text-muted');
 	      status.classList.add('text-danger');
 	      document.getElementById('retryLink')?.classList.remove('d-none');

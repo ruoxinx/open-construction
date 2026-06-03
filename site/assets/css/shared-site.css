@@ -506,6 +506,128 @@ header.hero p{
   flex:0 0 auto;
 }
 
+.oc-identity-grid{
+  display:flex;
+  flex-direction:column;
+  gap:.2rem;
+}
+
+.oc-identity-card{
+  display:grid;
+  grid-template-columns:36px minmax(0,1fr) auto;
+  align-items:center;
+  gap:.7rem;
+  min-height:44px;
+  padding:.35rem 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  text-align:left;
+}
+
+.oc-identity-card.is-linked{
+  background:transparent;
+}
+
+.oc-identity-mark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  border:1px solid #dbe6f0;
+  border-radius:999px;
+  background:#fff;
+  color:var(--oc-ink);
+}
+
+.oc-identity-mark svg{
+  display:block;
+  width:18px;
+  height:18px;
+}
+
+.oc-identity-card.is-linked .oc-identity-mark{
+  border-color:#c8d9ec;
+}
+
+.oc-identity-label{
+  display:block;
+  color:var(--oc-ink);
+  font-size:.88rem;
+  font-weight:800;
+  line-height:1.15;
+}
+
+.oc-identity-detail{
+  display:block;
+  width:100%;
+  color:var(--oc-sub);
+  font-size:.76rem;
+  line-height:1.2;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.oc-identity-state{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:.15rem 0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--oc-sub);
+  font-size:.78rem;
+  font-weight:700;
+  line-height:1;
+}
+
+.oc-identity-card.is-linked .oc-identity-state{
+  border:0;
+  background:transparent;
+  color:var(--oc-sub);
+}
+
+.oc-identity-action{
+  min-height:28px;
+  padding:.15rem 0;
+  border:0;
+  background:transparent;
+  color:var(--oc-sub);
+  font-size:.78rem;
+  font-weight:700;
+  line-height:1;
+  text-decoration:none;
+}
+
+.oc-identity-action:hover,
+.oc-identity-action:focus{
+  color:var(--oc-ink);
+  background:transparent;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.oc-identity-action-link{
+  color:var(--oc-link);
+}
+
+@media (max-width: 575.98px){
+  .oc-identity-card{
+    grid-template-columns:32px minmax(0,1fr);
+  }
+
+  .oc-identity-card .oc-identity-action,
+  .oc-identity-card .oc-identity-state{
+    grid-column:2;
+    justify-self:start;
+    min-height:22px;
+  }
+}
+
 .oc-auth-preview{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
