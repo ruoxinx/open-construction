@@ -308,7 +308,7 @@
     return new Date().toISOString().slice(0, 10);
   }
 
-  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles }){
+  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
@@ -324,6 +324,7 @@
         email_confirmed_at: user.email_confirmed_at || null,
         user_metadata: user.user_metadata || {}
       },
+      linked_identities: identities || [],
       profile: profile || null,
       roles: Array.from(roles || []),
       saved_resources: bookmarks || [],
@@ -348,6 +349,64 @@
       'Thank you.'
     ].join('\n');
     return `mailto:${PRIVACY_CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  const linkableIdentityProviders = [
+    { provider: 'github', label: 'GitHub' },
+    { provider: 'google', label: 'Google' },
+    { provider: 'custom:orcid', label: 'ORCID' }
+  ];
+
+  function identityProviderLabel(provider){
+    if (provider === 'email') return 'Email';
+    return linkableIdentityProviders.find(item => item.provider === provider)?.label || typeLabel(provider);
+  }
+
+  function identityDisplayName(identity, fallback = ''){
+    const data = identity?.identity_data || {};
+    return data.email || data.user_name || data.preferred_username || data.name || data.full_name ||
+      [data.given_name, data.family_name].filter(Boolean).join(' ') || fallback || identity?.id || 'Linked identity';
+  }
+
+  function providerIdentity(identities, provider){
+    return (identities || []).find(identity => identity.provider === provider);
+  }
+
+  function identityRowsHtml(identities, user){
+    const rows = [];
+    const emailIdentity = providerIdentity(identities, 'email');
+    if (emailIdentity || user.email) {
+      rows.push(`
+        <div class="oc-account-row">
+          <span>
+            <span class="oc-account-type">Email</span>
+            <strong>${esc(user.email || identityDisplayName(emailIdentity, 'Email sign-in'))}</strong>
+            <span class="oc-account-meta">Magic-link sign in${emailIdentity?.created_at ? ` · Linked ${formatDate(emailIdentity.created_at)}` : ''}</span>
+          </span>
+          <span class="oc-account-actions"><span class="oc-status-pill oc-status-added">Connected</span></span>
+        </div>
+      `);
+    }
+
+    linkableIdentityProviders.forEach(({ provider, label }) => {
+      const identity = providerIdentity(identities, provider);
+      const index = identity ? identities.indexOf(identity) : -1;
+      rows.push(`
+        <div class="oc-account-row">
+          <span>
+            <span class="oc-account-type">${esc(label)}</span>
+            <strong>${identity ? esc(identityDisplayName(identity, label)) : `Link ${esc(label)}`}</strong>
+            <span class="oc-account-meta">${identity ? `Connected${identity.created_at ? ` · Linked ${formatDate(identity.created_at)}` : ''}` : 'Not connected'}</span>
+          </span>
+          <span class="oc-account-actions">
+            ${identity ? `<span class="oc-status-pill oc-status-added">Connected</span>` : `<button type="button" class="btn btn-outline-primary btn-sm" data-link-provider="${esc(provider)}">Link</button>`}
+            ${identity && identities.length > 1 ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-unlink-identity="${index}">Unlink</button>` : ''}
+          </span>
+        </div>
+      `);
+    });
+
+    return rows.join('');
   }
 
   function selectedResourceIndexes(){
@@ -938,6 +997,48 @@
     }
   }
 
+  function bindIdentityTools(identities){
+    const status = document.getElementById('identityToolStatus');
+    document.querySelectorAll('[data-link-provider]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const provider = button.dataset.linkProvider;
+        const label = identityProviderLabel(provider);
+        button.disabled = true;
+        if (status) status.textContent = `Opening ${label} linking...`;
+        try {
+          const { error } = await window.OCAuth.linkIdentity(provider);
+          if (error) throw error;
+        } catch (err) {
+          console.warn('Identity link failed', err);
+          if (status) status.textContent = err.message || `Could not link ${label}.`;
+          button.disabled = false;
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-unlink-identity]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const index = Number(button.dataset.unlinkIdentity);
+        const identity = identities[index];
+        if (!identity) return;
+        const label = identityProviderLabel(identity.provider);
+        const confirmed = window.confirm(`Unlink ${label} from this OpenConstruction account?`);
+        if (!confirmed) return;
+        button.disabled = true;
+        if (status) status.textContent = `Unlinking ${label}...`;
+        try {
+          await window.OCAuth.unlinkIdentity(identity);
+          if (status) status.textContent = `${label} unlinked. Refreshing account...`;
+          window.setTimeout(() => window.location.reload(), 350);
+        } catch (err) {
+          console.warn('Identity unlink failed', err);
+          if (status) status.textContent = err.message || `Could not unlink ${label}.`;
+          button.disabled = false;
+        }
+      });
+    });
+  }
+
   function bindBadgeCertificates(badges, recipient){
     document.querySelectorAll('[data-badge-certificate]').forEach(button => {
       button.addEventListener('click', async () => {
@@ -1066,17 +1167,24 @@
     const roles = new Set(await window.OCAuth.getRoles?.().catch(() => ['user']) || ['user']);
     const isAdmin = roles.has('admin');
     const canReview = roles.has('reviewer') || isAdmin;
-    const [bookmarks, profileRes, badgesRes, suggestionsRes] = await Promise.all([
+    const identitiesPromise = window.OCAuth.getUserIdentities?.()
+      .catch(err => {
+        console.warn('Identity list failed', err);
+        return Array.isArray(user.identities) ? user.identities : [];
+      }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
+    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
-      sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false })
+      sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+      identitiesPromise
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
     if (suggestionsRes.error) throw suggestionsRes.error;
 
     const profile = profileRes.data || {};
+    const identities = Array.isArray(identitiesResult) ? identitiesResult : [];
     const badges = badgesRes.data || [];
     const suggestions = suggestionsRes.data || [];
     const avatar = profile.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
@@ -1116,7 +1224,7 @@
       .filter(role => role !== 'user')
       .map(role => `<span class="oc-status-pill oc-status-role">${esc(roleLabels[role] || role)}</span>`)
       .join('');
-    const accountDataExport = accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles });
+    const accountDataExport = accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities });
 
     function badgeIcon(){
       return `
@@ -1187,6 +1295,15 @@
 	              <span id="profileStatus" class="small text-muted" role="status"></span>
             </div>
           </form>
+        </section>
+
+        <section id="linked-identities" class="oc-workspace-card">
+          <h2 class="h6 fw-bold mb-2">Linked identities</h2>
+          <p class="small text-muted mb-3">Connect GitHub, Google, or ORCID so each sign-in method opens the same workspace.</p>
+          <div class="vstack gap-2">
+            ${identityRowsHtml(identities, user)}
+          </div>
+          <span id="identityToolStatus" class="small text-muted d-block mt-2" role="status"></span>
         </section>
 
         <section class="oc-workspace-card">
@@ -1311,6 +1428,7 @@
     bindProfileForm(user);
     bindResourceTools(recentBookmarks);
     bindBadgeCertificates(publicBadges, name);
+    bindIdentityTools(identities);
     bindPrivacyTools(accountDataExport, user);
 
   } catch (err) {

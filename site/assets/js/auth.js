@@ -141,6 +141,7 @@
       href = fallback;
       target = new URL(fallback, window.location.href);
     }
+    if (target.hash === '#linked-identities') return href;
     const path = target.pathname || '';
     const shouldUseRoleHome = /\/account\.html$/.test(path) || /\/auth\/(sign-in|callback)\.html$/.test(path);
     if (!shouldUseRoleHome) return href;
@@ -312,6 +313,37 @@
         scopes: provider === 'github' ? 'read:user user:email' : undefined
       }
     });
+  }
+
+  async function linkIdentity(provider){
+    const sb = getClient();
+    if (!sb) throw new Error('Supabase is not configured.');
+    setReturnTo(siteHref('account.html') + '#linked-identities');
+    return sb.auth.linkIdentity({
+      provider,
+      options: {
+        redirectTo: siteHref('auth/callback.html'),
+        scopes: provider === 'github' ? 'read:user user:email' : undefined
+      }
+    });
+  }
+
+  async function getUserIdentities(){
+    const sb = getClient();
+    if (!sb) throw new Error('Supabase is not configured.');
+    const { data, error } = await sb.auth.getUserIdentities();
+    if (error) throw error;
+    return data?.identities || [];
+  }
+
+  async function unlinkIdentity(identity){
+    const sb = getClient();
+    if (!sb) throw new Error('Supabase is not configured.');
+    const { data, error } = await sb.auth.unlinkIdentity(identity);
+    if (error) throw error;
+    currentUser = null;
+    await getUser().catch(() => null);
+    return data;
   }
 
   async function signInWithEmail(email, captchaToken = ''){
@@ -639,6 +671,9 @@
     isMaintainer,
     roleHomeHref,
     resolvePostSignInHref,
+    linkIdentity,
+    getUserIdentities,
+    unlinkIdentity,
     listBookmarks,
     syncLocalBookmarks,
     takeReturnTo,
