@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: iWatchRoad: Scalable Detection and Geospatial Visualization of Potholes for Smart Cities]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:iWatchRoad:2026-06-06</guid>
+    <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Road infrastructure monitoring model using Ground RGB (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: VizArQA: A Foundation for Visual Question Answering in Architectural Simulation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=VizArQA</link>
     <guid isPermaLink="false">datasets:VizArQA:2026-06-01</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=BrickNet</link>
     <guid isPermaLink="false">datasets:BrickNet:2026-05-07</guid>
     <pubDate>Thu, 07 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: DrafterBench: Benchmarking Large Language Models for Tasks Automation in Civil Engineering]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=DrafterBench</link>
-    <guid isPermaLink="false">datasets:DrafterBench:2026-05-06</guid>
-    <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
