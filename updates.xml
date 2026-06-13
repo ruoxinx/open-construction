@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: BIM-JEPA: Joint Embedding Predictive Architecture for BIM Element Classification]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:bim-jepa:2026-06-13</guid>
+    <pubDate>Sat, 13 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[BIM model understanding model using BIM/IFC (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: iWatchRoad: Scalable Detection and Geospatial Visualization of Potholes for Smart Cities]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:iWatchRoad:2026-06-06</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:PV-Forecasting:2026-05-18</guid>
     <pubDate>Mon, 18 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Electricity demand management model using Tabular (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BrickNet: Fabrication-Aware Synthetic Dataset for Brick Wall Designs]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BrickNet</link>
-    <guid isPermaLink="false">datasets:BrickNet:2026-05-07</guid>
-    <pubDate>Thu, 07 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
