@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: MultiCamAssembly DataPackage: Experimental Crane Assembly Runs and YOLO Vision Training Data]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=MultiCamAssembly</link>
+    <guid isPermaLink="false">datasets:MultiCamAssembly:2026-06-16</guid>
+    <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: BIM-JEPA: Joint Embedding Predictive Architecture for BIM Element Classification]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:bim-jepa:2026-06-13</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:NYSolarForecastLab:2026-05-18</guid>
     <pubDate>Mon, 18 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Machine learning benchmarks for day-ahead photovoltaic power forecasting]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:PV-Forecasting:2026-05-18</guid>
-    <pubDate>Mon, 18 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Electricity demand management model using Tabular (2026)]]></description>
   </item>
   </channel>
 </rss>
