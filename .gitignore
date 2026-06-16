@@ -69,3 +69,4 @@ openconstruction-*-certificate.pdf
 site/scripts/validate-role-management.mjs
 supabase/functions/issue-certificate/index.ts
 supabase/config.toml
+scripts/workspace_research_cockpit.sql

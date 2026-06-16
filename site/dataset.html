@@ -368,52 +368,6 @@
   })();
 </script>
 
-<!-- Optional: visit logger via Supabase -->
-<script>
-(async function(){
-  const PAGE = 'index';
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  if(!hasSB){ console.warn('Supabase config missing'); return; }
-  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
-
-  async function sha256hex(text){
-    const enc = new TextEncoder().encode(text);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  }
-  function getVisitorId(){
-    const k='oc_visitor_id';
-    let v=localStorage.getItem(k);
-    if(!v){ v=(crypto.randomUUID?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2))); localStorage.setItem(k,v); }
-    return v;
-  }
-  async function getGeo(){
-    try{
-      const g=await fetch('https://get.geojs.io/v1/ip/geo.json',{cache:'no-store'}).then(r=>r.json());
-      if(g && g.latitude && g.longitude) return { ip:g.ip||null, lat:+g.latitude, lon:+g.longitude, city:g.city||null, region:g.region||null, country:g.country||null };
-    }catch(e){}
-    return null;
-  }
-
-  try{
-    const geo=await getGeo();
-    const base = geo?.ip ? geo.ip : ('vid:'+getVisitorId());
-    const ip_hash=await sha256hex(base);
-    const payload={
-      page: PAGE, ip_hash,
-      city: geo?.city||null, region: geo?.region||null, country: geo?.country||null,
-      lat: (geo && typeof geo.lat==='number')?geo.lat:null,
-      lon: (geo && typeof geo.lon==='number')?geo.lon:null,
-      ua: navigator.userAgent, referrer: document.referrer||null
-    };
-    const { error } = await sb.from('visits').insert(payload);
-    if(error) console.error('insert error', error);
-  }catch(e){
-    console.error('logger failed', e);
-  }
-})();
-</script>
-
 <!-- Floating button: Suggest dataset -->
 <a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_dataset.yml"
    class="issue-btn" target="_blank" rel="noopener">

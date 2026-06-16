@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Workspace · OpenConstruction</title>
-  <meta name="description" content="Manage saved OpenConstruction resources, resource suggestions, and badges.">
+  <meta name="description" content="Manage saved OpenConstruction resources, collections, notes, resource suggestions, and badges.">
   <meta name="robots" content="noindex">
   <link rel="canonical" href="https://www.openconstruction.org/account.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -144,6 +144,10 @@
             <div>
               <label for="suggestSubmitterAffiliation" class="form-label small fw-bold">Affiliation</label>
               <input id="suggestSubmitterAffiliation" name="submitter_affiliation" class="form-control" required>
+            </div>
+            <div>
+              <label for="suggestSubmitterGithub" class="form-label small fw-bold">GitHub username <span class="text-muted fw-normal">(optional)</span></label>
+              <input id="suggestSubmitterGithub" name="submitter_github" class="form-control" placeholder="github-handle">
             </div>
           </div>
         </fieldset>
@@ -308,7 +312,7 @@
     return new Date().toISOString().slice(0, 10);
   }
 
-  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities }){
+  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
@@ -329,6 +333,9 @@
       roles: Array.from(roles || []),
       saved_resources: bookmarks || [],
       local_saved_resources: window.OCBookmark.localBookmarks?.() || [],
+      resource_collections: collections || [],
+      resource_collection_items: collectionItems || [],
+      resource_notes: notes || [],
       badges: badges || [],
       resource_submissions: suggestions || []
     };
@@ -430,6 +437,60 @@
       .filter(index => Number.isInteger(index));
   }
 
+  function resourceKey(type, id){
+    return `${resourceKind(type)}:${String(id || '').trim()}`;
+  }
+
+  function bookmarkKey(row){
+    return resourceKey(row.type, row.id || row.resource_id);
+  }
+
+  function normalizeWorkspaceRow(row){
+    return {
+      type: resourceKind(row.resource_type || row.type),
+      id: row.resource_id || row.id || '',
+      title: row.resource_title || row.title || row.resource_id || row.id || '',
+      url: row.resource_url || row.url || ''
+    };
+  }
+
+  function tagsFromInput(value){
+    const seen = new Set();
+    return String(value || '')
+      .split(/[,\n;]/)
+      .map(item => item.trim())
+      .filter(Boolean)
+      .filter(item => {
+        const key = item.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }
+
+  function tagListHtml(tags){
+    const items = Array.isArray(tags) ? tags : [];
+    return items.length
+      ? `<span class="oc-tag-list">${items.map(tag => `<span>${esc(tag)}</span>`).join('')}</span>`
+      : '';
+  }
+
+  function workspaceRowsByKey(rows){
+    return (rows || []).reduce((acc, row) => {
+      acc.set(resourceKey(row.resource_type, row.resource_id), row);
+      return acc;
+    }, new Map());
+  }
+
+  async function safeRows(query, label){
+    const { data, error } = await query;
+    if (error) {
+      console.warn(`${label} unavailable`, error);
+      return { rows: [], error };
+    }
+    return { rows: data || [], error: null };
+  }
+
   const catalogCache = new Map();
   const catalogSources = {
     dataset: 'data/datasets.json',
@@ -450,7 +511,10 @@
   }
 
   function titleOfRecord(record, fallback = ''){
-    return record?.title || record?.name || record?.resource_title || fallback || record?.id || '';
+    const value = record?.title || record?.name || record?.resource_title || fallback || record?.id || '';
+    if (Array.isArray(value)) return value.map(item => String(item ?? '')).filter(Boolean).join(', ');
+    if (value && typeof value === 'object') return value.name || value.title || value.id || JSON.stringify(value);
+    return String(value || '');
   }
 
   function normalizeCatalog(type, payload){
@@ -808,7 +872,7 @@
     return value;
   }
 
-  function exportResourceRow(item){
+  function exportResourceRow(item, noteRow = null){
     const record = item.record || {};
     const bookmark = item.bookmark || {};
     const out = { resource_type: item.kind || resourceKind(bookmark.type) };
@@ -817,6 +881,10 @@
       if (shouldExportField(key) && hasValue(value)) out[key] = value;
     });
     if (!hasValue(out.title) && !hasValue(out.name) && hasValue(bookmark.title)) out.title = bookmark.title;
+    if (noteRow) {
+      if (hasValue(noteRow.note)) out.workspace_note = noteRow.note;
+      if (Array.isArray(noteRow.tags) && noteRow.tags.length) out.workspace_tags = flattenExportList(noteRow.tags);
+    }
     return out;
   }
 
@@ -891,10 +959,10 @@
     return ordered.concat(remaining);
   }
 
-  async function selectedExportRows(rows, status){
+  async function selectedExportRows(rows, status, notesByKey = new Map()){
     status.textContent = 'Loading catalog metadata for export...';
     const enriched = await Promise.all(rows.map(enrichBookmark));
-    return enriched.map(exportResourceRow);
+    return enriched.map(item => exportResourceRow(item, notesByKey.get(bookmarkKey(item.bookmark))));
   }
 
   async function downloadBadgeCertificatePdf(badge, recipient){
@@ -919,8 +987,8 @@
     downloadBlob(filename, blob);
   }
 
-  function bindResourceTools(bookmarks){
-    const status = document.getElementById('resourceToolStatus');
+  function bindResourceTools(bookmarks, notesByKey = new Map()){
+    const status = document.getElementById('resourceToolStatus') || { textContent: '' };
     const compareOutput = document.getElementById('resourceCompareOutput');
     const selectedRows = () => selectedResourceIndexes().map(index => bookmarks[index]).filter(Boolean);
 
@@ -957,7 +1025,7 @@
         status.textContent = 'Select resources first.';
         return;
       }
-      const exportRows = await selectedExportRows(rows, status);
+      const exportRows = await selectedExportRows(rows, status, notesByKey);
       downloadFile('openconstruction-saved-resources.json', JSON.stringify(exportRows, null, 2), 'application/json');
       status.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'} exported.`;
     });
@@ -968,7 +1036,7 @@
         status.textContent = 'Select resources first.';
         return;
       }
-      const exportRows = await selectedExportRows(rows, status);
+      const exportRows = await selectedExportRows(rows, status, notesByKey);
       const header = exportHeaders(exportRows);
       const csv = [header.join(',')]
         .concat(exportRows.map(row => header.map(key => csvCell(row[key])).join(',')))
@@ -989,6 +1057,312 @@
       const enriched = await Promise.all(rows.map(enrichBookmark));
       status.textContent = `${rows.length} resources compared.`;
       compareOutput.innerHTML = comparisonHtml(enriched);
+    });
+  }
+
+  function bookmarkOptionsHtml(bookmarks){
+    return (bookmarks || []).map(row => `
+      <option value="${esc(bookmarkKey(row))}">${esc(typeLabel(row.type))}: ${esc(row.title || row.id)}</option>
+    `).join('');
+  }
+
+  function collectionOptionsHtml(collections){
+    return (collections || []).map(collection => `
+      <option value="${esc(collection.id)}">${esc(collection.name)}</option>
+    `).join('');
+  }
+
+  function collectionCardsHtml(collections, collectionItems, bookmarks){
+    const bookmarkLookup = new Map((bookmarks || []).map(row => [bookmarkKey(row), row]));
+    const options = bookmarkOptionsHtml(bookmarks);
+    if (!collections.length) return empty('No collections yet', 'Create a collection to organize resources by paper, class, benchmark, or project.');
+    return collections.map(collection => {
+      const items = collectionItems.filter(item => item.collection_id === collection.id);
+      return `
+        <article class="oc-workspace-subcard" data-collection-card="${esc(collection.id)}">
+          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-2">
+            <div>
+              <h4 class="h6 fw-bold mb-1">${esc(collection.name)}</h4>
+              ${collection.description ? `<p class="small text-muted mb-0">${esc(collection.description)}</p>` : '<p class="small text-muted mb-0">Private resource collection</p>'}
+            </div>
+            <div class="oc-account-actions">
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-export-collection="${esc(collection.id)}" data-export-format="json">JSON</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-export-collection="${esc(collection.id)}" data-export-format="csv">CSV</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-delete-collection="${esc(collection.id)}">Delete</button>
+            </div>
+          </div>
+          <div class="oc-collection-items mb-3">
+            ${items.length ? items.map(item => {
+              const key = resourceKey(item.resource_type, item.resource_id);
+              const bookmark = bookmarkLookup.get(key);
+              return `
+                <div class="oc-mini-row">
+                  <span>
+                    <span class="oc-account-type">${esc(typeLabel(item.resource_type))}</span>
+                    <strong>${esc(bookmark?.title || item.resource_id)}</strong>
+                  </span>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" data-remove-collection-item="${esc(collection.id)}" data-resource-type="${esc(item.resource_type)}" data-resource-id="${esc(item.resource_id)}">Remove</button>
+                </div>
+              `;
+            }).join('') : empty('No resources in this collection')}
+          </div>
+          ${options ? `
+            <div class="oc-inline-form">
+              <select class="form-select form-select-sm" data-collection-resource="${esc(collection.id)}" aria-label="Saved resource">
+                ${options}
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" data-add-collection-item="${esc(collection.id)}">Add</button>
+            </div>
+          ` : '<p class="small text-muted mb-0">Save resources before adding items to a collection.</p>'}
+        </article>
+      `;
+    }).join('');
+  }
+
+  function notesHtml(bookmarks, notesByKey){
+    if (!bookmarks.length) return empty('No saved resources yet', 'Save a resource before adding notes or tags.');
+    return bookmarks.map(row => {
+      const key = bookmarkKey(row);
+      const note = notesByKey.get(key) || {};
+      return `
+        <form class="oc-workspace-subcard oc-note-form" data-note-form="${esc(key)}">
+          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+            <div>
+              <span class="oc-account-type">${esc(typeLabel(row.type))}</span>
+              <h4 class="h6 fw-bold mb-1">${esc(row.title || row.id)}</h4>
+              <div class="small text-muted">${tagListHtml(note.tags)}</div>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
+          </div>
+          <input type="hidden" name="resource_type" value="${esc(resourceKind(row.type))}">
+          <input type="hidden" name="resource_id" value="${esc(row.id || row.resource_id)}">
+          <div class="oc-note-grid">
+            <div class="oc-note-wide">
+              <label class="form-label small fw-bold">Tags</label>
+              <input name="tags" class="form-control form-control-sm" value="${esc((note.tags || []).join(', '))}">
+            </div>
+            <div class="oc-note-wide">
+              <label class="form-label small fw-bold">Note</label>
+              <textarea name="note" class="form-control" rows="3">${esc(note.note || '')}</textarea>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <button type="submit" class="btn btn-primary btn-sm">Save note</button>
+            ${note.user_id ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-clear-note="${esc(key)}">Clear</button>` : ''}
+            <span class="small text-muted" role="status"></span>
+          </div>
+        </form>
+      `;
+    }).join('');
+  }
+
+  function bindWorkspaceTabs(){
+    const tabs = Array.from(document.querySelectorAll('[data-workspace-tab]'));
+    const panels = Array.from(document.querySelectorAll('[data-workspace-panel]'));
+    const show = id => {
+      tabs.forEach(tab => {
+        const active = tab.dataset.workspaceTab === id;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      panels.forEach(panel => {
+        panel.hidden = panel.dataset.workspacePanel !== id;
+      });
+    };
+    tabs.forEach(tab => tab.addEventListener('click', () => show(tab.dataset.workspaceTab)));
+    show('library');
+  }
+
+  function selectorValue(value){
+    if (window.CSS?.escape) return CSS.escape(value);
+    return String(value).replace(/"/g, '\\"');
+  }
+
+  function bindCollectionTools(user, bookmarks, collections, collectionItems, notesByKey){
+    const status = document.getElementById('collectionToolStatus');
+    const bookmarkLookup = new Map((bookmarks || []).map(row => [bookmarkKey(row), row]));
+    document.getElementById('collectionForm')?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const button = form.querySelector('button[type="submit"]');
+      const name = form.elements.name.value.trim();
+      if (!name) return;
+      button.disabled = true;
+      if (status) status.textContent = 'Creating collection...';
+      const { error } = await sb.from('resource_collections').insert({
+        user_id: user.id,
+        name,
+        description: form.elements.description.value.trim() || null
+      });
+      if (error) {
+        if (status) status.textContent = error.message || 'Collection could not be created.';
+        button.disabled = false;
+        return;
+      }
+      window.location.reload();
+    });
+
+    document.querySelectorAll('[data-add-collection-item]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const collectionId = button.dataset.addCollectionItem;
+        const select = document.querySelector(`[data-collection-resource="${selectorValue(collectionId)}"]`);
+        const row = bookmarkLookup.get(select?.value);
+        if (!row) return;
+        button.disabled = true;
+        if (status) status.textContent = 'Adding resource...';
+        const { error } = await sb.from('resource_collection_items').upsert({
+          collection_id: collectionId,
+          user_id: user.id,
+          resource_type: resourceKind(row.type),
+          resource_id: row.id || row.resource_id
+        }, { onConflict: 'collection_id,resource_type,resource_id' });
+        if (error) {
+          if (status) status.textContent = error.message || 'Resource could not be added.';
+          button.disabled = false;
+          return;
+        }
+        window.location.reload();
+      });
+    });
+
+    document.querySelectorAll('[data-add-library-collection]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const key = button.dataset.addLibraryCollection;
+        const select = document.querySelector(`[data-library-collection="${selectorValue(key)}"]`);
+        const collectionId = select?.value;
+        if (!collectionId) return;
+        button.disabled = true;
+        const status = button.closest('.oc-library-quick-edit')?.querySelector('[data-library-collection-status]');
+        if (status) status.textContent = 'Adding to collection...';
+        const { error } = await sb.from('resource_collection_items').upsert({
+          collection_id: collectionId,
+          user_id: user.id,
+          resource_type: button.dataset.resourceType,
+          resource_id: button.dataset.resourceId
+        }, { onConflict: 'collection_id,resource_type,resource_id' });
+        if (error) {
+          if (status) status.textContent = error.message || 'Resource could not be added.';
+          button.disabled = false;
+          return;
+        }
+        if (status) status.textContent = 'Added. Refreshing...';
+        window.setTimeout(() => window.location.reload(), 350);
+      });
+    });
+
+    document.querySelectorAll('[data-remove-collection-item]').forEach(button => {
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        if (status) status.textContent = 'Removing resource...';
+        const { error } = await sb.from('resource_collection_items')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('collection_id', button.dataset.removeCollectionItem)
+          .eq('resource_type', button.dataset.resourceType)
+          .eq('resource_id', button.dataset.resourceId);
+        if (error) {
+          if (status) status.textContent = error.message || 'Resource could not be removed.';
+          button.disabled = false;
+          return;
+        }
+        window.location.reload();
+      });
+    });
+
+    document.querySelectorAll('[data-delete-collection]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const confirmed = window.confirm('Delete this collection? Saved resources and notes will remain in your library.');
+        if (!confirmed) return;
+        button.disabled = true;
+        if (status) status.textContent = 'Deleting collection...';
+        const { error } = await sb.from('resource_collections')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('id', button.dataset.deleteCollection);
+        if (error) {
+          if (status) status.textContent = error.message || 'Collection could not be deleted.';
+          button.disabled = false;
+          return;
+        }
+        window.location.reload();
+      });
+    });
+
+    document.querySelectorAll('[data-export-collection]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const collectionId = button.dataset.exportCollection;
+        const rows = collectionItems
+          .filter(item => item.collection_id === collectionId)
+          .map(item => bookmarkLookup.get(resourceKey(item.resource_type, item.resource_id)) || normalizeWorkspaceRow(item))
+          .filter(row => row.id || row.resource_id);
+        if (!rows.length) {
+          if (status) status.textContent = 'Collection has no resources to export.';
+          return;
+        }
+        button.disabled = true;
+        if (status) status.textContent = 'Preparing collection export...';
+        const exportRows = await selectedExportRows(rows, status || { textContent: '' }, notesByKey);
+        const collection = collections.find(item => item.id === collectionId);
+        const slug = String(collection?.name || 'collection').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'collection';
+        if (button.dataset.exportFormat === 'csv') {
+          const header = exportHeaders(exportRows);
+          const csv = [header.join(',')]
+            .concat(exportRows.map(row => header.map(key => csvCell(row[key])).join(',')))
+            .join('\n');
+          downloadFile(`openconstruction-${slug}.csv`, csv, 'text/csv');
+        } else {
+          downloadFile(`openconstruction-${slug}.json`, JSON.stringify(exportRows, null, 2), 'application/json');
+        }
+        if (status) status.textContent = 'Collection exported.';
+        button.disabled = false;
+      });
+    });
+  }
+
+  function bindNoteTools(user){
+    document.querySelectorAll('[data-note-form]').forEach(form => {
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const status = form.querySelector('[role="status"]');
+        const button = form.querySelector('button[type="submit"]');
+        button.disabled = true;
+        if (status) status.textContent = 'Saving...';
+        const { error } = await sb.from('resource_notes').upsert({
+          user_id: user.id,
+          resource_type: form.elements.resource_type.value,
+          resource_id: form.elements.resource_id.value,
+          tags: tagsFromInput(form.elements.tags.value),
+          note: form.elements.note.value.trim() || null
+        }, { onConflict: 'user_id,resource_type,resource_id' });
+        if (error) {
+          if (status) status.textContent = error.message || 'Note could not be saved.';
+          button.disabled = false;
+          return;
+        }
+        if (status) status.textContent = 'Saved.';
+        window.setTimeout(() => window.location.reload(), 350);
+      });
+    });
+
+    document.querySelectorAll('[data-clear-note]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const form = button.closest('[data-note-form]');
+        if (!form) return;
+        button.disabled = true;
+        const status = form.querySelector('[role="status"]');
+        if (status) status.textContent = 'Clearing...';
+        const { error } = await sb.from('resource_notes')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('resource_type', form.elements.resource_type.value)
+          .eq('resource_id', form.elements.resource_id.value);
+        if (error) {
+          if (status) status.textContent = error.message || 'Note could not be cleared.';
+          button.disabled = false;
+          return;
+        }
+        window.location.reload();
+      });
     });
   }
 
@@ -1187,12 +1561,15 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult] = await Promise.all([
+    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
       sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
-      identitiesPromise
+      identitiesPromise,
+      safeRows(sb.from('resource_collections').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource collections'),
+      safeRows(sb.from('resource_collection_items').select('*').eq('user_id', user.id).order('created_at', { ascending: false }), 'collection items'),
+      safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes')
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -1202,6 +1579,11 @@
     const identities = Array.isArray(identitiesResult) ? identitiesResult : [];
     const badges = badgesRes.data || [];
     const suggestions = suggestionsRes.data || [];
+    const collections = collectionsRes.rows || [];
+    const collectionItems = collectionItemsRes.rows || [];
+    const notes = notesRes.rows || [];
+    const workspaceSchemaErrors = [collectionsRes, collectionItemsRes, notesRes].filter(result => result.error);
+    const notesByKey = workspaceRowsByKey(notes);
     const avatar = profile.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
     const fallbackName = window.OCAuth.displayName?.(user) || user.user_metadata?.full_name || user.user_metadata?.name || 'OpenConstruction member';
     const genericNames = new Set(['openconstruction user', 'openconstruction member', 'oc']);
@@ -1239,7 +1621,31 @@
       .filter(role => role !== 'user')
       .map(role => `<span class="oc-status-pill oc-status-role">${esc(roleLabels[role] || role)}</span>`)
       .join('');
-    const accountDataExport = accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities });
+    const annotatedCount = notes.filter(row => row.note || (Array.isArray(row.tags) && row.tags.length)).length;
+    const taggedCount = notes.filter(row => Array.isArray(row.tags) && row.tags.length).length;
+    const collectionNamesById = new Map(collections.map(collection => [collection.id, collection.name]));
+    const collectionNamesByResource = collectionItems.reduce((acc, item) => {
+      const key = resourceKey(item.resource_type, item.resource_id);
+      const name = collectionNamesById.get(item.collection_id);
+      if (!name) return acc;
+      const list = acc.get(key) || [];
+      list.push(name);
+      acc.set(key, list);
+      return acc;
+    }, new Map());
+    const collectionOptions = collectionOptionsHtml(collections);
+    const accountDataExport = accountExportPayload({
+      user,
+      profile,
+      bookmarks,
+      badges,
+      suggestions,
+      roles,
+      identities,
+      collections,
+      collectionItems,
+      notes
+    });
 
     function badgeIcon(){
       return `
@@ -1254,7 +1660,7 @@
     root.innerHTML = `
       <aside class="oc-workspace-sidebar">
         <section class="oc-workspace-card oc-account-profile-card">
-          <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="oc-account-profile-head">
             ${avatar ? `<img class="oc-account-avatar" src="${esc(avatar)}" alt="">` : ''}
             <div>
               <p class="oc-workspace-kicker mb-1">Workspace</p>
@@ -1271,65 +1677,68 @@
           </div>
         </section>
 
-			        <section class="oc-workspace-card">
-			          <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
-                  <div>
-                    <h2 class="h6 fw-bold mb-1">Credentials</h2>
-                    <p class="small text-muted mb-0">Download verified contribution certificates.</p>
+        ${publicBadges.length ? `
+          <section class="oc-workspace-card oc-credentials-card">
+            <h2 class="oc-sidebar-section-title">Credentials</h2>
+            <p class="small text-muted mb-3">Download verified contribution certificates.</p>
+            <div class="oc-badge-grid">
+              ${publicBadges.map((row, index) => `
+                <article class="oc-badge-card" title="${esc(row.badge_description || '')}">
+                  <div class="oc-badge-card-icon">${badgeIcon()}</div>
+                  <div class="oc-badge-card-body">
+                    <strong>${esc(row.badge_label)}</strong>
+                    <span>${row.awarded_at ? `Issued ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
                   </div>
+                  <div class="oc-badge-card-actions">
+                    <button type="button" class="btn btn-primary btn-sm" data-badge-certificate="${index}">Download PDF</button>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+        ` : ''}
+
+        <section class="oc-workspace-card oc-account-settings-card">
+          <details class="oc-settings-panel">
+            <summary>Account settings</summary>
+            <div class="oc-settings-block">
+              <h2 class="h6 fw-bold mb-3">Profile</h2>
+              <form id="profileForm" class="oc-profile-form">
+                <div>
+                  <label for="profileDisplayName" class="form-label small fw-bold">Display name</label>
+                  <input id="profileDisplayName" name="display_name" class="form-control form-control-sm" value="${esc(name)}">
                 </div>
-			          <div class="oc-badge-grid">
-			            ${publicBadges.length ? publicBadges.map((row, index) => `
-			              <article class="oc-badge-card" title="${esc(row.badge_description || '')}">
-	                    <div class="oc-badge-card-icon">${badgeIcon()}</div>
-	                    <div class="oc-badge-card-body">
-	                      <strong>${esc(row.badge_label)}</strong>
-	                      <span>${row.awarded_at ? `Issued ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
-	                    </div>
-	                    <div class="oc-badge-card-actions">
-	                      <button type="button" class="btn btn-primary btn-sm" data-badge-certificate="${index}">Download PDF</button>
-	                    </div>
-	                  </article>
-		            `).join('') : empty('No badges yet')}
-		          </div>
-			        </section>
-
-        <section class="oc-workspace-card">
-          <h2 class="h6 fw-bold mb-3">Profile</h2>
-          <form id="profileForm" class="oc-profile-form">
-            <div>
-              <label for="profileDisplayName" class="form-label small fw-bold">Display name</label>
-              <input id="profileDisplayName" name="display_name" class="form-control form-control-sm" value="${esc(name)}">
+                <div>
+                  <label for="profileAffiliation" class="form-label small fw-bold">Affiliation</label>
+                  <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, lab, or organization">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <button type="submit" class="btn btn-outline-primary btn-sm">Save profile</button>
+                  <span id="profileStatus" class="small text-muted" role="status"></span>
+                </div>
+              </form>
             </div>
-            <div>
-              <label for="profileAffiliation" class="form-label small fw-bold">Affiliation</label>
-              <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, lab, or organization">
-            </div>
-	            <div class="d-flex align-items-center gap-2">
-	              <button type="submit" class="btn btn-outline-primary btn-sm">Save profile</button>
-	              <span id="profileStatus" class="small text-muted" role="status"></span>
-            </div>
-          </form>
-        </section>
 
-        <section id="linked-identities" class="oc-workspace-card">
-          <h2 class="h6 fw-bold mb-2">Linked identities</h2>
-          <p class="small text-muted mb-3">Manage sign-in methods for this workspace.</p>
-          <div class="oc-identity-grid">
-            ${identityRowsHtml(identities, user)}
-          </div>
-          <span id="identityToolStatus" class="small text-muted d-block mt-2" role="status"></span>
-        </section>
+            <div id="linked-identities" class="oc-settings-block">
+              <h2 class="h6 fw-bold mb-2">Linked identities</h2>
+              <p class="small text-muted mb-3">Manage sign-in methods for this workspace.</p>
+              <div class="oc-identity-grid">
+                ${identityRowsHtml(identities, user)}
+              </div>
+              <span id="identityToolStatus" class="small text-muted d-block mt-2" role="status"></span>
+            </div>
 
-        <section class="oc-workspace-card">
-          <h2 class="h6 fw-bold mb-2">Privacy and data</h2>
-          <p class="small text-muted mb-3">Download your account records or request account deletion. Privacy terms are described on the contribute page.</p>
-          <div class="d-grid gap-2">
-            <button type="button" id="downloadAccountDataBtn" class="btn btn-outline-secondary btn-sm">Download my data</button>
-            <a id="requestDeletionBtn" class="btn btn-outline-danger btn-sm" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
-            <a class="btn btn-link btn-sm p-0 text-start" href="contribute.html#privacy">Privacy notice</a>
-          </div>
-          <span id="privacyToolStatus" class="small text-muted d-block mt-2" role="status"></span>
+            <div class="oc-settings-block">
+              <h2 class="h6 fw-bold mb-2">Privacy and data</h2>
+              <p class="small text-muted mb-3">Download your account records, saved resources, notes, and collections, or request account deletion.</p>
+              <div class="d-grid gap-2">
+                <button type="button" id="downloadAccountDataBtn" class="btn btn-outline-secondary btn-sm">Download my data</button>
+                <a id="requestDeletionBtn" class="btn btn-outline-danger btn-sm" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
+                <a class="btn btn-link btn-sm p-0 text-start" href="contribute.html#privacy">Privacy notice</a>
+              </div>
+              <span id="privacyToolStatus" class="small text-muted d-block mt-2" role="status"></span>
+            </div>
+          </details>
         </section>
       </aside>
 
@@ -1339,7 +1748,7 @@
 	            <div>
 	              <p class="oc-workspace-kicker mb-2">Dashboard</p>
 	              <h2 class="h3 fw-bold mb-1">Your OpenConstruction workspace</h2>
-	              <p class="text-muted mb-0">Track saved resources, submitted additions, badges, exports, and comparisons.</p>
+		              <p class="text-muted mb-0">Organize saved resources into collections, notes, and contribution records.</p>
 	            </div>
             <div class="d-flex gap-2 flex-wrap justify-content-end">
               <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
@@ -1353,82 +1762,178 @@
               <div class="oc-account-stat-label">Saved</div>
             </div>
             <div class="oc-account-stat">
-              <div class="oc-account-stat-value">${suggestions.length}</div>
-              <div class="oc-account-stat-label">Submissions</div>
+              <div class="oc-account-stat-value">${collections.length}</div>
+              <div class="oc-account-stat-label">Collections</div>
             </div>
             <div class="oc-account-stat">
-              <div class="oc-account-stat-value">${publicBadges.length}</div>
-              <div class="oc-account-stat-label">Badges</div>
+              <div class="oc-account-stat-value">${notes.length}</div>
+              <div class="oc-account-stat-label">Notes</div>
             </div>
-	            <div class="oc-account-stat">
-	              <div class="oc-account-stat-value">${addedCount}</div>
-	              <div class="oc-account-stat-label">Added</div>
-	            </div>
+		            <div class="oc-account-stat">
+		              <div class="oc-account-stat-value">${suggestions.length}</div>
+		              <div class="oc-account-stat-label">Submissions</div>
+		            </div>
 	          </div>
-	        </section>
-
-	        <section id="saved-resources" class="oc-workspace-card">
-            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-	              <div>
-	                <h3 class="h5 fw-bold mb-1">${bookmarks.length} saved</h3>
-	                <p class="text-muted mb-0 small">Resources you saved across OpenConstruction.</p>
-	              </div>
-	              <div class="small text-muted">${Object.entries(savedByType).map(([type, count]) => `${count} ${esc(typeLabel(type))}`).join(' · ') || 'No saved resources'}</div>
-	            </div>
-              ${recentBookmarks.length ? `
-                <div class="oc-resource-tools mb-3">
-                  <button type="button" id="compareResourcesBtn" class="btn btn-outline-primary btn-sm">Compare</button>
-                  <button type="button" id="exportJsonBtn" class="btn btn-outline-secondary btn-sm">Export JSON</button>
-                  <button type="button" id="exportCsvBtn" class="btn btn-outline-secondary btn-sm">Export CSV</button>
-                  <span id="resourceToolStatus" class="small text-muted" role="status"></span>
-                </div>
-              ` : ''}
-	            <div class="vstack gap-2">
-	              ${recentBookmarks.length ? recentBookmarks.map((row, index) => `
-	            <div class="oc-account-row oc-resource-select-row">
-                <label class="oc-resource-select">
-                  <input class="form-check-input" type="checkbox" value="${index}" data-resource-select aria-label="Select ${esc(row.title || row.id)}">
-                  <span>
-	                  <span class="oc-account-type">${esc(typeLabel(row.type))}</span>
-	                  <strong>${esc(row.title || row.id)}</strong>
-	                  <span class="oc-account-meta">${row.created_at ? `Saved ${formatDate(row.created_at)}` : 'Saved resource'}</span>
-                  </span>
-                </label>
-                <span class="oc-account-actions">
-                  <button type="button" class="oc-bookmark-btn active" data-resource-unsave="${index}" aria-label="Remove ${esc(row.title || row.id)} from saved resources" title="Remove from saved resources">${bookmarkIcon()}</button>
-                  <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
-                </span>
-	            </div>
-	              `).join('') : empty('No library items yet', 'Browse the catalog to add resources to this account.')}
-	            </div>
-              <div id="resourceCompareOutput"></div>
-	        </section>
-
-        <section id="submissions" class="oc-workspace-card">
-          <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-            <div>
-              <h3 class="h5 fw-bold mb-1">Resource submissions</h3>
-              <p class="text-muted mb-0 small">${pendingCount} pending review · ${addedCount} added to the catalog</p>
-            </div>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
-          </div>
-          <div class="vstack gap-2">
-            ${suggestions.length ? suggestions.map(row => `
-              <div class="oc-account-row">
-                <span>
-                  <span class="oc-account-type">${esc(typeLabel(row.resource_type))}</span>
-                  <strong>${esc(row.title)}</strong>
-                  <span class="oc-account-meta">${row.created_at ? `Submitted ${formatDate(row.created_at)}` : 'Submitted resource'}${row.reviewed_at ? ` · Reviewed ${formatDate(row.reviewed_at)}` : ''}</span>
-                  ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
-                </span>
-                <span class="oc-account-actions">
-                  <span class="${statusClass(row.status)}">${esc(statusLabel(row.status))}</span>
-                  ${row.url ? `<a class="btn btn-outline-secondary btn-sm" href="${esc(row.url)}" target="_blank" rel="noopener">Source</a>` : ''}
-                </span>
+            ${workspaceSchemaErrors.length ? `
+              <div class="alert alert-warning small mt-3 mb-0">
+	                Research workspace tables are not available yet. Apply the updated Supabase account schema to enable collections and notes.
               </div>
-            `).join('') : empty('No submissions yet', 'Suggest a dataset, model, workflow, or OER for review.')}
-          </div>
+            ` : ''}
+	        </section>
+
+        <nav class="oc-workspace-tabs" aria-label="Workspace sections">
+          <button type="button" class="oc-workspace-tab active" data-workspace-tab="library" aria-selected="true">Library</button>
+          <button type="button" class="oc-workspace-tab" data-workspace-tab="collections" aria-selected="false">Collections</button>
+          <button type="button" class="oc-workspace-tab" data-workspace-tab="notes" aria-selected="false">Notes</button>
+          <button type="button" class="oc-workspace-tab" data-workspace-tab="submissions" aria-selected="false">Submissions</button>
+        </nav>
+
+        <section data-workspace-panel="library">
+          <section id="saved-resources" class="oc-workspace-card">
+            <div class="oc-library-header">
+              <div>
+                <h3 class="h5 fw-bold mb-1">${bookmarks.length} saved resources</h3>
+                <p class="text-muted mb-0 small">${annotatedCount} with notes · ${taggedCount} tagged</p>
+              </div>
+              <div class="small text-muted">${Object.entries(savedByType).map(([type, count]) => `${count} ${esc(typeLabel(type))}`).join(' · ') || 'No saved resources'}</div>
+            </div>
+            ${recentBookmarks.length ? `
+              <div class="oc-resource-tools mb-3">
+                <button type="button" id="compareResourcesBtn" class="btn btn-outline-primary btn-sm">Compare</button>
+                <button type="button" id="exportJsonBtn" class="btn btn-outline-secondary btn-sm">Export JSON</button>
+                <button type="button" id="exportCsvBtn" class="btn btn-outline-secondary btn-sm">Export CSV</button>
+                <span id="resourceToolStatus" class="small text-muted" role="status"></span>
+              </div>
+            ` : ''}
+            <div class="oc-library-list">
+              ${recentBookmarks.length ? recentBookmarks.map((row, index) => {
+                const key = bookmarkKey(row);
+                const note = notesByKey.get(key) || {};
+                const collectionLabels = collectionNamesByResource.get(key) || [];
+                const rowType = resourceKind(row.type);
+                const rowId = row.id || row.resource_id;
+                const libraryMetaHtml = [
+                  note.tags?.length ? tagListHtml(note.tags) : '',
+                  collectionLabels.length ? `<span class="oc-account-meta">In ${esc(collectionLabels.slice(0, 2).join(', '))}${collectionLabels.length > 2 ? ` +${collectionLabels.length - 2}` : ''}</span>` : ''
+                ].filter(Boolean).join('');
+                return `
+                  <div class="oc-account-row oc-resource-select-row">
+                    <label class="oc-resource-select">
+                      <input class="form-check-input" type="checkbox" value="${index}" data-resource-select aria-label="Select ${esc(row.title || row.id)}">
+                      <span class="oc-resource-main">
+                        <span class="oc-account-type">${esc(typeLabel(row.type))}</span>
+                        <strong>${esc(row.title || row.id)}</strong>
+                        <span class="oc-account-meta">${row.created_at ? `Saved ${formatDate(row.created_at)}` : 'Saved resource'}</span>
+                      </span>
+                    </label>
+                    ${libraryMetaHtml ? `<div class="oc-library-meta">${libraryMetaHtml}</div>` : ''}
+                    <span class="oc-account-actions">
+                      <button type="button" class="oc-bookmark-btn active" data-resource-unsave="${index}" aria-label="Remove ${esc(row.title || row.id)} from saved resources" title="Remove from saved resources">${bookmarkIcon()}</button>
+                      <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
+                    </span>
+                    <details class="oc-library-quick-edit">
+                      <summary>Notes and tags</summary>
+                      <form class="oc-library-edit-grid" data-note-form="${esc(key)}">
+                        <input type="hidden" name="resource_type" value="${esc(rowType)}">
+                        <input type="hidden" name="resource_id" value="${esc(rowId)}">
+                        <div class="oc-library-edit-wide">
+                          <label class="form-label small fw-bold">Tags</label>
+                          <input name="tags" class="form-control form-control-sm" value="${esc((note.tags || []).join(', '))}">
+                        </div>
+                        <div class="oc-library-edit-wide">
+                          <label class="form-label small fw-bold">Note</label>
+                          <textarea name="note" class="form-control" rows="2">${esc(note.note || '')}</textarea>
+                        </div>
+                        <div class="oc-library-edit-actions">
+                          <button type="submit" class="btn btn-primary btn-sm">Save note</button>
+                          ${note.user_id ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-clear-note="${esc(key)}">Clear</button>` : ''}
+                          <span class="small text-muted" role="status"></span>
+                        </div>
+                      </form>
+                      ${collectionOptions ? `
+                        <div class="oc-library-collection-tool">
+                          <label class="form-label small fw-bold">Add to collection</label>
+                          <div class="oc-inline-form oc-library-collection-form">
+                            <select class="form-select form-select-sm" data-library-collection="${esc(key)}" aria-label="Collection">
+                              ${collectionOptions}
+                            </select>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-add-library-collection="${esc(key)}" data-resource-type="${esc(rowType)}" data-resource-id="${esc(rowId)}">Add</button>
+                          </div>
+                          <span class="small text-muted" data-library-collection-status></span>
+                        </div>
+                      ` : '<p class="small text-muted mb-0">Create a collection before assigning this resource.</p>'}
+                    </details>
+                  </div>
+                `;
+              }).join('') : empty('No library items yet', 'Browse the catalog to add resources to this account.')}
+            </div>
+            <div id="resourceCompareOutput"></div>
+          </section>
         </section>
+
+        <section data-workspace-panel="submissions" hidden>
+	          <section id="submissions" class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+              <div>
+                <h3 class="h5 fw-bold mb-1">Resource submissions</h3>
+                <p class="text-muted mb-0 small">${pendingCount} pending review · ${addedCount} added to the catalog · ${publicBadges.length} badges</p>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
+            </div>
+            <div class="vstack gap-2">
+              ${suggestions.length ? suggestions.map(row => `
+                <div class="oc-account-row">
+                  <span>
+                    <span class="oc-account-type">${esc(typeLabel(row.resource_type))}</span>
+                    <strong>${esc(row.title)}</strong>
+                    <span class="oc-account-meta">${row.created_at ? `Submitted ${formatDate(row.created_at)}` : 'Submitted resource'}${row.reviewed_at ? ` · Reviewed ${formatDate(row.reviewed_at)}` : ''}</span>
+                    ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
+                  </span>
+                  <span class="oc-account-actions">
+                    <span class="${statusClass(row.status)}">${esc(statusLabel(row.status))}</span>
+                    ${row.url ? `<a class="btn btn-outline-secondary btn-sm" href="${esc(row.url)}" target="_blank" rel="noopener">Source</a>` : ''}
+                  </span>
+                </div>
+              `).join('') : empty('No submissions yet', 'Suggest a dataset, model, workflow, or OER for review.')}
+	            </div>
+	          </section>
+        </section>
+
+        <section data-workspace-panel="collections" hidden>
+          <section class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+              <div>
+                <h3 class="h5 fw-bold mb-1">Collections</h3>
+                <p class="text-muted mb-0 small">Group saved resources for projects, papers, classes, or benchmark comparisons.</p>
+              </div>
+              <span id="collectionToolStatus" class="small text-muted" role="status"></span>
+            </div>
+            <form id="collectionForm" class="oc-inline-form mb-3">
+              <input name="name" class="form-control form-control-sm" placeholder="Collection name" required>
+              <input name="description" class="form-control form-control-sm" placeholder="Optional description">
+              <button type="submit" class="btn btn-primary btn-sm">Create</button>
+            </form>
+            <div class="oc-subcard-grid">
+              ${collectionCardsHtml(collections, collectionItems, bookmarks)}
+            </div>
+          </section>
+        </section>
+
+        <section data-workspace-panel="notes" hidden>
+          <section class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+              <div>
+                <h3 class="h5 fw-bold mb-1">Research notes</h3>
+                <p class="text-muted mb-0 small">Notes and tags for saved resources.</p>
+              </div>
+              <span class="small text-muted">${notes.length} annotated</span>
+            </div>
+            <div class="oc-subcard-grid">
+              ${notesHtml(bookmarks, notesByKey)}
+            </div>
+          </section>
+        </section>
+
       </section>
     `;
 
@@ -1441,7 +1946,10 @@
     });
     bindSuggestionForm(user);
     bindProfileForm(user);
-    bindResourceTools(recentBookmarks);
+    bindWorkspaceTabs();
+    bindResourceTools(recentBookmarks, notesByKey);
+    bindCollectionTools(user, recentBookmarks, collections, collectionItems, notesByKey);
+    bindNoteTools(user);
     bindBadgeCertificates(publicBadges, name);
     bindIdentityTools(identities);
     bindPrivacyTools(accountDataExport, user);
