@@ -469,7 +469,8 @@ function formatLicense(licVal){
     'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'MIT License with Commons Clause Restriction':'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
 	'LGPL-3.0':'https://www.gnu.org/licenses/lgpl-3.0.html',
-    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en'
+    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
+    'Custom MIT License (University of Stuttgart)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
   };
   if (licenseMap[key]) {
     return `<a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a>`;
@@ -506,7 +507,8 @@ function formatLicense(licVal){
     'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
     'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
     'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
-    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md'
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+    'Custom MIT License (University of Stuttgart)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
   };
 
   if (licenseMap[key]) {
@@ -541,7 +543,8 @@ function licenseHrefFor(licVal){
     'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
     'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
     'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
-    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md'
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+    'Custom MIT License (University of Stuttgart)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
   };
   return licenseMap[key] || '';
 }
