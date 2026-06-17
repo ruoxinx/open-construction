@@ -150,7 +150,7 @@
 			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
@@ -305,14 +305,13 @@
 <script src="assets/js/config.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/site-shell.js"></script>
 <script src="assets/js/index.js"></script>
 
 <script>
-  // Year + docked search + selected-range bar
-  (function(){
-    document.getElementById('yearNow').textContent = new Date().getFullYear();
-
-    const heroInput = document.getElementById('q');
+	  // Docked search + selected-range bar
+	  (function(){
+	    const heroInput = document.getElementById('q');
     const dockInput = document.getElementById('qDock');
     const dockThreshold = 220;
 
@@ -348,27 +347,10 @@
       minVal.textContent = a; maxVal.textContent = b;
     }
     if (min && max && track){ ['input','change'].forEach(e=>{min.addEventListener(e,updateTrack); max.addEventListener(e,updateTrack);}); updateTrack(); }
-  })();
-</script>
+	  })();
+	</script>
 
-<!-- Auto-active current nav link (adds aria-current + .active) -->
-<script>
-  (function(){
-    var current = location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(function(a){
-      var href = a.getAttribute('href'); if(!href) return;
-      var normalized = href.split('#')[0].split('?')[0];
-      var isMatch = normalized === current ||
-                    (normalized === 'index.html' && (current === '' || current === '/'));
-      if(isMatch){
-        a.classList.add('active');
-        a.setAttribute('aria-current','page');
-      }
-    });
-  })();
-</script>
-
-<!-- Floating button: Suggest dataset -->
+	<!-- Floating button: Suggest dataset -->
 <a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_dataset.yml"
    class="issue-btn" target="_blank" rel="noopener">
    Suggest a Dataset

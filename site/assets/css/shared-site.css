@@ -243,6 +243,29 @@ header.hero p{
 .btn-subscribe-icon svg{ fill:var(--oc-accent); }
 .btn-subscribe-icon:hover svg{ filter:brightness(1.15); }
 
+.issue-btn{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:1050;
+  padding:12px 20px;
+  border-radius:999px;
+  background:#0d6efd;
+  color:#fff;
+  font-size:.9rem;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+  transition:background .2s ease, transform .2s ease;
+}
+
+.issue-btn:hover{
+  background:#0b5ed7;
+  color:#fff;
+  text-decoration:none;
+  transform:translateY(-2px);
+}
+
 .oc-modal-compact{
   padding:1rem;
   border:0;
@@ -1555,6 +1578,13 @@ header.hero p{
 
   .oc-resource-select-row{
     grid-template-columns:1fr;
+  }
+
+  .issue-btn{
+    right:14px;
+    bottom:14px;
+    padding:10px 14px;
+    font-size:.82rem;
   }
 }
 

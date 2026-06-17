@@ -600,7 +600,7 @@
 			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="models">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
         <li class="nav-item dropdown">
           <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
@@ -962,7 +962,6 @@
 </footer>
 
 <!-- Scripts -->
-<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/institutions.js"></script>
 
@@ -980,46 +979,6 @@ api.renderInstitutionMarquee({
 })();
 </script>
 
-<!-- Auto-active current nav link -->
-<script>
-  (function(){
-    const path = (location.pathname || '').replace(/\/+$/,'');
-    const file = path.split('/').pop() || 'contributors.html';
-    const routeByFile = {
-      '': 'contributors',
-      'contributors': 'contributors', 'contributors.html': 'contributors',
-      'index': 'index', 'index.html': 'index',
-      'dataset': 'dataset', 'dataset.html': 'dataset',
-      'models': 'models', 'models.html': 'models'
-    };
-    const route = routeByFile[file] || (file.includes('contributors') ? 'contributors' : '');
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.dataset.route===route){ a.classList.add('active'); a.setAttribute('aria-current','page'); }
-    });
-  })();
-</script>
-
-<script>
-(function(){
-  const file = (location.pathname || '').split('/').pop() || 'index.html';
-  const isTools = /tools(\.html)?$/.test(file);
-  const isGuides = /guides(\.html)?$/.test(file);
-  if (isTools || isGuides) {
-    // highlight "Docs"
-    document.querySelectorAll('.navbar .nav-link.plain').forEach(a=>{
-      if(a.textContent.trim()==='Docs') a.classList.add('active');
-    });
-    // mark the chosen dropdown item
-    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(d=>{
-      if ((isTools && d.getAttribute('href')?.includes('tools')) ||
-          (isGuides && d.getAttribute('href')?.includes('guides'))) {
-        d.classList.add('active');
-      }
-    });
-  }
-})();
-</script>
-
 <!-- Leaflet core -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 
@@ -1030,6 +989,7 @@ api.renderInstitutionMarquee({
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/site-shell.js"></script>
 
 <style>
   /* Optional: soft ocean background to avoid gray gaps */
@@ -1614,4 +1574,3 @@ api.renderInstitutionMarquee({
 
 </body>
 </html>
-
