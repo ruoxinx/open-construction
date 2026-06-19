@@ -7,7 +7,7 @@
     <language>en-US</language>
 
   <item>
-    <title><![CDATA[Dataset: Steel bridge inspection dataset]]></title>
+    <title><![CDATA[Dataset: Steel bridge defect dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
     <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
     <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
