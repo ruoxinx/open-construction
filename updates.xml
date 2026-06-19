@@ -7,17 +7,25 @@
     <language>en-US</language>
 
   <item>
-    <title><![CDATA[Dataset: MultiCamAssembly DataPackage: Experimental Crane Assembly Runs and YOLO Vision Training Data]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=MultiCamAssembly</link>
-    <guid isPermaLink="false">datasets:MultiCamAssembly:2026-06-16</guid>
-    <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
+    <title><![CDATA[Dataset: Steel bridge inspection dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
+    <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
 
   <item>
-    <title><![CDATA[Dataset: Steel bridge inspection dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
-    <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-16</guid>
+    <title><![CDATA[Model: Context-Aware Framework for Bridge Condition Assessment]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:ContextAware_CV_CorrosionBridge:2026-06-19</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Bridge condition assessment model using Ground RGB (2026)]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Dataset: MultiCamAssembly DataPackage: Experimental Crane Assembly Runs and YOLO Vision Training Data]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=MultiCamAssembly</link>
+    <guid isPermaLink="false">datasets:MultiCamAssembly:2026-06-16</guid>
     <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:TunCO2:2026-05-22</guid>
     <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Lifecycle analysis model using Tabular (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: 3DFacilities: Annotated 3D Reconstructions of Building Facilities]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=3DFacilities</link>
-    <guid isPermaLink="false">datasets:3DFacilities:2026-05-19</guid>
-    <pubDate>Tue, 19 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
