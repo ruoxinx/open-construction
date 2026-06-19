@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: BD3: Building De-fects Detection Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BD3</link>
+    <guid isPermaLink="false">datasets:BD3:2026-06-19</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Context-Aware Framework for Bridge Condition Assessment]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:ContextAware_CV_CorrosionBridge:2026-06-19</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
     <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: TunCO2: an open-source digital toolbox for accounting and optimising decarbonisation in tunnelling]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:TunCO2:2026-05-22</guid>
-    <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Lifecycle analysis model using Tabular (2026)]]></description>
   </item>
   </channel>
 </rss>
