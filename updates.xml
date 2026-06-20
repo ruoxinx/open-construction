@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: TTPLA: An Aerial-Image Dataset for Detection and Segmentation of Transmission Towers and Power Lines]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=TTPLA</link>
+    <guid isPermaLink="false">datasets:TTPLA:2026-06-20</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Steel bridge defect dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
     <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: RDD2022: A multi-national Road Damage Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=RDD2022</link>
     <guid isPermaLink="false">datasets:RDD2022:2026-06-01</guid>
-    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CISOL: Construction Industry Steel Ordering List (CISOL) Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CISOL</link>
-    <guid isPermaLink="false">datasets:CISOL:2026-06-01</guid>
     <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
