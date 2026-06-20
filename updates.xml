@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: LEAD1.0: Large-scale Energy Anomaly Detection (LEAD) Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=LEAD1.0</link>
+    <guid isPermaLink="false">datasets:LEAD1.0:2026-06-20</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Steel bridge defect dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
     <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=CISOL</link>
     <guid isPermaLink="false">datasets:CISOL:2026-06-01</guid>
     <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: TunGPR dataset: Ground Penetrating Radar (GPR)-based tunnel lining assessment dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=TunGPR</link>
-    <guid isPermaLink="false">datasets:TunGPR:2026-05-22</guid>
-    <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
