@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: BridgeEQA: Virtual Embodied Agents for Real Bridge Inspections]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
+    <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: SCSegamba: Lightweight Structure-Aware Vision Mamba for Crack Segmentation in Structures]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:iWatchRoad:2026-06-06</guid>
     <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Road infrastructure monitoring model using Ground RGB (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: VizArQA: A Foundation for Visual Question Answering in Architectural Simulation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=VizArQA</link>
-    <guid isPermaLink="false">datasets:VizArQA:2026-06-01</guid>
-    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
