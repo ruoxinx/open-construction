@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Modified Swiss Dwellings (MSD) Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=MSD</link>
+    <guid isPermaLink="false">datasets:MSD:2026-06-24</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: SCSegamba: Lightweight Structure-Aware Vision Mamba for Crack Segmentation in Structures]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:MultiCamAssembly:2026-06-16</guid>
     <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: BIM-JEPA: Joint Embedding Predictive Architecture for BIM Element Classification]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:bim-jepa:2026-06-13</guid>
-    <pubDate>Sat, 13 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[BIM model understanding model using BIM/IFC (2026)]]></description>
   </item>
   </channel>
 </rss>
