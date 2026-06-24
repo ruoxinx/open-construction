@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: DreamHouse: How Far Are VLMs from Constructing the Real World?]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DreamHouse</link>
+    <guid isPermaLink="false">datasets:DreamHouse:2026-06-24</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: SCSegamba: Lightweight Structure-Aware Vision Mamba for Crack Segmentation in Structures]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:ContextAware_CV_CorrosionBridge:2026-06-19</guid>
     <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Bridge condition assessment model using Ground RGB (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: MultiCamAssembly DataPackage: Experimental Crane Assembly Runs and YOLO Vision Training Data]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=MultiCamAssembly</link>
-    <guid isPermaLink="false">datasets:MultiCamAssembly:2026-06-16</guid>
-    <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
