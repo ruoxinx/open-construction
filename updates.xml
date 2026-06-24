@@ -15,9 +15,9 @@
   </item>
 
   <item>
-    <title><![CDATA[Dataset: BridgeEQA: Embodied Question Answering (EQA) for Bridge Inspections]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
-    <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
+    <title><![CDATA[Dataset: Rail3D: Multi-Context Point Cloud Dataset for Railway Semantic Segmentation]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=Rail3D</link>
+    <guid isPermaLink="false">datasets:Rail3D:2026-06-24</guid>
     <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
