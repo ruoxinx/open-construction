@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: SCSegamba: Lightweight Structure-Aware Vision Mamba for Crack Segmentation in Structures]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Crack detection model using Ground RGB (2025)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: LEAD1.0: Large-scale Energy Anomaly Detection (LEAD) Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=LEAD</link>
     <guid isPermaLink="false">datasets:LEAD:2026-06-20</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: VizArQA: A Foundation for Visual Question Answering in Architectural Simulation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=VizArQA</link>
     <guid isPermaLink="false">datasets:VizArQA:2026-06-01</guid>
-    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: RDD2022: A multi-national Road Damage Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=RDD2022</link>
-    <guid isPermaLink="false">datasets:RDD2022:2026-06-01</guid>
     <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
