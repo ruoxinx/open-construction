@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: German Hospital dataset (DeKH)]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DeKH</link>
+    <guid isPermaLink="false">datasets:DeKH:2026-06-25</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BridgeEQA: Virtual Embodied Agents for Real Bridge Inspections]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
     <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:BD3:2026-06-19</guid>
     <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Context-Aware Framework for Bridge Condition Assessment]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:ContextAware_CV_CorrosionBridge:2026-06-19</guid>
-    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Bridge condition assessment model using Ground RGB (2026)]]></description>
   </item>
   </channel>
 </rss>
