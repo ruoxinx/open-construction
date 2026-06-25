@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: PyStruct3D: Bounding box fitting and reconstruction for scan-to-BIM workflows]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:PyStruct3D:2026-06-25</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[scan-to-BIM model using BIM/IFC, 3D point clouds (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: BridgeEQA: Virtual Embodied Agents for Real Bridge Inspections]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
     <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: Steel bridge defect dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
     <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
-    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BD3: Building Defects Detection Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BD3</link>
-    <guid isPermaLink="false">datasets:BD3:2026-06-19</guid>
     <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
