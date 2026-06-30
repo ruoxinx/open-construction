@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: evCIVIL : Event-Based Dataset for visual Detection of CIVIL infrastructure Defects]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=ev-CIVIL</link>
+    <guid isPermaLink="false">datasets:ev-CIVIL:2026-06-30</guid>
+    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: German Hospital dataset (DeKH)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=DeKH</link>
     <guid isPermaLink="false">datasets:DeKH:2026-06-25</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: LEAD1.0: Large-scale Energy Anomaly Detection (LEAD) Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=LEAD</link>
     <guid isPermaLink="false">datasets:LEAD:2026-06-20</guid>
-    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: TTPLA: An Aerial-Image Dataset for Detection and Segmentation of Transmission Towers and Power Lines]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=TTPLA</link>
-    <guid isPermaLink="false">datasets:TTPLA:2026-06-20</guid>
     <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
