@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: WHU-Railway3D: A Diverse Dataset and Benchmark for Railway Point Cloud Semantic Segmentation]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=WHU-Railway3D</link>
+    <guid isPermaLink="false">datasets:WHU-Railway3D:2026-06-30</guid>
+    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: German Hospital dataset (DeKH)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=DeKH</link>
     <guid isPermaLink="false">datasets:DeKH:2026-06-25</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=TTPLA</link>
     <guid isPermaLink="false">datasets:TTPLA:2026-06-20</guid>
     <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Steel bridge defect dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CorrosionBridge</link>
-    <guid isPermaLink="false">datasets:CorrosionBridge:2026-06-19</guid>
-    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
