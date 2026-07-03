@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: InsPLAD: Inspection of Power Line Assets Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=InsPLAD</link>
+    <guid isPermaLink="false">datasets:InsPLAD:2026-07-3</guid>
+    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: WHU-Railway3D: A Diverse Dataset and Benchmark for Railway Point Cloud Semantic Segmentation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=WHU-Railway3D</link>
     <guid isPermaLink="false">datasets:WHU-Railway3D:2026-06-30</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
     <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Crack detection model using Ground RGB (2025)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: LEAD1.0: Large-scale Energy Anomaly Detection (LEAD) Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=LEAD</link>
-    <guid isPermaLink="false">datasets:LEAD:2026-06-20</guid>
-    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
