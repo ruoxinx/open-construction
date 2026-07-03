@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: AECV-Bench: Inspection of Power Line Assets Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=AECV-Bench</link>
+    <guid isPermaLink="false">datasets:AECV-Bench:2026-07-03</guid>
+    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: WHU-Railway3D: A Diverse Dataset and Benchmark for Railway Point Cloud Semantic Segmentation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=WHU-Railway3D</link>
     <guid isPermaLink="false">datasets:WHU-Railway3D:2026-06-30</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:DreamHouse:2026-06-24</guid>
     <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: SCSegamba: Lightweight Structure-Aware Vision Mamba for Crack Segmentation in Structures]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:SCSegamba:2026-06-24</guid>
-    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Crack detection model using Ground RGB (2025)]]></description>
   </item>
   </channel>
 </rss>
