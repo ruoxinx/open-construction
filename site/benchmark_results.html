@@ -675,7 +675,7 @@
     document.getElementById('taskBackLink').href = taskKey ? `benchmark_task.html?key=${encodeURIComponent(taskKey)}&label=${encodeURIComponent(taskLabel)}` : 'benchmarks.html';
     document.title = `OpenConstruction - ${board.dataset_name || board.page_title || board.name}`;
 
-    if (board.results_url && !metricDefs.length) {
+    if (board.results_url) {
       const externalFacts = datasetFacts.filter(fact => fact.label !== 'Metric');
       return `
         <div class="dataset-hero">
