@@ -80,6 +80,7 @@ function formatLicense(licenseValue){
     'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
     'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
@@ -114,6 +115,7 @@ function licenseHrefFor(licenseValue){
     'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
     'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
@@ -174,6 +176,19 @@ function licenseNoticeFor(licenseValue){
         'Attribution — Give appropriate credit, provide a link to the license, and indicate if changes were made.',
         'NonCommercial — You may not use the material for commercial purposes.',
         'No additional restrictions — Do not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
+    'CC BY-NC 3.0': {
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
       ],
       notices
     },
@@ -245,6 +260,8 @@ function licenseNoticeFor(licenseValue){
   };
   cc['CC-BY 4.0'] = cc['CC BY 4.0'];
   cc['CC-BY-NC'] = cc['CC BY-NC 4.0'];
+  cc['CC-BY-NC 3.0'] = cc['CC BY-NC 3.0'];
+  cc['CC BY NC 3.0'] = cc['CC BY-NC 3.0'];
 
   if (!key || /UNSPECIFIED|UNKNOWN|NOT SPECIFIED/.test(key)) return unspecified;
   if (cc[key]) return cc[key];

@@ -460,6 +460,7 @@ function formatLicense(licVal){
     'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
     'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
@@ -493,6 +494,7 @@ function formatLicense(licVal){
     'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
     'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
@@ -533,6 +535,7 @@ function licenseHrefFor(licVal){
     'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
     'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
     'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
@@ -614,6 +617,21 @@ function licenseNoticeFor(licVal){
       ],
       notices
     },
+    'CC BY-NC 3.0': {
+      title: 'Creative Commons Attribution-NonCommercial 3.0',
+      intro: 'This resource is made available under Creative Commons Attribution-NonCommercial 3.0. The following summary highlights key permissions and conditions from the license deed.',
+      freedoms: [
+        'Share — copy and redistribute the material in any medium or format.',
+        'Adapt — remix, transform, and build upon the material.',
+        'The licensor cannot revoke these freedoms as long as you follow the license terms.'
+      ],
+      terms: [
+        'Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.',
+        'NonCommercial — You may not use the material for commercial purposes.',
+        'No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.'
+      ],
+      notices
+    },
     'CC-BY-NC': null,
     'CC BY-SA 4.0': {
       title: 'Creative Commons Attribution-ShareAlike 4.0 International',
@@ -679,6 +697,8 @@ function licenseNoticeFor(licVal){
   };
   creativeCommons['CC-BY 4.0'] = creativeCommons['CC BY 4.0'];
   creativeCommons['CC-BY-NC'] = creativeCommons['CC BY-NC 4.0'];
+  creativeCommons['CC-BY-NC 3.0'] = creativeCommons['CC BY-NC 3.0'];
+  creativeCommons['CC BY NC 3.0'] = creativeCommons['CC BY-NC 3.0'];
 
   if (!key || /UNSPECIFIED|UNKNOWN|NOT SPECIFIED/.test(key)) return unspecified;
   if (creativeCommons[key]) return creativeCommons[key];
