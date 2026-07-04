@@ -507,12 +507,35 @@
       document.getElementById('pageSubtitle').textContent = taskDefinition;
     }
 
-    const dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key));
+    let dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key));
     const mMatched  = models
       .filter(m => getModelTasks(m).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key))
       .filter(m => !/^semanticbridge-(unet3d|kpconv|ptv2)$/i.test(normStr(m.id)));
-    const boards = (Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [])
-      .filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const allBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
+    const exactBoards = allBoards.filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
+    const matchedDatasetIds = new Set(dsMatched.map(ds => canonKey(ds.id)));
+    exactBoards.forEach(board => {
+      const datasetId = canonKey(board.dataset_id);
+      if(!datasetId || matchedDatasetIds.has(datasetId)) return;
+      const dataset = datasetById.get(datasetId);
+      if(dataset){
+        dsMatched.push(dataset);
+        matchedDatasetIds.add(datasetId);
+      }
+    });
+    const requestedTaskId = normalizedRequested.entry?.id || '';
+    const relatedBoards = allBoards.filter(board => {
+      const normalizedBoardTask = normalizeTaskTerm(board.task, taskVocabulary);
+      const datasetId = canonKey(board.dataset_id);
+      if(!datasetId || !matchedDatasetIds.has(datasetId)) return false;
+      if(normalizedBoardTask.canon === key) return false;
+      const boardRelatedIds = normArray(normalizedBoardTask.entry?.related_task_ids);
+      const requestedRelatedIds = normArray(normalizedRequested.entry?.related_task_ids);
+      return (requestedTaskId && boardRelatedIds.includes(requestedTaskId))
+        || (normalizedBoardTask.entry?.id && requestedRelatedIds.includes(normalizedBoardTask.entry.id));
+    });
+    const boards = [...exactBoards, ...relatedBoards];
     const boardByDatasetId = new Map();
     boards.forEach(board => {
       const datasetId = canonKey(board.dataset_id);

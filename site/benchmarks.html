@@ -585,7 +585,8 @@
           dsCount:0,
           modelCount:0,
           imgPrimary:'',
-          imgFallback:''
+          imgFallback:'',
+          searchText: [normalized.label, canon].filter(Boolean).join(' ')
         });
       }
       return map.get(canon);
@@ -601,6 +602,7 @@
           node.dsCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+          node.searchText = [node.searchText, ds.id, ds.name, ds.title].map(normStr).filter(Boolean).join(' ');
         }
       });
     });
@@ -615,6 +617,7 @@
           node.modelCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+          node.searchText = [node.searchText, m.id, m.name, m.title].map(normStr).filter(Boolean).join(' ');
         }
       });
     });
@@ -622,6 +625,64 @@
     const arr = Array.from(map.values());
     arr.sort((a,b)=> a.label.localeCompare(b.label));
     return arr;
+  }
+
+  function findDatasetById(datasets, id){
+    const wanted = canonKey(id);
+    if(!wanted) return null;
+    return datasets.find(ds => canonKey(ds.id) === wanted) || null;
+  }
+
+  function mergeBenchmarkTasks(index, boards, datasets, taskVocabulary){
+    const byCanon = new Map(index.map(item => [item.canon, item]));
+
+    boards.forEach(board => {
+      const normalized = normalizeTaskTerm(board.task, taskVocabulary);
+      const canon = normalized.canon;
+      if(!canon) return;
+
+      let node = byCanon.get(canon);
+      if(!node){
+        node = {
+          canon,
+          label: normalized.label,
+          idSlug: slugifyKey(normalized.label || canon),
+          taskId: normalized.taskId || '',
+          dsCount: 0,
+          modelCount: 0,
+          imgPrimary: '',
+          imgFallback: '',
+          searchText: [normalized.label, canon].filter(Boolean).join(' ')
+        };
+        byCanon.set(canon, node);
+      }
+
+      const dataset = findDatasetById(datasets, board.dataset_id);
+      const boardDatasetKey = canonKey(board.dataset_id || board.dataset_name || board.id);
+      const datasetAlreadyLinked = dataset
+        ? getDatasetTasks(dataset).some(task => normalizeTaskTerm(task, taskVocabulary).canon === canon)
+        : false;
+      node._benchmarkDatasetKeys = node._benchmarkDatasetKeys || new Set();
+      if(boardDatasetKey && !datasetAlreadyLinked && !node._benchmarkDatasetKeys.has(boardDatasetKey)){
+        node._benchmarkDatasetKeys.add(boardDatasetKey);
+        node.dsCount += 1;
+      }
+
+      const img = toPngFirst(dataset?.image_url || dataset?.thumbnail || '');
+      node.imgPrimary = betterImage(node.imgPrimary, img.primary);
+      if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+      node.searchText = [
+        node.searchText,
+        board.id,
+        board.name,
+        board.page_title,
+        board.dataset_id,
+        board.dataset_name,
+        board.summary
+      ].map(normStr).filter(Boolean).join(' ');
+    });
+
+    return Array.from(byCanon.values()).sort((a,b)=> a.label.localeCompare(b.label));
   }
 
   // -------- Progressive reveal --------
@@ -719,7 +780,7 @@
 
     function renderAllMatches(kind, elId, noteId, hrefBuilder){
       const all = gridState[kind].all || [];
-      const filtered = !needle ? all : all.filter(x => (x.label || x.canon || '').toLowerCase().includes(needle));
+      const filtered = !needle ? all : all.filter(x => (x.searchText || x.label || x.canon || '').toLowerCase().includes(needle));
 
       const el = document.getElementById(elId);
       const note = document.getElementById(noteId);
@@ -774,9 +835,19 @@
     // Keep your existing site paths:
     // - data/datasets.json is an object keyed by id (we read Object.values)
     // - data/models.json is an array
-    const [datasets, models, taskVocabularyPayload] = await Promise.all([
+    const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
       loadJsonSafe('data/models.json'),
+      (async () => {
+        try{
+          const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
+          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          return await res.json();
+        }catch(err){
+          console.warn('Could not load benchmark-results.json', err);
+          return { benchmarks: [] };
+        }
+      })(),
       (async () => {
         try{
           const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});
@@ -789,12 +860,13 @@
       })()
     ]);
     const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
+    const benchmarkBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
 
     document.getElementById('statDatasets').textContent = String(datasets.length || 0);
     document.getElementById('statModels').textContent   = String(models.length || 0);
 
     // Build PNG-first index for TASKS
-	const tasks = buildMergedIndex({
+	let tasks = buildMergedIndex({
 	  datasets,
 	  models,
 	  extractor: (obj, kind) =>
@@ -807,6 +879,7 @@
 		  ? (obj.image_url || obj.thumbnail || '')
 		  : getModelCardImage(obj)
 	})
+    tasks = mergeBenchmarkTasks(tasks, benchmarkBoards, datasets, taskVocabulary);
 
     // Build PNG-first index for APPLICATIONS
     const apps = buildMergedIndex({
