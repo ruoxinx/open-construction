@@ -376,6 +376,15 @@
       </svg>`;
   }
 
+  function externalLeaderboardIcon(){
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M2 13.5V8h2v5.5H2Zm5 0V4h2v9.5H7Zm5 0V6h2v7.5h-2Z"/>
+        <path d="M10.5 1h4v4h-1V2.707L9.854 6.354l-.708-.708L12.793 2H10.5V1Z"/>
+        <path d="M1 15h14v1H1v-1Z"/>
+      </svg>`;
+  }
+
   function githubIcon(){
     return `
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -391,6 +400,10 @@
 
   function resultsCell(board){
     if(!board) return '<span class="text-muted">—</span>';
+    const externalUrl = normStr(board.results_url || '');
+    if(externalUrl){
+      return `<a href="${esc(externalUrl)}" class="btn btn-sm btn-outline-dark" target="_blank" rel="noopener" title="Open external leaderboard" aria-label="Open external leaderboard">${externalLeaderboardIcon()}</a>`;
+    }
     return `<a href="benchmark_results.html?id=${encodeURIComponent(board.id)}" class="btn btn-sm btn-outline-dark" title="Open benchmark results" aria-label="Open benchmark results">${resultsIcon()}</a>`;
   }
 

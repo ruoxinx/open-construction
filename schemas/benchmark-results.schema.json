@@ -15,14 +15,11 @@
           "name",
           "task",
           "dataset_id",
-          "summary",
-          "comparison_scope",
-          "split",
-          "protocol",
-          "submission_policy",
-          "primary_metric_key",
-          "metric_columns",
-          "results"
+          "summary"
+        ],
+        "anyOf": [
+          { "required": ["results_url"] },
+          { "required": ["primary_metric_key", "metric_columns", "results"] }
         ],
         "properties": {
           "id": { "$ref": "schema.common.json#/definitions/id" },
@@ -40,6 +37,7 @@
           "source_label": { "type": "string" },
           "source_url": { "$ref": "schema.common.json#/definitions/url" },
           "dataset_url": { "$ref": "schema.common.json#/definitions/url" },
+          "results_url": { "$ref": "schema.common.json#/definitions/url" },
           "primary_metric_key": { "type": "string" },
           "metric_columns": {
             "type": "array",
