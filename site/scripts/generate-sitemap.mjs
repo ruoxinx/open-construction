@@ -8,7 +8,17 @@ const siteRoot = path.resolve(__dirname, "..");
 const outputPath = path.join(siteRoot, "sitemap.xml");
 const baseUrl = "https://www.openconstruction.org";
 const ignoredTopLevelDirs = new Set(["assets", "auth", "data", "scripts"]);
-const ignoredHtmlFiles = new Set(["account.html"]);
+const ignoredHtmlFiles = new Set([
+  "account.html",
+  "benchmark_application.html",
+  "benchmark_results.html",
+  "benchmark_task.html",
+  "datasets/detail.html",
+  "maintainer.html",
+  "models/details.html",
+  "oers/details.html",
+  "workflows/details.html",
+]);
 const args = new Set(process.argv.slice(2));
 const checkOnly = args.has("--check");
 
@@ -29,11 +39,26 @@ function walkHtmlFiles(dir, acc = []) {
       walkHtmlFiles(fullPath, acc);
       continue;
     }
-    if (entry.isFile() && entry.name.endsWith(".html") && !ignoredHtmlFiles.has(path.relative(siteRoot, fullPath).split(path.sep).join("/"))) {
+    const relative = path.relative(siteRoot, fullPath).split(path.sep).join("/");
+    if (
+      entry.isFile() &&
+      entry.name.endsWith(".html") &&
+      !ignoredHtmlFiles.has(relative) &&
+      !hasNoindexMeta(fullPath)
+    ) {
       acc.push(fullPath);
     }
   }
   return acc;
+}
+
+function hasNoindexMeta(fullPath) {
+  const html = fs.readFileSync(fullPath, "utf8");
+  return [...html.matchAll(/<meta\s+[^>]*>/gi)].some(([tag]) => {
+    const name = tag.match(/\bname=["']([^"']+)["']/i)?.[1]?.toLowerCase();
+    const content = tag.match(/\bcontent=["']([^"']+)["']/i)?.[1]?.toLowerCase() || "";
+    return name === "robots" && /\bnoindex\b/.test(content);
+  });
 }
 
 function buildXml(urls) {

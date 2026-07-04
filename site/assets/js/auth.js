@@ -610,7 +610,7 @@
     const li = document.getElementById(AUTH_NAV_ID);
     if (!li) return;
     if (!user) {
-      li.innerHTML = `<a class="nav-link plain oc-auth-link" href="${relHref('auth/sign-in.html')}">Sign in</a>`;
+      li.innerHTML = `<a class="nav-link plain oc-auth-link" href="${relHref('auth/sign-in.html')}" rel="nofollow">Sign in</a>`;
       return;
     }
     const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
