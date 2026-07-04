@@ -41,6 +41,7 @@
     .oc-section{ margin-top:28px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
     .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
+    .badge-external{ background:#fff4df; color:#7a4a09; border-color:#f3d199; }
     .card-shell,.table-wrap,.dataset-hero,.empty-card{
       background:#fff;
       border:1px solid var(--oc-border);
@@ -72,6 +73,36 @@
     .fact{ border-top:1px solid var(--oc-border); padding-top:.7rem; }
     .fact-label{ color:var(--oc-subtle); font-size:.76rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.2rem; }
     .fact-value{ font-weight:700; line-height:1.35; }
+    .external-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.85rem;
+      flex-wrap:wrap;
+      margin-top:1.15rem;
+      padding-top:1rem;
+      border-top:1px solid var(--oc-border);
+    }
+    .external-actions-primary,
+    .external-actions-secondary{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      flex-wrap:wrap;
+    }
+    .btn-leaderboard{
+      --bs-btn-color:#1e2a36;
+      --bs-btn-bg:var(--oc-gold);
+      --bs-btn-border-color:#d98c1c;
+      --bs-btn-hover-color:#111820;
+      --bs-btn-hover-bg:#ffb64f;
+      --bs-btn-hover-border-color:#c77f17;
+      --bs-btn-active-color:#111820;
+      --bs-btn-active-bg:#e99a23;
+      --bs-btn-active-border-color:#b87014;
+      box-shadow:0 8px 18px rgba(242,162,56,.22);
+      font-weight:700;
+    }
     .card-shell{ padding:1.1rem 1.25rem; }
     .metric-pill{
       display:inline-flex;
@@ -692,7 +723,7 @@
               : esc(datasetLabel)}</h2>
             <div class="d-flex flex-wrap gap-2 mb-3">
               <span class="badge badge-oc rounded-pill">${esc(taskLabel)}</span>
-              <span class="badge badge-oc rounded-pill">External leaderboard</span>
+              <span class="badge badge-oc badge-external rounded-pill">External leaderboard</span>
             </div>
             <div class="facts-grid">
               ${externalFacts.map(fact => `
@@ -702,17 +733,21 @@
                 </div>
               `).join('')}
             </div>
-            <div class="d-flex flex-wrap gap-2 mt-3">
-              <a class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-1" href="${esc(board.results_url)}" target="_blank" rel="noopener">${externalLeaderboardIcon()}<span>Open leaderboard</span></a>
-              ${datasetHref && datasetHref !== '#'
-                ? `<a class="btn btn-sm btn-outline-dark" href="${esc(datasetHref)}">View dataset</a>`
-                : ''}
-              ${board.source_url
-                ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.source_url)}" target="_blank" rel="noopener">View paper</a>`
-                : ''}
-              ${board.dataset_url
-                ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.dataset_url)}" target="_blank" rel="noopener">Source repository</a>`
-                : ''}
+            <div class="external-actions">
+              <div class="external-actions-primary">
+                <a class="btn btn-sm btn-leaderboard d-inline-flex align-items-center gap-1" href="${esc(board.results_url)}" target="_blank" rel="noopener">${externalLeaderboardIcon()}<span>Open leaderboard</span></a>
+              </div>
+              <div class="external-actions-secondary">
+                ${datasetHref && datasetHref !== '#'
+                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(datasetHref)}">View dataset</a>`
+                  : ''}
+                ${board.source_url
+                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.source_url)}" target="_blank" rel="noopener">View paper</a>`
+                  : ''}
+                ${board.dataset_url
+                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.dataset_url)}" target="_blank" rel="noopener">Source repository</a>`
+                  : ''}
+              </div>
             </div>
           </div>
         </div>
