@@ -1946,7 +1946,7 @@ async function initDetail(){
           ${metaRow('Annotations', chipLane(ds.annotation_types))}
           ${metaRow('IFC / Source files', chipLane(ds.data_type || ds.file_types || ds.formats || ''))}
           ${metaRow('Resolution', safeText(ds.resolution))}
-          ${metaRow('Geographic context', chipLane(ds.geographical_location))}
+          ${metaRow('Location', chipLane(ds.geographical_location))}
         </dl>
       </section>
 
