@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: CWPV: Construction Work Posture Video Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=CWPV</link>
+    <guid isPermaLink="false">datasets:CWPV:2026-07-09</guid>
+    <pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CEQuest: Benchmarking Large Language Models for Construction Estimation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CEQuest</link>
     <guid isPermaLink="false">datasets:CEQuest:2026-07-04</guid>
@@ -39,7 +47,7 @@
   </item>
 
   <item>
-    <title><![CDATA[Dataset: evCIVIL : Event-Based Dataset for visual Detection of CIVIL infrastructure Defects]]></title>
+    <title><![CDATA[Dataset: evCIVIL: Event-Based Dataset for visual Detection of CIVIL infrastructure Defects]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=ev-CIVIL</link>
     <guid isPermaLink="false">datasets:ev-CIVIL:2026-06-30</guid>
     <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: Rail3D: Multi-Context Point Cloud Dataset for Railway Semantic Segmentation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=Rail3D</link>
     <guid isPermaLink="false">datasets:Rail3D:2026-06-24</guid>
-    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Modified Swiss Dwellings (MSD) Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=MSD</link>
-    <guid isPermaLink="false">datasets:MSD:2026-06-24</guid>
     <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
