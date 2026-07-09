@@ -47,7 +47,9 @@ function incViews(id){ const k=getLocalViewsKey(id); const v=getViews(id)+1; loc
 document.addEventListener('DOMContentLoaded', ()=>{ const y=document.getElementById('yearNow'); if(y) y.textContent = new Date().getFullYear(); });
 
 function normalizeOcTaskKey(value){
-  return String(value || '').trim().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').toLowerCase();
+  return window.OCTerms?.normalizeTaskKey
+    ? window.OCTerms.normalizeTaskKey(value)
+    : String(value || '').trim().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').toLowerCase();
 }
 
 (function(){

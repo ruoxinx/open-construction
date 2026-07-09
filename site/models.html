@@ -333,6 +333,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
+<script src="assets/js/terms.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/site-shell.js"></script>
 
@@ -446,7 +447,11 @@ function esc(s){
 }
 
 /* ===== Normalizers & splitters ===== */
-function normKey(s){ if (s == null) return ''; return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase(); }
+function normKey(s){
+  if (window.OCTerms?.key) return window.OCTerms.key(s);
+  if (s == null) return '';
+  return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
+}
 function formatModelTitle(raw){
   const text = String(raw || '').trim();
   if (!text) return '';
@@ -479,6 +484,7 @@ function formatModelTitle(raw){
   }).join(' ');
 }
 function prettyTermLabel(raw){
+  if (window.OCTerms?.prettyTermLabel) return window.OCTerms.prettyTermLabel(raw);
   const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
   if (vocabLabel) return vocabLabel;
   const key = normKey(raw);
@@ -595,6 +601,7 @@ function splitTags(input){
 
 /* ===== Modalities canonicalization ===== */
 function canonicalizeModalityLabel(raw){
+  if (window.OCTerms?.canonicalizeModalityLabel) return window.OCTerms.canonicalizeModalityLabel(raw);
   if (!raw) return 'Other';
   const s = normKey(raw);
   const has = re => re.test(s);
@@ -642,6 +649,7 @@ function canonicalizeModalityLabel(raw){
   return 'Other';
 }
 function canonicalizeModalityLabels(raw){
+  if (window.OCTerms?.canonicalizeModalityLabels) return window.OCTerms.canonicalizeModalityLabels(raw);
   if (raw == null) return ['Other'];
   let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
   parts = parts.map(p => p && p.trim()).filter(Boolean);

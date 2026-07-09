@@ -201,6 +201,7 @@ function modalityFamilies(val){
 }
 
 function prettyTermLabel(raw){
+  if (window.OCTerms?.prettyTermLabel) return window.OCTerms.prettyTermLabel(raw);
   const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
   if (vocabLabel) return vocabLabel;
   const key = normKey(raw).replace(/[_-]+/g, ' ');
@@ -303,6 +304,7 @@ function prettyTermLabel(raw){
 }
 
 function uniquePrettyTerms(val){
+  if (window.OCTerms?.uniquePrettyTerms) return window.OCTerms.uniquePrettyTerms(val);
   const seen = new Set();
   const output = [];
   normalizeList(val).forEach(item => {
@@ -320,10 +322,10 @@ function taskFamilies(val){
   const families = new Set();
 
   rawTerms.forEach(term => {
-    const raw = String(term || '').toLowerCase();
+    const raw = normKey(term);
     if (!raw) return;
     if (/segment/.test(raw)) families.add('segmentation');
-    if (/reconstruction|structure from motion|scan-to-bim|2d-to-bim|bim reconstruction|model generation/.test(raw)) families.add('reconstruction');
+    if (/reconstruction|structure from motion|scan to bim|2d to bim|bim reconstruction|model generation/.test(raw)) families.add('reconstruction');
     if (/detect/.test(raw)) families.add('detection');
     if (/classif/.test(raw)) families.add('classification');
     if (/caption|retrieval/.test(raw)) families.add('vision-language');
@@ -341,9 +343,9 @@ function applicationFamilies(val){
   const families = new Set();
 
   rawTerms.forEach(term => {
-    const raw = String(term || '').toLowerCase();
+    const raw = normKey(term);
     if (!raw) return;
-    if (/building model|mesh generation|digital twin generation|bim authoring|bim reconstruction|scan-to-bim|text-to-bim|floorplan-to-bim|design brief automation|lod3|lod4/.test(raw)) families.add('building-generation');
+    if (/building model|mesh generation|digital twin generation|bim authoring|bim reconstruction|scan to bim|text to bim|floorplan to bim|design brief automation|lod3|lod4/.test(raw)) families.add('building-generation');
     if (/structural condition monitoring|damage|defect|inspection|assessment|bridge inspection/.test(raw)) families.add('inspection-monitoring');
     if (/safety/.test(raw)) families.add('safety');
     if (/site understanding|progress monitoring|productivity monitoring|knowledge management/.test(raw)) families.add('site-operations');
@@ -360,8 +362,8 @@ function applicationFamilies(val){
 
 function domainFamilies(val){
   const raw = Array.isArray(val)
-    ? val.map(item => String(item || '')).join(' ').toLowerCase()
-    : String(val || '').toLowerCase();
+    ? normKey(val.map(item => String(item || '')).join(' '))
+    : normKey(val);
   if (!raw.trim()) return [];
 
   const families = new Set();
@@ -409,7 +411,8 @@ function datasetCountSummary(ds){
 }
 
 function normKey(val){
-  return String(val || '').trim().toLowerCase();
+  if (window.OCTerms?.key) return window.OCTerms.key(val);
+  return String(val || '').trim().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').toLowerCase();
 }
 
 function truncateText(val, max = 180){

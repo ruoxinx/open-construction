@@ -16,10 +16,12 @@ let syncingUrlState = false;
 
 // ---------- helpers ----------
 function normKey(s){
+  if (window.OCTerms?.key) return window.OCTerms.key(s);
   if (s == null) return '';
   return String(s).trim().replace(/[_-]+/g,' ').replace(/\s+/g,' ').toLowerCase();
 }
 function prettyLabel(raw){
+  if (window.OCTerms?.prettyTermLabel) return window.OCTerms.prettyTermLabel(raw);
   const vocabLabel = window.ocPreferredTaskLabel ? window.ocPreferredTaskLabel(raw) : '';
   if (vocabLabel) return vocabLabel;
   const k = normKey(raw);
@@ -239,6 +241,7 @@ function prettyClassLabel(raw){
 
 // Canonicalize a single free-text modality description into one label
 function canonicalizeModalityLabel(raw){
+  if (window.OCTerms?.canonicalizeModalityLabel) return window.OCTerms.canonicalizeModalityLabel(raw);
   if (!raw) return 'Other';
   const s = normKey(raw);
   const has = re => re.test(s);
@@ -300,6 +303,7 @@ function canonicalizeModalityLabel(raw){
 // Split and canonicalize to an ARRAY of modalities.
 // Adds a separate "Synthetic" tag if the overall text implies it.
 function canonicalizeModalityLabels(raw){
+  if (window.OCTerms?.canonicalizeModalityLabels) return window.OCTerms.canonicalizeModalityLabels(raw);
   if (raw == null) return ['Other'];
 
   let parts = Array.isArray(raw) ? raw.slice() : String(raw).split(/[,/&+]| and /gi);
