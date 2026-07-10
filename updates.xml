@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: OpenFACADES dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=OpenFACADES</link>
+    <guid isPermaLink="false">datasets:OpenFACADES:2026-07-10</guid>
+    <pubDate>Fri, 10 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: CWPV: Construction Work Posture Video Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=CWPV</link>
     <guid isPermaLink="false">datasets:CWPV:2026-07-09</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: BridgeEQA: Virtual Embodied Agents for Real Bridge Inspections]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
     <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
-    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Rail3D: Multi-Context Point Cloud Dataset for Railway Semantic Segmentation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Rail3D</link>
-    <guid isPermaLink="false">datasets:Rail3D:2026-06-24</guid>
     <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
