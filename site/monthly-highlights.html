@@ -266,7 +266,7 @@
     }
     .featured-media{
       position:relative;
-      aspect-ratio:1.45/1;
+      aspect-ratio:16 / 9;
       background:#f3f6fa;
       overflow:hidden;
     }
@@ -295,10 +295,10 @@
       text-overflow:ellipsis;
     }
     .featured-body{
-      padding:.85rem .9rem .95rem;
+      padding:1rem 1.05rem 1.05rem;
       display:flex;
       flex-direction:column;
-      gap:.38rem;
+      gap:.45rem;
       flex:1;
       min-width:0;
     }
@@ -329,29 +329,10 @@
     }
     .featured-title{
       margin:0;
-      font-size:.93rem;
+      font-size:1.02rem;
       font-weight:700;
       color:var(--oc-ink);
       line-height:1.35;
-    }
-    .featured-title a{
-      color:inherit;
-      text-decoration:none;
-    }
-    .featured-title a:hover,
-    .featured-title a:focus-visible{
-      color:inherit;
-      text-decoration:none;
-    }
-    .featured-desc{
-      margin:0;
-      color:var(--oc-text);
-      font-size:.88rem;
-      line-height:1.42;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
     }
     .featured-meta{
       margin:0;
@@ -640,6 +621,11 @@
       return '';
     }
   }
+  function normalizeContributorHandle(name){
+    const text = safeText(name);
+    if (!text) return '';
+    return text.startsWith('@') ? text : `@${text}`;
+  }
   function parseDate(value){
     const raw = safeText(value);
     if (!raw) return null;
@@ -703,6 +689,50 @@
     }
     return Array.from(new Set(names.map((name) => safeText(name)).filter(Boolean)));
   }
+  function normalizeCardContributors(item, registry){
+    const list = [];
+    const pushContributor = (name, url) => {
+      const cleanName = safeText(name);
+      if (!cleanName) return;
+      const match = registry?.get(contributorKey(cleanName)) || registry?.get(aliasKey(cleanName));
+      const cleanUrl = safeHref(url || match?.link_url || '');
+      list.push({ name: cleanName, url: cleanUrl });
+    };
+
+    if (Array.isArray(item?.contributors)){
+      item.contributors.forEach((entry) => {
+        if (!entry) return;
+        if (typeof entry === 'string'){
+          pushContributor(entry, '');
+          return;
+        }
+        if (typeof entry === 'object'){
+          pushContributor(
+            entry.name || entry.contributor || entry.handle,
+            entry.url || entry.contributor_url || entry.profile || entry.link_url || ''
+          );
+        }
+      });
+    }
+
+    pushContributor(item?.contributor, item?.contributor_url);
+    pushContributor(item?.contributor_2, item?.contributor_url_2);
+    pushContributor(item?.contributor_3, item?.contributor_url_3);
+
+    return list.filter((entry, index, arr) => arr.findIndex((other) =>
+      contributorKey(other.name) === contributorKey(entry.name) && safeText(other.url) === safeText(entry.url)
+    ) === index).slice(0, 3);
+  }
+  function contributorOverlayHtml(contributors){
+    if (!Array.isArray(contributors) || !contributors.length) return '';
+    const names = contributors.map((entry) => {
+      const label = `<strong>${escapeHtml(normalizeContributorHandle(entry.name))}</strong>`;
+      return entry.url
+        ? `<a href="${escapeHtml(entry.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${label}</a>`
+        : label;
+    }).join(', ');
+    return `<div class="submitted-by">Proposed by ${names}</div>`;
+  }
   function itemHref(type, item){
     const id = encodeURIComponent(item.id || item.title || item.name || '');
     return type === 'dataset' ? `datasets/detail.html?id=${id}` : `models/details.html?id=${id}`;
@@ -710,13 +740,38 @@
   function itemTitle(item){
     return safeText(item.title || item.name || item.id || 'Untitled resource');
   }
-  function itemSummary(item){
-    return safeText(item.abstract || item.description || item.summary || '');
+  function normalizeMetaValue(value){
+    if (Array.isArray(value)) return value.map(safeText).filter(Boolean).join(', ');
+    return safeText(value);
   }
-  function truncate(text, max){
-    const raw = safeText(text);
-    if (!raw || raw.length <= max) return raw;
-    return `${raw.slice(0, max - 1).trimEnd()}…`;
+  function datasetCountLabel(modalityVal){
+    const modalities = Array.isArray(modalityVal)
+      ? modalityVal.map((value) => safeText(value).toLowerCase())
+      : String(modalityVal || '').split(',').map((value) => safeText(value).toLowerCase());
+    if (!modalities.length) return 'samples';
+    const has = (pattern) => modalities.some((value) => pattern.test(value));
+    if (has(/point\s*cloud|lidar|laser\s*scan|3d\s*scan/)) return 'point clouds';
+    if (has(/video|clip/)) return 'videos';
+    if (has(/document|text|pdf|report|specification|contract/)) return 'documents';
+    if (has(/audio|speech|sound/)) return 'audio files';
+    if (has(/bim|ifc|cad|mesh|graph/)) return 'models';
+    if (has(/timeseries|time\s*series|sensor|tabular|table|csv|database|sql/)) return 'records';
+    if (has(/image|rgb|thermal|satellite|aerial|depth/)) return 'images';
+    return 'samples';
+  }
+  function datasetCountSummary(item){
+    const raw = item?.num_images;
+    if (raw == null || raw === '') return '';
+    const text = safeText(raw);
+    if (/[a-zA-Z]/.test(text)) return text;
+    const formatted = typeof raw === 'number' ? raw.toLocaleString() : text;
+    return `${formatted} ${datasetCountLabel(item?.data_modality)}`;
+  }
+  function resourceMeta(type, item){
+    if (type === 'dataset'){
+      return [normalizeMetaValue(item.data_modality), datasetCountSummary(item)].filter(Boolean).join(' · ');
+    }
+    return [normalizeMetaValue(item.tasks || item.task), normalizeMetaValue(item.modalities || item.modality)].filter(Boolean).join(' · ');
   }
   function monthHref(month){
     const url = new URL(window.location.href);
@@ -930,53 +985,37 @@
       }
     ]);
 
-    const primaryContributor = (item) => {
-      if (Array.isArray(item.contributors) && item.contributors.length){
-        const first = item.contributors[0];
-        const name = safeText(first?.name || first);
-        const url = safeHref(first?.url || first?.link_url || item.contributor_url || '');
-        return { name, url };
-      }
-      const contributor = safeText(item.contributor);
-      if (contributor){
-        const match = registry.get(contributorKey(contributor)) || registry.get(aliasKey(contributor));
-        return {
-          name: contributor,
-          url: safeHref(item.contributor_url || match?.link_url || '')
-        };
-      }
-      return { name:'', url:'' };
-    };
     const renderFeaturedCards = (entries) => entries.map(({ type, item }) => {
       const title = itemTitle(item);
-      const proposer = primaryContributor(item);
-      const summary = type === 'model' ? '' : truncate(itemSummary(item), 170);
-      const media = safeText(item.thumbnail || item.image_url) || 'assets/img/models/_placeholder.png';
+      const meta = resourceMeta(type, item) || 'OpenConstruction catalog resource';
+      const media = safeText(item.thumbnail || item.image_url) || (type === 'model' ? 'assets/img/models/_placeholder.png' : 'assets/img/placeholder/placeholder.png');
       const detailHref = itemHref(type, item);
+      const contributors = normalizeCardContributors(item, registry);
       return `
         <article class="featured-card">
-          <div class="featured-card-link">
+          <div class="featured-card-link" role="link" tabindex="0"
+               onclick="window.location.href='${escapeHtml(detailHref)}'"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); window.location.href='${escapeHtml(detailHref)}';}">
             <div class="featured-media">
-              <a href="${escapeHtml(detailHref)}">
-                <img src="${escapeHtml(media)}" alt="${escapeHtml(title)}">
-              </a>
-              ${proposer.name ? `${proposer.url ? `<a class="submitted-by" href="${escapeHtml(proposer.url)}" target="_blank" rel="noopener">Proposed by ${escapeHtml(proposer.name)}</a>` : `<div class="submitted-by">Proposed by ${escapeHtml(proposer.name)}</div>`}` : ''}
+              <img src="${escapeHtml(media)}" alt="${escapeHtml(title)}"
+                   onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
+              ${contributorOverlayHtml(contributors)}
             </div>
             <div class="featured-body">
               <div class="featured-topline">
                 <span class="featured-type">${escapeHtml(type)}</span>
                 ${safeText(item.year) ? `<span class="featured-year">${escapeHtml(item.year)}</span>` : ''}
               </div>
-              <h3 class="featured-title"><a href="${escapeHtml(detailHref)}">${escapeHtml(title)}</a></h3>
-              ${summary ? `<p class="featured-desc">${escapeHtml(summary)}</p>` : ''}
+              <h3 class="featured-title">${escapeHtml(title)}</h3>
+              <p class="featured-meta">${escapeHtml(meta)}</p>
             </div>
           </div>
         </article>
       `;
     }).join('');
 
-      const featuredDatasets = monthly.filter((entry) => entry.type === 'dataset').slice(0, 12);
-      const featuredModels = monthly.filter((entry) => entry.type === 'model').slice(0, 12);
+    const featuredDatasets = monthly.filter((entry) => entry.type === 'dataset').slice(0, 12);
+    const featuredModels = monthly.filter((entry) => entry.type === 'model').slice(0, 12);
     const groups = [];
     if (featuredDatasets.length){
       groups.push(`
