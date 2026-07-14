@@ -1134,7 +1134,9 @@ async function initDetail(){
       const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
-      const paperUrl = (m.paper_url || m.paper || '').trim();
+      const rawPaperField = safeText(m.paper || '');
+      const paperFieldIsUrl = rawPaperField !== '—' && !!safeHref(rawPaperField);
+      const paperUrl = safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
       const codeUrl  = (m.code_url  || m.code  || '').trim();
       const modelSourceUrl = safeHref(codeUrl);
       const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
@@ -1150,7 +1152,16 @@ async function initDetail(){
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
-      const modelPaperTitle = safeText(m.Paper || m.title || m.paper_title || m.paper_name || m.publication || m.name || '');
+      const modelPaperTitle = safeText(
+        (rawPaperField !== '—' && !paperFieldIsUrl ? rawPaperField : '') ||
+        m.Paper ||
+        m.paper_title ||
+        m.paper_name ||
+        m.publication ||
+        m.title ||
+        m.name ||
+        ''
+      );
       const taskList = uniquePrettyTerms(tasks);
       const taskFamilyList = taskFamilies(tasks);
       const appList = uniquePrettyTerms(applications);

@@ -4,13 +4,22 @@
 (async function(){
   const script = document.currentScript;
   const PAGE = script?.dataset?.page || (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/,'') || 'index';
-  const hasSB = !!(window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient);
-  if (!hasSB) {
+  const sb = window.OCAuth?.getClient?.() || (
+    window.SUPABASE_URL && window.SUPABASE_ANON_KEY && window.supabase?.createClient
+      ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY, {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            storageKey: 'oc-visit-logger-auth-token'
+          }
+        })
+      : null
+  );
+  if (!sb) {
     console.warn('Supabase config missing; visit logger skipped');
     return;
   }
-
-  const sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
 
   async function sha256hex(text){
     const enc = new TextEncoder().encode(text);

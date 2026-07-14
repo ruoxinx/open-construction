@@ -44,6 +44,16 @@ jobs:
             echo "WARNING: No img/ folder in private repo"
           fi
 
+      - name: Validate catalog JSON
+        run: |
+          node -e '
+            const fs = require("fs");
+            for (const file of fs.readdirSync("site/data").filter(name => name.endsWith(".json"))) {
+              JSON.parse(fs.readFileSync(`site/data/${file}`, "utf8"));
+              console.log(`validated ${file}`);
+            }
+          '
+
       - name: Configure Pages
         uses: actions/configure-pages@v6
 
