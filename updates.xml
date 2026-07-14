@@ -7,6 +7,22 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: IL3D: A Large-scale indoor layout dataset for LLM-Driven 3D Scene Generation]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=IL3D</link>
+    <guid isPermaLink="false">datasets:IL3D:2026-07-14</guid>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
+    <title><![CDATA[Model: Large language model (LLM)-driven 3D scene generation for indoor layout design]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:IL3D:2026-07-14</guid>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Indoor layout design model using 3D Objects (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: OpenFACADES dataset: An open framework for architectural caption and attribute data enrichment via street view imagery]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=OpenFACADES</link>
     <guid isPermaLink="false">datasets:OpenFACADES:2026-07-10</guid>
@@ -67,22 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=DeKH</link>
     <guid isPermaLink="false">datasets:DeKH:2026-06-25</guid>
     <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: PyStruct3D: Bounding box fitting and reconstruction for scan-to-BIM workflows]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:PyStruct3D:2026-06-25</guid>
-    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[scan-to-BIM model using BIM/IFC (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BridgeEQA: Virtual Embodied Agents for Real Bridge Inspections]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BridgeEQA</link>
-    <guid isPermaLink="false">datasets:BridgeEQA:2026-06-24</guid>
-    <pubDate>Wed, 24 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
