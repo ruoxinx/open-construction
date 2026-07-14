@@ -49,7 +49,14 @@ jobs:
           node -e '
             const fs = require("fs");
             for (const file of fs.readdirSync("site/data").filter(name => name.endsWith(".json"))) {
-              JSON.parse(fs.readFileSync(`site/data/${file}`, "utf8"));
+              const path = `site/data/${file}`;
+              console.log(`validating ${file}`);
+              try {
+                JSON.parse(fs.readFileSync(path, "utf8"));
+              } catch (error) {
+                console.error(`Invalid JSON in ${path}: ${error.message}`);
+                process.exit(1);
+              }
               console.log(`validated ${file}`);
             }
           '
