@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: BIMCompNet: Multimodal Dataset for Geometric Deep Learningin Building Information Model]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BIMCompNet</link>
+    <guid isPermaLink="false">datasets:BIMCompNet:2026-07-14</guid>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Large language model (LLM)-driven 3D scene generation for indoor layout design]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:IL3D:2026-07-14</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=ev-CIVIL</link>
     <guid isPermaLink="false">datasets:ev-CIVIL:2026-06-30</guid>
     <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: German Hospital dataset (DeKH)]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=DeKH</link>
-    <guid isPermaLink="false">datasets:DeKH:2026-06-25</guid>
-    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
