@@ -44,9 +44,6 @@ jobs:
             echo "WARNING: No img/ folder in private repo"
           fi
 
-      # If your site is pure static HTML/CSS/JS, no build step is needed.
-      # If you later add a build step, put it here and output to ./site (or ./dist).
-
       - name: Configure Pages
         uses: actions/configure-pages@v6
 
@@ -54,12 +51,24 @@ jobs:
         run: |
           node site/scripts/generate-sitemap.mjs
 
+      - name: Archive Pages artifact
+        run: |
+          tar \
+            --directory ./site \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude='.[^/]*' \
+            .
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: github-pages
-          path: ./site
+          path: ${{ runner.temp }}/artifact.tar
           retention-days: 7
+          if-no-files-found: error
+          overwrite: true
 
   deploy:
     needs: build
