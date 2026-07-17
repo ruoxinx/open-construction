@@ -202,18 +202,6 @@
       gap:.42rem;
       margin-top:.7rem;
     }
-    .metric-tag-group + .metric-tag-group{
-      margin-top:.65rem;
-    }
-    .metric-tag-heading{
-      display:block;
-      margin:.72rem 0 .35rem;
-      font-size:.68rem;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-      color:var(--oc-subtle);
-      font-weight:750;
-    }
     .metric-tag{
       display:inline-flex;
       align-items:center;
@@ -842,22 +830,11 @@
   }
   function renderMetricCard(card){
     const tags = Array.isArray(card.tags) ? card.tags.filter(Boolean) : [];
-    const groups = Array.isArray(card.groups) ? card.groups.filter((group) => Array.isArray(group.tags) && group.tags.filter(Boolean).length) : [];
-    const groupHtml = groups.map((group) => {
-      const groupTags = group.tags.filter(Boolean);
-      return `
-        <div class="metric-tag-group">
-          ${group.label ? `<span class="metric-tag-heading">${escapeHtml(group.label)}</span>` : ''}
-          <div class="metric-tags">${groupTags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>
-        </div>
-      `;
-    }).join('');
     return `
       <div class="metric-card">
         <span class="metric-label">${escapeHtml(card.label)}</span>
         ${card.value ? `<span class="metric-value">${escapeHtml(card.value)}</span>` : ''}
         ${tags.length ? `<div class="metric-tags">${tags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
-        ${groupHtml}
       </div>
     `;
   }
@@ -994,10 +971,7 @@
       {
         label:'Tasks & Applications',
         value: topTasks.length || topApplications.length ? '' : 'Tasks and applications not specified',
-        groups:[
-          { label:'Tasks', tags: topTasks },
-          { label:'Applications', tags: topApplications }
-        ]
+        tags: [...topTasks, ...topApplications]
       }
     ]);
 
