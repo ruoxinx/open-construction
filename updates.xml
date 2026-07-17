@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Question Answering on Piping and Instrumentation Diagrams (PIDQA)]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=PIDQA</link>
+    <guid isPermaLink="false">datasets:PIDQA:2026-07-17</guid>
+    <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IL3D: A Large-scale indoor layout dataset for LLM-Driven 3D Scene Generation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IL3D</link>
     <guid isPermaLink="false">datasets:IL3D:2026-07-14</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=AECV-Bench</link>
     <guid isPermaLink="false">datasets:AECV-Bench:2026-07-03</guid>
     <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: WHU-Railway3D: A Diverse Dataset and Benchmark for Railway Point Cloud Semantic Segmentation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=WHU-Railway3D</link>
-    <guid isPermaLink="false">datasets:WHU-Railway3D:2026-06-30</guid>
-    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
