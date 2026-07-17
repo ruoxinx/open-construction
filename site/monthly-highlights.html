@@ -155,7 +155,7 @@
     }
     .metric-grid{
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      grid-template-columns:repeat(2,minmax(0,1fr));
       gap:.9rem;
       max-width:1120px;
     }
@@ -201,6 +201,18 @@
       flex-wrap:wrap;
       gap:.42rem;
       margin-top:.7rem;
+    }
+    .metric-tag-group + .metric-tag-group{
+      margin-top:.65rem;
+    }
+    .metric-tag-heading{
+      display:block;
+      margin:.72rem 0 .35rem;
+      font-size:.68rem;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      color:var(--oc-subtle);
+      font-weight:750;
     }
     .metric-tag{
       display:inline-flex;
@@ -506,11 +518,7 @@
           <span class="metric-value">Loading monthly summary...</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">Tasks</span>
-          <span class="metric-value">Loading monthly summary...</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">Applications</span>
+          <span class="metric-label">Tasks &amp; Applications</span>
           <span class="metric-value">Loading monthly summary...</span>
         </div>
       </div>
@@ -834,11 +842,22 @@
   }
   function renderMetricCard(card){
     const tags = Array.isArray(card.tags) ? card.tags.filter(Boolean) : [];
+    const groups = Array.isArray(card.groups) ? card.groups.filter((group) => Array.isArray(group.tags) && group.tags.filter(Boolean).length) : [];
+    const groupHtml = groups.map((group) => {
+      const groupTags = group.tags.filter(Boolean);
+      return `
+        <div class="metric-tag-group">
+          ${group.label ? `<span class="metric-tag-heading">${escapeHtml(group.label)}</span>` : ''}
+          <div class="metric-tags">${groupTags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>
+        </div>
+      `;
+    }).join('');
     return `
       <div class="metric-card">
         <span class="metric-label">${escapeHtml(card.label)}</span>
         ${card.value ? `<span class="metric-value">${escapeHtml(card.value)}</span>` : ''}
         ${tags.length ? `<div class="metric-tags">${tags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+        ${groupHtml}
       </div>
     `;
   }
@@ -907,8 +926,7 @@
       pageSummaryEl.textContent = '';
       setMetricCards([
         { label:'Scope', value:'No monthly highlights yet' },
-        { label:'Tasks', value:'—' },
-        { label:'Applications', value:'—' }
+        { label:'Tasks & Applications', value:'—' }
       ]);
       featuredSections.innerHTML = '<div class="empty-state">No monthly highlights are available yet.</div>';
       contribGrid.innerHTML = '<div class="empty-state">Contributors will appear here once monthly highlights are available.</div>';
@@ -974,14 +992,12 @@
         tags:[]
       },
       {
-        label:'Tasks',
-        value: topTasks.length ? '' : 'Tasks not specified',
-        tags: topTasks
-      },
-      {
-        label:'Applications',
-        value: topApplications.length ? '' : 'Applications not specified',
-        tags: topApplications
+        label:'Tasks & Applications',
+        value: topTasks.length || topApplications.length ? '' : 'Tasks and applications not specified',
+        groups:[
+          { label:'Tasks', tags: topTasks },
+          { label:'Applications', tags: topApplications }
+        ]
       }
     ]);
 
@@ -1077,8 +1093,7 @@
     pageSummaryEl.textContent = '';
     setMetricCards([
       { label:'Scope', value:'Summary unavailable' },
-      { label:'Tasks', value:'Summary unavailable' },
-      { label:'Applications', value:'Summary unavailable' }
+      { label:'Tasks & Applications', value:'Summary unavailable' }
     ]);
     featuredSections.innerHTML = '<div class="empty-state">We could not load monthly highlights right now.</div>';
     contribGrid.innerHTML = '<div class="empty-state">We could not load contributors right now.</div>';
