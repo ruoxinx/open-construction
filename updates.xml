@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Rail Components Dataset (RCD)]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=rail-components</link>
+    <guid isPermaLink="false">datasets:rail-components:2026-07-17</guid>
+    <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: IL3D: A Large-scale indoor layout dataset for LLM-Driven 3D Scene Generation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IL3D</link>
     <guid isPermaLink="false">datasets:IL3D:2026-07-14</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: WHU-Railway3D: A Diverse Dataset and Benchmark for Railway Point Cloud Semantic Segmentation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=WHU-Railway3D</link>
     <guid isPermaLink="false">datasets:WHU-Railway3D:2026-06-30</guid>
-    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: evCIVIL: Event-Based Dataset for visual Detection of CIVIL infrastructure Defects]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=ev-CIVIL</link>
-    <guid isPermaLink="false">datasets:ev-CIVIL:2026-06-30</guid>
     <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
