@@ -638,6 +638,39 @@
     }
     .logo.loaded img{ opacity:1; }
     .logo img:hover{ transform:scale(1.03); }
+    .institution-support-card{
+      display:flex;
+      align-items:center;
+      gap:.85rem;
+      margin-top:.65rem;
+      padding:.35rem 0 0;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      color:var(--oc-subtle);
+      font-size:.88rem;
+      line-height:1.45;
+      box-shadow:none;
+    }
+    .institution-support-card img{
+      width:48px;
+      height:48px;
+      object-fit:contain;
+      flex:0 0 auto;
+    }
+    .institution-support-card p{
+      margin:0;
+    }
+    .institution-support-card a{
+      color:var(--oc-brand-ink);
+      font-weight:500;
+      text-decoration:none;
+    }
+    .institution-support-card a:hover,
+    .institution-support-card a:focus{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
     @keyframes oc-marquee-left {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
@@ -660,6 +693,14 @@
     @media (max-width: 767.98px){
       .logo{ width:132px; height:72px; }
       .logo img{ max-width:118px; max-height:50px; }
+      .institution-support-card{
+        align-items:flex-start;
+        font-size:.84rem;
+      }
+      .institution-support-card img{
+        width:40px;
+        height:40px;
+      }
     }
     /* Sections & cards */
     .oc-section{ margin-top:56px; }
@@ -1061,7 +1102,9 @@
       transform:translateY(-2px);
     }
     .ms-phase{
-      display:block;
+      display:flex;
+      align-items:center;
+      gap:.34rem;
       margin-bottom:.45rem;
       color:var(--oc-subtle);
       font-size:.72rem;
@@ -1069,6 +1112,12 @@
       letter-spacing:.14em;
       line-height:1.2;
       text-transform:uppercase;
+    }
+    .ms-phase-logo{
+      width:18px;
+      height:18px;
+      object-fit:contain;
+      flex:0 0 auto;
     }
     .ms-desc{
       font-size:.88rem;
@@ -1563,8 +1612,11 @@
           <div class="ms-step" role="listitem">
             <div class="ms-year">2026</div>
             <div class="ms-card">
-              <span class="ms-phase">Ecosystem</span>
-              <p class="ms-desc"><a href="https://www.sciencedirect.com/science/article/pii/S2666165926000670" target="_blank" rel="noopener">Open science ecosystem</a> connects research, education, and practice.</p>
+              <span class="ms-phase">
+                <img class="ms-phase-logo" src="assets/img/nsf-logo.png" alt="" width="18" height="18" loading="lazy">
+                NSF Support
+              </span>
+              <p class="ms-desc">Supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>.</p>
             </div>
           </div>
 
@@ -1628,6 +1680,11 @@
       <div class="row-marquee" data-direction="left">
         <div class="logo-track" role="list" data-speed="46"></div>
       </div>
+    </div>
+    <div class="oc-kicker mt-3 mb-2">Funding</div>
+    <div class="institution-support-card">
+      <img src="assets/img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="48" height="48" loading="lazy">
+      <p>OpenConstruction is supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>.</p>
     </div>
   </section>
 
@@ -2262,7 +2319,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js"></script>
-<script src="assets/js/site-shell.js"></script>
+<script src="assets/js/site-shell.js?v=20260719-footer4"></script>
 <script src="assets/js/institutions.js"></script>
 <script src="assets/js/visit-logger.js" data-page="index"></script>
 <script>
