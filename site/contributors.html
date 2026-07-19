@@ -98,6 +98,43 @@
     .oc-card{ background:var(--oc-card); border:1px solid var(--oc-border); border-radius:var(--oc-radius); box-shadow:var(--oc-shadow); }
     .oc-card-body{ padding:1.25rem; }
     .oc-card .oc-card-title{ font-weight:700; color:var(--oc-ink); }
+    .funding-card .oc-card-body{
+      display:flex;
+      align-items:flex-start;
+      gap:.9rem;
+      padding:1rem 1.05rem;
+    }
+    .funding-card img{
+      width:40px;
+      height:40px;
+      object-fit:contain;
+      flex:0 0 auto;
+      margin-top:.1rem;
+    }
+    .funding-card p{
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.9rem;
+      line-height:1.55;
+    }
+    .funding-card a{
+      font-weight:600;
+      text-decoration:none;
+    }
+    .funding-card a:hover,
+    .funding-card a:focus{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    @media (max-width:575.98px){
+      .funding-card .oc-card-body{
+        gap:.75rem;
+      }
+      .funding-card img{
+        width:34px;
+        height:34px;
+      }
+    }
 
     /* People cards */
     .person-card{
@@ -138,11 +175,11 @@
       line-height:1.4;
     }
     .person-card .project-role{
-      font-size:.9rem;
+      font-size:.88rem;
       line-height:1.35;
       color:var(--oc-ink);
-      font-weight:650;
-      margin-top:.18rem;
+      font-weight:600;
+      margin-top:.08rem;
     }
     .person-card .affil{
       font-size:.94rem;
@@ -186,66 +223,6 @@
       font-size:.95rem;
     }
 
-    .news-card{
-      background:var(--oc-card);
-      border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      box-shadow:var(--oc-shadow);
-      height:100%;
-    }
-    .news-card .card-body{ padding:1.15rem 1.2rem; }
-    .news-layout{
-      display:grid;
-      grid-template-columns:minmax(0,1fr);
-      gap:1rem;
-      align-items:start;
-    }
-    .news-thumb{
-      width:100%;
-      max-width:220px;
-      aspect-ratio:16/10;
-      object-fit:cover;
-      border-radius:12px;
-      border:1px solid var(--oc-border);
-      background:#f6f9fc;
-    }
-    .news-eyebrow{
-      display:flex;
-      align-items:center;
-      gap:.55rem;
-      flex-wrap:wrap;
-      margin-bottom:.55rem;
-    }
-    .news-pill{
-      display:inline-flex;
-      align-items:center;
-      border-radius:999px;
-      border:1px solid var(--oc-border);
-      background:#f8fafc;
-      color:var(--oc-subtle);
-      font-size:.76rem;
-      font-weight:700;
-      letter-spacing:.04em;
-      padding:.18rem .55rem;
-      text-transform:uppercase;
-    }
-    .news-meta{
-      color:var(--oc-subtle);
-      font-size:.92rem;
-      margin-bottom:.75rem;
-    }
-    .news-summary{
-      color:var(--oc-text);
-      margin-bottom:.7rem;
-      line-height:1.55;
-    }
-    .news-empty{
-      border:1px dashed var(--oc-border);
-      border-radius:var(--oc-radius);
-      padding:1.1rem 1.2rem;
-      color:var(--oc-subtle);
-      background:#fff;
-    }
     .monthly-teaser{
       position:relative;
       overflow:hidden;
@@ -536,15 +513,8 @@
       .reach-note,
       .reach-footnote{font-size:.88rem}
       #visitorMap{height:300px}
-      .news-card .card-body{padding:1rem}
-      .news-meta{font-size:.88rem}
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
-    }
-    @media (min-width: 900px){
-      .news-layout.has-thumb{
-        grid-template-columns:220px minmax(0,1fr);
-      }
     }
   </style>
 
@@ -771,7 +741,7 @@
             <div>
               <h5 class="card-title">Ruoxin Xiong, Ph.D.</h5>
               <div class="role">Assistant Professor</div>
-              <div class="project-role">Technical Lead &amp; Core Developer</div>
+              <div class="project-role">Technical lead and core developer</div>
               <div class="affil">College of Architecture &amp; Environmental Design, Kent State University (Ohio, USA)</div>
             </div>
           </div>
@@ -898,17 +868,15 @@
 
 	</section>
 
-  <section class="oc-section" id="news-events">
-    <div class="mb-2">
-      <div class="oc-kicker">News &amp; Events</div>
-    </div>
-    <div class="row g-4" id="newsEventsGrid">
-      <div class="col-12">
-        <div class="news-empty">Loading upcoming events...</div>
+  <section class="oc-section" aria-labelledby="funding-heading">
+    <div class="oc-kicker mb-2" id="funding-heading">Funding</div>
+    <div class="oc-card funding-card">
+      <div class="oc-card-body">
+        <img src="assets/img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="40" height="40" loading="lazy">
+        <div>
+          <p>This material is supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>. Any opinions, findings, conclusions, or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</p>
+        </div>
       </div>
-    </div>
-    <div class="mt-2 text-end">
-      <a class="small text-decoration-none fw-semibold" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Share an event or update</a>
     </div>
   </section>
 
@@ -1514,82 +1482,6 @@ api.renderInstitutionMarquee({
     summaryEl.textContent = 'We could not reach the catalog. Try refreshing in a moment.';
     setStats(['—','—','—']);
   });
-})();
-</script>
-
-<script>
-(function(){
-  const DATA_URL = 'data/news-events.json';
-  const grid = document.getElementById('newsEventsGrid');
-  if (!grid) return;
-
-  function fmtDate(value){
-    if (!value) return '';
-    const d = new Date(value + 'T12:00:00');
-    if (Number.isNaN(d.getTime())) return value;
-    return d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-  }
-
-  function escapeHtml(value){
-    return String(value ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  function render(events){
-    if (!events.length){
-      grid.innerHTML = '<div class="col-12"><div class="news-empty">No events are listed yet. Check back soon for workshops, talks, and announcements.</div></div>';
-      return;
-    }
-
-    grid.innerHTML = events.map((item) => {
-      const hasThumb = !!item.image_url;
-      return `
-        <div class="col-12">
-          <article class="news-card">
-            <div class="card-body">
-              <div class="news-layout ${hasThumb ? 'has-thumb' : ''}">
-                ${hasThumb ? `<img class="news-thumb" src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title || 'Event image')}">` : ''}
-                <div>
-                  <div class="news-eyebrow">
-                    ${item.category ? `<span class="news-pill">${escapeHtml(item.category)}</span>` : ''}
-                    ${item.is_featured ? '<span class="news-pill">Featured</span>' : ''}
-                  </div>
-                  <h4 class="oc-card-title mb-2">${escapeHtml(item.title || 'Event')}</h4>
-                  <div class="news-meta">
-                    ${[fmtDate(item.event_date), item.time_label, item.location].filter(Boolean).map(escapeHtml).join(' &middot; ')}
-                  </div>
-                  ${item.summary ? `<p class="news-summary">${escapeHtml(item.summary)}</p>` : ''}
-                  <div class="d-flex flex-wrap gap-2 mt-3">
-                    ${item.registration_url ? `<a class="btn-ink btn-sm" href="${escapeHtml(item.registration_url)}" target="_blank" rel="noopener">View event</a>` : ''}
-                    ${item.source_url ? `<a class="btn-accent btn-sm" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener">Source</a>` : ''}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-      `;
-    }).join('');
-  }
-
-  fetch(DATA_URL, { cache: 'no-cache' })
-    .then((res) => {
-      if (!res.ok) throw new Error('Failed to load news-events.json');
-      return res.json();
-    })
-    .then((payload) => {
-      const events = Array.isArray(payload?.events) ? payload.events : [];
-      events.sort((a, b) => String(a.event_date || '').localeCompare(String(b.event_date || '')));
-      render(events);
-    })
-    .catch((err) => {
-      console.error('Failed to load events', err);
-      grid.innerHTML = '<div class="col-12"><div class="news-empty">Could not load events right now.</div></div>';
-    });
 })();
 </script>
 
