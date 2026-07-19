@@ -161,43 +161,26 @@
     styles.id = 'ocFooterFundingStyles';
     styles.textContent = `
       .oc-footer-brandline{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        flex-wrap:wrap;
-        gap:.55rem;
-        color:var(--oc-text,#1e2a36);
-        font-weight:400;
-        line-height:1.35;
-      }
-      .oc-footer-logo-group{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        gap:.38rem;
-        flex:0 0 auto;
+        color:inherit;
+        font-weight:inherit;
+        line-height:inherit;
       }
       .oc-footer-nsf-logo{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
+        display:inline-block;
+        margin-right:4px;
         text-decoration:none;
+        vertical-align:-5px;
       }
       .oc-footer-oc-logo,
       .oc-footer-nsf-logo img{
-        display:block;
+        display:inline-block;
         width:24px;
         height:24px;
         object-fit:contain;
+        vertical-align:-5px;
       }
-      .oc-footer-copy{
-        display:inline-flex;
-        align-items:center;
-        gap:.25rem;
-        font-weight:400;
-      }
-      .oc-footer-copy *{
-        font-weight:400;
+      .oc-footer-oc-logo{
+        margin-right:4px;
       }
       .oc-footer-funding{
         max-width:620px;
@@ -254,13 +237,11 @@
 
     container.innerHTML = `
       <div class="oc-footer-brandline">
-        <span class="oc-footer-logo-group" aria-label="OpenConstruction and U.S. National Science Foundation">
-          <img class="oc-footer-oc-logo" src="${assetPrefix}img/icon.png" alt="OpenConstruction logo" width="24" height="24" loading="lazy">
-          <a class="oc-footer-nsf-logo" href="${AWARD_URL}" target="_blank" rel="noopener" aria-label="View U.S. National Science Foundation Award 2612086">
-            <img src="${assetPrefix}img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="24" height="24" loading="lazy">
-          </a>
-        </span>
-        <span class="oc-footer-copy">&copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</span>
+        <img class="oc-footer-oc-logo" src="${assetPrefix}img/icon.png" alt="OpenConstruction logo" width="24" height="24" loading="lazy">
+        <a class="oc-footer-nsf-logo" href="${AWARD_URL}" target="_blank" rel="noopener" aria-label="View U.S. National Science Foundation Award 2612086">
+          <img src="${assetPrefix}img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="24" height="24" loading="lazy">
+        </a>
+        &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative
       </div>
       <div class="oc-footer-funding">
         <small>Supported by the U.S. National Science Foundation under <a href="${AWARD_URL}" target="_blank" rel="noopener">Award No. 2612086</a>.</small>
