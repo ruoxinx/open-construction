@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 (() => {
+  const AWARD_URL = 'https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086';
+  const scriptSrc = document.currentScript?.getAttribute('src') || 'assets/js/site-shell.js';
+  const assetPrefix = scriptSrc.replace(/assets\/js\/site-shell\.js(?:\?.*)?$/, 'assets/');
+
   const ROUTE_BY_FILE = {
     '': 'index',
     'index': 'index',
@@ -151,13 +155,133 @@
     });
   }
 
+  function injectFooterFundingStyles(){
+    if (document.getElementById('ocFooterFundingStyles')) return;
+    const styles = document.createElement('style');
+    styles.id = 'ocFooterFundingStyles';
+    styles.textContent = `
+      .oc-footer-brandline{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:.55rem;
+        color:var(--oc-text,#1e2a36);
+        font-weight:400;
+        line-height:1.35;
+      }
+      .oc-footer-logo-group{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:.38rem;
+        flex:0 0 auto;
+      }
+      .oc-footer-nsf-logo{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        text-decoration:none;
+      }
+      .oc-footer-oc-logo,
+      .oc-footer-nsf-logo img{
+        display:block;
+        width:24px;
+        height:24px;
+        object-fit:contain;
+      }
+      .oc-footer-copy{
+        display:inline-flex;
+        align-items:center;
+        gap:.25rem;
+        font-weight:400;
+      }
+      .oc-footer-copy *{
+        font-weight:400;
+      }
+      .oc-footer-funding{
+        max-width:620px;
+        margin:.38rem auto 0;
+        color:var(--oc-subtle,#4f5d6c);
+        font-size:.78rem;
+        line-height:1.45;
+      }
+      .oc-footer-funding a{
+        color:inherit;
+        text-decoration:none;
+      }
+      .oc-footer-funding a:hover,
+      .oc-footer-funding a:focus{
+        color:var(--oc-ink,#0f2e4b);
+        text-decoration:underline;
+        text-underline-offset:3px;
+      }
+      .oc-footer-links{
+        margin-top:.55rem!important;
+      }
+      .oc-footer-links small{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:.25rem .45rem;
+      }
+      .oc-footer-links a{
+        color:var(--oc-subtle,#4f5d6c)!important;
+        text-decoration:none;
+      }
+      .oc-footer-links a:hover,
+      .oc-footer-links a:focus{
+        color:var(--oc-ink,#0f2e4b)!important;
+        text-decoration:underline;
+        text-underline-offset:3px;
+      }
+    `;
+    document.head.appendChild(styles);
+  }
+
+  function normalizeFooter(){
+    const footer = document.querySelector('footer[role="contentinfo"], footer');
+    if (!footer || footer.dataset.ocFooterNormalized === 'true') return;
+    const openConstructionLogo = footer.querySelector('img[alt="OpenConstruction logo"]');
+    if (!openConstructionLogo) return;
+    const container = footer.querySelector('.container') || footer;
+    const linksBlock = Array.from(container.children).find(element =>
+      /Terms/i.test(element.textContent || '') && /Privacy/i.test(element.textContent || '')
+    );
+    const linksClone = linksBlock?.cloneNode(true);
+    if (linksClone) linksClone.classList.add('oc-footer-links');
+
+    container.innerHTML = `
+      <div class="oc-footer-brandline">
+        <span class="oc-footer-logo-group" aria-label="OpenConstruction and U.S. National Science Foundation">
+          <img class="oc-footer-oc-logo" src="${assetPrefix}img/icon.png" alt="OpenConstruction logo" width="24" height="24" loading="lazy">
+          <a class="oc-footer-nsf-logo" href="${AWARD_URL}" target="_blank" rel="noopener" aria-label="View U.S. National Science Foundation Award 2612086">
+            <img src="${assetPrefix}img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="24" height="24" loading="lazy">
+          </a>
+        </span>
+        <span class="oc-footer-copy">&copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</span>
+      </div>
+      <div class="oc-footer-funding">
+        <small>Supported by the U.S. National Science Foundation under <a href="${AWARD_URL}" target="_blank" rel="noopener">Award No. 2612086</a>.</small>
+      </div>
+    `;
+
+    if (linksClone) container.appendChild(linksClone);
+    footer.dataset.ocFooterNormalized = 'true';
+    setFooterYear();
+  }
+
   function init(){
     setFooterYear();
     applyActiveNav();
+    injectFooterFundingStyles();
+    normalizeFooter();
   }
 
   window.OpenConstructionShell = {
     applyActiveNav,
+    normalizeFooter,
     routeForPath,
     setFooterYear
   };

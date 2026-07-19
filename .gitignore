@@ -55,11 +55,15 @@ __pycache__/
 # Generated catalog/site assets from the data pipeline
 site/data/*.json
 site/data/img/
-site/assets/img/
+site/assets/img/*
+!site/assets/img/
 !site/assets/img/icon.png
+!site/assets/img/nsf-logo.png
 !site/assets/img/details/
+site/assets/img/details/*
 !site/assets/img/details/Rebar-Counting.mp4
 !site/assets/img/models/
+site/assets/img/models/*
 !site/assets/img/models/Buildee.gif
 
 # Downloaded/generated certificates
