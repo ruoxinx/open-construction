@@ -1093,6 +1093,51 @@ function findModelById(modelsArr, id){
   return modelsArr.find(x => String(x?.title || x?.name || '').trim().toLowerCase() === idNorm) || null;
 }
 
+async function loadBenchmarkPayload(){
+  const candidates = [
+    '../data/benchmark-results.json',
+    '/open-construction/data/benchmark-results.json'
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (res?.ok) return await res.json();
+    } catch {}
+  }
+  return { benchmarks: [] };
+}
+
+function datasetBenchmarkBoards(benchmarkPayload, ds){
+  const wanted = normKey(ds?.id || ds?.name || '');
+  if (!wanted) return [];
+  return (Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [])
+    .filter(board => normKey(board?.dataset_id) === wanted);
+}
+
+function benchmarkLinksCardHtml(boards){
+  if (!Array.isArray(boards) || !boards.length) return '';
+  return `
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-uppercase text-muted mb-3">Benchmarks &amp; Leaderboards</h2>
+        <div class="d-grid gap-2">
+          ${boards.map(board => {
+            const isExternal = !!board.results_url;
+            const href = isExternal
+              ? board.results_url
+              : `../benchmark_results.html?id=${encodeURIComponent(board.id || '')}`;
+            const label = isExternal ? 'Open leaderboard' : 'View benchmark results';
+            const title = board.page_title || board.name || label;
+            return href
+              ? `<a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(href)}" ${isExternal ? 'target="_blank" rel="noopener"' : ''}>${escapeHtml(label)}</a><div class="small text-muted">${escapeHtml(title)}</div>`
+              : '';
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function initDetail(){
   const type = getDetailType();
   if (window.loadTaskVocabulary) await window.loadTaskVocabulary();
@@ -1625,14 +1670,17 @@ async function initDetail(){
     // ---------- dataset (existing behavior) ----------
     let dataObj = {};
     let modelArr = [];
+    let benchmarkPayload = { benchmarks: [] };
     try{
-      const [datasetRes, modelRes] = await Promise.all([
+      const [datasetRes, modelRes, benchmarkData] = await Promise.all([
         fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null),
-        fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null)
+        fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null),
+        loadBenchmarkPayload()
       ]);
       dataObj = datasetRes?.ok ? await datasetRes.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
       const modelPayload = modelRes?.ok ? await modelRes.json() : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
       modelArr = normalizeModelPayload(modelPayload);
+      benchmarkPayload = benchmarkData || benchmarkPayload;
     }catch(e){
       if (typeof showErrorBanner === 'function') showErrorBanner('Could not load data/datasets.json for detail page.');
       console.error(e);
@@ -1782,6 +1830,7 @@ async function initDetail(){
       .sort((a, b) => b.score - a.score || (b.model.year || 0) - (a.model.year || 0))
       .slice(0, 3)
       .map(({ model }) => model);
+    const benchmarkBoards = datasetBenchmarkBoards(benchmarkPayload, ds);
 
     const blogEntries = (() => {
       const entries = [];
@@ -2045,6 +2094,8 @@ async function initDetail(){
             </div>
           </div>
         </div>
+
+        ${benchmarkLinksCardHtml(benchmarkBoards)}
 
         ${shareCardHtml(ds.name || ds.id || 'Dataset')}
 
