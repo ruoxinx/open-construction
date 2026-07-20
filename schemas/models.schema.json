@@ -22,6 +22,15 @@
 
           "paper": { "type": "string" },
           "doi": { "type": "string" },
+          "source_status": {
+            "type": "string",
+            "enum": [
+              "peer-reviewed",
+              "preprint",
+              "community-contributed",
+              "unknown"
+            ]
+          },
 
           "framework": { "type": "string" },
           "architecture": { "type": "string" },

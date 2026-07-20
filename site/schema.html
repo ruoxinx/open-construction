@@ -261,6 +261,7 @@
 <tr><td><code>paper</code></td><td>Yes</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Primary paper or landing page URL for the dataset.</td></tr>
 <tr><td><code>potential_tasks</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Supported tasks. Values should match the controlled vocabulary in <code>site/data/task-vocabulary.json</code> or one of its accepted aliases.</td></tr>
 <tr><td><code>resolution</code></td><td>No</td><td><span class='text-muted'>schema.org:variableMeasured / additionalProperty</span></td><td>Spatial/image resolution info (free text).</td></tr>
+<tr><td><code>source_status</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Source review/contribution status. Recommended values: <code>peer-reviewed</code>, <code>preprint</code>, <code>community-contributed</code>, or <code>unknown</code>.</td></tr>
 <tr><td><code>year</code></td><td>Yes</td><td><span class='text-muted'>schema.org:datePublished</span></td><td>Publication/release year.</td></tr></tbody></table></div>
 
     <div class="row g-3 mt-3">
@@ -276,6 +277,7 @@
     &quot;First Last&quot;
   ],
   &quot;doi&quot;: &quot;10.xxxx/xxxx&quot;,
+  &quot;source_status&quot;: &quot;peer-reviewed&quot;,
   &quot;paper&quot;: &quot;https://example.org/paper&quot;,
   &quot;license&quot;: &quot;CC BY 4.0&quot;,
   &quot;access&quot;: &quot;https://example.org/download&quot;,
@@ -319,6 +321,7 @@
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;num_images&quot;,&quot;value&quot;:&quot;12345&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;num_classes&quot;,&quot;value&quot;:&quot;5&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;classes&quot;,&quot;value&quot;:&quot;bridge, road, rail, pipeline, powerline&quot;},
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;source_status&quot;,&quot;value&quot;:&quot;peer-reviewed&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added_date&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
   ]
@@ -358,6 +361,7 @@
 <tr><td><code>modalities</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Input modalities (e.g., image, text, point cloud).</td></tr>
 <tr><td><code>paper</code></td><td>No</td><td><span class='text-muted'>schema.org:citation</span></td><td>Associated paper title.</td></tr>
 <tr><td><code>paper_url</code></td><td>No</td><td><span class='text-muted'>schema.org:url / schema.org:sameAs</span></td><td>Paper or preprint URL.</td></tr>
+<tr><td><code>source_status</code></td><td>No</td><td><span class='text-muted'>schema.org:additionalProperty</span></td><td>Source review/contribution status. Recommended values: <code>peer-reviewed</code>, <code>preprint</code>, <code>community-contributed</code>, or <code>unknown</code>.</td></tr>
 <tr><td><code>tasks</code></td><td>No</td><td><span class='text-muted'>schema.org:keywords</span></td><td>Supported tasks. Values should match the controlled vocabulary in <code>site/data/task-vocabulary.json</code> or one of its accepted aliases.</td></tr>
 <tr><td><code>thumbnail</code></td><td>No</td><td><span class='text-muted'>schema.org:image</span></td><td>Preview image URL.</td></tr>
 <tr><td><code>title</code></td><td>Yes</td><td><span class='text-muted'>schema.org:name</span></td><td>Model name/title.</td></tr>
@@ -376,6 +380,7 @@
   &quot;abstract&quot;: &quot;A language model fine-tuned for BIM question answering.&quot;,
   &quot;paper&quot;: &quot;Associated paper title&quot;,
   &quot;paper_url&quot;: &quot;https://example.org/paper&quot;,
+  &quot;source_status&quot;: &quot;peer-reviewed&quot;,
   &quot;code_url&quot;: &quot;https://github.com/org/repo&quot;,
   &quot;license&quot;: &quot;Apache-2.0&quot;,
   &quot;modalities&quot;: [&quot;text&quot;],
@@ -405,6 +410,7 @@
   &quot;sameAs&quot;:&quot;https://example.org/paper&quot;,
   &quot;keywords&quot;:[&quot;LLM&quot;,&quot;text&quot;,&quot;question answering&quot;,&quot;BIM compliance checking&quot;],
   &quot;additionalProperty&quot;:[
+    {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;source_status&quot;,&quot;value&quot;:&quot;peer-reviewed&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;added_date&quot;,&quot;value&quot;:&quot;2026-01-09&quot;},
     {&quot;@type&quot;:&quot;PropertyValue&quot;,&quot;name&quot;:&quot;contributor&quot;,&quot;value&quot;:&quot;@someone&quot;}
   ]

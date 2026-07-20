@@ -38,6 +38,19 @@ function safeText(val){
   return txt;
 }
 
+function formatSourceStatus(val){
+  const txt = safeText(val);
+  if (txt === '—') return '';
+  const labels = {
+    'peer-reviewed': 'Peer-reviewed',
+    'preprint': 'Preprint',
+    'community-contributed': 'Community-contributed',
+    'unknown': 'Unknown'
+  };
+  const key = String(txt).trim().toLowerCase();
+  return labels[key] || txt;
+}
+
 // Authors can be provided as:
 // 1) string: "A, B, C"
 // 2) array of strings: ["A", "B"]
@@ -1454,6 +1467,7 @@ async function initDetail(){
             ${metaRow('Modalities', chipLane(modalityList))}
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
             ${metaRow('Associated paper', modelPaperTitle !== '—' ? ((doiUrl || safeHref(paperUrl || '')) ? `<a href="${doiUrl || safeHref(paperUrl || '')}" target="_blank" rel="noopener">${escapeHtml(modelPaperTitle)}</a>` : escapeHtml(modelPaperTitle)) : '—')}
+            ${metaRow('Source status', escapeHtml(formatSourceStatus(m.source_status)))}
             ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a>` : '—')}
             ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license) || '—')}
@@ -1969,6 +1983,7 @@ async function initDetail(){
         <h2 class="detail-heading">How to use this dataset</h2>
         <dl class="meta mb-0">
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
+          ${metaRow('Source status', escapeHtml(formatSourceStatus(ds.source_status)))}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
           ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a>` : '—')}

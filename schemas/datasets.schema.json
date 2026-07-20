@@ -38,6 +38,15 @@
           "doi": {
             "type": "string"
           },
+          "source_status": {
+            "type": "string",
+            "enum": [
+              "peer-reviewed",
+              "preprint",
+              "community-contributed",
+              "unknown"
+            ]
+          },
           "contributors": {
             "$ref": "schema.common.json#/definitions/contributors"
           },
