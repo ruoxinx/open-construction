@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: DrawingVQA: A Real-World Benchmark for Multi-Depth Visual-Textual Reasoning on Construction Drawings]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=DrawingVQA</link>
+    <guid isPermaLink="false">datasets:DrawingVQA:2026-07-20</guid>
+    <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Rail Components Dataset (RCD)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=rail-components</link>
     <guid isPermaLink="false">datasets:rail-components:2026-07-17</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=CEQuest</link>
     <guid isPermaLink="false">datasets:CEQuest:2026-07-04</guid>
     <pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: InsPLAD: Inspection of Power Line Assets Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=InsPLAD</link>
-    <guid isPermaLink="false">datasets:InsPLAD:2026-07-03</guid>
-    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
