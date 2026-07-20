@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: LandedSpec Construction-Material Import Quote Comparison Registers]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=LandedSpec%20Construction-Material%20Import%20Quote%20Comparison%20Registers</link>
+    <guid isPermaLink="false">datasets:LandedSpec Construction-Material Import Quote Comparison Registers:2026-07-20</guid>
+    <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Rail Components Dataset (RCD)]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=rail-components</link>
     <guid isPermaLink="false">datasets:rail-components:2026-07-17</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: InsPLAD: Inspection of Power Line Assets Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=InsPLAD</link>
     <guid isPermaLink="false">datasets:InsPLAD:2026-07-03</guid>
-    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: AECV-Bench: Benchmarking Multimodal Models on Architectural and Engineering Drawings Understanding]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=AECV-Bench</link>
-    <guid isPermaLink="false">datasets:AECV-Bench:2026-07-03</guid>
     <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
