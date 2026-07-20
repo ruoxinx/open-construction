@@ -155,6 +155,12 @@
     .team-card .headshot,
     .person-card .headshot,
     .headshot.is-initials{ width:64px; height:64px; }
+    .person-card .headshot.is-logo{
+      object-fit:contain;
+      border-radius:12px;
+      background:#fff;
+      padding:6px;
+    }
     .person-card .person-meta{
       min-width:0;
       display:flex;
@@ -1201,9 +1207,14 @@ api.renderInstitutionMarquee({
   const urlPage = ()=>{ const u=new URL(location.href); const p=parseInt(u.searchParams.get(URL_PARAM),10); return (isFinite(p)&&p>=1)?p:1; };
   const setUrlPage = p=>{ const u=new URL(location.href); u.searchParams.set(URL_PARAM,String(p)); history.replaceState(null,'',u); };
   const initials = name => (name||'OC').trim().split(/\s+/).slice(0,2).map(s=>s[0]?.toUpperCase()||'').join('');
+  const esc = value => String(value ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#39;");
 
   function cardHTML(c){
-    const img = c.image ? `<img class="headshot" src="${c.image}" alt="">`
+    const isOrg = String(c.type || '').toLowerCase() === 'org';
+    const imageAlt = isOrg ? `${c.name || 'Organization'} logo` : '';
+    const img = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${c.image}" alt="${esc(imageAlt)}">`
                         : `<div class="headshot is-initials">${initials(c.name)}</div>`;
     const body = `<div class="card oc-card person-card h-100">
         <div class="card-body compact-body d-flex">${img}
