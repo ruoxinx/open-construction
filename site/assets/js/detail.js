@@ -300,7 +300,7 @@ function prettyTermLabel(raw){
   };
   if (preferred[key]) return preferred[key];
   const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs', 'with']);
-  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
   const tokens = key.split(/\s+/).filter(Boolean);
   return tokens.map((token, index) => {
     const parts = token.match(/^([^a-z0-9]*)([a-z0-9-]+)([^a-z0-9]*)$/i);

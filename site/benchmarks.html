@@ -415,7 +415,10 @@
     if(!raw) return '';
     const hasCaps = /[A-Z]/.test(raw);
     if(hasCaps && raw.length <= 14) return raw;
-    return raw.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
+    return raw.toLowerCase().replace(/\b\w+\b/g, word =>
+      acronymPattern.test(word) ? word.toUpperCase() : `${word.charAt(0).toUpperCase()}${word.slice(1)}`
+    );
   }
   function slugifyKey(s){
     return normStr(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0, 90) || 'key';
@@ -540,7 +543,7 @@
   function formatApplicationLabel(raw){
     const key = canonKey(raw);
     if(!key) return '';
-    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui)$/i;
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
     let isFirstWord = true;
     return key.split(' ').map(word => {
       const rendered = word.split('/').map(segment =>

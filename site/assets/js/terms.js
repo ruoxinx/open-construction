@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 (function(){
-  const ACRONYM_PATTERN = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod2|lod3|lod4|ui|pcd)$/i;
+  const ACRONYM_PATTERN = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|teaser|vlm|llm|qa|hvac|lod2|lod3|lod4|ui|pcd|fob|cif|dap)$/i;
   const MINOR_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs', 'with']);
 
   const PREFERRED_TERMS = {

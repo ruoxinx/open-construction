@@ -106,7 +106,7 @@ function prettyLabel(raw){
   };
   if (preferred[k]) return preferred[k];
   return k.split(' ').map(tok=>{
-    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i.test(tok)) return tok.toUpperCase();
+    if (/^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i.test(tok)) return tok.toUpperCase();
     return tok.charAt(0).toUpperCase()+tok.slice(1);
   }).join(' ');
 }
@@ -114,7 +114,7 @@ function formatDatasetTitle(raw){
   const text = String(raw || '').trim();
   if (!text) return '';
   const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
-  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd)$/i;
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
 
   return text.split(/\s+/).map((token, index, arr) => {
     const parts = token.match(/^([^A-Za-z0-9]*)([A-Za-z0-9][A-Za-z0-9-]*)([^A-Za-z0-9]*)$/);

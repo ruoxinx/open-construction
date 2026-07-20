@@ -270,7 +270,7 @@
   function formatApplicationLabel(raw){
     const key = canonKey(raw);
     if(!key) return '';
-    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui)$/i;
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
     return key.split(' ').map(word =>
       word.split('/').map(segment =>
         segment.split('-').map(part => {
