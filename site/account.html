@@ -1684,14 +1684,14 @@
         ${publicBadges.length ? `
           <section class="oc-workspace-card oc-credentials-card">
             <h2 class="oc-sidebar-section-title">Credentials</h2>
-            <p class="small text-muted mb-3">Download certificates for accepted OpenConstruction contributions.</p>
+            <p class="small text-muted mb-3">Download verified OpenConstruction contribution certificates.</p>
             <div class="oc-badge-grid">
               ${publicBadges.map((row, index) => `
                 <article class="oc-badge-card" title="${esc(row.badge_description || '')}">
                   <div class="oc-badge-card-icon">${badgeIcon()}</div>
                   <div class="oc-badge-card-body">
                     <strong>${esc(row.badge_label)}</strong>
-                    <span>${row.awarded_at ? `Accepted ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
+                    <span>${row.awarded_at ? `Issued ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
                   </div>
                   <div class="oc-badge-card-actions">
                     <button type="button" class="btn btn-primary btn-sm" data-badge-certificate="${index}">Download PDF</button>
