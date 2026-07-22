@@ -153,6 +153,28 @@
     workflow: ['workflow_contributor', 'Workflow Contributor']
   };
 
+  function normalizeCredentialKey(value){
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_+|_+$/g, '')
+      .slice(0, 48);
+  }
+
+  function contributionBadgeKey(baseKey, suggestion){
+    const suffix = normalizeCredentialKey(suggestion.id || suggestion.title || Date.now());
+    return suffix ? `${baseKey}_${suffix}` : baseKey;
+  }
+
+  function contributionCredentialDescription(suggestion){
+    const parts = [`Contribution: ${suggestion.title || 'OpenConstruction platform contribution'}`];
+    if (suggestion.doi) parts.push(`DOI: ${suggestion.doi}`);
+    if (suggestion.url) parts.push(`URL: ${suggestion.url}`);
+    parts.push('Statement: Verified OpenConstruction platform contribution.');
+    return parts.join(' | ');
+  }
+
   function statusBox(message, type = 'info'){
     return `<div class="alert alert-${type} mb-0" role="status">${esc(message)}</div>`;
   }
@@ -588,11 +610,7 @@
     const key = document.getElementById('badgeKey');
     const customKeyWrap = document.getElementById('customBadgeKeyWrap');
     const customKeyInput = document.getElementById('customBadgeKey');
-    const normalizeBadgeKey = value => String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_+|_+$/g, '');
+    const normalizeBadgeKey = normalizeCredentialKey;
     key?.addEventListener('change', () => {
       const custom = key.value === 'custom';
       customKeyWrap?.classList.toggle('d-none', !custom);
@@ -801,7 +819,8 @@
         const suggestion = suggestions.find(row => row.id === button.dataset.addSuggestion);
         if (!suggestion) return;
         button.disabled = true;
-        const [badgeKey, badgeLabel] = contributorBadgeByType[suggestion.resource_type] || [];
+        const [baseBadgeKey, badgeLabel] = contributorBadgeByType[suggestion.resource_type] || [];
+        const badgeKey = baseBadgeKey ? contributionBadgeKey(baseBadgeKey, suggestion) : '';
         const { error: suggestionError } = await updateSuggestionStatus(suggestion, 'added');
         if (suggestionError) {
           alert(suggestionError.message || 'Could not update suggestion.');
@@ -813,7 +832,7 @@
             user_id: suggestion.user_id,
             badge_key: badgeKey,
             badge_label: badgeLabel,
-            badge_description: 'Verified OpenConstruction platform contribution.',
+            badge_description: contributionCredentialDescription(suggestion),
             public: true
           }, { onConflict: 'user_id,badge_key' });
           if (badgeError) alert(badgeError.message || 'Suggestion was updated, but the badge could not be awarded.');
