@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: MEP BIM Object Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=BIMObjectDataset</link>
+    <guid isPermaLink="false">datasets:BIMObjectDataset:2026-07-27</guid>
+    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: LandedSpec Construction-Material Import Quote Comparison Registers]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=LandedSpec%20Construction-Material%20Import%20Quote%20Comparison%20Registers</link>
     <guid isPermaLink="false">datasets:LandedSpec Construction-Material Import Quote Comparison Registers:2026-07-20</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=CWPV</link>
     <guid isPermaLink="false">datasets:CWPV:2026-07-09</guid>
     <pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CEQuest: Benchmarking Large Language Models for Construction Estimation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CEQuest</link>
-    <guid isPermaLink="false">datasets:CEQuest:2026-07-04</guid>
-    <pubDate>Sat, 04 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
