@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: Tunnel Leakage Defect Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=tunnel-leakage</link>
+    <guid isPermaLink="false">datasets:tunnel-leakage:2026-07-27</guid>
+    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: LandedSpec Construction-Material Import Quote Comparison Registers]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=LandedSpec%20Construction-Material%20Import%20Quote%20Comparison%20Registers</link>
     <guid isPermaLink="false">datasets:LandedSpec Construction-Material Import Quote Comparison Registers:2026-07-20</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=OpenFACADES</link>
     <guid isPermaLink="false">datasets:OpenFACADES:2026-07-10</guid>
     <pubDate>Fri, 10 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CWPV: Construction Work Posture Video Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=CWPV</link>
-    <guid isPermaLink="false">datasets:CWPV:2026-07-09</guid>
-    <pubDate>Thu, 09 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
