@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: GeoLink-UV: A high-resolution nationwide urban village mapping product for 342 Chinese cities]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=GeoLink-UV</link>
+    <guid isPermaLink="false">datasets:GeoLink-UV:2026-07-29</guid>
+    <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Text2Onto-Agent: An LLM Agent-Based End-to-End Automated Ontology Construction Method and a Case Study of Green Building Domain Modeling]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:T2OA:2026-07-29</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: IL3D: A Large-scale indoor layout dataset for LLM-Driven 3D Scene Generation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=IL3D</link>
     <guid isPermaLink="false">datasets:IL3D:2026-07-14</guid>
-    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BIMCompNet: Multimodal Dataset for Geometric Deep Learning in Building Information Model]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BIMCompNet</link>
-    <guid isPermaLink="false">datasets:BIMCompNet:2026-07-14</guid>
     <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
