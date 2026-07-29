@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: Adaptive Insulation Framework with Multi-Objective Model Predictive Control for EnergyPlus]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:surrogate-mpc-eplus:2026-07-29</guid>
+    <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[building energy performance simulation model using Multivariate time-series data (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Architectural and MEP BIM Object Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BIMObjectDataset</link>
     <guid isPermaLink="false">datasets:BIMObjectDataset:2026-07-27</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=PIDQA</link>
     <guid isPermaLink="false">datasets:PIDQA:2026-07-17</guid>
     <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: IL3D: A Large-scale indoor layout dataset for LLM-Driven 3D Scene Generation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=IL3D</link>
-    <guid isPermaLink="false">datasets:IL3D:2026-07-14</guid>
-    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
