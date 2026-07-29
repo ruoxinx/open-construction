@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Synthetic multimodal dataset of reinforced concrete (RC) slab bridges]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=MultiModalBridgeDataset</link>
+    <guid isPermaLink="false">datasets:MultiModalBridgeDataset:2026-07-29</guid>
+    <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Architectural and MEP BIM Object Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=BIMObjectDataset</link>
     <guid isPermaLink="false">datasets:BIMObjectDataset:2026-07-27</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:IL3D:2026-07-14</guid>
     <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Indoor layout design model using 3D Objects (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: OpenFACADES dataset: An open framework for architectural caption and attribute data enrichment via street view imagery]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=OpenFACADES</link>
-    <guid isPermaLink="false">datasets:OpenFACADES:2026-07-10</guid>
-    <pubDate>Fri, 10 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
