@@ -3,8 +3,6 @@
   <span style="vertical-align: top; margin-left: 10px;">OpenConstruction Open Science Platform</span>
 </h1>
 
-[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.dibe.2026.100909-blue)](https://doi.org/10.1016/j.dibe.2026.100909)
-
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
 **distributed development, validation, and discovery** of datasets, AI models,
 workflows, and open educational resources (OERs) for the
