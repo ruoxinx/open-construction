@@ -38,7 +38,7 @@
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-    'AGPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
     'MIT License with Commons Clause Restriction': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
