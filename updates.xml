@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: Construction Specification Layout Detection Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=construction-document-digitalization</link>
+    <guid isPermaLink="false">datasets:construction-document-digitalization:2026-08-11</guid>
+    <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Reinforcement Learning-powered Training Data Quality Evaluation and Sampling for Enhancing Computer Vision in Construction]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:rl-powered-data-quality-evaluation:2026-08-11</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=tunnel-leakage</link>
     <guid isPermaLink="false">datasets:tunnel-leakage:2026-07-27</guid>
     <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: LandedSpec Construction-Material Import Quote Comparison Registers]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=LandedSpec%20Construction-Material%20Import%20Quote%20Comparison%20Registers</link>
-    <guid isPermaLink="false">datasets:LandedSpec Construction-Material Import Quote Comparison Registers:2026-07-20</guid>
-    <pubDate>Mon, 20 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
