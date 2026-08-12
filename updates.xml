@@ -31,6 +31,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: FARM: Find Anything using Relational Spatial Memory]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:FARM-Project:2026-08-11</guid>
+    <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Robot navigation model using RGB-D (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Long-context Construction Regulatory Document QA Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=Self-reflective-vision-language-model-for-construction-documents</link>
     <guid isPermaLink="false">datasets:Self-reflective-vision-language-model-for-construction-documents:2026-08-09</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:surrogate-mpc-eplus:2026-07-29</guid>
     <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[building energy performance simulation model using Multivariate time-series data (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Architectural and MEP BIM Object Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=BIMObjectDataset</link>
-    <guid isPermaLink="false">datasets:BIMObjectDataset:2026-07-27</guid>
-    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
