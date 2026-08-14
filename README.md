@@ -1,6 +1,6 @@
 <h1 align="center">
   <img src="site/assets/img/icon.png" alt="OpenConstruction Logo" width="44" style="vertical-align: top;" />
-  <span style="vertical-align: top; margin-left: 10px;">OpenConstruction Open Science Platform</span>
+  <span style="vertical-align: top; margin-left: 10px;">OpenConstruction Open Science Initiative</span>
 </h1>
 
 **OpenConstruction** is a **community-governed, open-source platform** that enables the
@@ -136,6 +136,12 @@ If OpenConstruction is helpful in your research, you may cite:
 
 
 ## Acknowledgment
+<p>
+  <img src="site/assets/img/nsf-logo.png" alt="U.S. National Science Foundation" width="72">
+</p>
+
+OpenConstruction is supported by the **U.S. National Science Foundation** under
+[Award No. 2612086](https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086).
 
 We thank the global community of researchers, educators, and practitioners whose
 contributions advance open science and AI innovation in the AEC domain.
