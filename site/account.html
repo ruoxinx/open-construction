@@ -1098,7 +1098,7 @@
   function aiResourceRounds(chat){
     if (Array.isArray(chat?.resourceRounds)) return chat.resourceRounds.filter(round => Array.isArray(round.resources));
     if (Array.isArray(chat?.resources) && chat.resources.length) {
-      const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || chat.title || 'Previous search';
+      const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || chat.title || 'Search';
       return [{ query: firstUserMessage, resources: chat.resources, created_at: chat.created_at || chat.updated_at || '' }];
     }
     return [];
@@ -1671,7 +1671,7 @@
     ` : '');
   }
 
-  function accountAiResultToolsHtml(results, query, visibleLimit = AI_INITIAL_RESULT_LIMIT){
+  function accountAiResultToolsHtml(results, query, visibleLimit = AI_INITIAL_RESULT_LIMIT, title = 'Current resources'){
     const rows = Array.isArray(results) ? results : [];
     const counts = rows.reduce((acc, resource) => {
       const label = resource.label || typeLabel(resource.type || 'resource');
@@ -1684,7 +1684,7 @@
       .join('');
     return `
       <div class="oc-ai-results-heading-main">
-        <span>Current resources</span>
+        <span>${esc(title)}</span>
         <small>${esc(aiVisibleSummary(rows, visibleLimit))}</small>
       </div>
       <div class="oc-ai-result-tools">
@@ -1693,20 +1693,20 @@
     `;
   }
 
-  function previousAiRoundsHtml(rounds){
-    const previous = (Array.isArray(rounds) ? rounds : []).filter(round => round.changed !== false && Array.isArray(round.resources) && round.resources.length);
-    if (!previous.length) return '';
-    return previous.slice().reverse().map(round => `
-      <details class="oc-ai-previous-round">
+  function accountAiReplyResourcesHtml(round, index, open = false, visibleLimit = AI_INITIAL_RESULT_LIMIT){
+    const resources = Array.isArray(round?.resources) ? round.resources : [];
+    if (!resources.length) return '';
+    return `
+      <details class="oc-ai-reply-results" data-ai-reply-results="${index}"${open ? ' open' : ''}>
         <summary>
-          <span>Previous search: ${esc(aiRoundTitle(round.query || 'Search'))}</span>
-          <small>${round.resources.length} resource${round.resources.length === 1 ? '' : 's'}</small>
+          <span>Resources</span>
+          <small>${resources.length} resource${resources.length === 1 ? '' : 's'}</small>
         </summary>
-        <div class="oc-library-grid oc-ai-previous-grid">
-          ${accountAiResourceCardsHtml(round.resources, round.query || '', round.resources.length, false)}
+        <div class="oc-library-grid oc-ai-reply-resource-grid">
+          ${accountAiResourceCardsHtml(resources, round.query || '', visibleLimit, true)}
         </div>
       </details>
-    `).join('');
+    `;
   }
 
   function resourceKeyAi(value){
@@ -3243,7 +3243,7 @@
       const heading = document.querySelector('.oc-ai-results-heading');
       if (!output || !threadEl || !resultsEl) return;
       document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
-      if (resultsShell) resultsShell.hidden = false;
+      if (resultsShell) resultsShell.hidden = true;
       const examples = document.querySelector('.oc-ask-examples');
       if (examples) examples.hidden = true;
       output.hidden = false;
@@ -3253,19 +3253,38 @@
           { role: 'user', text: query },
           { role: 'assistant', text: answer }
         ].filter(message => message.text);
-      threadEl.innerHTML = thread.map(message => `
-        <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
-          <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
-          <p>${esc(message.text || '')}</p>
-        </div>
-      `).join('');
-      if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
-      resultsEl.innerHTML = previousAiRoundsHtml(previousRounds) + accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
-      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', event => {
-        const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
-        renderAccountAiResults(query, answer, results, messages, previousRounds, nextVisible);
-      });
-      window.OCBookmark?.mount?.(resultsEl);
+      const latestAssistantIndex = thread.reduce((latest, message, index) => message.role === 'assistant' ? index : latest, -1);
+      const assistantResourceRounds = [
+        ...(Array.isArray(previousRounds) ? previousRounds : []),
+        { query, resources: results }
+      ].map(round => round?.changed !== false && Array.isArray(round.resources) && round.resources.length ? round : null);
+      let assistantRoundIndex = 0;
+      threadEl.innerHTML = thread.map((message, index) => {
+        const roundIndex = message.role === 'assistant' ? assistantRoundIndex++ : -1;
+        const round = roundIndex >= 0 ? assistantResourceRounds[roundIndex] : null;
+        return `
+          <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
+            <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
+            <p>${esc(message.text || '')}</p>
+            ${round ? accountAiReplyResourcesHtml(round, roundIndex, index === latestAssistantIndex, index === latestAssistantIndex ? visibleLimit : AI_INITIAL_RESULT_LIMIT) : ''}
+          </div>
+        `;
+      }).join('');
+      resultsEl.innerHTML = '';
+      const mountReplyResourceActions = rootEl => {
+        rootEl.querySelectorAll('[data-ai-show-more]').forEach(button => button.addEventListener('click', event => {
+          const details = event.currentTarget.closest('[data-ai-reply-results]');
+          const round = assistantResourceRounds[Number(details?.dataset.aiReplyResults || -1)];
+          const grid = details?.querySelector('.oc-ai-reply-resource-grid');
+          if (!round || !grid) return;
+          const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
+          grid.innerHTML = accountAiResourceCardsHtml(round.resources, round.query || '', nextVisible, true);
+          window.OCBookmark?.mount?.(grid);
+          mountReplyResourceActions(grid);
+        }));
+      };
+      mountReplyResourceActions(threadEl);
+      window.OCBookmark?.mount?.(threadEl);
     }
 
     function renderAccountAiSessions(activeId = ''){
@@ -3350,7 +3369,7 @@
         output.hidden = false;
         document.querySelector('.oc-ask-examples')?.setAttribute('hidden', '');
         const resultsShell = document.querySelector('.oc-ai-results-shell');
-        if (resultsShell) resultsShell.hidden = !existingChat?.resources?.length;
+        if (resultsShell) resultsShell.hidden = true;
         threadEl.innerHTML = [
           ...priorMessages,
           { role: 'user', text: clean },
@@ -3361,7 +3380,7 @@
             <p>${esc(message.text || '')}</p>
           </div>
         `).join('');
-        if (!existingChat?.resources?.length) resultsEl.innerHTML = '';
+        resultsEl.innerHTML = '';
       }
       const catalog = await loadAccountAiCatalog();
       const contextText = priorMessages
