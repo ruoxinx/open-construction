@@ -146,6 +146,30 @@
     navList.dataset.ocHeaderNormalized = 'true';
   }
 
+  async function syncProtectedNavigation(){
+    const mcpLink = document.querySelector('.navbar a[href$="mcp.html"], .navbar a[href*="mcp.html"]');
+    const mcpItem = mcpLink?.closest('li') || mcpLink;
+    if (mcpItem) mcpItem.hidden = true;
+    try {
+      const canUseAgentDocs = await window.OCAuth?.canUseAgentDocs?.();
+      if (mcpItem) mcpItem.hidden = !canUseAgentDocs;
+    } catch (error) {
+      if (mcpItem) mcpItem.hidden = true;
+    }
+  }
+
+  function refreshProtectedShell(){
+    syncProtectedNavigation();
+    mountAiAssistant();
+  }
+
+  function bindProtectedShellRefresh(){
+    if (document.body.dataset.ocProtectedShellBound === 'true') return;
+    document.body.dataset.ocProtectedShellBound = 'true';
+    document.addEventListener('oc:auth-user', refreshProtectedShell);
+    document.addEventListener('oc:auth-roles', refreshProtectedShell);
+  }
+
   function applyActiveNav(){
     const nav = document.querySelector('.navbar');
     if (!nav) return;
@@ -471,28 +495,6 @@
         text-decoration:underline;
         text-underline-offset:3px;
       }
-      .oc-ai-panel-actions{
-        display:flex;
-        align-items:center;
-        gap:.7rem;
-        flex-wrap:wrap;
-        margin:.42rem .2rem 0;
-      }
-      .oc-ai-panel-actions a{
-        color:var(--oc-sub,#4f5d6c);
-        font-size:.78rem;
-        font-weight:700;
-        text-decoration:none;
-      }
-      .oc-ai-panel-actions a:hover,
-      .oc-ai-panel-actions a:focus{
-        color:var(--oc-ink,#0f2e4b);
-        text-decoration:underline;
-        text-underline-offset:3px;
-      }
-      body.oc-ai-floating-mounted .issue-btn{
-        display:none!important;
-      }
       @media (max-width:575.98px){
         .oc-ai-launcher{
           right:14px;
@@ -516,44 +518,15 @@
       .replace(/>/g, '&gt;');
   }
 
-  const ANONYMOUS_AI_DAILY_LIMIT = 1;
-
-  function todayAiUsageStamp(){
-    return new Date().toISOString().slice(0, 10);
-  }
-
-  function anonymousAiUsageKey(){
-    return `oc_ai_usage:anonymous:${todayAiUsageStamp()}`;
-  }
-
-  function anonymousAiUsageCount(){
-    try {
-      return Number(localStorage.getItem(anonymousAiUsageKey()) || '0') || 0;
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  function normalSearchHref(query){
-    const text = String(query || '').toLowerCase();
-    const scope = /\b(models?|checkpoints?|architectures?|scan-to-bim|point clouds?)\b/.test(text)
-      ? 'model'
-      : /\b(workflows?|deployments?|use cases?|pipelines?|progress tracking|monitoring)\b/.test(text)
-        ? 'workflow'
-        : /\b(oers?|courses?|teaching|education|tutorials?|labs?)\b/.test(text)
-          ? 'oer'
-          : 'dataset';
-    const params = new URLSearchParams();
-    params.set('scope', scope);
-    const suffix = params.toString();
-    return `${pagePrefix()}index.html${suffix ? `?${suffix}` : ''}#homeSearchInput`;
-  }
-
-  function mountAiAssistant(){
+  async function mountAiAssistant(){
     if (routeForPath() === 'account' || document.getElementById('ocAiLauncher')) return;
+    const canUseAsk = window.OCAuth?.canUseAskBeta
+      ? await window.OCAuth.canUseAskBeta().catch(() => false)
+      : false;
+    if (!canUseAsk) return;
+    if (document.getElementById('ocAiLauncher')) return;
     injectAiAssistantStyles();
     document.body.classList.add('oc-ai-floating-mounted');
-    const submitHref = `${pagePrefix()}account.html?submit=resource`;
     const privacyHref = `${pagePrefix()}contribute.html#privacy`;
     const examplePrompt = 'e.g. Find datasets for construction safety with worker, PPE, or equipment annotations';
     const wrap = document.createElement('div');
@@ -577,10 +550,6 @@
           </div>
           <p class="oc-ai-panel-note">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="${escapeAiAttribute(privacyHref)}">Data &amp; Privacy</a>.</p>
           <p class="oc-ai-panel-note oc-ai-panel-limit" id="ocAiLimitNote">Limited beta. Normal search remains available.</p>
-          <div class="oc-ai-panel-actions" aria-label="Related actions">
-            <a href="${escapeAiAttribute(submitHref)}">Submit resource</a>
-            <a href="${escapeAiAttribute(`${pagePrefix()}account.html?report=issue&page=${encodeURIComponent(window.location.href)}`)}">Report issue</a>
-          </div>
         </form>
       </section>
     `;
@@ -629,15 +598,7 @@
         prompt?.focus();
         return;
       }
-      const user = await window.OCAuth?.getUser?.().catch(() => null);
-      if (!user && anonymousAiUsageCount() >= ANONYMOUS_AI_DAILY_LIMIT) {
-          if (limitNote) {
-            limitNote.innerHTML = `Anonymous visitors can use Ask OpenConstruction once per day. <a href="${escapeAiAttribute(`${pagePrefix()}auth/sign-in.html`)}">Sign in</a> for more searches and saved sessions. <a href="${escapeAiAttribute(normalSearchHref(query))}">Search catalog</a> remains available.`;
-          }
-          prompt?.focus();
-          return;
-      }
-      window.location.href = `account.html${user ? '' : '?anon=1'}${user ? '?q=' : '&q='}${encodeURIComponent(query)}`;
+      window.location.href = `${pagePrefix()}account.html?tab=ask&q=${encodeURIComponent(query)}`;
     });
   }
 
@@ -692,9 +653,11 @@
   function init(){
     setFooterYear();
     normalizeHeaderNav();
+    bindProtectedShellRefresh();
+    refreshProtectedShell();
     applyActiveNav();
     injectFooterFundingStyles();
-    mountAiAssistant();
+    [250, 1000, 2500].forEach(delay => window.setTimeout(refreshProtectedShell, delay));
     bindSearchArrowActions();
     normalizeFooter();
   }

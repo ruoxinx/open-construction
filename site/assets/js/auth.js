@@ -139,6 +139,12 @@
     localStorage.setItem(RETURN_TO_KEY, url);
   }
 
+  function dispatchAuthEvent(name, detail = {}){
+    try {
+      document.dispatchEvent(new CustomEvent(name, { detail }));
+    } catch (_) {}
+  }
+
   function pendingReturnTo(){
     return localStorage.getItem(RETURN_TO_KEY) || '';
   }
@@ -307,6 +313,7 @@
 
     if (roles.has('admin')) roles.add('reviewer');
     roleCache = Array.from(roles);
+    dispatchAuthEvent('oc:auth-roles', { user, roles: roleCache });
     return roleCache;
   }
 
@@ -314,6 +321,27 @@
     const roles = await getRoles();
     if (role === 'reviewer') return roles.includes('reviewer') || roles.includes('admin');
     return roles.includes(role);
+  }
+
+  function hasAnyRole(roles, allowed){
+    const roleSet = new Set(Array.isArray(roles) ? roles : []);
+    return allowed.some(role => roleSet.has(role));
+  }
+
+  function canUseAskBetaRoles(roles){
+    return hasAnyRole(roles, ['admin', 'developer', 'tester', 'reviewer']);
+  }
+
+  function canUseAgentDocsRoles(roles){
+    return hasAnyRole(roles, ['admin', 'developer', 'tester']);
+  }
+
+  async function canUseAskBeta(){
+    return canUseAskBetaRoles(await getRoles());
+  }
+
+  async function canUseAgentDocs(){
+    return canUseAgentDocsRoles(await getRoles());
   }
 
   async function isAdmin(){
@@ -681,6 +709,7 @@
       currentUser = session?.user || null;
       bookmarkCache = null;
       roleCache = null;
+      dispatchAuthEvent('oc:auth-user', { user: currentUser });
       if (currentUser) upsertProfile(currentUser).catch(err => console.warn('Profile sync failed', err));
       updateAuthNav(currentUser);
       refreshBookmarkButtons().catch(() => {});
@@ -700,6 +729,10 @@
     upsertProfile,
     getRoles,
     hasRole,
+    canUseAskBeta,
+    canUseAskBetaRoles,
+    canUseAgentDocs,
+    canUseAgentDocsRoles,
     isAdmin,
     isReviewer,
     isMaintainer,

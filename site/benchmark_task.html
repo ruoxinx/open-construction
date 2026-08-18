@@ -72,30 +72,7 @@
     .search-mini input{ border:0; box-shadow:none; background:transparent; }
     .search-mini input:focus{ box-shadow:none; }
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
-
-    /* ---- Floating Suggestion Button ---- */
-    .issue-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1050;
-      background: #0d6efd;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: .9rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,.25);
-      text-decoration: none;
-      transition: background .2s ease, transform .2s ease;
-    }
-    .issue-btn:hover {
-      background: #0b5ed7;
-      transform: translateY(-2px);
-      color: #fff;
-      text-decoration: none;
-    }
-  </style>
+</style>
 </head>
 
 <body>
@@ -251,11 +228,6 @@
 </footer>
 
 <!-- Floating button -->
-<a href="account.html?report=issue"
-   class="issue-btn" target="_blank" rel="noopener">
-  Issue or Suggestion?
-</a>
-
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
@@ -281,8 +253,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
+<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
 
 <script>
   const esc = (s) => String(s ?? '')

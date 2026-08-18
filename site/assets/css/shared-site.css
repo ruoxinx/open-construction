@@ -281,29 +281,6 @@ header.hero p{
 .btn-subscribe-icon svg{ fill:var(--oc-accent); }
 .btn-subscribe-icon:hover svg{ filter:brightness(1.15); }
 
-.issue-btn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  z-index:1050;
-  padding:12px 20px;
-  border-radius:999px;
-  background:#0d6efd;
-  color:#fff;
-  font-size:.9rem;
-  font-weight:600;
-  text-decoration:none;
-  box-shadow:0 4px 12px rgba(0,0,0,.25);
-  transition:background .2s ease, transform .2s ease;
-}
-
-.issue-btn:hover{
-  background:#0b5ed7;
-  color:#fff;
-  text-decoration:none;
-  transform:translateY(-2px);
-}
-
 .oc-modal-compact{
   padding:1rem;
   border:0;
@@ -1703,6 +1680,80 @@ header.hero p{
 .oc-ai-message-resource-block{
   width:100%;
   justify-self:stretch;
+}
+
+.oc-ai-feedback{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.45rem;
+  border:1px solid #dbe5ef;
+  border-radius:8px;
+  background:#fff;
+  color:#5c6978;
+  font-size:.82rem;
+  margin-top:.55rem;
+  padding:.55rem .65rem;
+}
+
+.oc-ai-feedback > span{
+  color:#415064;
+  font-weight:800;
+}
+
+.oc-ai-feedback-actions{
+  display:inline-flex;
+  gap:.35rem;
+}
+
+.oc-ai-feedback-button,
+.oc-ai-feedback-note-toggle{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  border:1px solid var(--oc-border);
+  border-radius:6px;
+  background:#f8fafc;
+  color:#2f66c7;
+  font-size:.78rem;
+  font-weight:800;
+  padding:.2rem .5rem;
+}
+
+.oc-ai-feedback-button.active{
+  border-color:#9bc1eb;
+  background:#eaf4ff;
+  color:#164b82;
+}
+
+.oc-ai-feedback-note{
+  display:grid;
+  grid-template-columns:minmax(180px, 1fr) auto;
+  gap:.45rem;
+  width:100%;
+  margin-top:.2rem;
+}
+
+.oc-ai-feedback-note[hidden]{
+  display:none;
+}
+
+.oc-ai-feedback-note textarea{
+  min-height:42px;
+  border:1px solid var(--oc-border);
+  border-radius:7px;
+  color:var(--oc-text);
+  font:inherit;
+  font-size:.84rem;
+  line-height:1.4;
+  padding:.45rem .55rem;
+  resize:vertical;
+}
+
+.oc-ai-feedback small{
+  color:#64748b;
+  font-size:.76rem;
+  font-weight:700;
 }
 
 .oc-ai-reply-results summary{
@@ -3282,13 +3333,6 @@ header.hero p{
 
   .oc-ai-reply-resource-grid{
     grid-template-columns:1fr;
-  }
-
-  .issue-btn{
-    right:14px;
-    bottom:14px;
-    padding:10px 14px;
-    font-size:.82rem;
   }
 }
 

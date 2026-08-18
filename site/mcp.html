@@ -142,8 +142,16 @@
     .code-block{position:relative;margin-top:.65rem;border:1px solid #d8e4ef;border-radius:8px;background:#f8fafc;color:#26394c;overflow:hidden}
     .code-block pre{margin:0;padding:.8rem 4.5rem .8rem .85rem;color:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
     .copy-btn{position:absolute;top:.5rem;right:.5rem;border:1px solid #bfd8f0;border-radius:6px;background:#eef6ff;color:#0b559f;font-size:.72rem;font-weight:800;padding:.22rem .48rem}
-    .issue-btn{position:fixed;right:20px;bottom:20px;z-index:1050;display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:999px;background:#0d6efd;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.25);font-size:.9rem;font-weight:700;padding:12px 20px;text-decoration:none}
-    .issue-btn:hover{background:#0b5ed7;color:#fff;text-decoration:none}
+    body.oc-protected-pending .page-hero,
+    body.oc-protected-pending main,
+    body.oc-protected-denied .page-hero,
+    body.oc-protected-denied main{display:none}
+    .access-gate{display:none;border-bottom:1px solid var(--doc-border);background:#f7fafc;padding:4rem 0}
+    body.oc-protected-denied .access-gate{display:block}
+    .access-gate-card{max-width:680px;border:1px solid var(--doc-border);border-radius:8px;background:#fff;box-shadow:0 12px 32px rgba(15,46,75,.08);padding:1.35rem}
+    .access-gate-card h1{color:var(--doc-ink);font-size:1.55rem;font-weight:800;margin:0 0 .55rem}
+    .access-gate-card p{color:var(--doc-muted);font-size:1rem;line-height:1.6;margin:0 0 1rem}
+    .access-gate-actions{display:flex;gap:.6rem;flex-wrap:wrap}
     @media (max-width:991.98px){
       .hero-inner{grid-template-columns:1fr;min-height:0;padding:2.35rem 0}
       .compact-grid,.compact-grid.two,.stage-grid,.api-grid{grid-template-columns:1fr 1fr}
@@ -153,12 +161,11 @@
       .endpoint{grid-template-columns:1fr}
       .relationship{padding:.8rem}
       .flow-row.two{grid-template-columns:1fr}
-      .issue-btn{right:12px;bottom:12px;padding:10px 14px}
     }
   </style>
 </head>
 
-<body>
+<body class="oc-protected-pending">
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
@@ -207,6 +214,19 @@
     </div>
   </div>
 </nav>
+
+<section class="access-gate" aria-labelledby="accessGateTitle">
+  <div class="container oc-container">
+    <div class="access-gate-card">
+      <h1 id="accessGateTitle">API &amp; MCP beta access</h1>
+      <p>This page is available to invited OpenConstruction testers and developers.</p>
+      <div class="access-gate-actions">
+        <a class="btn btn-primary" href="auth/sign-in.html">Sign in</a>
+        <a class="btn btn-outline-secondary" href="account.html">Open workspace</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <header class="page-hero">
   <div class="container oc-container">
@@ -426,11 +446,6 @@ python -m pip install -e .</code></pre>
       <p class="section-kicker">Use cases</p>
       <h2 class="section-title">What Developers Can Build</h2>
       <p class="section-copy">The API and MCP server make it easier to build search interfaces, research assistants, benchmark preparation tools, dataset comparison views, and resource discovery workflows.</p>
-      <div class="status-row" aria-label="Developer use cases">
-        <span class="status-chip now">Search experiences</span>
-        <span class="status-chip next">Assistant integrations</span>
-        <span class="status-chip workflow">Lifecycle workflows</span>
-      </div>
     </div>
   </section>
 </main>
@@ -442,8 +457,6 @@ python -m pip install -e .</code></pre>
     <div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div>
   </div>
 </footer>
-
-<a href="account.html?report=issue" class="issue-btn" target="_blank" rel="noopener">Issue or Suggestion?</a>
 
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
@@ -652,7 +665,21 @@ python -m pip install -e .</code></pre>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
+<script>
+  (async () => {
+    try {
+      const canUseAgentDocs = await window.OCAuth?.canUseAgentDocs?.();
+      if (!canUseAgentDocs) window.OCAuth?.setReturnTo?.(window.location.href);
+      document.body.classList.remove('oc-protected-pending');
+      document.body.classList.toggle('oc-protected-denied', !canUseAgentDocs);
+    } catch (error) {
+      window.OCAuth?.setReturnTo?.(window.location.href);
+      document.body.classList.remove('oc-protected-pending');
+      document.body.classList.add('oc-protected-denied');
+    }
+  })();
+</script>
+<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
 </body>
 </html>

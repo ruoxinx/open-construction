@@ -94,5 +94,8 @@ openconstruction-*-certificate.pdf
 site/scripts/validate-role-management.mjs
 scripts/generate_ai_catalog.py
 scripts/ai_search_limits.sql
+scripts/ai_search_feedback.sql
+scripts/developer_role_permissions.sql
 scripts/site_issue_reports.sql
+scripts/tester_role_permissions.sql
 scripts/workspace_research_cockpit.sql

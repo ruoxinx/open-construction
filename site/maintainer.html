@@ -117,8 +117,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
+<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -145,6 +145,7 @@
     workflow_contributor: ['Workflow Contributor', 'Verified OpenConstruction platform contribution.'],
     reviewer: ['Reviewer', 'Reviewed OpenConstruction catalog or platform contributions.'],
     admin: ['Admin', 'Provides administrative stewardship for OpenConstruction users, roles, and credentials.'],
+    tester: ['Tester', 'Invited beta access for OpenConstruction workspace features.'],
     steward: ['Steward', 'Provides ongoing governance, review, or resource stewardship for OpenConstruction.']
   };
   const contributorBadgeByType = {
@@ -208,6 +209,8 @@
       labels.push('Contributor');
     }
     if (userRoles.includes('reviewer') || userRoles.includes('admin')) labels.push('Reviewer');
+    if (userRoles.includes('developer')) labels.push('Developer');
+    if (userRoles.includes('tester')) labels.push('Tester');
     if (userRoles.includes('admin')) labels.push('Admin');
     return labels;
   }
@@ -218,9 +221,11 @@
       acc.users += 1;
       if (labels.includes('Contributor')) acc.contributors += 1;
       if (labels.includes('Reviewer')) acc.reviewers += 1;
+      if (labels.includes('Developer')) acc.developers += 1;
+      if (labels.includes('Tester')) acc.testers += 1;
       if (labels.includes('Admin')) acc.admins += 1;
       return acc;
-    }, { users: 0, contributors: 0, reviewers: 0, admins: 0 });
+    }, { users: 0, contributors: 0, reviewers: 0, developers: 0, testers: 0, admins: 0 });
   }
 
   function renderSignedOut(){
@@ -303,6 +308,14 @@
             <div class="oc-account-stat-label">Reviewers</div>
           </div>
           <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.developers}</div>
+            <div class="oc-account-stat-label">Developers</div>
+          </div>
+          <div class="oc-account-stat">
+            <div class="oc-account-stat-value">${overview.testers}</div>
+            <div class="oc-account-stat-label">Testers</div>
+          </div>
+          <div class="oc-account-stat">
             <div class="oc-account-stat-value">${overview.admins}</div>
             <div class="oc-account-stat-label">Admins</div>
           </div>
@@ -313,6 +326,8 @@
             ['user', 'Users'],
             ['contributor', 'Contributors'],
             ['reviewer', 'Reviewers'],
+            ['developer', 'Developers'],
+            ['tester', 'Testers'],
             ['admin', 'Admins']
           ].map(([value, label]) => `
             <button type="button" class="btn btn-sm ${profileRoleFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-role-filter="${value}">${label}</button>
@@ -415,13 +430,13 @@
 
   function renderPermissionEditor(profile){
     const selectedRoles = rolesFor(profile.user_id);
-    const removableRoles = selectedRoles.filter(role => role === 'reviewer' || role === 'admin');
+    const removableRoles = selectedRoles.filter(role => role === 'reviewer' || role === 'developer' || role === 'tester' || role === 'admin');
     return `
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3 oc-section-heading">
         <div>
           <p class="oc-auth-kicker mb-2">People & permissions</p>
           <h3 class="h5 fw-bold mb-1">Role allocation</h3>
-          <p class="text-muted small mb-0">Grant or remove reviewer/admin permissions for the selected account.</p>
+          <p class="text-muted small mb-0">Grant or remove reviewer, tester, developer, and admin permissions for the selected account.</p>
         </div>
       </div>
 
@@ -433,6 +448,14 @@
             <label class="form-check">
               <input class="form-check-input" type="checkbox" name="reviewer" ${selectedRoles.includes('reviewer') ? 'checked' : ''}>
               <span class="form-check-label">Reviewer</span>
+            </label>
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" name="developer" ${selectedRoles.includes('developer') ? 'checked' : ''}>
+              <span class="form-check-label">Developer</span>
+            </label>
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" name="tester" ${selectedRoles.includes('tester') ? 'checked' : ''}>
+              <span class="form-check-label">Tester</span>
             </label>
             <label class="form-check">
               <input class="form-check-input" type="checkbox" name="admin" ${selectedRoles.includes('admin') ? 'checked' : ''}>
@@ -448,7 +471,7 @@
             </div>
           ` : ''}
           ${profile.user_id === currentMaintainerId && selectedRoles.includes('admin') ? '<p class="small text-muted mb-0 mt-2">You cannot remove admin access from your own active session here.</p>' : ''}
-          <p class="small text-muted mb-0 mt-2">Reviewer access makes this account available for resource queue assignment.</p>
+          <p class="small text-muted mb-0 mt-2">Reviewer access makes this account available for resource queue assignment. Tester access enables invited beta workspace features. Developer access enables beta API, MCP, and Skills workspace features.</p>
         </div>
         <button type="submit" class="btn btn-outline-primary">Save permissions</button>
         <div id="roleStatus" class="small text-muted" role="status"></div>
@@ -749,7 +772,7 @@
       event.preventDefault();
       const status = document.getElementById('roleStatus');
       const userId = form.elements.user_id.value;
-      const wanted = ['reviewer', 'admin'].filter(role => form.elements[role].checked);
+      const wanted = ['reviewer', 'developer', 'tester', 'admin'].filter(role => form.elements[role].checked);
       const existing = rolesFor(userId);
       const profile = profiles.find(row => row.user_id === userId) || { user_id: userId };
       if (userId === currentMaintainerId && existing.includes('admin') && !wanted.includes('admin')) {
@@ -768,6 +791,8 @@
       const { error } = await sb.rpc('set_user_roles', {
         target_user_id: userId,
         reviewer_enabled: wanted.includes('reviewer'),
+        developer_enabled: wanted.includes('developer'),
+        tester_enabled: wanted.includes('tester'),
         admin_enabled: wanted.includes('admin')
       });
       if (error) {

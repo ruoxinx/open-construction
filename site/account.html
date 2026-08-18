@@ -433,8 +433,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
+<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -806,7 +806,7 @@
     if (remaining) remaining.textContent = String(aiUsageRemaining(user));
   }
 
-  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, issueReports }){
+  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
@@ -831,10 +831,16 @@
       resource_collection_items: collectionItems || [],
       resource_notes: notes || [],
       search_sessions: aiChats || [],
+      search_feedback: aiFeedback || [],
       badges: badges || [],
       resource_submissions: suggestions || [],
       issue_reports: issueReports || []
     };
+  }
+
+  function aiFeedbackId(){
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return `feedback_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
   }
 
   function deletionRequestHref(user){
@@ -2048,11 +2054,34 @@
     `;
   }
 
-  function accountAiMessageResourcesBlockHtml(round, roundIndex, open, visibleLimit){
+  function accountAiMessageResourcesBlockHtml(round, roundIndex, open, visibleLimit, includeFeedback = false){
     if (!round) return '';
     return `
       <div class="oc-ai-message-resource-block">
         ${accountAiReplyResourcesHtml(round, roundIndex, open, visibleLimit)}
+        ${includeFeedback ? accountAiFeedbackHtml(round, roundIndex) : ''}
+      </div>
+    `;
+  }
+
+  function accountAiFeedbackHtml(round, roundIndex){
+    const feedback = round?.feedback || {};
+    const value = feedback.rating || '';
+    const comment = feedback.comment || feedback.note || '';
+    return `
+      <div class="oc-ai-feedback" data-ai-feedback="${roundIndex}">
+        <span>Was this useful?</span>
+        <div class="oc-ai-feedback-actions">
+          <button type="button" class="oc-ai-feedback-button${value === 'helpful' ? ' active' : ''}" data-ai-feedback-rating="helpful" aria-pressed="${value === 'helpful' ? 'true' : 'false'}">Yes</button>
+          <button type="button" class="oc-ai-feedback-button${value === 'not_helpful' ? ' active' : ''}" data-ai-feedback-rating="not_helpful" aria-pressed="${value === 'not_helpful' ? 'true' : 'false'}">No</button>
+        </div>
+        <button type="button" class="oc-ai-feedback-note-toggle" data-ai-feedback-note-toggle>Add comment</button>
+        <form class="oc-ai-feedback-note" data-ai-feedback-note-form hidden>
+          <label class="visually-hidden" for="aiFeedbackComment${roundIndex}">Search feedback comment</label>
+          <textarea id="aiFeedbackComment${roundIndex}" rows="2" maxlength="600" placeholder="Optional: what should be improved?">${esc(comment)}</textarea>
+          <button type="submit" class="oc-text-action">Save</button>
+        </form>
+        <small data-ai-feedback-status>${feedback.rating ? 'Feedback saved.' : ''}</small>
       </div>
     `;
   }
@@ -2708,6 +2737,7 @@
   }
 
   function openAskWithPrompt(prompt){
+    if (!document.querySelector('[data-workspace-panel="ask"]')) return;
     showWorkspacePanel('ask');
     const input = document.querySelector('.oc-ask-form [name="q"]');
     if (!input) return;
@@ -2725,7 +2755,8 @@
     const tabs = Array.from(document.querySelectorAll('[data-workspace-tab]'));
     tabs.forEach(tab => tab.addEventListener('click', () => showWorkspacePanel(tab.dataset.workspaceTab)));
     const requested = new URLSearchParams(window.location.search).get('tab');
-    showWorkspacePanel(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : 'ask');
+    const fallback = tabs[0]?.dataset.workspaceTab || 'library';
+    showWorkspacePanel(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : fallback);
   }
 
   function selectorValue(value){
@@ -3372,11 +3403,6 @@
   try {
     const user = await window.OCAuth.getUser();
     if (!user) {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('anon') === '1' && params.get('q')) {
-        await renderAnonymousAsk(params.get('q'));
-        return;
-      }
       renderSignedOut();
       return;
     }
@@ -3384,13 +3410,17 @@
     await window.OCAuth.syncLocalBookmarks();
     const roles = new Set(await window.OCAuth.getRoles?.().catch(() => ['user']) || ['user']);
     const isAdmin = roles.has('admin');
+    const canUseAsk = window.OCAuth.canUseAskBetaRoles
+      ? window.OCAuth.canUseAskBetaRoles(Array.from(roles))
+      : isAdmin || roles.has('developer') || roles.has('tester') || roles.has('reviewer');
+    const canUseSkills = isAdmin || roles.has('developer') || roles.has('tester');
     const canReview = roles.has('reviewer') || isAdmin;
     const identitiesPromise = window.OCAuth.getUserIdentities?.()
       .catch(err => {
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, issueReportsRes] = await Promise.all([
+    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
@@ -3399,6 +3429,7 @@
       safeRows(sb.from('resource_collections').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource collections'),
       safeRows(sb.from('resource_collection_items').select('*').eq('user_id', user.id).order('created_at', { ascending: false }), 'collection items'),
       safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes'),
+      safeRows(sb.from('ai_search_feedback').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(500), 'AI search feedback'),
       safeRows(sb.from('site_issue_reports').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50), 'issue reports')
     ]);
     if (profileRes.error) throw profileRes.error;
@@ -3412,6 +3443,7 @@
     const collections = collectionsRes.rows || [];
     const collectionItems = collectionItemsRes.rows || [];
     const notes = notesRes.rows || [];
+    let aiFeedback = aiFeedbackRes.rows || [];
     let issueReports = issueReportsRes.rows || [];
     let issueReportsReady = !issueReportsRes.error;
     const aiChats = readAiChats(user);
@@ -3440,14 +3472,16 @@
     ].includes(row.badge_key));
     if (hasContributorBadge || addedCount > 0) roles.add('contributor');
     if (roles.has('admin')) roles.add('reviewer');
-    const hasUnlimitedAiAccess = roles.has('admin') || roles.has('reviewer') || roles.has('contributor');
+    const hasUnlimitedAiAccess = roles.has('admin') || roles.has('developer') || roles.has('tester') || roles.has('reviewer') || roles.has('contributor');
     const roleLabels = {
       user: 'User',
       contributor: 'Contributor',
       reviewer: 'Reviewer',
+      developer: 'Developer',
+      tester: 'Tester',
       admin: 'Admin'
     };
-    const roleOrder = ['admin', 'reviewer', 'contributor', 'user'];
+    const roleOrder = ['admin', 'developer', 'tester', 'reviewer', 'contributor', 'user'];
     const shownRoles = roleOrder.filter(role => roles.has(role));
     const roleBadgesHtml = shownRoles
       .filter(role => role !== 'user')
@@ -3466,6 +3500,7 @@
       collectionItems,
       notes,
       aiChats,
+      aiFeedback,
       issueReports
     });
 
@@ -3503,24 +3538,24 @@
     root.innerHTML = `
       <aside class="oc-workspace-sidebar">
         <nav class="oc-workspace-nav" aria-label="Workspace">
-          <button type="button" class="oc-workspace-nav-item active" data-workspace-tab="ask" aria-selected="true" aria-label="Ask OpenConstruction" title="Ask OpenConstruction"><span aria-hidden="true">✦</span></button>
-          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="library" aria-selected="false" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
-          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="skills" aria-selected="false" aria-label="Skills" title="Skills">${workspaceIcon('skill')}<span>Skills</span></button>
+          ${canUseAsk ? `<button type="button" class="oc-workspace-nav-item active" data-workspace-tab="ask" aria-selected="true" aria-label="Ask OpenConstruction" title="Ask OpenConstruction"><span aria-hidden="true">✦</span></button>` : ''}
+          <button type="button" class="oc-workspace-nav-item${canUseAsk ? '' : ' active'}" data-workspace-tab="library" aria-selected="${canUseAsk ? 'false' : 'true'}" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
+          ${canUseSkills ? `<button type="button" class="oc-workspace-nav-item" data-workspace-tab="skills" aria-selected="false" aria-label="Skills" title="Skills">${workspaceIcon('skill')}<span>Skills</span></button>` : ''}
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="reports" aria-selected="false" aria-label="Activity" title="Activity">${workspaceIcon('activity')}<span>Activity</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
         </nav>
-        <div class="oc-sidebar-sessions">
+        ${canUseAsk ? `<div class="oc-sidebar-sessions">
           <div class="oc-sidebar-sessions-head">
             <span>Search sessions</span>
             <button type="button" data-new-ai-session aria-label="New session" title="New session">${workspaceIcon('plus')}</button>
           </div>
           <div id="accountAiSessions"></div>
-        </div>
+        </div>` : ''}
       </aside>
 
       <section class="oc-workspace-main">
-        <section data-workspace-panel="ask" hidden>
+        ${canUseAsk ? `<section data-workspace-panel="ask" hidden>
           <section class="oc-ask-workspace">
             <h3 class="h4 fw-bold mb-2"><span class="oc-ask-title-mark" aria-hidden="true">&#10022;</span>Ask OpenConstruction <span class="oc-beta-pill">Beta</span></h3>
             <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
@@ -3553,7 +3588,7 @@
               <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
             </div>
           </section>
-        </section>
+        </section>` : ''}
 
         <section data-workspace-panel="settings" hidden>
           <section class="oc-workspace-card oc-account-settings-workspace">
@@ -3661,7 +3696,7 @@
           </section>
         </section>
 
-        <section data-workspace-panel="skills" hidden>
+        ${canUseSkills ? `<section data-workspace-panel="skills" hidden>
           <section class="oc-workspace-card oc-skills-workspace">
             <div class="oc-library-header">
               <div>
@@ -3717,7 +3752,7 @@
               </article>
             </div>
           </section>
-        </section>
+        </section>` : ''}
 
         <section data-workspace-panel="reports" hidden>
           <section class="oc-workspace-card oc-report-workspace">
@@ -3727,7 +3762,7 @@
               </div>
               <div class="oc-activity-actions">
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">${workspaceIcon('upload')}<span>Submit resource</span></button>
-                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#submitSkillModal">${workspaceIcon('skill')}<span>Submit skill</span></button>
+                ${canUseSkills ? `<button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#submitSkillModal">${workspaceIcon('skill')}<span>Submit skill</span></button>` : ''}
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Report issue</span></button>
               </div>
             </div>
@@ -3751,6 +3786,9 @@
 
       </section>
     `;
+    if (!canUseSkills) {
+      document.getElementById('submitSkillModal')?.remove();
+    }
 
     function renderIssueReportsWorkspace(){
       const dashboard = document.getElementById('issueReportsDashboard');
@@ -3779,10 +3817,18 @@
           { role: 'assistant', text: answer }
         ].filter(message => message.text);
       const latestAssistantIndex = thread.reduce((latest, message, index) => message.role === 'assistant' ? index : latest, -1);
-      const assistantResourceRounds = [
-        ...(Array.isArray(previousRounds) ? previousRounds : []),
-        { query, resources: results }
-      ].map(round => round?.changed !== false && Array.isArray(round.resources) && round.resources.length ? round : null);
+      const activeChat = activeAccountChatId ? currentAiChats.find(row => row.id === activeAccountChatId) : null;
+      const sourceRounds = aiResourceRounds(activeChat).length
+        ? aiResourceRounds(activeChat)
+        : [
+          ...(Array.isArray(previousRounds) ? previousRounds : []),
+          { query, resources: results }
+        ];
+      const assistantResourceRounds = sourceRounds.map((round, sourceIndex) => (
+        round?.changed !== false && Array.isArray(round.resources) && round.resources.length
+          ? { ...round, sourceIndex }
+          : null
+      ));
       let assistantRoundIndex = 0;
       threadEl.innerHTML = thread.map((message, index) => {
         const roundIndex = message.role === 'assistant' ? assistantRoundIndex++ : -1;
@@ -3793,7 +3839,7 @@
         ` : '';
         return `
           ${accountAiMessageHtml(message, { trustHtml })}
-          ${accountAiMessageResourcesBlockHtml(round, roundIndex, isLatestAssistant, isLatestAssistant ? visibleLimit : AI_INITIAL_RESULT_LIMIT)}
+          ${accountAiMessageResourcesBlockHtml(round, round?.sourceIndex ?? roundIndex, isLatestAssistant, isLatestAssistant ? visibleLimit : AI_INITIAL_RESULT_LIMIT, true)}
         `;
       }).join('');
       resultsEl.innerHTML = '';
@@ -3811,6 +3857,64 @@
       };
       mountReplyResourceActions(threadEl);
       window.OCBookmark?.mount?.(threadEl);
+    }
+
+    function resultSnapshotForFeedback(resources){
+      return (Array.isArray(resources) ? resources : [])
+        .slice(0, 20)
+        .map(resource => ({
+          type: resource.type || '',
+          label: resource.label || '',
+          title: resource.title || '',
+          href: resource.href || '',
+          meta: resource.meta || '',
+          summary: resource.summary || ''
+        }));
+    }
+
+    async function saveAccountAiFeedback(roundIndex, rating, comment = ''){
+      const chat = activeAccountChatId ? currentAiChats.find(row => row.id === activeAccountChatId) : null;
+      const rounds = aiResourceRounds(chat);
+      const index = Number(roundIndex);
+      const round = Number.isInteger(index) ? rounds[index] : null;
+      if (!chat || !round || !['helpful', 'not_helpful'].includes(rating)) return { saved: false, message: 'Feedback could not be saved.' };
+
+      const now = new Date().toISOString();
+      const feedback = {
+        id: round.feedback?.id || aiFeedbackId(),
+        rating,
+        comment: String(comment || '').trim().slice(0, 600),
+        updated_at: now
+      };
+      const resourceRounds = rounds.map((item, itemIndex) => itemIndex === index ? { ...item, feedback } : item);
+      const updatedChat = { ...chat, updated_at: now, resourceRounds };
+      currentAiChats = writeAiChats(user, [updatedChat, ...currentAiChats.filter(row => row.id !== chat.id)]);
+      accountDataExport.search_sessions = currentAiChats;
+
+      try {
+        const feedbackRow = {
+          client_feedback_id: feedback.id,
+          user_id: user.id,
+          chat_id: chat.id,
+          round_index: index,
+          query: round.query || '',
+          answer: round.answer || '',
+          rating,
+          comment: feedback.comment || null,
+          result_count: Array.isArray(round.resources) ? round.resources.length : 0,
+          result_snapshot: resultSnapshotForFeedback(round.resources),
+          page_url: window.location.href,
+          updated_at: now
+        };
+        aiFeedback = [feedbackRow, ...aiFeedback.filter(row => row.client_feedback_id !== feedback.id)];
+        accountDataExport.search_feedback = aiFeedback;
+        const { error } = await sb.from('ai_search_feedback').upsert(feedbackRow, { onConflict: 'client_feedback_id' });
+        if (error) throw error;
+        return { saved: true, message: 'Feedback saved.' };
+      } catch (error) {
+        console.warn('AI search feedback saved locally only', error);
+        return { saved: true, message: 'Feedback saved locally.' };
+      }
     }
 
     function renderAccountAiSessions(activeId = ''){
@@ -4040,6 +4144,7 @@
     }
 
     function bindAccountAsk(){
+      if (!canUseAsk) return;
       const form = document.querySelector('.oc-ask-form');
       const input = form?.querySelector('[name="q"]');
       form?.addEventListener('submit', event => {
@@ -4072,6 +4177,7 @@
     function openRequestedSubmission(){
       const params = new URLSearchParams(window.location.search);
       if (params.get('submit') === 'skill') {
+        if (!canUseSkills) return;
         openRequestedSkillSubmission();
         return;
       }
@@ -4086,6 +4192,7 @@
     }
 
     function openRequestedSkillSubmission(){
+      if (!canUseSkills) return;
       const modalEl = document.getElementById('submitSkillModal');
       if (!modalEl || !window.bootstrap?.Modal) return;
       const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
@@ -4108,7 +4215,7 @@
     }
 
     bindSuggestionForm(user);
-    bindSkillProposalForm(user);
+    if (canUseSkills) bindSkillProposalForm(user);
     bindIssueReportForm(user, report => {
       issueReportsReady = true;
       issueReports = [report, ...issueReports].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
@@ -4119,6 +4226,46 @@
       if (!trigger) return;
       event.preventDefault();
       openAskWithPrompt(trigger.dataset.askExample || '');
+    });
+    root.addEventListener('click', async event => {
+      const button = event.target.closest('[data-ai-feedback-rating]');
+      if (!button) return;
+      event.preventDefault();
+      const wrap = button.closest('[data-ai-feedback]');
+      const status = wrap?.querySelector('[data-ai-feedback-status]');
+      const comment = wrap?.querySelector('[data-ai-feedback-note-form] textarea')?.value || '';
+      wrap?.querySelectorAll('[data-ai-feedback-rating]').forEach(item => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      if (status) status.textContent = 'Saving...';
+      const result = await saveAccountAiFeedback(wrap?.dataset.aiFeedback, button.dataset.aiFeedbackRating, comment);
+      if (status) status.textContent = result.message;
+    });
+    root.addEventListener('click', event => {
+      const button = event.target.closest('[data-ai-feedback-note-toggle]');
+      if (!button) return;
+      event.preventDefault();
+      const form = button.closest('[data-ai-feedback]')?.querySelector('[data-ai-feedback-note-form]');
+      if (!form) return;
+      form.hidden = !form.hidden;
+      if (!form.hidden) form.querySelector('textarea')?.focus();
+    });
+    root.addEventListener('submit', async event => {
+      const form = event.target.closest('[data-ai-feedback-note-form]');
+      if (!form) return;
+      event.preventDefault();
+      const wrap = form.closest('[data-ai-feedback]');
+      const active = wrap?.querySelector('[data-ai-feedback-rating].active');
+      const status = wrap?.querySelector('[data-ai-feedback-status]');
+      if (!active) {
+        if (status) status.textContent = 'Choose Yes or No first.';
+        return;
+      }
+      if (status) status.textContent = 'Saving...';
+      const result = await saveAccountAiFeedback(wrap?.dataset.aiFeedback, active.dataset.aiFeedbackRating, form.querySelector('textarea')?.value || '');
+      if (status) status.textContent = result.message;
     });
     root.addEventListener('click', async event => {
       const trigger = event.target.closest('[data-copy-install-prompt]');
@@ -4140,8 +4287,10 @@
     });
     bindProfileForm(user);
     bindWorkspaceTabs();
-    bindAccountAsk();
-    renderAccountAiSessions();
+    if (canUseAsk) {
+      bindAccountAsk();
+      renderAccountAiSessions();
+    }
     bindResourceTools(recentBookmarks, notesByKey);
     bindLibraryFilters();
     bindBadgeCertificates(publicBadges, name);

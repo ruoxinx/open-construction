@@ -41,9 +41,7 @@
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:140px}
     .skeleton::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent); transform:translateX(-100%); animation:shimmer 1.1s infinite; mix-blend-mode:overlay; pointer-events:none;}
     @keyframes shimmer{to{transform:translateX(100%)}}
-    .issue-btn{position:fixed; bottom:20px; right:20px; z-index:1050; background:#0d6efd; color:#fff; padding:12px 20px; border-radius:999px; font-weight:600; font-size:.9rem; box-shadow:0 4px 12px rgba(0,0,0,.25); text-decoration:none; transition:background .2s ease, transform .2s ease;}
-    .issue-btn:hover{background:#0b5ed7; transform:translateY(-2px); color:#fff; text-decoration:none;}
-    @media (max-width: 991.98px){.page-head .content{padding:18px 0} main.py-4{padding-top:1rem !important} .issue-btn{right:14px; bottom:14px; padding:10px 14px; font-size:.82rem;}}
+@media (max-width: 991.98px){.page-head .content{padding:18px 0} main.py-4{padding-top:1rem !important}}
     @media (max-width: 575.98px){html{scroll-padding-top:92px} [id]{scroll-margin-top:92px}}
   </style>
 </head>
@@ -141,9 +139,6 @@
   </div>
 </footer>
 
-<a href="https://github.com/ruoxinx/open-construction/issues/new?template=content-addition.yml"
-   class="issue-btn" target="_blank" rel="noopener">Suggest an OER</a>
-
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
     <div class="modal-content border-0 shadow-lg">
@@ -167,8 +162,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="../assets/js/config.js"></script>
-<script src="../assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="../assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="../assets/js/auth.js?v=20260818-beta-gates"></script>
+<script src="../assets/js/site-shell.js?v=20260818-beta-gates"></script>
 <script src="../assets/js/oer-detail.js?v=20260513a"></script>
 </body>
 </html>

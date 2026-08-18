@@ -96,10 +96,7 @@
     @keyframes shimmer{to{transform:translateX(100%)}}
 
     /* Floating button: Suggest model */
-    .issue-btn { position: fixed; bottom: 20px; right: 20px; z-index: 1050; background: #0d6efd; color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; font-size: .9rem; box-shadow: 0 4px 12px rgba(0,0,0,.25); text-decoration: none; transition: background .2s ease, transform .2s ease; }
-    .issue-btn:hover { background: #0b5ed7; transform: translateY(-2px); color: #fff; text-decoration: none; }
-
-    /* ---------- Abstract toggle helpers ---------- */
+/* ---------- Abstract toggle helpers ---------- */
     .abstract{position:relative}
     .abstract-fade{position:relative;display:inline}
     .abstract-fade::after{
@@ -137,13 +134,7 @@
         aspect-ratio:16/9;
       }
       .added-note{margin-left:0}
-      .issue-btn{
-        right:14px;
-        bottom:14px;
-        padding:10px 14px;
-        font-size:.82rem;
-      }
-    }
+}
 
     @media (max-width: 575.98px){
       .paper-card .left .submitted-by{
@@ -343,8 +334,8 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/terms.js"></script>
-<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
+<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
+<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
 
 <script>
 /* ---------------------------
@@ -1230,11 +1221,6 @@ if(document.readyState === 'loading'){
 </script>
 
 <!-- Floating button: Suggest model -->
-<a href="https://github.com/ruoxinx/open-construction/issues/new?template=new_model.yml"
-   class="issue-btn" target="_blank" rel="noopener">
-   Suggest a Model
-</a>
-
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
