@@ -1715,6 +1715,7 @@
 
   function candidatesForGeminiAi(resources, limit = 300){
     return (Array.isArray(resources) ? resources : []).slice(0, limit).map(resource => ({
+      key: resourceKeyAi(resource.href || resource.title),
       type: resource.type,
       label: resource.label,
       title: resource.title,
@@ -1727,20 +1728,33 @@
     }));
   }
 
-  function orderGeminiResultsAi(resources, hrefs){
+  function geminiResourceRefsAi(gemini){
+    const refs = [
+      ...(Array.isArray(gemini?.resourceHrefs) ? gemini.resourceHrefs : []),
+      ...(Array.isArray(gemini?.resourceKeys) ? gemini.resourceKeys : []),
+      ...(Array.isArray(gemini?.resources) ? gemini.resources : [])
+    ];
+    return refs.map(ref => {
+      if (typeof ref === 'string') return ref;
+      return ref?.href || ref?.key || ref?.id || ref?.url || ref?.title || '';
+    }).filter(Boolean);
+  }
+
+  function pickGeminiResultsAi(resources, refs){
     const rows = Array.isArray(resources) ? resources : [];
-    const orderedHrefs = Array.isArray(hrefs) ? hrefs.map(resourceKeyAi).filter(Boolean) : [];
-    if (!orderedHrefs.length) return rows;
-    const byHref = new Map(rows.map(resource => [resourceKeyAi(resource.href), resource]));
+    const orderedRefs = Array.isArray(refs) ? refs.map(resourceKeyAi).filter(Boolean) : [];
+    if (!orderedRefs.length) return [];
+    const byKey = new Map();
+    rows.forEach(resource => {
+      byKey.set(resourceKeyAi(resource.href), resource);
+      byKey.set(resourceKeyAi(resource.title), resource);
+    });
     const picked = [];
-    orderedHrefs.forEach(href => {
-      const resource = byHref.get(href);
+    orderedRefs.forEach(ref => {
+      const resource = byKey.get(ref);
       if (resource && !picked.includes(resource)) picked.push(resource);
     });
-    rows.forEach(resource => {
-      if (!picked.includes(resource)) picked.push(resource);
-    });
-    return picked.slice(0, rows.length);
+    return picked;
   }
 
   async function askOpenConstructionWithGemini(query, candidates, previousMessages){
@@ -1749,6 +1763,9 @@
       body: {
         query,
         candidates: candidatesForGeminiAi(candidates),
+        responseContract: {
+          resourceReferences: 'Return selected catalog resources as resourceHrefs or resourceKeys using the provided href/key values only.'
+        },
         previousMessages: (Array.isArray(previousMessages) ? previousMessages : []).slice(-6).map(message => ({
           role: message.role,
           text: message.text
@@ -2878,10 +2895,13 @@
           renderAnonymousLimit(clean);
           return;
         } else if (gemini?.answer) {
-          recordAiUsage(null);
-          answer = gemini.answer;
-          if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_MAX_RESULT_LIMIT);
+          const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
+          if (citedResults.length) {
+            recordAiUsage(null);
+            answer = gemini.answer;
+            results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
+          } else {
+            console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
           }
         } else {
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
@@ -3412,15 +3432,16 @@
             answer = gemini.answer;
             results = isRefinement ? previousResources : results;
           } else if (gemini?.answer) {
-            if (!hasUnlimitedAiAccess) {
-              recordAiUsage(user);
-              updateAiUsageUi(user);
-            }
-            answer = gemini.answer;
-            if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_MAX_RESULT_LIMIT);
+            const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
+            if (citedResults.length) {
+              if (!hasUnlimitedAiAccess) {
+                recordAiUsage(user);
+                updateAiUsageUi(user);
+              }
+              answer = gemini.answer;
+              results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
             } else {
-              results = orderGeminiResultsAi(results, gemini.resourceHrefs);
+              console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
             }
           } else {
             answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
