@@ -135,7 +135,7 @@
     .skill-file-icon{color:#0b66c3;font-family:Inter,system-ui,sans-serif;font-size:.95rem}
     .skill-file-size{color:#647182;font-size:.82rem}
     .skill-source{color:var(--doc-muted);font-size:.86rem;line-height:1.5;margin:.8rem 0 0}
-    .skill-empty{border:1px dashed #c8d4df;border-radius:8px;background:#fff;color:var(--doc-muted);font-size:.92rem;line-height:1.5;margin-top:1.2rem;padding:1rem}
+    .skill-empty{border:1px dashed #c8d4df;border-radius:8px;background:#fff;color:var(--doc-muted);font-size:.92rem;line-height:1.5;padding:1rem}
     .skill-actions{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:.95rem}
     .skill-submit-link{display:inline-flex;align-items:center;min-height:36px;border:1px solid #bfd8f0;border-radius:6px;background:#eef6ff;color:#0b559f;font-size:.88rem;font-weight:800;padding:.35rem .75rem;text-decoration:none}
     .skill-submit-link:hover,.skill-submit-link:focus{border-color:#8cbce9;background:#e4f1ff;color:#0a4c8f;text-decoration:none}
@@ -371,7 +371,7 @@ python -m pip install -e .</code></pre>
       </div>
       <div class="skill-actions">
         <a class="skill-submit-link" href="account.html?submit=skill">Submit skill</a>
-        <p class="skill-source">Skill metadata is maintained in the agent registry and surfaced here as workflows are released.</p>
+        <p class="skill-source">Skill source packages are maintained in the agent repo and surfaced here as workflows are released.</p>
       </div>
       <div class="skill-preview-grid" id="skillPreviewGrid" aria-label="OpenConstruction skills">
         <div class="skill-empty">Loading skill registry...</div>
@@ -535,7 +535,7 @@ python -m pip install -e .</code></pre>
       `Creator: ${skill.creator || skill.author || 'OpenConstruction'}`,
       `Preferred install command: ${skill.install_command || ''}`,
       '',
-      'Please open the skill page and source, review SKILL.md plus any companion files, and explain anything risky before installing.',
+      'Please open the skill page and source, review SKILL.md plus any companion files, and explain any setup notes, permissions, or files that need attention before installing.',
       '',
       'If shell commands are available, prefer the install command above. If you install manually, copy the complete skill directory that contains SKILL.md, including scripts, references, assets, agents, examples, tests, and any other files shown on the skill page. Preserve the relative folder structure. Do not install SKILL.md alone. After installing, verify the target skills folder contains SKILL.md and all companion files needed by this skill.'
     ].join('\n');
