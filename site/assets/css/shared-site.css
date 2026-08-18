@@ -1839,6 +1839,193 @@ header.hero p{
   stroke-linejoin:round;
 }
 
+.oc-skills-workspace{
+  display:grid;
+  gap:1rem;
+}
+
+.oc-skill-workspace-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:.85rem;
+  align-items:start;
+}
+
+.oc-skill-workspace-card{
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--oc-border);
+  border-radius:8px;
+  background:#fff;
+  padding:1rem;
+  box-shadow:0 8px 20px rgba(15,46,75,.04);
+  min-width:0;
+  min-height:0;
+}
+
+.oc-skill-workspace-card.is-empty{
+  border-style:dashed;
+  background:#f8fafc;
+}
+
+.oc-skill-workspace-card h4{
+  color:var(--oc-ink);
+  font-size:1.08rem;
+  font-weight:800;
+  margin:.3rem 0 .35rem;
+}
+
+.oc-skill-workspace-card p{
+  color:var(--oc-sub);
+  font-size:.92rem;
+  line-height:1.5;
+  margin:0;
+}
+
+.oc-skill-card-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin-top:auto;
+  padding-top:.85rem;
+}
+
+.oc-skill-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+}
+
+.oc-skill-stage-label{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  min-width:0;
+  color:#5f6d7c;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.oc-skill-stage-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:7px;
+  background:#122d4a;
+  color:#fff;
+  flex:0 0 auto;
+}
+
+.oc-skill-stage-icon svg{
+  width:15px;
+  height:15px;
+  stroke:currentColor;
+  stroke-width:2;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.oc-skill-card-note{
+  color:var(--oc-sub);
+  font-size:.76rem;
+  font-weight:700;
+}
+
+.oc-skill-pill-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+  margin-top:.85rem;
+}
+
+.oc-skill-pill-row span{
+  display:inline-flex;
+  align-items:center;
+  min-height:26px;
+  border:1px solid var(--oc-border);
+  border-radius:999px;
+  background:#f8fafc;
+  color:#435466;
+  font-size:.76rem;
+  font-weight:700;
+  padding:.2rem .55rem;
+}
+
+.oc-skill-install-details{
+  margin-top:.75rem;
+  padding-top:.1rem;
+}
+
+.oc-skill-install-details summary{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  min-height:32px;
+  border:1px solid var(--oc-border);
+  border-radius:6px;
+  background:#f8fafc;
+  cursor:pointer;
+  color:#2f66c7;
+  font-size:.8rem;
+  font-weight:800;
+  list-style:none;
+  padding:.25rem .6rem;
+}
+
+.oc-skill-install-details summary::-webkit-details-marker{
+  display:none;
+}
+
+.oc-skill-install-details summary::after{
+  color:#6c7a8a;
+  content:"+";
+  font-weight:900;
+}
+
+.oc-skill-install-details[open] summary::after{
+  content:"-";
+}
+
+.oc-skill-install-details pre{
+  max-height:320px;
+  margin:.65rem 0 0;
+  overflow:auto;
+  border:1px solid var(--oc-border);
+  border-radius:8px;
+  background:#fff;
+  color:#26394c;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.76rem;
+  line-height:1.45;
+  padding:.75rem;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.oc-skill-json-preview{
+  max-height:260px;
+  margin:0;
+  overflow:auto;
+  border:1px solid var(--oc-border);
+  border-radius:8px;
+  background:#f8fafc;
+  color:#243547;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.78rem;
+  line-height:1.45;
+  padding:.85rem;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
 .oc-account-settings-workspace{
   display:grid;
   gap:1rem;
@@ -2992,6 +3179,7 @@ header.hero p{
   .oc-auth-preview,
   .oc-account-stat-grid,
   .oc-resource-form-grid,
+  .oc-skill-workspace-grid,
   .oc-account-grid,
   .oc-maintainer-grid,
   .oc-maintainer-form{

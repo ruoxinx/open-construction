@@ -243,6 +243,125 @@
   </div>
 </div>
 
+<div class="modal fade" id="submitSkillModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable oc-resource-modal">
+    <div class="modal-content oc-resource-content">
+      <div class="modal-header">
+        <div>
+          <p class="oc-auth-kicker mb-1">OpenConstruction skill</p>
+          <h2 class="modal-title oc-resource-title">Submit skill</h2>
+          <p class="oc-resource-subtitle">Submit a public skill package link for review.</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="skillProposalForm">
+        <div class="modal-body">
+          <div class="oc-resource-sections">
+            <fieldset class="oc-resource-fieldset">
+              <legend>Your contact</legend>
+              <div class="oc-resource-form-grid">
+                <div>
+                  <label for="skillSubmitterName" class="form-label">Name</label>
+                  <input id="skillSubmitterName" name="submitter_name" class="form-control" required>
+                </div>
+                <div>
+                  <label for="skillSubmitterEmail" class="form-label">Email</label>
+                  <input id="skillSubmitterEmail" name="submitter_email" type="email" class="form-control" required>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="oc-resource-fieldset">
+              <legend>New Skills</legend>
+              <div class="oc-resource-form-grid">
+                <div class="oc-resource-form-wide">
+                  <label for="skillSourceUrl" class="form-label">Package URL</label>
+                  <input id="skillSourceUrl" name="source_url" type="url" class="form-control" placeholder="GitHub folder, ZIP file, or documentation URL" required>
+                </div>
+                <div>
+                  <label for="skillId" class="form-label">Skill ID</label>
+                  <input id="skillId" name="skill_id" class="form-control" placeholder="dataset-comparison" required>
+                </div>
+                <div>
+                  <label for="skillTitle" class="form-label">Skill name</label>
+                  <input id="skillTitle" name="title" class="form-control" placeholder="Dataset comparison" required>
+                </div>
+                <div>
+                  <label for="skillLifecycleStage" class="form-label">Lifecycle stage</label>
+                  <select id="skillLifecycleStage" name="lifecycle_stage" class="form-select" required>
+                    <option value="discover">Discover</option>
+                    <option value="select">Select</option>
+                    <option value="access">Access</option>
+                    <option value="understand">Understand</option>
+                    <option value="analyze">Analyze</option>
+                    <option value="execute">Execute</option>
+                  </select>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillProblem" class="form-label">User outcome</label>
+                  <textarea id="skillProblem" name="problem" class="form-control" rows="3" placeholder="What should this help users complete?" required></textarea>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillInputs" class="form-label">Inputs</label>
+                  <textarea id="skillInputs" name="inputs" class="form-control" rows="2" placeholder="task, modality, resource ids, license preference..." required></textarea>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillOutputs" class="form-label">Outputs</label>
+                  <textarea id="skillOutputs" name="outputs" class="form-control" rows="2" placeholder="ranked candidates, checks, comparison table, next actions..." required></textarea>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillExample" class="form-label">Example request</label>
+                  <textarea id="skillExample" name="example_prompt" class="form-control" rows="2" placeholder="Describe a first user request this skill should handle." required></textarea>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillTools" class="form-label">API or MCP tools</label>
+                  <textarea id="skillTools" name="tools" class="form-control" rows="2" placeholder="search_resources, get_resource, compare_resources" required></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="oc-resource-fieldset">
+              <legend>Rights and verification</legend>
+              <div class="oc-resource-form-grid">
+                <div>
+                  <label for="skillLicense" class="form-label">License</label>
+                  <input id="skillLicense" name="license" class="form-control" value="Apache-2.0" required>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="skillVerificationNotes" class="form-label">Verification notes</label>
+                  <textarea id="skillVerificationNotes" name="verification_notes" class="form-control" rows="2" placeholder="How should reviewers test this skill?"></textarea>
+                </div>
+              </div>
+              <div class="vstack gap-2">
+                <label class="form-check oc-resource-check">
+                  <input class="form-check-input" type="checkbox" name="agreement_rights" required>
+                  <span class="form-check-label">I have the right to share this skill content, examples, and files.</span>
+                </label>
+                <label class="form-check oc-resource-check">
+                  <input class="form-check-input" type="checkbox" name="agreement_no_restricted_content" required>
+                  <span class="form-check-label">This proposal contains no private data or restricted material.</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="oc-resource-fieldset">
+              <legend>Proposal JSON</legend>
+              <p class="oc-resource-subtitle">This preview is proposal metadata. Accepted skills also include SKILL.md, examples, and tests.</p>
+              <pre id="skillJsonPreview" class="oc-skill-json-preview" aria-live="polite">{}</pre>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div id="skillProposalStatus" class="small text-muted me-auto" role="status"></div>
+          <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="copySkillJsonBtn" class="btn btn-outline-primary btn-sm oc-resource-footer-action">Copy JSON</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Open GitHub proposal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="reportIssueModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable oc-resource-modal">
     <div class="modal-content oc-resource-content">
@@ -323,6 +442,27 @@
   const esc = window.OCAuth.escapeHtml;
   const sb = window.OCAuth.getClient();
   const PRIVACY_CONTACT_EMAIL = 'support@openconstruction.org';
+  const SKILL_PROPOSAL_URL = 'https://github.com/open-construction/open-construction-agent-api/issues/new';
+  const DATASET_DISCOVERY_SKILL_SOURCE = 'https://github.com/open-construction/open-construction-agent-api/tree/main/skills/dataset-discovery';
+  const DATASET_DISCOVERY_SKILL_DOWNLOAD = 'https://github.com/open-construction/open-construction-agent-api/raw/main/packages/skills/dataset-discovery.zip';
+  const DATASET_DISCOVERY_SKILL_PAGE = 'https://www.openconstruction.org/mcp.html#skillSourceFiles';
+  const DATASET_DISCOVERY_INSTALL_COMMAND = 'npx skills add https://github.com/open-construction/open-construction-agent-api --skill dataset-discovery';
+
+  function datasetDiscoveryInstallPrompt(){
+    return [
+      'Install this Agent Skill for me.',
+      '',
+      `Skill page: ${DATASET_DISCOVERY_SKILL_PAGE}`,
+      `Source URL: ${DATASET_DISCOVERY_SKILL_SOURCE}`,
+      'Skill name: dataset-discovery',
+      'Creator: OpenConstruction',
+      `Preferred install command: ${DATASET_DISCOVERY_INSTALL_COMMAND}`,
+      '',
+      'Please open the skill page and source, review SKILL.md plus any companion files, and explain anything risky before installing.',
+      '',
+      'If shell commands are available, prefer the install command above. If you install manually, copy the complete skill directory that contains SKILL.md, including scripts, references, assets, agents, examples, tests, and any other files shown on the skill page. Preserve the relative folder structure. Do not install SKILL.md alone. After installing, verify the target skills folder contains SKILL.md and all companion files needed by this skill.'
+    ].join('\n');
+  }
 
   function empty(label, detail = ''){
     return `<div class="oc-workspace-empty"><strong>${esc(label)}</strong>${detail ? `<div class="small mt-1">${esc(detail)}</div>` : ''}</div>`;
@@ -364,6 +504,117 @@
   function statusClass(status){
     const cleanStatus = String(status || 'pending').replace(/^request_/, '');
     return `oc-status-pill oc-status-${esc(cleanStatus)}`;
+  }
+
+  function skillIdFromTitle(value){
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 64);
+  }
+
+  function splitList(value){
+    return String(value || '')
+      .split(/[\n,]+/)
+      .map(item => item.trim())
+      .filter(Boolean);
+  }
+
+  function skillProposalMetadata(form){
+    const skillId = skillIdFromTitle(form.elements.skill_id.value || form.elements.title.value);
+    const stage = form.elements.lifecycle_stage.value || 'discover';
+    const tools = splitList(form.elements.tools.value);
+    const inputNames = splitList(form.elements.inputs.value);
+    const outputNames = splitList(form.elements.outputs.value);
+    const sourceUrl = form.elements.source_url.value.trim();
+    const license = form.elements.license.value.trim() || 'Apache-2.0';
+    const verificationNotes = form.elements.verification_notes.value.trim();
+    return {
+      id: skillId,
+      name: form.elements.title.value.trim(),
+      author: form.elements.submitter_name.value.trim() || 'Community contributor',
+      version: '0.1.0',
+      tier: 'community',
+      status: 'draft',
+      lifecycle_stage: stage,
+      description: form.elements.problem.value.trim(),
+      inputs: inputNames.map(name => ({ name, type: 'string', required: false })),
+      outputs: outputNames.map(name => ({ name, type: 'string' })),
+      tools,
+      permissions: ['read_openconstruction'],
+      risk_level: 'low',
+      license,
+      review: {
+        reviewer: null,
+        reviewed_date: null,
+        test_status: 'proposed',
+        security_notes: ''
+      },
+      workflow: [],
+      example_prompts: splitList(form.elements.example_prompt.value),
+      source_url: sourceUrl || null,
+      rights: {
+        copyright_owner: form.elements.submitter_name.value.trim() || null,
+        contributor_confirms_rights: Boolean(form.elements.agreement_rights?.checked),
+        contains_restricted_material: !form.elements.agreement_no_restricted_content?.checked
+      },
+      verification: {
+        notes: verificationNotes,
+        status: 'proposed'
+      }
+    };
+  }
+
+  function updateSkillJsonPreview(form){
+    const preview = document.getElementById('skillJsonPreview');
+    if (!preview) return;
+    preview.textContent = JSON.stringify(skillProposalMetadata(form), null, 2);
+  }
+
+  function githubSkillProposalUrl(form){
+    const metadata = skillProposalMetadata(form);
+    const title = metadata.name;
+    const body = [
+      '## Skill Proposal',
+      '',
+      `Skill name: ${metadata.name}`,
+      `Skill ID: ${metadata.id}`,
+      `Lifecycle stage: ${metadata.lifecycle_stage}`,
+      '',
+      '## User Problem',
+      form.elements.problem.value.trim(),
+      '',
+      '## Inputs',
+      form.elements.inputs.value.trim(),
+      '',
+      '## Outputs',
+      form.elements.outputs.value.trim(),
+      '',
+      '## Example Request',
+      form.elements.example_prompt.value.trim(),
+      '',
+      '## Rights and Verification',
+      `License: ${metadata.license}`,
+      `Source URL: ${metadata.source_url || ''}`,
+      form.elements.verification_notes.value.trim(),
+      '',
+      '## Proposed metadata.json',
+      '```json',
+      JSON.stringify(metadata, null, 2),
+      '```',
+      '',
+      '## Submitter',
+      `Name: ${form.elements.submitter_name.value.trim()}`,
+      `Email: ${form.elements.submitter_email.value.trim()}`
+    ].join('\n');
+    const params = new URLSearchParams({
+      title: `Skill proposal: ${title}`,
+      body,
+      labels: 'skill-proposal'
+    });
+    return `${SKILL_PROPOSAL_URL}?${params.toString()}`;
   }
 
   function downloadFile(filename, content, type){
@@ -2443,22 +2694,38 @@
     `).join('');
   }
 
-  function bindWorkspaceTabs(){
+  function showWorkspacePanel(id){
     const tabs = Array.from(document.querySelectorAll('[data-workspace-tab]'));
     const panels = Array.from(document.querySelectorAll('[data-workspace-panel]'));
-    const show = id => {
-      tabs.forEach(tab => {
-        const active = tab.dataset.workspaceTab === id;
-        tab.classList.toggle('active', active);
-        tab.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      panels.forEach(panel => {
-        panel.hidden = panel.dataset.workspacePanel !== id;
-      });
-    };
-    tabs.forEach(tab => tab.addEventListener('click', () => show(tab.dataset.workspaceTab)));
+    tabs.forEach(tab => {
+      const active = tab.dataset.workspaceTab === id;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach(panel => {
+      panel.hidden = panel.dataset.workspacePanel !== id;
+    });
+  }
+
+  function openAskWithPrompt(prompt){
+    showWorkspacePanel('ask');
+    const input = document.querySelector('.oc-ask-form [name="q"]');
+    if (!input) return;
+    input.value = prompt || '';
+    autoSizeAskField(input);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    syncAskFormState(input.form);
+    window.requestAnimationFrame(() => {
+      input.focus();
+      input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+
+  function bindWorkspaceTabs(){
+    const tabs = Array.from(document.querySelectorAll('[data-workspace-tab]'));
+    tabs.forEach(tab => tab.addEventListener('click', () => showWorkspacePanel(tab.dataset.workspaceTab)));
     const requested = new URLSearchParams(window.location.search).get('tab');
-    show(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : 'ask');
+    showWorkspacePanel(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : 'ask');
   }
 
   function selectorValue(value){
@@ -2856,6 +3123,52 @@
     });
   }
 
+  function bindSkillProposalForm(user){
+    const form = document.getElementById('skillProposalForm');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.elements.submitter_name.value ||= user.user_metadata?.full_name || user.user_metadata?.name || '';
+    form.elements.submitter_email.value ||= user.email || '';
+    const titleInput = form.elements.title;
+    const idInput = form.elements.skill_id;
+    titleInput?.addEventListener('input', () => {
+      if (!idInput.value.trim() || idInput.dataset.autogenerated === 'true') {
+        idInput.value = skillIdFromTitle(titleInput.value);
+        idInput.dataset.autogenerated = 'true';
+      }
+      updateSkillJsonPreview(form);
+    });
+    idInput?.addEventListener('input', () => {
+      idInput.value = skillIdFromTitle(idInput.value);
+      idInput.dataset.autogenerated = 'false';
+      updateSkillJsonPreview(form);
+    });
+    form.querySelectorAll('input, textarea, select').forEach(field => {
+      field.addEventListener('input', () => updateSkillJsonPreview(form));
+      field.addEventListener('change', () => updateSkillJsonPreview(form));
+    });
+    document.getElementById('copySkillJsonBtn')?.addEventListener('click', async () => {
+      const status = document.getElementById('skillProposalStatus');
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(skillProposalMetadata(form), null, 2));
+        if (status) status.textContent = 'metadata.json copied.';
+      } catch (error) {
+        if (status) status.textContent = 'Could not copy metadata JSON.';
+      }
+    });
+    updateSkillJsonPreview(form);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const status = document.getElementById('skillProposalStatus');
+      const button = form.querySelector('button[type="submit"]');
+      if (status) status.textContent = 'Opening GitHub proposal...';
+      if (button) button.disabled = true;
+      window.open(githubSkillProposalUrl(form), '_blank', 'noopener');
+      if (button) button.disabled = false;
+      if (status) status.textContent = 'GitHub opened in a new tab.';
+    });
+  }
+
   function bindProfileForm(user){
     const form = document.getElementById('profileForm');
     if (!form || form.dataset.bound) return;
@@ -3172,6 +3485,7 @@
         plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>',
         edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h4l10-10-4-4L5 15v4z"></path><path d="m13.5 6.5 4 4"></path></svg>',
         upload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"></path><path d="m8 9 4-4 4 4"></path><path d="M5 19h14"></path></svg>',
+        skill: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4"></path><path d="M12 17v4"></path><path d="M3 12h4"></path><path d="M17 12h4"></path><path d="m6.6 6.6 2.8 2.8"></path><path d="m14.6 14.6 2.8 2.8"></path><path d="m17.4 6.6-2.8 2.8"></path><path d="m9.4 14.6-2.8 2.8"></path></svg>',
         report: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 19H3L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>',
         activity: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h11"></path><path d="M8 12h11"></path><path d="M8 18h11"></path><path d="m3.5 6 1 1 2-2"></path><path d="m3.5 12 1 1 2-2"></path><path d="m3.5 18 1 1 2-2"></path></svg>',
         settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"></path><path d="M19 12a7.8 7.8 0 0 0-.12-1.35l2.02-1.55-2-3.46-2.4.96a7.85 7.85 0 0 0-2.34-1.35L13.8 2.7H9.8l-.36 2.55A7.85 7.85 0 0 0 7.1 6.6l-2.4-.96-2 3.46 2.02 1.55a7.8 7.8 0 0 0 0 2.7L2.7 14.9l2 3.46 2.4-.96a7.85 7.85 0 0 0 2.34 1.35l.36 2.55h4l.36-2.55a7.85 7.85 0 0 0 2.34-1.35l2.4.96 2-3.46-2.02-1.55A7.8 7.8 0 0 0 19 12Z"></path></svg>',
@@ -3191,6 +3505,7 @@
         <nav class="oc-workspace-nav" aria-label="Workspace">
           <button type="button" class="oc-workspace-nav-item active" data-workspace-tab="ask" aria-selected="true" aria-label="Ask OpenConstruction" title="Ask OpenConstruction"><span aria-hidden="true">✦</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="library" aria-selected="false" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="skills" aria-selected="false" aria-label="Skills" title="Skills">${workspaceIcon('skill')}<span>Skills</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="reports" aria-selected="false" aria-label="Activity" title="Activity">${workspaceIcon('activity')}<span>Activity</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
@@ -3212,7 +3527,7 @@
             <div class="oc-ask-examples">
               <div class="oc-ask-examples-head">Try asking</div>
               ${[
-                { label: 'Dataset', text: 'Find datasets for PPE or hardhat detection with bounding-box annotations.' },
+                { label: 'Dataset', text: 'Find open construction safety datasets with image annotations.' },
                 { label: 'Model', text: 'Find models for scan-to-BIM, point clouds, or construction progress monitoring.' },
                 { label: 'Workflow', text: 'Find workflows for construction safety monitoring and progress tracking.' },
                 { label: 'OER', text: 'Find OERs about Generative AI in AEC, BIM, smart construction, or coding labs.' }
@@ -3346,6 +3661,64 @@
           </section>
         </section>
 
+        <section data-workspace-panel="skills" hidden>
+          <section class="oc-workspace-card oc-skills-workspace">
+            <div class="oc-library-header">
+              <div>
+                <h3 class="h4 fw-bold mb-1">Skills <span class="oc-beta-pill">Beta</span></h3>
+                <p class="small text-muted mb-0">Workflow entry points for common OpenConstruction tasks.</p>
+              </div>
+              <div class="oc-activity-actions">
+                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#submitSkillModal">${workspaceIcon('skill')}<span>Submit skill</span></button>
+              </div>
+            </div>
+            <div class="oc-skill-workspace-grid">
+              <article class="oc-skill-workspace-card">
+                <div class="oc-skill-card-head">
+                  <span class="oc-skill-stage-label">
+                    <span class="oc-skill-stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg></span>
+                    <span>Discover</span>
+                  </span>
+                  <span class="oc-skill-card-note">Skill package</span>
+                </div>
+                <h4>Dataset Discovery</h4>
+                <p>Review or download the current source package for the dataset discovery workflow.</p>
+                <div class="oc-skill-pill-row" aria-label="Dataset Discovery fields">
+                  <span>task</span>
+                  <span>modality</span>
+                  <span>annotation</span>
+                  <span>ranked results</span>
+                </div>
+                <div class="oc-skill-card-actions">
+                  <button type="button" class="oc-text-action" data-copy-install-prompt="dataset-discovery">Copy install prompt</button>
+                  <a class="oc-text-action" href="${DATASET_DISCOVERY_SKILL_DOWNLOAD}">Download</a>
+                </div>
+                <details class="oc-skill-install-details">
+                  <summary>Show prompt details</summary>
+                  <pre>${esc(datasetDiscoveryInstallPrompt())}</pre>
+                </details>
+              </article>
+              <article class="oc-skill-workspace-card is-empty">
+                <div class="oc-skill-card-head">
+                  <span class="oc-skill-stage-label">
+                    <span class="oc-skill-stage-icon" aria-hidden="true">${workspaceIcon('plus')}</span>
+                    <span>Contribute</span>
+                  </span>
+                  <span class="oc-skill-card-note">Source review</span>
+                </div>
+                <h4>New Skills</h4>
+                <p>Submit a GitHub folder, ZIP file, or documentation URL so reviewers can inspect the full package.</p>
+                <div class="oc-skill-pill-row" aria-label="Skill contribution files">
+                  <span>GitHub folder</span>
+                  <span>ZIP file</span>
+                  <span>SKILL.md</span>
+                  <span>examples/tests</span>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+
         <section data-workspace-panel="reports" hidden>
           <section class="oc-workspace-card oc-report-workspace">
             <div class="oc-library-header">
@@ -3354,6 +3727,7 @@
               </div>
               <div class="oc-activity-actions">
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">${workspaceIcon('upload')}<span>Submit resource</span></button>
+                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#submitSkillModal">${workspaceIcon('skill')}<span>Submit skill</span></button>
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Report issue</span></button>
               </div>
             </div>
@@ -3697,12 +4071,26 @@
 
     function openRequestedSubmission(){
       const params = new URLSearchParams(window.location.search);
+      if (params.get('submit') === 'skill') {
+        openRequestedSkillSubmission();
+        return;
+      }
       if (params.get('submit') !== 'resource') return;
       const modalEl = document.getElementById('suggestResourceModal');
       if (!modalEl || !window.bootstrap?.Modal) return;
       const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
       modalEl.addEventListener('shown.bs.modal', () => {
         document.getElementById('suggestTitle')?.focus();
+      }, { once: true });
+      modal.show();
+    }
+
+    function openRequestedSkillSubmission(){
+      const modalEl = document.getElementById('submitSkillModal');
+      if (!modalEl || !window.bootstrap?.Modal) return;
+      const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+      modalEl.addEventListener('shown.bs.modal', () => {
+        document.getElementById('skillTitle')?.focus();
       }, { once: true });
       modal.show();
     }
@@ -3720,22 +4108,35 @@
     }
 
     bindSuggestionForm(user);
+    bindSkillProposalForm(user);
     bindIssueReportForm(user, report => {
       issueReportsReady = true;
       issueReports = [report, ...issueReports].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
       renderIssueReportsWorkspace();
     });
-    document.querySelectorAll('[data-ask-example]').forEach(button => {
-      button.addEventListener('click', () => {
-        const input = document.querySelector('.oc-ask-form [name="q"]');
-        if (input) {
-          input.value = button.dataset.askExample || '';
-          input.focus();
-          autoSizeAskField(input);
-          input.dispatchEvent(new Event('input', { bubbles: true }));
-          syncAskFormState(input.form);
-        }
-      });
+    root.addEventListener('click', event => {
+      const trigger = event.target.closest('[data-ask-example]');
+      if (!trigger) return;
+      event.preventDefault();
+      openAskWithPrompt(trigger.dataset.askExample || '');
+    });
+    root.addEventListener('click', async event => {
+      const trigger = event.target.closest('[data-copy-install-prompt]');
+      if (!trigger) return;
+      event.preventDefault();
+      const label = trigger.textContent;
+      const prompt = trigger.dataset.copyInstallPrompt === 'dataset-discovery'
+        ? datasetDiscoveryInstallPrompt()
+        : '';
+      try {
+        await navigator.clipboard.writeText(prompt);
+        trigger.textContent = 'Copied';
+      } catch (error) {
+        trigger.textContent = 'Copy failed';
+      }
+      window.setTimeout(() => {
+        trigger.textContent = label;
+      }, 1200);
     });
     bindProfileForm(user);
     bindWorkspaceTabs();
