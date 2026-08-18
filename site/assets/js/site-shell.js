@@ -484,7 +484,7 @@
     document.body.classList.add('oc-ai-floating-mounted');
     const submitHref = `${pagePrefix()}account.html?submit=resource`;
     const privacyHref = `${pagePrefix()}contribute.html#privacy`;
-    const examplePrompt = 'e.g. Find open construction safety datasets with worker, PPE, or equipment annotations';
+    const examplePrompt = 'e.g. Find datasets for construction safety with worker, PPE, or equipment annotations';
     const wrap = document.createElement('div');
     wrap.innerHTML = `
       <button type="button" class="oc-ai-launcher" id="ocAiLauncher" aria-expanded="false" aria-controls="ocAiPanel">
