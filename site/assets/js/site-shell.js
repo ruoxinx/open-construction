@@ -3,6 +3,7 @@
 
 (() => {
   const AWARD_URL = 'https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086';
+  const LINKEDIN_URL = 'https://www.linkedin.com/company/openconstruction-open-science-initiative/';
   const scriptSrc = document.currentScript?.getAttribute('src') || 'assets/js/site-shell.js';
   const assetPrefix = scriptSrc.replace(/assets\/js\/site-shell\.js(?:\?.*)?$/, 'assets/');
 
@@ -130,6 +131,21 @@
     }
   }
 
+  function normalizeHeaderNav(){
+    const nav = document.querySelector('.navbar');
+    const navList = nav?.querySelector('.navbar-nav');
+    if (!navList || navList.dataset.ocHeaderNormalized === 'true') return;
+
+    navList.querySelector('.nav-link.plain[data-route="index"], .nav-link.plain[href$="index.html"]')
+      ?.closest('.nav-item')
+      ?.remove();
+
+    const catalogToggle = navList.querySelector('#ddLibraries, #ddCatalogs');
+    if (catalogToggle) catalogToggle.textContent = 'Catalog';
+
+    navList.dataset.ocHeaderNormalized = 'true';
+  }
+
   function applyActiveNav(){
     const nav = document.querySelector('.navbar');
     if (!nav) return;
@@ -200,6 +216,33 @@
         text-decoration:underline;
         text-underline-offset:3px;
       }
+      .navbar .navbar-nav{
+        align-items:center;
+      }
+      .navbar .nav-link.plain{
+        color:var(--oc-text,#22384d)!important;
+        font-size:.98rem;
+        font-weight:600!important;
+        letter-spacing:0;
+        padding:.46rem .55rem!important;
+      }
+      .navbar .nav-link.plain:hover,
+      .navbar .nav-link.plain:focus,
+      .navbar .nav-link.plain.active{
+        color:var(--oc-ink,#0f2e4b)!important;
+        text-decoration:underline!important;
+        text-underline-offset:3px;
+        text-decoration-thickness:1px;
+      }
+      .navbar .dropdown-toggle::after{
+        margin-left:.32rem;
+        opacity:.72;
+        vertical-align:.12em;
+      }
+      .navbar .dropdown-menu:not(.oc-auth-menu){
+        border-radius:8px!important;
+        box-shadow:0 16px 36px rgba(15,46,75,.12)!important;
+      }
     `;
     document.head.appendChild(styles);
   }
@@ -216,26 +259,38 @@
         right:20px;
         bottom:20px;
         z-index:1040;
+        isolation:isolate;
         display:inline-flex;
         align-items:center;
-        gap:.5rem;
+        gap:.42rem;
         min-height:38px;
-        padding:.48rem .86rem;
+        padding:.46rem .82rem;
         border:1px solid rgba(172,96,16,.32);
         border-radius:8px;
         background:#f2a238;
         color:var(--oc-ink,#0f2e4b);
         font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
         font-size:1rem;
-        font-weight:800;
+        font-weight:700;
         font-style:normal;
         font-variant:normal;
         letter-spacing:0;
         line-height:1;
         text-transform:none;
-        box-shadow:0 10px 24px rgba(15,46,75,.14);
+        box-shadow:0 10px 24px rgba(15,46,75,.14), 0 0 0 5px rgba(242,162,56,.12);
         text-decoration:none;
-        transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+        transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease, background .15s ease;
+      }
+      .oc-ai-launcher::before{
+        content:"";
+        position:absolute;
+        inset:-8px;
+        z-index:-1;
+        border-radius:14px;
+        background:radial-gradient(circle at 50% 50%, rgba(242,162,56,.22), rgba(242,162,56,0) 68%);
+        opacity:.72;
+        pointer-events:none;
+        transition:opacity .15s ease, transform .15s ease;
       }
       .oc-ai-launcher *{
         box-sizing:border-box;
@@ -246,8 +301,13 @@
         color:#fff;
         border-color:rgba(172,96,16,.5);
         background:#f5ad4b;
-        box-shadow:0 14px 30px rgba(15,46,75,.18);
+        box-shadow:0 14px 30px rgba(15,46,75,.18), 0 0 0 7px rgba(242,162,56,.18), 0 0 34px rgba(242,162,56,.34);
         transform:translateY(-1px);
+      }
+      .oc-ai-launcher:hover::before,
+      .oc-ai-launcher:focus::before{
+        opacity:1;
+        transform:scale(1.04);
       }
       .oc-ai-launcher-mark{
         display:inline-block;
@@ -262,8 +322,8 @@
       .oc-ai-launcher-copy{
         display:inline;
         color:#fff;
-        font-size:.86rem;
-        font-weight:800;
+        font-size:.84rem;
+        font-weight:700;
         letter-spacing:0;
         line-height:1;
         min-width:0;
@@ -272,8 +332,8 @@
       .oc-ai-launcher-copy strong{
         color:#fff;
         display:inline-block;
-        font-size:.86rem;
-        font-weight:800;
+        font-size:.84rem;
+        font-weight:700;
         letter-spacing:0;
         line-height:1;
         margin:0;
@@ -281,18 +341,23 @@
         white-space:nowrap;
       }
       .oc-ai-launcher-beta{
+        position:absolute;
+        top:-7px;
+        right:-7px;
         display:inline-flex;
         align-items:center;
-        min-height:18px;
-        margin-left:.2rem;
+        min-height:15px;
+        margin-left:0;
+        border:1px solid rgba(255,255,255,.72);
         border-radius:999px;
-        background:rgba(255,255,255,.22);
-        color:#fff;
-        font-size:.64rem;
-        font-weight:800;
+        background:#fff;
+        color:#9a5a0c;
+        font-size:.55rem;
+        font-weight:700;
         line-height:1;
-        letter-spacing:.04em;
-        padding:.08rem .34rem;
+        letter-spacing:.05em;
+        padding:.05rem .26rem;
+        box-shadow:0 4px 10px rgba(15,46,75,.12);
         text-transform:uppercase;
       }
       .oc-ai-panel{
@@ -576,7 +641,17 @@
       /Terms/i.test(element.textContent || '') && /Privacy/i.test(element.textContent || '')
     );
     const linksClone = linksBlock?.cloneNode(true);
-    if (linksClone) linksClone.classList.add('oc-footer-links');
+    if (linksClone) {
+      linksClone.classList.add('oc-footer-links');
+      const linkWrap = linksClone.querySelector('small') || linksClone;
+      if (!linkWrap.querySelector('a[href*="linkedin.com/company/openconstruction-open-science-initiative"]')) {
+        linkWrap.insertAdjacentHTML(
+          'beforeend',
+          ` <span aria-hidden="true">&middot;</span>
+          <a href="${LINKEDIN_URL}" class="text-muted" target="_blank" rel="noopener noreferrer">LinkedIn</a>`
+        );
+      }
+    }
 
     container.innerHTML = `
       <div class="oc-footer-brandline">
@@ -606,6 +681,7 @@
 
   function init(){
     setFooterYear();
+    normalizeHeaderNav();
     applyActiveNav();
     injectFooterFundingStyles();
     mountAiAssistant();
@@ -615,6 +691,7 @@
 
   window.OpenConstructionShell = {
     applyActiveNav,
+    normalizeHeaderNav,
     mountAiAssistant,
     normalizeFooter,
     routeForPath,

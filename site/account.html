@@ -315,7 +315,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260719-footer4"></script>
+<script src="assets/js/site-shell.js?v=20260818-ai-halo"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -2813,6 +2813,10 @@
     const params = new URLSearchParams(window.location.search);
     const page = params.get('page') || '';
     if (page && /^https?:\/\//i.test(page)) form.elements.page_url.value ||= page;
+    const requestedType = issueTypeLabel(params.get('issue_type') || '');
+    if (requestedType && Array.from(form.elements.issue_type.options).some(option => option.value === requestedType)) {
+      form.elements.issue_type.value = requestedType;
+    }
     form.addEventListener('submit', async event => {
       event.preventDefault();
       const status = document.getElementById('issueReportStatus');
@@ -3231,10 +3235,10 @@
         <section data-workspace-panel="settings" hidden>
           <section class="oc-workspace-card oc-account-settings-workspace">
             <div class="oc-library-header">
-              <div>
+              <div class="oc-settings-title-wrap">
                 <h3 class="h4 fw-bold mb-1">Account settings</h3>
+                ${roleBadgesHtml ? `<div class="oc-role-strip" aria-label="Account roles">${roleBadgesHtml}</div>` : ''}
               </div>
-              ${roleBadgesHtml}
             </div>
             <div class="oc-settings-grid">
               <form id="profileForm" class="oc-settings-section">

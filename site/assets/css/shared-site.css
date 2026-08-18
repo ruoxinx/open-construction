@@ -81,9 +81,11 @@ a{ color:var(--oc-link); }
 }
 
 .navbar .nav-link.plain{
-  font-weight:700;
   color:var(--oc-text);
-  padding:.5rem .6rem;
+  font-size:.98rem;
+  font-weight:600;
+  letter-spacing:0;
+  padding:.46rem .55rem;
 }
 
 .navbar .nav-link.plain:hover,
@@ -91,13 +93,20 @@ a{ color:var(--oc-link); }
   color:var(--oc-ink);
   text-decoration:underline;
   text-underline-offset:3px;
+  text-decoration-thickness:1px;
+}
+
+.navbar .dropdown-toggle::after{
+  margin-left:.32rem;
+  opacity:.72;
+  vertical-align:.12em;
 }
 
 .navbar .dropdown-menu:not(.oc-auth-menu){
   min-width:168px;
   border:1px solid var(--oc-border);
-  border-radius:10px;
-  box-shadow:0 14px 32px rgba(15,46,75,.1);
+  border-radius:8px;
+  box-shadow:0 16px 36px rgba(15,46,75,.12);
   padding:.4rem;
 }
 
@@ -1833,6 +1842,24 @@ header.hero p{
 .oc-account-settings-workspace{
   display:grid;
   gap:1rem;
+}
+
+.oc-settings-title-wrap{
+  min-width:0;
+}
+
+.oc-role-strip{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin-top:.55rem;
+}
+
+.oc-role-strip .oc-status-role{
+  width:auto;
+  padding:.34rem .58rem;
+  letter-spacing:.055em;
 }
 
 .oc-settings-grid{

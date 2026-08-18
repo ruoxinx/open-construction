@@ -301,10 +301,6 @@
       line-height:1.6;
       max-width:58ch;
     }
-    .monthly-teaser-cta{
-      align-self:flex-start;
-      margin-top:.35rem;
-    }
     .monthly-teaser-side{
       display:flex;
       flex-direction:column;
@@ -355,6 +351,52 @@
       font-size:.82rem;
       line-height:1.5;
       margin:.65rem 0 0;
+    }
+    .monthly-teaser-footer{
+      display:flex;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-top:1rem;
+    }
+    .monthly-action-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.38rem;
+      min-height:34px;
+      padding:.44rem .72rem;
+      border:1px solid rgba(242,162,56,.42);
+      border-radius:999px;
+      background:rgba(255,255,255,.78);
+      color:var(--oc-ink);
+      font-size:.86rem;
+      font-weight:500;
+      line-height:1.2;
+      text-decoration:none;
+    }
+    .monthly-action-link.primary{
+      border-color:rgba(242,162,56,.88);
+      background:var(--oc-accent);
+      color:#112b45;
+      font-weight:600;
+      box-shadow:0 8px 18px rgba(242,162,56,.18);
+    }
+    .monthly-action-link span[aria-hidden="true"]{
+      color:inherit;
+      opacity:.82;
+    }
+    .monthly-action-link:hover,
+    .monthly-action-link:focus{
+      background:rgba(242,162,56,.14);
+      border-color:rgba(242,162,56,.82);
+      color:var(--oc-ink);
+      text-decoration:none;
+    }
+    .monthly-action-link.primary:hover,
+    .monthly-action-link.primary:focus{
+      background:#e99623;
+      border-color:#e99623;
+      color:#10243a;
     }
 
     /* Logo wall */
@@ -692,7 +734,7 @@
     <!-- CTA buttons -->
     <div class="cta-row">
       <a class="btn-ink btn-sm" href="contribute.html">Contribute a Resource</a>
-      <a class="btn-accent btn-sm" href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Join discussions</a>
+      <a class="btn-accent btn-sm" href="monthly-highlights.html">Community digest</a>
 	  <button type="button" class="btn-accent btn-sm" data-bs-toggle="modal" data-bs-target="#subscribeModal">Subscribe for updates</button>
     </div>
 
@@ -711,7 +753,10 @@
             </div>
             <h2 id="communityMonthlyHeading">New datasets, models, and contributors</h2>
             <p id="communityMonthlySummary">A monthly digest of what just landed in the OpenConstruction catalog &mdash; the datasets, models, and people behind them.</p>
-            <a class="btn-ink btn-sm monthly-teaser-cta" href="monthly-highlights.html">View community digest <span aria-hidden="true">&rarr;</span></a>
+            <div class="monthly-teaser-footer" aria-label="Monthly digest actions">
+              <a class="monthly-action-link primary" href="monthly-highlights.html">View community digest <span aria-hidden="true">&rarr;</span></a>
+              <a class="monthly-action-link" href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">Follow on LinkedIn <span aria-hidden="true">&rarr;</span></a>
+            </div>
           </div>
           <div class="monthly-teaser-side">
             <div class="monthly-teaser-metrics" id="communityMonthlyStats" aria-label="Monthly community activity">
@@ -898,13 +943,13 @@
       <div class="oc-card h-100">
         <div class="oc-card-body">
           <h3 class="oc-card-title h6 mb-2">Collaborate With Us</h3>
-          <p>For collaborations or partnership conversations, join the <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">discussion board</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+          <p>For collaborations or partnership conversations, email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a> or follow OpenConstruction on <a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
         </div>
       </div>
       <div class="oc-card h-100">
         <div class="oc-card-body">
-          <h3 class="oc-card-title h6 mb-2">Share an Update</h3>
-          <p>Have an event, release, or lab milestone relevant to open AEC research? <a href="https://github.com/ruoxinx/open-construction/discussions" target="_blank" rel="noopener">Share it in discussions</a> so the community can see it.</p>
+          <h3 class="oc-card-title h6 mb-2">Feedback &amp; Ideas</h3>
+          <p>Report platform feedback and roadmap suggestions through OpenConstruction support. <a href="account.html?report=issue&amp;issue_type=platform">Report an issue</a> or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
         </div>
       </div>
     </div>
@@ -967,7 +1012,7 @@ api.renderInstitutionMarquee({
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260719-footer4"></script>
+<script src="assets/js/site-shell.js?v=20260818-ai-halo"></script>
 
 <style>
   /* Optional: soft ocean background to avoid gray gaps */

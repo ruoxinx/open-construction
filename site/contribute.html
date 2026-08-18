@@ -98,9 +98,28 @@
     .section-intro{ color:var(--oc-subtle); margin-bottom:1rem; line-height:1.45; }
     .path-grid{ display:grid; gap:1rem; grid-template-columns:repeat(2,minmax(0,1fr)); }
     .path-card{ height:100%; }
-    .path-card .oc-card-body{ padding:1.1rem 1.15rem; }
-    .path-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
+    .path-card .oc-card-body{ display:flex; flex-direction:column; height:100%; padding:1.1rem 1.15rem; }
+    .path-list{ flex:1; margin:0; padding-left:1.1rem; color:var(--oc-text); }
     .path-list li + li{ margin-top:.35rem; }
+    .path-actions{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; }
+    .path-action-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      min-height:32px;
+      padding:.38rem .62rem;
+      border:1px solid rgba(242,162,56,.48);
+      border-radius:999px;
+      background:rgba(242,162,56,.12);
+      color:var(--oc-ink);
+      font-size:.86rem;
+      font-weight:650;
+      line-height:1.2;
+      text-decoration:none;
+    }
+    .path-action-link:hover{ border-color:rgba(242,162,56,.85); background:rgba(242,162,56,.2); color:var(--oc-ink); text-decoration:none; }
+    .path-action-link span[aria-hidden="true"]{ color:var(--oc-accent); }
+    .path-action-link svg{ width:15px; height:15px; flex:0 0 auto; fill:currentColor; }
     .quickstart-grid{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
     .quickstart-card{
       height:100%;
@@ -159,6 +178,36 @@
     .link-cards{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
     .link-cards .oc-card-body{ padding:1rem 1.05rem; }
     .link-cards p{ margin:0; color:var(--oc-subtle); }
+    .policy-card .oc-card-body{ padding:1.25rem 1.35rem; }
+    .policy-lede{
+      max-width:82ch;
+      margin-bottom:1rem;
+      color:var(--oc-subtle);
+      line-height:1.55;
+    }
+    .policy-block{
+      padding-top:.95rem;
+      margin-top:.95rem;
+      border-top:1px solid var(--oc-border);
+    }
+    .policy-block h4{
+      margin:0 0 .45rem;
+      color:var(--oc-ink);
+      font-size:.8rem;
+      font-weight:750;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+    .policy-block p{ margin-bottom:.55rem; line-height:1.55; }
+    .policy-block p:last-child{ margin-bottom:0; }
+    .policy-list{ margin:0; padding-left:1.1rem; color:var(--oc-text); }
+    .policy-list li + li{ margin-top:.38rem; }
+    .policy-note{
+      border-left:3px solid var(--oc-accent);
+      background:rgba(242,162,56,.08);
+      padding:.72rem .85rem;
+      border-radius:0 10px 10px 0;
+    }
 
     /* People cards */
     .person-card{ transition:transform .12s ease; }
@@ -387,10 +436,13 @@
         <div class="oc-card-body">
           <h3 class="oc-card-title mb-2">Propose Resources</h3>
           <ul class="path-list">
-            <li>Add a dataset, model, workflow, or OER using the GitHub submission templates.</li>
+            <li>Add a dataset, model, workflow, or OER using the workspace submission form.</li>
             <li>Share links, source metadata, and enough context for others to evaluate the resource.</li>
             <li>Help fill gaps in tasks, modalities, and domains across AEC.</li>
           </ul>
+          <div class="path-actions">
+            <a class="path-action-link" href="account.html?submit=resource">Submit resource <span aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </div>
       <div class="oc-card path-card">
@@ -401,6 +453,9 @@
             <li>Strengthen discoverability by refining tasks, modalities, and structured fields.</li>
             <li>Report broken links, outdated resources, or inconsistent labels.</li>
           </ul>
+          <div class="path-actions">
+            <a class="path-action-link" href="account.html?report=issue&amp;issue_type=metadata">Report correction <span aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </div>
       <div class="oc-card path-card">
@@ -411,6 +466,9 @@
             <li>Help new contributors prepare submissions that are easier to merge and maintain.</li>
             <li>Support module-level curation as the catalog grows.</li>
           </ul>
+          <div class="path-actions">
+            <a class="path-action-link" href="mailto:support@openconstruction.org">Contact us <span aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </div>
       <div class="oc-card path-card">
@@ -418,9 +476,18 @@
           <h3 class="oc-card-title mb-2">Build the Platform</h3>
           <ul class="path-list">
             <li>Contribute to schemas, validation scripts, benchmarks, UI improvements, and guides.</li>
-            <li>Help shape roadmap priorities through issues, discussions, and implementation work.</li>
+            <li>Help shape roadmap priorities through issues, support requests, and implementation work.</li>
             <li>Active contributors may grow into longer-term stewardship roles.</li>
           </ul>
+          <div class="path-actions">
+            <a class="path-action-link" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 .2a8 8 0 0 0-2.5 15.6c.4.1.5-.2.5-.4v-1.4c-2 .4-2.5-.5-2.7-1-.1-.3-.7-1-.9-1.2-.3-.2-.8-.7 0-.7.7 0 1.2.7 1.4 1 .8 1.3 2.1 1 2.6.8.1-.6.3-1 .6-1.2-1.8-.2-3.7-.9-3.7-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8a7.5 7.5 0 0 1 4 0c1.5-1 2.2-.8 2.2-.8.5 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-1.9 3.8-3.7 4 .3.3.6.8.6 1.6v2.4c0 .2.1.5.6.4A8 8 0 0 0 8 .2Z"/>
+              </svg>
+              GitHub repo <span aria-hidden="true">&rarr;</span>
+            </a>
+            <a class="path-action-link" href="mailto:support@openconstruction.org">Contact us <span aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </div>
     </div>
@@ -439,51 +506,85 @@
           <li>Respect privacy, consent, and ethical sharing expectations for any data-related contribution.</li>
           <li>Platform contributions can also improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
         </ul>
-        <p class="mb-0">Templates and validation scripts are available in the GitHub repository, and unclear cases can be discussed before submission.</p>
+        <p class="mb-0">Templates and validation scripts are available in the GitHub repository, and unclear cases can be sent to support before submission.</p>
       </div>
     </div>
   </section>
 
   <section class="oc-section" id="terms">
     <div class="oc-kicker mb-2">Policies</div>
-    <div class="oc-card">
+    <div class="oc-card policy-card">
       <div class="oc-card-body">
         <h3 class="oc-card-title mb-2">Terms of Use</h3>
-        <p class="text-muted fst-italic mb-3">OpenConstruction Open Science Initiative is free to use for research and education. The guidelines below protect proper attribution and prevent misuse of the platform or its brand.</p>
-        <p>The platform indexes publicly accessible research metadata and links to original sources. It does not host or redistribute third-party datasets, models, code, or paywalled publications unless explicitly noted.</p>
-        <p>Project-owned source code, metadata schemas, and documentation are released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0 License</a> unless otherwise stated.</p>
-        <p class="mb-2"><strong>Permitted uses</strong></p>
-        <ul class="mb-3">
-          <li>Access and use the platform for research, educational, and other lawful purposes.</li>
-          <li>Build upon or adapt project-owned code under the terms of the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0 License</a>.</li>
-          <li>Cite OpenConstruction Open Science Initiative in academic publications and derivative works.</li>
-        </ul>
-        <p class="mb-2"><strong>Prohibited uses</strong></p>
-        <ul class="mb-3">
-          <li>Removing or obscuring any attribution, copyright, or license notice.</li>
-          <li>Misrepresenting authorship, ownership, affiliation, or endorsement.</li>
-          <li>Violating the license or access terms of third-party resources linked through the platform.</li>
-          <li>Republishing this platform, or a substantially similar version of it, as a separate public service without prior written consent.</li>
-          <li>Using the "OpenConstruction Open Science Initiative" name, logo, or associated marks in a way that implies unauthorized affiliation or endorsement.</li>
-        </ul>
+        <p class="policy-lede">OpenConstruction Open Science Initiative is free to use for research and education. These terms protect proper attribution, responsible reuse, and the integrity of the platform and its name.</p>
+
+        <div class="policy-block">
+          <h4>Scope</h4>
+          <p>The platform indexes publicly accessible research metadata and links to original sources. It does not host or redistribute third-party datasets, models, code, or paywalled publications unless explicitly noted.</p>
+          <p>Project-owned code, metadata schemas, and documentation are released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0 License</a> unless otherwise stated.</p>
+        </div>
+
+        <div class="policy-block">
+          <h4>Permitted Uses</h4>
+          <ul class="policy-list">
+            <li>Access and use the platform for research, educational, and other lawful purposes.</li>
+            <li>Build upon or adapt project-owned code under the terms of the Apache 2.0 License.</li>
+            <li>Cite OpenConstruction Open Science Initiative in academic publications and derivative works.</li>
+          </ul>
+        </div>
+
+        <div class="policy-block">
+          <h4>Not Allowed</h4>
+          <ul class="policy-list">
+            <li>Removing or obscuring any attribution, copyright, or license notice.</li>
+            <li>Misrepresenting authorship, ownership, affiliation, or endorsement.</li>
+            <li>Violating the license or access terms of third-party resources linked through the platform.</li>
+            <li>Republishing this platform, or a substantially similar version of it, as a separate public service without prior written consent.</li>
+            <li>Using the "OpenConstruction Open Science Initiative" name, logo, or associated marks in a way that implies unauthorized affiliation or endorsement.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="oc-section" id="privacy">
-    <div class="oc-card">
+    <div class="oc-kicker mb-2">Data Policy</div>
+    <div class="oc-card policy-card">
       <div class="oc-card-body">
         <h3 class="oc-card-title mb-2">Data &amp; Privacy</h3>
-        <p>OpenConstruction Open Science Initiative may receive information you voluntarily provide through email, GitHub issues or discussions, update-subscription forms, or optional account features such as saved resources, private notes, collections, contribution dashboards, and workspace records.</p>
-        <p>Account sign-in is handled by third-party OAuth providers such as GitHub and Google. OpenConstruction does not manage passwords. User-owned profile, bookmark, collection, and note records are stored in Supabase and protected with row-level access controls.</p>
-        <p>Ask OpenConstruction uses Google Gemini to enhance catalog search and summarize matching public resource records. Questions submitted to Ask OpenConstruction and selected catalog context may be processed by Google Gemini for this purpose.</p>
-        <p>That information is used only to operate the platform, respond to requests, coordinate community contributions, maintain personal saved-resource and research-workspace views, and send updates users explicitly request. OpenConstruction Open Science Initiative does not sell personal information.</p>
-        <p>Signed-in users can download their account data or request account deletion from the workspace account page. Privacy, access, correction, or deletion requests can also be sent to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+        <p class="policy-lede">OpenConstruction keeps the catalog centered on public research metadata and uses account information only to operate contribution, support, saved-resource, and search features.</p>
+
+        <div class="policy-block">
+          <h4>Catalog Metadata</h4>
+          <p>OpenConstruction indexes public metadata about datasets, models, workflows, benchmarks, tools, and educational resources. The catalog points users to original sources; rights to linked datasets, models, images, publications, and other third-party materials remain with their original creators, publishers, or providers.</p>
+        </div>
+
+        <div class="policy-block">
+          <h4>Information We Receive</h4>
+          <p>We may receive information you choose to provide through email, GitHub issues, update subscriptions, resource submissions, support reports, and optional account features such as saved resources, contribution activity, and workspace search history.</p>
+        </div>
+
+        <div class="policy-block">
+          <h4>Accounts and Workspace Data</h4>
+          <p>Sign-in is handled by third-party OAuth providers such as GitHub and Google. OpenConstruction does not manage passwords. User-owned profile, saved-resource, submission, support report, role, credential, and AI search records are stored in Supabase and protected with row-level access controls.</p>
+        </div>
+
+        <div class="policy-block">
+          <h4>AI-Assisted Search</h4>
+          <p>Ask OpenConstruction uses Google Gemini to enhance catalog search and summarize matching public resource records. Questions submitted to Ask OpenConstruction and selected catalog context may be processed by Google Gemini for this purpose. Users should not submit private, confidential, or sensitive information to AI-assisted search.</p>
+        </div>
+
+        <div class="policy-block">
+          <h4>Use, Choices, and Services</h4>
+          <p>We use information only to operate the platform, respond to requests, coordinate community contributions, maintain personal workspace features, improve catalog quality, and send updates users explicitly request. OpenConstruction Open Science Initiative does not sell personal information.</p>
+          <p>Signed-in users can download their account data or request account deletion from the workspace account page. Privacy, access, correction, or deletion requests can also be sent to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. Third-party services such as GitHub, Google, Supabase, DOI providers, CDNs, mailing-list tools, and linked resource providers operate under their own policies and terms.</p>
+        </div>
+
         <span id="data-policy" class="visually-hidden" aria-hidden="true"></span>
-        <p>OpenConstruction Open Science Initiative indexes metadata about datasets, models, workflows, benchmarks, tools, and educational resources. Unless explicitly noted otherwise, the project does not claim ownership of the underlying third-party resources referenced by the catalog.</p>
-        <p>Rights to third-party datasets, models, images, publications, and linked resources remain with their original authors, creators, publishers, or providers.</p>
-        <p>Users are responsible for reviewing and following the license, access, and reuse terms selected by each original provider before downloading, reproducing, adapting, or redistributing linked content.</p>
-        <p class="mb-0">Third-party services such as GitHub, Google, Supabase, DOI providers, CDNs, and mailing-list tools operate under their own policies and terms.</p>
+        <div class="policy-block policy-note">
+          <h4>Linked Resource Responsibility</h4>
+          <p>Users are responsible for reviewing and following the license, access, and reuse terms selected by each original provider before downloading, reproducing, adapting, or redistributing linked content.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -524,9 +625,9 @@
 </footer>
 
 <!-- Floating button -->
-<a href="https://github.com/ruoxinx/open-construction/discussions"
-   class="issue-btn" target="_blank" rel="noopener">
-  Join discussions
+<a href="account.html?report=issue&amp;issue_type=platform"
+   class="issue-btn">
+  Report issue
 </a>
 
 <!-- Subscribe Modal -->
@@ -556,7 +657,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260719-footer4"></script>
+<script src="assets/js/site-shell.js?v=20260818-ai-halo"></script>
 
 </body>
 </html>
