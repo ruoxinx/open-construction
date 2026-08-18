@@ -91,6 +91,33 @@
       background:transparent;
       border:0;
     }
+    .thumb-wrap img.is-fallback{
+      object-fit:contain !important;
+      padding:1.25rem;
+      background:#f8fafc;
+    }
+    .thumb-placeholder{
+      display:grid;
+      place-items:center;
+      background:#f8fafc;
+    }
+    .thumb-fallback-note{
+      position:absolute;
+      left:50%;
+      bottom:10px;
+      transform:translateX(-50%);
+      max-width:calc(100% - 24px);
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      background:rgba(255,255,255,.94);
+      color:var(--oc-sub);
+      font-size:.76rem;
+      font-weight:800;
+      padding:.16rem .55rem;
+      text-align:center;
+      white-space:nowrap;
+      z-index:4;
+    }
 
     /* Submitted Tag Style*/
     .submitted-tag {
@@ -361,6 +388,20 @@ function fmtAdded(d){
   }catch{ return null; }
 }
 function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m])); }
+function resolveWorkflowMediaUrl(url){
+  const raw = String(url || '').trim();
+  if (!raw) return '';
+  if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('/')) return raw;
+  if (raw.startsWith('../assets/')) return raw.replace(/^\.\.\//, '');
+  if (raw.startsWith('./')) return raw.slice(2);
+  return raw;
+}
+function workflowMediaFallbackHtml(){
+  return '<span class="thumb-fallback-note" data-media-fallback-note hidden>Preview unavailable</span>';
+}
+function workflowImageErrorHandler(){
+  return "this.onerror=null;this.src='assets/img/placeholder/placeholder.png';this.classList.add('is-fallback');const n=this.closest('.thumb-link')?.querySelector('[data-media-fallback-note]');if(n)n.hidden=false;";
+}
 
 const BRAND_URLS = {
   "OpenSpace":"https://www.openspace.ai/","Buildots":"https://buildots.com/","Doxel":"https://doxel.ai/",
@@ -411,8 +452,9 @@ function chooseMediaBlock(u){
 
   if (img){
     const href = u.links?.source || vid?.url || img.url;
-    const imgTag = `<img src="${img.url}" alt="${escapeHTML(img.alt || (u.title ? 'Image: '+u.title : 'Use case image'))}" width="720" height="405" loading="lazy" decoding="async">`;
-    return href ? `<a class="thumb-link" href="${href}" target="_blank" rel="noopener">${imgTag}</a>`
+    const imgSrc = resolveWorkflowMediaUrl(img.url);
+    const imgTag = `<img src="${escapeHTML(imgSrc)}" alt="${escapeHTML(img.alt || (u.title ? 'Image: '+u.title : 'Use case image'))}" width="720" height="405" loading="lazy" decoding="async" onerror="${workflowImageErrorHandler()}">${workflowMediaFallbackHtml()}`;
+    return href ? `<a class="thumb-link" href="${escapeHTML(href)}" target="_blank" rel="noopener">${imgTag}</a>`
                 : `<div class="thumb-link">${imgTag}</div>`;
   }
   if (vid){
@@ -427,12 +469,12 @@ function chooseMediaBlock(u){
       return `<div class="thumb-link"><iframe src="${embed}" title="Vimeo video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`;
     }
     if(/\.(mp4|webm|ogg)(\?|#|$)/i.test(vid.url)){
-      return `<div class="thumb-link"><video src="${vid.url}" controls playsinline preload="metadata"></video></div>`;
+      return `<div class="thumb-link"><video src="${escapeHTML(resolveWorkflowMediaUrl(vid.url))}" controls playsinline preload="metadata"></video></div>`;
     }
-    const thumb = vid.thumb ? `<img src="${vid.thumb}" alt="${escapeHTML(u.title ? 'Video: '+u.title : 'Use case video')}" loading="lazy" decoding="async">` : '';
-    return `<a class="thumb-link" href="${vid.url}" target="_blank" rel="noopener">${thumb}</a>`;
+    const thumb = vid.thumb ? `<img src="${escapeHTML(resolveWorkflowMediaUrl(vid.thumb))}" alt="${escapeHTML(u.title ? 'Video: '+u.title : 'Use case video')}" loading="lazy" decoding="async" onerror="${workflowImageErrorHandler()}">${workflowMediaFallbackHtml()}` : workflowMediaFallbackHtml().replace(' hidden', '');
+    return `<a class="thumb-link" href="${escapeHTML(vid.url)}" target="_blank" rel="noopener">${thumb}</a>`;
   }
-  return `<div class="thumb-link" aria-hidden="true"></div>`;
+  return `<div class="thumb-link thumb-placeholder"><span class="thumb-fallback-note">No preview available</span></div>`;
 }
 
 function listHTML(arr, cls){

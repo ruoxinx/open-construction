@@ -479,12 +479,14 @@
   }
 
   function normalSearchHref(query){
-    const q = encodeURIComponent(String(query || '').trim());
-    const text = String(query || '').toLowerCase();
-    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `models.html?q=${q}`;
-    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `deployments.html?q=${q}`;
-    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `oer.html?q=${q}`;
-    return `dataset.html?q=${q}`;
+    const clean = String(query || '').trim();
+    const q = encodeURIComponent(clean);
+    const suffix = q ? `?q=${q}` : '';
+    const text = clean.toLowerCase();
+    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `models.html${suffix}`;
+    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `deployments.html${suffix}`;
+    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `oer.html${suffix}`;
+    return `dataset.html${suffix}`;
   }
 
   function updateAiUsageUi(user){
@@ -1033,6 +1035,65 @@
     return values.filter(Boolean).map(value => String(value).trim()).filter(Boolean);
   }
 
+  const AI_INITIAL_RESULT_LIMIT = 12;
+  const AI_EXPANDED_RESULT_LIMIT = 24;
+
+  function visibleAiResults(results, limit = AI_INITIAL_RESULT_LIMIT){
+    return (Array.isArray(results) ? results : []).slice(0, limit);
+  }
+
+  function aiTypeMatches(query){
+    const clean = String(query || '');
+    return [
+      ['dataset', /\bdatasets?\b/i],
+      ['model', /\bmodels?\b/i],
+      ['workflow', /\bworkflows?\b|\bdeployments?\b/i],
+      ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i]
+    ].filter(([, pattern]) => pattern.test(clean)).map(([type]) => type);
+  }
+
+  function isTypeOnlyAiQuery(query){
+    const types = aiTypeMatches(query);
+    if (!types.length) return false;
+    const rest = normalizeAiText(query)
+      .replace(/\b(only|show|find|list|give|me|resources?|catalog|openconstruction|datasets?|models?|workflows?|deployments?|oers?|courses?|teaching|education)\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return !rest;
+  }
+
+  function shouldRefineAiResults(query){
+    const clean = String(query || '');
+    if (/\b(only|filter|refine|narrow|current results?|previous results?|within these|compare|largest|biggest|smallest|most|downloadable|has code|has data)\b/i.test(clean)) return true;
+    if (/\b(with|without)\s+(code|github|repo|repository|data|download|source)\b/i.test(clean)) return true;
+    return isTypeOnlyAiQuery(clean);
+  }
+
+  function aiRoundTitle(query){
+    const clean = String(query || '').trim();
+    return clean.length > 64 ? `${clean.slice(0, 61).trimEnd()}...` : clean;
+  }
+
+  function resourceHrefs(results){
+    return (Array.isArray(results) ? results : []).map(resource => resourceKeyAi(resource?.href || resource?.title)).filter(Boolean);
+  }
+
+  function didAiResultsChange(previousResults, nextResults){
+    const prev = resourceHrefs(previousResults);
+    const next = resourceHrefs(nextResults);
+    if (prev.length !== next.length) return true;
+    return prev.some((href, index) => href !== next[index]);
+  }
+
+  function aiResourceRounds(chat){
+    if (Array.isArray(chat?.resourceRounds)) return chat.resourceRounds.filter(round => Array.isArray(round.resources));
+    if (Array.isArray(chat?.resources) && chat.resources.length) {
+      const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || chat.title || 'Previous search';
+      return [{ query: firstUserMessage, resources: chat.resources, created_at: chat.created_at || chat.updated_at || '' }];
+    }
+    return [];
+  }
+
   function titleCaseAi(raw){
     const text = String(raw || '').trim();
     if (!text) return '';
@@ -1063,16 +1124,34 @@
         /(image|thumbnail|cover|preview)/i.test(key) &&
         /^[\w./-]+\.(png|jpe?g|webp|gif|avif)$/i.test(clean)
       ) {
-        return clean.replace(/^\/+/, '');
+        return normalizeAccountMediaUrl(clean);
       }
     }
     return '';
   }
 
+  function normalizeAccountMediaUrl(url){
+    const raw = String(url || '').trim();
+    if (!raw) return '';
+    if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('/')) return raw;
+    if (raw.startsWith('../assets/')) return raw.replace(/^\.\.\//, '');
+    if (raw.startsWith('./')) return raw.slice(2);
+    return raw.replace(/^\/+/, '');
+  }
+
+  function mediaFromAiRecord(item){
+    const direct = urlFromAi(item, ['image', 'image_url', 'image_path', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
+    if (direct) return direct;
+    const media = Array.isArray(item?.media) ? item.media : [];
+    const image = media.find(entry => entry && String(entry.type || '').toLowerCase() === 'image' && entry.url);
+    const videoThumb = media.find(entry => entry && entry.thumb);
+    return normalizeAccountMediaUrl(image?.url || videoThumb?.thumb || '');
+  }
+
   function accountAiResourceFromRecord(type, item){
     const kind = resourceKind(type);
     const title = titleCaseAi(titleOfRecord(item, `Untitled ${typeLabel(kind)}`));
-    const commonMedia = urlFromAi(item, ['image', 'image_url', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
+    const commonMedia = mediaFromAiRecord(item);
     if (kind === 'dataset') {
       const tasks = listAi(item.potential_tasks || item.tasks || item.task);
       const classes = listAi(item.classes || item.object_classes || item.objects);
@@ -1114,7 +1193,7 @@
         type: 'workflow',
         label: 'Workflow',
         title: titleValue,
-        href: `deployments.html?q=${encodeURIComponent(titleValue)}`,
+        href: `workflows/details.html?id=${encodeURIComponent(titleValue)}`,
         dataUrl: urlFromAi(item, ['url', 'source', 'link']),
         codeUrl: urlFromAi(item, ['code_url', 'github_url', 'repo_url']),
         media: commonMedia,
@@ -1297,12 +1376,21 @@
       bim: ['building', 'information', 'modeling', 'ifc', 'scan', 'scan2bim'],
       aec: ['architecture', 'engineering', 'construction'],
       ai: ['artificial intelligence', 'generative ai', 'machine learning'],
+      ml: ['machine learning', 'artificial intelligence'],
       ppe: ['personal', 'protective', 'equipment', 'helmet', 'hardhat', 'vest'],
       hardhat: ['helmet', 'ppe', 'hard hat'],
-      safety: ['ppe', 'hazard', 'worker', 'accident'],
-      teaching: ['course', 'education', 'slides', 'lecture', 'learning'],
+      hse: ['health safety environment', 'safety', 'inspection', 'hazard', 'incident'],
+      hazard: ['safety', 'risk', 'unsafe', 'inspection', 'incident', 'observation'],
+      hazards: ['safety', 'risk', 'unsafe', 'inspection', 'incident', 'observation'],
+      inspection: ['inspect', 'quality', 'safety', 'defect', 'closeout', 'field report'],
+      inspections: ['inspect', 'quality', 'safety', 'defect', 'closeout', 'field report'],
+      reporting: ['report', 'inspection', 'observation', 'documentation'],
+      safety: ['ppe', 'hazard', 'worker', 'accident', 'hse', 'inspection', 'unsafe'],
+      teaching: ['course', 'education', 'slides', 'lecture', 'learning', 'oer', 'open educational resource'],
       course: ['teaching', 'education', 'slides', 'lecture', 'syllabus'],
       slides: ['presentation', 'lecture', 'teaching'],
+      oer: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
+      oers: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
       labs: ['lab', 'interactive', 'code', 'notebook'],
       lab: ['labs', 'interactive', 'code', 'notebook'],
       reuse: ['responsible', 'license', 'open data', 'data ethics'],
@@ -1315,10 +1403,13 @@
       annotations: ['annotated', 'label', 'labels'],
       bounding: ['bbox', 'box', 'boxes', 'detection'],
       boxes: ['bbox', 'box', 'detection'],
-      code: ['github', 'repository', 'repo'],
+      code: ['github', 'repository', 'repo', 'source code', 'implementation'],
+      github: ['code', 'repository', 'repo', 'source code'],
+      repo: ['code', 'github', 'repository', 'source code'],
       largest: ['images', 'samples', 'records'],
       progress: ['tracking', 'monitoring', 'as built', 'asbuilt'],
-      monitoring: ['tracking', 'progress'],
+      tracking: ['monitoring', 'progress', 'site monitoring'],
+      monitoring: ['tracking', 'progress', 'inspection', 'site monitoring'],
       download: ['data', 'url', 'source']
     };
     const terms = new Set(base);
@@ -1328,8 +1419,12 @@
       [/\bscan\s*to\s*bim\b|\bscan2bim\b/, ['scan to bim', 'scan2bim', 'bim', 'point cloud']],
       [/\bbim\b|\bbuilding information model(?:ing)?\b|\bifc\b/, ['bim', 'building information modeling', 'ifc']],
       [/\bconstruction progress\b|\bprogress monitoring\b|\bsite monitoring\b/, ['progress monitoring', 'progress tracking', 'site monitoring', 'as built']],
+      [/\bhealth safety environment\b|\bhse\b|\bsafety reporting\b|\bhazard capture\b/, ['hse', 'safety', 'hazard', 'inspection', 'reporting']],
       [/\bgenerative ai\b|\bgenai\b|\bllms?\b/, ['generative ai', 'artificial intelligence', 'llm', 'aec ai']],
       [/\baec ai\b|\bai in aec\b|\bai for aec\b/, ['aec ai', 'artificial intelligence', 'architecture engineering construction']],
+      [/\bopen educational resources?\b|\boers?\b/, ['open educational resource', 'education', 'teaching', 'course', 'tutorial']],
+      [/\bwith code\b|\bgithub\b|\brepositor(?:y|ies)\b/, ['code', 'github', 'repository', 'repo', 'source code']],
+      [/\bwith data\b|\bdownload(?:able)?\b|\bdata source\b/, ['data', 'download', 'source', 'url']],
       [/\bopen data\b|\bresponsible reuse\b|\bdata reuse\b/, ['open data', 'responsible reuse', 'license', 'data ethics']],
       [/\bsmart construction\b|\bconstruction technolog(?:y|ies)\b/, ['smart construction', 'construction technology']],
       [/\binteractive labs?\b|\bcode labs?\b/, ['interactive labs', 'interactive', 'code', 'lab']],
@@ -1407,12 +1502,13 @@
     return score;
   }
 
-  function selectAiCandidates(catalog, query, limit = 8){
-    const requestedTypes = requestedAiTypes(query);
+  function selectAiCandidates(catalog, query, limit = AI_EXPANDED_RESULT_LIMIT){
+    const intent = aiTypeIntent(query);
+    const requestedTypes = intent.types;
     const scored = (Array.isArray(catalog) ? catalog : [])
       .map(resource => ({ ...resource, score: scoreAiResource(resource, query) }))
       .filter(resource => resource.score > 0);
-    const narrowed = requestedTypes.length
+    const narrowed = requestedTypes.length && intent.explicit
       ? scored.filter(resource => requestedTypes.includes(resource.type))
       : scored;
     return narrowed
@@ -1445,12 +1541,7 @@
     let rows = previous.slice();
     const clean = String(query || '');
     const wantsOnly = /\bonly\b|\bfilter\b|\bshow\b/i.test(clean);
-    const typeMatches = [
-      ['dataset', /\bdatasets?\b/i],
-      ['model', /\bmodels?\b/i],
-      ['workflow', /\bworkflows?\b|\bdeployments?\b/i],
-      ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i]
-    ].filter(([, pattern]) => pattern.test(clean)).map(([type]) => type);
+    const typeMatches = aiTypeMatches(clean);
     if ((wantsOnly || typeMatches.length) && typeMatches.length) {
       const filtered = rows.filter(resource => typeMatches.includes(resource.type));
       if (filtered.length) rows = filtered;
@@ -1474,14 +1565,20 @@
         return b.score - a.score || a.title.localeCompare(b.title);
       });
     const hasSpecificScore = scored.some(resource => resource.score > 0);
-    return (hasSpecificScore ? scored.filter(resource => resource.score > 0 || wantsOnly) : scored).slice(0, 8);
+    return (hasSpecificScore ? scored.filter(resource => resource.score > 0 || wantsOnly) : scored).slice(0, AI_EXPANDED_RESULT_LIMIT);
   }
 
   function reasonForAiResource(resource, query){
     return resource.summary || `OpenConstruction ${resource.label.toLowerCase()} record.`;
   }
 
-  function answerForAiQuery(query, results, catalogLoaded, scoped = false){
+  function aiVisibleSummary(results, visibleLimit = AI_INITIAL_RESULT_LIMIT){
+    const total = Array.isArray(results) ? results.length : 0;
+    const visible = Math.min(total, visibleLimit);
+    return total > visible ? `Showing the top ${visible} of ${total} matching resources.` : `Showing ${total} matching resource${total === 1 ? '' : 's'}.`;
+  }
+
+  function answerForAiQuery(query, results, catalogLoaded, scoped = false, visibleLimit = AI_INITIAL_RESULT_LIMIT){
     if (!catalogLoaded) return 'I could not load the catalog data in this environment yet.';
     if (!results.length) {
       const requestedTypes = requestedAiTypes(query).map(typeLabel);
@@ -1495,15 +1592,30 @@
     const summary = Object.entries(counts).map(([label, count]) => `${count} ${label.toLowerCase()}${count === 1 ? '' : 's'}`).join(', ');
     const top = results[0];
     const scope = scoped ? 'From the current results, ' : '';
-    return `${scope}I found ${summary}. The strongest match is ${top.title}. Review the resource cards below for supporting records.`;
+    return `${scope}I found ${summary}. The strongest match is ${top.title}. ${aiVisibleSummary(results, visibleLimit)}`;
   }
 
-  function accountAiResourceCardsHtml(results, query){
-    if (!results.length) return empty('No matching resources yet', 'Try a broader catalog question or fewer constraints.');
-    return results.map(resource => `
+  function aiEmptyText(query){
+    const text = normalizeAiText(query);
+    if (/\bsafety|hazard|hse|ppe|helmet|hardhat\b/.test(text)) return 'Try broader terms such as safety monitoring, PPE, hazard, inspection, or worker detection.';
+    if (/\bbim|point cloud|lidar|scan\b/.test(text)) return 'Try broader terms such as BIM, scan to BIM, point cloud, IFC, or progress monitoring.';
+    if (/\boer|course|teaching|education|slides\b/.test(text)) return 'Try broader terms such as OER, teaching, smart construction, slides, or interactive labs.';
+    return 'Try broader terms such as safety monitoring, object detection, BIM, point cloud, or education.';
+  }
+
+  function accountAiMediaHtml(resource){
+    if (!resource.media) return `<span>${esc(resourceInitial(resource.title, resource.type))}</span>`;
+    return `<img src="${esc(resource.media)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';this.classList.add('is-fallback');">`;
+  }
+
+  function accountAiResourceCardsHtml(results, query, visibleLimit = AI_INITIAL_RESULT_LIMIT, includeMore = true){
+    const rows = Array.isArray(results) ? results : [];
+    if (!rows.length) return empty('No matching resources yet', aiEmptyText(query));
+    const visible = visibleAiResults(rows, visibleLimit);
+    return visible.map(resource => `
       <article class="oc-library-card oc-ai-result-card">
         <div class="oc-library-card-media">
-          ${resource.media ? `<img src="${esc(resource.media)}" alt="">` : `<span>${esc(resourceInitial(resource.title, resource.type))}</span>`}
+          ${accountAiMediaHtml(resource)}
         </div>
         <div class="oc-library-card-body">
           <div class="oc-library-card-top">
@@ -1519,6 +1631,51 @@
           </div>
         </div>
       </article>
+    `).join('') + (includeMore && rows.length > visible.length ? `
+      <div class="oc-ai-show-more-row">
+        <button type="button" class="oc-text-action oc-ai-show-more" data-ai-show-more>
+          Show more resources (${Math.min(rows.length, AI_EXPANDED_RESULT_LIMIT) - visible.length} more)
+        </button>
+      </div>
+    ` : '');
+  }
+
+  function accountAiResultToolsHtml(results, query, visibleLimit = AI_INITIAL_RESULT_LIMIT){
+    const rows = Array.isArray(results) ? results : [];
+    const counts = rows.reduce((acc, resource) => {
+      const label = resource.label || typeLabel(resource.type || 'resource');
+      acc[label] = (acc[label] || 0) + 1;
+      return acc;
+    }, {});
+    const countChips = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([label, count]) => `<span>${esc(label)} ${count}</span>`)
+      .join('');
+    return `
+      <div class="oc-ai-results-heading-main">
+        <span>Current resources</span>
+        <small>${esc(aiVisibleSummary(rows, visibleLimit))}</small>
+      </div>
+      <div class="oc-ai-result-tools">
+        <div class="oc-ai-type-counts">${countChips || '<span>No matches</span>'}</div>
+        <a class="oc-text-action" href="${esc(normalSearchHref(query))}">Open normal search</a>
+      </div>
+    `;
+  }
+
+  function previousAiRoundsHtml(rounds){
+    const previous = (Array.isArray(rounds) ? rounds : []).filter(round => round.changed !== false && Array.isArray(round.resources) && round.resources.length);
+    if (!previous.length) return '';
+    return previous.slice().reverse().map(round => `
+      <details class="oc-ai-previous-round">
+        <summary>
+          <span>Previous search: ${esc(aiRoundTitle(round.query || 'Search'))}</span>
+          <small>${round.resources.length} resource${round.resources.length === 1 ? '' : 's'}</small>
+        </summary>
+        <div class="oc-library-grid oc-ai-previous-grid">
+          ${accountAiResourceCardsHtml(round.resources, round.query || '', Math.min(4, AI_INITIAL_RESULT_LIMIT), false)}
+        </div>
+      </details>
     `).join('');
   }
 
@@ -2617,11 +2774,12 @@
       </section>
     `;
 
-    function renderAnonymousResults(query, answer, results){
+    function renderAnonymousResults(query, answer, results, visibleLimit = AI_INITIAL_RESULT_LIMIT){
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
       const resultsShell = document.querySelector('.oc-ai-results-shell');
+      const heading = document.querySelector('.oc-ai-results-heading');
       if (!output || !threadEl || !resultsEl) return;
       document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
       if (resultsShell) resultsShell.hidden = false;
@@ -2635,7 +2793,11 @@
           <p>${esc(message.text || '')}</p>
         </div>
       `).join('');
-      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '');
+      if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
+      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
+      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', () => {
+        renderAnonymousResults(query, answer, results, AI_EXPANDED_RESULT_LIMIT);
+      });
       window.OCBookmark?.mount?.(resultsEl);
     }
 
@@ -2688,7 +2850,7 @@
           recordAiUsage(null);
           answer = gemini.answer;
           if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
+            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_EXPANDED_RESULT_LIMIT);
           }
         } else {
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
@@ -2696,6 +2858,9 @@
       } catch (err) {
         console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
         answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+      }
+      if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
+        answer = `${answer}\n\n${aiVisibleSummary(results)}`;
       }
       renderAnonymousResults(clean, answer, results);
     }
@@ -2857,14 +3022,12 @@
         </nav>
         <div class="oc-sidebar-sessions">
           <div class="oc-sidebar-sessions-head">
-            <span>Sessions</span>
+            <span>Search sessions</span>
             <button type="button" data-new-ai-session aria-label="New session" title="New session">${workspaceIcon('plus')}</button>
           </div>
           <div id="accountAiSessions"></div>
         </div>
         <nav class="oc-workspace-nav oc-workspace-nav-secondary" aria-label="Workspace utilities">
-          <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#reportIssueModal" aria-label="Report issue" title="Report issue">${workspaceIcon('report')}<span>Report</span></button>
-          <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#suggestResourceModal" aria-label="Submit resource" title="Submit resource">${workspaceIcon('upload')}<span>Submit</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
         </nav>
       </aside>
@@ -3009,6 +3172,10 @@
               <div>
                 <h3 class="h4 fw-bold mb-1">Activity</h3>
               </div>
+              <div class="oc-activity-actions">
+                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">${workspaceIcon('upload')}<span>Submit resource</span></button>
+                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Report issue</span></button>
+              </div>
             </div>
             <div id="issueReportsDashboard">
               ${workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady)}
@@ -3039,11 +3206,12 @@
       accountDataExport.issue_reports = issueReports;
     }
 
-    function renderAccountAiResults(query, answer, results, messages = []){
+    function renderAccountAiResults(query, answer, results, messages = [], previousRounds = [], visibleLimit = AI_INITIAL_RESULT_LIMIT){
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
       const resultsShell = document.querySelector('.oc-ai-results-shell');
+      const heading = document.querySelector('.oc-ai-results-heading');
       if (!output || !threadEl || !resultsEl) return;
       document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
       if (resultsShell) resultsShell.hidden = false;
@@ -3062,7 +3230,11 @@
           <p>${esc(message.text || '')}</p>
         </div>
       `).join('');
-      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '');
+      if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
+      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit) + previousAiRoundsHtml(previousRounds);
+      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', () => {
+        renderAccountAiResults(query, answer, results, messages, previousRounds, AI_EXPANDED_RESULT_LIMIT);
+      });
       window.OCBookmark?.mount?.(resultsEl);
     }
 
@@ -3076,9 +3248,15 @@
       sessionList.innerHTML = currentAiChats.slice(0, 12).map(chat => {
         const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || '';
         const title = chat.title || firstUserMessage || 'Search session';
+        const rounds = aiResourceRounds(chat);
+        const latestResources = rounds.length ? rounds[rounds.length - 1].resources : (chat.resources || []);
+        const count = Array.isArray(latestResources) ? latestResources.length : 0;
         return `
           <div class="oc-sidebar-session${chat.id === activeId ? ' active' : ''}" data-sidebar-session="${esc(chat.id || '')}">
-            <button type="button" class="oc-sidebar-session-link" data-open-ai-chat="${esc(chat.id || '')}">${esc(title)}</button>
+            <button type="button" class="oc-sidebar-session-link" data-open-ai-chat="${esc(chat.id || '')}">
+              <span>${esc(title)}</span>
+              <small>${count} resource${count === 1 ? '' : 's'}</small>
+            </button>
             <div class="dropdown">
               <button type="button" class="oc-session-more" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Session options">...</button>
               <div class="dropdown-menu dropdown-menu-end">
@@ -3092,7 +3270,9 @@
         button.addEventListener('click', () => {
           const chat = currentAiChats.find(row => row.id === button.dataset.openAiChat);
           if (!chat) return;
-          const query = (chat.messages || []).find(message => message.role === 'user')?.text || '';
+          const rounds = aiResourceRounds(chat);
+          const currentRound = rounds.length ? rounds[rounds.length - 1] : null;
+          const query = currentRound?.query || (chat.messages || []).find(message => message.role === 'user')?.text || '';
           const answer = (chat.messages || []).filter(message => message.role !== 'user').slice(-1)[0]?.text || '';
           const input = document.querySelector('.oc-ask-form input[name="q"]');
           activeAccountChatId = chat.id || '';
@@ -3101,7 +3281,7 @@
             input.placeholder = 'Ask a follow-up';
           }
           document.querySelector('[data-workspace-tab="ask"]')?.click();
-          renderAccountAiResults(query, answer, chat.resources || [], chat.messages || []);
+          renderAccountAiResults(query, answer, currentRound?.resources || chat.resources || [], chat.messages || [], rounds.slice(0, -1));
           renderAccountAiSessions(chat.id);
         });
       });
@@ -3158,26 +3338,30 @@
         .filter(message => message.role === 'user')
         .map(message => message.text)
         .join(' ');
-      const searchText = existingChat ? `${contextText} ${clean}`.trim() : clean;
-      let results = existingChat?.resources?.length
-        ? refineAiResultsFromPrevious(existingChat.resources, clean)
+      const priorRounds = aiResourceRounds(existingChat);
+      const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
+      const previousResources = latestRound?.resources || existingChat?.resources || [];
+      const isRefinement = Boolean(previousResources.length && shouldRefineAiResults(clean));
+      const searchText = isRefinement ? clean : (existingChat ? clean : `${contextText} ${clean}`.trim());
+      let results = isRefinement
+        ? refineAiResultsFromPrevious(previousResources, clean)
         : [];
       if (!results.length) {
         results = selectAiCandidates(catalog, searchText);
       }
-      let answer = answerForAiQuery(clean, results, Boolean(catalog.length), Boolean(existingChat?.resources?.length));
+      let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
       const remainingAiSearches = aiUsageRemaining(user);
       if (!hasUnlimitedAiAccess && remainingAiSearches <= 0) {
         answer = `${normalSearchNotice('limit')}\n\n${answer}`;
       } else {
         try {
-          const geminiCandidates = existingChat?.resources?.length
-            ? (results.length ? results : existingChat.resources)
+          const geminiCandidates = isRefinement
+            ? (results.length ? results : previousResources)
             : candidatePoolForGemini(catalog, searchText, results);
           const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages);
           if (gemini?.limited) {
             answer = gemini.answer;
-            results = existingChat?.resources?.length ? existingChat.resources : results;
+            results = isRefinement ? previousResources : results;
           } else if (gemini?.answer) {
             if (!hasUnlimitedAiAccess) {
               recordAiUsage(user);
@@ -3185,7 +3369,7 @@
             }
             answer = gemini.answer;
             if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
+              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_EXPANDED_RESULT_LIMIT);
             } else {
               results = orderGeminiResultsAi(results, gemini.resourceHrefs);
             }
@@ -3197,7 +3381,21 @@
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
         }
       }
+      if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
+        answer = `${answer}\n\n${aiVisibleSummary(results)}`;
+      }
       const now = new Date().toISOString();
+      const resourceRounds = [
+        ...priorRounds,
+        {
+          query: clean,
+          answer,
+          resources: results,
+          created_at: now,
+          mode: isRefinement ? 'refine' : 'search',
+          changed: didAiResultsChange(previousResources, results)
+        }
+      ];
       let chat;
       if (existingChat) {
         chat = {
@@ -3208,7 +3406,8 @@
             { role: 'user', text: clean, created_at: now },
             { role: 'assistant', text: answer, created_at: now }
           ],
-          resources: results
+          resources: results,
+          resourceRounds
         };
         currentAiChats = writeAiChats(user, [chat, ...currentAiChats.filter(row => row.id !== chat.id)]);
       } else {
@@ -3221,13 +3420,14 @@
             { role: 'user', text: clean, created_at: now },
             { role: 'assistant', text: answer, created_at: now }
           ],
-          resources: results
+          resources: results,
+          resourceRounds
         };
         currentAiChats = writeAiChats(user, [chat, ...currentAiChats.filter(row => row.title !== chat.title || row.messages?.[0]?.text !== clean)]);
       }
       activeAccountChatId = chat.id;
       accountDataExport.search_sessions = currentAiChats;
-      renderAccountAiResults(clean, answer, results, chat.messages || []);
+      renderAccountAiResults(clean, answer, results, chat.messages || [], resourceRounds.slice(0, -1));
       renderAccountAiSessions(chat.id);
       const input = document.querySelector('.oc-ask-form input[name="q"]');
       if (input) {

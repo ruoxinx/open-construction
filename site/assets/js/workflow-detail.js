@@ -31,6 +31,14 @@ function resolveMediaUrl(url){
   return raw;
 }
 
+function mediaFallbackNote(label = 'Preview unavailable'){
+  return `<span class="media-fallback-note" data-media-fallback-note hidden>${escapeHtml(label)}</span>`;
+}
+
+function mediaImageErrorHandler(){
+  return "this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';this.classList.add('is-fallback');const n=this.closest('.media-wrap')?.querySelector('[data-media-fallback-note]');if(n)n.hidden=false;";
+}
+
 function normalizeList(val){
   if (!val && val !== 0) return [];
   if (Array.isArray(val)) return val.map(v => String(v).trim()).filter(Boolean);
@@ -107,7 +115,7 @@ function getMediaEmbed(item){
   if (image) {
     const href = safeHref(item.links?.source) || safeHref(video?.url) || safeHref(image.url);
     const imgSrc = resolveMediaUrl(image.url);
-    const imgTag = `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';">`;
+    const imgTag = `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(image.alt || item.title || 'Workflow image')}" loading="lazy" decoding="async" referrerpolicy="strict-origin-when-cross-origin" onerror="${mediaImageErrorHandler()}">${mediaFallbackNote()}`;
     return `<figure class="media-figure"><div class="media-wrap">${href ? `<a class="d-block h-100" href="${href}" target="_blank" rel="noopener">${imgTag}</a>` : imgTag}</div>${mediaCredit}</figure>`;
   }
 
@@ -126,7 +134,7 @@ function getMediaEmbed(item){
       return `<figure class="media-figure"><div class="media-wrap"><video src="${escapeHtml(resolveMediaUrl(video.url))}" controls playsinline preload="metadata"></video></div>${mediaCredit}</figure>`;
     }
     if (video.thumb) {
-      return `<figure class="media-figure"><div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(resolveMediaUrl(video.thumb))}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='../assets/img/placeholder/placeholder.png';"></a></div>${mediaCredit}</figure>`;
+      return `<figure class="media-figure"><div class="media-wrap"><a class="d-block h-100" href="${escapeHtml(video.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(resolveMediaUrl(video.thumb))}" alt="${escapeHtml(video.alt || item.title || 'Workflow video')}" loading="lazy" decoding="async" onerror="${mediaImageErrorHandler()}">${mediaFallbackNote()}</a></div>${mediaCredit}</figure>`;
     }
   }
 
@@ -294,8 +302,11 @@ async function initWorkflowDetail(){
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
         .media-figure{ margin:0; }
-        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px 14px 0 0; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); }
-        .media-wrap img,.media-wrap iframe{ width:100%; height:100%; object-fit:cover; border:0; display:block; }
+        .media-wrap{ width:100%; aspect-ratio:16 / 9; border-radius:14px 14px 0 0; overflow:hidden; background:#f3f6fa; border-bottom:1px solid var(--oc-border); position:relative; }
+        .media-wrap img{ width:100%; height:100%; object-fit:contain; object-position:center; border:0; display:block; background:#fff; }
+        .media-wrap iframe,.media-wrap video{ width:100%; height:100%; object-fit:cover; border:0; display:block; }
+        .media-wrap img.is-fallback{ padding:1.25rem; background:#f8fafc; }
+        .media-fallback-note{ position:absolute; left:50%; bottom:10px; transform:translateX(-50%); max-width:calc(100% - 24px); border:1px solid var(--oc-border); border-radius:999px; background:rgba(255,255,255,.94); color:var(--oc-sub); font-size:.76rem; font-weight:800; padding:.16rem .55rem; text-align:center; white-space:nowrap; z-index:4; }
         .media-wrap.placeholder{ display:flex; align-items:center; justify-content:center; }
         .media-credit{ padding:.55rem 1rem; color:var(--oc-sub); font-size:.82rem; line-height:1.35; text-align:center; border-bottom:1px solid var(--oc-border); }
         .placeholder-copy{ color:var(--oc-sub); font-weight:600; }

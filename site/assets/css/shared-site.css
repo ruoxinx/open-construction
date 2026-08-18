@@ -1067,6 +1067,24 @@ header.hero p{
   color:var(--oc-ink);
 }
 
+.oc-sidebar-session-link span,
+.oc-sidebar-session-link small{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.oc-sidebar-session-link small{
+  color:var(--oc-sub);
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:0;
+  margin:.12rem 0 0;
+  padding:0;
+  text-transform:none;
+}
+
 .oc-session-more{
   width:24px;
   height:24px;
@@ -1311,15 +1329,151 @@ header.hero p{
 
 .oc-ai-results-heading{
   color:#5b6675;
+  display:grid;
+  gap:.45rem;
+  font-size:.84rem;
+  font-weight:700;
+  letter-spacing:0;
+  line-height:1.25;
+  text-transform:none;
+}
+
+.oc-ai-results-heading-main{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:.75rem;
+  flex-wrap:wrap;
+}
+
+.oc-ai-results-heading-main > span{
+  color:var(--oc-ink);
+  font-size:.9rem;
+  font-weight:800;
+}
+
+.oc-ai-results-heading-main small{
+  color:var(--oc-sub);
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.oc-ai-result-tools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.65rem;
+  flex-wrap:wrap;
+}
+
+.oc-ai-type-counts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+}
+
+.oc-ai-type-counts span{
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  border:1px solid var(--oc-border);
+  border-radius:999px;
+  background:#f8fafc;
+  color:#475569;
   font-size:.74rem;
   font-weight:800;
-  letter-spacing:.08em;
-  line-height:1;
-  text-transform:uppercase;
+  padding:.12rem .5rem;
+}
+
+.oc-ai-show-more-row,
+.oc-ai-previous-round{
+  grid-column:1 / -1;
+}
+
+.oc-ai-show-more-row{
+  display:flex;
+  justify-content:center;
+  padding:.35rem 0 0;
+}
+
+.oc-ai-show-more{
+  min-height:34px;
+  padding:.25rem .7rem;
+}
+
+.oc-ai-previous-round{
+  border:1px solid var(--oc-border);
+  border-radius:8px;
+  background:#f8fafc;
+  padding:.15rem .75rem .75rem;
+}
+
+.oc-ai-previous-round summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.75rem;
+  color:var(--oc-text);
+  cursor:pointer;
+  font-size:.86rem;
+  font-weight:800;
+  list-style:none;
+  padding:.65rem 0 .2rem;
+}
+
+.oc-ai-previous-round summary::-webkit-details-marker{
+  display:none;
+}
+
+.oc-ai-previous-round summary::before{
+  content:"+";
+  width:20px;
+  height:20px;
+  display:inline-grid;
+  place-items:center;
+  border:1px solid #d7e0ea;
+  border-radius:999px;
+  color:var(--oc-sub);
+  flex:0 0 auto;
+  font-weight:900;
+}
+
+.oc-ai-previous-round[open] summary::before{
+  content:"-";
+}
+
+.oc-ai-previous-round summary span{
+  flex:1 1 auto;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.oc-ai-previous-round summary small{
+  color:var(--oc-sub);
+  flex:0 0 auto;
+  font-size:.76rem;
+  font-weight:700;
+}
+
+.oc-ai-previous-grid{
+  margin-top:.65rem;
 }
 
 .oc-ai-result-card{
   min-height:340px;
+}
+
+.oc-ai-result-card .oc-library-card-media img{
+  object-fit:contain;
+  object-position:center;
+  background:#fff;
+}
+
+.oc-ai-result-card .oc-library-card-media img.is-fallback{
+  padding:1rem;
+  background:#f8fafc;
 }
 
 .oc-ai-result-reason{
@@ -1327,6 +1481,35 @@ header.hero p{
   font-size:.82rem;
   line-height:1.35;
   margin:0;
+}
+
+.oc-activity-actions{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:.5rem;
+  flex-wrap:wrap;
+}
+
+.oc-activity-actions .oc-text-action{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  min-height:34px;
+  border:1px solid var(--oc-border);
+  border-radius:6px;
+  background:#fff;
+  padding:.25rem .65rem;
+}
+
+.oc-activity-actions svg{
+  width:16px;
+  height:16px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
 .oc-account-settings-workspace{
@@ -2505,6 +2688,10 @@ header.hero p{
     justify-content:flex-start;
   }
 
+  .oc-activity-actions{
+    justify-content:flex-start;
+  }
+
   .oc-inline-form,
   .oc-note-grid,
   .oc-ask-form,
@@ -2522,6 +2709,11 @@ header.hero p{
 
   .oc-resource-select-row{
     grid-template-columns:1fr;
+  }
+
+  .oc-ai-result-tools{
+    align-items:flex-start;
+    flex-direction:column;
   }
 
   .issue-btn{
