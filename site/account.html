@@ -478,17 +478,6 @@
     return 'AI enhancement is unavailable right now, so I am showing normal catalog search results. Normal search remains unlimited.';
   }
 
-  function normalSearchHref(query){
-    const clean = String(query || '').trim();
-    const q = encodeURIComponent(clean);
-    const suffix = q ? `?q=${q}` : '';
-    const text = clean.toLowerCase();
-    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `models.html${suffix}`;
-    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `deployments.html${suffix}`;
-    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `oer.html${suffix}`;
-    return `dataset.html${suffix}`;
-  }
-
   function updateAiUsageUi(user){
     const remaining = document.getElementById('aiSearchesRemaining');
     if (remaining) remaining.textContent = String(aiUsageRemaining(user));
@@ -1036,7 +1025,8 @@
   }
 
   const AI_INITIAL_RESULT_LIMIT = 12;
-  const AI_EXPANDED_RESULT_LIMIT = 24;
+  const AI_RESULT_INCREMENT = 12;
+  const AI_MAX_RESULT_LIMIT = 80;
 
   function visibleAiResults(results, limit = AI_INITIAL_RESULT_LIMIT){
     return (Array.isArray(results) ? results : []).slice(0, limit);
@@ -1064,9 +1054,29 @@
 
   function shouldRefineAiResults(query){
     const clean = String(query || '');
-    if (/\b(only|filter|refine|narrow|current results?|previous results?|within these|compare|largest|biggest|smallest|most|downloadable|has code|has data)\b/i.test(clean)) return true;
+    if (/\b(only|filter|refine|narrow|current results?|previous results?|within these|compare|largest|biggest|smallest|most|downloadable|has code|has data|license|licence|cc\s*[- ]?\s*by|creative commons|noncommercial|non-commercial)\b/i.test(clean)) return true;
     if (/\b(with|without)\s+(code|github|repo|repository|data|download|source)\b/i.test(clean)) return true;
+    if (/\bcc\s*[- ]?\s*by(?:\s*[- ]?\s*n[ac])?\b/i.test(clean)) return true;
     return isTypeOnlyAiQuery(clean);
+  }
+
+  function normalizeAiLicense(value){
+    return normalizeAiText(value)
+      .replace(/\bnac\b/g, 'nc')
+      .replace(/\bnon commercial\b/g, 'noncommercial')
+      .replace(/\bcc by nc\b/g, 'cc by nc')
+      .trim();
+  }
+
+  function requestedAiLicenseTerms(query){
+    const text = normalizeAiLicense(query);
+    const terms = new Set();
+    if (/\bcc\s*by\s*nc\b|\bcc\s*by\s*nac\b|\bby\s*nc\b|\bnoncommercial\b|\bnon commercial\b/.test(text)) {
+      ['cc by nc', 'cc-by-nc', 'cc by-nc', 'noncommercial', 'non commercial'].forEach(term => terms.add(term));
+    } else if (/\bcc\s*by\b|\bcreative commons attribution\b/.test(text)) {
+      ['cc by', 'cc-by', 'creative commons'].forEach(term => terms.add(term));
+    }
+    return Array.from(terms);
   }
 
   function aiRoundTitle(query){
@@ -1183,7 +1193,7 @@
         media: commonMedia,
         meta,
         summary: firstSentenceAi(item.abstract || item.description || item.summary || ''),
-        haystack: normalizeAiText([title, meta, item.abstract, item.description, item.authors, item.paper_title, tasks.join(' '), modalities.join(' '), listAi(item.applications || item.application).join(' ')].join(' '))
+        haystack: normalizeAiText([title, meta, item.abstract, item.description, item.authors, item.paper_title, item.license, tasks.join(' '), modalities.join(' '), listAi(item.applications || item.application).join(' ')].join(' '))
       };
     }
     if (kind === 'workflow') {
@@ -1199,7 +1209,7 @@
         media: commonMedia,
         meta,
         summary: firstSentenceAi(item.summary || item.description || ''),
-        haystack: normalizeAiText([titleValue, meta, item.summary, item.description, item.provider, listAi(item.applications).join(' '), listAi(item.stakeholders).join(' ')].join(' '))
+        haystack: normalizeAiText([titleValue, meta, item.summary, item.description, item.provider, item.license, listAi(item.applications).join(' '), listAi(item.stakeholders).join(' ')].join(' '))
       };
     }
     const topics = listAi(item.topics || item.topic || item.keywords || item.tags);
@@ -1391,6 +1401,10 @@
       slides: ['presentation', 'lecture', 'teaching'],
       oer: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
       oers: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
+      license: ['licence', 'rights', 'reuse', 'creative commons', 'cc by', 'cc by nc'],
+      licence: ['license', 'rights', 'reuse', 'creative commons', 'cc by', 'cc by nc'],
+      nc: ['noncommercial', 'non commercial', 'cc by nc'],
+      nac: ['nc', 'noncommercial', 'cc by nc'],
       labs: ['lab', 'interactive', 'code', 'notebook'],
       lab: ['labs', 'interactive', 'code', 'notebook'],
       reuse: ['responsible', 'license', 'open data', 'data ethics'],
@@ -1425,6 +1439,8 @@
       [/\bopen educational resources?\b|\boers?\b/, ['open educational resource', 'education', 'teaching', 'course', 'tutorial']],
       [/\bwith code\b|\bgithub\b|\brepositor(?:y|ies)\b/, ['code', 'github', 'repository', 'repo', 'source code']],
       [/\bwith data\b|\bdownload(?:able)?\b|\bdata source\b/, ['data', 'download', 'source', 'url']],
+      [/\bcc\s*[- ]?\s*by\s*[- ]?\s*n[ac]\b|\bnon[- ]?commercial\b/, ['cc by nc', 'cc-by-nc', 'noncommercial', 'non commercial']],
+      [/\bcc\s*[- ]?\s*by\b|\bcreative commons\b/, ['cc by', 'cc-by', 'creative commons', 'license']],
       [/\bopen data\b|\bresponsible reuse\b|\bdata reuse\b/, ['open data', 'responsible reuse', 'license', 'data ethics']],
       [/\bsmart construction\b|\bconstruction technolog(?:y|ies)\b/, ['smart construction', 'construction technology']],
       [/\binteractive labs?\b|\bcode labs?\b/, ['interactive labs', 'interactive', 'code', 'lab']],
@@ -1484,13 +1500,20 @@
 
   function scoreAiResource(resource, query){
     const terms = expandedAiTerms(query);
+    const licenseTerms = requestedAiLicenseTerms(query);
     const intent = aiTypeIntent(query);
     const requestedTypes = intent.types;
     let score = 0;
     const title = normalizeAiText(resource.title);
     const meta = normalizeAiText(resource.meta);
+    const haystack = normalizeAiLicense(resource.haystack);
     if (requestedTypes.includes(resource.type)) score += intent.explicit ? 26 : 18;
     if (requestedTypes.length && !requestedTypes.includes(resource.type)) score -= intent.explicit ? 40 : 16;
+    if (licenseTerms.length) {
+      const licenseMatched = licenseTerms.some(term => haystack.includes(normalizeAiLicense(term)));
+      if (licenseMatched) score += 18;
+      else score -= 18;
+    }
     terms.forEach(term => {
       const specific = term.length >= 4 || term.includes(' ');
       if (containsAiTerm(title, term)) score += specific ? 8 : 4;
@@ -1502,7 +1525,7 @@
     return score;
   }
 
-  function selectAiCandidates(catalog, query, limit = AI_EXPANDED_RESULT_LIMIT){
+  function selectAiCandidates(catalog, query, limit = AI_MAX_RESULT_LIMIT){
     const intent = aiTypeIntent(query);
     const requestedTypes = intent.types;
     const scored = (Array.isArray(catalog) ? catalog : [])
@@ -1542,6 +1565,7 @@
     const clean = String(query || '');
     const wantsOnly = /\bonly\b|\bfilter\b|\bshow\b/i.test(clean);
     const typeMatches = aiTypeMatches(clean);
+    const licenseTerms = requestedAiLicenseTerms(clean);
     if ((wantsOnly || typeMatches.length) && typeMatches.length) {
       const filtered = rows.filter(resource => typeMatches.includes(resource.type));
       if (filtered.length) rows = filtered;
@@ -1554,6 +1578,13 @@
       const filtered = rows.filter(resource => resource.dataUrl);
       if (filtered.length) rows = filtered;
     }
+    if (licenseTerms.length) {
+      rows = rows.filter(resource => {
+        const haystack = normalizeAiLicense(resource.haystack);
+        return licenseTerms.some(term => haystack.includes(normalizeAiLicense(term)));
+      });
+      if (!rows.length) return [];
+    }
     const scored = rows
       .map(resource => ({
         ...resource,
@@ -1565,7 +1596,7 @@
         return b.score - a.score || a.title.localeCompare(b.title);
       });
     const hasSpecificScore = scored.some(resource => resource.score > 0);
-    return (hasSpecificScore ? scored.filter(resource => resource.score > 0 || wantsOnly) : scored).slice(0, AI_EXPANDED_RESULT_LIMIT);
+    return (hasSpecificScore ? scored.filter(resource => resource.score > 0 || wantsOnly || licenseTerms.length) : scored).slice(0, AI_MAX_RESULT_LIMIT);
   }
 
   function reasonForAiResource(resource, query){
@@ -1633,8 +1664,8 @@
       </article>
     `).join('') + (includeMore && rows.length > visible.length ? `
       <div class="oc-ai-show-more-row">
-        <button type="button" class="oc-text-action oc-ai-show-more" data-ai-show-more>
-          Show more resources (${Math.min(rows.length, AI_EXPANDED_RESULT_LIMIT) - visible.length} more)
+        <button type="button" class="oc-text-action oc-ai-show-more" data-ai-show-more data-next-visible="${Math.min(rows.length, visible.length + AI_RESULT_INCREMENT)}">
+          Show more resources (${Math.min(AI_RESULT_INCREMENT, rows.length - visible.length)} more)
         </button>
       </div>
     ` : '');
@@ -1658,7 +1689,6 @@
       </div>
       <div class="oc-ai-result-tools">
         <div class="oc-ai-type-counts">${countChips || '<span>No matches</span>'}</div>
-        <a class="oc-text-action" href="${esc(normalSearchHref(query))}">Open normal search</a>
       </div>
     `;
   }
@@ -1673,7 +1703,7 @@
           <small>${round.resources.length} resource${round.resources.length === 1 ? '' : 's'}</small>
         </summary>
         <div class="oc-library-grid oc-ai-previous-grid">
-          ${accountAiResourceCardsHtml(round.resources, round.query || '', Math.min(4, AI_INITIAL_RESULT_LIMIT), false)}
+          ${accountAiResourceCardsHtml(round.resources, round.query || '', round.resources.length, false)}
         </div>
       </details>
     `).join('');
@@ -2795,8 +2825,9 @@
       `).join('');
       if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
       resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
-      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', () => {
-        renderAnonymousResults(query, answer, results, AI_EXPANDED_RESULT_LIMIT);
+      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', event => {
+        const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
+        renderAnonymousResults(query, answer, results, nextVisible);
       });
       window.OCBookmark?.mount?.(resultsEl);
     }
@@ -2850,7 +2881,7 @@
           recordAiUsage(null);
           answer = gemini.answer;
           if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_EXPANDED_RESULT_LIMIT);
+            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_MAX_RESULT_LIMIT);
           }
         } else {
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
@@ -3019,6 +3050,7 @@
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="library" aria-selected="false" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="reports" aria-selected="false" aria-label="Activity" title="Activity">${workspaceIcon('activity')}<span>Activity</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
         </nav>
         <div class="oc-sidebar-sessions">
           <div class="oc-sidebar-sessions-head">
@@ -3027,9 +3059,6 @@
           </div>
           <div id="accountAiSessions"></div>
         </div>
-        <nav class="oc-workspace-nav oc-workspace-nav-secondary" aria-label="Workspace utilities">
-          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
-        </nav>
       </aside>
 
       <section class="oc-workspace-main">
@@ -3231,9 +3260,10 @@
         </div>
       `).join('');
       if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
-      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit) + previousAiRoundsHtml(previousRounds);
-      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', () => {
-        renderAccountAiResults(query, answer, results, messages, previousRounds, AI_EXPANDED_RESULT_LIMIT);
+      resultsEl.innerHTML = previousAiRoundsHtml(previousRounds) + accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
+      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', event => {
+        const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
+        renderAccountAiResults(query, answer, results, messages, previousRounds, nextVisible);
       });
       window.OCBookmark?.mount?.(resultsEl);
     }
@@ -3346,14 +3376,14 @@
       let results = isRefinement
         ? refineAiResultsFromPrevious(previousResources, clean)
         : [];
-      if (!results.length) {
+      if (!results.length && !isRefinement) {
         results = selectAiCandidates(catalog, searchText);
       }
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
       const remainingAiSearches = aiUsageRemaining(user);
       if (!hasUnlimitedAiAccess && remainingAiSearches <= 0) {
         answer = `${normalSearchNotice('limit')}\n\n${answer}`;
-      } else {
+      } else if (results.length || !isRefinement) {
         try {
           const geminiCandidates = isRefinement
             ? (results.length ? results : previousResources)
@@ -3369,7 +3399,7 @@
             }
             answer = gemini.answer;
             if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_EXPANDED_RESULT_LIMIT);
+              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, AI_MAX_RESULT_LIMIT);
             } else {
               results = orderGeminiResultsAi(results, gemini.resourceHrefs);
             }

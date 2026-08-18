@@ -934,36 +934,6 @@ header.hero p{
   font-weight:700;
 }
 
-.oc-workspace-nav-secondary{
-  border-top:1px solid var(--oc-border);
-  gap:.22rem;
-  padding-top:.45rem;
-}
-
-.oc-workspace-nav-secondary button,
-.oc-workspace-nav-secondary a{
-  min-height:30px;
-  gap:.42rem;
-  border-radius:5px;
-  color:#6b7682;
-  font-size:.78rem;
-  font-weight:650;
-  padding:.25rem .42rem;
-}
-
-.oc-workspace-nav-secondary svg{
-  width:15px;
-  height:15px;
-  stroke-width:1.85;
-}
-
-.oc-workspace-nav-secondary button:hover,
-.oc-workspace-nav-secondary a:hover,
-.oc-workspace-nav-secondary a:focus{
-  background:#f7f8fa;
-  color:var(--oc-ink);
-}
-
 .oc-sidebar-sessions{
   display:grid;
   align-content:start;
