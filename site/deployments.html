@@ -181,7 +181,12 @@
     </a>
 
     <form class="navbar-search ms-3" role="search" onsubmit="return false;">
-      <input id="qDock" type="text" class="form-control oc-search" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
+      <div class="oc-catalog-search-wrap">
+        <input id="qDock" type="text" class="form-control oc-search" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
+        <button type="submit" class="oc-search-arrow" aria-label="Search workflows">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+        </button>
+      </div>
     </form>
 
     <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
@@ -242,7 +247,12 @@
     <h1 class="display-6 fw-bold">OpenConstruction Workflow Catalog</h1>
     <p class="lead">Explore <span class="hl">practical AI workflows</span> across the AEC lifecycle</p>
     <div id="searchDock" class="mt-3">
-      <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
+      <div class="oc-catalog-search-wrap">
+        <input id="q" type="text" class="form-control form-control-lg search-input" placeholder="Search workflows, applications, stakeholders …" aria-label="Search workflows">
+        <button type="button" class="oc-search-arrow" aria-label="Search workflows">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+        </button>
+      </div>
     </div>
   </div>
 </header>
@@ -403,6 +413,14 @@ function workflowImageErrorHandler(){
   return "this.onerror=null;this.src='assets/img/placeholder/placeholder.png';this.classList.add('is-fallback');const n=this.closest('.thumb-link')?.querySelector('[data-media-fallback-note]');if(n)n.hidden=false;";
 }
 
+function workflowFallbackMedia(u){
+  const providerText = [u.provider, u.links?.source, ...(Array.isArray(u.organizations) ? u.organizations : [])].join(' ').toLowerCase();
+  if (providerText.includes('wakecap')) {
+    return [{ type:'image', url:'assets/img/use-cases/wakecap.png', alt:'Aramco construction site' }];
+  }
+  return [];
+}
+
 const BRAND_URLS = {
   "OpenSpace":"https://www.openspace.ai/","Buildots":"https://buildots.com/","Doxel":"https://doxel.ai/",
   "Autodesk Construction Cloud":"https://construction.autodesk.com/","Autodesk":"https://www.autodesk.com/",
@@ -446,7 +464,7 @@ function vimeoId(u){
 }
 
 function chooseMediaBlock(u){
-  const media = Array.isArray(u.media) ? u.media : [];
+  const media = Array.isArray(u.media) && u.media.length ? u.media : workflowFallbackMedia(u);
   const img = media.find(m => m && String(m.type).toLowerCase()==='image' && m.url);
   const vid = media.find(m => m && String(m.type).toLowerCase()==='video' && m.url);
 

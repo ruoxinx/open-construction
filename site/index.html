@@ -316,6 +316,34 @@
       width:100%;
     }
     .hero-search-input:focus{ outline:none; }
+    .hero-search-field .oc-search-arrow{
+      width:44px;
+      min-height:44px;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      border:0;
+      border-radius:10px;
+      background:transparent;
+      color:#3f3f46;
+      padding:0;
+      transition:background-color .18s ease, color .18s ease, transform .18s ease;
+    }
+    .hero-search-field .oc-search-arrow svg{
+      width:21px;
+      height:21px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .hero-search-field .oc-search-arrow:hover,
+    .hero-search-field .oc-search-arrow:focus{
+      background:#eef6ff;
+      color:#1f4f82;
+      transform:translateY(-1px);
+    }
     .hero-search-results{
       margin-top:.75rem;
       border:1px solid var(--oc-border);
@@ -1252,6 +1280,9 @@
           calc(100% - 10px) calc(50% - 2px),
           calc(100% - 4px) calc(50% - 2px);
       }
+      .hero-search-input{
+        flex:1 1 auto;
+      }
       .hero-search-results{ left:0; right:0; }
       .metrics{ gap:.65rem; }
       .metric{ gap:.7rem; min-width:min(100%, 280px); padding:.35rem .2rem; }
@@ -1523,6 +1554,9 @@
               placeholder="Search resources, authors, titles, or keywords ..."
               aria-label="Search the catalog"
               autocomplete="off">
+            <button type="submit" class="oc-search-arrow" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+            </button>
           </div>
         </form>
         <div class="hero-search-results" id="homeSearchResults" hidden aria-live="polite"></div>
@@ -2172,6 +2206,21 @@
       searchInput.addEventListener('focus', () => {
         if (searchInput.value.trim()) runSearch();
       });
+      const params = new URLSearchParams(window.location.search);
+      const initialQuery = params.get('q') || '';
+      const initialScope = params.get('scope') || '';
+      if (initialScope && Array.from(searchScopeSelect.options).some(option => option.value === initialScope)) {
+        searchScopeSelect.value = initialScope;
+      }
+      if (initialQuery) {
+        searchInput.value = initialQuery;
+        runSearch();
+        searchInput.focus({ preventScroll: true });
+        searchForm.scrollIntoView({ block: 'center' });
+      } else if (initialScope || window.location.hash === '#homeSearchInput') {
+        searchInput.focus({ preventScroll: true });
+        searchForm.scrollIntoView({ block: 'center' });
+      }
     }
 
     function pickItems(datasetsJson, modelsJson, usecasesJson, oersJson){

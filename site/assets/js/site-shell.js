@@ -470,12 +470,18 @@
   }
 
   function normalSearchHref(query){
-    const q = encodeURIComponent(String(query || '').trim());
     const text = String(query || '').toLowerCase();
-    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `${pagePrefix()}models.html?q=${q}`;
-    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `${pagePrefix()}deployments.html?q=${q}`;
-    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `${pagePrefix()}oer.html?q=${q}`;
-    return `${pagePrefix()}dataset.html?q=${q}`;
+    const scope = /\b(models?|checkpoints?|architectures?|scan-to-bim|point clouds?)\b/.test(text)
+      ? 'model'
+      : /\b(workflows?|deployments?|use cases?|pipelines?|progress tracking|monitoring)\b/.test(text)
+        ? 'workflow'
+        : /\b(oers?|courses?|teaching|education|tutorials?|labs?)\b/.test(text)
+          ? 'oer'
+          : 'dataset';
+    const params = new URLSearchParams();
+    params.set('scope', scope);
+    const suffix = params.toString();
+    return `${pagePrefix()}index.html${suffix ? `?${suffix}` : ''}#homeSearchInput`;
   }
 
   function mountAiAssistant(){
@@ -584,11 +590,26 @@
     setFooterYear();
   }
 
+  function bindSearchArrowActions(){
+    if (document.body.dataset.ocSearchArrowsBound === 'true') return;
+    document.body.dataset.ocSearchArrowsBound = 'true';
+    document.addEventListener('click', event => {
+      const button = event.target.closest?.('.oc-search-arrow');
+      if (!button) return;
+      const shell = button.closest('.oc-catalog-search-wrap, .hero-search-field');
+      const input = shell?.querySelector('input[type="search"], input[type="text"]');
+      if (!input) return;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus({ preventScroll: true });
+    });
+  }
+
   function init(){
     setFooterYear();
     applyActiveNav();
     injectFooterFundingStyles();
     mountAiAssistant();
+    bindSearchArrowActions();
     normalizeFooter();
   }
 

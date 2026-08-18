@@ -106,8 +106,16 @@ function vimeoId(urlValue){
   return null;
 }
 
+function fallbackWorkflowMedia(item){
+  const providerText = [item.provider, item.links?.source, ...normalizeList(item.organizations)].join(' ').toLowerCase();
+  if (providerText.includes('wakecap')) {
+    return [{ type: 'image', url: 'assets/img/use-cases/wakecap.png', alt: 'Aramco construction site' }];
+  }
+  return [];
+}
+
 function getMediaEmbed(item){
-  const media = Array.isArray(item.media) ? item.media : [];
+  const media = Array.isArray(item.media) && item.media.length ? item.media : fallbackWorkflowMedia(item);
   const image = media.find(m => m && String(m.type || '').toLowerCase() === 'image' && m.url);
   const video = media.find(m => m && String(m.type || '').toLowerCase() === 'video' && m.url);
   const mediaCredit = '<div class="media-credit">Media from public websites are &copy; their respective creators unless otherwise noted.</div>';

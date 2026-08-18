@@ -420,7 +420,7 @@
     if (!key) return [];
     const rows = (Array.isArray(chats) ? chats : [])
       .slice()
-      .sort((a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
+      .sort((a, b) => Number(Boolean(b.pinned)) - Number(Boolean(a.pinned)) || String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
       .slice(0, 25);
     try {
       localStorage.setItem(key, JSON.stringify(rows));
@@ -476,6 +476,72 @@
       return 'AI-enhanced search limit reached, so I am showing normal catalog search results. Normal search remains available.';
     }
     return 'AI enhancement is unavailable right now, so I am showing normal catalog search results. Normal search remains unlimited.';
+  }
+
+  function normalSearchHrefAi(query){
+    const text = String(query || '').toLowerCase();
+    const scope = /\b(models?|checkpoints?|architectures?|scan-to-bim|point clouds?)\b/.test(text)
+      ? 'model'
+      : /\b(workflows?|deployments?|use cases?|pipelines?|progress tracking|monitoring)\b/.test(text)
+        ? 'workflow'
+        : /\b(oers?|courses?|teaching|education|tutorials?|labs?)\b/.test(text)
+          ? 'oer'
+          : 'dataset';
+    const params = new URLSearchParams();
+    params.set('scope', scope);
+    const suffix = params.toString();
+    return `index.html${suffix ? `?${suffix}` : ''}#homeSearchInput`;
+  }
+
+  function setAskFormBusy(form, busy){
+    if (!form) return;
+    form.dataset.busy = busy ? 'true' : 'false';
+    const field = form.querySelector('[name="q"]');
+    const submit = form.querySelector('button[type="submit"]');
+    if (field) field.disabled = Boolean(busy);
+    if (submit) {
+      submit.disabled = Boolean(busy) || !String(field?.value || '').trim();
+      submit.setAttribute('aria-busy', busy ? 'true' : 'false');
+    }
+  }
+
+  function syncAskFormState(form){
+    if (!form || form.dataset.busy === 'true') return;
+    const field = form.querySelector('[name="q"]');
+    const submit = form.querySelector('button[type="submit"]');
+    if (submit) submit.disabled = !String(field?.value || '').trim();
+  }
+
+  function resetAskField(form, placeholder = 'Ask a follow-up'){
+    const field = form?.querySelector('[name="q"]');
+    if (!field) return;
+    field.value = '';
+    field.placeholder = placeholder;
+    autoSizeAskField(field);
+    syncAskFormState(form);
+  }
+
+  function autoSizeAskField(field){
+    if (!field || field.tagName !== 'TEXTAREA') return;
+    field.style.height = 'auto';
+    field.style.height = `${Math.min(field.scrollHeight, 150)}px`;
+  }
+
+  function bindAskFieldAutosize(rootEl = document){
+    rootEl.querySelectorAll('.oc-ask-form textarea[name="q"]').forEach(field => {
+      autoSizeAskField(field);
+      syncAskFormState(field.form);
+      field.addEventListener('input', () => {
+        autoSizeAskField(field);
+        syncAskFormState(field.form);
+      });
+      field.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          field.form?.requestSubmit();
+        }
+      });
+    });
   }
 
   function updateAiUsageUi(user){
@@ -1153,6 +1219,8 @@
     const direct = urlFromAi(item, ['image', 'image_url', 'image_path', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
     if (direct) return direct;
     const media = Array.isArray(item?.media) ? item.media : [];
+    const mediaUrl = media.find(entry => typeof entry === 'string' && /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(entry));
+    if (mediaUrl) return normalizeAccountMediaUrl(mediaUrl);
     const image = media.find(entry => entry && String(entry.type || '').toLowerCase() === 'image' && entry.url);
     const videoThumb = media.find(entry => entry && entry.thumb);
     return normalizeAccountMediaUrl(image?.url || videoThumb?.thumb || '');
@@ -1275,7 +1343,7 @@
       href: item.href || `${kind}s/details.html?id=${encodeURIComponent(item.id || title)}`,
       dataUrl: urlFromAi(item, ['data_url', 'dataUrl', 'dataset_url', 'access', 'url', 'source']),
       codeUrl: urlFromAi(item, ['code_url', 'codeUrl', 'github_url', 'repo_url', 'repository', 'code']),
-      media: urlFromAi(item, ['image', 'image_url', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']),
+      media: mediaFromAiRecord(item),
       meta,
       summary: firstSentenceAi(item.summary || item.description || item.abstract || ''),
       haystack: normalizeAiText([
@@ -1639,6 +1707,20 @@
     return `<img src="${esc(resource.media)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';this.classList.add('is-fallback');">`;
   }
 
+  function accountAiMessageHtml(message, options = {}){
+    const role = message?.role === 'user' ? 'user' : 'assistant';
+    const label = role === 'assistant' ? '<span class="oc-account-ai-label">OpenConstruction</span>' : '';
+    const loadingClass = options.loading ? ' is-loading' : '';
+    const trust = options.trustHtml || '';
+    return `
+      <div class="oc-account-ai-message is-${role}${loadingClass}">
+        ${label}
+        <p>${esc(message?.text || '')}</p>
+        ${role === 'assistant' ? trust : ''}
+      </div>
+    `;
+  }
+
   function accountAiResourceCardsHtml(results, query, visibleLimit = AI_INITIAL_RESULT_LIMIT, includeMore = true){
     const rows = Array.isArray(results) ? results : [];
     if (!rows.length) return empty('No matching resources yet', aiEmptyText(query));
@@ -1689,6 +1771,7 @@
       </div>
       <div class="oc-ai-result-tools">
         <div class="oc-ai-type-counts">${countChips || '<span>No matches</span>'}</div>
+        <a class="oc-text-action oc-ai-normal-search" href="${esc(normalSearchHrefAi(query))}">Search catalog instead</a>
       </div>
     `;
   }
@@ -1699,13 +1782,22 @@
     return `
       <details class="oc-ai-reply-results" data-ai-reply-results="${index}"${open ? ' open' : ''}>
         <summary>
-          <span>Resources</span>
+          <span>Cited resources</span>
           <small>${resources.length} resource${resources.length === 1 ? '' : 's'}</small>
         </summary>
         <div class="oc-library-grid oc-ai-reply-resource-grid">
           ${accountAiResourceCardsHtml(resources, round.query || '', visibleLimit, true)}
         </div>
       </details>
+    `;
+  }
+
+  function accountAiMessageResourcesBlockHtml(round, roundIndex, open, visibleLimit){
+    if (!round) return '';
+    return `
+      <div class="oc-ai-message-resource-block">
+        ${accountAiReplyResourcesHtml(round, roundIndex, open, visibleLimit)}
+      </div>
     `;
   }
 
@@ -2805,19 +2897,21 @@
         <h3 class="h4 fw-bold mb-2"><span class="oc-ask-title-mark" aria-hidden="true">&#10022;</span>Ask OpenConstruction <span class="oc-beta-pill">Beta</span></h3>
         <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
         <section id="accountAiOutput" class="oc-account-ai-output" hidden>
-          <div id="accountAiThread" class="oc-account-ai-thread"></div>
+          <div id="accountAiThread" class="oc-account-ai-thread" role="log" aria-live="polite" aria-relevant="additions text"></div>
           <div class="oc-ai-results-shell">
             <div class="oc-ai-results-heading">Resources</div>
             <div class="oc-library-grid" id="accountAiResults"></div>
           </div>
         </section>
-        <form class="oc-ask-form" id="anonymousAskForm" aria-label="Ask OpenConstruction follow-up">
-          <input name="q" class="form-control" placeholder="Ask OpenConstruction" value="${esc(cleanInitial)}">
-          <button type="submit" class="oc-primary-action" aria-label="Send">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
-          </button>
-        </form>
-        <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+        <div class="oc-ask-input-dock">
+          <form class="oc-ask-form" id="anonymousAskForm" aria-label="Ask OpenConstruction follow-up">
+            <textarea name="q" class="form-control" rows="1" placeholder="Ask about datasets, models, workflows, or OERs...">${esc(cleanInitial)}</textarea>
+            <button type="submit" class="oc-primary-action" aria-label="Send">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+            </button>
+          </form>
+          <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+        </div>
       </section>
     `;
 
@@ -2834,12 +2928,11 @@
       threadEl.innerHTML = [
         { role: 'user', text: query },
         { role: 'assistant', text: answer }
-      ].map(message => `
-        <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
-          <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
-          <p>${esc(message.text || '')}</p>
-        </div>
-      `).join('');
+      ].map(message => accountAiMessageHtml(message, {
+        trustHtml: message.role === 'assistant' && Array.isArray(results) && results.length ? `
+            <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(query))}">Search catalog instead</a>.</p>
+          ` : ''
+      })).join('');
       if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
       resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
       resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', event => {
@@ -2860,14 +2953,8 @@
       const message = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
       const current = threadEl.innerHTML.trim();
       const next = `
-        <div class="oc-account-ai-message is-user">
-          <span class="oc-account-ai-label">You</span>
-          <p>${esc(query || '')}</p>
-        </div>
-        <div class="oc-account-ai-message is-assistant">
-          <span class="oc-account-ai-label">OpenConstruction</span>
-          <p>${esc(message)}</p>
-        </div>
+        ${accountAiMessageHtml({ role: 'user', text: query || '' })}
+        ${accountAiMessageHtml({ role: 'assistant', text: message })}
       `;
       threadEl.innerHTML = current ? `${current}${next}` : next;
       if (!resultsEl.innerHTML.trim()) {
@@ -2885,35 +2972,56 @@
         renderAnonymousLimit(clean);
         return;
       }
-      const catalog = await loadAccountAiCatalog();
-      let results = selectAiCandidates(catalog, clean);
-      let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
       try {
-        const geminiCandidates = candidatePoolForGemini(catalog, clean, results);
-        const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
-        if (gemini?.limited) {
-          renderAnonymousLimit(clean);
-          return;
-        } else if (gemini?.answer) {
-          const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
-          if (citedResults.length) {
-            recordAiUsage(null);
-            answer = gemini.answer;
-            results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
+        const form = document.getElementById('anonymousAskForm');
+        setAskFormBusy(form, true);
+        const output = document.getElementById('accountAiOutput');
+        const threadEl = document.getElementById('accountAiThread');
+        const resultsEl = document.getElementById('accountAiResults');
+        const resultsShell = document.querySelector('.oc-ai-results-shell');
+        if (output && threadEl && resultsEl) {
+          document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
+          output.hidden = false;
+          if (resultsShell) resultsShell.hidden = true;
+          threadEl.innerHTML = `
+            ${accountAiMessageHtml({ role: 'user', text: clean })}
+            ${accountAiMessageHtml({ role: 'assistant', text: 'Searching OpenConstruction resources...' }, { loading: true })}
+          `;
+          resultsEl.innerHTML = '';
+        }
+        const catalog = await loadAccountAiCatalog();
+        let results = selectAiCandidates(catalog, clean);
+        let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
+        try {
+          const geminiCandidates = candidatePoolForGemini(catalog, clean, results);
+          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
+          if (gemini?.limited) {
+            renderAnonymousLimit(clean);
+            return;
+          } else if (gemini?.answer) {
+            const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
+            if (citedResults.length) {
+              recordAiUsage(null);
+              answer = gemini.answer;
+              results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
+            } else {
+              console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
+            }
           } else {
-            console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
+            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
           }
-        } else {
+        } catch (err) {
+          console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
         }
-      } catch (err) {
-        console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
-        answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+        if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
+          answer = `${answer}\n\n${aiVisibleSummary(results)}`;
+        }
+        renderAnonymousResults(clean, answer, results);
+        resetAskField(document.getElementById('anonymousAskForm'));
+      } finally {
+        setAskFormBusy(document.getElementById('anonymousAskForm'), false);
       }
-      if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
-        answer = `${answer}\n\n${aiVisibleSummary(results)}`;
-      }
-      renderAnonymousResults(clean, answer, results);
     }
 
     document.getElementById('anonymousAskForm')?.addEventListener('submit', event => {
@@ -2926,6 +3034,7 @@
       }
       run(query);
     });
+    bindAskFieldAutosize(root);
 
     if (cleanInitial) await run(cleanInitial);
   }
@@ -3054,7 +3163,9 @@
         report: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 19H3L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>',
         activity: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h11"></path><path d="M8 12h11"></path><path d="M8 18h11"></path><path d="m3.5 6 1 1 2-2"></path><path d="m3.5 12 1 1 2-2"></path><path d="m3.5 18 1 1 2-2"></path></svg>',
         settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"></path><path d="M19 12a7.8 7.8 0 0 0-.12-1.35l2.02-1.55-2-3.46-2.4.96a7.85 7.85 0 0 0-2.34-1.35L13.8 2.7H9.8l-.36 2.55A7.85 7.85 0 0 0 7.1 6.6l-2.4-.96-2 3.46 2.02 1.55a7.8 7.8 0 0 0 0 2.7L2.7 14.9l2 3.46 2.4-.96a7.85 7.85 0 0 0 2.34 1.35l.36 2.55h4l.36-2.55a7.85 7.85 0 0 0 2.34-1.35l2.4.96 2-3.46-2.02-1.55A7.8 7.8 0 0 0 19 12Z"></path></svg>',
-        credential: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25 19 6v5.25c0 4.2-2.75 8.1-7 9.5-4.25-1.4-7-5.3-7-9.5V6l7-2.75Z"></path><path d="m9.25 12.1 1.75 1.75 3.9-4.05"></path></svg>'
+        credential: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25 19 6v5.25c0 4.2-2.75 8.1-7 9.5-4.25-1.4-7-5.3-7-9.5V6l7-2.75Z"></path><path d="m9.25 12.1 1.75 1.75 3.9-4.05"></path></svg>',
+        pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5-4 1-4.5 4.5.5 3.5-2 2-3.5-5L2 11l2-2 3.5.5L12 5l3-1Z"></path><path d="m9 15-4 4"></path></svg>',
+        trash: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M7 7l1 13h8l1-13"></path><path d="M9 7V4h6v3"></path></svg>'
       };
       return icons[name] || '';
     }
@@ -3087,25 +3198,33 @@
             <h3 class="h4 fw-bold mb-2"><span class="oc-ask-title-mark" aria-hidden="true">&#10022;</span>Ask OpenConstruction <span class="oc-beta-pill">Beta</span></h3>
             <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
             <div class="oc-ask-examples">
+              <div class="oc-ask-examples-head">Try asking</div>
               ${[
-                'Find datasets for PPE or hardhat detection with bounding-box annotations.',
-                'Find models for scan-to-BIM, point clouds, or construction progress monitoring.',
-                'Find workflows for construction safety monitoring and progress tracking.',
-                'Find OERs about Generative AI in AEC, BIM, smart construction, or coding labs.'
-              ].map(example => `<button type="button" data-ask-example="${esc(example)}">${esc(example)}</button>`).join('')}
+                { label: 'Dataset', text: 'Find datasets for PPE or hardhat detection with bounding-box annotations.' },
+                { label: 'Model', text: 'Find models for scan-to-BIM, point clouds, or construction progress monitoring.' },
+                { label: 'Workflow', text: 'Find workflows for construction safety monitoring and progress tracking.' },
+                { label: 'OER', text: 'Find OERs about Generative AI in AEC, BIM, smart construction, or coding labs.' }
+              ].map(example => `
+                <button type="button" data-ask-example="${esc(example.text)}">
+                  <span>${esc(example.label)}</span>
+                  ${esc(example.text)}
+                </button>
+              `).join('')}
             </div>
             <section id="accountAiOutput" class="oc-account-ai-output" hidden>
-              <div id="accountAiThread" class="oc-account-ai-thread"></div>
+              <div id="accountAiThread" class="oc-account-ai-thread" role="log" aria-live="polite" aria-relevant="additions text"></div>
               <div class="oc-ai-results-shell">
                 <div class="oc-ai-results-heading">Resources</div>
                 <div class="oc-library-grid" id="accountAiResults"></div>
               </div>
             </section>
-            <form class="oc-ask-form" aria-label="Ask OpenConstruction follow-up">
-              <input name="q" class="form-control" placeholder="Ask OpenConstruction">
-              <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
-            </form>
-            <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+            <div class="oc-ask-input-dock">
+              <form class="oc-ask-form" aria-label="Ask OpenConstruction follow-up">
+                <textarea name="q" class="form-control" rows="1" placeholder="Ask about datasets, models, workflows, or OERs..."></textarea>
+                <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
+              </form>
+              <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+            </div>
           </section>
         </section>
 
@@ -3282,12 +3401,13 @@
       threadEl.innerHTML = thread.map((message, index) => {
         const roundIndex = message.role === 'assistant' ? assistantRoundIndex++ : -1;
         const round = roundIndex >= 0 ? assistantResourceRounds[roundIndex] : null;
+        const isLatestAssistant = index === latestAssistantIndex;
+        const trustHtml = round ? `
+          <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(round.query || query))}">Search catalog instead</a>.</p>
+        ` : '';
         return `
-          <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
-            <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
-            <p>${esc(message.text || '')}</p>
-            ${round ? accountAiReplyResourcesHtml(round, roundIndex, index === latestAssistantIndex, index === latestAssistantIndex ? visibleLimit : AI_INITIAL_RESULT_LIMIT) : ''}
-          </div>
+          ${accountAiMessageHtml(message, { trustHtml })}
+          ${accountAiMessageResourcesBlockHtml(round, roundIndex, isLatestAssistant, isLatestAssistant ? visibleLimit : AI_INITIAL_RESULT_LIMIT)}
         `;
       }).join('');
       resultsEl.innerHTML = '';
@@ -3321,15 +3441,21 @@
         const latestResources = rounds.length ? rounds[rounds.length - 1].resources : (chat.resources || []);
         const count = Array.isArray(latestResources) ? latestResources.length : 0;
         return `
-          <div class="oc-sidebar-session${chat.id === activeId ? ' active' : ''}" data-sidebar-session="${esc(chat.id || '')}">
+          <div class="oc-sidebar-session${chat.id === activeId ? ' active' : ''}${chat.pinned ? ' is-pinned' : ''}" data-sidebar-session="${esc(chat.id || '')}">
             <button type="button" class="oc-sidebar-session-link" data-open-ai-chat="${esc(chat.id || '')}">
-              <span>${esc(title)}</span>
+              <span class="oc-session-title-row">
+                ${chat.pinned ? '<span class="oc-session-pin" aria-hidden="true">&#9733;</span>' : ''}
+                <span class="oc-session-title-text">${esc(title)}</span>
+              </span>
               <small>${count} resource${count === 1 ? '' : 's'}</small>
             </button>
+            <button type="button" class="oc-session-pin-action" data-pin-ai-chat="${esc(chat.id || '')}" aria-label="${chat.pinned ? 'Unpin session' : 'Pin session'}" title="${chat.pinned ? 'Unpin session' : 'Pin session'}">${workspaceIcon('pin')}</button>
             <div class="dropdown">
               <button type="button" class="oc-session-more" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Session options">...</button>
               <div class="dropdown-menu dropdown-menu-end">
-                <button type="button" class="dropdown-item" data-delete-ai-chat="${esc(chat.id || '')}">Delete</button>
+                <button type="button" class="dropdown-item oc-session-menu-action" data-rename-ai-chat="${esc(chat.id || '')}">${workspaceIcon('edit')}<span>Rename</span></button>
+                <button type="button" class="dropdown-item oc-session-menu-action" data-pin-ai-chat="${esc(chat.id || '')}">${workspaceIcon('pin')}<span>${chat.pinned ? 'Unpin' : 'Pin'}</span></button>
+                <button type="button" class="dropdown-item oc-session-menu-action text-danger" data-delete-ai-chat="${esc(chat.id || '')}">${workspaceIcon('trash')}<span>Delete</span></button>
               </div>
             </div>
           </div>
@@ -3343,7 +3469,7 @@
           const currentRound = rounds.length ? rounds[rounds.length - 1] : null;
           const query = currentRound?.query || (chat.messages || []).find(message => message.role === 'user')?.text || '';
           const answer = (chat.messages || []).filter(message => message.role !== 'user').slice(-1)[0]?.text || '';
-          const input = document.querySelector('.oc-ask-form input[name="q"]');
+          const input = document.querySelector('.oc-ask-form [name="q"]');
           activeAccountChatId = chat.id || '';
           if (input) {
             input.value = '';
@@ -3352,6 +3478,29 @@
           document.querySelector('[data-workspace-tab="ask"]')?.click();
           renderAccountAiResults(query, answer, currentRound?.resources || chat.resources || [], chat.messages || [], rounds.slice(0, -1));
           renderAccountAiSessions(chat.id);
+        });
+      });
+      sessionList.querySelectorAll('[data-rename-ai-chat]').forEach(button => {
+        button.addEventListener('click', event => {
+          event.stopPropagation();
+          const chatId = button.dataset.renameAiChat || '';
+          const chat = currentAiChats.find(row => row.id === chatId);
+          if (!chat) return;
+          const nextTitle = window.prompt('Rename this search session', chat.title || 'Search session');
+          const cleanTitle = String(nextTitle || '').replace(/\s+/g, ' ').trim();
+          if (!cleanTitle) return;
+          currentAiChats = writeAiChats(user, currentAiChats.map(row => row.id === chatId ? { ...row, title: shortAiTitle(cleanTitle) } : row));
+          accountDataExport.search_sessions = currentAiChats;
+          renderAccountAiSessions(activeAccountChatId);
+        });
+      });
+      sessionList.querySelectorAll('[data-pin-ai-chat]').forEach(button => {
+        button.addEventListener('click', event => {
+          event.stopPropagation();
+          const chatId = button.dataset.pinAiChat || '';
+          currentAiChats = writeAiChats(user, currentAiChats.map(row => row.id === chatId ? { ...row, pinned: !row.pinned } : row));
+          accountDataExport.search_sessions = currentAiChats;
+          renderAccountAiSessions(activeAccountChatId);
         });
       });
       sessionList.querySelectorAll('[data-delete-ai-chat]').forEach(button => {
@@ -3365,10 +3514,10 @@
             activeAccountChatId = '';
             const output = document.getElementById('accountAiOutput');
             const examples = document.querySelector('.oc-ask-examples');
-            const input = document.querySelector('.oc-ask-form input[name="q"]');
+            const input = document.querySelector('.oc-ask-form [name="q"]');
             if (output) output.hidden = true;
             if (examples) examples.hidden = false;
-            if (input) input.placeholder = 'Ask OpenConstruction';
+            if (input) input.placeholder = 'Ask about datasets, models, workflows, or OERs...';
             document.querySelector('.oc-ask-workspace')?.classList.remove('has-results');
           }
           accountDataExport.search_sessions = currentAiChats;
@@ -3380,6 +3529,9 @@
     async function submitAccountAsk(query){
       const clean = String(query || '').trim();
       if (!clean) return;
+      const form = document.querySelector('.oc-ask-form');
+      if (form?.dataset.busy === 'true') return;
+      setAskFormBusy(form, true);
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
@@ -3393,15 +3545,11 @@
         threadEl.innerHTML = [
           ...priorMessages,
           { role: 'user', text: clean },
-          { role: 'assistant', text: 'Searching the OpenConstruction catalog...' }
-        ].map(message => `
-          <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
-            <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
-            <p>${esc(message.text || '')}</p>
-          </div>
-        `).join('');
+          { role: 'assistant', text: 'Searching OpenConstruction resources...' }
+        ].map((message, index, rows) => accountAiMessageHtml(message, { loading: message.role === 'assistant' && index === rows.length - 1 })).join('');
         resultsEl.innerHTML = '';
       }
+      try {
       const catalog = await loadAccountAiCatalog();
       const contextText = priorMessages
         .filter(message => message.role === 'user')
@@ -3499,20 +3647,20 @@
       accountDataExport.search_sessions = currentAiChats;
       renderAccountAiResults(clean, answer, results, chat.messages || [], resourceRounds.slice(0, -1));
       renderAccountAiSessions(chat.id);
-      const input = document.querySelector('.oc-ask-form input[name="q"]');
-      if (input) {
-        input.value = '';
-        input.placeholder = 'Ask a follow-up';
+      resetAskField(document.querySelector('.oc-ask-form'));
+      } finally {
+        setAskFormBusy(document.querySelector('.oc-ask-form'), false);
       }
     }
 
     function bindAccountAsk(){
       const form = document.querySelector('.oc-ask-form');
-      const input = form?.querySelector('input[name="q"]');
+      const input = form?.querySelector('[name="q"]');
       form?.addEventListener('submit', event => {
         event.preventDefault();
         submitAccountAsk(input?.value || '');
       });
+      bindAskFieldAutosize(document);
       const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
       if (initialQuery && input && !form.dataset.initialAskHandled) {
         form.dataset.initialAskHandled = 'true';
@@ -3522,10 +3670,9 @@
       document.querySelector('[data-new-ai-session]')?.addEventListener('click', () => {
         activeAccountChatId = '';
         if (input) {
-          input.value = '';
-          input.placeholder = 'Ask OpenConstruction';
           input.focus();
         }
+        resetAskField(form, 'Ask about datasets, models, workflows, or OERs...');
         const examples = document.querySelector('.oc-ask-examples');
         if (examples) examples.hidden = false;
         const output = document.getElementById('accountAiOutput');
@@ -3568,10 +3715,13 @@
     });
     document.querySelectorAll('[data-ask-example]').forEach(button => {
       button.addEventListener('click', () => {
-        const input = document.querySelector('.oc-ask-form input[name="q"]');
+        const input = document.querySelector('.oc-ask-form [name="q"]');
         if (input) {
           input.value = button.dataset.askExample || '';
           input.focus();
+          autoSizeAskField(input);
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          syncAskFormState(input.form);
         }
       });
     });
