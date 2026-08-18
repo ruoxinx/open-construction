@@ -149,7 +149,10 @@ for (const file of [...topLevelHtml, ...nestedHtml]) {
   const html = fs.readFileSync(path.join(siteRoot, file), "utf8");
   const labels = navLabels(html);
   if (!labels) continue;
-  for (const label of ["Home", "Libraries", "Docs", "Contribute", "Community"]) {
+  if (!labels.includes("Catalog") && !labels.includes("Libraries")) {
+    fail(`site/${file} nav missing Catalog`);
+  }
+  for (const label of ["Docs", "Contribute", "Community"]) {
     if (!labels.includes(label)) fail(`site/${file} nav missing ${label}`);
   }
 }
