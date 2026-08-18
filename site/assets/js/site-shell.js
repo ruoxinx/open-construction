@@ -210,6 +210,8 @@
     styles.id = 'ocAiAssistantStyles';
     styles.textContent = `
       .oc-ai-launcher{
+        appearance:none;
+        -webkit-appearance:none;
         position:fixed;
         right:20px;
         bottom:20px;
@@ -223,10 +225,21 @@
         border-radius:8px;
         background:#f2a238;
         color:var(--oc-ink,#0f2e4b);
+        font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+        font-size:1rem;
         font-weight:800;
+        font-style:normal;
+        font-variant:normal;
+        letter-spacing:0;
+        line-height:1;
+        text-transform:none;
         box-shadow:0 10px 24px rgba(15,46,75,.14);
         text-decoration:none;
         transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+      }
+      .oc-ai-launcher *{
+        box-sizing:border-box;
+        font-family:inherit;
       }
       .oc-ai-launcher:hover,
       .oc-ai-launcher:focus{
@@ -241,17 +254,30 @@
         color:#fff;
         font-size:1rem;
         font-weight:900;
+        letter-spacing:0;
         line-height:1;
+        text-transform:none;
         transform:translateY(-.02rem);
       }
       .oc-ai-launcher-copy{
         display:inline;
+        color:#fff;
+        font-size:.86rem;
+        font-weight:800;
+        letter-spacing:0;
         line-height:1;
         min-width:0;
+        text-transform:none;
       }
       .oc-ai-launcher-copy strong{
         color:#fff;
+        display:inline-block;
         font-size:.86rem;
+        font-weight:800;
+        letter-spacing:0;
+        line-height:1;
+        margin:0;
+        text-transform:none;
         white-space:nowrap;
       }
       .oc-ai-launcher-beta{
@@ -264,6 +290,7 @@
         color:#fff;
         font-size:.64rem;
         font-weight:800;
+        line-height:1;
         letter-spacing:.04em;
         padding:.08rem .34rem;
         text-transform:uppercase;
@@ -524,9 +551,9 @@
       const user = await window.OCAuth?.getUser?.().catch(() => null);
       if (!user && anonymousAiUsageCount() >= ANONYMOUS_AI_DAILY_LIMIT) {
           if (limitNote) {
-            limitNote.textContent = 'Daily AI beta limit reached. Opening normal search instead.';
+            limitNote.textContent = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
           }
-          window.location.href = normalSearchHref(query);
+          prompt?.focus();
           return;
       }
       window.location.href = `account.html${user ? '' : '?anon=1'}${user ? '?q=' : '&q='}${encodeURIComponent(query)}`;

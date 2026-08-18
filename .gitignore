@@ -92,5 +92,6 @@ openconstruction-*-certificate.pdf
 # Local role-management SQL validation helpers
 site/scripts/validate-role-management.mjs
 scripts/generate_ai_catalog.py
+scripts/ai_search_limits.sql
 scripts/site_issue_reports.sql
 scripts/workspace_research_cockpit.sql

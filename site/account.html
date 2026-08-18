@@ -473,7 +473,7 @@
 
   function normalSearchNotice(reason){
     if (reason === 'limit') {
-      return 'Daily AI beta limit reached, so I am showing normal catalog search results. Normal search remains unlimited.';
+      return 'AI-enhanced search limit reached, so I am showing normal catalog search results. Normal search remains available.';
     }
     return 'AI enhancement is unavailable right now, so I am showing normal catalog search results. Normal search remains unlimited.';
   }
@@ -1349,9 +1349,7 @@
   }
 
   function reasonForAiResource(resource, query){
-    const terms = expandedAiTerms(query).filter(term => resource.haystack.includes(term)).slice(0, 4);
-    if (terms.length) return `Matched catalog evidence for ${terms.join(', ')}.`;
-    return resource.summary || `Relevant ${resource.label.toLowerCase()} record from the OpenConstruction catalog.`;
+    return resource.summary || `OpenConstruction ${resource.label.toLowerCase()} record.`;
   }
 
   function answerForAiQuery(query, results, catalogLoaded, scoped = false){
@@ -1368,7 +1366,7 @@
     const summary = Object.entries(counts).map(([label, count]) => `${count} ${label.toLowerCase()}${count === 1 ? '' : 's'}`).join(', ');
     const top = results[0];
     const scope = scoped ? 'From the current results, ' : '';
-    return `${scope}I found ${summary}. The strongest match is ${top.title}, because ${reasonForAiResource(top, query).toLowerCase()} Review the resource cards below for source links and supporting records.`;
+    return `${scope}I found ${summary}. The strongest match is ${top.title}. Review the resource cards below for supporting records.`;
   }
 
   function accountAiResourceCardsHtml(results, query){
@@ -2506,32 +2504,58 @@
       window.OCBookmark?.mount?.(resultsEl);
     }
 
+    function renderAnonymousLimit(query){
+      const output = document.getElementById('accountAiOutput');
+      const threadEl = document.getElementById('accountAiThread');
+      const resultsEl = document.getElementById('accountAiResults');
+      if (!output || !threadEl || !resultsEl) return;
+      output.hidden = false;
+      const message = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
+      const current = threadEl.innerHTML.trim();
+      const next = `
+        <div class="oc-account-ai-message is-user">
+          <span class="oc-account-ai-label">You</span>
+          <p>${esc(query || '')}</p>
+        </div>
+        <div class="oc-account-ai-message is-assistant">
+          <span class="oc-account-ai-label">OpenConstruction</span>
+          <p>${esc(message)}</p>
+        </div>
+      `;
+      threadEl.innerHTML = current ? `${current}${next}` : next;
+      if (!resultsEl.innerHTML.trim()) {
+        resultsEl.innerHTML = '';
+      }
+    }
+
     async function run(query){
       const clean = String(query || '').trim();
       if (!clean) return;
+      if (aiUsageRemaining(null) <= 0) {
+        renderAnonymousLimit(clean);
+        return;
+      }
       const catalog = await loadAccountAiCatalog();
       let results = selectAiCandidates(catalog, clean);
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
-      const shouldUseAi = aiUsageRemaining(null) > 0;
-      if (shouldUseAi) {
-        try {
-          const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
-          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
-          if (gemini?.answer) {
-            recordAiUsage(null);
-            answer = gemini.answer;
-            if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
-              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
-            }
-          } else {
-            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+      try {
+        const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
+        const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
+        if (gemini?.limited) {
+          renderAnonymousLimit(clean);
+          return;
+        } else if (gemini?.answer) {
+          recordAiUsage(null);
+          answer = gemini.answer;
+          if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
+            results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
           }
-        } catch (err) {
-          console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
+        } else {
           answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
         }
-      } else {
-        answer = `${normalSearchNotice('limit')}\n\n${answer}`;
+      } catch (err) {
+        console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
+        answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
       }
       renderAnonymousResults(clean, answer, results);
     }
@@ -2541,7 +2565,7 @@
       const query = event.currentTarget.elements.q.value.trim();
       if (!query) return;
       if (aiUsageRemaining(null) <= 0) {
-        window.location.href = normalSearchHref(query);
+        renderAnonymousLimit(query);
         return;
       }
       run(query);
@@ -2626,6 +2650,7 @@
     ].includes(row.badge_key));
     if (hasContributorBadge || addedCount > 0) roles.add('contributor');
     if (roles.has('admin')) roles.add('reviewer');
+    const hasUnlimitedAiAccess = roles.has('admin') || roles.has('reviewer') || roles.has('contributor');
     const roleLabels = {
       user: 'User',
       contributor: 'Contributor',
@@ -2977,7 +3002,7 @@
             <p>${esc(message.text || '')}</p>
           </div>
         `).join('');
-        resultsEl.innerHTML = '';
+        if (!existingChat?.resources?.length) resultsEl.innerHTML = '';
       }
       const catalog = await loadAccountAiCatalog();
       const contextText = priorMessages
@@ -2993,15 +3018,22 @@
       }
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length), Boolean(existingChat?.resources?.length));
       const remainingAiSearches = aiUsageRemaining(user);
-      if (remainingAiSearches <= 0) {
+      if (!hasUnlimitedAiAccess && remainingAiSearches <= 0) {
         answer = `${normalSearchNotice('limit')}\n\n${answer}`;
       } else {
         try {
-          const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
+          const geminiCandidates = existingChat?.resources?.length
+            ? (results.length ? results : existingChat.resources)
+            : (catalog.length && catalog.length <= 300 ? catalog : results);
           const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages);
-          if (gemini?.answer) {
-            recordAiUsage(user);
-            updateAiUsageUi(user);
+          if (gemini?.limited) {
+            answer = gemini.answer;
+            results = existingChat?.resources?.length ? existingChat.resources : results;
+          } else if (gemini?.answer) {
+            if (!hasUnlimitedAiAccess) {
+              recordAiUsage(user);
+              updateAiUsageUi(user);
+            }
             answer = gemini.answer;
             if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
               results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
@@ -3037,8 +3069,8 @@
           created_at: now,
           updated_at: now,
           messages: [
-          { role: 'user', text: clean, created_at: now },
-          { role: 'assistant', text: answer, created_at: now }
+            { role: 'user', text: clean, created_at: now },
+            { role: 'assistant', text: answer, created_at: now }
           ],
           resources: results
         };
