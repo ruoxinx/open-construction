@@ -315,7 +315,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260817-menu-icons"></script>
-<script src="assets/js/site-shell.js?v=20260818-ai-halo"></script>
+<script src="assets/js/site-shell.js?v=20260818-search-available"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -473,9 +473,9 @@
 
   function normalSearchNotice(reason){
     if (reason === 'limit') {
-      return 'AI-enhanced search limit reached, so I am showing normal catalog search results. Normal search remains available.';
+      return 'Ask OpenConstruction limit reached, so I am showing normal catalog search results. Normal catalog search remains available.';
     }
-    return 'AI enhancement is unavailable right now, so I am showing normal catalog search results. Normal search remains unlimited.';
+    return 'Ask OpenConstruction is unavailable right now, so I am showing normal catalog search results. Normal catalog search remains available.';
   }
 
   function normalSearchHrefAi(query){
@@ -531,14 +531,20 @@
     rootEl.querySelectorAll('.oc-ask-form textarea[name="q"]').forEach(field => {
       autoSizeAskField(field);
       syncAskFormState(field.form);
+      if (field.dataset.ocAskFieldBound === 'true') return;
+      field.dataset.ocAskFieldBound = 'true';
       field.addEventListener('input', () => {
         autoSizeAskField(field);
         syncAskFormState(field.form);
       });
       field.addEventListener('keydown', event => {
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
           event.preventDefault();
-          field.form?.requestSubmit();
+          if (typeof field.form?.requestSubmit === 'function') {
+            field.form.requestSubmit();
+          } else {
+            field.form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+          }
         }
       });
     });
@@ -1771,7 +1777,7 @@
       </div>
       <div class="oc-ai-result-tools">
         <div class="oc-ai-type-counts">${countChips || '<span>No matches</span>'}</div>
-        <a class="oc-text-action oc-ai-normal-search" href="${esc(normalSearchHrefAi(query))}">Search catalog instead</a>
+        <a class="oc-text-action oc-ai-normal-search" href="${esc(normalSearchHrefAi(query))}">Search catalog</a>
       </div>
     `;
   }
@@ -2902,7 +2908,7 @@
         <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
         <section id="accountAiOutput" class="oc-account-ai-output" hidden>
           <div id="accountAiThread" class="oc-account-ai-thread" role="log" aria-live="polite" aria-relevant="additions text"></div>
-          <div class="oc-ai-results-shell">
+          <div class="oc-ai-results-shell" hidden>
             <div class="oc-ai-results-heading">Resources</div>
             <div class="oc-library-grid" id="accountAiResults"></div>
           </div>
@@ -2924,26 +2930,28 @@
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
       const resultsShell = document.querySelector('.oc-ai-results-shell');
-      const heading = document.querySelector('.oc-ai-results-heading');
       if (!output || !threadEl || !resultsEl) return;
       document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
-      if (resultsShell) resultsShell.hidden = false;
+      if (resultsShell) resultsShell.hidden = true;
       output.hidden = false;
-      threadEl.innerHTML = [
-        { role: 'user', text: query },
-        { role: 'assistant', text: answer }
-      ].map(message => accountAiMessageHtml(message, {
-        trustHtml: message.role === 'assistant' && Array.isArray(results) && results.length ? `
-            <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(query))}">Search catalog instead</a>.</p>
-          ` : ''
-      })).join('');
-      if (heading) heading.innerHTML = accountAiResultToolsHtml(results || [], query || '', visibleLimit);
-      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '', visibleLimit);
-      resultsEl.querySelector('[data-ai-show-more]')?.addEventListener('click', event => {
+      const round = Array.isArray(results) && results.length ? { query, resources: results } : null;
+      const trustHtml = round ? `
+        <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(query))}">Search catalog</a>.</p>
+      ` : '';
+      threadEl.innerHTML = `
+        ${accountAiMessageHtml({ role: 'user', text: query })}
+        ${accountAiMessageHtml({ role: 'assistant', text: answer }, { trustHtml })}
+        ${accountAiMessageResourcesBlockHtml(round, 0, true, visibleLimit)}
+      `;
+      resultsEl.innerHTML = '';
+      threadEl.querySelectorAll('[data-ai-show-more]').forEach(button => button.addEventListener('click', event => {
+        const grid = event.currentTarget.closest('[data-ai-reply-results]')?.querySelector('.oc-ai-reply-resource-grid');
+        if (!round || !grid) return;
         const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
-        renderAnonymousResults(query, answer, results, nextVisible);
-      });
-      window.OCBookmark?.mount?.(resultsEl);
+        grid.innerHTML = accountAiResourceCardsHtml(round.resources, round.query || '', nextVisible, true);
+        window.OCBookmark?.mount?.(grid);
+      }));
+      window.OCBookmark?.mount?.(threadEl);
     }
 
     function renderAnonymousLimit(query){
@@ -2954,11 +2962,12 @@
       if (!output || !threadEl || !resultsEl) return;
       document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
       output.hidden = false;
-      const message = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
+      const message = 'Anonymous visitors can use Ask OpenConstruction once per day.';
+      const trustHtml = `<p class="oc-ai-trust-note"><a href="auth/sign-in.html">Sign in</a> for more searches and saved sessions. <a href="${esc(normalSearchHrefAi(query || 'dataset'))}">Search catalog</a> remains available.</p>`;
       const current = threadEl.innerHTML.trim();
       const next = `
         ${accountAiMessageHtml({ role: 'user', text: query || '' })}
-        ${accountAiMessageHtml({ role: 'assistant', text: message })}
+        ${accountAiMessageHtml({ role: 'assistant', text: message }, { trustHtml })}
       `;
       threadEl.innerHTML = current ? `${current}${next}` : next;
       if (!resultsEl.innerHTML.trim()) {
@@ -3407,7 +3416,7 @@
         const round = roundIndex >= 0 ? assistantResourceRounds[roundIndex] : null;
         const isLatestAssistant = index === latestAssistantIndex;
         const trustHtml = round ? `
-          <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(round.query || query))}">Search catalog instead</a>.</p>
+          <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(round.query || query))}">Search catalog</a>.</p>
         ` : '';
         return `
           ${accountAiMessageHtml(message, { trustHtml })}

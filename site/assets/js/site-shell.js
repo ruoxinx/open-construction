@@ -611,6 +611,16 @@
     launcher?.addEventListener('click', () => setOpen(panel.hidden));
     close?.addEventListener('click', () => setOpen(false));
     prompt?.addEventListener('input', syncSubmitState);
+    prompt?.addEventListener('keydown', event => {
+      if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+        event.preventDefault();
+        if (typeof form?.requestSubmit === 'function') {
+          form.requestSubmit();
+        } else {
+          form?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        }
+      }
+    });
     syncSubmitState();
     form?.addEventListener('submit', async event => {
       event.preventDefault();
@@ -622,7 +632,7 @@
       const user = await window.OCAuth?.getUser?.().catch(() => null);
       if (!user && anonymousAiUsageCount() >= ANONYMOUS_AI_DAILY_LIMIT) {
           if (limitNote) {
-            limitNote.textContent = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
+            limitNote.innerHTML = `Anonymous visitors can use Ask OpenConstruction once per day. <a href="${escapeAiAttribute(`${pagePrefix()}auth/sign-in.html`)}">Sign in</a> for more searches and saved sessions. <a href="${escapeAiAttribute(normalSearchHref(query))}">Search catalog</a> remains available.`;
           }
           prompt?.focus();
           return;
