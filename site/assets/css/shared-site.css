@@ -848,6 +848,7 @@ header.hero p{
 .oc-workspace-main{
   display:grid;
   gap:.85rem;
+  min-height:calc(100vh - 116px);
 }
 
 .oc-account-grid .oc-workspace-card{
@@ -1116,6 +1117,12 @@ header.hero p{
   box-shadow:none;
 }
 
+.oc-ask-workspace.has-results{
+  gap:.9rem;
+  margin-top:2.25rem;
+  min-height:calc(100vh - 188px);
+}
+
 .oc-ask-workspace h3{
   display:flex;
   align-items:center;
@@ -1189,6 +1196,10 @@ header.hero p{
   padding:.35rem;
 }
 
+.oc-ask-workspace.has-results .oc-ask-form{
+  margin-top:auto;
+}
+
 .oc-ask-form .form-control{
   min-height:46px;
   border:0;
@@ -1250,6 +1261,10 @@ header.hero p{
   margin-top:.7rem;
 }
 
+.oc-ask-workspace.has-results .oc-account-ai-output{
+  margin-top:.2rem;
+}
+
 .oc-account-ai-thread{
   display:grid;
   gap:.65rem;
@@ -1287,6 +1302,20 @@ header.hero p{
   color:var(--oc-text);
   line-height:1.5;
   margin:0;
+}
+
+.oc-ai-results-shell{
+  display:grid;
+  gap:.65rem;
+}
+
+.oc-ai-results-heading{
+  color:#5b6675;
+  font-size:.74rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  line-height:1;
+  text-transform:uppercase;
 }
 
 .oc-ai-result-card{
@@ -2464,6 +2493,11 @@ header.hero p{
 
   .oc-workspace-sidebar{
     position:static;
+    min-height:auto;
+  }
+
+  .oc-workspace-main,
+  .oc-ask-workspace.has-results{
     min-height:auto;
   }
 

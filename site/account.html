@@ -1123,18 +1123,46 @@
         haystack: normalizeAiText([titleValue, meta, item.summary, item.description, item.provider, listAi(item.applications).join(' '), listAi(item.stakeholders).join(' ')].join(' '))
       };
     }
-    const oerMeta = compactAi([item.year, item.provider || item.publisher, firstAi(item.topics)]).join(' - ');
+    const topics = listAi(item.topics || item.topic || item.keywords || item.tags);
+    const media = listAi(item.media || item.formats || item.format || item.resource_types || item.resource_type);
+    const language = listAi(item.language || item.languages);
+    const institutions = listAi(item.institutions || item.institution || item.organization);
+    const provider = item.provider || item.publisher || item.organization || '';
+    const sourceUrl = urlFromAi(item, ['source', 'url', 'link', 'homepage']);
+    const codeUrl = urlFromAi(item, ['code_url', 'github_url', 'repo_url', 'repository', 'code', 'labs_url', 'lab_url']);
+    const oerMeta = compactAi([item.year, provider, firstAi(topics), firstAi(media), item.license]).join(' - ');
+    const oerSummary = firstSentenceAi(item.description || item.summary || item.overview || '')
+      || compactAi([
+        topics.length ? `Topics: ${topics.slice(0, 4).join(', ')}` : '',
+        media.length ? `Formats: ${media.slice(0, 4).join(', ')}` : '',
+        item.license ? `License: ${item.license}` : ''
+      ]).join('. ');
     return {
       type: 'oer',
       label: 'OER',
       title,
       href: item.id ? `oers/details.html?id=${encodeURIComponent(item.id)}` : 'oer.html',
-      dataUrl: urlFromAi(item, ['source', 'url', 'link']),
-      codeUrl: '',
+      dataUrl: sourceUrl,
+      codeUrl,
       media: commonMedia,
       meta: oerMeta,
-      summary: firstSentenceAi(item.description || item.summary || ''),
-      haystack: normalizeAiText([title, oerMeta, item.description, item.summary, item.provider, item.publisher, listAi(item.topics).join(' '), listAi(item.institutions).join(' ')].join(' '))
+      summary: oerSummary,
+      haystack: normalizeAiText([
+        title,
+        oerMeta,
+        item.description,
+        item.summary,
+        item.overview,
+        item.license,
+        item.contributor,
+        item.contributor_url,
+        provider,
+        item.publisher,
+        topics.join(' '),
+        media.join(' '),
+        language.join(' '),
+        institutions.join(' ')
+      ].join(' '))
     };
   }
 
@@ -1143,8 +1171,11 @@
     const title = titleCaseAi(item.title || item.name || item.id || `Untitled ${typeLabel(kind)}`);
     const meta = compactAi([
       item.year,
+      item.provider || item.publisher,
       firstAi(item.modalities || item.data_modality || item.data_modalities),
       firstAi(item.tasks || item.task || item.potential_tasks),
+      firstAi(item.topics || item.topic || item.keywords || item.tags),
+      firstAi(item.media || item.formats || item.format),
       firstAi(item.annotations || item.annotation_types),
       item.license
     ]).join(' - ');
@@ -1163,12 +1194,19 @@
         meta,
         item.summary,
         item.description,
+        item.abstract,
         item.license,
+        item.provider,
+        item.publisher,
+        item.contributor,
         listAi(item.tasks || item.task || item.potential_tasks).join(' '),
         listAi(item.objects || item.classes || item.object_classes).join(' '),
         listAi(item.annotations || item.annotation_types).join(' '),
         listAi(item.modalities || item.data_modality || item.data_modalities).join(' '),
         listAi(item.applications || item.application || item.use_cases).join(' '),
+        listAi(item.topics || item.topic || item.keywords || item.tags).join(' '),
+        listAi(item.media || item.formats || item.format).join(' '),
+        listAi(item.institutions || item.institution).join(' '),
         listAi(item.aliases).join(' ')
       ].join(' '))
     };
@@ -1186,19 +1224,27 @@
 
   function loadAccountAiCatalog(){
     if (accountAiCatalogPromise) return accountAiCatalogPromise;
-    accountAiCatalogPromise = loadAiCatalogIndex().then(indexRows => {
-      if (indexRows.length) return indexRows;
-      return Promise.all([
+    accountAiCatalogPromise = Promise.all([
+      loadAiCatalogIndex(),
+      Promise.all([
         loadCatalog('dataset'),
         loadCatalog('model'),
         loadCatalog('workflow'),
         loadCatalog('oer')
-      ]).then(([datasets, models, workflows, oers]) => [
+      ])
+    ]).then(([indexRows, [datasets, models, workflows, oers]]) => {
+      const directRows = [
         ...datasets.map(item => accountAiResourceFromRecord('dataset', item)),
         ...models.map(item => accountAiResourceFromRecord('model', item)),
         ...workflows.map(item => accountAiResourceFromRecord('workflow', item)),
         ...oers.map(item => accountAiResourceFromRecord('oer', item))
-      ].filter(item => item.title && item.href));
+      ].filter(item => item.title && item.href);
+      const byKey = new Map();
+      [...indexRows, ...directRows].forEach(item => {
+        const key = `${item.type}:${resourceKeyAi(item.href || item.title)}`;
+        if (!byKey.has(key)) byKey.set(key, item);
+      });
+      return Array.from(byKey.values());
     });
     return accountAiCatalogPromise;
   }
@@ -1212,6 +1258,9 @@
       'as',
       'at',
       'by',
+      'catalog',
+      'compare',
+      'construction',
       'find',
       'for',
       'from',
@@ -1221,6 +1270,10 @@
       'is',
       'list',
       'me',
+      'dataset',
+      'datasets',
+      'model',
+      'models',
       'of',
       'on',
       'openconstruction',
@@ -1232,15 +1285,30 @@
       'that',
       'the',
       'to',
+      'workflow',
+      'workflows',
       'with'
     ]);
+    const text = normalizeAiText(query);
     const base = normalizeAiText(query)
       .split(/\s+/)
       .filter(term => term.length > 1 && !stopTerms.has(term));
     const map = {
+      bim: ['building', 'information', 'modeling', 'ifc', 'scan', 'scan2bim'],
+      aec: ['architecture', 'engineering', 'construction'],
+      ai: ['artificial intelligence', 'generative ai', 'machine learning'],
       ppe: ['personal', 'protective', 'equipment', 'helmet', 'hardhat', 'vest'],
-      hardhat: ['helmet', 'ppe'],
+      hardhat: ['helmet', 'ppe', 'hard hat'],
       safety: ['ppe', 'hazard', 'worker', 'accident'],
+      teaching: ['course', 'education', 'slides', 'lecture', 'learning'],
+      course: ['teaching', 'education', 'slides', 'lecture', 'syllabus'],
+      slides: ['presentation', 'lecture', 'teaching'],
+      labs: ['lab', 'interactive', 'code', 'notebook'],
+      lab: ['labs', 'interactive', 'code', 'notebook'],
+      reuse: ['responsible', 'license', 'open data', 'data ethics'],
+      responsible: ['reuse', 'ethics', 'license', 'open data'],
+      generative: ['generative ai', 'genai', 'llm'],
+      smart: ['smart construction', 'construction technology'],
       workers: ['worker', 'person', 'people'],
       equipment: ['machinery', 'vehicle', 'excavator', 'crane'],
       annotation: ['annotated', 'label', 'labels'],
@@ -1249,43 +1317,91 @@
       boxes: ['bbox', 'box', 'detection'],
       code: ['github', 'repository', 'repo'],
       largest: ['images', 'samples', 'records'],
-      compare: ['dataset', 'model', 'benchmark'],
+      progress: ['tracking', 'monitoring', 'as built', 'asbuilt'],
+      monitoring: ['tracking', 'progress'],
       download: ['data', 'url', 'source']
     };
     const terms = new Set(base);
     base.forEach(term => (map[term] || []).forEach(extra => terms.add(extra)));
+    [
+      [/\bpoint clouds?\b|\blidar\b|\blaser scans?\b/, ['point cloud', 'pointcloud', 'lidar', 'laser scan', '3d point']],
+      [/\bscan\s*to\s*bim\b|\bscan2bim\b/, ['scan to bim', 'scan2bim', 'bim', 'point cloud']],
+      [/\bbim\b|\bbuilding information model(?:ing)?\b|\bifc\b/, ['bim', 'building information modeling', 'ifc']],
+      [/\bconstruction progress\b|\bprogress monitoring\b|\bsite monitoring\b/, ['progress monitoring', 'progress tracking', 'site monitoring', 'as built']],
+      [/\bgenerative ai\b|\bgenai\b|\bllms?\b/, ['generative ai', 'artificial intelligence', 'llm', 'aec ai']],
+      [/\baec ai\b|\bai in aec\b|\bai for aec\b/, ['aec ai', 'artificial intelligence', 'architecture engineering construction']],
+      [/\bopen data\b|\bresponsible reuse\b|\bdata reuse\b/, ['open data', 'responsible reuse', 'license', 'data ethics']],
+      [/\bsmart construction\b|\bconstruction technolog(?:y|ies)\b/, ['smart construction', 'construction technology']],
+      [/\binteractive labs?\b|\bcode labs?\b/, ['interactive labs', 'interactive', 'code', 'lab']],
+      [/\bsafety helmets?\b|\bhard hats?\b|\bhardhats?\b/, ['safety helmet', 'hardhat', 'hard hat', 'helmet', 'ppe']],
+      [/\bsafety vests?\b|\bprotective equipment\b/, ['safety vest', 'vest', 'ppe', 'personal protective equipment']],
+      [/\bobject detection\b|\bdetectors?\b/, ['object detection', 'detector', 'detection']],
+      [/\bsemantic segmentation\b/, ['semantic segmentation', 'segmentation']],
+      [/\binstance segmentation\b/, ['instance segmentation', 'segmentation']]
+    ].forEach(([pattern, additions]) => {
+      if (pattern.test(text)) additions.forEach(term => terms.add(term));
+    });
     return Array.from(terms);
   }
 
-  function requestedAiTypes(query){
+  function aiTypeIntent(query){
     const text = normalizeAiText(query);
-    const matches = [];
-    const patterns = [
-      ['dataset', /\b(data\s*sets?|dataset|benchmarks?|annotations?|annotated|bounding boxes?|image sets?|video sets?|object detection|semantic segmentation|instance segmentation|ppe|hardhats?|helmets?|safety vests?|workers?)\b/],
-      ['model', /\b(models?|checkpoints?|architectures?|trained model|detectors?|segmenters?)\b/],
+    const explicit = [];
+    const explicitPatterns = [
+      ['dataset', /\b(data\s*sets?|datasets?|benchmark datasets?|data catalog)\b/],
+      ['model', /\b(models?|trained models?|checkpoints?|architectures?)\b/],
       ['workflow', /\b(workflows?|use cases?|deployments?|pipelines?|processes?)\b/],
       ['oer', /\b(oers?|open educational resources?|courses?|teaching|education|tutorials?|lectures?|syllabus)\b/]
     ];
-    patterns.forEach(([type, pattern]) => {
-      if (pattern.test(text)) matches.push(type);
+    explicitPatterns.forEach(([type, pattern]) => {
+      if (pattern.test(text)) explicit.push(type);
     });
-    return matches;
+    if (explicit.length) return { types: Array.from(new Set(explicit)), explicit: true };
+
+    const inferred = [];
+    const inferredPatterns = [
+      ['dataset', /\b(annotations?|annotated|labels?|labeled|labelled|bounding boxes?|image sets?|video sets?)\b/],
+      ['model', /\b(detectors?|segmenters?|classifiers?|recognizers?|foundation models?|llms?|vlms?)\b/],
+      ['workflow', /\b(case studies?|deployed|deployment|implementation|project controls?)\b/],
+      ['oer', /\b(learning materials?|training materials?|lesson plans?)\b/]
+    ];
+    inferredPatterns.forEach(([type, pattern]) => {
+      if (pattern.test(text)) inferred.push(type);
+    });
+    return { types: Array.from(new Set(inferred)), explicit: false };
+  }
+
+  function requestedAiTypes(query){
+    return aiTypeIntent(query).types;
+  }
+
+  function escapeAiRegExp(value){
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function containsAiTerm(text, term){
+    const cleanText = String(text || '');
+    const cleanTerm = String(term || '').trim();
+    if (!cleanTerm) return false;
+    if (cleanTerm.includes(' ')) return cleanText.includes(cleanTerm);
+    return new RegExp(`\\b${escapeAiRegExp(cleanTerm)}\\b`).test(cleanText);
   }
 
   function scoreAiResource(resource, query){
     const terms = expandedAiTerms(query);
-    if (!terms.length) return 0;
+    const intent = aiTypeIntent(query);
+    const requestedTypes = intent.types;
     let score = 0;
     const title = normalizeAiText(resource.title);
     const meta = normalizeAiText(resource.meta);
+    if (requestedTypes.includes(resource.type)) score += intent.explicit ? 26 : 18;
+    if (requestedTypes.length && !requestedTypes.includes(resource.type)) score -= intent.explicit ? 40 : 16;
     terms.forEach(term => {
-      if (title.includes(term)) score += 5;
-      if (meta.includes(term)) score += 3;
-      if (resource.haystack.includes(term)) score += 1;
+      const specific = term.length >= 4 || term.includes(' ');
+      if (containsAiTerm(title, term)) score += specific ? 8 : 4;
+      if (containsAiTerm(meta, term)) score += specific ? 4 : 2;
+      if (containsAiTerm(resource.haystack, term)) score += specific ? 1.5 : .75;
     });
-    const requestedTypes = requestedAiTypes(query);
-    if (requestedTypes.includes(resource.type)) score += 18;
-    if (requestedTypes.length && !requestedTypes.includes(resource.type)) score -= 12;
     if (/code|github|repo|repository/i.test(query) && resource.codeUrl) score += 4;
     if (/data|download|source/i.test(query) && resource.dataUrl) score += 2;
     return score;
@@ -1302,6 +1418,19 @@
     return narrowed
       .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
       .slice(0, limit);
+  }
+
+  function candidatePoolForGemini(catalog, query, fallbackResults = [], limit = 80){
+    const requestedTypes = requestedAiTypes(query);
+    const selected = selectAiCandidates(catalog, query, limit);
+    if (selected.length) return selected;
+    if (requestedTypes.length) {
+      const typed = (Array.isArray(catalog) ? catalog : [])
+        .filter(resource => requestedTypes.includes(resource.type))
+        .slice(0, limit);
+      if (typed.length) return typed;
+    }
+    return (Array.isArray(fallbackResults) ? fallbackResults : []).slice(0, limit);
   }
 
   function resourceMagnitude(resource){
@@ -2473,9 +2602,12 @@
         <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
         <section id="accountAiOutput" class="oc-account-ai-output" hidden>
           <div id="accountAiThread" class="oc-account-ai-thread"></div>
-          <div class="oc-library-grid" id="accountAiResults"></div>
+          <div class="oc-ai-results-shell">
+            <div class="oc-ai-results-heading">Resources</div>
+            <div class="oc-library-grid" id="accountAiResults"></div>
+          </div>
         </section>
-        <form class="oc-ask-form" id="anonymousAskForm">
+        <form class="oc-ask-form" id="anonymousAskForm" aria-label="Ask OpenConstruction follow-up">
           <input name="q" class="form-control" placeholder="Ask OpenConstruction" value="${esc(cleanInitial)}">
           <button type="submit" class="oc-primary-action" aria-label="Send">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
@@ -2489,7 +2621,10 @@
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
+      const resultsShell = document.querySelector('.oc-ai-results-shell');
       if (!output || !threadEl || !resultsEl) return;
+      document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
+      if (resultsShell) resultsShell.hidden = false;
       output.hidden = false;
       threadEl.innerHTML = [
         { role: 'user', text: query },
@@ -2508,7 +2643,9 @@
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
+      const resultsShell = document.querySelector('.oc-ai-results-shell');
       if (!output || !threadEl || !resultsEl) return;
+      document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
       output.hidden = false;
       const message = 'Anonymous visitors are limited to 1 AI-enhanced search each day. Sign in for more searches and saved sessions.';
       const current = threadEl.innerHTML.trim();
@@ -2525,6 +2662,9 @@
       threadEl.innerHTML = current ? `${current}${next}` : next;
       if (!resultsEl.innerHTML.trim()) {
         resultsEl.innerHTML = '';
+        if (resultsShell) resultsShell.hidden = true;
+      } else if (resultsShell) {
+        resultsShell.hidden = false;
       }
     }
 
@@ -2539,7 +2679,7 @@
       let results = selectAiCandidates(catalog, clean);
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
       try {
-        const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
+        const geminiCandidates = candidatePoolForGemini(catalog, clean, results);
         const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
         if (gemini?.limited) {
           renderAnonymousLimit(clean);
@@ -2713,6 +2853,7 @@
           <button type="button" class="oc-workspace-nav-item active" data-workspace-tab="ask" aria-selected="true" aria-label="Ask OpenConstruction" title="Ask OpenConstruction"><span aria-hidden="true">✦</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="library" aria-selected="false" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="reports" aria-selected="false" aria-label="Activity" title="Activity">${workspaceIcon('activity')}<span>Activity</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
         </nav>
         <div class="oc-sidebar-sessions">
           <div class="oc-sidebar-sessions-head">
@@ -2725,7 +2866,6 @@
           <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#reportIssueModal" aria-label="Report issue" title="Report issue">${workspaceIcon('report')}<span>Report</span></button>
           <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#suggestResourceModal" aria-label="Submit resource" title="Submit resource">${workspaceIcon('upload')}<span>Submit</span></button>
           <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
-          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
         </nav>
       </aside>
 
@@ -2736,17 +2876,20 @@
             <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
             <div class="oc-ask-examples">
               ${[
-                'Find construction safety datasets with worker, PPE, or equipment annotations.',
-                'Compare models for BIM, point clouds, or construction progress monitoring.',
-                'Show workflows for infrastructure inspection, safety monitoring, or BIM-based project controls.',
-                'Find OERs for teaching AEC AI, open data, BIM, and responsible reuse.'
+                'Find PPE or hardhat detection datasets with bounding-box annotations.',
+                'Compare BIM and point-cloud models for scan-to-BIM or progress monitoring.',
+                'Show workflows for construction safety monitoring or progress tracking.',
+                'Find OERs for Generative AI in AEC, smart construction, slides, code, or interactive labs.'
               ].map(example => `<button type="button" data-ask-example="${esc(example)}">${esc(example)}</button>`).join('')}
             </div>
             <section id="accountAiOutput" class="oc-account-ai-output" hidden>
               <div id="accountAiThread" class="oc-account-ai-thread"></div>
-              <div class="oc-library-grid" id="accountAiResults"></div>
+              <div class="oc-ai-results-shell">
+                <div class="oc-ai-results-heading">Resources</div>
+                <div class="oc-library-grid" id="accountAiResults"></div>
+              </div>
             </section>
-            <form class="oc-ask-form">
+            <form class="oc-ask-form" aria-label="Ask OpenConstruction follow-up">
               <input name="q" class="form-control" placeholder="Ask OpenConstruction">
               <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
             </form>
@@ -2900,7 +3043,10 @@
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
       const resultsEl = document.getElementById('accountAiResults');
+      const resultsShell = document.querySelector('.oc-ai-results-shell');
       if (!output || !threadEl || !resultsEl) return;
+      document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
+      if (resultsShell) resultsShell.hidden = false;
       const examples = document.querySelector('.oc-ask-examples');
       if (examples) examples.hidden = true;
       output.hidden = false;
@@ -2974,6 +3120,7 @@
             if (output) output.hidden = true;
             if (examples) examples.hidden = false;
             if (input) input.placeholder = 'Ask OpenConstruction';
+            document.querySelector('.oc-ask-workspace')?.classList.remove('has-results');
           }
           accountDataExport.search_sessions = currentAiChats;
           renderAccountAiSessions();
@@ -2992,6 +3139,8 @@
       if (output && threadEl && resultsEl) {
         output.hidden = false;
         document.querySelector('.oc-ask-examples')?.setAttribute('hidden', '');
+        const resultsShell = document.querySelector('.oc-ai-results-shell');
+        if (resultsShell) resultsShell.hidden = !existingChat?.resources?.length;
         threadEl.innerHTML = [
           ...priorMessages,
           { role: 'user', text: clean },
@@ -3024,7 +3173,7 @@
         try {
           const geminiCandidates = existingChat?.resources?.length
             ? (results.length ? results : existingChat.resources)
-            : (catalog.length && catalog.length <= 300 ? catalog : results);
+            : candidatePoolForGemini(catalog, searchText, results);
           const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages);
           if (gemini?.limited) {
             answer = gemini.answer;
@@ -3111,6 +3260,7 @@
         if (examples) examples.hidden = false;
         const output = document.getElementById('accountAiOutput');
         if (output) output.hidden = true;
+        document.querySelector('.oc-ask-workspace')?.classList.remove('has-results');
         document.querySelector('[data-workspace-tab="ask"]')?.click();
         renderAccountAiSessions();
       });
