@@ -30,9 +30,19 @@
       #${AUTH_NAV_ID} .oc-auth-avatar{width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;min-width:28px!important;min-height:28px!important;border-radius:50%!important;object-fit:cover!important;border:1px solid #e7edf3!important;background:#f6f9fc!important;display:block!important}
       #${AUTH_NAV_ID} .oc-auth-initials{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:28px!important;height:28px!important;border-radius:50%!important;border:1px solid #d7e3ef!important;background:#f5f9ff!important;color:#0f2e4b!important;font-size:.72rem!important;font-weight:800!important;letter-spacing:0!important}
       #${AUTH_NAV_ID} .oc-auth-user::after{display:none!important}
-      #${AUTH_NAV_ID} .oc-auth-menu{border:1px solid #e7edf3;border-radius:10px;box-shadow:0 14px 32px rgba(15,46,75,.12);padding:.35rem;min-width:170px}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item{border-radius:8px;font-size:.94rem;font-weight:600;padding:.48rem .6rem}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-header{color:#4f5d6c;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .6rem .25rem}
+      #${AUTH_NAV_ID} .oc-auth-menu{border:1px solid #e7edf3;border-radius:10px;box-shadow:0 14px 32px rgba(15,46,75,.12);padding:.42rem;min-width:178px}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-header{color:#536170;font-size:.82rem;font-weight:650;letter-spacing:0;padding:.32rem .55rem .46rem;text-transform:none}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item{display:grid!important;grid-template-columns:14px minmax(0,1fr);align-items:center!important;column-gap:.52rem;border-radius:7px;color:#26313d;font-size:.86rem;font-weight:600;line-height:1.15;padding:.44rem .55rem}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item svg{width:14px;height:14px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:#7a8794}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item span{display:block;min-width:0}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:hover svg,
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:focus svg{color:#0f2e4b}
+      #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]{border-top:1px solid #edf2f7;border-radius:0;color:#536170;margin-top:.22rem;padding-top:.62rem}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:hover,
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:focus{background:#f6f9fc;color:#0f2e4b}
+      #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]:hover,
+      #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]:focus{border-radius:7px;color:#0f2e4b}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:active{background:#eef5fb;color:#0f2e4b}
       .oc-bookmark-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:6px!important;color:#5c6873!important;background:transparent!important}
       .oc-bookmark-btn-icon{width:30px!important;height:30px!important;padding:0!important;border:0!important}
       .oc-bookmark-btn-text{width:100%!important;min-height:34px!important;padding:.38rem .7rem!important;border:1px solid #f2a238!important;color:#8a5a0a!important;font-size:.875rem!important;font-weight:700!important;background:#fff!important}
@@ -129,6 +139,10 @@
     localStorage.setItem(RETURN_TO_KEY, url);
   }
 
+  function pendingReturnTo(){
+    return localStorage.getItem(RETURN_TO_KEY) || '';
+  }
+
   function takeReturnTo(){
     const fallback = relHref('account.html');
     const value = localStorage.getItem(RETURN_TO_KEY) || fallback;
@@ -157,6 +171,7 @@
     const path = target.pathname || '';
     const shouldUseRoleHome = /\/account\.html$/.test(path) || /\/auth\/(sign-in|callback)\.html$/.test(path);
     if (!shouldUseRoleHome) return href;
+    if (/\/account\.html$/.test(path) && (target.search || target.hash)) return href;
     const roles = await getRoles().catch(() => []);
     return roleHomeHref(roles);
   }
@@ -317,7 +332,7 @@
     const sb = getClient();
     if (!sb) throw new Error('Supabase is not configured.');
     const isSignInPage = /\/auth\/sign-in\.html$/.test(window.location.pathname || '');
-    setReturnTo(isSignInPage ? siteHref('account.html') : window.location.href);
+    setReturnTo(isSignInPage ? (pendingReturnTo() || siteHref('account.html')) : window.location.href);
     return sb.auth.signInWithOAuth({
       provider,
       options: {
@@ -364,7 +379,7 @@
     const cleanEmail = String(email || '').trim();
     if (!cleanEmail) throw new Error('Enter an email address.');
     const isSignInPage = /\/auth\/sign-in\.html$/.test(window.location.pathname || '');
-    setReturnTo(isSignInPage ? siteHref('account.html') : window.location.href);
+    setReturnTo(isSignInPage ? (pendingReturnTo() || siteHref('account.html')) : window.location.href);
     return sb.auth.signInWithOtp({
       email: cleanEmail,
       options: {
@@ -615,6 +630,12 @@
     }
     const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
     const name = userDisplayName(user);
+    const menuIcon = name => ({
+      workspace: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14v13H5z"></path><path d="M9 5.5v13"></path><path d="M5 9.5h14"></path></svg>',
+      admin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 19 6v5.25c0 4.15-2.75 7.85-7 9.25-4.25-1.4-7-5.1-7-9.25V6l7-2.5Z"></path><path d="m9.4 12.1 1.75 1.75 3.7-3.8"></path></svg>',
+      review: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h12v15H6z"></path><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h4"></path></svg>',
+      signout: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H6.5A1.5 1.5 0 0 0 5 6.5v11A1.5 1.5 0 0 0 6.5 19H10"></path><path d="M14 8l4 4-4 4"></path><path d="M18 12H9"></path></svg>'
+    }[name] || '');
     li.innerHTML = `
       <div class="dropdown">
         <a class="nav-link plain oc-auth-link oc-auth-user dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="${escapeHtml(name)}" aria-label="Open account menu">
@@ -622,8 +643,8 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end oc-auth-menu">
           <div class="dropdown-header">${escapeHtml(name)}</div>
-          <a class="dropdown-item" href="${relHref('account.html')}">Workspace</a>
-          <button type="button" class="dropdown-item" data-oc-signout>Sign out</button>
+          <a class="dropdown-item" href="${relHref('account.html')}">${menuIcon('workspace')}<span>Workspace</span></a>
+          <button type="button" class="dropdown-item" data-oc-signout>${menuIcon('signout')}<span>Sign out</span></button>
         </div>
       </div>
     `;
@@ -643,7 +664,7 @@
       if (!isReviewerUser) return;
       const signOutButton = li.querySelector('[data-oc-signout]');
       if (!signOutButton || li.querySelector('[data-oc-maintainer-link]')) return;
-      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">${isAdminUser ? 'Admin console' : 'Review queue'}</a>`);
+      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">${menuIcon(isAdminUser ? 'admin' : 'review')}<span>${isAdminUser ? 'Admin console' : 'Review queue'}</span></a>`);
     });
   }
 
@@ -690,6 +711,7 @@
     listBookmarks,
     syncLocalBookmarks,
     takeReturnTo,
+    setReturnTo,
     relHref,
     siteHref,
     escapeHtml

@@ -87,8 +87,7 @@
     <div class="mt-1">
       <small>
         <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
-        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
         <a href="contribute.html#citation" class="text-muted">Citation</a>
       </small>
     </div>
@@ -118,7 +117,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js"></script>
+<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
 <script src="assets/js/site-shell.js?v=20260719-footer4"></script>
 <script>
 (async () => {
@@ -129,6 +128,7 @@
   let profiles = [];
   let badges = [];
   let suggestions = [];
+  let issueReports = [];
   let selectedUserId = '';
   let currentMaintainerId = '';
   let userRoles = [];
@@ -136,6 +136,7 @@
   let currentUserId = '';
   let profileRoleFilter = 'all';
   let suggestionStatusFilter = 'active';
+  let issueStatusFilter = 'active';
 
   const badgeDefaults = {
     dataset_contributor: ['Dataset Contributor', 'Verified OpenConstruction platform contribution.'],
@@ -269,8 +270,12 @@
         <section class="oc-workspace-card oc-maintainer-suggestions">
           ${renderSuggestions()}
         </section>
+        <section class="oc-workspace-card oc-maintainer-suggestions mt-3">
+          ${renderIssueReports()}
+        </section>
       `;
       bindSuggestionActions();
+      bindIssueReportActions();
       return;
     }
 
@@ -331,6 +336,9 @@
         <section class="oc-workspace-card oc-maintainer-suggestions oc-maintainer-queue-panel">
           ${renderSuggestions()}
         </section>
+        <section class="oc-workspace-card oc-maintainer-suggestions">
+          ${renderIssueReports()}
+        </section>
       </section>
     `;
     renderProfileList('');
@@ -344,6 +352,7 @@
     bindBadgeForm();
     bindRoleForm();
     bindSuggestionActions();
+    bindIssueReportActions();
   }
 
   function matchesRoleFilter(profile){
@@ -604,6 +613,57 @@
     `;
   }
 
+  function renderIssueReports(){
+    const active = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const completed = issueReports.filter(row => row.status === 'resolved' || row.status === 'declined');
+    const queue = issueStatusFilter === 'active'
+      ? active
+      : issueStatusFilter === 'completed'
+        ? completed
+        : issueReports.filter(row => row.status === issueStatusFilter);
+    const filterOptions = [
+      ['active', 'Active', active.length],
+      ['pending', 'Pending', issueReports.filter(row => row.status === 'pending').length],
+      ['in_review', 'In review', issueReports.filter(row => row.status === 'in_review').length],
+      ['completed', 'Completed', completed.length]
+    ];
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <div>
+          <p class="oc-auth-kicker mb-2">Issue queue</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${issueStatusFilter === 'active' ? 'active' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${active.length} active reports</p>
+        </div>
+        <button type="button" id="refreshIssuesBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+      <div class="oc-role-filter mb-3" aria-label="Filter issue reports by status">
+        ${filterOptions.map(([value, label, count]) => `
+          <button type="button" class="btn btn-sm ${issueStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-issue-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
+        `).join('')}
+      </div>
+      <div class="vstack gap-2">
+        ${queue.length ? queue.map(row => `
+          <div class="oc-account-row">
+            <span>
+              <span class="oc-account-type">${esc(row.issue_type)} Â· ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</span>
+              <strong>${esc(row.summary)}</strong>
+              <span class="oc-account-meta">${esc([row.reporter_name, row.reporter_email].filter(Boolean).join(' Â· ') || 'Reporter not provided')}${row.created_at ? ` Â· ${new Date(row.created_at).toLocaleDateString()}` : ''}</span>
+              ${row.page_url ? `<span class="oc-account-meta">${esc(row.page_url)}</span>` : ''}
+              <span class="oc-account-meta">${esc(row.details || '')}</span>
+              ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
+            </span>
+            <span class="d-flex gap-2 justify-content-end flex-wrap">
+              ${row.status === 'pending' ? `<button type="button" class="btn btn-outline-primary btn-sm" data-review-issue="${esc(row.id)}">Start review</button>` : ''}
+              <button type="button" class="btn btn-primary btn-sm" data-resolve-issue="${esc(row.id)}">Resolve</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-note-issue="${esc(row.id)}">Note</button>
+              ${canAdmin ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-issue="${esc(row.id)}">Decline</button>` : ''}
+            </span>
+          </div>
+        `).join('') : '<div class="oc-workspace-empty"><strong>No matching issue reports</strong></div>'}
+      </div>
+    `;
+  }
+
   function bindBadgeForm(){
     document.getElementById('refreshBtn')?.addEventListener('click', loadDashboard);
     const form = document.getElementById('badgeForm');
@@ -757,6 +817,20 @@
       .eq('id', suggestion.id);
   }
 
+  async function updateIssueStatus(report, status, note = null){
+    const payload = {
+      status,
+      reviewed_by: currentUserId,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    if (note !== null) payload.maintainer_note = note;
+    return sb
+      .from('site_issue_reports')
+      .update(payload)
+      .eq('id', report.id);
+  }
+
   function bindSuggestionActions(){
     document.getElementById('refreshSuggestionsBtn')?.addEventListener('click', () => loadDashboard(false));
     document.querySelectorAll('[data-assign-reviewer]').forEach(select => {
@@ -851,12 +925,67 @@
     });
   }
 
+  function bindIssueReportActions(){
+    document.getElementById('refreshIssuesBtn')?.addEventListener('click', () => loadDashboard(false));
+    document.querySelectorAll('[data-issue-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        issueStatusFilter = button.dataset.issueFilter || 'active';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-review-issue]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const report = issueReports.find(row => row.id === button.dataset.reviewIssue);
+        if (!report) return;
+        button.disabled = true;
+        const { error } = await updateIssueStatus(report, 'in_review');
+        if (error) alert(error.message || 'Could not update issue report.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-resolve-issue]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const report = issueReports.find(row => row.id === button.dataset.resolveIssue);
+        if (!report) return;
+        const note = window.prompt('Resolution note', report.maintainer_note || '');
+        if (note === null) return;
+        button.disabled = true;
+        const { error } = await updateIssueStatus(report, 'resolved', note.trim() || null);
+        if (error) alert(error.message || 'Could not resolve issue report.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-note-issue]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const report = issueReports.find(row => row.id === button.dataset.noteIssue);
+        if (!report) return;
+        const note = window.prompt('Maintainer note', report.maintainer_note || '');
+        if (note === null) return;
+        button.disabled = true;
+        const { error } = await updateIssueStatus(report, report.status || 'in_review', note.trim() || null);
+        if (error) alert(error.message || 'Could not update issue report.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-decline-issue]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const report = issueReports.find(row => row.id === button.dataset.declineIssue);
+        if (!report || !window.confirm(`Decline issue report "${report.summary}"?`)) return;
+        button.disabled = true;
+        const { error } = await updateIssueStatus(report, 'declined');
+        if (error) alert(error.message || 'Could not decline issue report.');
+        await loadDashboard(false);
+      });
+    });
+  }
+
   async function loadDashboard(resetSelection = true){
     const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at').order('created_at', { ascending: false }).limit(200);
-    const [profilesRes, badgesRes, suggestionsRes, rolesRes] = await Promise.all([
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
+      sb.from('site_issue_reports').select('*').order('created_at', { ascending: false }).limit(200),
       canAdmin
         ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
         : Promise.resolve({ data: [], error: null })
@@ -866,6 +995,7 @@
     profiles = profilesRes.data || [];
     badges = badgesRes.data || [];
     suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
+    issueReports = issueReportsRes.error ? [] : (issueReportsRes.data || []);
     userRoles = rolesRes.error ? [] : (rolesRes.data || []);
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';

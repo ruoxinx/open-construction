@@ -73,22 +73,22 @@
   <div class="oc-auth-page">
     <div class="oc-auth-intro">
       <p class="oc-auth-kicker mb-2">OpenConstruction Workspace</p>
-      <h1 class="oc-auth-title mb-3">Access your OpenConstruction library.</h1>
-      <p class="oc-auth-lede mb-0">Sign in to save resources, submit catalog additions, and manage your workspace.</p>
-      <p class="oc-auth-lede mb-0">OpenConstruction does not manage passwords.</p>
+      <h1 class="oc-auth-title mb-3">Your research space for open AEC resources.</h1>
+      <p class="oc-auth-lede mb-0">Sign in to save catalog records, continue Ask OpenConstruction sessions, and submit open resources for review.</p>
+      <p class="oc-auth-lede mb-0">Use an identity provider or email link. OpenConstruction does not store passwords.</p>
 
       <div class="oc-auth-preview" aria-label="Workspace features">
+        <div class="oc-auth-preview-item">
+          <div class="oc-auth-preview-label">Ask</div>
+          <div class="oc-auth-preview-value">Search sessions</div>
+        </div>
         <div class="oc-auth-preview-item">
           <div class="oc-auth-preview-label">Library</div>
           <div class="oc-auth-preview-value">Saved resources</div>
         </div>
         <div class="oc-auth-preview-item">
-          <div class="oc-auth-preview-label">Contribute</div>
-          <div class="oc-auth-preview-value">Resource submissions</div>
-        </div>
-        <div class="oc-auth-preview-item">
-          <div class="oc-auth-preview-label">Profile</div>
-          <div class="oc-auth-preview-value">Workspace settings</div>
+          <div class="oc-auth-preview-label">Submit</div>
+          <div class="oc-auth-preview-value">Catalog review</div>
         </div>
       </div>
 
@@ -158,8 +158,7 @@
     <div class="mt-1">
       <small>
         <a href="../contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="../contribute.html#privacy" class="text-muted">Privacy</a> ·
-        <a href="../contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="../contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
         <a href="../contribute.html#citation" class="text-muted">Citation</a>
       </small>
     </div>
@@ -189,7 +188,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="../assets/js/config.js"></script>
-<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/auth.js?v=20260817-menu-icons"></script>
 <script src="../assets/js/site-shell.js?v=20260719-footer4"></script>
 <script>
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -308,7 +307,7 @@
     } catch (err) {
       const message = err.message || 'Email sign in failed. Please try again.';
       showAuthError(message.includes('captcha_token')
-        ? 'Captcha protection is still enabled in Supabase. Disable it under Authentication > Attack Protection, then try again.'
+        ? 'Email sign-in protection needs attention. Please use GitHub or Google sign-in, or contact support.'
         : message);
       label.textContent = originalLabel;
       button.disabled = false;

@@ -89,8 +89,7 @@
     <div class="mt-1">
       <small>
         <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Privacy</a> ·
-        <a href="contribute.html#data-policy" class="text-muted">Data Usage</a> ·
+        <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
         <a href="contribute.html#citation" class="text-muted">Citation</a>
       </small>
     </div>
@@ -123,40 +122,37 @@
       <div class="modal-header">
         <div>
           <p class="oc-auth-kicker mb-1">OpenConstruction submission</p>
-          <h2 class="modal-title h5 fw-bold">Submit resource</h2>
+          <h2 class="modal-title oc-resource-title">Submit resource</h2>
+          <p class="oc-resource-subtitle">Share an open dataset, model, workflow, or learning resource for review.</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="resourceSuggestionForm">
         <div class="modal-body">
-          <div class="vstack gap-4">
+          <div class="oc-resource-sections">
         <fieldset class="oc-resource-fieldset">
-          <legend>Contact information</legend>
+          <legend>Your contact</legend>
           <div class="oc-resource-form-grid">
             <div>
-              <label for="suggestSubmitterName" class="form-label small fw-bold">Submitter name</label>
+              <label for="suggestSubmitterName" class="form-label">Name</label>
               <input id="suggestSubmitterName" name="submitter_name" class="form-control" required>
             </div>
             <div>
-              <label for="suggestSubmitterEmail" class="form-label small fw-bold">Submitter email</label>
+              <label for="suggestSubmitterEmail" class="form-label">Email</label>
               <input id="suggestSubmitterEmail" name="submitter_email" type="email" class="form-control" placeholder="name@domain.edu" required>
             </div>
-            <div>
-              <label for="suggestSubmitterAffiliation" class="form-label small fw-bold">Affiliation</label>
+            <div class="oc-resource-form-wide">
+              <label for="suggestSubmitterAffiliation" class="form-label">Affiliation</label>
               <input id="suggestSubmitterAffiliation" name="submitter_affiliation" class="form-control" required>
-            </div>
-            <div>
-              <label for="suggestSubmitterGithub" class="form-label small fw-bold">GitHub username <span class="text-muted fw-normal">(optional)</span></label>
-              <input id="suggestSubmitterGithub" name="submitter_github" class="form-control" placeholder="github-handle">
             </div>
           </div>
         </fieldset>
 
         <fieldset class="oc-resource-fieldset">
-          <legend>Resource metadata</legend>
+          <legend>Resource details</legend>
           <div class="oc-resource-form-grid">
             <div>
-              <label for="suggestResourceType" class="form-label small fw-bold">Type</label>
+              <label for="suggestResourceType" class="form-label">Type</label>
               <select id="suggestResourceType" name="resource_type" class="form-select" required>
                 <option value="dataset">Dataset</option>
                 <option value="model">Model</option>
@@ -165,45 +161,53 @@
               </select>
             </div>
             <div>
-              <label for="suggestTitle" class="form-label small fw-bold">Title</label>
+              <label for="suggestTitle" class="form-label">Title</label>
               <input id="suggestTitle" name="title" class="form-control" required>
             </div>
             <div>
-              <label for="suggestDoi" class="form-label small fw-bold">DOI</label>
+              <label for="suggestDoi" class="form-label">DOI <span>optional</span></label>
               <input id="suggestDoi" name="doi" class="form-control" placeholder="10.xxxx/xxxxx">
             </div>
             <div>
-              <label for="suggestLicense" class="form-label small fw-bold">License</label>
+              <label for="suggestLicense" class="form-label">License</label>
               <input id="suggestLicense" name="license" class="form-control" placeholder="CC BY 4.0, MIT, Apache 2.0..." required>
             </div>
             <div class="oc-resource-form-wide">
-              <label for="suggestUrl" class="form-label small fw-bold">Resource URL</label>
+              <label for="suggestUrl" class="form-label">Resource URL</label>
               <input id="suggestUrl" name="url" type="url" class="form-control" placeholder="https://..." required>
             </div>
             <div class="oc-resource-form-wide">
-              <label for="suggestDescription" class="form-label small fw-bold">Short note</label>
-              <textarea id="suggestDescription" name="description" class="form-control" rows="3"></textarea>
+              <label for="suggestDescription" class="form-label">Short note <span>optional</span></label>
+              <textarea id="suggestDescription" name="description" class="form-control" rows="3" placeholder="What should reviewers know about this resource?"></textarea>
             </div>
           </div>
         </fieldset>
 
         <fieldset class="oc-resource-fieldset">
-          <legend>Permissions</legend>
+          <legend>Authorship &amp; credit</legend>
           <div>
-            <label for="suggestAuthorship" class="form-label small fw-bold">Authorship</label>
+            <label for="suggestAuthorship" class="form-label">Authorship</label>
             <select id="suggestAuthorship" name="authorship" class="form-select" required>
               <option value="author">I am submitting as an author of this resource</option>
               <option value="third_party">I am not an author but have permission to submit</option>
             </select>
           </div>
-          <div>
-            <label for="suggestPermissionStatement" class="form-label small fw-bold">Permission statement</label>
+          <div data-permission-statement hidden>
+            <label for="suggestPermissionStatement" class="form-label">Permission statement</label>
             <textarea id="suggestPermissionStatement" name="permission_statement" class="form-control" rows="3" placeholder="Required for third-party submissions."></textarea>
+          </div>
+          <label class="form-check oc-resource-check oc-resource-credit">
+            <input class="form-check-input" type="checkbox" name="community_credit">
+            <span class="form-check-label">If this resource is accepted, include contributor names on the Community page.</span>
+          </label>
+          <div data-credit-name hidden>
+            <label for="suggestCreditName" class="form-label">Contributor names</label>
+            <textarea id="suggestCreditName" name="community_credit_name" class="form-control" rows="2" placeholder="Add names only with permission. Separate multiple names with commas."></textarea>
           </div>
         </fieldset>
 
         <fieldset class="oc-resource-fieldset">
-          <legend>Submission agreement</legend>
+          <legend>Review checklist</legend>
           <div class="vstack gap-2">
             <label class="form-check oc-resource-check">
               <input class="form-check-input" type="checkbox" name="agreement_contact_current" required>
@@ -231,8 +235,76 @@
         </div>
         <div class="modal-footer">
           <div id="suggestionStatus" class="small text-muted me-auto" role="status"></div>
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Submit resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="reportIssueModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable oc-resource-modal">
+    <div class="modal-content oc-resource-content">
+      <div class="modal-header">
+        <div>
+          <p class="oc-auth-kicker mb-1">OpenConstruction support</p>
+          <h2 class="modal-title oc-resource-title">Report issue</h2>
+          <p class="oc-resource-subtitle">Report broken links, metadata problems, access issues, or platform feedback.</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="issueReportForm">
+        <div class="modal-body">
+          <div class="oc-resource-sections">
+            <fieldset class="oc-resource-fieldset">
+              <legend>Issue details</legend>
+              <div class="oc-resource-form-grid">
+                <div>
+                  <label for="reportIssueType" class="form-label">Issue type</label>
+                  <select id="reportIssueType" name="issue_type" class="form-select" required>
+                    <option value="Broken link">Broken link</option>
+                    <option value="Metadata correction">Metadata correction</option>
+                    <option value="Access or download problem">Access or download problem</option>
+                    <option value="Duplicate record">Duplicate record</option>
+                    <option value="Platform feedback">Platform feedback</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="reportPageUrl" class="form-label">Page or resource URL <span>optional</span></label>
+                  <input id="reportPageUrl" name="page_url" type="url" class="form-control" placeholder="https://www.openconstruction.org/...">
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="reportSummary" class="form-label">Summary</label>
+                  <input id="reportSummary" name="summary" class="form-control" placeholder="Short description of the issue" required>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label for="reportDetails" class="form-label">Details</label>
+                  <textarea id="reportDetails" name="details" class="form-control" rows="4" placeholder="What happened? What should be corrected? Include enough context for maintainers to review." required></textarea>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="oc-resource-fieldset">
+              <legend>Contact</legend>
+              <div class="oc-resource-form-grid">
+                <div>
+                  <label for="reportName" class="form-label">Name</label>
+                  <input id="reportName" name="reporter_name" class="form-control">
+                </div>
+                <div>
+                  <label for="reportEmail" class="form-label">Email</label>
+                  <input id="reportEmail" name="reporter_email" type="email" class="form-control">
+                </div>
+              </div>
+              <p class="oc-resource-help mb-0">Do not include private, sensitive, or confidential data.</p>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div id="issueReportStatus" class="small text-muted me-auto" role="status"></div>
+          <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Submit report</button>
         </div>
       </form>
     </div>
@@ -242,7 +314,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js"></script>
+<script src="assets/js/auth.js?v=20260817-menu-icons"></script>
 <script src="assets/js/site-shell.js?v=20260719-footer4"></script>
 <script>
 (async () => {
@@ -282,6 +354,7 @@
       approved: 'Approved',
       added: 'Added',
       declined: 'Declined',
+      resolved: 'Resolved',
       request_pending: 'Pending',
       request_approved: 'Approved',
       request_declined: 'Declined'
@@ -313,7 +386,113 @@
     return new Date().toISOString().slice(0, 10);
   }
 
-  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes }){
+  function aiChatStorageKey(user){
+    return user?.id ? `oc_ai_chats:${user.id}` : '';
+  }
+
+  function readAiChats(user){
+    const key = aiChatStorageKey(user);
+    if (!key) return [];
+    try {
+      const rows = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(rows) ? rows : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function aiChatMessageCount(chat){
+    return Array.isArray(chat?.messages) ? chat.messages.length : 0;
+  }
+
+  function deleteAiChat(user, chatId){
+    const key = aiChatStorageKey(user);
+    if (!key || !chatId) return;
+    try {
+      const rows = JSON.parse(localStorage.getItem(key) || '[]');
+      if (!Array.isArray(rows)) return;
+      localStorage.setItem(key, JSON.stringify(rows.filter(chat => chat.id !== chatId)));
+    } catch (_) {}
+  }
+
+  function writeAiChats(user, chats){
+    const key = aiChatStorageKey(user);
+    if (!key) return [];
+    const rows = (Array.isArray(chats) ? chats : [])
+      .slice()
+      .sort((a, b) => String(b.updated_at || '').localeCompare(String(a.updated_at || '')))
+      .slice(0, 25);
+    try {
+      localStorage.setItem(key, JSON.stringify(rows));
+    } catch (_) {}
+    return rows;
+  }
+
+  function newAiChatId(){
+    return `chat-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function shortAiTitle(text){
+    const clean = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!clean) return 'Search session';
+    return clean.length > 48 ? `${clean.slice(0, 45).trimEnd()}...` : clean;
+  }
+
+  const AI_DAILY_LIMIT_SIGNED_IN = 5;
+  const AI_DAILY_LIMIT_ANONYMOUS = 1;
+
+  function todayUsageStamp(){
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function aiUsageKey(user){
+    return `oc_ai_usage:${user?.id || 'anonymous'}:${todayUsageStamp()}`;
+  }
+
+  function aiDailyLimit(user){
+    return user?.id ? AI_DAILY_LIMIT_SIGNED_IN : AI_DAILY_LIMIT_ANONYMOUS;
+  }
+
+  function aiUsageCount(user){
+    try {
+      return Number(localStorage.getItem(aiUsageKey(user)) || '0') || 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  function aiUsageRemaining(user){
+    return Math.max(0, aiDailyLimit(user) - aiUsageCount(user));
+  }
+
+  function recordAiUsage(user){
+    try {
+      localStorage.setItem(aiUsageKey(user), String(aiUsageCount(user) + 1));
+    } catch (_) {}
+  }
+
+  function normalSearchNotice(reason){
+    if (reason === 'limit') {
+      return 'Daily AI beta limit reached, so I am showing normal catalog search results. Normal search remains unlimited.';
+    }
+    return 'AI enhancement is unavailable right now, so I am showing normal catalog search results. Normal search remains unlimited.';
+  }
+
+  function normalSearchHref(query){
+    const q = encodeURIComponent(String(query || '').trim());
+    const text = String(query || '').toLowerCase();
+    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `models.html?q=${q}`;
+    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `deployments.html?q=${q}`;
+    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `oer.html?q=${q}`;
+    return `dataset.html?q=${q}`;
+  }
+
+  function updateAiUsageUi(user){
+    const remaining = document.getElementById('aiSearchesRemaining');
+    if (remaining) remaining.textContent = String(aiUsageRemaining(user));
+  }
+
+  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, issueReports }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
@@ -337,8 +516,10 @@
       resource_collections: collections || [],
       resource_collection_items: collectionItems || [],
       resource_notes: notes || [],
+      search_sessions: aiChats || [],
       badges: badges || [],
-      resource_submissions: suggestions || []
+      resource_submissions: suggestions || [],
+      issue_reports: issueReports || []
     };
   }
 
@@ -494,6 +675,7 @@
 
   const catalogCache = new Map();
   const catalogSources = {
+    ai: 'data/ai-catalog.json',
     dataset: 'data/datasets.json',
     model: 'data/models.json',
     workflow: 'data/use-cases.json',
@@ -720,6 +902,541 @@
     }
     if (text.length > 220) return `<span>${esc(text.slice(0, 220))}<span class="text-muted">...</span></span>`;
     return `<span>${esc(text)}</span>`;
+  }
+
+  function displayList(value, limit = 3){
+    const items = Array.isArray(value)
+      ? value
+      : String(value || '').split(/\s*[,;]\s*/);
+    return items
+      .map(item => String(item ?? '').trim())
+      .filter(Boolean)
+      .slice(0, limit);
+  }
+
+  function firstField(record, keys){
+    for (const key of keys) {
+      const value = record?.[key];
+      if (hasValue(value)) return Array.isArray(value) ? value[0] : value;
+    }
+    return '';
+  }
+
+  function firstUrlField(record, keys){
+    const value = firstField(record, keys);
+    if (typeof value === 'object') return value?.url || value?.href || '';
+    const text = String(value || '').trim();
+    return /^https?:\/\//i.test(text) || /^[\w./-]+\.(png|jpe?g|webp|gif)$/i.test(text) ? text : '';
+  }
+
+  function resourceMediaUrl(item){
+    const record = item.record || {};
+    const url = firstUrlField(record, [
+      'image',
+      'image_url',
+      'image_path',
+      'thumbnail',
+      'thumbnail_url',
+      'preview',
+      'preview_image',
+      'cover',
+      'cover_image'
+    ]);
+    if (!url) return '';
+    return /^https?:\/\//i.test(url) ? url : url.replace(/^\/+/, '');
+  }
+
+  function resourceObjects(record){
+    return displayList(
+      record?.classes ||
+      record?.object_classes ||
+      record?.objects ||
+      record?.categories ||
+      record?.annotation_types ||
+      record?.potential_tasks ||
+      record?.tasks,
+      4
+    );
+  }
+
+  function resourceCardMeta(item){
+    const record = item.record || {};
+    const objects = resourceObjects(record);
+    const added = firstField(record, ['added', 'added_date', 'date_added', 'created_at']) || item.bookmark.created_at || '';
+    return {
+      objects,
+      added: added ? formatDate(added) : '',
+      media: resourceMediaUrl(item)
+    };
+  }
+
+  function resourceInitial(title, type){
+    const source = title || type || 'O';
+    return String(source).trim().charAt(0).toUpperCase() || 'O';
+  }
+
+  function savedResourceCardsHtml(items){
+    if (!items.length) return empty('No saved resources yet', 'Save resources from catalog pages to add them here.');
+    return items.map((item, index) => {
+      const row = item.bookmark;
+      const meta = resourceCardMeta(item);
+      const title = titleOfRecord(item.record, row.title || row.id || row.resource_id);
+      const objectsLabel = meta.objects.join(', ');
+      const cardMeta = [
+        meta.added ? `<span>Added ${esc(meta.added)}</span>` : '',
+        objectsLabel ? `<span>${esc(objectsLabel)}</span>` : ''
+      ].filter(Boolean).join('');
+      return `
+        <article class="oc-library-card" data-resource-card data-title="${esc(title)}" data-type="${esc(item.kind)}" data-objects="${esc(objectsLabel)}" data-created="${esc(row.created_at || '')}">
+          <label class="oc-library-card-select">
+            <input class="form-check-input" type="checkbox" value="${index}" data-resource-select aria-label="Select ${esc(title)}">
+          </label>
+          <div class="oc-library-card-media">
+            ${meta.media ? `<img src="${esc(meta.media)}" alt="">` : `<span>${esc(resourceInitial(title, item.kind))}</span>`}
+          </div>
+          <div class="oc-library-card-body">
+            <div class="oc-library-card-top">
+              <span class="oc-account-type">${esc(typeLabel(item.kind))}</span>
+              <button type="button" class="oc-bookmark-btn active" data-resource-unsave="${index}" aria-label="Remove ${esc(title)} from saved resources" title="Remove from saved resources">${bookmarkIcon()}</button>
+            </div>
+            <h3>${esc(title)}</h3>
+            ${cardMeta ? `<div class="oc-library-card-meta">${cardMeta}</div>` : '<div class="oc-library-card-meta"><span>Saved resource</span></div>'}
+            <div class="oc-library-card-actions">
+              <a class="oc-text-action" href="${esc(bookmarkUrl(row))}">View</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function normalizeAiText(value){
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[_-]+/g, ' ')
+      .replace(/[^\w\s.+#]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function listAi(value){
+    if (Array.isArray(value)) return value.filter(Boolean).map(item => String(item).trim()).filter(Boolean);
+    if (value == null || value === '') return [];
+    return String(value).split(',').map(item => item.trim()).filter(Boolean);
+  }
+
+  function firstAi(value){
+    return listAi(value)[0] || '';
+  }
+
+  function compactAi(values){
+    return values.filter(Boolean).map(value => String(value).trim()).filter(Boolean);
+  }
+
+  function titleCaseAi(raw){
+    const text = String(raw || '').trim();
+    if (!text) return '';
+    const acronym = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod|lod3|ui)$/i;
+    return text.split(/\s+/).map(token => {
+      if (/[A-Z]{2,}/.test(token) || acronym.test(token)) return token.toUpperCase();
+      if (/[A-Z].*[a-z]|[a-z].*[A-Z]/.test(token)) return token;
+      const lower = token.toLowerCase();
+      return `${lower.charAt(0).toUpperCase()}${lower.slice(1)}`;
+    }).join(' ');
+  }
+
+  function firstSentenceAi(value){
+    const clean = String(value || '').replace(/\s+/g, ' ').trim();
+    if (!clean) return '';
+    const match = clean.match(/^.*?[.!?](?:\s|$)/);
+    const sentence = match ? match[0].trim() : clean;
+    return sentence.length > 170 ? `${sentence.slice(0, 167).trimEnd()}...` : sentence;
+  }
+
+  function urlFromAi(item, keys){
+    for (const key of keys) {
+      const value = item?.[key];
+      if (typeof value === 'string' && /^https?:\/\//i.test(value.trim())) return value.trim();
+    }
+    return '';
+  }
+
+  function accountAiResourceFromRecord(type, item){
+    const kind = resourceKind(type);
+    const title = titleCaseAi(titleOfRecord(item, `Untitled ${typeLabel(kind)}`));
+    const commonMedia = urlFromAi(item, ['image', 'image_url', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
+    if (kind === 'dataset') {
+      const tasks = listAi(item.potential_tasks || item.tasks || item.task);
+      const classes = listAi(item.classes || item.object_classes || item.objects);
+      const meta = compactAi([item.year, firstAi(item.data_modality || item.modality), firstAi(tasks), item.num_images || item.samples || item.size]).join(' - ');
+      return {
+        type: 'dataset',
+        label: 'Dataset',
+        title,
+        href: `datasets/detail.html?id=${encodeURIComponent(item.id || item.name || title)}`,
+        dataUrl: urlFromAi(item, ['data_url', 'dataset_url', 'url', 'link', 'homepage']),
+        codeUrl: urlFromAi(item, ['code_url', 'github_url', 'repo_url', 'repository', 'source_code']),
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.description || item.summary || item.paper || ''),
+        haystack: normalizeAiText([title, meta, item.authors, item.doi, item.paper, item.description, item.data_modality, item.license, tasks.join(' '), classes.join(' ')].join(' '))
+      };
+    }
+    if (kind === 'model') {
+      const tasks = listAi(item.tasks || item.task);
+      const modalities = listAi(item.modalities || item.modality);
+      const meta = compactAi([item.year, firstAi(tasks), firstAi(modalities)]).join(' - ');
+      return {
+        type: 'model',
+        label: 'Model',
+        title,
+        href: `models/details.html?id=${encodeURIComponent(item.id || item.title || title)}`,
+        dataUrl: urlFromAi(item, ['paper_url', 'paper', 'doi']),
+        codeUrl: urlFromAi(item, ['code_url', 'github_url', 'repo_url', 'repository']),
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.abstract || item.description || item.summary || ''),
+        haystack: normalizeAiText([title, meta, item.abstract, item.description, item.authors, item.paper_title, tasks.join(' '), modalities.join(' '), listAi(item.applications || item.application).join(' ')].join(' '))
+      };
+    }
+    if (kind === 'workflow') {
+      const titleValue = title || titleCaseAi(item.name || item.id || 'Untitled workflow');
+      const meta = compactAi([item.year, item.phase, firstAi(item.stakeholders)]).join(' - ');
+      return {
+        type: 'workflow',
+        label: 'Workflow',
+        title: titleValue,
+        href: `deployments.html?q=${encodeURIComponent(titleValue)}`,
+        dataUrl: urlFromAi(item, ['url', 'source', 'link']),
+        codeUrl: urlFromAi(item, ['code_url', 'github_url', 'repo_url']),
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.summary || item.description || ''),
+        haystack: normalizeAiText([titleValue, meta, item.summary, item.description, item.provider, listAi(item.applications).join(' '), listAi(item.stakeholders).join(' ')].join(' '))
+      };
+    }
+    const oerMeta = compactAi([item.year, item.provider || item.publisher, firstAi(item.topics)]).join(' - ');
+    return {
+      type: 'oer',
+      label: 'OER',
+      title,
+      href: item.id ? `oers/details.html?id=${encodeURIComponent(item.id)}` : 'oer.html',
+      dataUrl: urlFromAi(item, ['source', 'url', 'link']),
+      codeUrl: '',
+      media: commonMedia,
+      meta: oerMeta,
+      summary: firstSentenceAi(item.description || item.summary || ''),
+      haystack: normalizeAiText([title, oerMeta, item.description, item.summary, item.provider, item.publisher, listAi(item.topics).join(' '), listAi(item.institutions).join(' ')].join(' '))
+    };
+  }
+
+  function accountAiResourceFromIndex(item){
+    const kind = resourceKind(item.type);
+    const title = titleCaseAi(item.title || item.name || item.id || `Untitled ${typeLabel(kind)}`);
+    const meta = compactAi([
+      item.year,
+      firstAi(item.modalities || item.data_modality || item.data_modalities),
+      firstAi(item.tasks || item.task || item.potential_tasks),
+      firstAi(item.annotations || item.annotation_types),
+      item.license
+    ]).join(' - ');
+    return {
+      type: kind,
+      label: typeLabel(kind),
+      title,
+      href: item.href || `${kind}s/details.html?id=${encodeURIComponent(item.id || title)}`,
+      dataUrl: urlFromAi(item, ['data_url', 'dataUrl', 'dataset_url', 'access', 'url', 'source']),
+      codeUrl: urlFromAi(item, ['code_url', 'codeUrl', 'github_url', 'repo_url', 'repository', 'code']),
+      media: urlFromAi(item, ['image', 'image_url', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']),
+      meta,
+      summary: firstSentenceAi(item.summary || item.description || item.abstract || ''),
+      haystack: normalizeAiText([
+        title,
+        meta,
+        item.summary,
+        item.description,
+        item.license,
+        listAi(item.tasks || item.task || item.potential_tasks).join(' '),
+        listAi(item.objects || item.classes || item.object_classes).join(' '),
+        listAi(item.annotations || item.annotation_types).join(' '),
+        listAi(item.modalities || item.data_modality || item.data_modalities).join(' '),
+        listAi(item.applications || item.application || item.use_cases).join(' '),
+        listAi(item.aliases).join(' ')
+      ].join(' '))
+    };
+  }
+
+  let accountAiCatalogPromise = null;
+
+  function loadAiCatalogIndex(){
+    return fetch(catalogSources.ai, { cache: 'no-store' })
+      .then(response => response.ok ? response.json() : Promise.reject(new Error(`Could not load ${catalogSources.ai}`)))
+      .then(payload => Array.isArray(payload) ? payload : [])
+      .then(rows => rows.map(accountAiResourceFromIndex).filter(item => item.title && item.href))
+      .catch(() => []);
+  }
+
+  function loadAccountAiCatalog(){
+    if (accountAiCatalogPromise) return accountAiCatalogPromise;
+    accountAiCatalogPromise = loadAiCatalogIndex().then(indexRows => {
+      if (indexRows.length) return indexRows;
+      return Promise.all([
+        loadCatalog('dataset'),
+        loadCatalog('model'),
+        loadCatalog('workflow'),
+        loadCatalog('oer')
+      ]).then(([datasets, models, workflows, oers]) => [
+        ...datasets.map(item => accountAiResourceFromRecord('dataset', item)),
+        ...models.map(item => accountAiResourceFromRecord('model', item)),
+        ...workflows.map(item => accountAiResourceFromRecord('workflow', item)),
+        ...oers.map(item => accountAiResourceFromRecord('oer', item))
+      ].filter(item => item.title && item.href));
+    });
+    return accountAiCatalogPromise;
+  }
+
+  function expandedAiTerms(query){
+    const stopTerms = new Set([
+      'a',
+      'an',
+      'and',
+      'are',
+      'as',
+      'at',
+      'by',
+      'find',
+      'for',
+      'from',
+      'give',
+      'i',
+      'in',
+      'is',
+      'list',
+      'me',
+      'of',
+      'on',
+      'openconstruction',
+      'or',
+      'please',
+      'resource',
+      'resources',
+      'show',
+      'that',
+      'the',
+      'to',
+      'with'
+    ]);
+    const base = normalizeAiText(query)
+      .split(/\s+/)
+      .filter(term => term.length > 1 && !stopTerms.has(term));
+    const map = {
+      ppe: ['personal', 'protective', 'equipment', 'helmet', 'hardhat', 'vest'],
+      hardhat: ['helmet', 'ppe'],
+      safety: ['ppe', 'hazard', 'worker', 'accident'],
+      workers: ['worker', 'person', 'people'],
+      equipment: ['machinery', 'vehicle', 'excavator', 'crane'],
+      annotation: ['annotated', 'label', 'labels'],
+      annotations: ['annotated', 'label', 'labels'],
+      bounding: ['bbox', 'box', 'boxes', 'detection'],
+      boxes: ['bbox', 'box', 'detection'],
+      code: ['github', 'repository', 'repo'],
+      largest: ['images', 'samples', 'records'],
+      compare: ['dataset', 'model', 'benchmark'],
+      download: ['data', 'url', 'source']
+    };
+    const terms = new Set(base);
+    base.forEach(term => (map[term] || []).forEach(extra => terms.add(extra)));
+    return Array.from(terms);
+  }
+
+  function requestedAiTypes(query){
+    const text = normalizeAiText(query);
+    const matches = [];
+    const patterns = [
+      ['dataset', /\b(data\s*sets?|dataset|benchmarks?|annotations?|annotated|bounding boxes?|image sets?|video sets?|object detection|semantic segmentation|instance segmentation|ppe|hardhats?|helmets?|safety vests?|workers?)\b/],
+      ['model', /\b(models?|checkpoints?|architectures?|trained model|detectors?|segmenters?)\b/],
+      ['workflow', /\b(workflows?|use cases?|deployments?|pipelines?|processes?)\b/],
+      ['oer', /\b(oers?|open educational resources?|courses?|teaching|education|tutorials?|lectures?|syllabus)\b/]
+    ];
+    patterns.forEach(([type, pattern]) => {
+      if (pattern.test(text)) matches.push(type);
+    });
+    return matches;
+  }
+
+  function scoreAiResource(resource, query){
+    const terms = expandedAiTerms(query);
+    if (!terms.length) return 0;
+    let score = 0;
+    const title = normalizeAiText(resource.title);
+    const meta = normalizeAiText(resource.meta);
+    terms.forEach(term => {
+      if (title.includes(term)) score += 5;
+      if (meta.includes(term)) score += 3;
+      if (resource.haystack.includes(term)) score += 1;
+    });
+    const requestedTypes = requestedAiTypes(query);
+    if (requestedTypes.includes(resource.type)) score += 18;
+    if (requestedTypes.length && !requestedTypes.includes(resource.type)) score -= 12;
+    if (/code|github|repo|repository/i.test(query) && resource.codeUrl) score += 4;
+    if (/data|download|source/i.test(query) && resource.dataUrl) score += 2;
+    return score;
+  }
+
+  function selectAiCandidates(catalog, query, limit = 8){
+    const requestedTypes = requestedAiTypes(query);
+    const scored = (Array.isArray(catalog) ? catalog : [])
+      .map(resource => ({ ...resource, score: scoreAiResource(resource, query) }))
+      .filter(resource => resource.score > 0);
+    const narrowed = requestedTypes.length
+      ? scored.filter(resource => requestedTypes.includes(resource.type))
+      : scored;
+    return narrowed
+      .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+      .slice(0, limit);
+  }
+
+  function resourceMagnitude(resource){
+    const text = [resource.meta, resource.summary, resource.title].join(' ');
+    const numbers = String(text).match(/\b\d[\d,]*(?:\.\d+)?\b/g) || [];
+    return numbers.reduce((max, raw) => Math.max(max, Number(raw.replace(/,/g, '')) || 0), 0);
+  }
+
+  function refineAiResultsFromPrevious(previousResults, query){
+    const previous = Array.isArray(previousResults) ? previousResults.filter(Boolean) : [];
+    if (!previous.length) return [];
+    let rows = previous.slice();
+    const clean = String(query || '');
+    const wantsOnly = /\bonly\b|\bfilter\b|\bshow\b/i.test(clean);
+    const typeMatches = [
+      ['dataset', /\bdatasets?\b/i],
+      ['model', /\bmodels?\b/i],
+      ['workflow', /\bworkflows?\b|\bdeployments?\b/i],
+      ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i]
+    ].filter(([, pattern]) => pattern.test(clean)).map(([type]) => type);
+    if ((wantsOnly || typeMatches.length) && typeMatches.length) {
+      const filtered = rows.filter(resource => typeMatches.includes(resource.type));
+      if (filtered.length) rows = filtered;
+    }
+    if (/\b(code|github|repo|repository)\b/i.test(clean)) {
+      const filtered = rows.filter(resource => resource.codeUrl);
+      if (filtered.length) rows = filtered;
+    }
+    if (/\b(data|download|source)\b/i.test(clean)) {
+      const filtered = rows.filter(resource => resource.dataUrl);
+      if (filtered.length) rows = filtered;
+    }
+    const scored = rows
+      .map(resource => ({
+        ...resource,
+        score: scoreAiResource(resource, clean),
+        magnitude: resourceMagnitude(resource)
+      }))
+      .sort((a, b) => {
+        if (/\b(largest|biggest|most|size)\b/i.test(clean)) return b.magnitude - a.magnitude || b.score - a.score || a.title.localeCompare(b.title);
+        return b.score - a.score || a.title.localeCompare(b.title);
+      });
+    const hasSpecificScore = scored.some(resource => resource.score > 0);
+    return (hasSpecificScore ? scored.filter(resource => resource.score > 0 || wantsOnly) : scored).slice(0, 8);
+  }
+
+  function reasonForAiResource(resource, query){
+    const terms = expandedAiTerms(query).filter(term => resource.haystack.includes(term)).slice(0, 4);
+    if (terms.length) return `Matched catalog evidence for ${terms.join(', ')}.`;
+    return resource.summary || `Relevant ${resource.label.toLowerCase()} record from the OpenConstruction catalog.`;
+  }
+
+  function answerForAiQuery(query, results, catalogLoaded, scoped = false){
+    if (!catalogLoaded) return 'I could not load the catalog data in this environment yet.';
+    if (!results.length) {
+      const requestedTypes = requestedAiTypes(query).map(typeLabel);
+      const typeText = requestedTypes.length ? `${requestedTypes.join(' or ').toLowerCase()} ` : '';
+      return `I could not find enough ${typeText}catalog evidence for that query. Try broader terms such as safety monitoring, object detection, BIM, point cloud, or education.`;
+    }
+    const counts = results.reduce((acc, item) => {
+      acc[item.label] = (acc[item.label] || 0) + 1;
+      return acc;
+    }, {});
+    const summary = Object.entries(counts).map(([label, count]) => `${count} ${label.toLowerCase()}${count === 1 ? '' : 's'}`).join(', ');
+    const top = results[0];
+    const scope = scoped ? 'From the current results, ' : '';
+    return `${scope}I found ${summary}. The strongest match is ${top.title}, because ${reasonForAiResource(top, query).toLowerCase()} Review the resource cards below for source links and supporting records.`;
+  }
+
+  function accountAiResourceCardsHtml(results, query){
+    if (!results.length) return empty('No matching resources yet', 'Try a broader catalog question or fewer constraints.');
+    return results.map(resource => `
+      <article class="oc-library-card oc-ai-result-card">
+        <div class="oc-library-card-media">
+          ${resource.media ? `<img src="${esc(resource.media)}" alt="">` : `<span>${esc(resourceInitial(resource.title, resource.type))}</span>`}
+        </div>
+        <div class="oc-library-card-body">
+          <div class="oc-library-card-top">
+            <span class="oc-account-type">${esc(resource.label)}</span>
+            ${window.OCBookmark?.buttonHtml ? window.OCBookmark.buttonHtml({ type: resource.type, id: resource.href, title: resource.title, url: resource.href }) : ''}
+          </div>
+          <h3>${esc(resource.title)}</h3>
+          ${resource.meta ? `<div class="oc-library-card-meta">${resource.meta.split(' - ').filter(Boolean).slice(0, 3).map(item => `<span>${esc(item)}</span>`).join('')}</div>` : '<div class="oc-library-card-meta"><span>Catalog resource</span></div>'}
+          <p class="oc-ai-result-reason">${esc(reasonForAiResource(resource, query))}</p>
+          <div class="oc-library-card-actions">
+            <a class="oc-text-action" href="${esc(resource.href)}">View</a>
+            ${resource.dataUrl ? `<a class="oc-text-action" href="${esc(resource.dataUrl)}" target="_blank" rel="noopener">Data</a>` : ''}
+            ${resource.codeUrl ? `<a class="oc-text-action" href="${esc(resource.codeUrl)}" target="_blank" rel="noopener">Code</a>` : ''}
+          </div>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function resourceKeyAi(value){
+    return String(value || '').replace(/^\.?\//, '').replace(/^https?:\/\/(?:www\.)?openconstruction\.org\//i, '');
+  }
+
+  function candidatesForGeminiAi(resources, limit = 300){
+    return (Array.isArray(resources) ? resources : []).slice(0, limit).map(resource => ({
+      type: resource.type,
+      label: resource.label,
+      title: resource.title,
+      href: resource.href,
+      dataUrl: resource.dataUrl,
+      codeUrl: resource.codeUrl,
+      meta: resource.meta,
+      summary: resource.summary,
+      evidence: String(resource.haystack || '').slice(0, 600)
+    }));
+  }
+
+  function orderGeminiResultsAi(resources, hrefs){
+    const rows = Array.isArray(resources) ? resources : [];
+    const orderedHrefs = Array.isArray(hrefs) ? hrefs.map(resourceKeyAi).filter(Boolean) : [];
+    if (!orderedHrefs.length) return rows;
+    const byHref = new Map(rows.map(resource => [resourceKeyAi(resource.href), resource]));
+    const picked = [];
+    orderedHrefs.forEach(href => {
+      const resource = byHref.get(href);
+      if (resource && !picked.includes(resource)) picked.push(resource);
+    });
+    rows.forEach(resource => {
+      if (!picked.includes(resource)) picked.push(resource);
+    });
+    return picked.slice(0, rows.length);
+  }
+
+  async function askOpenConstructionWithGemini(query, candidates, previousMessages){
+    if (!sb?.functions?.invoke || !candidates?.length) return null;
+    const { data, error } = await sb.functions.invoke('ask-openconstruction', {
+      body: {
+        query,
+        candidates: candidatesForGeminiAi(candidates),
+        previousMessages: (Array.isArray(previousMessages) ? previousMessages : []).slice(-6).map(message => ({
+          role: message.role,
+          text: message.text
+        }))
+      }
+    });
+    if (error) throw error;
+    if (!data || typeof data.answer !== 'string' || !data.answer.trim()) return null;
+    return data;
   }
 
   function compareFieldRow(field, items){
@@ -1012,7 +1729,7 @@
           });
           if (result.saved) throw new Error('Resource is still saved.');
           bookmarks[index] = null;
-          button.closest('.oc-account-row')?.remove();
+          button.closest('[data-resource-card]')?.remove();
           compareOutput.innerHTML = '';
           status.textContent = 'Removed from saved resources.';
         } catch (err) {
@@ -1064,6 +1781,57 @@
     });
   }
 
+  function bindLibraryFilters(){
+    const queryInput = document.getElementById('libraryFilterInput');
+    const typeSelect = document.getElementById('libraryTypeSelect');
+    const sortSelect = document.getElementById('librarySortSelect');
+    const exactInput = document.getElementById('libraryExactObjects');
+    const grid = document.getElementById('libraryResourceGrid');
+    const count = document.getElementById('libraryVisibleCount');
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('[data-resource-card]'));
+    const normalize = value => String(value || '').trim().toLowerCase();
+
+    function apply(){
+      const query = normalize(queryInput?.value);
+      const type = normalize(typeSelect?.value);
+      const exact = Boolean(exactInput?.checked);
+      let visible = 0;
+
+      cards.forEach(card => {
+        const title = normalize(card.dataset.title);
+        const objects = normalize(card.dataset.objects);
+        const objectList = objects.split(/\s*,\s*/).filter(Boolean);
+        const matchesType = !type || card.dataset.type === type;
+        const matchesQuery = !query || (
+          exact
+            ? objectList.includes(query)
+            : `${title} ${objects}`.includes(query)
+        );
+        const show = matchesType && matchesQuery;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      const sorted = cards.slice().sort((a, b) => {
+        const mode = sortSelect?.value || 'created';
+        if (mode === 'oldest') return String(a.dataset.created || '').localeCompare(String(b.dataset.created || ''));
+        if (mode === 'title-az') return String(a.dataset.title || '').localeCompare(String(b.dataset.title || ''));
+        if (mode === 'title-za') return String(b.dataset.title || '').localeCompare(String(a.dataset.title || ''));
+        return String(b.dataset.created || '').localeCompare(String(a.dataset.created || ''));
+      });
+      sorted.forEach(card => grid.appendChild(card));
+      if (count) count.textContent = `${visible} shown`;
+    }
+
+    [queryInput, typeSelect, sortSelect, exactInput].forEach(control => {
+      control?.addEventListener('input', apply);
+      control?.addEventListener('change', apply);
+    });
+    apply();
+  }
+
   function bookmarkOptionsHtml(bookmarks){
     return (bookmarks || []).map(row => `
       <option value="${esc(bookmarkKey(row))}">${esc(typeLabel(row.type))}: ${esc(row.title || row.id)}</option>
@@ -1090,9 +1858,9 @@
               ${collection.description ? `<p class="small text-muted mb-0">${esc(collection.description)}</p>` : '<p class="small text-muted mb-0">Private resource collection</p>'}
             </div>
             <div class="oc-account-actions">
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-export-collection="${esc(collection.id)}" data-export-format="json">JSON</button>
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-export-collection="${esc(collection.id)}" data-export-format="csv">CSV</button>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-delete-collection="${esc(collection.id)}">Delete</button>
+              <button type="button" class="oc-text-action" data-export-collection="${esc(collection.id)}" data-export-format="json">JSON</button>
+              <button type="button" class="oc-text-action" data-export-collection="${esc(collection.id)}" data-export-format="csv">CSV</button>
+              <button type="button" class="oc-text-action text-danger" data-delete-collection="${esc(collection.id)}">Delete</button>
             </div>
           </div>
           <div class="oc-collection-items mb-3">
@@ -1105,7 +1873,7 @@
                     <span class="oc-account-type">${esc(typeLabel(item.resource_type))}</span>
                     <strong>${esc(bookmark?.title || item.resource_id)}</strong>
                   </span>
-                  <button type="button" class="btn btn-outline-secondary btn-sm" data-remove-collection-item="${esc(collection.id)}" data-resource-type="${esc(item.resource_type)}" data-resource-id="${esc(item.resource_id)}">Remove</button>
+                  <button type="button" class="oc-text-action" data-remove-collection-item="${esc(collection.id)}" data-resource-type="${esc(item.resource_type)}" data-resource-id="${esc(item.resource_id)}">Remove</button>
                 </div>
               `;
             }).join('') : empty('No resources in this collection')}
@@ -1115,7 +1883,7 @@
               <select class="form-select form-select-sm" data-collection-resource="${esc(collection.id)}" aria-label="Saved resource">
                 ${options}
               </select>
-              <button type="button" class="btn btn-primary btn-sm" data-add-collection-item="${esc(collection.id)}">Add</button>
+              <button type="button" class="oc-text-action" data-add-collection-item="${esc(collection.id)}">Add</button>
             </div>
           ` : '<p class="small text-muted mb-0">Save resources before adding items to a collection.</p>'}
         </article>
@@ -1136,7 +1904,7 @@
               <h4 class="h6 fw-bold mb-1">${esc(row.title || row.id)}</h4>
               <div class="small text-muted">${tagListHtml(note.tags)}</div>
             </div>
-            <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
+            <a class="oc-text-action" href="${esc(bookmarkUrl(row))}">View</a>
           </div>
           <input type="hidden" name="resource_type" value="${esc(resourceKind(row.type))}">
           <input type="hidden" name="resource_id" value="${esc(row.id || row.resource_id)}">
@@ -1151,13 +1919,93 @@
             </div>
           </div>
           <div class="d-flex align-items-center gap-2 flex-wrap">
-            <button type="submit" class="btn btn-primary btn-sm">Save note</button>
-            ${note.user_id ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-clear-note="${esc(key)}">Clear</button>` : ''}
+            <button type="submit" class="oc-text-action">Save note</button>
+            ${note.user_id ? `<button type="button" class="oc-text-action" data-clear-note="${esc(key)}">Clear</button>` : ''}
             <span class="small text-muted" role="status"></span>
           </div>
         </form>
       `;
     }).join('');
+  }
+
+  function issueTypeLabel(type){
+    return {
+      broken_link: 'Broken link',
+      'Broken link': 'Broken link',
+      metadata: 'Metadata correction',
+      'Metadata correction': 'Metadata correction',
+      access: 'Access or download',
+      'Access or download problem': 'Access or download',
+      duplicate: 'Duplicate record',
+      'Duplicate record': 'Duplicate record',
+      platform: 'Platform feedback',
+      'Platform feedback': 'Platform feedback',
+      other: 'Other'
+    }[type] || typeLabel(type);
+  }
+
+  function reviewNoteHtml(note){
+    if (!note) return '';
+    return `
+      <div class="oc-review-note">
+        <span>Reviewer note</span>
+        <p>${esc(note)}</p>
+      </div>
+    `;
+  }
+
+  function activityStatusHtml(status){
+    return `<span class="${statusClass(status)} oc-activity-status">${esc(statusLabel(status))}</span>`;
+  }
+
+  function workspaceStatusDashboardHtml(submissions, reports, reportsReady = true){
+    const submissionRows = Array.isArray(submissions) ? submissions : [];
+    const reportRows = reportsReady && Array.isArray(reports) ? reports : [];
+    const inReviewCount = submissionRows.filter(row => row.status === 'in_review').length
+      + reportRows.filter(row => row.status === 'in_review').length;
+    const completedCount = submissionRows.filter(row => ['added', 'approved'].includes(row.status)).length
+      + reportRows.filter(row => row.status === 'resolved').length;
+    return `
+      <section class="oc-activity-summary" aria-label="Workspace status summary">
+        <span><strong>${submissionRows.length}</strong> submissions</span>
+        <span><strong>${reportRows.length}</strong> reports</span>
+        <span><strong>${inReviewCount}</strong> in review</span>
+        <span><strong>${completedCount}</strong> completed</span>
+      </section>
+    `;
+  }
+
+  function resourceSubmissionListHtml(submissions){
+    const rows = Array.isArray(submissions) ? submissions : [];
+    if (!rows.length) return empty('No resource submissions yet', 'Use Submit when you want OpenConstruction maintainers to review an open resource.');
+    return rows.map(row => `
+      <article class="oc-account-row oc-activity-row">
+        <span class="oc-activity-body">
+          <span class="oc-account-type">${esc(typeLabel(row.resource_type))} &middot; ${esc(formatDate(row.created_at))}</span>
+          <strong>${esc(row.title || 'Resource submission')}</strong>
+          ${reviewNoteHtml(row.maintainer_note)}
+        </span>
+        ${activityStatusHtml(row.status)}
+      </article>
+    `).join('');
+  }
+
+  function issueReportListHtml(reports, ready = true){
+    if (!ready) return '';
+    const rows = Array.isArray(reports) ? reports : [];
+    if (!rows.length) return empty('No reports yet', 'Use Report issue when you find a broken link, metadata problem, or platform issue.');
+    return rows.map(report => `
+      <article class="oc-account-row oc-activity-row">
+        <span class="oc-activity-body">
+          <span class="oc-account-type">${esc(issueTypeLabel(report.issue_type))} &middot; ${esc(formatDate(report.created_at))}</span>
+          <strong>${esc(report.summary || 'Issue report')}</strong>
+          ${report.page_url ? `<a class="oc-issue-report-url" href="${esc(report.page_url)}">Reported page</a>` : ''}
+          <span class="oc-account-meta oc-activity-detail">${esc(report.details || '')}</span>
+          ${reviewNoteHtml(report.maintainer_note)}
+        </span>
+        ${activityStatusHtml(report.status)}
+      </article>
+    `).join('');
   }
 
   function bindWorkspaceTabs(){
@@ -1174,7 +2022,8 @@
       });
     };
     tabs.forEach(tab => tab.addEventListener('click', () => show(tab.dataset.workspaceTab)));
-    show('library');
+    const requested = new URLSearchParams(window.location.search).get('tab');
+    show(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : 'ask');
   }
 
   function selectorValue(value){
@@ -1460,6 +2309,18 @@
     form.dataset.bound = 'true';
     form.elements.submitter_name.value ||= user.user_metadata?.full_name || user.user_metadata?.name || '';
     form.elements.submitter_email.value ||= user.email || '';
+    form.elements.submitter_affiliation.value ||= window.OCAuth.affiliation?.(user) || '';
+    const permissionWrap = form.querySelector('[data-permission-statement]');
+    const creditNameWrap = form.querySelector('[data-credit-name]');
+    function syncSubmissionOptions(){
+      const isThirdParty = form.elements.authorship.value === 'third_party';
+      if (permissionWrap) permissionWrap.hidden = !isThirdParty;
+      if (form.elements.permission_statement) form.elements.permission_statement.required = isThirdParty;
+      if (creditNameWrap) creditNameWrap.hidden = !form.elements.community_credit?.checked;
+    }
+    form.elements.authorship?.addEventListener('change', syncSubmissionOptions);
+    form.elements.community_credit?.addEventListener('change', syncSubmissionOptions);
+    syncSubmissionOptions();
     form.addEventListener('submit', async event => {
       event.preventDefault();
       const status = document.getElementById('suggestionStatus');
@@ -1469,18 +2330,24 @@
         return;
       }
       status.textContent = 'Submitting...';
+      const creditRequested = Boolean(form.elements.community_credit?.checked);
+      const creditName = form.elements.community_credit_name?.value.trim() || form.elements.submitter_name.value.trim();
+      const description = form.elements.description.value.trim();
+      const creditNote = creditRequested
+        ? `Community contributor credit request: list ${creditName} on the Community page if this resource is accepted. Submitter confirms they have permission to include these names.`
+        : '';
       const payload = {
         user_id: user.id,
         submitter_name: form.elements.submitter_name.value.trim(),
         submitter_email: form.elements.submitter_email.value.trim(),
         submitter_affiliation: form.elements.submitter_affiliation.value.trim(),
-        submitter_github: form.elements.submitter_github.value.trim() || null,
+        submitter_github: null,
         resource_type: form.elements.resource_type.value,
         title: form.elements.title.value.trim(),
         doi: form.elements.doi.value.trim() || null,
         url: form.elements.url.value.trim(),
         license: form.elements.license.value.trim(),
-        description: form.elements.description.value.trim() || null,
+        description: [description, creditNote].filter(Boolean).join('\n\n') || null,
         authorship: form.elements.authorship.value,
         permission_statement: form.elements.permission_statement.value.trim() || null,
         agreement_contact_current: form.elements.agreement_contact_current.checked,
@@ -1498,8 +2365,55 @@
       form.reset();
       form.elements.submitter_name.value = user.user_metadata?.full_name || user.user_metadata?.name || '';
       form.elements.submitter_email.value = user.email || '';
-      status.textContent = 'Resource submitted. Refreshing dashboard...';
-      window.setTimeout(() => window.location.reload(), 650);
+      form.elements.submitter_affiliation.value = window.OCAuth.affiliation?.(user) || '';
+      syncSubmissionOptions();
+      status.textContent = 'Resource submitted. Opening status dashboard...';
+      window.setTimeout(() => {
+        window.location.href = `${window.location.pathname}?tab=reports`;
+      }, 650);
+    });
+  }
+
+  function bindIssueReportForm(user, onSubmitted){
+    const form = document.getElementById('issueReportForm');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.elements.reporter_name.value ||= user.user_metadata?.full_name || user.user_metadata?.name || '';
+    form.elements.reporter_email.value ||= user.email || '';
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page') || '';
+    if (page && /^https?:\/\//i.test(page)) form.elements.page_url.value ||= page;
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('issueReportStatus');
+      const button = form.querySelector('button[type="submit"]');
+      status.textContent = 'Submitting...';
+      button.disabled = true;
+      const payload = {
+        user_id: user.id,
+        issue_type: form.elements.issue_type.value,
+        page_url: form.elements.page_url.value.trim() || null,
+        summary: form.elements.summary.value.trim(),
+        details: form.elements.details.value.trim(),
+        reporter_name: form.elements.reporter_name.value.trim() || null,
+        reporter_email: form.elements.reporter_email.value.trim() || null,
+        status: 'pending'
+      };
+      const { data, error } = await sb.from('site_issue_reports').insert(payload).select('*').single();
+      button.disabled = false;
+      if (error) {
+        status.textContent = error.message || 'Could not submit report.';
+        return;
+      }
+      if (typeof onSubmitted === 'function') onSubmitted(data || payload);
+      form.reset();
+      form.elements.reporter_name.value = user.user_metadata?.full_name || user.user_metadata?.name || '';
+      form.elements.reporter_email.value = user.email || '';
+      status.textContent = 'Report submitted. Thank you.';
+      window.setTimeout(() => {
+        window.bootstrap?.Modal.getInstance(document.getElementById('reportIssueModal'))?.hide();
+        document.querySelector('[data-workspace-tab="reports"]')?.click();
+      }, 700);
     });
   }
 
@@ -1545,13 +2459,103 @@
     });
   }
 
+  async function renderAnonymousAsk(initialQuery){
+    const cleanInitial = String(initialQuery || '').trim();
+    root.className = '';
+    root.innerHTML = `
+      <section class="oc-ask-workspace oc-anonymous-ask">
+        <h3 class="h4 fw-bold mb-2"><span class="oc-ask-title-mark" aria-hidden="true">&#10022;</span>Ask OpenConstruction <span class="oc-beta-pill">Beta</span></h3>
+        <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
+        <section id="accountAiOutput" class="oc-account-ai-output" hidden>
+          <div id="accountAiThread" class="oc-account-ai-thread"></div>
+          <div class="oc-library-grid" id="accountAiResults"></div>
+        </section>
+        <form class="oc-ask-form" id="anonymousAskForm">
+          <input name="q" class="form-control" placeholder="Ask OpenConstruction" value="${esc(cleanInitial)}">
+          <button type="submit" class="oc-primary-action" aria-label="Send">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+          </button>
+        </form>
+        <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+      </section>
+    `;
+
+    function renderAnonymousResults(query, answer, results){
+      const output = document.getElementById('accountAiOutput');
+      const threadEl = document.getElementById('accountAiThread');
+      const resultsEl = document.getElementById('accountAiResults');
+      if (!output || !threadEl || !resultsEl) return;
+      output.hidden = false;
+      threadEl.innerHTML = [
+        { role: 'user', text: query },
+        { role: 'assistant', text: answer }
+      ].map(message => `
+        <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
+          <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
+          <p>${esc(message.text || '')}</p>
+        </div>
+      `).join('');
+      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '');
+      window.OCBookmark?.mount?.(resultsEl);
+    }
+
+    async function run(query){
+      const clean = String(query || '').trim();
+      if (!clean) return;
+      const catalog = await loadAccountAiCatalog();
+      let results = selectAiCandidates(catalog, clean);
+      let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
+      const shouldUseAi = aiUsageRemaining(null) > 0;
+      if (shouldUseAi) {
+        try {
+          const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
+          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
+          if (gemini?.answer) {
+            recordAiUsage(null);
+            answer = gemini.answer;
+            if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
+              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
+            }
+          } else {
+            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          }
+        } catch (err) {
+          console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
+          answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+        }
+      } else {
+        answer = `${normalSearchNotice('limit')}\n\n${answer}`;
+      }
+      renderAnonymousResults(clean, answer, results);
+    }
+
+    document.getElementById('anonymousAskForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      const query = event.currentTarget.elements.q.value.trim();
+      if (!query) return;
+      if (aiUsageRemaining(null) <= 0) {
+        window.location.href = normalSearchHref(query);
+        return;
+      }
+      run(query);
+    });
+
+    if (cleanInitial) await run(cleanInitial);
+  }
+
   function renderSignedOut(){
+    window.OCAuth?.setReturnTo?.(window.location.href);
     window.location.replace('auth/sign-in.html');
   }
 
   try {
     const user = await window.OCAuth.getUser();
     if (!user) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('anon') === '1' && params.get('q')) {
+        await renderAnonymousAsk(params.get('q'));
+        return;
+      }
       renderSignedOut();
       return;
     }
@@ -1565,7 +2569,7 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes] = await Promise.all([
+    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, issueReportsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
@@ -1573,7 +2577,8 @@
       identitiesPromise,
       safeRows(sb.from('resource_collections').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource collections'),
       safeRows(sb.from('resource_collection_items').select('*').eq('user_id', user.id).order('created_at', { ascending: false }), 'collection items'),
-      safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes')
+      safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes'),
+      safeRows(sb.from('site_issue_reports').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50), 'issue reports')
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -1586,7 +2591,9 @@
     const collections = collectionsRes.rows || [];
     const collectionItems = collectionItemsRes.rows || [];
     const notes = notesRes.rows || [];
-    const workspaceSchemaErrors = [collectionsRes, collectionItemsRes, notesRes].filter(result => result.error);
+    let issueReports = issueReportsRes.rows || [];
+    let issueReportsReady = !issueReportsRes.error;
+    const aiChats = readAiChats(user);
     const notesByKey = workspaceRowsByKey(notes);
     const avatar = profile.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || '';
     const fallbackName = window.OCAuth.displayName?.(user) || user.user_metadata?.full_name || user.user_metadata?.name || 'OpenConstruction member';
@@ -1603,7 +2610,6 @@
     }, {});
     const recentBookmarks = bookmarks;
     const publicBadges = badges.filter(row => row.public !== false);
-    const pendingCount = suggestions.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'needs_changes').length;
     const addedCount = suggestions.filter(row => row.status === 'added').length;
     const hasContributorBadge = publicBadges.some(row => [
       'dataset_contributor',
@@ -1625,19 +2631,7 @@
       .filter(role => role !== 'user')
       .map(role => `<span class="oc-status-pill oc-status-role">${esc(roleLabels[role] || role)}</span>`)
       .join('');
-    const annotatedCount = notes.filter(row => row.note || (Array.isArray(row.tags) && row.tags.length)).length;
-    const taggedCount = notes.filter(row => Array.isArray(row.tags) && row.tags.length).length;
-    const collectionNamesById = new Map(collections.map(collection => [collection.id, collection.name]));
-    const collectionNamesByResource = collectionItems.reduce((acc, item) => {
-      const key = resourceKey(item.resource_type, item.resource_id);
-      const name = collectionNamesById.get(item.collection_id);
-      if (!name) return acc;
-      const list = acc.get(key) || [];
-      list.push(name);
-      acc.set(key, list);
-      return acc;
-    }, new Map());
-    const collectionOptions = collectionOptionsHtml(collections);
+    const enrichedBookmarks = await Promise.all(recentBookmarks.map(enrichBookmark));
     const accountDataExport = accountExportPayload({
       user,
       profile,
@@ -1648,7 +2642,9 @@
       identities,
       collections,
       collectionItems,
-      notes
+      notes,
+      aiChats,
+      issueReports
     });
 
     function badgeIcon(){
@@ -1660,280 +2656,199 @@
       `;
     }
 
+    function workspaceIcon(name){
+      const icons = {
+        search: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>',
+        library: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h4.5v13H5z"></path><path d="M9.5 5.5H14v13H9.5z"></path><path d="M14 6.5 18.5 18"></path></svg>',
+        plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>',
+        edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h4l10-10-4-4L5 15v4z"></path><path d="m13.5 6.5 4 4"></path></svg>',
+        upload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"></path><path d="m8 9 4-4 4 4"></path><path d="M5 19h14"></path></svg>',
+        report: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 19H3L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>',
+        activity: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h11"></path><path d="M8 12h11"></path><path d="M8 18h11"></path><path d="m3.5 6 1 1 2-2"></path><path d="m3.5 12 1 1 2-2"></path><path d="m3.5 18 1 1 2-2"></path></svg>',
+        settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"></path><path d="M19 12a7.8 7.8 0 0 0-.12-1.35l2.02-1.55-2-3.46-2.4.96a7.85 7.85 0 0 0-2.34-1.35L13.8 2.7H9.8l-.36 2.55A7.85 7.85 0 0 0 7.1 6.6l-2.4-.96-2 3.46 2.02 1.55a7.8 7.8 0 0 0 0 2.7L2.7 14.9l2 3.46 2.4-.96a7.85 7.85 0 0 0 2.34 1.35l.36 2.55h4l.36-2.55a7.85 7.85 0 0 0 2.34-1.35l2.4.96 2-3.46-2.02-1.55A7.8 7.8 0 0 0 19 12Z"></path></svg>',
+        credential: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25 19 6v5.25c0 4.2-2.75 8.1-7 9.5-4.25-1.4-7-5.3-7-9.5V6l7-2.75Z"></path><path d="m9.25 12.1 1.75 1.75 3.9-4.05"></path></svg>'
+      };
+      return icons[name] || '';
+    }
+
+    let currentAiChats = writeAiChats(user, aiChats);
+    let activeAccountChatId = '';
+
     root.className = 'oc-account-grid';
     root.innerHTML = `
       <aside class="oc-workspace-sidebar">
-        <section class="oc-workspace-card oc-account-profile-card">
-          <div class="oc-account-profile-head">
-            ${avatar ? `<img class="oc-account-avatar" src="${esc(avatar)}" alt="">` : ''}
-            <div>
-              <p class="oc-workspace-kicker mb-1">Workspace</p>
-              <h1 class="h4 fw-bold mb-1">${esc(name)}</h1>
-              ${accountEmail ? `<div class="text-muted small">${esc(accountEmail)}</div>` : ''}
-              <div class="text-muted small">${affiliation ? esc(affiliation) : 'OpenConstruction member'}</div>
-              ${roleBadgesHtml ? `<div class="d-flex gap-2 flex-wrap mt-2">${roleBadgesHtml}</div>` : ''}
-            </div>
+        <nav class="oc-workspace-nav" aria-label="Workspace">
+          <button type="button" class="oc-workspace-nav-item active" data-workspace-tab="ask" aria-selected="true" aria-label="Ask OpenConstruction" title="Ask OpenConstruction"><span aria-hidden="true">✦</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="library" aria-selected="false" aria-label="Personal Library" title="Personal Library">${workspaceIcon('library')}<span>Library</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="reports" aria-selected="false" aria-label="Activity" title="Activity">${workspaceIcon('activity')}<span>Activity</span></button>
+        </nav>
+        <div class="oc-sidebar-sessions">
+          <div class="oc-sidebar-sessions-head">
+            <span>Sessions</span>
+            <button type="button" data-new-ai-session aria-label="New session" title="New session">${workspaceIcon('plus')}</button>
           </div>
-          <div class="d-grid gap-2">
-            <a class="btn btn-primary btn-sm" href="dataset.html">Explore catalog</a>
-            ${canReview ? `<a class="btn btn-outline-primary btn-sm" href="maintainer.html">${isAdmin ? 'Admin console' : 'Review queue'}</a>` : ''}
-            <button type="button" id="signOutBtn" class="btn btn-outline-secondary btn-sm">Sign out</button>
-          </div>
-        </section>
-
-        ${publicBadges.length ? `
-          <section class="oc-workspace-card oc-credentials-card">
-            <h2 class="oc-sidebar-section-title">Credentials</h2>
-            <p class="small text-muted mb-3">Download verified OpenConstruction contribution certificates.</p>
-            <div class="oc-badge-grid">
-              ${publicBadges.map((row, index) => `
-                <article class="oc-badge-card" title="${esc(row.badge_description || '')}">
-                  <div class="oc-badge-card-icon">${badgeIcon()}</div>
-                  <div class="oc-badge-card-body">
-                    <strong>${esc(row.badge_label)}</strong>
-                    <span>${row.awarded_at ? `Issued ${formatDate(row.awarded_at)}` : 'Verified credential'}</span>
-                  </div>
-                  <div class="oc-badge-card-actions">
-                    <button type="button" class="btn btn-primary btn-sm" data-badge-certificate="${index}">Download PDF</button>
-                  </div>
-                </article>
-              `).join('')}
-            </div>
-          </section>
-        ` : ''}
-
-        <section class="oc-workspace-card oc-account-settings-card">
-          <details class="oc-settings-panel">
-            <summary>Account settings</summary>
-            <div class="oc-settings-block">
-              <h2 class="h6 fw-bold mb-3">Profile</h2>
-              <form id="profileForm" class="oc-profile-form">
-                <div>
-                  <label for="profileDisplayName" class="form-label small fw-bold">Display name</label>
-                  <input id="profileDisplayName" name="display_name" class="form-control form-control-sm" value="${esc(name)}">
-                </div>
-                <div>
-                  <label for="profileAffiliation" class="form-label small fw-bold">Affiliation</label>
-                  <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, lab, or organization">
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                  <button type="submit" class="btn btn-outline-primary btn-sm">Save profile</button>
-                  <span id="profileStatus" class="small text-muted" role="status"></span>
-                </div>
-              </form>
-            </div>
-
-            <div id="linked-identities" class="oc-settings-block">
-              <h2 class="h6 fw-bold mb-2">Linked identities</h2>
-              <p class="small text-muted mb-3">Manage sign-in methods for this workspace.</p>
-              <div class="oc-identity-grid">
-                ${identityRowsHtml(identities, user)}
-              </div>
-              <span id="identityToolStatus" class="small text-muted d-block mt-2" role="status"></span>
-            </div>
-
-            <div class="oc-settings-block">
-              <h2 class="h6 fw-bold mb-2">Privacy and data</h2>
-              <p class="small text-muted mb-3">Download your account records, saved resources, notes, and collections, or request account deletion.</p>
-              <div class="d-grid gap-2">
-                <button type="button" id="downloadAccountDataBtn" class="btn btn-outline-secondary btn-sm">Download my data</button>
-                <a id="requestDeletionBtn" class="btn btn-outline-danger btn-sm" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
-                <a class="btn btn-link btn-sm p-0 text-start" href="contribute.html#privacy">Privacy notice</a>
-              </div>
-              <span id="privacyToolStatus" class="small text-muted d-block mt-2" role="status"></span>
-            </div>
-          </details>
-        </section>
+          <div id="accountAiSessions"></div>
+        </div>
+        <nav class="oc-workspace-nav oc-workspace-nav-secondary" aria-label="Workspace utilities">
+          <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#reportIssueModal" aria-label="Report issue" title="Report issue">${workspaceIcon('report')}<span>Report</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-bs-toggle="modal" data-bs-target="#suggestResourceModal" aria-label="Submit resource" title="Submit resource">${workspaceIcon('upload')}<span>Submit</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="settings" aria-selected="false" aria-label="Account settings" title="Account settings">${workspaceIcon('settings')}<span>Settings</span></button>
+          <button type="button" class="oc-workspace-nav-item" data-workspace-tab="credentials" aria-selected="false" aria-label="Credentials" title="Credentials">${workspaceIcon('credential')}<span>Credentials</span></button>
+        </nav>
       </aside>
 
       <section class="oc-workspace-main">
-        <section class="oc-workspace-card">
-          <div class="oc-account-hero">
-	            <div>
-	              <p class="oc-workspace-kicker mb-2">Dashboard</p>
-	              <h2 class="h3 fw-bold mb-1">Your OpenConstruction workspace</h2>
-		              <p class="text-muted mb-0">Organize saved resources into collections, notes, and contribution records.</p>
-	            </div>
-            <div class="d-flex gap-2 flex-wrap justify-content-end">
-              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
-              <a class="btn btn-outline-primary btn-sm" href="dataset.html">Browse catalog</a>
+        <section data-workspace-panel="ask" hidden>
+          <section class="oc-ask-workspace">
+            <h3 class="h4 fw-bold mb-2"><span class="oc-ask-title-mark" aria-hidden="true">&#10022;</span>Ask OpenConstruction <span class="oc-beta-pill">Beta</span></h3>
+            <p class="oc-ask-subtle-note">Limited beta. Normal search remains available.</p>
+            <div class="oc-ask-examples">
+              ${[
+                'Find construction safety datasets with worker, PPE, or equipment annotations.',
+                'Compare models for BIM, point clouds, or construction progress monitoring.',
+                'Show workflows for infrastructure inspection, safety monitoring, or BIM-based project controls.',
+                'Find OERs for teaching AEC AI, open data, BIM, and responsible reuse.'
+              ].map(example => `<button type="button" data-ask-example="${esc(example)}">${esc(example)}</button>`).join('')}
             </div>
-          </div>
+            <section id="accountAiOutput" class="oc-account-ai-output" hidden>
+              <div id="accountAiThread" class="oc-account-ai-thread"></div>
+              <div class="oc-library-grid" id="accountAiResults"></div>
+            </section>
+            <form class="oc-ask-form">
+              <input name="q" class="form-control" placeholder="Ask OpenConstruction">
+              <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
+            </form>
+            <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+          </section>
+        </section>
 
-          <div class="oc-account-stat-grid">
-            <div class="oc-account-stat">
-              <div class="oc-account-stat-value">${bookmarks.length}</div>
-              <div class="oc-account-stat-label">Saved</div>
-            </div>
-            <div class="oc-account-stat">
-              <div class="oc-account-stat-value">${collections.length}</div>
-              <div class="oc-account-stat-label">Collections</div>
-            </div>
-            <div class="oc-account-stat">
-              <div class="oc-account-stat-value">${notes.length}</div>
-              <div class="oc-account-stat-label">Notes</div>
-            </div>
-		            <div class="oc-account-stat">
-		              <div class="oc-account-stat-value">${suggestions.length}</div>
-		              <div class="oc-account-stat-label">Submissions</div>
-		            </div>
-	          </div>
-            ${workspaceSchemaErrors.length ? `
-              <div class="alert alert-warning small mt-3 mb-0">
-	                Research workspace tables are not available yet. Apply the updated Supabase account schema to enable collections and notes.
+        <section data-workspace-panel="settings" hidden>
+          <section class="oc-workspace-card oc-account-settings-workspace">
+            <div class="oc-library-header">
+              <div>
+                <h3 class="h4 fw-bold mb-1">Account settings</h3>
               </div>
-            ` : ''}
-	        </section>
+              ${roleBadgesHtml}
+            </div>
+            <div class="oc-settings-grid">
+              <form id="profileForm" class="oc-settings-section">
+                <h4>Profile</h4>
+                <label class="form-label small fw-bold" for="profileDisplayName">Name</label>
+                <input id="profileDisplayName" name="display_name" class="form-control form-control-sm" value="${esc(name)}">
+                <label class="form-label small fw-bold" for="profileAffiliation">Affiliation</label>
+                <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, company, or organization">
+                <label class="form-label small fw-bold" for="profileEmail">Email</label>
+                <input id="profileEmail" class="form-control form-control-sm" value="${esc(accountEmail || 'No email on file')}" disabled>
+                <div class="oc-settings-actions">
+                  <button type="submit" class="oc-text-action">Save profile</button>
+                  <span id="profileStatus" class="small text-muted" role="status"></span>
+                </div>
+              </form>
+              <section class="oc-settings-section">
+                <h4>Linked identities</h4>
+                <div class="oc-identity-grid">
+                  ${identityRowsHtml(identities, user)}
+                </div>
+                <span id="identityToolStatus" class="small text-muted" role="status"></span>
+              </section>
+              <section class="oc-settings-section">
+                <h4>Privacy and data</h4>
+                <div class="oc-settings-actions is-column">
+                  <button type="button" id="downloadAccountDataBtn" class="oc-text-action">Download my data</button>
+                  <a class="oc-text-action" href="contribute.html#privacy">Privacy notice</a>
+                  <a id="requestDeletionBtn" class="oc-text-action" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
+                  <span id="privacyToolStatus" class="small text-muted" role="status"></span>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
 
-        <nav class="oc-workspace-tabs" aria-label="Workspace sections">
-          <button type="button" class="oc-workspace-tab active" data-workspace-tab="library" aria-selected="true">Library</button>
-          <button type="button" class="oc-workspace-tab" data-workspace-tab="collections" aria-selected="false">Collections</button>
-          <button type="button" class="oc-workspace-tab" data-workspace-tab="notes" aria-selected="false">Notes</button>
-          <button type="button" class="oc-workspace-tab" data-workspace-tab="submissions" aria-selected="false">Submissions</button>
-        </nav>
+        <section data-workspace-panel="credentials" hidden>
+          <section class="oc-workspace-card oc-account-settings-workspace">
+            <div class="oc-library-header">
+              <div>
+                <h3 class="h4 fw-bold mb-1">Credentials</h3>
+              </div>
+            </div>
+            ${publicBadges.length ? `
+              <div class="oc-badge-grid">
+                ${publicBadges.map((badge, index) => `
+                  <article class="oc-badge-card">
+                    <div class="oc-badge-card-icon">${badgeIcon()}</div>
+                    <div class="oc-badge-card-body">
+                      <strong>${esc(badge.badge_name || badge.name || typeLabel(String(badge.badge_key || '').replace(/_/g, ' ')))}</strong>
+                      <span>${esc(formatDate(badge.awarded_at || badge.created_at) || 'OpenConstruction credential')}</span>
+                    </div>
+                    <div class="oc-badge-card-actions">
+                      <button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>
+                    </div>
+                  </article>
+                `).join('')}
+              </div>
+            ` : empty('No credentials yet', 'Contributor credentials will appear here after review.')}
+          </section>
+        </section>
 
         <section data-workspace-panel="library">
           <section id="saved-resources" class="oc-workspace-card">
             <div class="oc-library-header">
               <div>
-                <h3 class="h5 fw-bold mb-1">${bookmarks.length} saved resources</h3>
-                <p class="text-muted mb-0 small">${annotatedCount} with notes · ${taggedCount} tagged</p>
+                <h3 class="h4 fw-bold mb-1">Personal Library</h3>
               </div>
-              <div class="small text-muted">${Object.entries(savedByType).map(([type, count]) => `${count} ${esc(typeLabel(type))}`).join(' · ') || 'No saved resources'}</div>
+              <span id="libraryVisibleCount" class="small text-muted">${bookmarks.length} shown</span>
             </div>
             ${recentBookmarks.length ? `
-              <div class="oc-resource-tools mb-3">
-                <button type="button" id="compareResourcesBtn" class="btn btn-outline-primary btn-sm">Compare</button>
-                <button type="button" id="exportJsonBtn" class="btn btn-outline-secondary btn-sm">Export JSON</button>
-                <button type="button" id="exportCsvBtn" class="btn btn-outline-secondary btn-sm">Export CSV</button>
+              <div class="oc-library-toolbar">
+                <input id="libraryFilterInput" class="form-control form-control-sm" placeholder="Filter by title or object">
+                <select id="libraryTypeSelect" class="form-select form-select-sm" aria-label="Resource type">
+                  <option value="">All types</option>
+                  ${Object.keys(savedByType).sort().map(type => `<option value="${esc(resourceKind(type))}">${esc(typeLabel(type))}</option>`).join('')}
+                </select>
+                <select id="librarySortSelect" class="form-select form-select-sm" aria-label="Sort resources">
+                  <option value="created">Newest saved</option>
+                  <option value="oldest">Oldest saved</option>
+                  <option value="title-az">Title A-Z</option>
+                  <option value="title-za">Title Z-A</option>
+                </select>
+                <label class="oc-library-check">
+                  <input id="libraryExactObjects" class="form-check-input" type="checkbox">
+                  <span>Exact object</span>
+                </label>
+                <button type="button" id="compareResourcesBtn" class="oc-text-action">Compare</button>
+                <button type="button" id="exportJsonBtn" class="oc-text-action">JSON</button>
+                <button type="button" id="exportCsvBtn" class="oc-text-action">CSV</button>
                 <span id="resourceToolStatus" class="small text-muted" role="status"></span>
               </div>
             ` : ''}
-            <div class="oc-library-list">
-              ${recentBookmarks.length ? recentBookmarks.map((row, index) => {
-                const key = bookmarkKey(row);
-                const note = notesByKey.get(key) || {};
-                const collectionLabels = collectionNamesByResource.get(key) || [];
-                const rowType = resourceKind(row.type);
-                const rowId = row.id || row.resource_id;
-                const libraryMetaHtml = [
-                  note.tags?.length ? tagListHtml(note.tags) : '',
-                  collectionLabels.length ? `<span class="oc-account-meta">In ${esc(collectionLabels.slice(0, 2).join(', '))}${collectionLabels.length > 2 ? ` +${collectionLabels.length - 2}` : ''}</span>` : ''
-                ].filter(Boolean).join('');
-                return `
-                  <div class="oc-account-row oc-resource-select-row">
-                    <label class="oc-resource-select">
-                      <input class="form-check-input" type="checkbox" value="${index}" data-resource-select aria-label="Select ${esc(row.title || row.id)}">
-                      <span class="oc-resource-main">
-                        <span class="oc-account-type">${esc(typeLabel(row.type))}</span>
-                        <strong>${esc(row.title || row.id)}</strong>
-                        <span class="oc-account-meta">${row.created_at ? `Saved ${formatDate(row.created_at)}` : 'Saved resource'}</span>
-                      </span>
-                    </label>
-                    ${libraryMetaHtml ? `<div class="oc-library-meta">${libraryMetaHtml}</div>` : ''}
-                    <span class="oc-account-actions">
-                      <button type="button" class="oc-bookmark-btn active" data-resource-unsave="${index}" aria-label="Remove ${esc(row.title || row.id)} from saved resources" title="Remove from saved resources">${bookmarkIcon()}</button>
-                      <a class="btn btn-outline-secondary btn-sm" href="${esc(bookmarkUrl(row))}">View</a>
-                    </span>
-                    <details class="oc-library-quick-edit">
-                      <summary>Notes and tags</summary>
-                      <form class="oc-library-edit-grid" data-note-form="${esc(key)}">
-                        <input type="hidden" name="resource_type" value="${esc(rowType)}">
-                        <input type="hidden" name="resource_id" value="${esc(rowId)}">
-                        <div class="oc-library-edit-wide">
-                          <label class="form-label small fw-bold">Tags</label>
-                          <input name="tags" class="form-control form-control-sm" value="${esc((note.tags || []).join(', '))}">
-                        </div>
-                        <div class="oc-library-edit-wide">
-                          <label class="form-label small fw-bold">Note</label>
-                          <textarea name="note" class="form-control" rows="2">${esc(note.note || '')}</textarea>
-                        </div>
-                        <div class="oc-library-edit-actions">
-                          <button type="submit" class="btn btn-primary btn-sm">Save note</button>
-                          ${note.user_id ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-clear-note="${esc(key)}">Clear</button>` : ''}
-                          <span class="small text-muted" role="status"></span>
-                        </div>
-                      </form>
-                      ${collectionOptions ? `
-                        <div class="oc-library-collection-tool">
-                          <label class="form-label small fw-bold">Add to collection</label>
-                          <div class="oc-inline-form oc-library-collection-form">
-                            <select class="form-select form-select-sm" data-library-collection="${esc(key)}" aria-label="Collection">
-                              ${collectionOptions}
-                            </select>
-                            <button type="button" class="btn btn-outline-primary btn-sm" data-add-library-collection="${esc(key)}" data-resource-type="${esc(rowType)}" data-resource-id="${esc(rowId)}">Add</button>
-                          </div>
-                          <span class="small text-muted" data-library-collection-status></span>
-                        </div>
-                      ` : '<p class="small text-muted mb-0">Create a collection before assigning this resource.</p>'}
-                    </details>
-                  </div>
-                `;
-              }).join('') : empty('No library items yet', 'Browse the catalog to add resources to this account.')}
+            <div id="libraryResourceGrid" class="oc-library-grid">
+              ${savedResourceCardsHtml(enrichedBookmarks)}
             </div>
             <div id="resourceCompareOutput"></div>
           </section>
         </section>
 
-        <section data-workspace-panel="submissions" hidden>
-	          <section id="submissions" class="oc-workspace-card">
-            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <section data-workspace-panel="reports" hidden>
+          <section class="oc-workspace-card oc-report-workspace">
+            <div class="oc-library-header">
               <div>
-                <h3 class="h5 fw-bold mb-1">Resource submissions</h3>
-                <p class="text-muted mb-0 small">${pendingCount} pending review · ${addedCount} added to the catalog · ${publicBadges.length} badges</p>
+                <h3 class="h4 fw-bold mb-1">Activity</h3>
               </div>
-              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">Submit resource</button>
             </div>
-            <div class="vstack gap-2">
-              ${suggestions.length ? suggestions.map(row => `
-                <div class="oc-account-row">
-                  <span>
-                    <span class="oc-account-type">${esc(typeLabel(row.resource_type))}</span>
-                    <strong>${esc(row.title)}</strong>
-                    <span class="oc-account-meta">${row.created_at ? `Submitted ${formatDate(row.created_at)}` : 'Submitted resource'}${row.reviewed_at ? ` · Reviewed ${formatDate(row.reviewed_at)}` : ''}</span>
-                    ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
-                  </span>
-                  <span class="oc-account-actions">
-                    <span class="${statusClass(row.status)}">${esc(statusLabel(row.status))}</span>
-                    ${row.url ? `<a class="btn btn-outline-secondary btn-sm" href="${esc(row.url)}" target="_blank" rel="noopener">Source</a>` : ''}
-                  </span>
-                </div>
-              `).join('') : empty('No submissions yet', 'Suggest a dataset, model, workflow, or OER for review.')}
-	            </div>
-	          </section>
-        </section>
-
-        <section data-workspace-panel="collections" hidden>
-          <section class="oc-workspace-card">
-            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-              <div>
-                <h3 class="h5 fw-bold mb-1">Collections</h3>
-                <p class="text-muted mb-0 small">Group saved resources for projects, papers, classes, or benchmark comparisons.</p>
+            <div id="issueReportsDashboard">
+              ${workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady)}
+            </div>
+            <div class="oc-status-section">
+              <h4>Resource submissions <span>${suggestions.length}</span></h4>
+              <div id="resourceSubmissionsList" class="oc-report-list">
+                ${resourceSubmissionListHtml(suggestions)}
               </div>
-              <span id="collectionToolStatus" class="small text-muted" role="status"></span>
             </div>
-            <form id="collectionForm" class="oc-inline-form mb-3">
-              <input name="name" class="form-control form-control-sm" placeholder="Collection name" required>
-              <input name="description" class="form-control form-control-sm" placeholder="Optional description">
-              <button type="submit" class="btn btn-primary btn-sm">Create</button>
-            </form>
-            <div class="oc-subcard-grid">
-              ${collectionCardsHtml(collections, collectionItems, bookmarks)}
-            </div>
-          </section>
-        </section>
-
-        <section data-workspace-panel="notes" hidden>
-          <section class="oc-workspace-card">
-            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-              <div>
-                <h3 class="h5 fw-bold mb-1">Research notes</h3>
-                <p class="text-muted mb-0 small">Notes and tags for saved resources.</p>
+            <div class="oc-status-section">
+              <h4>Issue reports <span>${issueReportsReady ? issueReports.length : 0}</span></h4>
+              <div id="issueReportsList" class="oc-report-list">
+                ${issueReportListHtml(issueReports, issueReportsReady)}
               </div>
-              <span class="small text-muted">${notes.length} annotated</span>
-            </div>
-            <div class="oc-subcard-grid">
-              ${notesHtml(bookmarks, notesByKey)}
             </div>
           </section>
         </section>
@@ -1941,22 +2856,277 @@
       </section>
     `;
 
-    document.getElementById('signOutBtn')?.addEventListener('click', async () => {
-      try {
-        await window.OCAuth.signOut();
-      } finally {
-        renderSignedOut();
+    function renderIssueReportsWorkspace(){
+      const dashboard = document.getElementById('issueReportsDashboard');
+      const list = document.getElementById('issueReportsList');
+      if (dashboard) dashboard.innerHTML = workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady);
+      if (list) list.innerHTML = issueReportListHtml(issueReports, issueReportsReady);
+      accountDataExport.issue_reports = issueReports;
+    }
+
+    function renderAccountAiResults(query, answer, results, messages = []){
+      const output = document.getElementById('accountAiOutput');
+      const threadEl = document.getElementById('accountAiThread');
+      const resultsEl = document.getElementById('accountAiResults');
+      if (!output || !threadEl || !resultsEl) return;
+      const examples = document.querySelector('.oc-ask-examples');
+      if (examples) examples.hidden = true;
+      output.hidden = false;
+      const thread = messages.length
+        ? messages
+        : [
+          { role: 'user', text: query },
+          { role: 'assistant', text: answer }
+        ].filter(message => message.text);
+      threadEl.innerHTML = thread.map(message => `
+        <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
+          <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
+          <p>${esc(message.text || '')}</p>
+        </div>
+      `).join('');
+      resultsEl.innerHTML = accountAiResourceCardsHtml(results || [], query || '');
+      window.OCBookmark?.mount?.(resultsEl);
+    }
+
+    function renderAccountAiSessions(activeId = ''){
+      const sessionList = document.getElementById('accountAiSessions');
+      if (!sessionList) return;
+      if (!currentAiChats.length) {
+        sessionList.innerHTML = '<small>No saved sessions</small>';
+        return;
       }
-    });
+      sessionList.innerHTML = currentAiChats.slice(0, 12).map(chat => {
+        const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || '';
+        const title = chat.title || firstUserMessage || 'Search session';
+        return `
+          <div class="oc-sidebar-session${chat.id === activeId ? ' active' : ''}" data-sidebar-session="${esc(chat.id || '')}">
+            <button type="button" class="oc-sidebar-session-link" data-open-ai-chat="${esc(chat.id || '')}">${esc(title)}</button>
+            <div class="dropdown">
+              <button type="button" class="oc-session-more" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Session options">...</button>
+              <div class="dropdown-menu dropdown-menu-end">
+                <button type="button" class="dropdown-item" data-delete-ai-chat="${esc(chat.id || '')}">Delete</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      sessionList.querySelectorAll('[data-open-ai-chat]').forEach(button => {
+        button.addEventListener('click', () => {
+          const chat = currentAiChats.find(row => row.id === button.dataset.openAiChat);
+          if (!chat) return;
+          const query = (chat.messages || []).find(message => message.role === 'user')?.text || '';
+          const answer = (chat.messages || []).filter(message => message.role !== 'user').slice(-1)[0]?.text || '';
+          const input = document.querySelector('.oc-ask-form input[name="q"]');
+          activeAccountChatId = chat.id || '';
+          if (input) {
+            input.value = '';
+            input.placeholder = 'Ask a follow-up';
+          }
+          document.querySelector('[data-workspace-tab="ask"]')?.click();
+          renderAccountAiResults(query, answer, chat.resources || [], chat.messages || []);
+          renderAccountAiSessions(chat.id);
+        });
+      });
+      sessionList.querySelectorAll('[data-delete-ai-chat]').forEach(button => {
+        button.addEventListener('click', event => {
+          event.stopPropagation();
+          const chatId = button.dataset.deleteAiChat || '';
+          if (!window.confirm('Delete this search session?')) return;
+          deleteAiChat(user, chatId);
+          currentAiChats = readAiChats(user);
+          if (activeAccountChatId === chatId) {
+            activeAccountChatId = '';
+            const output = document.getElementById('accountAiOutput');
+            const examples = document.querySelector('.oc-ask-examples');
+            const input = document.querySelector('.oc-ask-form input[name="q"]');
+            if (output) output.hidden = true;
+            if (examples) examples.hidden = false;
+            if (input) input.placeholder = 'Ask OpenConstruction';
+          }
+          accountDataExport.search_sessions = currentAiChats;
+          renderAccountAiSessions();
+        });
+      });
+    }
+
+    async function submitAccountAsk(query){
+      const clean = String(query || '').trim();
+      if (!clean) return;
+      const output = document.getElementById('accountAiOutput');
+      const threadEl = document.getElementById('accountAiThread');
+      const resultsEl = document.getElementById('accountAiResults');
+      const existingChat = activeAccountChatId ? currentAiChats.find(row => row.id === activeAccountChatId) : null;
+      const priorMessages = existingChat?.messages || [];
+      if (output && threadEl && resultsEl) {
+        output.hidden = false;
+        document.querySelector('.oc-ask-examples')?.setAttribute('hidden', '');
+        threadEl.innerHTML = [
+          ...priorMessages,
+          { role: 'user', text: clean },
+          { role: 'assistant', text: 'Searching the OpenConstruction catalog...' }
+        ].map(message => `
+          <div class="oc-account-ai-message ${message.role === 'user' ? 'is-user' : 'is-assistant'}">
+            <span class="oc-account-ai-label">${message.role === 'user' ? 'You' : 'OpenConstruction'}</span>
+            <p>${esc(message.text || '')}</p>
+          </div>
+        `).join('');
+        resultsEl.innerHTML = '';
+      }
+      const catalog = await loadAccountAiCatalog();
+      const contextText = priorMessages
+        .filter(message => message.role === 'user')
+        .map(message => message.text)
+        .join(' ');
+      const searchText = existingChat ? `${contextText} ${clean}`.trim() : clean;
+      let results = existingChat?.resources?.length
+        ? refineAiResultsFromPrevious(existingChat.resources, clean)
+        : [];
+      if (!results.length) {
+        results = selectAiCandidates(catalog, searchText);
+      }
+      let answer = answerForAiQuery(clean, results, Boolean(catalog.length), Boolean(existingChat?.resources?.length));
+      const remainingAiSearches = aiUsageRemaining(user);
+      if (remainingAiSearches <= 0) {
+        answer = `${normalSearchNotice('limit')}\n\n${answer}`;
+      } else {
+        try {
+          const geminiCandidates = catalog.length && catalog.length <= 300 ? catalog : results;
+          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages);
+          if (gemini?.answer) {
+            recordAiUsage(user);
+            updateAiUsageUi(user);
+            answer = gemini.answer;
+            if (Array.isArray(gemini.resourceHrefs) && gemini.resourceHrefs.length) {
+              results = orderGeminiResultsAi(geminiCandidates, gemini.resourceHrefs).slice(0, 8);
+            } else {
+              results = orderGeminiResultsAi(results, gemini.resourceHrefs);
+            }
+          } else {
+            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          }
+        } catch (err) {
+          console.warn('Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
+          answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+        }
+      }
+      const now = new Date().toISOString();
+      let chat;
+      if (existingChat) {
+        chat = {
+          ...existingChat,
+          updated_at: now,
+          messages: [
+            ...priorMessages,
+            { role: 'user', text: clean, created_at: now },
+            { role: 'assistant', text: answer, created_at: now }
+          ],
+          resources: results
+        };
+        currentAiChats = writeAiChats(user, [chat, ...currentAiChats.filter(row => row.id !== chat.id)]);
+      } else {
+        chat = {
+          id: newAiChatId(),
+          title: shortAiTitle(clean),
+          created_at: now,
+          updated_at: now,
+          messages: [
+          { role: 'user', text: clean, created_at: now },
+          { role: 'assistant', text: answer, created_at: now }
+          ],
+          resources: results
+        };
+        currentAiChats = writeAiChats(user, [chat, ...currentAiChats.filter(row => row.title !== chat.title || row.messages?.[0]?.text !== clean)]);
+      }
+      activeAccountChatId = chat.id;
+      accountDataExport.search_sessions = currentAiChats;
+      renderAccountAiResults(clean, answer, results, chat.messages || []);
+      renderAccountAiSessions(chat.id);
+      const input = document.querySelector('.oc-ask-form input[name="q"]');
+      if (input) {
+        input.value = '';
+        input.placeholder = 'Ask a follow-up';
+      }
+    }
+
+    function bindAccountAsk(){
+      const form = document.querySelector('.oc-ask-form');
+      const input = form?.querySelector('input[name="q"]');
+      form?.addEventListener('submit', event => {
+        event.preventDefault();
+        submitAccountAsk(input?.value || '');
+      });
+      const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
+      if (initialQuery && input && !form.dataset.initialAskHandled) {
+        form.dataset.initialAskHandled = 'true';
+        input.value = initialQuery;
+        submitAccountAsk(initialQuery);
+      }
+      document.querySelector('[data-new-ai-session]')?.addEventListener('click', () => {
+        activeAccountChatId = '';
+        if (input) {
+          input.value = '';
+          input.placeholder = 'Ask OpenConstruction';
+          input.focus();
+        }
+        const examples = document.querySelector('.oc-ask-examples');
+        if (examples) examples.hidden = false;
+        const output = document.getElementById('accountAiOutput');
+        if (output) output.hidden = true;
+        document.querySelector('[data-workspace-tab="ask"]')?.click();
+        renderAccountAiSessions();
+      });
+    }
+
+    function openRequestedSubmission(){
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('submit') !== 'resource') return;
+      const modalEl = document.getElementById('suggestResourceModal');
+      if (!modalEl || !window.bootstrap?.Modal) return;
+      const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+      modalEl.addEventListener('shown.bs.modal', () => {
+        document.getElementById('suggestTitle')?.focus();
+      }, { once: true });
+      modal.show();
+    }
+
+    function openRequestedIssueReport(){
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('report') !== 'issue') return;
+      const modalEl = document.getElementById('reportIssueModal');
+      if (!modalEl || !window.bootstrap?.Modal) return;
+      const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+      modalEl.addEventListener('shown.bs.modal', () => {
+        document.getElementById('reportSummary')?.focus();
+      }, { once: true });
+      modal.show();
+    }
+
     bindSuggestionForm(user);
+    bindIssueReportForm(user, report => {
+      issueReportsReady = true;
+      issueReports = [report, ...issueReports].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+      renderIssueReportsWorkspace();
+    });
+    document.querySelectorAll('[data-ask-example]').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = document.querySelector('.oc-ask-form input[name="q"]');
+        if (input) {
+          input.value = button.dataset.askExample || '';
+          input.focus();
+        }
+      });
+    });
     bindProfileForm(user);
     bindWorkspaceTabs();
+    bindAccountAsk();
+    renderAccountAiSessions();
     bindResourceTools(recentBookmarks, notesByKey);
-    bindCollectionTools(user, recentBookmarks, collections, collectionItems, notesByKey);
-    bindNoteTools(user);
+    bindLibraryFilters();
     bindBadgeCertificates(publicBadges, name);
     bindIdentityTools(identities);
     bindPrivacyTools(accountDataExport, user);
+    openRequestedSubmission();
+    openRequestedIssueReport();
 
   } catch (err) {
     root.className = '';

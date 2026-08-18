@@ -10,6 +10,9 @@ Desktop.ini
 
 # Local tools and dependencies
 .claude/
+.codex/
+.cursor/
+.history/
 .tools/
 node_modules/
 .pnpm-store/
@@ -19,17 +22,23 @@ node_modules/
 .env.*
 !.env.example
 !.env.sample
+*.local
+*.secret
+*.pem
+*.p12
+*.key
+secrets/
 .vercel/
 .supabase/
 supabase/*
-!supabase/config.toml
-!supabase/functions/
-supabase/functions/*
-!supabase/functions/issue-certificate/
-!supabase/functions/issue-certificate/index.ts
 supabase/.branches/
 supabase/.temp/
 database/
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.backup
 
 # Logs, caches, test output, and build output
 *.log
@@ -42,12 +51,23 @@ pnpm-debug.log*
 coverage/
 dist/
 build/
+.cache/
+.vite/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+playwright-report/
+test-results/
+output/playwright/
 .next/
 .turbo/
 
 # Python cache
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -71,6 +91,6 @@ openconstruction-*-certificate.pdf
 
 # Local role-management SQL validation helpers
 site/scripts/validate-role-management.mjs
-supabase/functions/issue-certificate/index.ts
-supabase/config.toml
+scripts/generate_ai_catalog.py
+scripts/site_issue_reports.sql
 scripts/workspace_research_cockpit.sql

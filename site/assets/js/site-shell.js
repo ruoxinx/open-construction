@@ -80,6 +80,10 @@
     return ROUTE_BY_FILE[cleanFile(path)] || '';
   }
 
+  function pagePrefix(){
+    return assetPrefix.replace(/assets\/$/, '');
+  }
+
   function routeForHref(href){
     if (!href) return '';
     if (String(href).trim().startsWith('#')) return '';
@@ -200,6 +204,335 @@
     document.head.appendChild(styles);
   }
 
+  function injectAiAssistantStyles(){
+    if (document.getElementById('ocAiAssistantStyles')) return;
+    const styles = document.createElement('style');
+    styles.id = 'ocAiAssistantStyles';
+    styles.textContent = `
+      .oc-ai-launcher{
+        position:fixed;
+        right:20px;
+        bottom:20px;
+        z-index:1040;
+        display:inline-flex;
+        align-items:center;
+        gap:.5rem;
+        min-height:38px;
+        padding:.48rem .86rem;
+        border:1px solid rgba(172,96,16,.32);
+        border-radius:8px;
+        background:#f2a238;
+        color:var(--oc-ink,#0f2e4b);
+        font-weight:800;
+        box-shadow:0 10px 24px rgba(15,46,75,.14);
+        text-decoration:none;
+        transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+      }
+      .oc-ai-launcher:hover,
+      .oc-ai-launcher:focus{
+        color:#fff;
+        border-color:rgba(172,96,16,.5);
+        background:#f5ad4b;
+        box-shadow:0 14px 30px rgba(15,46,75,.18);
+        transform:translateY(-1px);
+      }
+      .oc-ai-launcher-mark{
+        display:inline-block;
+        color:#fff;
+        font-size:1rem;
+        font-weight:900;
+        line-height:1;
+        transform:translateY(-.02rem);
+      }
+      .oc-ai-launcher-copy{
+        display:inline;
+        line-height:1;
+        min-width:0;
+      }
+      .oc-ai-launcher-copy strong{
+        color:#fff;
+        font-size:.86rem;
+        white-space:nowrap;
+      }
+      .oc-ai-launcher-beta{
+        display:inline-flex;
+        align-items:center;
+        min-height:18px;
+        margin-left:.2rem;
+        border-radius:999px;
+        background:rgba(255,255,255,.22);
+        color:#fff;
+        font-size:.64rem;
+        font-weight:800;
+        letter-spacing:.04em;
+        padding:.08rem .34rem;
+        text-transform:uppercase;
+      }
+      .oc-ai-panel{
+        position:fixed;
+        right:20px;
+        bottom:78px;
+        z-index:1040;
+        width:min(420px, calc(100vw - 40px));
+        border:1px solid var(--oc-border,#e7edf3);
+        border-radius:12px;
+        background:#fff;
+        box-shadow:0 16px 36px rgba(15,46,75,.16);
+        padding:.65rem;
+      }
+      .oc-ai-panel[hidden]{
+        display:none!important;
+      }
+      .oc-ai-close{
+        position:absolute;
+        top:.3rem;
+        right:.35rem;
+        z-index:1;
+        width:28px;
+        height:28px;
+        display:grid;
+        place-items:center;
+        border:0;
+        border-radius:6px;
+        background:transparent;
+        color:var(--oc-sub,#4f5d6c);
+        font-size:1.1rem;
+        line-height:1;
+      }
+      .oc-ai-close:hover,
+      .oc-ai-close:focus{
+        background:#f3f4f6;
+        color:var(--oc-ink,#0f2e4b);
+      }
+      .oc-ai-panel-body{
+        padding:0;
+      }
+      .oc-ai-panel-prompt{
+        display:grid;
+        grid-template-columns:minmax(0,1fr) auto;
+        align-items:end;
+        gap:.35rem;
+        border:1px solid #cfcfcf;
+        border-radius:10px;
+        background:#fff;
+        box-shadow:0 2px 8px rgba(15,46,75,.12);
+        padding:.35rem;
+      }
+      .oc-ai-panel textarea{
+        min-height:74px;
+        resize:vertical;
+        border:0;
+        box-shadow:none;
+        border-radius:8px;
+        font-size:.92rem;
+        padding:.62rem 1.65rem .62rem .68rem;
+      }
+      .oc-ai-panel textarea::placeholder{
+        color:#8a929d;
+        opacity:1;
+      }
+      .oc-ai-panel textarea:focus{
+        box-shadow:none;
+      }
+      .oc-ai-panel-submit{
+        width:38px;
+        height:38px;
+        display:grid;
+        place-items:center;
+        border:0;
+        border-radius:8px;
+        background:transparent;
+        color:#3f3f46;
+        padding:0;
+      }
+      .oc-ai-panel-submit:hover,
+      .oc-ai-panel-submit:focus{
+        background:#f3f4f6;
+        color:var(--oc-ink,#0f2e4b);
+      }
+      .oc-ai-panel-submit:disabled{
+        color:#a7b0ba;
+        cursor:default;
+      }
+      .oc-ai-panel-submit:disabled:hover,
+      .oc-ai-panel-submit:disabled:focus{
+        background:transparent;
+        color:#a7b0ba;
+      }
+      .oc-ai-panel-submit svg{
+        width:20px;
+        height:20px;
+        fill:none;
+        stroke:currentColor;
+        stroke-width:1.9;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+      }
+      .oc-ai-panel-note{
+        color:var(--oc-sub,#4f5d6c);
+        font-size:.75rem;
+        line-height:1.35;
+        margin:.5rem .2rem .05rem;
+      }
+      .oc-ai-panel-note a{
+        color:inherit;
+        text-decoration:underline;
+        text-underline-offset:3px;
+      }
+      .oc-ai-panel-actions{
+        display:flex;
+        align-items:center;
+        gap:.7rem;
+        flex-wrap:wrap;
+        margin:.42rem .2rem 0;
+      }
+      .oc-ai-panel-actions a{
+        color:var(--oc-sub,#4f5d6c);
+        font-size:.78rem;
+        font-weight:700;
+        text-decoration:none;
+      }
+      .oc-ai-panel-actions a:hover,
+      .oc-ai-panel-actions a:focus{
+        color:var(--oc-ink,#0f2e4b);
+        text-decoration:underline;
+        text-underline-offset:3px;
+      }
+      body.oc-ai-floating-mounted .issue-btn{
+        display:none!important;
+      }
+      @media (max-width:575.98px){
+        .oc-ai-launcher{
+          right:14px;
+          bottom:14px;
+        }
+        .oc-ai-panel{
+          right:14px;
+          bottom:76px;
+          width:calc(100vw - 28px);
+        }
+      }
+    `;
+    document.head.appendChild(styles);
+  }
+
+  function escapeAiAttribute(value){
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  const ANONYMOUS_AI_DAILY_LIMIT = 1;
+
+  function todayAiUsageStamp(){
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function anonymousAiUsageKey(){
+    return `oc_ai_usage:anonymous:${todayAiUsageStamp()}`;
+  }
+
+  function anonymousAiUsageCount(){
+    try {
+      return Number(localStorage.getItem(anonymousAiUsageKey()) || '0') || 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  function normalSearchHref(query){
+    const q = encodeURIComponent(String(query || '').trim());
+    const text = String(query || '').toLowerCase();
+    if (/\b(models?|checkpoints?|architectures?)\b/.test(text)) return `${pagePrefix()}models.html?q=${q}`;
+    if (/\b(workflows?|deployments?|use cases?|pipelines?)\b/.test(text)) return `${pagePrefix()}deployments.html?q=${q}`;
+    if (/\b(oers?|courses?|teaching|education|tutorials?)\b/.test(text)) return `${pagePrefix()}oer.html?q=${q}`;
+    return `${pagePrefix()}dataset.html?q=${q}`;
+  }
+
+  function mountAiAssistant(){
+    if (routeForPath() === 'account' || document.getElementById('ocAiLauncher')) return;
+    injectAiAssistantStyles();
+    document.body.classList.add('oc-ai-floating-mounted');
+    const submitHref = `${pagePrefix()}account.html?submit=resource`;
+    const privacyHref = `${pagePrefix()}contribute.html#privacy`;
+    const examplePrompt = 'e.g. Find open construction safety datasets with worker, PPE, or equipment annotations';
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <button type="button" class="oc-ai-launcher" id="ocAiLauncher" aria-expanded="false" aria-controls="ocAiPanel">
+        <span class="oc-ai-launcher-mark" aria-hidden="true">&#10022;</span>
+        <span class="oc-ai-launcher-copy">
+          <strong>Ask OpenConstruction</strong>
+          <span class="oc-ai-launcher-beta">Beta</span>
+        </span>
+      </button>
+      <section class="oc-ai-panel" id="ocAiPanel" aria-label="Ask OpenConstruction" hidden>
+        <button type="button" class="oc-ai-close" id="ocAiClose" aria-label="Close">&times;</button>
+        <form class="oc-ai-panel-body" id="ocAiForm">
+          <label class="visually-hidden" for="ocAiPrompt">Question</label>
+          <div class="oc-ai-panel-prompt">
+            <textarea class="form-control" id="ocAiPrompt" placeholder="${examplePrompt}"></textarea>
+            <button type="submit" class="oc-ai-panel-submit" aria-label="Send" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+            </button>
+          </div>
+          <p class="oc-ai-panel-note">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="${escapeAiAttribute(privacyHref)}">Data &amp; Privacy</a>.</p>
+          <p class="oc-ai-panel-note oc-ai-panel-limit" id="ocAiLimitNote">Limited beta. Normal search remains available.</p>
+          <div class="oc-ai-panel-actions" aria-label="Related actions">
+            <a href="${escapeAiAttribute(submitHref)}">Submit resource</a>
+            <a href="${escapeAiAttribute(`${pagePrefix()}account.html?report=issue&page=${encodeURIComponent(window.location.href)}`)}">Report issue</a>
+          </div>
+        </form>
+      </section>
+    `;
+    document.body.appendChild(wrap);
+
+    const launcher = document.getElementById('ocAiLauncher');
+    const panel = document.getElementById('ocAiPanel');
+    const close = document.getElementById('ocAiClose');
+    const form = document.getElementById('ocAiForm');
+    const prompt = document.getElementById('ocAiPrompt');
+    const submit = form?.querySelector('button[type="submit"]');
+    const limitNote = document.getElementById('ocAiLimitNote');
+
+    function setOpen(open){
+      panel.hidden = !open;
+      launcher.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        window.setTimeout(() => {
+          prompt?.focus();
+        }, 0);
+      }
+    }
+
+    function syncSubmitState(){
+      if (submit) submit.disabled = !String(prompt?.value || '').trim();
+    }
+
+    launcher?.addEventListener('click', () => setOpen(panel.hidden));
+    close?.addEventListener('click', () => setOpen(false));
+    prompt?.addEventListener('input', syncSubmitState);
+    syncSubmitState();
+    form?.addEventListener('submit', async event => {
+      event.preventDefault();
+      const query = String(prompt?.value || '').trim();
+      if (!query) {
+        prompt?.focus();
+        return;
+      }
+      const user = await window.OCAuth?.getUser?.().catch(() => null);
+      if (!user && anonymousAiUsageCount() >= ANONYMOUS_AI_DAILY_LIMIT) {
+          if (limitNote) {
+            limitNote.textContent = 'Daily AI beta limit reached. Opening normal search instead.';
+          }
+          window.location.href = normalSearchHref(query);
+          return;
+      }
+      window.location.href = `account.html${user ? '' : '?anon=1'}${user ? '?q=' : '&q='}${encodeURIComponent(query)}`;
+    });
+  }
+
   function normalizeFooter(){
     const footer = document.querySelector('footer[role="contentinfo"], footer');
     if (!footer || footer.dataset.ocFooterNormalized === 'true') return;
@@ -228,11 +561,13 @@
     setFooterYear();
     applyActiveNav();
     injectFooterFundingStyles();
+    mountAiAssistant();
     normalizeFooter();
   }
 
   window.OpenConstructionShell = {
     applyActiveNav,
+    mountAiAssistant,
     normalizeFooter,
     routeForPath,
     setFooterYear
