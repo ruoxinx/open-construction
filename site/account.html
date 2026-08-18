@@ -1056,7 +1056,15 @@
   function urlFromAi(item, keys){
     for (const key of keys) {
       const value = item?.[key];
-      if (typeof value === 'string' && /^https?:\/\//i.test(value.trim())) return value.trim();
+      if (typeof value !== 'string') continue;
+      const clean = value.trim();
+      if (/^https?:\/\//i.test(clean)) return clean;
+      if (
+        /(image|thumbnail|cover|preview)/i.test(key) &&
+        /^[\w./-]+\.(png|jpe?g|webp|gif|avif)$/i.test(clean)
+      ) {
+        return clean.replace(/^\/+/, '');
+      }
     }
     return '';
   }
@@ -1380,7 +1388,6 @@
           <p class="oc-ai-result-reason">${esc(reasonForAiResource(resource, query))}</p>
           <div class="oc-library-card-actions">
             <a class="oc-text-action" href="${esc(resource.href)}">View</a>
-            ${resource.dataUrl ? `<a class="oc-text-action" href="${esc(resource.dataUrl)}" target="_blank" rel="noopener">Data</a>` : ''}
             ${resource.codeUrl ? `<a class="oc-text-action" href="${esc(resource.codeUrl)}" target="_blank" rel="noopener">Code</a>` : ''}
           </div>
         </div>
