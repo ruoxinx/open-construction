@@ -46,7 +46,29 @@ function setBadge(id, values){
   const list = normalizeList(values);
   if (!el || !list.length) return;
   el.hidden = false;
-  el.innerHTML = list.map(v => `<span class="badge">${escapeHtml(v)}</span>`).join('');
+  const isLicense = id === 'badge-license';
+  el.innerHTML = list.map(v => {
+    const content = isLicense
+      ? `${licenseMiniIconStripHtml(v)}<span>${escapeHtml(v)}</span>`
+      : escapeHtml(v);
+    return `<span class="badge${isLicense ? ' license-pill' : ''}">${content}</span>`;
+  }).join('');
+}
+
+function licenseMiniIconStripHtml(licenseValue){
+  const upper = String(licenseValue || '').trim().toUpperCase();
+  const normalized = upper.replace(/[-_/]+/g, ' ');
+  if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
+  const badges = ['cc'];
+  if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
+    badges.push('zero');
+  } else {
+    if (/\bBY\b/.test(normalized)) badges.push('by');
+    if (/\bNC\b/.test(normalized)) badges.push('nc');
+    if (/\bSA\b/.test(normalized)) badges.push('sa');
+    if (/\bND\b/.test(normalized)) badges.push('nd');
+  }
+  return `<span class="license-mini-strip" aria-hidden="true">${badges.map(kind => `<img class="license-mini-icon" src="../assets/img/licenses/${kind}.svg" alt="" loading="lazy" decoding="async">`).join('')}</span>`;
 }
 
 function fmtDate(value){
@@ -99,7 +121,9 @@ function formatLicense(licenseValue){
   };
 
   const href = licenseMap[key];
-  return href ? `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(norm)}</a>` : escapeHtml(norm);
+  return href
+    ? `<span class="license-inline">${licenseIconStripHtml(licenseValue)}<span class="license-title-line"><a href="${href}" target="_blank" rel="noopener">${escapeHtml(norm)}</a></span></span>`
+    : `<span class="license-inline"><span class="license-title-line">${escapeHtml(norm)}</span></span>`;
 }
 
 function licenseHrefFor(licenseValue){
@@ -296,10 +320,49 @@ function licenseListHtml(items){
   return `<ul class="license-list">${items.map(item => {
     const [label, ...rest] = String(item).split(' — ');
     const detail = rest.join(' — ');
+    const icon = licenseTermIconHtml(label);
+    const className = icon ? ' class="has-license-icon"' : '';
     return detail
-      ? `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(detail)}</span></li>`
+      ? `<li${className}>${icon}<div class="license-list-copy"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(detail)}</span></div></li>`
       : `<li><span>${escapeHtml(item)}</span></li>`;
   }).join('')}</ul>`;
+}
+
+function licenseBadgeHtml(kind, label){
+  return `<img class="license-badge license-badge-${kind}" src="../assets/img/licenses/${kind}.svg" alt="" title="${escapeHtml(label)}" aria-hidden="true" loading="lazy" decoding="async">`;
+}
+
+function licenseIconStripHtml(licenseValue){
+  const upper = String(licenseValue || '').trim().toUpperCase();
+  const normalized = upper.replace(/[-_/]+/g, ' ');
+  if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
+
+  const badges = [{ kind: 'cc', label: 'Creative Commons' }];
+  if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
+    badges.push({ kind: 'zero', label: 'Public Domain Dedication' });
+  } else {
+    if (/\bBY\b/.test(normalized)) badges.push({ kind: 'by', label: 'Attribution' });
+    if (/\bNC\b/.test(normalized)) badges.push({ kind: 'nc', label: 'NonCommercial' });
+    if (/\bSA\b/.test(normalized)) badges.push({ kind: 'sa', label: 'ShareAlike' });
+    if (/\bND\b/.test(normalized)) badges.push({ kind: 'nd', label: 'NoDerivatives' });
+  }
+
+  const label = badges.map(badge => badge.label).join(', ');
+  return `<span class="license-icon-strip" role="img" aria-label="${escapeHtml(label)}">${badges.map(badge => licenseBadgeHtml(badge.kind, badge.label)).join('')}</span>`;
+}
+
+function licenseTermIconHtml(label){
+  const normalized = String(label || '').trim().toLowerCase();
+  const terms = {
+    share: { kind: 'share', label: 'Share' },
+    adapt: { kind: 'remix', label: 'Adapt' },
+    attribution: { kind: 'by', label: 'Attribution' },
+    noncommercial: { kind: 'nc', label: 'NonCommercial' },
+    sharealike: { kind: 'sa', label: 'ShareAlike' },
+    noderivatives: { kind: 'nd', label: 'NoDerivatives' }
+  };
+  const term = terms[normalized];
+  return term ? licenseBadgeHtml(term.kind, term.label) : '';
 }
 
 function oerLicenseModalHtml(item){
@@ -324,7 +387,10 @@ function oerLicenseModalHtml(item){
             <div class="license-summary">
               <div class="license-summary-row">
                 <div class="license-summary-label">License terms</div>
-                <div>${licenseTerms}</div>
+                <div class="license-summary-value">
+                  ${licenseIconStripHtml(item?.license)}
+                  <span class="license-title-line">${licenseTerms}</span>
+                </div>
               </div>
             </div>
             ${notice.freedoms.length ? `
@@ -575,11 +641,19 @@ async function initOerDetail(){
         .license-summary-row{ display:grid; grid-template-columns:132px 1fr; gap:1rem; padding:.82rem .95rem; align-items:center; }
         .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
         .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+        .license-summary-value{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; min-width:0; }
+        .license-inline{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:.45rem; min-width:0; }
+        .license-title-line{ display:inline-flex; align-items:center; min-width:0; }
+        .license-icon-strip{ display:inline-flex; flex:0 0 auto; align-items:center; gap:.28rem; }
+        .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
         .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
         .license-summary + .license-section{ border-top:0; padding-top:0; }
         .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
-        .license-list{ display:grid; gap:.5rem; margin:0; padding:0; color:var(--oc-text); list-style:none; }
-        .license-list li{ display:grid; gap:.12rem; line-height:1.45; padding-left:.85rem; border-left:3px solid #d8e4ef; }
+        .license-list{ display:grid; gap:.68rem; margin:0; padding:0; color:var(--oc-text); list-style:none; }
+        .license-list li{ display:grid; gap:.12rem; line-height:1.45; padding:0; }
+        .license-list li.has-license-icon{ grid-template-columns:auto 1fr; column-gap:.62rem; align-items:flex-start; }
+        .license-list-copy{ display:grid; gap:.12rem; min-width:0; }
+        .license-list li.has-license-icon .license-badge{ margin-top:.06rem; width:1.45rem; min-width:1.45rem; height:1.45rem; }
         .license-list li strong{ color:var(--oc-ink); font-size:.9rem; }
         .license-list li span{ color:#334155; }
         .license-footer{ gap:.75rem; align-items:center; border-top:1px solid var(--oc-border); padding:1rem 1.4rem; background:#f8fafc; }

@@ -76,7 +76,23 @@
     if (!key || key.toLowerCase() === 'unspecified') return '';
     const url = LICENSE_URLS[key];
     if (!url) return esc(key);
-    return `<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a>`;
+    return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a></span>`;
+  }
+
+  function licenseIconStripHTML(license){
+    const upper = String(license || '').trim().toUpperCase();
+    const normalized = upper.replace(/[-_/]+/g, ' ');
+    if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
+    const badges = ['cc'];
+    if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
+      badges.push('zero');
+    } else {
+      if (/\bBY\b/.test(normalized)) badges.push('by');
+      if (/\bNC\b/.test(normalized)) badges.push('nc');
+      if (/\bSA\b/.test(normalized)) badges.push('sa');
+      if (/\bND\b/.test(normalized)) badges.push('nd');
+    }
+    return `<span class="license-icon-strip" aria-hidden="true">${badges.map(kind => `<img class="license-icon" src="assets/img/licenses/${kind}.svg" alt="" loading="lazy" decoding="async">`).join('')}</span>`;
   }
 
   const sec = (label, arr, cls='') =>

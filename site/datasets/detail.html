@@ -57,6 +57,9 @@
       color:var(--oc-text);
     }
     .oc-badge > .badge:last-child{margin-right:0;}
+    .oc-badge > .license-pill{display:inline-flex; align-items:center; gap:.35rem;}
+    .license-mini-strip{display:inline-flex; align-items:center; gap:.18rem;}
+    .license-mini-icon{display:block; width:1rem; height:1rem; object-fit:contain;}
 
     /* ---- Loading skeleton ---- */
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:140px}
@@ -206,6 +209,10 @@
     if (!arr.length) return "";
     const shown = arr.slice(0, limit)
       .map(t => {
+        if (kind === 'license') {
+          const icons = licenseIconStripHtml(t);
+          return `<span class="badge rounded-pill license-pill">${icons}<span>${t}</span></span>`;
+        }
         if (kind === 'task') {
           const href = taskHref(t);
           return href
@@ -219,6 +226,22 @@
       ? `<span class="badge rounded-pill">+${arr.length - limit} more</span>`
       : "";
     return shown + more;
+  }
+
+  function licenseIconStripHtml(licenseValue){
+    const upper = String(licenseValue || '').trim().toUpperCase();
+    const normalized = upper.replace(/[-_/]+/g, ' ');
+    if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
+    const badges = ['cc'];
+    if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
+      badges.push('zero');
+    } else {
+      if (/\bBY\b/.test(normalized)) badges.push('by');
+      if (/\bNC\b/.test(normalized)) badges.push('nc');
+      if (/\bSA\b/.test(normalized)) badges.push('sa');
+      if (/\bND\b/.test(normalized)) badges.push('nd');
+    }
+    return `<span class="license-mini-strip" aria-hidden="true">${badges.map(kind => `<img class="license-mini-icon" src="../assets/img/licenses/${kind}.svg" alt="" loading="lazy" decoding="async">`).join('')}</span>`;
   }
 
   function putAsPills(id, values, limit, kind = ''){
@@ -237,7 +260,7 @@
     setBadges({modality, tasks, license} = {}){
       putAsPills('badge-modality', modality, Infinity);
       putAsPills('badge-tasks', tasks, Infinity, 'task');
-      putAsPills('badge-license', license, 1);
+      putAsPills('badge-license', license, 1, 'license');
     },
     clearSkeleton(){
       const sk = document.getElementById('loading');

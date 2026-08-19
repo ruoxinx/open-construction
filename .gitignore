@@ -80,6 +80,8 @@ site/assets/img/*
 !site/assets/img/
 !site/assets/img/icon.png
 !site/assets/img/nsf-logo.png
+!site/assets/img/licenses/
+!site/assets/img/licenses/*
 !site/assets/img/details/
 site/assets/img/details/*
 !site/assets/img/details/Rebar-Counting.mp4
