@@ -514,18 +514,19 @@
       }
       .navbar .nav-link.plain{
         color:#526071!important;
-        font-size:.93rem;
-        font-weight:560!important;
+        min-height:36px;
+        font-size:.92rem;
+        font-weight:590!important;
         letter-spacing:0;
-        padding:.44rem .5rem!important;
+        padding:.42rem .48rem!important;
         display:inline-flex;
         align-items:center;
-        gap:.32rem;
+        gap:.38rem;
         position:relative;
         text-decoration:none!important;
       }
       .navbar .navbar-nav{
-        column-gap:.54rem!important;
+        column-gap:.42rem!important;
         row-gap:.25rem;
       }
       .navbar .nav-link.plain:hover,
@@ -540,13 +541,13 @@
       .navbar .nav-link.plain::before{
         content:"";
         position:absolute;
-        left:.5rem;
-        right:.5rem;
-        bottom:.24rem;
-        height:1px;
+        left:.48rem;
+        right:.48rem;
+        bottom:.18rem;
+        height:2px;
         border-radius:999px;
         background:var(--oc-accent,#f2a238);
-        opacity:.72;
+        opacity:.78;
         transform:scaleX(0);
         transform-origin:center;
         transition:transform .16s ease;
@@ -564,10 +565,10 @@
         align-items:center;
         justify-content:center;
         flex:0 0 auto;
-        width:.84rem;
-        height:.84rem;
+        width:.94rem;
+        height:.94rem;
         color:currentColor;
-        opacity:.58;
+        opacity:.72;
         transform:translateY(.01em);
         transition:opacity .16s ease;
       }
@@ -591,15 +592,12 @@
         align-items:center;
         justify-content:center;
         flex:0 0 auto;
-        position:absolute;
-        right:-.12rem;
-        top:50%;
-        width:.56rem;
-        height:.56rem;
+        width:.58rem;
+        height:.58rem;
+        margin-left:-.12rem;
         color:currentColor;
-        opacity:0;
+        opacity:.34;
         pointer-events:none;
-        transform:translateY(-50%);
         transition:opacity .14s ease;
       }
       .oc-top-nav-caret svg{
@@ -615,7 +613,7 @@
       .navbar .dropdown-toggle:hover .oc-top-nav-caret,
       .navbar .dropdown-toggle:focus .oc-top-nav-caret,
       .navbar .dropdown-toggle.show .oc-top-nav-caret{
-        opacity:.48;
+        opacity:.68;
       }
       .navbar .dropdown-menu:not(.oc-auth-menu){
         min-width:154px!important;

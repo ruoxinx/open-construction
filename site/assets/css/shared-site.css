@@ -83,19 +83,20 @@ a{ color:var(--oc-link); }
 .navbar .nav-link.plain{
   display:inline-flex;
   align-items:center;
-  gap:.32rem;
+  gap:.38rem;
   position:relative;
   color:#526071;
-  font-size:.93rem;
-  font-weight:560;
+  min-height:36px;
+  font-size:.92rem;
+  font-weight:590;
   letter-spacing:0;
-  padding:.44rem .5rem;
+  padding:.42rem .48rem;
   text-decoration:none;
   transition:color .16s ease;
 }
 
 .navbar .navbar-nav{
-  column-gap:.54rem!important;
+  column-gap:.42rem!important;
   row-gap:.25rem;
 }
 
@@ -113,13 +114,13 @@ a{ color:var(--oc-link); }
 .navbar .nav-link.plain::before{
   content:"";
   position:absolute;
-  left:.5rem;
-  right:.5rem;
-  bottom:.24rem;
-  height:1px;
+  left:.48rem;
+  right:.48rem;
+  bottom:.18rem;
+  height:2px;
   border-radius:999px;
   background:var(--oc-accent);
-  opacity:.72;
+  opacity:.78;
   transform:scaleX(0);
   transform-origin:center;
   transition:transform .16s ease;
@@ -140,10 +141,10 @@ a{ color:var(--oc-link); }
   align-items:center;
   justify-content:center;
   flex:0 0 auto;
-  width:.84rem;
-  height:.84rem;
+  width:.94rem;
+  height:.94rem;
   color:currentColor;
-  opacity:.58;
+  opacity:.72;
   transform:translateY(.01em);
   transition:opacity .16s ease;
 }
@@ -170,15 +171,12 @@ a{ color:var(--oc-link); }
   align-items:center;
   justify-content:center;
   flex:0 0 auto;
-  position:absolute;
-  right:-.12rem;
-  top:50%;
-  width:.56rem;
-  height:.56rem;
+  width:.58rem;
+  height:.58rem;
+  margin-left:-.12rem;
   color:currentColor;
-  opacity:0;
+  opacity:.34;
   pointer-events:none;
-  transform:translateY(-50%);
   transition:opacity .14s ease;
 }
 
@@ -196,7 +194,7 @@ a{ color:var(--oc-link); }
 .navbar .dropdown-toggle:hover .oc-top-nav-caret,
 .navbar .dropdown-toggle:focus .oc-top-nav-caret,
 .navbar .dropdown-toggle.show .oc-top-nav-caret{
-  opacity:.48;
+  opacity:.68;
 }
 
 .navbar .dropdown-menu:not(.oc-auth-menu){
@@ -383,12 +381,13 @@ header.hero h1.oc-page-title{
 #ocAuthNavItem{
   display:flex;
   align-items:center;
+  position:relative;
 }
 
 .navbar #ocAuthNavItem .oc-auth-actions{
   display:inline-flex;
   align-items:center;
-  gap:.5rem;
+  gap:.42rem;
 }
 
 .navbar #ocAuthNavItem .oc-auth-link{
@@ -423,7 +422,7 @@ header.hero h1.oc-page-title{
 }
 
 .navbar #ocAuthNavItem .oc-auth-login-link{
-  padding:.42rem .12rem;
+  padding:.42rem .2rem;
   color:#526071;
   font-weight:500;
 }
@@ -438,7 +437,7 @@ header.hero h1.oc-page-title{
   position:absolute;
   left:.12rem;
   right:.12rem;
-  bottom:.32rem;
+  bottom:.24rem;
   height:2px;
   border-radius:999px;
   background:var(--oc-accent);
@@ -461,13 +460,13 @@ header.hero h1.oc-page-title{
 }
 
 .navbar #ocAuthNavItem .oc-auth-signup-link{
-  min-height:36px;
-  padding:.52rem .98rem;
+  min-height:34px;
+  padding:.46rem .86rem;
   border-radius:999px;
   background:var(--oc-ink);
   color:#fff;
-  font-weight:680;
-  box-shadow:0 8px 18px rgba(15,46,75,.14);
+  font-weight:650;
+  box-shadow:0 7px 16px rgba(15,46,75,.12);
   transition:background-color .14s ease, box-shadow .14s ease, transform .14s ease;
 }
 
@@ -475,7 +474,7 @@ header.hero h1.oc-page-title{
 .navbar #ocAuthNavItem .oc-auth-signup-link:focus{
   color:#fff;
   background:#123c62;
-  box-shadow:0 10px 22px rgba(15,46,75,.18);
+  box-shadow:0 9px 20px rgba(15,46,75,.16);
   text-decoration:none;
   transform:translateY(-1px);
 }
@@ -579,13 +578,29 @@ header.hero h1.oc-page-title{
 
 @media (min-width: 992px){
   #ocAuthNavItem{
-    margin-left:.25rem;
-    padding-left:.4rem;
-    border-left:1px solid var(--oc-border);
+    margin-left:.46rem;
+    padding-left:.98rem;
+    border-left:0;
+  }
+
+  #ocAuthNavItem::before{
+    content:"";
+    position:absolute;
+    left:.22rem;
+    top:50%;
+    width:1px;
+    height:24px;
+    border-radius:999px;
+    background:linear-gradient(180deg, transparent, #dbe4ee 18%, #dbe4ee 82%, transparent);
+    transform:translateY(-50%);
   }
 }
 
 @media (max-width:991.98px){
+  #ocAuthNavItem::before{
+    display:none;
+  }
+
   .navbar .dropdown-toggle .oc-top-nav-caret{
     opacity:.45;
   }

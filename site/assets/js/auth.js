@@ -23,19 +23,19 @@
     const style = document.createElement('style');
     style.id = 'oc-auth-runtime-style';
     style.textContent = `
-      #${AUTH_NAV_ID}{display:flex;align-items:center}
-      #${AUTH_NAV_ID} .oc-auth-actions{display:inline-flex!important;align-items:center!important;gap:.5rem!important}
+      #${AUTH_NAV_ID}{display:flex;align-items:center;position:relative}
+      #${AUTH_NAV_ID} .oc-auth-actions{display:inline-flex!important;align-items:center!important;gap:.42rem!important}
       #${AUTH_NAV_ID} .oc-auth-link{display:inline-flex!important;align-items:center!important;gap:.45rem!important;line-height:1!important;white-space:nowrap}
       #${AUTH_NAV_ID} .oc-auth-link::before{display:none!important}
       #${AUTH_NAV_ID} .oc-auth-login-link,#${AUTH_NAV_ID} .oc-auth-signup-link{position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:34px!important;font-size:.9rem!important;line-height:1!important;text-decoration:none!important;white-space:nowrap!important}
-      #${AUTH_NAV_ID} .oc-auth-login-link{padding:.42rem .12rem!important;color:#526071!important;font-weight:500!important;background:transparent!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link{padding:.42rem .2rem!important;color:#526071!important;font-weight:500!important;background:transparent!important}
       #${AUTH_NAV_ID} .oc-auth-login-link::before,#${AUTH_NAV_ID} .oc-auth-signup-link::before{display:none!important}
-      #${AUTH_NAV_ID} .oc-auth-login-link::after{content:"" !important;position:absolute!important;left:.12rem!important;right:.12rem!important;bottom:.32rem!important;height:2px!important;border-radius:999px!important;background:#f2a238!important;opacity:0!important;transform:scaleX(.55)!important;transition:opacity .14s ease,transform .14s ease!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link::after{content:"" !important;position:absolute!important;left:.12rem!important;right:.12rem!important;bottom:.24rem!important;height:2px!important;border-radius:999px!important;background:#f2a238!important;opacity:0!important;transform:scaleX(.55)!important;transition:opacity .14s ease,transform .14s ease!important}
       #${AUTH_NAV_ID} .oc-auth-login-link:hover,#${AUTH_NAV_ID} .oc-auth-login-link:focus{color:#0f2e4b!important;text-decoration:none!important;background:transparent!important}
       #${AUTH_NAV_ID} .oc-auth-login-link:hover::after,#${AUTH_NAV_ID} .oc-auth-login-link:focus::after{opacity:1!important;transform:scaleX(1)!important}
-      #${AUTH_NAV_ID} .oc-auth-signup-link{min-height:36px!important;padding:.52rem .98rem!important;border-radius:999px!important;background:#0f2e4b!important;color:#fff!important;font-weight:680!important;box-shadow:0 8px 18px rgba(15,46,75,.14)!important;transition:background-color .14s ease,box-shadow .14s ease,transform .14s ease!important}
+      #${AUTH_NAV_ID} .oc-auth-signup-link{min-height:34px!important;padding:.46rem .86rem!important;border-radius:999px!important;background:#0f2e4b!important;color:#fff!important;font-weight:650!important;box-shadow:0 7px 16px rgba(15,46,75,.12)!important;transition:background-color .14s ease,box-shadow .14s ease,transform .14s ease!important}
       #${AUTH_NAV_ID} .oc-auth-signup-link::before{display:none!important}
-      #${AUTH_NAV_ID} .oc-auth-signup-link:hover,#${AUTH_NAV_ID} .oc-auth-signup-link:focus{color:#fff!important;text-decoration:none!important;background:#123c62!important;box-shadow:0 10px 22px rgba(15,46,75,.18)!important;transform:translateY(-1px)!important}
+      #${AUTH_NAV_ID} .oc-auth-signup-link:hover,#${AUTH_NAV_ID} .oc-auth-signup-link:focus{color:#fff!important;text-decoration:none!important;background:#123c62!important;box-shadow:0 9px 20px rgba(15,46,75,.16)!important;transform:translateY(-1px)!important}
       #${AUTH_NAV_ID} .oc-auth-user{width:34px!important;height:34px!important;justify-content:center!important;padding:.2rem!important;border:1px solid transparent!important;border-radius:999px!important}
       #${AUTH_NAV_ID} .oc-auth-user:hover{border-color:#d7e3ef!important;background:#f8fafc!important}
       #${AUTH_NAV_ID} .oc-auth-avatar{width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;min-width:28px!important;min-height:28px!important;border-radius:50%!important;object-fit:cover!important;border:1px solid #e7edf3!important;background:#f6f9fc!important;display:block!important}

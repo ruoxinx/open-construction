@@ -83,13 +83,13 @@ footer .container{ text-align:center; }
 
 /* Sidebar + navbar tweaks */
 .card .form-range{ margin-top:.25rem; }
-#ocAuthNavItem{ display:flex; align-items:center; }
+#ocAuthNavItem{ display:flex; align-items:center; position:relative; }
 .navbar #ocAuthNavItem .oc-auth-link{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-height:32px;
-  padding:.5rem .6rem;
+  min-height:34px;
+  padding:.42rem .5rem;
   border:0;
   border-radius:0;
   background:transparent;
@@ -100,8 +100,7 @@ footer .container{ text-align:center; }
 .navbar #ocAuthNavItem .oc-auth-link:hover,
 .navbar #ocAuthNavItem .oc-auth-link:focus{
   color:var(--brand);
-  text-decoration:underline;
-  text-underline-offset:3px;
+  text-decoration:none;
 }
 .navbar #ocAuthNavItem .oc-auth-user{
   width:34px;
@@ -112,8 +111,19 @@ footer .container{ text-align:center; }
 }
 @media (min-width: 992px){
   #ocAuthNavItem{
-    margin-left:.25rem;
-    padding-left:.4rem;
-    border-left:1px solid #e7edf3;
+    margin-left:.46rem;
+    padding-left:.98rem;
+    border-left:0;
+  }
+  #ocAuthNavItem::before{
+    content:"";
+    position:absolute;
+    left:.22rem;
+    top:50%;
+    width:1px;
+    height:24px;
+    border-radius:999px;
+    background:linear-gradient(180deg, transparent, #e7edf3 18%, #e7edf3 82%, transparent);
+    transform:translateY(-50%);
   }
 }
