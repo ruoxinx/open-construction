@@ -330,7 +330,8 @@
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const overview = roleOverviewCounts();
     const catalogTotal = catalogResources.length || suggestions.length;
-    const contributorTotal = catalogPartnerRecords.length || contributors.length || catalogContributorRecords.length || overview.contributors;
+    const uniquePartners = uniqueCatalogRecords(catalogPartnerRecords);
+    const contributorTotal = uniquePartners.length || contributors.length || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
       reviews: activeSuggestions.length + activeIssues.length,
@@ -363,7 +364,7 @@
         <div class="oc-dashboard-side-section">
           <span class="oc-dashboard-side-label">Catalog</span>
           <div class="oc-dashboard-side-metric"><span>Resources</span><strong>${esc(String(catalogTotal))}</strong></div>
-          <div class="oc-dashboard-side-metric"><span>Contributors/Labs</span><strong>${esc(String(contributorTotal))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Unique contributors/labs</span><strong>${esc(String(contributorTotal))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Verified profiles</span><strong>${esc(String(contributors.length))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Authors</span><strong>${esc(String(catalogAuthorRecords.length))}</strong></div>
         </div>
@@ -612,6 +613,21 @@
     }
   }
 
+  function uniqueCatalogRecords(records){
+    const map = new Map();
+    records.forEach(row => {
+      const key = catalogEntityKey(row.name);
+      if (!key) return;
+      const existing = map.get(key);
+      const currentDate = validDate(row.date || contributorDate(row));
+      const existingDate = existing ? validDate(existing.date || contributorDate(existing)) : null;
+      if (!existing || (currentDate && (!existingDate || currentDate < existingDate))) {
+        map.set(key, row);
+      }
+    });
+    return Array.from(map.values());
+  }
+
   function catalogItemTitle(row){
     return row.title || row.name || row.id || 'Untitled resource';
   }
@@ -780,15 +796,16 @@
     const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
-    const contributorTrend = cumulativeTrendBuckets(catalogPartnerRecords, row => row.date || contributorDate(row));
-    const contributorTotal = catalogPartnerRecords.length || contributors.length || catalogContributorRecords.length || overview.contributors;
+    const uniquePartners = uniqueCatalogRecords(catalogPartnerRecords);
+    const contributorTrend = cumulativeTrendBuckets(uniquePartners, row => row.date || contributorDate(row));
+    const contributorTotal = uniquePartners.length || contributors.length || catalogContributorRecords.length || overview.contributors;
     return `
       <section class="oc-dashboard-overview">
         <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
           ${[
             ['Resources', catalogResources.length || suggestions.length],
             ['Users', overview.users],
-            ['Contributors/Labs', contributorTotal],
+            ['Unique contributors/labs', contributorTotal],
             ['Open reviews', activeSuggestions.length],
             ['Issues', activeIssues.length],
             ['Verified profiles', contributors.length]
@@ -803,7 +820,7 @@
         <div class="oc-dashboard-trend-grid">
           ${renderCatalogResourceTrendCard()}
           ${renderTrendCard('Cumulative users', profiles.length, userTrend, 'User profiles will appear here after profile creation dates are available.')}
-          ${renderTrendCard('Cumulative contributors/labs', catalogPartnerRecords.length, contributorTrend, 'Contributor/lab trend uses dated catalog contributor, provider, company, organization, and institution fields.')}
+          ${renderTrendCard('Unique cumulative contributors/labs', uniquePartners.length, contributorTrend, 'Contributor/lab trend uses dated catalog contributor, provider, company, organization, and institution fields after de-duplication.')}
         </div>
 
         <div class="oc-dashboard-overview-grid">
@@ -822,7 +839,7 @@
                 ['Needs changes', suggestions.filter(row => row.status === 'needs_changes').length],
                 ['Active issues', activeIssues.length],
                 ['Explicit catalog contributors', catalogContributorRecords.length],
-                ['Dated contributors/labs', catalogPartnerRecords.length]
+                ['Dated contributors/labs', uniquePartners.length]
               ].map(([label, value]) => `
                 <div class="oc-dashboard-mini-row">
                   <span>${esc(label)}</span>
