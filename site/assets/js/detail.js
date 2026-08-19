@@ -1298,34 +1298,9 @@ async function initDetail(){
         .slice(0, 3)
         .map(({ other }) => other);
 
-      const blogEntries = (() => {
-        const entries = [];
-        const pushEntry = (item) => {
-          if (!item) return;
-          const url = typeof item === 'string' ? item : (item.url || item.href || '');
-          const href = safeHref(url);
-          if (!href) return;
-          entries.push({
-            href,
-            title: (typeof item === 'object' && item.title) ? String(item.title).trim() : '',
-            description: (typeof item === 'object' && item.description) ? String(item.description).trim() : '',
-            image: (typeof item === 'object' && item.image) ? String(item.image).trim() : ''
-          });
-        };
-        (Array.isArray(m.blog_posts) ? m.blog_posts : []).forEach(pushEntry);
-        pushEntry(m.blog_url);
-        normalizeList(m.blog_urls).forEach(pushEntry);
-        const seen = new Set();
-        return entries.filter(entry => {
-          if (seen.has(entry.href)) return false;
-          seen.add(entry.href);
-          return true;
-        });
-      })();
-
       const relatedItemsHtml = `
         <div class="row g-4">
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <div class="detail-subcard h-100">
               <div class="detail-subhead">Related models</div>
               ${relatedModels.length ? relatedModels.map(other => `
@@ -1337,7 +1312,7 @@ async function initDetail(){
               `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <div class="detail-subcard h-100">
               <div class="detail-subhead">Related datasets</div>
               ${relatedDatasets.length ? relatedDatasets.map(ds => `
@@ -1347,25 +1322,6 @@ async function initDetail(){
                   <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
                 </a>
               `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="detail-subcard h-100">
-              <div class="detail-subhead">Related posts</div>
-              ${blogEntries.length ? blogEntries.map((entry, idx) => {
-                let host = '';
-                try { host = new URL(entry.href).hostname.replace(/^www\./, ''); } catch {}
-                const title = entry.title || (idx === 0 ? 'Project blog post' : `Additional blog post ${idx + 1}`);
-                const meta = entry.description || truncateText(host || entry.href, 90);
-                const previewSrc = safeHref(entry.image || '') || imgBase + '.png';
-                return `
-                <a class="related-link" href="${entry.href}" target="_blank" rel="noopener">
-                  ${previewSrc ? `<img class="related-link-preview" src="${previewSrc}" alt="${escapeHtml(title)} preview" onerror="this.onerror=null;this.style.display='none';">` : ''}
-                  <span class="related-link-title">${escapeHtml(title)}</span>
-                  <span class="related-link-meta">${escapeHtml(meta)}</span>
-                </a>
-              `;
-              }).join('') : '<p class="text-muted small mb-0">No blog posts are linked for this model yet.</p>'}
             </div>
           </div>
         </div>
@@ -1832,33 +1788,9 @@ async function initDetail(){
       .map(({ model }) => model);
     const benchmarkBoards = datasetBenchmarkBoards(benchmarkPayload, ds);
 
-    const blogEntries = (() => {
-      const entries = [];
-      const pushEntry = (item) => {
-        if (!item) return;
-        const url = typeof item === 'string' ? item : (item.url || item.href || '');
-        const href = safeHref(url);
-        if (!href) return;
-        entries.push({
-          href,
-          title: (typeof item === 'object' && item.title) ? String(item.title).trim() : '',
-          description: (typeof item === 'object' && item.description) ? String(item.description).trim() : ''
-        });
-      };
-      (Array.isArray(ds.blog_posts) ? ds.blog_posts : []).forEach(pushEntry);
-      pushEntry(ds.blog_url);
-      normalizeList(ds.blog_urls).forEach(pushEntry);
-      const seen = new Set();
-      return entries.filter(entry => {
-        if (seen.has(entry.href)) return false;
-        seen.add(entry.href);
-        return true;
-      });
-    })();
-
     const relatedItemsHtml = `
       <div class="row g-4">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="detail-subcard h-100">
             <div class="detail-subhead">Related models</div>
             ${relatedModels.length ? relatedModels.map(model => `
@@ -1870,7 +1802,7 @@ async function initDetail(){
             `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="detail-subcard h-100">
             <div class="detail-subhead">Related datasets</div>
             ${relatedDatasets.length ? relatedDatasets.map(({ other, sharedTasks }) => `
@@ -1880,25 +1812,6 @@ async function initDetail(){
                 <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.potential_tasks || other.tasks || other.task)[0], normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task coverage', 90))}</span>
               </a>
             `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="detail-subcard h-100">
-            <div class="detail-subhead">Related posts</div>
-            ${blogEntries.length ? blogEntries.map((entry, idx) => {
-              let host = '';
-              try { host = new URL(entry.href).hostname.replace(/^www\./, ''); } catch {}
-              const title = entry.title || (idx === 0 ? 'Project blog post' : `Additional blog post ${idx + 1}`);
-              const meta = entry.description || truncateText(host || entry.href, 90);
-              const previewSrc = safeHref(entry.image || '') || imgSrc;
-              return `
-                <a class="related-link" href="${entry.href}" target="_blank" rel="noopener">
-                  ${previewSrc ? `<img class="related-link-preview" src="${previewSrc}" alt="${escapeHtml(title)} preview" onerror="this.onerror=null;this.style.display='none';">` : ''}
-                  <span class="related-link-title">${escapeHtml(title)}</span>
-                  <span class="related-link-meta">${escapeHtml(meta)}</span>
-                </a>
-              `;
-            }).join('') : '<p class="text-muted small mb-0">No blog posts are linked for this dataset yet.</p>'}
           </div>
         </div>
       </div>
@@ -1942,7 +1855,6 @@ async function initDetail(){
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .related-link-preview{ width:100%; aspect-ratio:16/9; object-fit:contain; border-radius:12px; border:1px solid var(--oc-border); background:#f8fbff; margin:.1rem 0 .45rem; }
         .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
         .chip-link{ display:inline-flex; align-items:center; color:var(--oc-text); text-decoration:none !important; transition:background .15s ease, border-color .15s ease, color .15s ease; }
