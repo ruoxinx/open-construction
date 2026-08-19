@@ -8,6 +8,9 @@ on:
     types: [data-repo-update]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest

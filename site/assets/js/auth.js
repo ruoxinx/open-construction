@@ -24,25 +24,36 @@
     style.id = 'oc-auth-runtime-style';
     style.textContent = `
       #${AUTH_NAV_ID}{display:flex;align-items:center}
+      #${AUTH_NAV_ID} .oc-auth-actions{display:inline-flex!important;align-items:center!important;gap:.5rem!important}
       #${AUTH_NAV_ID} .oc-auth-link{display:inline-flex!important;align-items:center!important;gap:.45rem!important;line-height:1!important;white-space:nowrap}
+      #${AUTH_NAV_ID} .oc-auth-link::before{display:none!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link,#${AUTH_NAV_ID} .oc-auth-signup-link{position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:34px!important;font-size:.9rem!important;line-height:1!important;text-decoration:none!important;white-space:nowrap!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link{padding:.42rem .12rem!important;color:#526071!important;font-weight:500!important;background:transparent!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link::before,#${AUTH_NAV_ID} .oc-auth-signup-link::before{display:none!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link::after{content:"" !important;position:absolute!important;left:.12rem!important;right:.12rem!important;bottom:.32rem!important;height:2px!important;border-radius:999px!important;background:#f2a238!important;opacity:0!important;transform:scaleX(.55)!important;transition:opacity .14s ease,transform .14s ease!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link:hover,#${AUTH_NAV_ID} .oc-auth-login-link:focus{color:#0f2e4b!important;text-decoration:none!important;background:transparent!important}
+      #${AUTH_NAV_ID} .oc-auth-login-link:hover::after,#${AUTH_NAV_ID} .oc-auth-login-link:focus::after{opacity:1!important;transform:scaleX(1)!important}
+      #${AUTH_NAV_ID} .oc-auth-signup-link{min-height:36px!important;padding:.52rem .98rem!important;border-radius:999px!important;background:#0f2e4b!important;color:#fff!important;font-weight:680!important;box-shadow:0 8px 18px rgba(15,46,75,.14)!important;transition:background-color .14s ease,box-shadow .14s ease,transform .14s ease!important}
+      #${AUTH_NAV_ID} .oc-auth-signup-link::before{display:none!important}
+      #${AUTH_NAV_ID} .oc-auth-signup-link:hover,#${AUTH_NAV_ID} .oc-auth-signup-link:focus{color:#fff!important;text-decoration:none!important;background:#123c62!important;box-shadow:0 10px 22px rgba(15,46,75,.18)!important;transform:translateY(-1px)!important}
       #${AUTH_NAV_ID} .oc-auth-user{width:34px!important;height:34px!important;justify-content:center!important;padding:.2rem!important;border:1px solid transparent!important;border-radius:999px!important}
       #${AUTH_NAV_ID} .oc-auth-user:hover{border-color:#d7e3ef!important;background:#f8fafc!important}
       #${AUTH_NAV_ID} .oc-auth-avatar{width:28px!important;height:28px!important;max-width:28px!important;max-height:28px!important;min-width:28px!important;min-height:28px!important;border-radius:50%!important;object-fit:cover!important;border:1px solid #e7edf3!important;background:#f6f9fc!important;display:block!important}
       #${AUTH_NAV_ID} .oc-auth-initials{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:28px!important;height:28px!important;border-radius:50%!important;border:1px solid #d7e3ef!important;background:#f5f9ff!important;color:#0f2e4b!important;font-size:.72rem!important;font-weight:800!important;letter-spacing:0!important}
       #${AUTH_NAV_ID} .oc-auth-user::after{display:none!important}
-      #${AUTH_NAV_ID} .oc-auth-menu{border:1px solid #e7edf3;border-radius:10px;box-shadow:0 14px 32px rgba(15,46,75,.12);padding:.42rem;min-width:178px}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-header{color:#536170;font-size:.82rem;font-weight:650;letter-spacing:0;padding:.32rem .55rem .46rem;text-transform:none}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item{display:grid!important;grid-template-columns:14px minmax(0,1fr);align-items:center!important;column-gap:.52rem;border-radius:7px;color:#26313d;font-size:.86rem;font-weight:600;line-height:1.15;padding:.44rem .55rem}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item svg{width:14px;height:14px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:#7a8794}
+      #${AUTH_NAV_ID} .oc-auth-menu{border:1px solid #e7edf3;border-radius:7px;box-shadow:0 12px 28px rgba(15,46,75,.10);padding:.32rem;min-width:164px}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-header{color:#6b7785;font-size:.72rem;font-weight:620;letter-spacing:.04em;line-height:1.2;padding:.34rem .52rem .42rem;text-transform:uppercase}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item{display:grid!important;grid-template-columns:13px minmax(0,1fr);align-items:center!important;column-gap:.48rem;min-height:34px;border-radius:6px;color:#3f4c5b;font-size:.84rem;font-weight:560;line-height:1.2;padding:.4rem .52rem;letter-spacing:0;transition:background-color .14s ease,color .14s ease}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item svg{width:13px;height:13px;display:block;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;color:#7a8794;transition:color .14s ease}
       #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item span{display:block;min-width:0}
       #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:hover svg,
       #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:focus svg{color:#0f2e4b}
-      #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]{border-top:1px solid #edf2f7;border-radius:0;color:#536170;margin-top:.22rem;padding-top:.62rem}
+      #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]{border-top:1px solid #edf2f7;border-radius:0;color:#667586;margin-top:.24rem;padding-top:.56rem}
       #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:hover,
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:focus{background:#f6f9fc;color:#0f2e4b}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:focus{background:#f7fafc;color:#0f2e4b}
       #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]:hover,
       #${AUTH_NAV_ID} .oc-auth-menu [data-oc-signout]:focus{border-radius:7px;color:#0f2e4b}
-      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:active{background:#eef5fb;color:#0f2e4b}
+      #${AUTH_NAV_ID} .oc-auth-menu .dropdown-item:active{background:#f3f7fb;color:#0f2e4b}
       .oc-bookmark-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;border-radius:6px!important;color:#5c6873!important;background:transparent!important}
       .oc-bookmark-btn-icon{width:30px!important;height:30px!important;padding:0!important;border:0!important}
       .oc-bookmark-btn-text{width:100%!important;min-height:34px!important;padding:.38rem .7rem!important;border:1px solid #f2a238!important;color:#8a5a0a!important;font-size:.875rem!important;font-weight:700!important;background:#fff!important}
@@ -72,6 +83,19 @@
 
   function relHref(path){
     return pageDepthPrefix() + path.replace(/^\//, '');
+  }
+
+  function safeSameOriginHref(value, fallback = relHref('account.html')){
+    const raw = String(value || '').trim();
+    if (!raw) return fallback;
+    try {
+      const target = new URL(raw, window.location.href);
+      if (!['http:', 'https:'].includes(target.protocol)) return fallback;
+      if (target.origin !== window.location.origin) return fallback;
+      return target.href;
+    } catch {
+      return fallback;
+    }
   }
 
   function getClient(){
@@ -136,7 +160,7 @@
   }
 
   function setReturnTo(url = window.location.href){
-    localStorage.setItem(RETURN_TO_KEY, url);
+    localStorage.setItem(RETURN_TO_KEY, safeSameOriginHref(url, siteHref('account.html')));
   }
 
   function dispatchAuthEvent(name, detail = {}){
@@ -146,12 +170,12 @@
   }
 
   function pendingReturnTo(){
-    return localStorage.getItem(RETURN_TO_KEY) || '';
+    return safeSameOriginHref(localStorage.getItem(RETURN_TO_KEY), '');
   }
 
   function takeReturnTo(){
     const fallback = relHref('account.html');
-    const value = localStorage.getItem(RETURN_TO_KEY) || fallback;
+    const value = safeSameOriginHref(localStorage.getItem(RETURN_TO_KEY), fallback);
     localStorage.removeItem(RETURN_TO_KEY);
     return value;
   }
@@ -165,7 +189,7 @@
 
   async function resolvePostSignInHref(preferredHref = ''){
     const fallback = relHref('account.html');
-    let href = preferredHref || fallback;
+    let href = safeSameOriginHref(preferredHref, fallback);
     let target;
     try {
       target = new URL(href, window.location.href);
@@ -653,7 +677,8 @@
     const li = document.getElementById(AUTH_NAV_ID);
     if (!li) return;
     if (!user) {
-      li.innerHTML = `<a class="nav-link plain oc-auth-link" href="${relHref('auth/sign-in.html')}" rel="nofollow">Sign in</a>`;
+      const signInHref = relHref('auth/sign-in.html');
+      li.innerHTML = `<div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="${signInHref}?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="${signInHref}?mode=signup" rel="nofollow">Sign up</a></div>`;
       return;
     }
     const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || '';

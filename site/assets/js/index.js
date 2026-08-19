@@ -542,7 +542,7 @@ function renderClassList(){
   }).join('');
 
   const node = document.getElementById(id); if (node) node.innerHTML = html || '<div class="text-muted small">No classes</div>';
-  ensureToggleButton(id,btn,'classes','Show all classes','Show less',renderClassList);
+  ensureToggleButton(id,btn,'classes','Show all','Show less',renderClassList);
 }
 
 // ---------- search boxes ----------

@@ -58,12 +58,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
 
   <!-- Design tokens -->
   <style>
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#4f5d6c; --oc-border:#e7edf3;
       --oc-brand-ink:#0f2e4b; --oc-brand-accent:#f2a238; --oc-brand-accent-2:#123c62;
+      --oc-ink:var(--oc-brand-ink); --oc-accent:var(--oc-brand-accent);
       --oc-link:#0b66c3; --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
@@ -95,63 +97,6 @@
       backdrop-filter:saturate(120%) blur(6px);
       border-bottom:1px solid var(--oc-border)!important;
       z-index:1030 !important; /* below Bootstrap modal */
-    }
-    .brand-wordmark{
-      display:flex;
-      flex-direction:column;
-      line-height:1;
-      gap:0;
-      align-items:flex-start;
-      color:#0F2E4B;
-    }
-    .brand-wordmark .oc-open{
-      font-size:0.75rem;
-      font-weight:400;
-      letter-spacing:0.15em;
-      text-transform:uppercase;
-      opacity:0.7;
-      margin-bottom:-0.1rem;
-    }
-    .brand-wordmark .oc-sep{display:none}
-    .brand-wordmark .oc-construction{
-      font-size:1.35rem;
-      font-weight:700;
-      letter-spacing:-0.01em;
-    }
-    .oc-logo{ height:44px; width:44px; }
-
-    .navbar .nav-link.plain{
-      font-weight:700; color:var(--oc-text); padding:.5rem .6rem;
-    }
-    .navbar .nav-link.plain:hover,
-    .navbar .nav-link.plain.active{
-      color:var(--oc-brand-ink);
-      text-decoration:underline; text-underline-offset:3px;
-    }
-    .navbar .dropdown-menu:not(.oc-auth-menu){
-      min-width:168px;
-      border:1px solid var(--oc-border);
-      border-radius:10px;
-      box-shadow:0 14px 32px rgba(15,46,75,.1);
-      padding:.4rem;
-    }
-    .navbar .dropdown-menu:not(.oc-auth-menu) .dropdown-item{
-      border-radius:7px;
-      color:var(--oc-text);
-      font-size:.9rem;
-      font-weight:550;
-      line-height:1.2;
-      padding:.48rem .62rem;
-    }
-    .navbar .dropdown-menu:not(.oc-auth-menu) .dropdown-item:hover,
-    .navbar .dropdown-menu:not(.oc-auth-menu) .dropdown-item:focus{
-      background:#f6f9fc;
-      color:var(--oc-brand-ink);
-    }
-    .navbar .dropdown-menu:not(.oc-auth-menu) .dropdown-item.active,
-    .navbar .dropdown-menu:not(.oc-auth-menu) .dropdown-item:active{
-      background:#eef5fb;
-      color:var(--oc-brand-ink);
     }
     #ocAuthNavItem{
       display:flex;
@@ -212,35 +157,17 @@
       color:var(--oc-brand-ink);
       border-bottom:1px solid var(--oc-border);
     }
-    .hero .content{ padding:64px 0 48px; text-align:center; }
-    .hero-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      padding:.35rem .8rem;
-      border:1px solid #dbe6f0;
-      border-radius:999px;
-      background:#f8fbff;
-      color:var(--oc-brand-ink);
-      font-size:.78rem;
-      font-weight:700;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-    .hero-kicker::before{
-      content:"";
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:var(--oc-brand-accent);
-      box-shadow:0 0 0 4px rgba(242,162,56,.16);
-    }
+    .hero .content{ padding:68px 0 48px; text-align:center; }
     .hero-title{
       font-weight:700; letter-spacing:.2px; line-height:1.2;
       font-size:clamp(1.6rem, 1.1rem + 1.8vw, 2.35rem);
-      margin:.7rem 0 .55rem;
+      margin:0 0 .72rem;
       max-width:26ch;
       margin-inline:auto;
+      text-wrap:balance;
+      transform:translateY(6px);
+      opacity:0;
+      animation:hero-rise .56s ease-out .04s forwards;
     }
     .hero-title-line{
       display:block;
@@ -407,7 +334,22 @@
     }
     .btn-accent:hover{ background:#f7fbff; }
 
-    .hero-center { display:flex; flex-direction:column; align-items:center; gap:.55rem; }
+    .hero-center {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:.55rem;
+      transform:translateY(8px);
+      opacity:0;
+      animation:hero-rise .62s ease-out .14s forwards;
+    }
+
+    @keyframes hero-rise{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
 
     .featured-rail-head{
       display:flex;
@@ -885,7 +827,15 @@
       margin-top:auto;
       padding-top:.2rem;
     }
+    .pf-actions .pf-link{
+      flex:0 1 auto;
+      justify-content:flex-start;
+      max-width:none;
+    }
     .pf-link{
+      border:0;
+      padding:0;
+      background:transparent;
       display:inline-flex;
       align-items:center;
       gap:.35rem;
@@ -893,17 +843,52 @@
       font-size:.9rem;
       font-weight:700;
       text-decoration:none;
+      cursor:pointer;
+      line-height:1.3;
     }
     .pf-link span[aria-hidden="true"]{
       color:var(--oc-brand-accent);
+      font-size:.9em;
+      line-height:1;
+      transition:transform .15s ease;
     }
     .pf-link:hover{
       color:var(--oc-brand-ink);
       text-decoration:underline;
       text-underline-offset:3px;
     }
+    .pf-link:hover span[aria-hidden="true"],
+    .pf-link:focus span[aria-hidden="true"]{
+      transform:translateX(.12rem);
+    }
+    .pf-inline-action{
+      border:0;
+      padding:0;
+      background:transparent;
+      color:inherit;
+      font:inherit;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .pf-inline-action-word{
+      color:var(--oc-link);
+      font-weight:600;
+      text-decoration:underline;
+      text-decoration-color:var(--oc-brand-accent);
+      text-underline-offset:3px;
+    }
+    .pf-inline-action:hover .pf-inline-action-word,
+    .pf-inline-action:focus .pf-inline-action-word{
+      color:var(--oc-link);
+      text-decoration-color:var(--oc-brand-accent);
+    }
     @media (max-width:575.98px){
       .pf-grid{ grid-template-columns:1fr; }
+      .pf-actions .pf-link{
+        flex:0 1 auto;
+        justify-content:flex-start;
+        max-width:none;
+      }
     }
 
     @media (max-width:991.98px){
@@ -1257,6 +1242,12 @@
     .metric[data-kind="oers"]    .ring-val{ stroke: var(--oc-brand-accent); }
 
     @media (prefers-reduced-motion: reduce){
+      .hero-title,
+      .hero-center{
+        animation:none;
+        opacity:1;
+        transform:none;
+      }
       .ring-ready .ring-val{ transition:none; }
     }
 
@@ -1336,17 +1327,6 @@
     }
     .oc-modal-compact .form-control{ height:40px; border-radius:10px; }
 
-    /* Yellow bell only */
-    .btn-subscribe-icon{
-      background:transparent;
-      border:0;
-      padding:.25rem .4rem;
-      line-height:1;
-    }
-    .btn-subscribe-icon svg{ fill:var(--oc-brand-accent); }
-    .btn-subscribe-icon:hover svg{ filter:brightness(1.15); }
-    .btn-subscribe-icon:focus-visible{ outline: 2px solid var(--oc-focus); outline-offset: 2px; border-radius: 999px; }
-
 	/* Dark buttons */
 	.btn-ink,
 	.btn-ink:visited,
@@ -1420,21 +1400,7 @@
         <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
 
         <!-- 🔔 Subscribe button -->
-        <li class="nav-item">
-          <button type="button"
-                  class="nav-link px-2 icon-only btn-subscribe-icon"
-                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
-                  aria-label="Subscribe for updates" title="Subscribe">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 
-                       0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 
-                       1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 
-                       7 0 0 0 8.5 2z"/>
-            </svg>
-          </button>
-        </li>
-        <li class="nav-item" id="ocAuthNavItem"><a class="nav-link plain oc-auth-link" href="auth/sign-in.html" rel="nofollow">Sign in</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
 
       </ul>
     </div>
@@ -1444,7 +1410,6 @@
 <!-- Hero -->
 <header class="hero">
   <div class="container oc-container content">
-    <div class="hero-kicker">Open AEC Resource Library</div>
     <h1 class="hero-title mb-1">
       <span class="hero-title-line">Discover open digital assets</span>
       <span class="hero-title-line">for the AEC community</span>
@@ -1708,6 +1673,7 @@
         <p>OpenConstruction indexes public metadata and points back to original sources. Inclusion is descriptive, not endorsement; corrections and removal requests go to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
         <div class="pf-actions">
           <a class="pf-link" href="contribute.html#terms">Read policy <span aria-hidden="true">&rarr;</span></a>
+          <a class="pf-link" href="mailto:support@openconstruction.org?subject=OpenConstruction%20content%20issue">Report issue <span aria-hidden="true">&rarr;</span></a>
         </div>
       </article>
       <article class="pf-card">
@@ -1717,8 +1683,12 @@
           </span>
           <span class="pf-eyebrow">Feedback &amp; Ideas</span>
         </div>
-        <h4>Shape what's next, in the open.</h4>
-        <p>Share platform feedback and roadmap suggestions through the OpenConstruction workspace, follow us on <a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">LinkedIn</a>, or email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
+        <h4>Contribute to what comes next.</h4>
+        <p>Propose datasets, models, workflows, OERs, and platform improvements through the Contribute page. For updates and community signals, follow OpenConstruction on <a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">LinkedIn</a> or <button type="button" class="pf-inline-action" data-bs-toggle="modal" data-bs-target="#subscribeModal"><span class="pf-inline-action-word">subscribe</span> for email updates</button>.</p>
+        <div class="pf-actions">
+          <a class="pf-link" href="contribute.html">Start contributing <span aria-hidden="true">&rarr;</span></a>
+          <a class="pf-link" href="contributors.html">Meet the community <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </article>
     </div>
   </section>
@@ -2387,10 +2357,10 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/auth.js?v=20260818-beta-gates"></script>
-<script src="assets/js/site-shell.js?v=20260818-beta-gates"></script>
+<script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script>
+<script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
 <script src="assets/js/institutions.js"></script>
 <script src="assets/js/visit-logger.js" data-page="index"></script>
 <script>
@@ -2422,7 +2392,7 @@
       </div>
 
       <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" 
-            method="post" target="_blank" novalidate>
+            method="post" target="_blank" rel="noopener noreferrer" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
         <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2"
                placeholder="you@university.edu" required>

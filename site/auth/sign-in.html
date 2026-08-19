@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sign in · OpenConstruction</title>
-  <meta name="description" content="Sign in to OpenConstruction.">
+  <title>Log in · OpenConstruction</title>
+  <meta name="description" content="Log in or sign up for OpenConstruction.">
   <meta name="robots" content="noindex">
   <link rel="canonical" href="https://www.openconstruction.org/auth/sign-in.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/css/shared-site.css" rel="stylesheet">
+  <link href="../assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
 </head>
-<body>
-<a class="skip-link" href="#mainContent">Skip to sign in</a>
+<body class="oc-auth-mode-login">
+<a class="skip-link" href="#mainContent">Skip to account access</a>
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
@@ -52,17 +52,7 @@
         </li>
         <li class="nav-item"><a class="nav-link plain" href="../contribute.html">Contribute</a></li>
         <li class="nav-item"><a class="nav-link plain" href="../contributors.html">Community</a></li>
-        <li class="nav-item">
-          <button type="button" class="nav-link px-2 icon-only btn-subscribe-icon"
-                  data-bs-toggle="modal" data-bs-target="#subscribeModal"
-                  aria-label="Subscribe for updates" title="Subscribe">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                 viewBox="0 0 16 16" aria-hidden="true" class="icon-bell">
-              <path d="M8 16a2 2 0 0 0 1.985-1.75H6.015A2 2 0 0 0 8 16zm.5-14a.5.5 0 0 0-1 0 7 7 0 0 0-5.468 6.37c-.084.58-.272 1.204-.653 1.856-.356.617-.879 1.104-1.379 1.357V13h14v-1.417c-.5-.253-1.023-.74-1.379-1.357-.38-.652-.569-1.276-.653-1.856A7 7 0 0 0 8.5 2z"/>
-            </svg>
-          </button>
-        </li>
-        <li class="nav-item" id="ocAuthNavItem"><a class="nav-link plain oc-auth-link" href="../auth/sign-in.html" rel="nofollow">Sign in</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="../auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="../auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
 
       </ul>
     </div>
@@ -73,11 +63,16 @@
   <div class="oc-auth-page">
     <div class="oc-auth-intro">
       <p class="oc-auth-kicker mb-2">OpenConstruction Workspace</p>
-      <h1 class="oc-auth-title mb-3">Your research space for open AEC resources.</h1>
-      <p class="oc-auth-lede mb-0">Sign in to save catalog records, continue Ask OpenConstruction sessions, and submit open resources for review.</p>
+      <h1 class="oc-auth-title mb-3" id="authIntroTitle">Your research space for open AEC resources.</h1>
+      <p class="oc-auth-lede mb-0" id="authIntroLede">Log in to save catalog records, continue Ask OpenConstruction sessions, and submit open resources for review.</p>
       <p class="oc-auth-lede mb-0">Use an identity provider or email link. OpenConstruction does not store passwords.</p>
+      <ul class="oc-auth-mode-list" id="authModeList">
+        <li>Return to saved resources and notes.</li>
+        <li>Continue Ask OpenConstruction sessions.</li>
+        <li>Review your submissions and reports.</li>
+      </ul>
 
-      <div class="oc-auth-preview" aria-label="Workspace features">
+      <div class="oc-auth-preview" id="authPreview" aria-label="Workspace features">
         <div class="oc-auth-preview-item">
           <div class="oc-auth-preview-label">Ask</div>
           <div class="oc-auth-preview-value">Search sessions</div>
@@ -95,8 +90,13 @@
     </div>
 
     <section class="oc-auth-card" aria-labelledby="signin-title">
-      <p class="oc-workspace-kicker mb-2">No password required</p>
-      <h2 id="signin-title" class="h4 fw-bold mb-3">Sign in to your account</h2>
+      <div class="oc-auth-mode-switch" role="tablist" aria-label="Account access mode">
+        <a id="authLoginModeLink" href="../auth/sign-in.html?mode=login" role="tab" aria-selected="true">Log in</a>
+        <a id="authSignupModeLink" href="../auth/sign-in.html?mode=signup" role="tab" aria-selected="false">Sign up</a>
+      </div>
+      <p class="oc-workspace-kicker mb-2" id="authCardKicker">No password required</p>
+      <h2 id="signin-title" class="h4 fw-bold mb-3">Log in to your account</h2>
+      <p class="oc-auth-card-lede" id="authCardLede">Use your existing identity to return to your workspace.</p>
       <div id="signedInNotice" class="alert alert-success d-none" role="status">
         You are already signed in. Opening <span id="signedInDestinationLabel">your workspace</span>...
         <a id="signedInDestinationLink" class="alert-link" href="../account.html">Open now</a>
@@ -106,7 +106,7 @@
           <svg class="oc-auth-provider-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
             <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
           </svg>
-          <span class="oc-auth-provider-label">Continue with GitHub</span>
+          <span class="oc-auth-provider-label">Log in with GitHub</span>
         </button>
         <button type="button" class="btn btn-outline-primary oc-auth-provider" data-provider="google">
           <svg class="oc-auth-provider-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -115,30 +115,30 @@
             <path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.84z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06L5.84 9.9C6.71 7.31 9.14 5.38 12 5.38z"/>
           </svg>
-          <span class="oc-auth-provider-label">Continue with Google</span>
+          <span class="oc-auth-provider-label">Log in with Google</span>
         </button>
         <button type="button" class="btn btn-outline-primary oc-auth-provider" data-provider="custom:orcid">
           <svg class="oc-auth-provider-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path fill="#A6CE39" d="M12 24C5.37 24 0 18.63 0 12S5.37 0 12 0s12 5.37 12 12-5.37 12-12 12z"/>
             <path fill="#fff" d="M7.88 6.39a1.14 1.14 0 1 1-2.28 0 1.14 1.14 0 0 1 2.28 0zM5.8 8.2h1.86v9.4H5.8V8.2zm4.02 0h5.02c3.47 0 5 2.48 5 4.71 0 2.42-1.89 4.69-4.98 4.69H9.82V8.2zm1.86 7.72h2.96c3.06 0 3.28-2.32 3.28-3.01 0-1.13-.72-3.03-3.46-3.03h-2.78v6.04z"/>
           </svg>
-          <span class="oc-auth-provider-label">Continue with ORCID</span>
+          <span class="oc-auth-provider-label">Log in with ORCID</span>
         </button>
       </div>
       <div class="text-center small text-muted my-3">or</div>
       <form id="emailSignInForm" class="vstack gap-2">
         <label for="emailSignInInput" class="form-label small text-muted mb-0">Email</label>
         <input type="email" id="emailSignInInput" class="form-control" autocomplete="email" placeholder="you@university.edu" required>
-        <p class="small text-muted mb-0">We will email a secure one-time sign-in link for your workspace.</p>
+        <p class="small text-muted mb-0" id="emailSignInHint">We will email a secure one-time login link for your workspace.</p>
         <button type="submit" class="btn btn-outline-primary oc-auth-provider">
           <svg class="oc-auth-provider-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2v.35l8 5.16 8-5.16V7H4zm0 2.73V17h16V9.73l-7.46 4.81a1 1 0 0 1-1.08 0L4 9.73z"/>
           </svg>
-          <span id="emailSignInLabel">Email me a sign-in link</span>
+          <span id="emailSignInLabel">Email me a login link</span>
         </button>
       </form>
       <hr>
-      <div class="small text-muted">
+      <div class="small text-muted" id="authSecurityNote">
         Provider identity and session security are handled by the selected identity provider.
       </div>
       <div id="authError" class="alert alert-danger mt-3 mb-0 d-none" role="alert"></div>
@@ -172,7 +172,7 @@
         <h6 class="m-0 fw-semibold">Subscribe</h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" novalidate>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0" method="post" target="_blank" rel="noopener noreferrer" novalidate>
         <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
         <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
         <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
@@ -186,10 +186,10 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="../assets/js/config.js"></script>
-<script src="../assets/js/auth.js?v=20260818-beta-gates"></script>
-<script src="../assets/js/site-shell.js?v=20260818-beta-gates"></script>
+<script src="../assets/js/auth.js?v=20260819-auth-cta-balance"></script>
+<script src="../assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
 <script>
   document.getElementById('yearNow').textContent = new Date().getFullYear();
 
@@ -218,6 +218,92 @@
     google: 'Google',
     'custom:orcid': 'ORCID'
   };
+  const authMode = new URLSearchParams(window.location.search).get('mode') === 'signup' ? 'signup' : 'login';
+  const isSignupMode = authMode === 'signup';
+  const emailIdleLabel = isSignupMode ? 'Create workspace with email' : 'Email me a login link';
+  const modeContent = {
+    login: {
+      title: 'Your research space for open AEC resources.',
+      lede: 'Log in to save catalog records, continue Ask OpenConstruction sessions, and submit open resources for review.',
+      list: [
+        'Return to saved resources and notes.',
+        'Continue Ask OpenConstruction sessions.',
+        'Review your submissions and reports.'
+      ],
+      preview: [
+        ['Ask', 'Search sessions'],
+        ['Library', 'Saved resources'],
+        ['Submit', 'Catalog review']
+      ],
+      kicker: 'No password required',
+      cardTitle: 'Log in to your account',
+      cardLede: 'Use your existing identity to return to your workspace.',
+      providerVerb: 'Log in with',
+      emailHint: 'We will email a secure one-time login link for your workspace.',
+      securityNote: 'Provider identity and session security are handled by the selected identity provider.'
+    },
+    signup: {
+      title: 'Create your OpenConstruction workspace.',
+      lede: 'Start a free workspace for saving open AEC resources, tracking submissions, and joining the contribution workflow.',
+      list: [
+        'Build a personal library of datasets, models, workflows, and OERs.',
+        'Submit resources and follow review status from one workspace.',
+        'Manage email updates and account preferences after joining.'
+      ],
+      preview: [
+        ['Save', 'Personal library'],
+        ['Contribute', 'Submit resources'],
+        ['Updates', 'Email preferences']
+      ],
+      kicker: 'Free workspace',
+      cardTitle: 'Sign up for OpenConstruction',
+      cardLede: 'Create a workspace with a trusted identity provider or a secure email link.',
+      providerVerb: 'Sign up with',
+      emailHint: 'We will email a secure one-time link to create or access your workspace.',
+      securityNote: 'No password is stored by OpenConstruction. If an account already exists, the same link logs you in.'
+    }
+  };
+
+  function applyAuthMode(){
+    document.body.classList.toggle('oc-auth-mode-signup', isSignupMode);
+    document.body.classList.toggle('oc-auth-mode-login', !isSignupMode);
+    const content = modeContent[authMode];
+    document.title = isSignupMode ? 'Sign up · OpenConstruction' : 'Log in · OpenConstruction';
+    const introTitle = document.getElementById('authIntroTitle');
+    const introLede = document.getElementById('authIntroLede');
+    const modeList = document.getElementById('authModeList');
+    const preview = document.getElementById('authPreview');
+    const cardKicker = document.getElementById('authCardKicker');
+    const cardTitle = document.getElementById('signin-title');
+    const cardLede = document.getElementById('authCardLede');
+    const emailHint = document.getElementById('emailSignInHint');
+    const emailLabel = document.getElementById('emailSignInLabel');
+    const securityNote = document.getElementById('authSecurityNote');
+    const loginLink = document.getElementById('authLoginModeLink');
+    const signupLink = document.getElementById('authSignupModeLink');
+
+    if (introTitle) introTitle.textContent = content.title;
+    if (introLede) introLede.textContent = content.lede;
+    if (modeList) modeList.innerHTML = content.list.map(item => `<li>${item}</li>`).join('');
+    if (preview) preview.innerHTML = content.preview.map(([label, value]) => `
+      <div class="oc-auth-preview-item">
+        <div class="oc-auth-preview-label">${label}</div>
+        <div class="oc-auth-preview-value">${value}</div>
+      </div>
+    `).join('');
+    if (cardKicker) cardKicker.textContent = content.kicker;
+    if (cardTitle) cardTitle.textContent = content.cardTitle;
+    if (cardLede) cardLede.textContent = content.cardLede;
+    if (emailHint) emailHint.textContent = content.emailHint;
+    if (emailLabel) emailLabel.textContent = emailIdleLabel;
+    if (securityNote) securityNote.textContent = content.securityNote;
+    if (loginLink) loginLink.setAttribute('aria-selected', String(!isSignupMode));
+    if (signupLink) signupLink.setAttribute('aria-selected', String(isSignupMode));
+    document.querySelectorAll('[data-provider]').forEach((button) => {
+      const label = button.querySelector('.oc-auth-provider-label');
+      if (label) label.textContent = `${content.providerVerb} ${providerNames[button.dataset.provider] || 'provider'}`;
+    });
+  }
 
   function showAuthError(message){
     const errorBox = document.getElementById('authError');
@@ -247,7 +333,7 @@
       const remaining = getEmailCooldownRemaining();
       if (remaining <= 0) {
         button.disabled = false;
-        label.textContent = 'Email me a sign-in link';
+        label.textContent = emailIdleLabel;
         return;
       }
 
@@ -280,6 +366,7 @@
 	    });
 	  });
 
+  applyAuthMode();
   applyEmailCooldown();
 
   document.getElementById('emailSignInForm')?.addEventListener('submit', async (event) => {
@@ -296,7 +383,7 @@
     const originalLabel = label.textContent;
     errorBox.classList.add('d-none');
     button.disabled = true;
-    label.textContent = 'Sending sign-in link...';
+    label.textContent = isSignupMode ? 'Sending sign-up link...' : 'Sending login link...';
     try {
       const { error } = await window.OCAuth.signInWithEmail(input.value);
       if (error) throw error;
