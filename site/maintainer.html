@@ -711,6 +711,32 @@
     `;
   }
 
+  function renderContributorRosterCard(total){
+    return `
+      <article class="oc-dashboard-trend-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">Community</p>
+            <h3 class="h6 fw-bold mb-0">Contributors/Labs</h3>
+          </div>
+          <strong class="oc-dashboard-trend-total">${esc(String(total))}</strong>
+        </div>
+        <div class="vstack gap-2">
+          ${[
+            ['Contributor registry', contributors.length],
+            ['Core team', coreTeamMemberCount],
+            ['Catalog authors credited separately', catalogAuthorRecords.length]
+          ].map(([label, value]) => `
+            <div class="oc-dashboard-mini-row">
+              <span>${esc(label)}</span>
+              <strong>${esc(String(value))}</strong>
+            </div>
+          `).join('')}
+        </div>
+      </article>
+    `;
+  }
+
   function renderCatalogResourceTrendCard(){
     const trend = cumulativeResourceTrend(catalogResources);
     const selectedType = resourceTrendMode === 'all' ? null : resourceTrendMode;
@@ -795,7 +821,6 @@
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
     const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
-    const contributorTrend = cumulativeTrendBuckets(contributors, row => contributorDate(row), coreTeamMemberCount);
     return `
       <section class="oc-dashboard-overview">
         <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
@@ -817,7 +842,7 @@
         <div class="oc-dashboard-trend-grid">
           ${renderCatalogResourceTrendCard()}
           ${renderTrendCard('Cumulative users', profiles.length, userTrend, 'User profiles will appear here after profile creation dates are available.')}
-          ${renderTrendCard('Unique cumulative contributors/labs', contributorTotal, contributorTrend, 'Add first_contributed_at, joined_at, or created_at to contributors.json for a contributor/lab timeline.')}
+          ${renderContributorRosterCard(contributorTotal)}
         </div>
 
         <div class="oc-dashboard-overview-grid">
