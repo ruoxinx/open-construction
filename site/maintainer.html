@@ -132,6 +132,7 @@
   let contributors = [];
   let catalogResources = [];
   let catalogContributorRecords = [];
+  let catalogPartnerRecords = [];
   let catalogAuthorRecords = [];
   let selectedUserId = '';
   let currentMaintainerId = '';
@@ -329,7 +330,7 @@
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const overview = roleOverviewCounts();
     const catalogTotal = catalogResources.length || suggestions.length;
-    const contributorTotal = contributors.length || catalogContributorRecords.length || overview.contributors;
+    const contributorTotal = catalogPartnerRecords.length || contributors.length || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
       reviews: activeSuggestions.length + activeIssues.length,
@@ -362,7 +363,8 @@
         <div class="oc-dashboard-side-section">
           <span class="oc-dashboard-side-label">Catalog</span>
           <div class="oc-dashboard-side-metric"><span>Resources</span><strong>${esc(String(catalogTotal))}</strong></div>
-          <div class="oc-dashboard-side-metric"><span>Contributors</span><strong>${esc(String(contributorTotal))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Contributors/Labs</span><strong>${esc(String(contributorTotal))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Verified profiles</span><strong>${esc(String(contributors.length))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Authors</span><strong>${esc(String(catalogAuthorRecords.length))}</strong></div>
         </div>
         <div class="oc-dashboard-side-section">
@@ -573,6 +575,43 @@
       .filter(Boolean);
   }
 
+  function splitCatalogNames(value){
+    if (!value) return [];
+    if (Array.isArray(value)) return value.flatMap(splitCatalogNames);
+    if (typeof value === 'object') return splitCatalogNames(value.name || value.title || value.label);
+    return String(value)
+      .split(/;|\+|\band\b|,(?=\s*[A-Z@])/gi)
+      .map(normalizePersonName)
+      .filter(Boolean);
+  }
+
+  function catalogEntityKey(value){
+    const aliases = {
+      'autodesk construction cloud': 'autodesk',
+      'autodesk forma': 'autodesk',
+      'skanska usa': 'skanska'
+    };
+    const key = String(value || '')
+      .toLowerCase()
+      .replace(/\u2019|'/g, '')
+      .replace(/\b(inc|inc\.|llc|ltd|ltd\.|limited|corp|corp\.|corporation|company|co\.|the)\b/g, '')
+      .replace(/\s*\(([^)]*)\)/g, ' $1 ')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+    return aliases[key] || key;
+  }
+
+  function keepEarliestRecord(map, name, date, record){
+    const key = catalogEntityKey(name);
+    if (!key || !date || /^yyyy/i.test(String(date))) return;
+    const existing = map.get(key);
+    const currentDate = validDate(date);
+    const existingDate = existing ? validDate(existing.date) : null;
+    if (!existing || (currentDate && (!existingDate || currentDate < existingDate))) {
+      map.set(key, { name, date, ...record });
+    }
+  }
+
   function catalogItemTitle(row){
     return row.title || row.name || row.id || 'Untitled resource';
   }
@@ -580,26 +619,29 @@
   function buildCatalogRecords(catalogs){
     const resources = [];
     const contributorMap = new Map();
+    const partnerMap = new Map();
     const authorMap = new Map();
     catalogs.forEach(({ type, rows }) => {
       rows.forEach(row => {
         const date = catalogDate(row);
         const title = catalogItemTitle(row);
         resources.push({ ...row, resource_type: type, catalog_date: date, catalog_title: title });
-        const contributor = normalizePersonName(row.contributor);
-        if (contributor && date && !/^yyyy/i.test(String(date))) {
-          const key = contributor.toLowerCase();
-          const existing = contributorMap.get(key);
-          if (!existing || new Date(date) < new Date(existing.date)) {
-            contributorMap.set(key, {
-              name: contributor,
-              url: row.contributor_url || '',
-              date,
+        splitCatalogNames(row.contributor || row.contributors).forEach(contributor => {
+          keepEarliestRecord(contributorMap, contributor, date, {
+            url: row.contributor_url || '',
+            resource_type: type,
+            resource_title: title
+          });
+        });
+        ['contributor', 'contributors', 'provider', 'organizations', 'companies', 'institutions'].forEach(field => {
+          splitCatalogNames(row[field]).forEach(partner => {
+            keepEarliestRecord(partnerMap, partner, date, {
               resource_type: type,
-              resource_title: title
+              resource_title: title,
+              source_field: field
             });
-          }
-        }
+          });
+        });
         splitAuthorNames(row.authors || row.author || row.provider).forEach(author => {
           if (!author || !date || /^yyyy/i.test(String(date))) return;
           const key = author.toLowerCase();
@@ -618,6 +660,7 @@
     return {
       resources,
       contributorRecords: Array.from(contributorMap.values()),
+      partnerRecords: Array.from(partnerMap.values()),
       authorRecords: Array.from(authorMap.values())
     };
   }
@@ -737,18 +780,18 @@
     const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
-    const contributorTrend = cumulativeTrendBuckets(catalogContributorRecords, row => row.date || contributorDate(row));
-    const contributorTotal = contributors.length || catalogContributorRecords.length || overview.contributors;
+    const contributorTrend = cumulativeTrendBuckets(catalogPartnerRecords, row => row.date || contributorDate(row));
+    const contributorTotal = catalogPartnerRecords.length || contributors.length || catalogContributorRecords.length || overview.contributors;
     return `
       <section class="oc-dashboard-overview">
         <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
           ${[
             ['Resources', catalogResources.length || suggestions.length],
             ['Users', overview.users],
-            ['Contributors', contributorTotal],
+            ['Contributors/Labs', contributorTotal],
             ['Open reviews', activeSuggestions.length],
             ['Issues', activeIssues.length],
-            ['Credited authors', catalogAuthorRecords.length]
+            ['Verified profiles', contributors.length]
           ].map(([label, value]) => `
             <div class="oc-account-stat">
               <div class="oc-account-stat-value">${esc(String(value))}</div>
@@ -760,7 +803,7 @@
         <div class="oc-dashboard-trend-grid">
           ${renderCatalogResourceTrendCard()}
           ${renderTrendCard('Cumulative users', profiles.length, userTrend, 'User profiles will appear here after profile creation dates are available.')}
-          ${renderTrendCard('Cumulative catalog contributors', catalogContributorRecords.length, contributorTrend, 'Contributor trend uses dated catalog records with explicit contributor fields.')}
+          ${renderTrendCard('Cumulative contributors/labs', catalogPartnerRecords.length, contributorTrend, 'Contributor/lab trend uses dated catalog contributor, provider, company, organization, and institution fields.')}
         </div>
 
         <div class="oc-dashboard-overview-grid">
@@ -778,7 +821,8 @@
                 ['In review', suggestions.filter(row => row.status === 'in_review').length],
                 ['Needs changes', suggestions.filter(row => row.status === 'needs_changes').length],
                 ['Active issues', activeIssues.length],
-                ['Unique dated contributors', catalogContributorRecords.length]
+                ['Explicit catalog contributors', catalogContributorRecords.length],
+                ['Dated contributors/labs', catalogPartnerRecords.length]
               ].map(([label, value]) => `
                 <div class="oc-dashboard-mini-row">
                   <span>${esc(label)}</span>
@@ -1780,6 +1824,7 @@
     const catalogRecords = buildCatalogRecords(Array.isArray(catalogRes) ? catalogRes : []);
     catalogResources = catalogRecords.resources;
     catalogContributorRecords = catalogRecords.contributorRecords;
+    catalogPartnerRecords = catalogRecords.partnerRecords;
     catalogAuthorRecords = catalogRecords.authorRecords;
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';
