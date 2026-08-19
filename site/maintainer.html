@@ -132,7 +132,6 @@
   let contributors = [];
   let catalogResources = [];
   let catalogContributorRecords = [];
-  let catalogPartnerRecords = [];
   let catalogAuthorRecords = [];
   let selectedUserId = '';
   let currentMaintainerId = '';
@@ -163,6 +162,23 @@
     oer: ['oer_contributor', 'OER Contributor'],
     workflow: ['workflow_contributor', 'Workflow Contributor']
   };
+  const coreTeamMemberCount = 7;
+  const contributorDataUrls = [
+    'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/contributors.json',
+    'data/contributors.json'
+  ];
+
+  async function fetchFirstJson(urls, fallback){
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (res.ok) return await res.json();
+      } catch (error) {
+        console.warn(`[dashboard] Could not load ${url}`, error);
+      }
+    }
+    return fallback;
+  }
 
   function normalizeCredentialKey(value){
     return String(value || '')
@@ -330,8 +346,7 @@
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const overview = roleOverviewCounts();
     const catalogTotal = catalogResources.length || suggestions.length;
-    const uniquePartners = uniqueCatalogRecords(catalogPartnerRecords);
-    const contributorTotal = uniquePartners.length || contributors.length || catalogContributorRecords.length || overview.contributors;
+    const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
       reviews: activeSuggestions.length + activeIssues.length,
@@ -366,7 +381,7 @@
           <div class="oc-dashboard-side-metric"><span>Resources</span><strong>${esc(String(catalogTotal))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Unique contributors/labs</span><strong>${esc(String(contributorTotal))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Verified profiles</span><strong>${esc(String(contributors.length))}</strong></div>
-          <div class="oc-dashboard-side-metric"><span>Authors</span><strong>${esc(String(catalogAuthorRecords.length))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Core team</span><strong>${esc(String(coreTeamMemberCount))}</strong></div>
         </div>
         <div class="oc-dashboard-side-section">
           <span class="oc-dashboard-side-label">Workload</span>
@@ -491,7 +506,7 @@
     return keys.map(key => ({ key, label: monthLabel(key), count: counts[key] || 0 }));
   }
 
-  function cumulativeTrendBuckets(rows, getDate){
+  function cumulativeTrendBuckets(rows, getDate, baseline = 0){
     const keys = monthRangeFor(rows, getDate);
     const counts = Object.fromEntries(keys.map(key => [key, 0]));
     rows.forEach(row => {
@@ -500,7 +515,7 @@
       const key = monthKey(date);
       if (key in counts) counts[key] += 1;
     });
-    let total = 0;
+    let total = baseline;
     return keys.map(key => {
       total += counts[key] || 0;
       return { key, label: monthLongLabel(key), count: total, added: counts[key] || 0 };
@@ -587,19 +602,13 @@
   }
 
   function catalogEntityKey(value){
-    const aliases = {
-      'autodesk construction cloud': 'autodesk',
-      'autodesk forma': 'autodesk',
-      'skanska usa': 'skanska'
-    };
-    const key = String(value || '')
+    return String(value || '')
       .toLowerCase()
       .replace(/\u2019|'/g, '')
       .replace(/\b(inc|inc\.|llc|ltd|ltd\.|limited|corp|corp\.|corporation|company|co\.|the)\b/g, '')
       .replace(/\s*\(([^)]*)\)/g, ' $1 ')
       .replace(/[^a-z0-9]+/g, ' ')
       .trim();
-    return aliases[key] || key;
   }
 
   function keepEarliestRecord(map, name, date, record){
@@ -635,7 +644,6 @@
   function buildCatalogRecords(catalogs){
     const resources = [];
     const contributorMap = new Map();
-    const partnerMap = new Map();
     const authorMap = new Map();
     catalogs.forEach(({ type, rows }) => {
       rows.forEach(row => {
@@ -647,15 +655,6 @@
             url: row.contributor_url || '',
             resource_type: type,
             resource_title: title
-          });
-        });
-        ['contributor', 'contributors', 'provider', 'organizations', 'companies', 'institutions'].forEach(field => {
-          splitCatalogNames(row[field]).forEach(partner => {
-            keepEarliestRecord(partnerMap, partner, date, {
-              resource_type: type,
-              resource_title: title,
-              source_field: field
-            });
           });
         });
         splitAuthorNames(row.authors || row.author || row.provider).forEach(author => {
@@ -676,7 +675,6 @@
     return {
       resources,
       contributorRecords: Array.from(contributorMap.values()),
-      partnerRecords: Array.from(partnerMap.values()),
       authorRecords: Array.from(authorMap.values())
     };
   }
@@ -796,9 +794,8 @@
     const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
     const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
-    const uniquePartners = uniqueCatalogRecords(catalogPartnerRecords);
-    const contributorTrend = cumulativeTrendBuckets(uniquePartners, row => row.date || contributorDate(row));
-    const contributorTotal = uniquePartners.length || contributors.length || catalogContributorRecords.length || overview.contributors;
+    const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
+    const contributorTrend = cumulativeTrendBuckets(contributors, row => contributorDate(row), coreTeamMemberCount);
     return `
       <section class="oc-dashboard-overview">
         <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
@@ -820,7 +817,7 @@
         <div class="oc-dashboard-trend-grid">
           ${renderCatalogResourceTrendCard()}
           ${renderTrendCard('Cumulative users', profiles.length, userTrend, 'User profiles will appear here after profile creation dates are available.')}
-          ${renderTrendCard('Unique cumulative contributors/labs', uniquePartners.length, contributorTrend, 'Contributor/lab trend uses dated catalog contributor, provider, company, organization, and institution fields after de-duplication.')}
+          ${renderTrendCard('Unique cumulative contributors/labs', contributorTotal, contributorTrend, 'Add first_contributed_at, joined_at, or created_at to contributors.json for a contributor/lab timeline.')}
         </div>
 
         <div class="oc-dashboard-overview-grid">
@@ -839,7 +836,8 @@
                 ['Needs changes', suggestions.filter(row => row.status === 'needs_changes').length],
                 ['Active issues', activeIssues.length],
                 ['Explicit catalog contributors', catalogContributorRecords.length],
-                ['Dated contributors/labs', uniquePartners.length]
+                ['Verified contributors/labs', contributors.length],
+                ['Core team members', coreTeamMemberCount]
               ].map(([label, value]) => `
                 <div class="oc-dashboard-mini-row">
                   <span>${esc(label)}</span>
@@ -1807,9 +1805,7 @@
 
   async function loadDashboard(resetSelection = true){
     const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at').order('created_at', { ascending: false }).limit(200);
-    const contributorsRequest = fetch('data/contributors.json', { cache: 'no-store' })
-      .then(res => res.ok ? res.json() : [])
-      .catch(() => []);
+    const contributorsRequest = fetchFirstJson(contributorDataUrls, []);
     const catalogRequests = [
       ['dataset', 'data/datasets.json'],
       ['model', 'data/models.json'],
@@ -1841,7 +1837,6 @@
     const catalogRecords = buildCatalogRecords(Array.isArray(catalogRes) ? catalogRes : []);
     catalogResources = catalogRecords.resources;
     catalogContributorRecords = catalogRecords.contributorRecords;
-    catalogPartnerRecords = catalogRecords.partnerRecords;
     catalogAuthorRecords = catalogRecords.authorRecords;
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';
