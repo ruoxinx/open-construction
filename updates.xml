@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Multi-task crack foundation model for engineering-reliable crack representation and topology preservation in civil infrastructure]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:crackgeofm:2026-08-19</guid>
+    <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Infrastructure Inspection model using Ground RGB (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Construction Specification Layout Detection Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=construction-document-digitalization</link>
     <guid isPermaLink="false">datasets:construction-document-digitalization:2026-08-11</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:T2OA:2026-07-29</guid>
     <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Building Code and Standard Modeling model using Text (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Adaptive Insulation Framework with Multi-Objective Model Predictive Control for EnergyPlus]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:surrogate-mpc-eplus:2026-07-29</guid>
-    <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[building energy simulation model using Multivariate time-series data (2026)]]></description>
   </item>
   </channel>
 </rss>
