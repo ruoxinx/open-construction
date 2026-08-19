@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Review & Admin · OpenConstruction</title>
-  <meta name="description" content="OpenConstruction reviewer and admin dashboard for submissions, roles, and badges.">
+  <title>Dashboard · OpenConstruction</title>
+  <meta name="description" content="OpenConstruction dashboard for trends, reviews, people, roles, and badges.">
   <meta name="robots" content="noindex">
   <link rel="canonical" href="https://www.openconstruction.org/maintainer.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
   <link href="assets/css/shared-site.css" rel="stylesheet">
 </head>
 <body>
-<a class="skip-link" href="#mainContent">Skip to review and admin tools</a>
+<a class="skip-link" href="#mainContent">Skip to dashboard tools</a>
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
   <div class="container oc-container">
@@ -129,6 +129,10 @@
   let badges = [];
   let suggestions = [];
   let issueReports = [];
+  let contributors = [];
+  let catalogResources = [];
+  let catalogContributorRecords = [];
+  let catalogAuthorRecords = [];
   let selectedUserId = '';
   let currentMaintainerId = '';
   let userRoles = [];
@@ -137,6 +141,10 @@
   let profileRoleFilter = 'all';
   let suggestionStatusFilter = 'active';
   let issueStatusFilter = 'active';
+  let selectedSuggestionId = '';
+  let dashboardTab = 'overview';
+  let reviewQueueMode = 'resources';
+  let resourceTrendMode = 'all';
 
   const badgeDefaults = {
     dataset_contributor: ['Dataset Contributor', 'Verified OpenConstruction platform contribution.'],
@@ -231,7 +239,7 @@
   function renderSignedOut(){
     root.className = 'oc-auth-card';
     root.innerHTML = `
-      <p class="oc-auth-kicker mb-2">Review & admin</p>
+      <p class="oc-auth-kicker mb-2">Dashboard</p>
       <h1 class="h3 fw-bold mb-2">Sign in required</h1>
       <p class="text-muted">Use an account with reviewer or admin access.</p>
       <div class="d-flex gap-2 flex-wrap">
@@ -260,7 +268,7 @@
   function renderDenied(user){
     root.className = 'oc-auth-card';
     root.innerHTML = `
-      <p class="oc-auth-kicker mb-2">Review & admin</p>
+      <p class="oc-auth-kicker mb-2">Dashboard</p>
       <h1 class="h3 fw-bold mb-2">No review access</h1>
       <p class="text-muted">You are signed in as ${esc(user.email || 'this account')}, but this account does not have reviewer or admin access.</p>
       <p class="text-muted small">Ask an admin to grant reviewer or admin access.</p>
@@ -270,54 +278,550 @@
 
   function renderDashboard(){
     if (!canAdmin) {
-      root.className = '';
+      root.className = 'oc-dashboard-console';
       root.innerHTML = `
-        <section class="oc-workspace-card oc-maintainer-suggestions">
-          ${renderSuggestions()}
-        </section>
-        <section class="oc-workspace-card oc-maintainer-suggestions mt-3">
-          ${renderIssueReports()}
-        </section>
+        ${renderDashboardHeader('Review queue', 'OpenConstruction Dashboard', 'Review assigned resource submissions and site reports from one focused queue.')}
+        <div class="oc-dashboard-layout">
+          ${renderDashboardSidebar()}
+          <section class="oc-dashboard-panel">
+            ${renderReviewCenter()}
+          </section>
+        </div>
       `;
+      bindDashboardNav();
       bindSuggestionActions();
       bindIssueReportActions();
+      bindReviewCenterActions();
       return;
     }
 
     const selected = profiles.find(row => row.user_id === selectedUserId) || profiles[0] || null;
     selectedUserId = selected?.user_id || '';
-    const overview = roleOverviewCounts();
-    root.className = 'oc-maintainer-grid';
+    root.className = 'oc-dashboard-console';
     root.innerHTML = `
-      <aside class="oc-workspace-card oc-maintainer-sidebar">
-        <div class="oc-maintainer-sidebar-head">
-          <p class="oc-auth-kicker mb-2">Admin</p>
-          <h1 class="h4 fw-bold mb-0">People</h1>
+      ${renderDashboardHeader('', 'OpenConstruction Dashboard', 'Track community activity, review queues, user access, and credentials.')}
+      <div class="oc-dashboard-layout">
+        ${renderDashboardSidebar()}
+        <section class="oc-dashboard-panel">
+          ${renderDashboardPanel(selected)}
+        </section>
+      </div>
+    `;
+    bindDashboardNav();
+    bindCurrentDashboardPanel();
+  }
+
+  function renderDashboardHeader(kicker, title, subtitle){
+    return `
+      <div class="oc-dashboard-header">
+        <div>
+          ${kicker ? `<p class="oc-auth-kicker mb-2">${esc(kicker)}</p>` : ''}
+          <h1 class="h3 fw-bold mb-1">${esc(title)}</h1>
+          <p class="text-muted mb-0">${esc(subtitle)}</p>
         </div>
-        <div class="oc-account-stat-grid oc-maintainer-stat-grid mb-3" aria-label="Role overview">
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.users}</div>
-            <div class="oc-account-stat-label">Users</div>
+        <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+    `;
+  }
+
+  function renderDashboardSidebar(){
+    const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
+    const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const overview = roleOverviewCounts();
+    const catalogTotal = catalogResources.length || suggestions.length;
+    const contributorTotal = contributors.length || catalogContributorRecords.length || overview.contributors;
+    const navCounts = {
+      overview: catalogTotal,
+      reviews: activeSuggestions.length + activeIssues.length,
+      people: profiles.length,
+      credentials: badges.length
+    };
+    const tabs = canAdmin
+      ? [
+          ['overview', 'Overview'],
+          ['reviews', 'Reviews'],
+          ['people', 'People & Access'],
+          ['credentials', 'Credentials']
+        ]
+      : [
+          ['reviews', 'Reviews']
+        ];
+    return `
+      <aside class="oc-dashboard-sidebar" aria-label="Dashboard sections">
+        <nav class="oc-dashboard-nav">
+        ${tabs.map(([value, label]) => `
+          <button type="button" class="${dashboardTab === value ? 'active' : ''}" data-dashboard-tab="${value}">
+            <span class="oc-dashboard-nav-label">
+              <span class="oc-dashboard-nav-mark" aria-hidden="true"></span>
+              <span>${esc(label)}</span>
+            </span>
+            <span class="oc-dashboard-nav-count">${esc(String(navCounts[value] || 0))}</span>
+          </button>
+        `).join('')}
+        </nav>
+        <div class="oc-dashboard-side-section">
+          <span class="oc-dashboard-side-label">Catalog</span>
+          <div class="oc-dashboard-side-metric"><span>Resources</span><strong>${esc(String(catalogTotal))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Contributors</span><strong>${esc(String(contributorTotal))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Authors</span><strong>${esc(String(catalogAuthorRecords.length))}</strong></div>
+        </div>
+        <div class="oc-dashboard-side-section">
+          <span class="oc-dashboard-side-label">Workload</span>
+          <div class="oc-dashboard-side-metric"><span>Resource reviews</span><strong>${esc(String(activeSuggestions.length))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Issues</span><strong>${esc(String(activeIssues.length))}</strong></div>
+          ${canAdmin ? `<div class="oc-dashboard-side-metric"><span>Reviewers</span><strong>${esc(String(overview.reviewers))}</strong></div>` : ''}
+        </div>
+      </aside>
+    `;
+  }
+
+  function bindDashboardNav(){
+    document.getElementById('refreshBtn')?.addEventListener('click', () => loadDashboard(false));
+    document.querySelectorAll('[data-dashboard-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        dashboardTab = button.dataset.dashboardTab || 'overview';
+        renderDashboard();
+      });
+    });
+  }
+
+  function renderDashboardPanel(selected){
+    if (dashboardTab === 'reviews') return renderReviewCenter();
+    if (dashboardTab === 'people') return renderPeopleAccess(selected);
+    if (dashboardTab === 'credentials') return renderCredentials(selected);
+    return renderOverview();
+  }
+
+  function bindCurrentDashboardPanel(){
+    if (dashboardTab === 'reviews') {
+      bindSuggestionActions();
+      bindIssueReportActions();
+      bindReviewCenterActions();
+      return;
+    }
+    if (dashboardTab === 'people') {
+      bindProfileBrowser();
+      bindRoleForm();
+      return;
+    }
+    if (dashboardTab === 'credentials') {
+      bindProfileBrowser();
+      bindBadgeForm();
+      return;
+    }
+    bindResourceTrendActions();
+  }
+
+  function bindResourceTrendActions(){
+    document.querySelectorAll('[data-resource-trend-mode]').forEach(button => {
+      button.addEventListener('click', () => {
+        resourceTrendMode = button.dataset.resourceTrendMode || 'all';
+        renderDashboard();
+      });
+    });
+  }
+
+  function bindProfileBrowser(){
+    renderProfileListCompact('');
+    document.getElementById('userSearch')?.addEventListener('input', event => renderProfileListCompact(event.target.value));
+    document.querySelectorAll('[data-role-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        profileRoleFilter = button.dataset.roleFilter || 'all';
+        renderDashboard();
+      });
+    });
+  }
+
+  function monthKey(date){
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function monthLabel(key){
+    const [year, month] = key.split('-').map(Number);
+    return new Date(year, month - 1, 1).toLocaleDateString(undefined, { month: 'short' });
+  }
+
+  function monthLongLabel(key){
+    const [year, month] = key.split('-').map(Number);
+    return new Date(year, month - 1, 1).toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+  }
+
+  function validDate(value){
+    if (!value || /^yyyy/i.test(String(value))) return null;
+    const dateOnly = String(value).trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    const date = dateOnly
+      ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+      : new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function monthRangeFor(rows, getDate){
+    const dates = rows.map(row => validDate(getDate(row))).filter(Boolean);
+    if (!dates.length) return [];
+    const min = dates.reduce((earliest, date) => date < earliest ? date : earliest, dates[0]);
+    const max = dates.reduce((latest, date) => date > latest ? date : latest, dates[0]);
+    const start = new Date(min.getFullYear(), min.getMonth(), 1);
+    const end = new Date(max.getFullYear(), max.getMonth(), 1);
+    const keys = [];
+    for (let cursor = new Date(start); cursor <= end; cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)) {
+      keys.push(monthKey(cursor));
+    }
+    return keys;
+  }
+
+  function trendBuckets(rows, getDate, months = 8){
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth() - months + 1, 1);
+    const keys = Array.from({ length: months }, (_, index) => {
+      const date = new Date(start.getFullYear(), start.getMonth() + index, 1);
+      return monthKey(date);
+    });
+    const counts = Object.fromEntries(keys.map(key => [key, 0]));
+    rows.forEach(row => {
+      const rawDate = getDate(row);
+      if (!rawDate) return;
+      const date = new Date(rawDate);
+      if (Number.isNaN(date.getTime()) || date < start) return;
+      const key = monthKey(date);
+      if (key in counts) counts[key] += 1;
+    });
+    return keys.map(key => ({ key, label: monthLabel(key), count: counts[key] || 0 }));
+  }
+
+  function cumulativeTrendBuckets(rows, getDate){
+    const keys = monthRangeFor(rows, getDate);
+    const counts = Object.fromEntries(keys.map(key => [key, 0]));
+    rows.forEach(row => {
+      const date = validDate(getDate(row));
+      if (!date) return;
+      const key = monthKey(date);
+      if (key in counts) counts[key] += 1;
+    });
+    let total = 0;
+    return keys.map(key => {
+      total += counts[key] || 0;
+      return { key, label: monthLongLabel(key), count: total, added: counts[key] || 0 };
+    });
+  }
+
+  function cumulativeResourceTrend(rows){
+    const resourceTypes = [
+      ['dataset', 'Datasets'],
+      ['model', 'Models'],
+      ['oer', 'OER'],
+      ['workflow', 'Workflows']
+    ];
+    const keys = monthRangeFor(rows, row => row.catalog_date);
+    const monthly = Object.fromEntries(keys.map(key => [key, Object.fromEntries(resourceTypes.map(([type]) => [type, 0]))]));
+    rows.forEach(row => {
+      const date = validDate(row.catalog_date);
+      if (!date || !monthly[monthKey(date)]) return;
+      const type = row.resource_type || 'dataset';
+      if (type in monthly[monthKey(date)]) monthly[monthKey(date)][type] += 1;
+    });
+    const running = Object.fromEntries(resourceTypes.map(([type]) => [type, 0]));
+    const buckets = keys.map(key => {
+      resourceTypes.forEach(([type]) => {
+        running[type] += monthly[key]?.[type] || 0;
+      });
+      const total = resourceTypes.reduce((sum, [type]) => sum + running[type], 0);
+      return {
+        key,
+        label: monthLongLabel(key),
+        total,
+        types: Object.fromEntries(resourceTypes.map(([type]) => [type, running[type]]))
+      };
+    });
+    const datedTotals = Object.fromEntries(resourceTypes.map(([type]) => [
+      type,
+      rows.filter(row => row.resource_type === type && validDate(row.catalog_date)).length
+    ]));
+    const allTotals = Object.fromEntries(resourceTypes.map(([type]) => [
+      type,
+      rows.filter(row => row.resource_type === type).length
+    ]));
+    return { resourceTypes, buckets, datedTotals, allTotals };
+  }
+
+  function contributorDate(row){
+    return row.first_contributed_at || row.joined_at || row.created_at || row.contributed_at || row.date || null;
+  }
+
+  function catalogDate(row){
+    return row.added_date || row.added || row.created_at || row.date || null;
+  }
+
+  function catalogRowsFrom(data){
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.resources)) return data.resources;
+    if (Array.isArray(data?.use_cases)) return data.use_cases;
+    if (data && typeof data === 'object') {
+      return Object.values(data).filter(row => row && typeof row === 'object' && !Array.isArray(row));
+    }
+    return [];
+  }
+
+  function normalizePersonName(value){
+    return String(value || '').replace(/^@+/, '').trim();
+  }
+
+  function splitAuthorNames(value){
+    if (Array.isArray(value)) return value.map(normalizePersonName).filter(Boolean);
+    return String(value || '')
+      .split(/;|\band\b|,(?=\s*[A-Z@])/)
+      .map(normalizePersonName)
+      .filter(Boolean);
+  }
+
+  function catalogItemTitle(row){
+    return row.title || row.name || row.id || 'Untitled resource';
+  }
+
+  function buildCatalogRecords(catalogs){
+    const resources = [];
+    const contributorMap = new Map();
+    const authorMap = new Map();
+    catalogs.forEach(({ type, rows }) => {
+      rows.forEach(row => {
+        const date = catalogDate(row);
+        const title = catalogItemTitle(row);
+        resources.push({ ...row, resource_type: type, catalog_date: date, catalog_title: title });
+        const contributor = normalizePersonName(row.contributor);
+        if (contributor && date && !/^yyyy/i.test(String(date))) {
+          const key = contributor.toLowerCase();
+          const existing = contributorMap.get(key);
+          if (!existing || new Date(date) < new Date(existing.date)) {
+            contributorMap.set(key, {
+              name: contributor,
+              url: row.contributor_url || '',
+              date,
+              resource_type: type,
+              resource_title: title
+            });
+          }
+        }
+        splitAuthorNames(row.authors || row.author || row.provider).forEach(author => {
+          if (!author || !date || /^yyyy/i.test(String(date))) return;
+          const key = author.toLowerCase();
+          const existing = authorMap.get(key);
+          if (!existing || new Date(date) < new Date(existing.date)) {
+            authorMap.set(key, {
+              name: author,
+              date,
+              resource_type: type,
+              resource_title: title
+            });
+          }
+        });
+      });
+    });
+    return {
+      resources,
+      contributorRecords: Array.from(contributorMap.values()),
+      authorRecords: Array.from(authorMap.values())
+    };
+  }
+
+  function renderTrendCard(title, total, rows, emptyMessage){
+    const max = Math.max(1, ...rows.map(row => row.count));
+    const hasData = rows.some(row => row.count > 0);
+    return `
+      <article class="oc-dashboard-trend-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">Trend</p>
+            <h3 class="h6 fw-bold mb-0">${esc(title)}</h3>
           </div>
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.contributors}</div>
-            <div class="oc-account-stat-label">Contributors</div>
+          <strong class="oc-dashboard-trend-total">${esc(String(total))}</strong>
+        </div>
+        ${hasData ? `
+          <div class="oc-dashboard-bars" aria-label="${esc(title)} monthly trend">
+            ${rows.map(row => `
+              <div class="oc-dashboard-bar" title="${esc(`${row.label}: ${row.count}`)}">
+                <strong class="oc-dashboard-bar-value">${esc(String(row.count))}</strong>
+                <span style="height:${Math.max(8, Math.round((row.count / max) * 100))}%"></span>
+                <small>${esc(row.label)}</small>
+              </div>
+            `).join('')}
           </div>
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.reviewers}</div>
-            <div class="oc-account-stat-label">Reviewers</div>
+        ` : `
+          <div class="oc-workspace-empty oc-dashboard-trend-empty">
+            <strong>No dated history yet</strong>
+            <span>${esc(emptyMessage)}</span>
           </div>
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.developers}</div>
-            <div class="oc-account-stat-label">Developers</div>
+        `}
+      </article>
+    `;
+  }
+
+  function renderCatalogResourceTrendCard(){
+    const trend = cumulativeResourceTrend(catalogResources);
+    const selectedType = resourceTrendMode === 'all' ? null : resourceTrendMode;
+    const selectedTypeRow = trend.resourceTypes.find(([type]) => type === selectedType);
+    const values = trend.buckets.map(row => selectedType ? (row.types[selectedType] || 0) : row.total);
+    const max = Math.max(1, ...values);
+    const hasData = values.some(value => value > 0);
+    const allTotal = catalogResources.length || suggestions.length;
+    const datedTotal = trend.buckets.at(-1)?.total || 0;
+    const latestLabel = trend.buckets.at(-1)?.label || '';
+    const displayTotal = selectedType ? (trend.allTotals[selectedType] || 0) : allTotal;
+    const displayDatedTotal = selectedType ? (trend.datedTotals[selectedType] || 0) : datedTotal;
+    const chartTitle = selectedTypeRow ? `${selectedTypeRow[1]} growth` : 'Catalog resource growth';
+    const typeRows = trend.resourceTypes.map(([type, label]) => ({
+      type,
+      label,
+      all: trend.allTotals[type] || 0,
+      dated: trend.datedTotals[type] || 0
+    }));
+    return `
+      <article class="oc-dashboard-trend-card oc-dashboard-resource-trend-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">Cumulative trend</p>
+            <h3 class="h6 fw-bold mb-0">${esc(chartTitle)}</h3>
+            <p class="text-muted small mb-0">${displayDatedTotal} dated records${latestLabel ? ` through ${esc(latestLabel)}` : ''}</p>
           </div>
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.testers}</div>
-            <div class="oc-account-stat-label">Testers</div>
+          <strong class="oc-dashboard-trend-total">${esc(String(displayTotal))}</strong>
+        </div>
+        <div class="oc-resource-trend-controls" aria-label="Resource trend display">
+          ${[['all', 'All']].concat(trend.resourceTypes).map(([type, label]) => `
+            <button type="button" class="${resourceTrendMode === type ? 'active' : ''}" data-resource-trend-mode="${esc(type)}">
+              <span class="oc-resource-control-dot oc-resource-${esc(type)}"></span>
+              ${esc(label)}
+            </button>
+          `).join('')}
+        </div>
+        ${hasData ? `
+          <div class="oc-resource-trend-scroll" aria-label="Cumulative catalog resources by month and type">
+            <div class="oc-resource-trend-bars" style="--oc-resource-months:${trend.buckets.length}">
+              ${trend.buckets.map(row => {
+                const total = selectedType ? (row.types[selectedType] || 0) : row.total;
+                return `
+                <div class="oc-resource-trend-month" title="${esc(`${row.label}: ${total}`)}">
+                  <strong class="oc-resource-trend-value">${esc(String(total))}</strong>
+                  <div class="oc-resource-trend-stack" style="height:${Math.max(8, Math.round((total / max) * 100))}%">
+                    ${selectedType ? `
+                      <span class="oc-resource-segment oc-resource-${esc(selectedType)}" style="height:100%" title="${esc(`${selectedTypeRow?.[1] || selectedType}: ${total}`)}"></span>
+                    ` : trend.resourceTypes.map(([type, label]) => {
+                        const value = row.types[type] || 0;
+                        const pct = row.total ? (value / row.total) * 100 : 0;
+                        return value ? `<span class="oc-resource-segment oc-resource-${esc(type)}" style="height:${pct}%" title="${esc(`${label}: ${value}`)}"></span>` : '';
+                      }).join('')}
+                  </div>
+                  <small>${esc(row.label)}</small>
+                </div>
+              `}).join('')}
+            </div>
           </div>
-          <div class="oc-account-stat">
-            <div class="oc-account-stat-value">${overview.admins}</div>
-            <div class="oc-account-stat-label">Admins</div>
+          <div class="oc-resource-trend-summary">
+            ${typeRows.map(row => `
+              <div>
+                <span><i class="oc-resource-${esc(row.type)}"></i>${esc(row.label)}</span>
+                <strong>${esc(String(row.all))}</strong>
+                <small>${esc(String(row.dated))} dated</small>
+              </div>
+            `).join('')}
+          </div>
+        ` : `
+          <div class="oc-workspace-empty oc-dashboard-trend-empty">
+            <strong>No dated catalog history yet</strong>
+            <span>Add added_date or added fields to catalog records to build cumulative resource growth.</span>
+          </div>
+        `}
+      </article>
+    `;
+  }
+
+  function renderOverview(){
+    const overview = roleOverviewCounts();
+    const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
+    const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
+    const contributorTrend = cumulativeTrendBuckets(catalogContributorRecords, row => row.date || contributorDate(row));
+    const contributorTotal = contributors.length || catalogContributorRecords.length || overview.contributors;
+    return `
+      <section class="oc-dashboard-overview">
+        <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
+          ${[
+            ['Resources', catalogResources.length || suggestions.length],
+            ['Users', overview.users],
+            ['Contributors', contributorTotal],
+            ['Open reviews', activeSuggestions.length],
+            ['Issues', activeIssues.length],
+            ['Credited authors', catalogAuthorRecords.length]
+          ].map(([label, value]) => `
+            <div class="oc-account-stat">
+              <div class="oc-account-stat-value">${esc(String(value))}</div>
+              <div class="oc-account-stat-label">${esc(label)}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="oc-dashboard-trend-grid">
+          ${renderCatalogResourceTrendCard()}
+          ${renderTrendCard('Cumulative users', profiles.length, userTrend, 'User profiles will appear here after profile creation dates are available.')}
+          ${renderTrendCard('Cumulative catalog contributors', catalogContributorRecords.length, contributorTrend, 'Contributor trend uses dated catalog records with explicit contributor fields.')}
+        </div>
+
+        <div class="oc-dashboard-overview-grid">
+          <section class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+              <div>
+                <p class="oc-auth-kicker mb-2">Review load</p>
+                <h2 class="h5 fw-bold mb-0">Open queues</h2>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" data-dashboard-tab="reviews">Open reviews</button>
+            </div>
+            <div class="vstack gap-2">
+              ${[
+                ['Pending resources', suggestions.filter(row => row.status === 'pending').length],
+                ['In review', suggestions.filter(row => row.status === 'in_review').length],
+                ['Needs changes', suggestions.filter(row => row.status === 'needs_changes').length],
+                ['Active issues', activeIssues.length],
+                ['Unique dated contributors', catalogContributorRecords.length]
+              ].map(([label, value]) => `
+                <div class="oc-dashboard-mini-row">
+                  <span>${esc(label)}</span>
+                  <strong>${esc(String(value))}</strong>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+          <section class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+              <div>
+                <p class="oc-auth-kicker mb-2">Access</p>
+                <h2 class="h5 fw-bold mb-0">People & roles</h2>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" data-dashboard-tab="people">Manage people</button>
+            </div>
+            <div class="vstack gap-2">
+              ${[
+                ['Admins', overview.admins],
+                ['Reviewers', overview.reviewers],
+                ['Developers', overview.developers],
+                ['Testers', overview.testers],
+                ['Potential author credits', catalogAuthorRecords.length]
+              ].map(([label, value]) => `
+                <div class="oc-dashboard-mini-row">
+                  <span>${esc(label)}</span>
+                  <strong>${esc(String(value))}</strong>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderPeopleBrowser(){
+    return `
+      <aside class="oc-workspace-card oc-dashboard-people-browser">
+        <div class="oc-maintainer-sidebar-head">
+          <div>
+            <p class="oc-auth-kicker mb-2">Users</p>
+            <h2 class="h5 fw-bold mb-0">People</h2>
           </div>
         </div>
         <div class="oc-role-filter mb-3" aria-label="Filter people by role">
@@ -336,38 +840,76 @@
         <input id="userSearch" class="form-control mb-3" type="search" placeholder="Search users" aria-label="Search users">
         <div id="profileList" class="oc-maintainer-list"></div>
       </aside>
-      <section class="oc-maintainer-main">
-        <div class="oc-maintainer-header">
+    `;
+  }
+
+  function renderPeopleAccess(selected){
+    return `
+      <div class="oc-dashboard-split">
+        ${renderPeopleBrowser()}
+        <section class="oc-workspace-card">
+          ${selected ? `
+            ${renderSelectedAccountHeader(selected)}
+            ${renderPermissionEditor(selected)}
+          ` : statusBox('No signed-in users yet.', 'secondary')}
+        </section>
+      </div>
+    `;
+  }
+
+  function renderCredentials(selected){
+    return `
+      <div class="oc-dashboard-split">
+        ${renderPeopleBrowser()}
+        <section class="oc-workspace-card">
+          ${selected ? `
+            ${renderSelectedAccountHeader(selected)}
+            ${renderBadgeAllocation(selected)}
+          ` : statusBox('No signed-in users yet.', 'secondary')}
+        </section>
+      </div>
+    `;
+  }
+
+  function renderReviewCenter(){
+    return `
+      <section class="oc-workspace-card oc-dashboard-review-shell">
+        <div class="oc-dashboard-review-head">
           <div>
-            <p class="oc-auth-kicker mb-2">Admin console</p>
-            <h2 class="h3 fw-bold mb-1">Role, badge, and review management</h2>
-            <p class="text-muted mb-0">Select an account to manage permissions and badges, then allocate resource reviews below.</p>
+            <p class="oc-auth-kicker mb-2">Review center</p>
+            <h2 class="h5 fw-bold mb-1">Queue review</h2>
+            <p class="text-muted small mb-0">Switch between resource, issue, and skill review without leaving the dashboard.</p>
           </div>
-          <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+          <div class="oc-dashboard-review-select">
+            <label class="form-label small fw-bold" for="reviewQueueMode">Queue</label>
+            <select id="reviewQueueMode" class="form-select form-select-sm" aria-label="Choose review queue">
+              <option value="resources" ${reviewQueueMode === 'resources' ? 'selected' : ''}>Resource review</option>
+              <option value="issues" ${reviewQueueMode === 'issues' ? 'selected' : ''}>Issues review</option>
+              <option value="skills" ${reviewQueueMode === 'skills' ? 'selected' : ''}>Skill review</option>
+            </select>
+          </div>
         </div>
-        <section class="oc-workspace-card oc-maintainer-account-panel">
-          ${selected ? renderAccountManagement(selected) : statusBox('No signed-in users yet.', 'secondary')}
-        </section>
-        <section class="oc-workspace-card oc-maintainer-suggestions oc-maintainer-queue-panel">
-          ${renderSuggestions()}
-        </section>
-        <section class="oc-workspace-card oc-maintainer-suggestions">
-          ${renderIssueReports()}
-        </section>
+        <div class="oc-dashboard-review-body">
+          ${reviewQueueMode === 'issues' ? renderIssueReports() : reviewQueueMode === 'skills' ? renderSkillReview() : renderResourceSubmissions()}
+        </div>
       </section>
     `;
-    renderProfileList('');
-    document.getElementById('userSearch')?.addEventListener('input', event => renderProfileList(event.target.value));
-    document.querySelectorAll('[data-role-filter]').forEach(button => {
-      button.addEventListener('click', () => {
-        profileRoleFilter = button.dataset.roleFilter || 'all';
-        renderDashboard();
-      });
+  }
+
+  function bindReviewCenterActions(){
+    document.getElementById('reviewQueueMode')?.addEventListener('change', event => {
+      reviewQueueMode = event.target.value || 'resources';
+      renderDashboard();
     });
-    bindBadgeForm();
-    bindRoleForm();
-    bindSuggestionActions();
-    bindIssueReportActions();
+  }
+
+  function renderSkillReview(){
+    return `
+      <div class="oc-workspace-empty">
+        <strong>Skill review is ready for a queue</strong>
+        <span>Add or connect a skill submission data source, then this review mode can use the same status, assignment, and decision flow as resource review.</span>
+      </div>
+    `;
   }
 
   function matchesRoleFilter(profile){
@@ -376,7 +918,7 @@
     return labels.includes(profileRoleFilter);
   }
 
-  function renderProfileList(query){
+  function renderProfileListLegacy(query){
     const q = String(query || '').trim().toLowerCase();
     const rows = profiles.filter(profile => {
       const haystack = [profile.display_name, profile.github_username, profile.affiliation, profile.user_id].join(' ').toLowerCase();
@@ -389,6 +931,35 @@
         <span>${esc(rolesFor(profile.user_id).map(role => role.replace(/^\w/, c => c.toUpperCase())).join(' · ') || 'User')}</span>
       </button>
     `).join('') || '<div class="text-muted small">No matching users.</div>';
+    document.querySelectorAll('[data-user-id]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedUserId = button.dataset.userId;
+        renderDashboard();
+      });
+    });
+  }
+
+  function renderProfileListCompact(query){
+    const q = String(query || '').trim().toLowerCase();
+    const rows = profiles.filter(profile => {
+      const haystack = [profile.display_name, profile.github_username, profile.affiliation, profile.user_id].join(' ').toLowerCase();
+      return matchesRoleFilter(profile) && (!q || haystack.includes(q));
+    });
+    document.getElementById('profileList').innerHTML = rows.map(profile => {
+      const roles = rolesFor(profile.user_id);
+      const labels = roles.length ? roles : accountStatusLabels(profile.user_id).slice(0, 2);
+      return `
+        <button type="button" class="oc-maintainer-user ${profile.user_id === selectedUserId ? 'active' : ''}" data-user-id="${esc(profile.user_id)}">
+          <span class="oc-maintainer-user-main">
+            <strong>${esc(userLabel(profile))}</strong>
+            <small>${esc([profile.github_username ? `@${profile.github_username}` : profile.user_id, profile.affiliation].filter(Boolean).join(' · '))}</small>
+          </span>
+          <span class="oc-maintainer-user-roles">
+            ${labels.slice(0, 2).map(role => `<span>${esc(String(role).replace(/^\w/, c => c.toUpperCase()))}</span>`).join('')}
+          </span>
+        </button>
+      `;
+    }).join('') || '<div class="text-muted small">No matching users.</div>';
     document.querySelectorAll('[data-user-id]').forEach(button => {
       button.addEventListener('click', () => {
         selectedUserId = button.dataset.userId;
@@ -549,7 +1120,7 @@
     return profiles.find(profile => profile.user_id === row.assigned_reviewer_id) || null;
   }
 
-  function renderSuggestions(){
+  function renderSuggestionsLegacy(){
     const visibleSuggestions = canAdmin
       ? suggestions
       : suggestions.filter(row => row.assigned_reviewer_id === currentUserId);
@@ -630,6 +1201,161 @@
                 <span class="oc-account-meta">${esc(row.resource_type)}${row.doi ? ` · DOI ${esc(row.doi)}` : ''}${row.license ? ` · ${esc(row.license)}` : ''}${row.reviewed_at ? ` · ${new Date(row.reviewed_at).toLocaleDateString()}` : ''}</span>
               </span>
             </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    `;
+  }
+
+  function suggestionQueueState(){
+    const visibleSuggestions = canAdmin
+      ? suggestions
+      : suggestions.filter(row => row.assigned_reviewer_id === currentUserId);
+    const pending = visibleSuggestions.filter(row => row.status === 'pending');
+    const inReview = visibleSuggestions.filter(row => row.status === 'in_review' || row.status === 'needs_changes' || row.status === 'approved');
+    const active = pending.concat(inReview);
+    const completed = visibleSuggestions.filter(row => row.status === 'added' || row.status === 'declined');
+    const queue = suggestionStatusFilter === 'active'
+      ? active
+      : suggestionStatusFilter === 'completed'
+        ? completed
+        : visibleSuggestions.filter(row => row.status === suggestionStatusFilter);
+    return { visibleSuggestions, pending, inReview, active, completed, queue };
+  }
+
+  function renderSubmissionField(label, value, options = {}){
+    if (!value) return '';
+    const content = options.href
+      ? `<a href="${esc(value)}" target="_blank" rel="noopener">${esc(value)}</a>`
+      : esc(String(value));
+    return `
+      <div class="oc-resource-detail-field">
+        <span>${esc(label)}</span>
+        <strong>${content}</strong>
+      </div>
+    `;
+  }
+
+  function renderResourceSubmissionDetail(row, reviewers){
+    if (!row) {
+      return `
+        <div class="oc-workspace-empty oc-resource-detail-empty">
+          <strong>Select a resource submission</strong>
+          <span>Choose a resource from the list to review metadata, assignment, and decision actions.</span>
+        </div>
+      `;
+    }
+    const profile = suggestionUser(row);
+    const reviewer = assignedReviewer(row);
+    const submitter = [row.submitter_name || userLabel(profile), row.submitter_email, row.submitter_affiliation].filter(Boolean).join(' · ');
+    const authorship = row.authorship
+      ? `${row.authorship === 'third_party' ? 'Third-party submission' : 'Author submission'}${row.permission_statement ? ` · ${row.permission_statement}` : ''}`
+      : '';
+    return `
+      <article class="oc-resource-submission-detail">
+        <div class="oc-resource-detail-head">
+          <div>
+            <span class="oc-account-type">${esc(row.resource_type || 'resource')} · ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</span>
+            <h3>${esc(row.title || 'Untitled resource')}</h3>
+            <p>${esc(submitter || 'Submitter not provided')}</p>
+          </div>
+          ${canAdmin ? `
+            <div class="oc-resource-detail-assign">
+              <label class="form-label small fw-bold" for="assignReviewer${esc(row.id)}">Reviewer</label>
+              <select id="assignReviewer${esc(row.id)}" class="form-select form-select-sm oc-reviewer-assign" data-assign-reviewer="${esc(row.id)}" aria-label="Assign reviewer for ${esc(row.title || 'resource')}">
+                <option value="">Unassigned</option>
+                ${reviewers.map(candidate => `<option value="${esc(candidate.user_id)}" ${candidate.user_id === row.assigned_reviewer_id ? 'selected' : ''}>${esc(userLabel(candidate))}${rolesFor(candidate.user_id).includes('admin') ? ' (admin)' : ''}</option>`).join('')}
+              </select>
+            </div>
+          ` : ''}
+        </div>
+        <div class="oc-resource-detail-grid">
+          ${renderSubmissionField('Reviewer', reviewer ? userLabel(reviewer) : 'Unassigned')}
+          ${renderSubmissionField('License', row.license || 'Not provided')}
+          ${renderSubmissionField('DOI', row.doi)}
+          ${renderSubmissionField('URL', row.url, { href: true })}
+          ${renderSubmissionField('Authorship', authorship)}
+          ${renderSubmissionField('Submitted', row.created_at ? new Date(row.created_at).toLocaleString() : '')}
+        </div>
+        ${row.description ? `
+          <div class="oc-resource-detail-description">
+            <span>Description</span>
+            <p>${esc(row.description)}</p>
+          </div>
+        ` : ''}
+        ${row.maintainer_note ? `
+          <div class="oc-resource-detail-description">
+            <span>Maintainer note</span>
+            <p>${esc(row.maintainer_note)}</p>
+          </div>
+        ` : ''}
+        <div class="oc-resource-detail-actions">
+          ${row.status === 'pending' ? `<button type="button" class="btn btn-outline-primary btn-sm" data-review-suggestion="${esc(row.id)}">Start review</button>` : ''}
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Needs changes</button>
+          <button type="button" class="btn btn-outline-primary btn-sm" data-approve-suggestion="${esc(row.id)}">Approve</button>
+          ${canAdmin ? `<button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Mark added</button>` : ''}
+          ${canAdmin ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Decline</button>` : ''}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderResourceSubmissions(){
+    const { visibleSuggestions, pending, inReview, active, completed, queue } = suggestionQueueState();
+    const reviewers = reviewerProfiles();
+    const filterOptions = [
+      ['active', 'Active', active.length],
+      ['pending', 'Pending', pending.length],
+      ['in_review', 'In review', visibleSuggestions.filter(row => row.status === 'in_review').length],
+      ['needs_changes', 'Needs changes', visibleSuggestions.filter(row => row.status === 'needs_changes').length],
+      ['approved', 'Approved', visibleSuggestions.filter(row => row.status === 'approved').length],
+      ['completed', 'Completed', completed.length]
+    ];
+    if (!queue.some(row => row.id === selectedSuggestionId)) {
+      selectedSuggestionId = queue[0]?.id || '';
+    }
+    const selected = queue.find(row => row.id === selectedSuggestionId) || null;
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <div>
+          <p class="oc-auth-kicker mb-2">${canAdmin ? 'Resource submissions' : 'Assigned resources'}</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'active' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} pending · ${inReview.length} in review</p>
+        </div>
+        <button type="button" id="refreshSuggestionsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+      <div class="oc-role-filter mb-3" aria-label="Filter submissions by status">
+        ${filterOptions.map(([value, label, count]) => `
+          <button type="button" class="btn btn-sm ${suggestionStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-suggestion-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
+        `).join('')}
+      </div>
+      <div class="oc-resource-review-layout">
+        <div class="oc-resource-submission-list" aria-label="Resource submissions">
+          ${queue.length ? queue.map(row => {
+            const profile = suggestionUser(row);
+            const reviewer = assignedReviewer(row);
+            return `
+              <button type="button" class="oc-resource-submission-item ${row.id === selectedSuggestionId ? 'active' : ''}" data-select-suggestion="${esc(row.id)}">
+                <span class="oc-resource-submission-title">
+                  <strong>${esc(row.title || 'Untitled resource')}</strong>
+                  <small>${esc(row.resource_type || 'resource')} · ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</small>
+                </span>
+                <span class="oc-resource-submission-meta">${esc(row.submitter_name || userLabel(profile))}</span>
+                <span class="oc-resource-submission-meta">Reviewer: ${reviewer ? esc(userLabel(reviewer)) : 'Unassigned'}</span>
+              </button>
+            `;
+          }).join('') : '<div class="oc-workspace-empty"><strong>No matching suggestions</strong></div>'}
+        </div>
+        ${renderResourceSubmissionDetail(selected, reviewers)}
+      </div>
+      ${suggestionStatusFilter === 'active' && completed.length ? `
+        <h3 class="h6 fw-bold mt-4 mb-2">Recently reviewed</h3>
+        <div class="oc-resource-recent-list">
+          ${completed.slice(0, 6).map(row => `
+            <button type="button" class="oc-resource-recent-item" data-open-completed-suggestion="${esc(row.id)}">
+              <strong>${esc(row.title || 'Untitled resource')}</strong>
+              <span>${esc(row.status || '')}${row.reviewed_at ? ` · ${new Date(row.reviewed_at).toLocaleDateString()}` : ''}</span>
+            </button>
           `).join('')}
         </div>
       ` : ''}
@@ -878,6 +1604,20 @@
     document.querySelectorAll('[data-suggestion-filter]').forEach(button => {
       button.addEventListener('click', () => {
         suggestionStatusFilter = button.dataset.suggestionFilter || 'active';
+        selectedSuggestionId = '';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-select-suggestion]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedSuggestionId = button.dataset.selectSuggestion || '';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-open-completed-suggestion]').forEach(button => {
+      button.addEventListener('click', () => {
+        suggestionStatusFilter = 'completed';
+        selectedSuggestionId = button.dataset.openCompletedSuggestion || '';
         renderDashboard();
       });
     });
@@ -1006,14 +1746,28 @@
 
   async function loadDashboard(resetSelection = true){
     const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at').order('created_at', { ascending: false }).limit(200);
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes] = await Promise.all([
+    const contributorsRequest = fetch('data/contributors.json', { cache: 'no-store' })
+      .then(res => res.ok ? res.json() : [])
+      .catch(() => []);
+    const catalogRequests = [
+      ['dataset', 'data/datasets.json'],
+      ['model', 'data/models.json'],
+      ['oer', 'data/oer.json'],
+      ['workflow', 'data/use-cases.json']
+    ].map(([type, url]) => fetch(url, { cache: 'no-store' })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => ({ type, rows: catalogRowsFrom(data) }))
+      .catch(() => ({ type, rows: [] })));
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, contributorsRes, catalogRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
       sb.from('site_issue_reports').select('*').order('created_at', { ascending: false }).limit(200),
       canAdmin
         ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
-        : Promise.resolve({ data: [], error: null })
+        : Promise.resolve({ data: [], error: null }),
+      contributorsRequest,
+      Promise.all(catalogRequests)
     ]);
     if (profilesRes.error) throw profilesRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -1022,6 +1776,11 @@
     suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
     issueReports = issueReportsRes.error ? [] : (issueReportsRes.data || []);
     userRoles = rolesRes.error ? [] : (rolesRes.data || []);
+    contributors = Array.isArray(contributorsRes) ? contributorsRes : [];
+    const catalogRecords = buildCatalogRecords(Array.isArray(catalogRes) ? catalogRes : []);
+    catalogResources = catalogRecords.resources;
+    catalogContributorRecords = catalogRecords.contributorRecords;
+    catalogAuthorRecords = catalogRecords.authorRecords;
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';
     }

@@ -692,7 +692,7 @@
       if (!isReviewerUser) return;
       const signOutButton = li.querySelector('[data-oc-signout]');
       if (!signOutButton || li.querySelector('[data-oc-maintainer-link]')) return;
-      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">${menuIcon(isAdminUser ? 'admin' : 'review')}<span>${isAdminUser ? 'Admin console' : 'Review queue'}</span></a>`);
+      signOutButton.insertAdjacentHTML('beforebegin', `<a class="dropdown-item" data-oc-maintainer-link href="${relHref('maintainer.html')}">${menuIcon(isAdminUser ? 'admin' : 'review')}<span>${isAdminUser ? 'Dashboard' : 'Review queue'}</span></a>`);
     });
   }
 

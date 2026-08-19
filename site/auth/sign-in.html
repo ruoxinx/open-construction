@@ -198,7 +198,7 @@
     const roles = await window.OCAuth.getRoles?.().catch(() => []) || [];
     const target = await window.OCAuth.resolvePostSignInHref('../account.html');
     const destinationLabel = roles.includes('admin')
-      ? 'your admin console'
+      ? 'your dashboard'
       : roles.includes('reviewer')
         ? 'your review queue'
         : 'your workspace';
