@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: CubiCasa5k-ScanShift]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=cubicasa5k_scanshift</link>
+    <guid isPermaLink="false">datasets:cubicasa5k_scanshift:2026-08-19</guid>
+    <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Multi-task crack foundation model for engineering-reliable crack representation and topology preservation in civil infrastructure]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:crackgeofm:2026-08-19</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:GeoLink-UV:2026-07-29</guid>
     <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Text2Onto-Agent: An LLM Agent-Based End-to-End Automated Ontology Construction Method and a Case Study of Green Building Domain Modeling]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:T2OA:2026-07-29</guid>
-    <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Building Code and Standard Modeling model using Text (2026)]]></description>
   </item>
   </channel>
 </rss>
