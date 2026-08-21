@@ -1019,6 +1019,30 @@
   function labelKey(value){
     return safeText(value).toLowerCase().replace(/\s+/g, ' ').trim();
   }
+  function cleanLabel(value){
+    return safeText(value).replace(/\s+/g, ' ');
+  }
+  function labelDisplayScore(value){
+    const label = cleanLabel(value);
+    if (!label) return 0;
+    return label.split(/\s+/).reduce((score, word) => {
+      if (/^[A-Z0-9]{2,}(?:[-/][A-Z0-9]+)*$/.test(word)) return score + 2;
+      if (/^[A-Z][a-z0-9]+/.test(word)) return score + 1;
+      return score;
+    }, 0);
+  }
+  function preferredLabel(current, candidate){
+    const currentLabel = cleanLabel(current);
+    const candidateLabel = cleanLabel(candidate);
+    if (!currentLabel) return candidateLabel;
+    if (!candidateLabel) return currentLabel;
+    const currentScore = labelDisplayScore(currentLabel);
+    const candidateScore = labelDisplayScore(candidateLabel);
+    if (candidateScore !== currentScore){
+      return candidateScore > currentScore ? candidateLabel : currentLabel;
+    }
+    return candidateLabel.length > currentLabel.length ? candidateLabel : currentLabel;
+  }
   function startCaseLabel(value){
     const raw = safeText(value);
     if (!raw) return '';
@@ -1048,16 +1072,18 @@
   function summarizeTop(values, limit = Infinity, options = {}){
     const { lookup = null, formatter = null } = options;
     const counts = new Map();
+    const labels = new Map();
     values.map(safeText).filter(Boolean).forEach((value) => {
       const key = labelKey(value);
       if (!key) return;
       const label = (lookup && lookup.get(key)) || (typeof formatter === 'function' ? formatter(value) : value);
-      counts.set(label, (counts.get(label) || 0) + 1);
+      counts.set(key, (counts.get(key) || 0) + 1);
+      labels.set(key, preferredLabel(labels.get(key), label));
     });
     return Array.from(counts.entries())
-      .sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .sort((a,b) => b[1] - a[1] || labels.get(a[0]).localeCompare(labels.get(b[0])))
       .slice(0, limit)
-      .map(([label]) => label);
+      .map(([key]) => labels.get(key));
   }
   function listValues(type, item){
     if (type === 'dataset'){
@@ -1131,9 +1157,17 @@
     `;
   }
   function setTopicStrip(items){
-    topicItems = Array.isArray(items)
-      ? Array.from(new Set(items.filter(Boolean))).sort((a, b) => a.localeCompare(b))
-      : [];
+    if (Array.isArray(items)){
+      const topics = new Map();
+      items.forEach((item) => {
+        const key = labelKey(item);
+        if (!key) return;
+        topics.set(key, preferredLabel(topics.get(key), item));
+      });
+      topicItems = Array.from(topics.values()).sort((a, b) => a.localeCompare(b));
+    }else{
+      topicItems = [];
+    }
     topicExpanded = false;
     renderTopicStrip();
   }
