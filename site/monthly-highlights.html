@@ -318,6 +318,10 @@
       flex-wrap:wrap;
       margin-bottom:1rem;
     }
+    .section-head > div{
+      width:100%;
+      min-width:0;
+    }
     .highlight-grid{
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
@@ -326,26 +330,74 @@
     .highlight-group + .highlight-group{
       margin-top:1.25rem;
     }
-    .highlight-subhead{
-      display:flex;
-      align-items:center;
-      gap:.46rem;
-      margin:0 0 .9rem;
-      font-size:1.02rem;
-      font-weight:700;
-      color:var(--oc-ink);
-      letter-spacing:-.01em;
-    }
+    .highlight-subhead,
     .icon-heading{
       display:flex;
       align-items:center;
-      gap:.46rem;
+      gap:.5rem;
+      margin:0 0 .9rem;
+      font-size:1.16rem;
+      font-weight:700;
+      color:var(--oc-ink);
+      letter-spacing:-.01em;
       line-height:1.2;
     }
+    .section-head .icon-heading{
+      margin-bottom:0;
+    }
+    .section-toggle{
+      appearance:none;
+      -webkit-appearance:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      width:100%;
+      border:0;
+      background:transparent;
+      color:inherit;
+      font:inherit;
+      letter-spacing:inherit;
+      line-height:inherit;
+      text-align:left;
+      padding:0;
+      cursor:pointer;
+    }
+    .section-toggle-title{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      min-width:0;
+    }
+    .collapse-mark{
+      display:inline-grid;
+      place-items:center;
+      flex:0 0 auto;
+      width:1.55rem;
+      height:1.55rem;
+      border:1px solid var(--oc-border);
+      border-radius:6px;
+      color:var(--oc-ink);
+      font-size:1rem;
+      font-weight:700;
+      line-height:1;
+      background:#fff;
+    }
+    .collapse-mark::before{
+      content:"-";
+    }
+    .section-toggle[aria-expanded="false"] .collapse-mark::before{
+      content:"+";
+    }
+    .section-toggle:hover .collapse-mark,
+    .section-toggle:focus .collapse-mark{
+      border-color:#d6e2ee;
+      background:#f8fbff;
+    }
     .resource-title-icon{
-      width:1.12rem;
-      height:1.12rem;
-      opacity:.78;
+      width:1.2rem;
+      height:1.2rem;
+      opacity:.8;
     }
     .featured-card{
       background:#fff;
@@ -696,8 +748,17 @@
   <section class="oc-section mb-5">
     <div class="section-head">
       <div>
-        <div class="oc-kicker">Community Contributors</div>
-        <h2 class="h4 mb-2" id="contribHeading">Contributors this month</h2>
+        <h2 class="icon-heading" id="contribHeading">
+          <button class="section-toggle" type="button" aria-expanded="true" aria-controls="contribGrid">
+            <span class="section-toggle-title">
+              <span class="resource-title-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle class="oc-icon-fill" cx="12" cy="8" r="3"></circle><circle cx="12" cy="8" r="3"></circle><path d="M5 19c2.2-3.2 5-4.8 7-4.8s4.8 1.6 7 4.8"></path><path d="M4 15.5c1.1-1.5 2.5-2.3 4.1-2.6"></path><path d="M20 15.5c-1.1-1.5-2.5-2.3-4.1-2.6"></path></svg>
+              </span>
+              <span>Community Contributors</span>
+            </span>
+            <span class="collapse-mark" aria-hidden="true"></span>
+          </button>
+        </h2>
       </div>
     </div>
     <div class="contrib-grid" id="contribGrid">
@@ -1064,13 +1125,15 @@
       <span class="topic-label">Focus Areas</span>
       <div class="topic-chip-row">
         ${visible.map((tag) => `<span class="topic-chip">${escapeHtml(tag)}</span>`).join('')}
-        ${remaining > 0 ? `<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="false">+${remaining} more</button>` : ''}
+        ${remaining > 0 ? `<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="false">Show all</button>` : ''}
         ${topicExpanded && labels.length > 8 ? '<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="true">Show fewer</button>' : ''}
       </div>
     `;
   }
   function setTopicStrip(items){
-    topicItems = Array.isArray(items) ? items.filter(Boolean) : [];
+    topicItems = Array.isArray(items)
+      ? Array.from(new Set(items.filter(Boolean))).sort((a, b) => a.localeCompare(b))
+      : [];
     topicExpanded = false;
     renderTopicStrip();
   }
@@ -1133,6 +1196,16 @@
       renderTopicStrip();
     });
   }
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.section-toggle');
+    if (!trigger) return;
+    const targetId = trigger.getAttribute('aria-controls');
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!target) return;
+    const expanded = trigger.getAttribute('aria-expanded') !== 'false';
+    trigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    target.hidden = expanded;
+  });
 
   Promise.all([
     fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
@@ -1231,8 +1304,6 @@
     document.title = `Monthly Highlights - ${monthLabel} - OpenConstruction Open Science Initiative`;
     setPageTitle(`${monthLabel} Community Highlights`);
     setPageSummary('');
-    const contribHeading = document.getElementById('contribHeading');
-    setIconHeading(contribHeading, 'contributors', `Contributors in ${monthLabel}`);
     setMetricCards([
       { key:'datasets', label:'Datasets', value:datasetCount.toLocaleString() },
       { key:'models', label:'Models', value:modelCount.toLocaleString() },
@@ -1275,16 +1346,26 @@
     if (featuredDatasets.length){
       groups.push(`
         <div class="highlight-group">
-          <h3 class="highlight-subhead">${resourceIconHtml('datasets', 'resource-title-icon')}<span>Datasets</span></h3>
-          <div class="highlight-grid">${renderFeaturedCards(featuredDatasets)}</div>
+          <h3 class="highlight-subhead">
+            <button class="section-toggle" type="button" aria-expanded="true" aria-controls="datasetsPanel">
+              <span class="section-toggle-title">${resourceIconHtml('datasets', 'resource-title-icon')}<span>Datasets</span></span>
+              <span class="collapse-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="highlight-grid" id="datasetsPanel">${renderFeaturedCards(featuredDatasets)}</div>
         </div>
       `);
     }
     if (featuredModels.length){
       groups.push(`
         <div class="highlight-group">
-          <h3 class="highlight-subhead">${resourceIconHtml('models', 'resource-title-icon')}<span>Models</span></h3>
-          <div class="highlight-grid">${renderFeaturedCards(featuredModels)}</div>
+          <h3 class="highlight-subhead">
+            <button class="section-toggle" type="button" aria-expanded="true" aria-controls="modelsPanel">
+              <span class="section-toggle-title">${resourceIconHtml('models', 'resource-title-icon')}<span>Models</span></span>
+              <span class="collapse-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="highlight-grid" id="modelsPanel">${renderFeaturedCards(featuredModels)}</div>
         </div>
       `);
     }
