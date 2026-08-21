@@ -1158,6 +1158,19 @@
     });
   }
 
+  function loadUsageLogger(){
+    if (window.OCUsageAnalytics?.ready || document.querySelector('script[data-oc-usage-logger="true"]')) return;
+    if (!window.SUPABASE_URL || !window.SUPABASE_ANON_KEY || !window.supabase?.createClient) return;
+    const pageFile = cleanFile(window.location.pathname);
+    if (!pageFile || pageFile === 'index.html') return;
+    const script = document.createElement('script');
+    script.src = `${assetPrefix}js/visit-logger.js?v=20260821-catalog-searches`;
+    script.async = true;
+    script.dataset.ocUsageLogger = 'true';
+    script.dataset.page = window.location.pathname.replace(/^\/+|\/+$/g, '').replace(/\.html$/i, '') || 'index';
+    document.head.appendChild(script);
+  }
+
   function init(){
     setFooterYear();
     normalizeHeaderNav();
@@ -1173,6 +1186,7 @@
     [250, 1000, 2500].forEach(delay => window.setTimeout(refreshProtectedShell, delay));
     bindSearchArrowActions();
     normalizeFooter();
+    loadUsageLogger();
   }
 
   window.OpenConstructionShell = {

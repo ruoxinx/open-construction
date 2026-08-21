@@ -2181,9 +2181,15 @@
       }
       searchInput.addEventListener('input', runSearch);
       searchScopeSelect.addEventListener('change', runSearch);
-      searchForm.addEventListener('submit', (event) => {
+      searchForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const results = runSearch();
+        if (window.OCUsageAnalytics?.recordSearchInput) {
+          await Promise.race([
+            window.OCUsageAnalytics.recordSearchInput(searchInput, 'home_submit', { keepalive: true }),
+            new Promise(resolve => setTimeout(resolve, 220))
+          ]);
+        }
         if (results[0]) window.location.href = results[0].href;
       });
       document.addEventListener('click', (event) => {
@@ -2383,7 +2389,7 @@
 <script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script>
 <script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
 <script src="assets/js/institutions.js"></script>
-<script src="assets/js/visit-logger.js" data-page="index"></script>
+<script src="assets/js/visit-logger.js?v=20260821-catalog-searches" data-page="index"></script>
 <script>
   (function(){
     var api = window.OpenConstructionInstitutions;

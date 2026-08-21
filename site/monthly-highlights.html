@@ -9,7 +9,7 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Monthly Highlights</title>
+  <title>OpenConstruction - Monthly Highlights</title>
   <meta name="description" content="Explore monthly community highlights from OpenConstruction, including new datasets, models, and contributors.">
   <link rel="canonical" href="https://www.openconstruction.org/monthly-highlights.html">
   <meta property="og:type" content="website">
@@ -35,46 +35,15 @@
     .oc-container{ max-width:1120px; }
     .hero{
       border-bottom:1px solid var(--oc-border);
-      background:
-        radial-gradient(circle at top right, rgba(242,162,56,.18), transparent 28%),
-        linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      background:linear-gradient(180deg, #fbfdff 0%, #ffffff 100%);
     }
-    .hero .content{ padding:56px 0 40px; }
-    .hero-toolbar{
+    .hero .content{ padding:42px 0 28px; }
+    .hero-heading-row{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-      margin-bottom:1rem;
+      gap:.5rem;
+      margin-bottom:.55rem;
       flex-wrap:wrap;
-    }
-    .hero-toolbar-actions{
-      display:flex;
-      align-items:center;
-      gap:.65rem;
-      flex-wrap:wrap;
-    }
-    .hero-kicker{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      padding:.35rem .8rem;
-      border:1px solid #dbe6f0;
-      border-radius:999px;
-      background:#f8fbff;
-      color:var(--oc-ink);
-      font-size:.78rem;
-      font-weight:700;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-    .hero-kicker::before{
-      content:"";
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:var(--oc-accent);
-      box-shadow:0 0 0 4px rgba(242,162,56,.16);
     }
     .hero-top{
       display:grid;
@@ -83,12 +52,18 @@
       align-items:start;
     }
     .hero-title{
+      display:flex;
+      align-items:center;
+      gap:.52rem;
       font-weight:700;
       color:var(--oc-ink);
-      letter-spacing:-.03em;
+      letter-spacing:-.02em;
       line-height:1.1;
-      font-size:clamp(1.5rem, 1rem + 2.5vw, 2.4rem);
+      font-size:clamp(1.45rem, 1rem + 2.2vw, 2.25rem);
       margin:0;
+    }
+    .hero-title-mark{
+      display:none;
     }
     .hero-subtitle{
       color:var(--oc-subtle);
@@ -100,119 +75,233 @@
     .hero-subtitle:empty{
       display:none;
     }
-    .share-icon-btn{
-      width:38px;
-      height:38px;
-      border-radius:10px;
-      border:1px solid var(--oc-border);
-      background:#fff;
+    .hero-back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:.38rem;
       color:var(--oc-ink);
-      box-shadow:0 6px 18px rgba(15,46,75,.06);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:0;
-      transition:background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      font-size:.84rem;
+      font-weight:700;
+      line-height:1.2;
+      text-decoration:none;
+      opacity:.78;
+      transition:opacity .16s ease, color .16s ease;
     }
-    .share-icon-btn:hover{
-      background:#f8fbff;
-      border-color:#d6e2ee;
-      transform:translateY(-1px);
-      box-shadow:0 10px 24px rgba(15,46,75,.08);
+    .hero-back-link:hover,
+    .hero-back-link:focus{
+      color:var(--oc-ink);
+      opacity:1;
+      text-decoration:none;
     }
-    .archive-row{
+    .hero-back-link svg{
+      width:16px;
+      height:16px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .archive-band{
+      margin-top:.35rem;
+      border-bottom:1px solid var(--oc-border);
+      background:#fff;
+    }
+    .archive-control{
       display:flex;
-      flex-wrap:wrap;
-      gap:.5rem;
-      margin-top:1rem;
-      padding-top:.2rem;
-    }
-    .archive-chip{
-      display:inline-flex;
       align-items:center;
-      justify-content:center;
-      padding:.34rem .72rem;
-      border-radius:999px;
-      border:1px solid var(--oc-border);
-      background:rgba(255,255,255,.82);
+      justify-content:space-between;
+      gap:.55rem;
+      padding:.6rem 0;
+    }
+    .archive-tools{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      flex-wrap:wrap;
+    }
+    .archive-control label{
+      color:var(--oc-ink);
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .archive-control .form-select{
+      width:auto;
+      min-width:170px;
+      border-color:var(--oc-border);
       color:var(--oc-ink);
       font-weight:600;
-      font-size:.83rem;
-      text-decoration:none;
-      box-shadow:none;
-      backdrop-filter:blur(4px);
     }
-    .archive-chip:hover{
-      text-decoration:none;
+    .share-month-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:.38rem;
+      min-height:30px;
+      padding:.28rem .62rem;
+      border:1px solid var(--oc-ink);
+      border-radius:8px;
       background:#fff;
-      border-color:#d6e2ee;
+      color:var(--oc-ink);
+      font-size:.8rem;
+      font-weight:700;
+      line-height:1.2;
+      transition:background .16s ease, border-color .16s ease, color .16s ease;
     }
-    .archive-chip.is-active{
-      background:var(--oc-ink);
+    .share-month-btn:hover{
+      background:#f7fbff;
       border-color:var(--oc-ink);
-      color:#fff;
-      box-shadow:0 10px 24px rgba(15,46,75,.12);
+      color:var(--oc-ink);
+    }
+    .share-month-btn:disabled{
+      cursor:not-allowed;
+      opacity:.58;
+      transform:none;
+    }
+    .share-month-btn svg{
+      width:14px;
+      height:14px;
     }
     .metric-grid{
       display:grid;
-      grid-template-columns:1fr;
-      gap:.9rem;
-      max-width:1120px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:clamp(1rem, 4vw, 3.5rem);
+      width:100%;
+      max-width:100%;
+      margin-top:1.05rem;
     }
     .metric-card{
       position:relative;
-      border:1px solid var(--oc-border);
-      border-radius:18px;
-      box-shadow:0 10px 28px rgba(15,46,75,.06);
-      padding:1.05rem 1.05rem 1rem;
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr);
+      align-items:center;
+      gap:.62rem;
+      min-width:0;
+      padding:0;
       text-align:left;
-      background:
-        radial-gradient(circle at top right, rgba(242,162,56,.12), transparent 36%),
-        linear-gradient(180deg, rgba(248,251,255,.95) 0%, rgba(255,255,255,1) 100%);
+      background:transparent;
+      box-shadow:none;
+      border:0;
+      border-radius:0;
     }
-    .metric-card::before{
-      content:"";
+    .metric-card + .metric-card{
+      border-left:0;
+    }
+    .metric-icon,
+    .resource-title-icon,
+    .featured-type-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      color:var(--oc-ink);
+      opacity:.78;
+    }
+    .metric-icon{
+      grid-column:1;
+      grid-row:1;
+      width:1.65rem;
+      height:1.65rem;
+      opacity:.86;
+    }
+    .metric-icon svg,
+    .resource-title-icon svg,
+    .featured-type-icon svg{
       display:block;
-      width:34px;
-      height:3px;
-      border-radius:999px;
-      background:linear-gradient(90deg, var(--oc-accent), rgba(242,162,56,.15));
-      margin-bottom:.7rem;
+      width:100%;
+      height:100%;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.85;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .metric-icon .oc-icon-fill,
+    .resource-title-icon .oc-icon-fill,
+    .featured-type-icon .oc-icon-fill{
+      fill:rgba(242,162,56,.14);
+    }
+    .metric-icon svg{
+      width:1.65rem;
+      height:1.65rem;
+    }
+    .metric-copy{
+      grid-column:2;
+      grid-row:1;
+      display:flex;
+      flex-direction:column-reverse;
+      align-items:flex-start;
+      gap:.22rem;
+      min-width:0;
     }
     .metric-value{
       display:block;
-      font-size:.98rem;
-      line-height:1.45;
-      font-weight:750;
+      font-size:1.72rem;
+      line-height:1.1;
+      font-weight:760;
       color:var(--oc-ink);
-      max-width:34ch;
+      margin:0;
     }
     .metric-label{
       display:block;
-      margin-bottom:.45rem;
-      font-size:.72rem;
+      font-size:.68rem;
       letter-spacing:.12em;
       text-transform:uppercase;
       color:var(--oc-subtle);
       font-weight:700;
     }
-    .metric-tags{
+    .topic-strip{
+      width:100%;
+      max-width:100%;
+      margin-top:.72rem;
+      text-align:left;
+    }
+    .topic-label{
+      display:block;
+      margin:0;
+      color:var(--oc-subtle);
+      font-size:.74rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-weight:750;
+    }
+    .topic-chip-row{
       display:flex;
       flex-wrap:wrap;
-      gap:.42rem;
-      margin-top:.7rem;
+      align-items:center;
+      gap:.45rem;
+      margin-top:.52rem;
     }
-    .metric-tag{
+    .topic-chip{
       display:inline-flex;
       align-items:center;
-      padding:.26rem .62rem;
-      border-radius:999px;
-      border:1px solid #dbe6f0;
+      min-height:26px;
+      padding:.28rem .64rem;
+      border-radius:6px;
+      border:1px solid var(--oc-border);
       background:#fff;
-      color:var(--oc-ink);
-      font-size:.79rem;
-      font-weight:700;
+      color:#3f4c5b;
+      font-size:.78rem;
+      font-weight:650;
       line-height:1.2;
+    }
+    .topic-more-button,
+    .topic-empty{
+      color:var(--oc-subtle);
+      font-size:.84rem;
+      font-weight:650;
+    }
+    .topic-more-button{
+      border:0;
+      background:transparent;
+      min-height:28px;
+      padding:.3rem .1rem;
+      color:var(--oc-link);
+      cursor:pointer;
+      line-height:1.2;
+    }
+    .topic-more-button:hover,
+    .topic-more-button:focus{
+      text-decoration:underline;
     }
     .oc-section{ margin-top:34px; }
     .oc-kicker{
@@ -232,30 +321,44 @@
     .highlight-grid{
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:.9rem;
+      gap:.75rem;
     }
     .highlight-group + .highlight-group{
-      margin-top:1.4rem;
+      margin-top:1.25rem;
     }
     .highlight-subhead{
+      display:flex;
+      align-items:center;
+      gap:.46rem;
       margin:0 0 .9rem;
       font-size:1.02rem;
       font-weight:700;
       color:var(--oc-ink);
       letter-spacing:-.01em;
     }
+    .icon-heading{
+      display:flex;
+      align-items:center;
+      gap:.46rem;
+      line-height:1.2;
+    }
+    .resource-title-icon{
+      width:1.12rem;
+      height:1.12rem;
+      opacity:.78;
+    }
     .featured-card{
       background:#fff;
       border:1px solid var(--oc-border);
-      border-radius:16px;
+      border-radius:12px;
       box-shadow:var(--oc-shadow);
       overflow:hidden;
       height:100%;
       transition:transform .2s ease, box-shadow .2s ease;
     }
     .featured-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 12px 32px rgba(15,46,75,.1);
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(15,46,75,.09);
     }
     .featured-card-link{
       display:flex;
@@ -295,10 +398,10 @@
       text-overflow:ellipsis;
     }
     .featured-body{
-      padding:1rem 1.05rem 1.05rem;
+      padding:.78rem .86rem .86rem;
       display:flex;
       flex-direction:column;
-      gap:.45rem;
+      gap:.34rem;
       flex:1;
       min-width:0;
     }
@@ -311,16 +414,31 @@
     }
     .featured-type{
       display:inline-flex;
+      align-items:center;
       align-self:flex-start;
-      padding:.2rem .55rem;
-      border-radius:999px;
-      background:#eef4fb;
-      border:1px solid #dbe6f0;
-      color:var(--oc-ink);
+      padding:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--oc-subtle);
       font-size:.74rem;
       font-weight:700;
-      letter-spacing:.06em;
+      letter-spacing:.08em;
       text-transform:uppercase;
+    }
+    .featured-type.is-dataset{
+      background:transparent;
+      color:var(--oc-subtle);
+    }
+    .featured-type.is-model{
+      background:transparent;
+      color:var(--oc-subtle);
+    }
+    .featured-type-icon{
+      width:.95rem;
+      height:.95rem;
+      color:var(--oc-ink);
+      opacity:.74;
     }
     .featured-year{
       color:var(--oc-subtle);
@@ -329,20 +447,29 @@
     }
     .featured-title{
       margin:0;
-      font-size:1.02rem;
+      font-size:.94rem;
       font-weight:700;
       color:var(--oc-ink);
-      line-height:1.35;
+      line-height:1.3;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
     .featured-meta{
       margin:0;
       color:var(--oc-subtle);
-      font-size:.88rem;
+      font-size:.82rem;
+      line-height:1.35;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
     .contrib-grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:1rem;
+      gap:.75rem;
     }
     .contrib-card-link{
       display:block;
@@ -352,8 +479,8 @@
     }
     .person-card{ transition:transform .12s ease; }
     .person-card:hover{ transform:translateY(-1px); }
-    .person-card .card-body{ padding:1rem 1.1rem; }
-    .team-card .card-body{ padding:.9rem 1rem; }
+    .person-card .card-body{ padding:.78rem .9rem; }
+    .team-card .card-body{ padding:.72rem .82rem; }
     .contrib-card-wrap{
       display:flex;
       gap:.75rem;
@@ -361,11 +488,11 @@
       min-width:0;
     }
     .headshot{
-      width:86px; height:86px; object-fit:cover; border-radius:50%;
+      width:72px; height:72px; object-fit:cover; border-radius:50%;
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06); flex:0 0 auto;
       background:#eef3f8;
     }
-    .team-card .headshot{ width:72px; height:72px; }
+    .team-card .headshot{ width:62px; height:62px; }
     .headshot.is-initials{
       display:none;
       place-items:center;
@@ -400,24 +527,38 @@
     }
     @media (max-width: 991.98px){
       .hero .content{ padding:42px 0 34px; }
-      .metric-grid{ grid-template-columns:1fr; }
+      .metric-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
       .highlight-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
       .contrib-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
       .hero-title{ }
     }
     @media (max-width: 767.98px){
       .metric-grid{ grid-template-columns:1fr; }
+      .metric-card + .metric-card{
+        border-left:0;
+        border-top:0;
+      }
       .highlight-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
       .contrib-grid{ grid-template-columns:1fr; }
-      .hero-toolbar{ align-items:flex-start; }
+      .hero-heading-row{ align-items:flex-start; }
       .hero-title{
         font-size:clamp(1.3rem, 1rem + 2vw, 2rem);
       }
-      .archive-row{
-        gap:.42rem;
+      .archive-control{
+        align-items:flex-start;
+        justify-content:flex-start;
+        flex-direction:column;
       }
-      .archive-chip{
-        font-size:.8rem;
+      .archive-tools{
+        width:100%;
+      }
+      .archive-control .form-select{
+        min-width:0;
+        flex:1;
+      }
+      .share-month-btn{
+        width:100%;
+        justify-content:center;
       }
     }
     @media (max-width: 575.98px){
@@ -473,30 +614,54 @@
   <div class="container oc-container content">
     <div class="hero-top">
       <div>
-        <div class="hero-toolbar">
-          <div class="hero-kicker">Community Digests</div>
-          <div class="hero-toolbar-actions">
-            <a class="btn btn-dark btn-sm rounded-pill" href="contributors.html">Back to community</a>
-            <button type="button" class="share-icon-btn" id="shareNativeBtn" aria-label="Share monthly highlights" title="Share">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M.5 9.9a.5.5 0 0 1 .5.5v3.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.1a.5.5 0 0 1 1 0v3.1A2 2 0 0 1 14 15.5H2a2 2 0 0 1-2-2v-3.1a.5.5 0 0 1 .5-.5"/>
-                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V10.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
-              </svg>
-            </button>
-          </div>
+        <div class="hero-heading-row">
+          <a class="hero-back-link" href="contributors.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 12H5"></path>
+              <path d="m12 19-7-7 7-7"></path>
+            </svg>
+            <span>Community</span>
+          </a>
         </div>
-        <h1 class="hero-title" id="pageTitle">Loading monthly highlights...</h1>
+        <h1 class="hero-title" id="pageTitle">
+          <span class="hero-title-mark" aria-hidden="true"></span>
+          <span id="pageTitleText">Loading monthly highlights...</span>
+        </h1>
         <p class="hero-subtitle" id="pageSummary"></p>
-        <div class="archive-row" id="archiveRow" aria-label="Monthly community archive"></div>
       </div>
       <div class="metric-grid" id="metricGrid" aria-label="Monthly activity summary">
-        <div class="metric-card">
-          <span class="metric-label">Scope</span>
-          <span class="metric-value">Loading monthly summary...</span>
+        <div class="metric-card" data-metric="datasets">
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>
+          </span>
+          <div class="metric-copy">
+            <span class="metric-value">-</span>
+            <span class="metric-label">Datasets</span>
+          </div>
         </div>
-        <div class="metric-card">
-          <span class="metric-label">Tasks &amp; Applications</span>
-          <span class="metric-value">Loading monthly summary...</span>
+        <div class="metric-card" data-metric="models">
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle><circle cx="7" cy="8" r="2.5"></circle><circle cx="17" cy="6" r="2.5"></circle><circle cx="17" cy="18" r="2.5"></circle><path d="m9.4 7.5 5.2-1"></path><path d="m8.7 10 6.6 6"></path><path d="M7 10.5v4.8"></path><circle cx="7" cy="17.8" r="1.8"></circle></svg>
+          </span>
+          <div class="metric-copy">
+            <span class="metric-value">-</span>
+            <span class="metric-label">Models</span>
+          </div>
+        </div>
+        <div class="metric-card" data-metric="contributors">
+          <span class="metric-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle class="oc-icon-fill" cx="12" cy="8" r="3"></circle><circle cx="12" cy="8" r="3"></circle><path d="M5 19c2.2-3.2 5-4.8 7-4.8s4.8 1.6 7 4.8"></path><path d="M4 15.5c1.1-1.5 2.5-2.3 4.1-2.6"></path><path d="M20 15.5c-1.1-1.5-2.5-2.3-4.1-2.6"></path></svg>
+          </span>
+          <div class="metric-copy">
+            <span class="metric-value">-</span>
+            <span class="metric-label">Contributors</span>
+          </div>
+        </div>
+      </div>
+      <div class="topic-strip" id="topicStrip" aria-label="Monthly focus areas">
+        <span class="topic-label">Focus Areas</span>
+        <div class="topic-chip-row">
+          <span class="topic-empty">Loading focus areas...</span>
         </div>
       </div>
     </div>
@@ -504,7 +669,31 @@
 </header>
 
 <main class="container oc-container">
+  <div class="archive-band" aria-label="Monthly community archive">
+    <div class="archive-control">
+      <div class="archive-tools">
+        <label for="archiveSelect">Month</label>
+        <select class="form-select form-select-sm" id="archiveSelect">
+          <option>Loading months...</option>
+        </select>
+      </div>
+      <button type="button" class="share-month-btn" id="shareMonthBtn" aria-label="Share this monthly highlight page">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.43"></path>
+          <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.33-1.33"></path>
+        </svg>
+        <span>Share this month</span>
+      </button>
+    </div>
+  </div>
+
   <section class="oc-section">
+    <div id="featuredSections">
+      <div class="empty-state">Loading monthly highlights...</div>
+    </div>
+  </section>
+
+  <section class="oc-section mb-5">
     <div class="section-head">
       <div>
         <div class="oc-kicker">Community Contributors</div>
@@ -513,18 +702,6 @@
     </div>
     <div class="contrib-grid" id="contribGrid">
       <div class="empty-state">Loading contributors...</div>
-    </div>
-  </section>
-
-  <section class="oc-section mb-5">
-    <div class="section-head">
-      <div>
-        <div class="oc-kicker">Monthly Highlights</div>
-        <h2 class="h4 mb-2" id="featuredHeading">Community highlights</h2>
-      </div>
-    </div>
-    <div id="featuredSections">
-      <div class="empty-state">Loading monthly highlights...</div>
     </div>
   </section>
 </main>
@@ -578,13 +755,20 @@
 <script>
 (function(){
   const pageTitleEl = document.getElementById('pageTitle');
+  const pageTitleTextEl = document.getElementById('pageTitleText');
   const pageSummaryEl = document.getElementById('pageSummary');
   const metricGrid = document.getElementById('metricGrid');
+  const topicStrip = document.getElementById('topicStrip');
   const featuredSections = document.getElementById('featuredSections');
   const contribGrid = document.getElementById('contribGrid');
-  const archiveRow = document.getElementById('archiveRow');
-  const shareNativeBtn = document.getElementById('shareNativeBtn');
+  const archiveSelect = document.getElementById('archiveSelect');
+  const shareMonthBtn = document.getElementById('shareMonthBtn');
   const MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month:'long', year:'numeric' });
+  const ARCHIVE_MONTH_FORMATTER = new Intl.DateTimeFormat('en-US', { month:'short', year:'numeric' });
+  let topicItems = [];
+  let topicExpanded = false;
+  let currentMonthLabel = '';
+  let currentShareUrl = window.location.href;
 
   function safeText(value){ return String(value ?? '').trim(); }
   function escapeHtml(value){
@@ -618,6 +802,12 @@
   }
   function monthKey(date){
     return date ? `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}` : '';
+  }
+  function compactMonthLabel(month){
+    const raw = safeText(month);
+    const match = raw.match(/^(\d{4})-(\d{2})$/);
+    if (!match) return raw;
+    return ARCHIVE_MONTH_FORMATTER.format(new Date(`${raw}-01T12:00:00`));
   }
   function parseMonthParam(value){
     const raw = safeText(value);
@@ -753,14 +943,17 @@
   }
   function resourceMeta(type, item){
     if (type === 'dataset'){
-      return [normalizeMetaValue(item.data_modality), datasetCountSummary(item)].filter(Boolean).join(' · ');
+      return [normalizeMetaValue(item.data_modality), datasetCountSummary(item)].filter(Boolean).join(' - ');
     }
-    return [normalizeMetaValue(item.tasks || item.task), normalizeMetaValue(item.modalities || item.modality)].filter(Boolean).join(' · ');
+    return [normalizeMetaValue(item.tasks || item.task), normalizeMetaValue(item.modalities || item.modality)].filter(Boolean).join(' - ');
   }
   function monthHref(month){
     const url = new URL(window.location.href);
     url.searchParams.set('month', month);
     return `${url.pathname}${url.search}`;
+  }
+  function absoluteMonthHref(month){
+    return new URL(monthHref(month), window.location.href).href;
   }
   function labelKey(value){
     return safeText(value).toLowerCase().replace(/\s+/g, ' ').trim();
@@ -816,18 +1009,70 @@
       applications: Array.isArray(item.applications) ? item.applications : []
     };
   }
+  const RESOURCE_ICONS = {
+    dataset: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>',
+    datasets: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>',
+    model: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle><circle cx="7" cy="8" r="2.5"></circle><circle cx="17" cy="6" r="2.5"></circle><circle cx="17" cy="18" r="2.5"></circle><path d="m9.4 7.5 5.2-1"></path><path d="m8.7 10 6.6 6"></path><path d="M7 10.5v4.8"></path><circle cx="7" cy="17.8" r="1.8"></circle></svg>',
+    models: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle><circle cx="7" cy="8" r="2.5"></circle><circle cx="17" cy="6" r="2.5"></circle><circle cx="17" cy="18" r="2.5"></circle><path d="m9.4 7.5 5.2-1"></path><path d="m8.7 10 6.6 6"></path><path d="M7 10.5v4.8"></path><circle cx="7" cy="17.8" r="1.8"></circle></svg>',
+    contributors: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="oc-icon-fill" cx="12" cy="8" r="3"></circle><circle cx="12" cy="8" r="3"></circle><path d="M5 19c2.2-3.2 5-4.8 7-4.8s4.8 1.6 7 4.8"></path><path d="M4 15.5c1.1-1.5 2.5-2.3 4.1-2.6"></path><path d="M20 15.5c-1.1-1.5-2.5-2.3-4.1-2.6"></path></svg>'
+  };
+  function resourceIconHtml(key, className){
+    const icon = RESOURCE_ICONS[key];
+    return icon ? `<span class="${className}" aria-hidden="true">${icon}</span>` : '';
+  }
+  function setIconHeading(element, iconKey, text){
+    if (!element) return;
+    element.classList.add('icon-heading');
+    element.innerHTML = `${resourceIconHtml(iconKey, 'resource-title-icon')}<span>${escapeHtml(text)}</span>`;
+  }
   function renderMetricCard(card){
-    const tags = Array.isArray(card.tags) ? card.tags.filter(Boolean) : [];
     return `
-      <div class="metric-card">
-        <span class="metric-label">${escapeHtml(card.label)}</span>
-        ${card.value ? `<span class="metric-value">${escapeHtml(card.value)}</span>` : ''}
-        ${tags.length ? `<div class="metric-tags">${tags.map((tag) => `<span class="metric-tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+      <div class="metric-card" data-metric="${escapeHtml(card.key || '')}">
+        ${resourceIconHtml(card.key, 'metric-icon')}
+        <div class="metric-copy">
+          ${card.value ? `<span class="metric-value">${escapeHtml(card.value)}</span>` : ''}
+          <span class="metric-label">${escapeHtml(card.label)}</span>
+        </div>
       </div>
     `;
   }
   function setMetricCards(cards){
     metricGrid.innerHTML = cards.map(renderMetricCard).join('');
+  }
+  function setPageTitle(text){
+    if (pageTitleTextEl) pageTitleTextEl.textContent = text;
+    else if (pageTitleEl) pageTitleEl.textContent = text;
+  }
+  function setPageSummary(text){
+    if (pageSummaryEl) pageSummaryEl.textContent = safeText(text);
+  }
+  function renderTopicStrip(){
+    if (!topicStrip) return;
+    const labels = topicItems;
+    if (!labels.length){
+      topicStrip.innerHTML = `
+        <span class="topic-label">Focus Areas</span>
+        <div class="topic-chip-row">
+          <span class="topic-empty">Tasks and applications not specified</span>
+        </div>
+      `;
+      return;
+    }
+    const visible = topicExpanded ? labels : labels.slice(0, 8);
+    const remaining = labels.length - visible.length;
+    topicStrip.innerHTML = `
+      <span class="topic-label">Focus Areas</span>
+      <div class="topic-chip-row">
+        ${visible.map((tag) => `<span class="topic-chip">${escapeHtml(tag)}</span>`).join('')}
+        ${remaining > 0 ? `<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="false">+${remaining} more</button>` : ''}
+        ${topicExpanded && labels.length > 8 ? '<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="true">Show fewer</button>' : ''}
+      </div>
+    `;
+  }
+  function setTopicStrip(items){
+    topicItems = Array.isArray(items) ? items.filter(Boolean) : [];
+    topicExpanded = false;
+    renderTopicStrip();
   }
   async function copyText(text){
     if (!text) return false;
@@ -843,22 +1088,51 @@
     }catch{}
     return false;
   }
-  async function shareLink(){
-    const url = window.location.href;
+  async function shareCurrentMonth(){
+    const shareUrl = currentShareUrl || window.location.href;
+    const shareTitle = currentMonthLabel
+      ? `${currentMonthLabel} Community Highlights`
+      : 'OpenConstruction Monthly Highlights';
     try{
       if (navigator.share){
-        await navigator.share({ title: document.title, url });
+        await navigator.share({
+          title: shareTitle,
+          text: shareTitle,
+          url: shareUrl
+        });
         return;
       }
     }catch(err){
       if (err?.name === 'AbortError') return;
     }
-    const ok = await copyText(url);
-    if (ok) shareNativeBtn.title = 'Link copied';
-    setTimeout(() => { shareNativeBtn.title = 'Share'; }, 1800);
+
+    const ok = await copyText(shareUrl);
+    if (!shareMonthBtn) return;
+    const label = shareMonthBtn.querySelector('span');
+    const original = label ? label.textContent : '';
+    if (ok && label) label.textContent = 'Link copied';
+    setTimeout(() => {
+      if (label) label.textContent = original || 'Share this month';
+    }, 1600);
   }
 
-  shareNativeBtn.addEventListener('click', () => { shareLink(); });
+  if (archiveSelect){
+    archiveSelect.addEventListener('change', () => {
+      const month = parseMonthParam(archiveSelect.value);
+      if (month) window.location.href = monthHref(month);
+    });
+  }
+  if (shareMonthBtn){
+    shareMonthBtn.addEventListener('click', shareCurrentMonth);
+  }
+  if (topicStrip){
+    topicStrip.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-topic-toggle]');
+      if (!trigger) return;
+      topicExpanded = !topicExpanded;
+      renderTopicStrip();
+    });
+  }
 
   Promise.all([
     fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
@@ -887,12 +1161,19 @@
     const latest = all.slice().sort((a,b) => (b.added?.getTime() || 0) - (a.added?.getTime() || 0))[0];
 
     if (!latest){
-      pageTitleEl.textContent = 'Monthly highlights coming soon';
-      pageSummaryEl.textContent = '';
+      setPageTitle('Monthly highlights coming soon');
+      setPageSummary('');
       setMetricCards([
-        { label:'Scope', value:'No monthly highlights yet' },
-        { label:'Tasks & Applications', value:'—' }
+        { key:'datasets', label:'Datasets', value:'0' },
+        { key:'models', label:'Models', value:'0' },
+        { key:'contributors', label:'Contributors', value:'0' }
       ]);
+      setTopicStrip([]);
+      if (archiveSelect){
+        archiveSelect.innerHTML = '<option>No months available</option>';
+        archiveSelect.disabled = true;
+      }
+      if (shareMonthBtn) shareMonthBtn.disabled = true;
       featuredSections.innerHTML = '<div class="empty-state">No monthly highlights are available yet.</div>';
       contribGrid.innerHTML = '<div class="empty-state">Contributors will appear here once monthly highlights are available.</div>';
       return;
@@ -902,14 +1183,17 @@
     const requestedMonth = parseMonthParam(new URLSearchParams(window.location.search).get('month'));
     const featuredMonthKey = archiveMonths.includes(requestedMonth) ? requestedMonth : monthKey(latest.added);
     const monthLabel = MONTH_FORMATTER.format(new Date(`${featuredMonthKey}-01T12:00:00`));
+    currentMonthLabel = monthLabel;
+    currentShareUrl = absoluteMonthHref(featuredMonthKey);
 
-    if (archiveRow){
-      archiveRow.innerHTML = archiveMonths.slice(0, 12).map((month) => {
+    if (archiveSelect){
+      archiveSelect.disabled = false;
+      archiveSelect.innerHTML = archiveMonths.map((month) => {
         const isActive = month === featuredMonthKey;
-        const date = new Date(`${month}-01T12:00:00`);
-        return `<a class="archive-chip${isActive ? ' is-active' : ''}" href="${escapeHtml(monthHref(month))}">${escapeHtml(MONTH_FORMATTER.format(date))}</a>`;
+        return `<option value="${escapeHtml(month)}"${isActive ? ' selected' : ''}>${escapeHtml(compactMonthLabel(month))}</option>`;
       }).join('');
     }
+    if (shareMonthBtn) shareMonthBtn.disabled = false;
 
     const monthly = all
       .filter((entry) => monthKey(entry.added) === featuredMonthKey)
@@ -944,24 +1228,17 @@
     const topTasks = summarizeTop(tasks, Infinity, { lookup: taskLabelLookup });
     const topApplications = summarizeTop(applications, Infinity, { formatter: startCaseLabel });
 
-    document.title = `Monthly Highlights · ${monthLabel} · OpenConstruction Open Science Initiative`;
-    pageTitleEl.textContent = `${monthLabel} Community Highlights`;
-    const featuredHeading = document.getElementById('featuredHeading');
+    document.title = `Monthly Highlights - ${monthLabel} - OpenConstruction Open Science Initiative`;
+    setPageTitle(`${monthLabel} Community Highlights`);
+    setPageSummary('');
     const contribHeading = document.getElementById('contribHeading');
-    if (featuredHeading) featuredHeading.textContent = `Community highlights in ${monthLabel}`;
-    if (contribHeading) contribHeading.textContent = `Contributors in ${monthLabel}`;
+    setIconHeading(contribHeading, 'contributors', `Contributors in ${monthLabel}`);
     setMetricCards([
-      {
-        label:'Scope',
-        value:`${datasetCount} datasets, ${modelCount} models, ${contributors.length} contributors`,
-        tags:[]
-      },
-      {
-        label:'Tasks & Applications',
-        value: topTasks.length || topApplications.length ? '' : 'Tasks and applications not specified',
-        tags: [...topTasks, ...topApplications]
-      }
+      { key:'datasets', label:'Datasets', value:datasetCount.toLocaleString() },
+      { key:'models', label:'Models', value:modelCount.toLocaleString() },
+      { key:'contributors', label:'Contributors', value:contributors.length.toLocaleString() }
     ]);
+    setTopicStrip([...topTasks, ...topApplications]);
 
     const renderFeaturedCards = (entries) => entries.map(({ type, item }) => {
       const title = itemTitle(item);
@@ -981,7 +1258,7 @@
             </div>
             <div class="featured-body">
               <div class="featured-topline">
-                <span class="featured-type">${escapeHtml(type)}</span>
+                <span class="featured-type is-${escapeHtml(type)}">${escapeHtml(type)}</span>
                 ${safeText(item.year) ? `<span class="featured-year">${escapeHtml(item.year)}</span>` : ''}
               </div>
               <h3 class="featured-title">${escapeHtml(title)}</h3>
@@ -998,7 +1275,7 @@
     if (featuredDatasets.length){
       groups.push(`
         <div class="highlight-group">
-          <h3 class="highlight-subhead">Datasets</h3>
+          <h3 class="highlight-subhead">${resourceIconHtml('datasets', 'resource-title-icon')}<span>Datasets</span></h3>
           <div class="highlight-grid">${renderFeaturedCards(featuredDatasets)}</div>
         </div>
       `);
@@ -1006,7 +1283,7 @@
     if (featuredModels.length){
       groups.push(`
         <div class="highlight-group">
-          <h3 class="highlight-subhead">Models</h3>
+          <h3 class="highlight-subhead">${resourceIconHtml('models', 'resource-title-icon')}<span>Models</span></h3>
           <div class="highlight-grid">${renderFeaturedCards(featuredModels)}</div>
         </div>
       `);
@@ -1051,12 +1328,19 @@
     }).join('') : '<div class="empty-state">Contributors are not available yet for this month.</div>';
   }).catch((err) => {
     console.error('Failed to load monthly highlights', err);
-    pageTitleEl.textContent = 'Monthly highlights unavailable right now';
-    pageSummaryEl.textContent = '';
+    setPageTitle('Monthly highlights unavailable right now');
+    setPageSummary('');
     setMetricCards([
-      { label:'Scope', value:'Summary unavailable' },
-      { label:'Tasks & Applications', value:'Summary unavailable' }
+      { key:'datasets', label:'Datasets', value:'-' },
+      { key:'models', label:'Models', value:'-' },
+      { key:'contributors', label:'Contributors', value:'-' }
     ]);
+    setTopicStrip([]);
+    if (archiveSelect){
+      archiveSelect.innerHTML = '<option>Archive unavailable</option>';
+      archiveSelect.disabled = true;
+    }
+    if (shareMonthBtn) shareMonthBtn.disabled = true;
     featuredSections.innerHTML = '<div class="empty-state">We could not load monthly highlights right now.</div>';
     contribGrid.innerHTML = '<div class="empty-state">We could not load contributors right now.</div>';
   });

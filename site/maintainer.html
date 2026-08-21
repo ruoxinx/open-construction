@@ -123,6 +123,8 @@
   let catalogResources = [];
   let catalogContributorRecords = [];
   let catalogAuthorRecords = [];
+  let usageAnalytics = null;
+  let usageAnalyticsDays = 30;
   let selectedUserId = '';
   let currentMaintainerId = '';
   let userRoles = [];
@@ -283,7 +285,30 @@
     `;
   }
 
+  function ensureUsageChartStyles(){
+    if (document.getElementById('ocUsageChartStyles')) return;
+    const style = document.createElement('style');
+    style.id = 'ocUsageChartStyles';
+    style.textContent = `
+      .oc-usage-chart-wrap{border:1px solid var(--oc-border,#e7edf3);border-radius:8px;padding:.75rem;background:#fff}
+      .oc-usage-line-chart{display:block;width:100%;height:auto;min-height:220px;overflow:visible}
+      .oc-usage-point{outline:none}
+      .oc-usage-point circle:last-child{transition:r .12s ease,stroke-width .12s ease}
+      .oc-usage-point:hover circle:last-child,.oc-usage-point:focus circle:last-child{r:5.2;stroke-width:2.8}
+      .oc-usage-chart-footer{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-top:.45rem}
+      .oc-usage-legend{display:flex;align-items:center;gap:.35rem .8rem;flex-wrap:wrap;color:#3f4c5b;font-size:.82rem;font-weight:650}
+      .oc-usage-legend span{display:inline-flex;align-items:center;gap:.28rem}
+      .oc-usage-legend i{display:inline-block;width:.7rem;height:.18rem;border-radius:999px}
+      .oc-usage-chart-readout{color:#0f2e4b;background:#f6f9fc;border:1px solid #e7edf3;border-radius:6px;padding:.3rem .48rem;font-size:.82rem;font-weight:650}
+      .oc-usage-ratio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem .75rem}
+      .oc-usage-ratio-grid .oc-dashboard-mini-row{margin:0}
+      @media (max-width:575.98px){.oc-usage-chart-wrap{padding:.55rem}.oc-usage-line-chart{min-height:190px}.oc-usage-chart-footer{align-items:flex-start}.oc-usage-chart-readout{width:100%}.oc-usage-ratio-grid{grid-template-columns:1fr}}
+    `;
+    document.head.appendChild(style);
+  }
+
   function renderDashboard(){
+    ensureUsageChartStyles();
     if (!canAdmin) {
       root.className = 'oc-dashboard-console';
       root.innerHTML = `
@@ -326,7 +351,18 @@
           <h1 class="h3 fw-bold mb-1">${esc(title)}</h1>
           <p class="text-muted mb-0">${esc(subtitle)}</p>
         </div>
-        <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          ${canAdmin ? `
+            <div class="dropdown">
+              <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Export</button>
+              <div class="dropdown-menu dropdown-menu-end">
+                <button type="button" class="dropdown-item" data-dashboard-export="json">Dashboard JSON</button>
+                <button type="button" class="dropdown-item" data-dashboard-export="analytics-csv" ${dashboardTab === 'analytics' ? '' : 'disabled'}>Analytics CSV</button>
+              </div>
+            </div>
+          ` : ''}
+          <button type="button" id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+        </div>
       </div>
     `;
   }
@@ -339,6 +375,7 @@
     const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
+      analytics: usageAnalytics?.totals?.usage_events || usageAnalytics?.totals?.visits || 0,
       reviews: activeSuggestions.length + activeIssues.length,
       people: profiles.length,
       credentials: badges.length
@@ -346,6 +383,7 @@
     const tabs = canAdmin
       ? [
           ['overview', 'Overview'],
+          ['analytics', 'Analytics'],
           ['reviews', 'Reviews'],
           ['people', 'People & Access'],
           ['credentials', 'Credentials']
@@ -391,9 +429,165 @@
         renderDashboard();
       });
     });
+    document.querySelectorAll('[data-dashboard-export]').forEach(button => {
+      button.addEventListener('click', () => exportDashboardData(button.dataset.dashboardExport));
+    });
+  }
+
+  function safeFilenamePart(value){
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 48) || 'dashboard';
+  }
+
+  function downloadTextFile(filename, content, type){
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 500);
+  }
+
+  function csvEscape(value){
+    const text = String(value ?? '');
+    return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  }
+
+  function csvRows(rows, columns){
+    const cleanRows = Array.isArray(rows) ? rows : [];
+    return [
+      columns.map(col => csvEscape(col.label)).join(','),
+      ...cleanRows.map(row => columns.map(col => csvEscape(col.value(row))).join(','))
+    ].join('\n');
+  }
+
+  function dashboardExportPayload(){
+    const overview = roleOverviewCounts();
+    const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
+    const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    return {
+      exported_at: new Date().toISOString(),
+      exported_by: currentUserId || null,
+      dashboard_tab: dashboardTab,
+      access: {
+        admin: canAdmin,
+        roles: Array.from(new Set(userRoles.filter(row => row.user_id === currentUserId).map(row => row.role)))
+      },
+      overview: {
+        resources: catalogResources.length || suggestions.length,
+        profiles: profiles.length,
+        badges: badges.length,
+        active_resource_reviews: activeSuggestions.length,
+        active_issue_reports: activeIssues.length,
+        role_counts: overview
+      },
+      analytics: canAdmin ? usageAnalytics : null,
+      profiles: canAdmin ? profiles : [],
+      user_roles: canAdmin ? userRoles : [],
+      badges: canAdmin ? badges : [],
+      resource_suggestions: canAdmin ? suggestions : activeSuggestions,
+      site_issue_reports: canAdmin ? issueReports : activeIssues,
+      catalog_resources: catalogResources.map(row => ({
+        resource_type: row.resource_type,
+        catalog_title: row.catalog_title,
+        catalog_date: row.catalog_date,
+        id: row.id || row.name || row.title || null
+      }))
+    };
+  }
+
+  function analyticsCsvExport(){
+    if (!usageAnalytics?.allowed) return '';
+    const sections = [
+      ['daily', usageAnalytics.daily, [
+        { label: 'day', value: row => row.day },
+        { label: 'visits', value: row => row.visits },
+        { label: 'unique_visitors', value: row => row.unique_visitors },
+        { label: 'page_views', value: row => row.page_views },
+        { label: 'interaction_events', value: row => row.interaction_events },
+        { label: 'searches', value: row => row.searches },
+        { label: 'filters', value: row => row.filters },
+        { label: 'resource_clicks', value: row => row.resource_clicks },
+        { label: 'download_clicks', value: row => row.download_clicks },
+        { label: 'outbound_clicks', value: row => row.outbound_clicks },
+        { label: 'action_clicks', value: row => row.action_clicks },
+        { label: 'form_opens', value: row => row.form_opens },
+        { label: 'form_starts', value: row => row.form_starts },
+        { label: 'form_submits', value: row => row.form_submits }
+      ]],
+      ['top_pages', usageAnalytics.top_pages, [
+        { label: 'page', value: row => row.page },
+        { label: 'visits', value: row => row.visits },
+        { label: 'unique_visitors', value: row => row.unique_visitors }
+      ]],
+      ['top_regions', usageAnalytics.top_regions, [
+        { label: 'country', value: row => row.country },
+        { label: 'region', value: row => row.region },
+        { label: 'city', value: row => row.city },
+        { label: 'visits', value: row => row.visits },
+        { label: 'unique_visitors', value: row => row.unique_visitors }
+      ]],
+      ['top_searches', usageAnalytics.top_searches, [
+        { label: 'query', value: row => row.query },
+        { label: 'count', value: row => row.count },
+        { label: 'avg_results', value: row => row.avg_results },
+        { label: 'zero_result_count', value: row => row.zero_result_count }
+      ]],
+      ['top_filters', usageAnalytics.top_filters, [
+        { label: 'filter_group', value: row => row.filter_group },
+        { label: 'filter_value', value: row => row.filter_value },
+        { label: 'count', value: row => row.count },
+        { label: 'avg_results', value: row => row.avg_results }
+      ]],
+      ['top_downloads', usageAnalytics.top_downloads, [
+        { label: 'label', value: row => row.label },
+        { label: 'target', value: row => row.target },
+        { label: 'count', value: row => row.count }
+      ]],
+      ['top_actions', usageAnalytics.top_actions, [
+        { label: 'action', value: row => row.action },
+        { label: 'count', value: row => row.count }
+      ]],
+      ['form_funnel', usageAnalytics.form_funnel, [
+        { label: 'page', value: row => row.page },
+        { label: 'opens', value: row => row.opens },
+        { label: 'starts', value: row => row.starts },
+        { label: 'submits', value: row => row.submits }
+      ]]
+    ];
+    return sections
+      .map(([name, rows, columns]) => `# ${name}\n${csvRows(rows, columns)}`)
+      .join('\n\n');
+  }
+
+  function exportDashboardData(format){
+    if (!canAdmin) {
+      alert('Dashboard exports are available to admins only.');
+      return;
+    }
+    const stamp = new Date().toISOString().slice(0, 10);
+    if (format === 'analytics-csv') {
+      const csv = analyticsCsvExport();
+      if (!csv) {
+        alert('Analytics data is not loaded yet.');
+        return;
+      }
+      downloadTextFile(`openconstruction-analytics-${usageRangeSlug()}-${stamp}.csv`, csv, 'text/csv;charset=utf-8');
+      return;
+    }
+    const payload = dashboardExportPayload();
+    const filename = `openconstruction-${safeFilenamePart(dashboardTab)}-dashboard-${stamp}.json`;
+    downloadTextFile(filename, `${JSON.stringify(payload, null, 2)}\n`, 'application/json;charset=utf-8');
   }
 
   function renderDashboardPanel(selected){
+    if (dashboardTab === 'analytics') return renderUsageAnalytics();
     if (dashboardTab === 'reviews') return renderReviewCenter();
     if (dashboardTab === 'people') return renderPeopleAccess(selected);
     if (dashboardTab === 'credentials') return renderCredentials(selected);
@@ -415,6 +609,10 @@
     if (dashboardTab === 'credentials') {
       bindProfileBrowser();
       bindBadgeForm();
+      return;
+    }
+    if (dashboardTab === 'analytics') {
+      bindUsageAnalyticsActions();
       return;
     }
     bindResourceTrendActions();
@@ -884,6 +1082,338 @@
               `).join('')}
             </div>
           </section>
+        </div>
+      </section>
+    `;
+  }
+
+  function usageTotal(key){
+    const value = usageAnalytics?.totals?.[key];
+    return Number.isFinite(Number(value)) ? Number(value) : 0;
+  }
+
+  function usageNumber(value, fallback = '0'){
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toLocaleString() : fallback;
+  }
+
+  function usagePercent(numerator, denominator){
+    const a = Number(numerator);
+    const b = Number(denominator);
+    if (!Number.isFinite(a) || !Number.isFinite(b) || b <= 0) return '0%';
+    return `${Math.round((a / b) * 100)}%`;
+  }
+
+  function usageDateLabel(value){
+    const date = validDate(value);
+    return date ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : String(value || '');
+  }
+
+  function usageRangeLabel(){
+    return usageAnalyticsDays > 0 ? `${usageAnalyticsDays} days` : 'All time';
+  }
+
+  function usageRangeSlug(){
+    return usageAnalyticsDays > 0 ? `${usageAnalyticsDays}d` : 'all-time';
+  }
+
+  function renderUsageDailyTrend(){
+    const rows = Array.isArray(usageAnalytics?.daily) ? usageAnalytics.daily : [];
+    const searches = usageTotal('searches');
+    const filters = usageTotal('filters');
+    const visits = usageTotal('visits');
+    const resourceClicks = usageTotal('resource_clicks');
+    const downloadClicks = usageTotal('download_clicks');
+    const outboundClicks = usageTotal('outbound_clicks');
+    const actionClicks = usageTotal('action_clicks');
+    const formOpens = usageTotal('form_opens');
+    const formStarts = usageTotal('form_starts');
+    const formSubmits = usageTotal('form_submits');
+    const pageViews = usageTotal('page_views');
+    const interactionEvents = usageTotal('interaction_events');
+    const usageEvents = usageTotal('usage_events');
+    const interactionTrackingActive = interactionEvents > 0;
+    if (!rows.length) {
+      return `
+        <section class="oc-workspace-card">
+          <p class="oc-auth-kicker mb-2">Trend</p>
+          <h2 class="h5 fw-bold mb-3">Daily usage</h2>
+          <div class="oc-workspace-empty"><strong>No usage trend yet</strong><span>Events will appear after visitors use catalog search and filters.</span></div>
+        </section>
+      `;
+    }
+    const series = [
+      { key: 'visits', label: 'Visits', color: '#0f2e4b', source: 'visits' },
+      { key: 'unique_visitors', label: 'Unique', color: '#0b66c3', source: 'visits' },
+      { key: 'searches', label: 'Searches', color: '#b86b16', source: 'events' },
+      { key: 'filters', label: 'Filters', color: '#2f7d5b', source: 'events' },
+      { key: 'resource_clicks', label: 'Clicks', color: '#5c6670', source: 'events' },
+      { key: 'download_clicks', label: 'Downloads', color: '#c2410c', source: 'events' },
+      { key: 'form_submits', label: 'Forms', color: '#7c3aed', source: 'events' }
+    ];
+    const width = 760;
+    const height = 260;
+    const left = 48;
+    const right = 20;
+    const top = 24;
+    const bottom = 44;
+    const plotW = width - left - right;
+    const plotH = height - top - bottom;
+    const max = Math.max(1, ...rows.flatMap(row => series.map(item => Number(row[item.key]) || 0)));
+    const xFor = index => left + (rows.length === 1 ? plotW / 2 : (index / (rows.length - 1)) * plotW);
+    const yFor = value => top + (1 - ((Number(value) || 0) / max)) * plotH;
+    const pathFor = key => rows.map((row, index) => `${index ? 'L' : 'M'}${xFor(index).toFixed(1)},${yFor(row[key]).toFixed(1)}`).join(' ');
+    const yTicks = [0, Math.ceil(max / 2), max].filter((value, index, arr) => index === 0 || value !== arr[index - 1]);
+    const xTicks = rows
+      .map((row, index) => ({ row, index }))
+      .filter((item, index, arr) => index === 0 || index === arr.length - 1 || index === Math.floor(arr.length / 2));
+    const latest = rows[rows.length - 1] || {};
+    const latestLabel = `${usageDateLabel(latest.day)}: ${series.map(item => `${item.label} ${usageNumber(latest[item.key])}`).join(' / ')}`;
+    return `
+      <section class="oc-workspace-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">Trend</p>
+            <h2 class="h5 fw-bold mb-0">Usage trend & engagement</h2>
+            <p class="text-muted small mb-0">One panel combining historical visit trends with interaction ratios.</p>
+          </div>
+          <span class="badge text-bg-light">${esc(usageRangeLabel())}</span>
+        </div>
+        <div class="oc-usage-chart-wrap">
+          <svg class="oc-usage-line-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Daily usage line chart">
+            <rect x="0" y="0" width="${width}" height="${height}" fill="#fff"></rect>
+            ${yTicks.map(value => {
+              const y = yFor(value);
+              return `
+                <line x1="${left}" y1="${y.toFixed(1)}" x2="${width - right}" y2="${y.toFixed(1)}" stroke="#e7edf3" stroke-width="1"></line>
+                <text x="${left - 10}" y="${(y + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#6b7785">${esc(usageNumber(value))}</text>
+              `;
+            }).join('')}
+            <line x1="${left}" y1="${height - bottom}" x2="${width - right}" y2="${height - bottom}" stroke="#d9e3ee" stroke-width="1"></line>
+            ${xTicks.map(({ row, index }) => `
+              <text x="${xFor(index).toFixed(1)}" y="${height - 18}" text-anchor="${index === 0 ? 'start' : index === rows.length - 1 ? 'end' : 'middle'}" font-size="11" fill="#6b7785">${esc(usageDateLabel(row.day))}</text>
+            `).join('')}
+            ${series.map(item => `
+              <path d="${pathFor(item.key)}" fill="none" stroke="${item.color}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+            `).join('')}
+            ${series.map(item => rows.map((row, index) => {
+              const value = Number(row[item.key]) || 0;
+              const label = `${usageDateLabel(row.day)} - ${item.label}: ${usageNumber(value)}`;
+              return `
+                <g class="oc-usage-point" tabindex="0" data-usage-point="${esc(label)}" aria-label="${esc(label)}">
+                  <circle cx="${xFor(index).toFixed(1)}" cy="${yFor(value).toFixed(1)}" r="7" fill="transparent"></circle>
+                  <circle cx="${xFor(index).toFixed(1)}" cy="${yFor(value).toFixed(1)}" r="3.3" fill="#fff" stroke="${item.color}" stroke-width="2"></circle>
+                  <title>${esc(label)}</title>
+                </g>
+              `;
+            }).join('')).join('')}
+          </svg>
+          <div class="oc-usage-chart-footer">
+            <div class="oc-usage-legend" aria-label="Chart legend">
+              ${series.map(item => `
+                <span><i style="background:${item.color}"></i>${esc(item.label)}</span>
+              `).join('')}
+            </div>
+            <output id="usageChartPoint" class="oc-usage-chart-readout">${esc(latestLabel)}</output>
+          </div>
+          <p class="text-muted small mb-0 mt-2">Visits and unique visitors use the historical <code>visits</code> table; interaction lines use <code>site_usage_events</code>.</p>
+        </div>
+        <div class="oc-usage-engagement mt-3">
+          <div class="alert ${interactionTrackingActive ? 'alert-success' : 'alert-warning'} py-2 small mb-3" role="status">
+            Page tracking is active: ${usageNumber(pageViews)} page-view event${pageViews === 1 ? '' : 's'} received in <code>site_usage_events</code>.
+            Interaction events: ${usageNumber(interactionEvents)}.
+            ${interactionTrackingActive
+              ? 'Engagement ratios are now based on recorded search, filter, click, and form events.'
+              : 'The ratios below are 0 because no search, filter, click, or form interaction events have been recorded yet.'}
+          </div>
+          <div class="oc-usage-ratio-grid">
+            ${[
+              ['Usage events', usageNumber(usageEvents)],
+              ['Interaction events', usageNumber(interactionEvents)],
+              ['Searches per visit', visits ? (searches / visits).toFixed(2) : '0.00'],
+              ['Filters per visit', visits ? (filters / visits).toFixed(2) : '0.00'],
+              ['Resource click rate', usagePercent(resourceClicks, visits)],
+              ['Download click rate', usagePercent(downloadClicks, visits)],
+              ['Outbound click rate', usagePercent(outboundClicks, visits)],
+              ['Action clicks', usageNumber(actionClicks)],
+              ['Form start rate', usagePercent(formStarts, formOpens)],
+              ['Form submit rate', usagePercent(formSubmits, formOpens)]
+            ].map(([label, value]) => `
+              <div class="oc-dashboard-mini-row">
+                <span>${esc(label)}</span>
+                <strong>${esc(String(value))}</strong>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderUsageTable(title, kicker, rows, columns, emptyMessage){
+    const cleanRows = Array.isArray(rows) ? rows : [];
+    return `
+      <section class="oc-workspace-card">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">${esc(kicker)}</p>
+            <h2 class="h5 fw-bold mb-0">${esc(title)}</h2>
+          </div>
+          <span class="badge text-bg-light">${esc(String(cleanRows.length))}</span>
+        </div>
+        ${cleanRows.length ? `
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead>
+                <tr>${columns.map(col => `<th scope="col">${esc(col.label)}</th>`).join('')}</tr>
+              </thead>
+              <tbody>
+                ${cleanRows.map(row => `
+                  <tr>
+                    ${columns.map(col => `<td>${col.render ? col.render(row) : esc(row[col.key] ?? '')}</td>`).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        ` : `
+          <div class="oc-workspace-empty">
+            <strong>No data yet</strong>
+            <span>${esc(emptyMessage)}</span>
+          </div>
+        `}
+      </section>
+    `;
+  }
+
+  function bindUsageAnalyticsActions(){
+    document.querySelectorAll('[data-usage-days]').forEach(button => {
+      button.addEventListener('click', () => {
+        const nextDays = Number(button.dataset.usageDays);
+        usageAnalyticsDays = Number.isFinite(nextDays) ? nextDays : 30;
+        loadDashboard(false);
+      });
+    });
+    const readout = document.getElementById('usageChartPoint');
+    document.querySelectorAll('[data-usage-point]').forEach(point => {
+      const update = () => {
+        if (readout) readout.textContent = point.dataset.usagePoint || '';
+      };
+      point.addEventListener('mouseenter', update);
+      point.addEventListener('focus', update);
+      point.addEventListener('click', update);
+    });
+  }
+
+  function renderUsageAnalytics(){
+    if (!canAdmin) return statusBox('Usage analytics are only visible to admins.', 'warning');
+    if (!usageAnalytics?.allowed) {
+      return `
+        <section class="oc-workspace-card">
+          <p class="oc-auth-kicker mb-2">Admin analytics</p>
+          <h2 class="h5 fw-bold mb-2">Usage analytics unavailable</h2>
+          <p class="text-muted mb-0">The dashboard could not load the analytics summary. Refresh or check Supabase RPC access.</p>
+        </section>
+      `;
+    }
+    const searches = usageTotal('searches');
+    const filters = usageTotal('filters');
+    const visits = usageTotal('visits');
+    const resourceClicks = usageTotal('resource_clicks');
+    const downloadClicks = usageTotal('download_clicks');
+    const actionClicks = usageTotal('action_clicks');
+    const formSubmits = usageTotal('form_submits');
+    const usageEvents = usageTotal('usage_events');
+    const pageViews = usageTotal('page_views');
+    const interactionEvents = usageTotal('interaction_events');
+    const topCounties = Array.isArray(usageAnalytics.top_counties) ? usageAnalytics.top_counties : [];
+    return `
+      <section class="oc-dashboard-overview">
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+          <div>
+            <p class="oc-auth-kicker mb-2">Admin only</p>
+            <h2 class="h4 fw-bold mb-1">Usage analytics</h2>
+            <p class="text-muted mb-0">Visitor geography, search demand, filter behavior, resource clicks, and submission funnel.</p>
+          </div>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Analytics date range">
+            ${[
+              [7, '7d'],
+              [30, '30d'],
+              [90, '90d'],
+              [0, 'All']
+            ].map(([days, label]) => `
+              <button type="button" class="btn ${usageAnalyticsDays === days ? 'btn-primary' : 'btn-outline-primary'}" data-usage-days="${days}">${label}</button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Usage analytics summary">
+          ${[
+            ['Visits', visits],
+            ['Unique visitors', usageTotal('unique_visitors')],
+            ['Page events', pageViews],
+            ['Interaction events', interactionEvents],
+            ['Searches', searches],
+            ['Filters', filters],
+            ['Resource clicks', resourceClicks],
+            ['Download clicks', downloadClicks],
+            ['Button actions', actionClicks],
+            ['Form submits', formSubmits]
+          ].map(([label, value]) => `
+            <div class="oc-account-stat">
+              <div class="oc-account-stat-value">${esc(usageNumber(value))}</div>
+              <div class="oc-account-stat-label">${esc(label)}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        ${renderUsageDailyTrend()}
+
+        <div class="oc-dashboard-overview-grid">
+          ${renderUsageTable('Top pages', 'Visits', usageAnalytics.top_pages, [
+            { label: 'Page', key: 'page' },
+            { label: 'Visits', render: row => esc(usageNumber(row.visits)) },
+            { label: 'Unique', render: row => esc(usageNumber(row.unique_visitors)) }
+          ], 'Page-level visits will appear as the logger runs across catalog pages.')}
+          ${renderUsageTable('Visitor regions', 'Geography', usageAnalytics.top_regions, [
+            { label: 'Country', key: 'country' },
+            { label: 'Region', key: 'region' },
+            { label: 'City', key: 'city' },
+            { label: 'Visits', render: row => esc(usageNumber(row.visits)) }
+          ], 'Visitor region data depends on the browser geo lookup succeeding.')}
+          ${renderUsageTable('County baseline', 'Geography', topCounties, [
+            { label: 'Country', key: 'country' },
+            { label: 'Region', key: 'region' },
+            { label: 'County', key: 'county' },
+            { label: 'Events', render: row => esc(usageNumber(row.events)) }
+          ], 'County will appear after a county-capable geolocation source is connected.')}
+          ${renderUsageTable('Top searches', 'Discovery', usageAnalytics.top_searches, [
+            { label: 'Query', key: 'query' },
+            { label: 'Count', render: row => esc(usageNumber(row.count)) },
+            { label: 'Avg results', render: row => esc(usageNumber(row.avg_results, '—')) },
+            { label: 'Zero result', render: row => esc(usageNumber(row.zero_result_count)) }
+          ], 'Search events will appear after visitors use catalog search or Ask OpenConstruction.')}
+          ${renderUsageTable('Top filters', 'Discovery', usageAnalytics.top_filters, [
+            { label: 'Group', key: 'filter_group' },
+            { label: 'Value', key: 'filter_value' },
+            { label: 'Count', render: row => esc(usageNumber(row.count)) },
+            { label: 'Avg results', render: row => esc(usageNumber(row.avg_results, '—')) }
+          ], 'Filter events will appear after visitors use facets, sorting, or quick filters.')}
+          ${renderUsageTable('Top downloads and outbound links', 'Access', usageAnalytics.top_downloads, [
+            { label: 'Label', key: 'label' },
+            { label: 'Target', key: 'target' },
+            { label: 'Count', render: row => esc(usageNumber(row.count)) }
+          ], 'Download, source, DOI, paper, code, and outbound clicks will appear after visitors open those links.')}
+          ${renderUsageTable('Top button actions', 'Interface', usageAnalytics.top_actions, [
+            { label: 'Action', key: 'action' },
+            { label: 'Count', render: row => esc(usageNumber(row.count)) }
+          ], 'Button action events will appear after visitors use share, bookmark, show more, or export-style controls.')}
+          ${renderUsageTable('Submission funnel', 'Contributions', usageAnalytics.form_funnel, [
+            { label: 'Form/page', key: 'page' },
+            { label: 'Opens', render: row => esc(usageNumber(row.opens)) },
+            { label: 'Starts', render: row => esc(usageNumber(row.starts)) },
+            { label: 'Submits', render: row => esc(usageNumber(row.submits)) }
+          ], 'Form funnel events will appear after visitors open and submit resource or issue forms.')}
         </div>
       </section>
     `;
@@ -1830,7 +2360,10 @@
       .then(res => res.ok ? res.json() : null)
       .then(data => ({ type, rows: catalogRowsFrom(data) }))
       .catch(() => ({ type, rows: [] })));
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, contributorsRes, catalogRes] = await Promise.all([
+    const usageRequest = canAdmin
+      ? sb.rpc('site_usage_summary', { days: usageAnalyticsDays })
+      : Promise.resolve({ data: null, error: null });
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
@@ -1839,7 +2372,8 @@
         ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
         : Promise.resolve({ data: [], error: null }),
       contributorsRequest,
-      Promise.all(catalogRequests)
+      Promise.all(catalogRequests),
+      usageRequest
     ]);
     if (profilesRes.error) throw profilesRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -1853,6 +2387,8 @@
     catalogResources = catalogRecords.resources;
     catalogContributorRecords = catalogRecords.contributorRecords;
     catalogAuthorRecords = catalogRecords.authorRecords;
+    usageAnalytics = usageRes?.error ? null : (usageRes?.data || null);
+    if (usageRes?.error) console.warn('Usage analytics summary failed', usageRes.error);
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';
     }
