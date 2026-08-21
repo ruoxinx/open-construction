@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: ELectrical INstallation symbols from Architectural plans (ELINA) Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=elina</link>
+    <guid isPermaLink="false">datasets:elina:2026-08-21</guid>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: SeisMLLM-1K: A Multimodal Dataset for Post-Earthquake Building Safety Evaluation]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=seismllm_1k</link>
     <guid isPermaLink="false">datasets:seismllm_1k:2026-08-20</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:Self-reflective-vision-language-model-for-construction-documents:2026-08-09</guid>
     <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: AI Copilot for Automated Building Design Using Knowledge Graphs and Numerical Models]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:ETABS-Copilot:2026-08-09</guid>
-    <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Automated structural design model using Text (2026)]]></description>
   </item>
   </channel>
 </rss>
