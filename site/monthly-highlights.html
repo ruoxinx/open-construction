@@ -176,12 +176,19 @@
       align-items:center;
       gap:.62rem;
       min-width:0;
+      width:max-content;
       padding:0;
       text-align:left;
       background:transparent;
       box-shadow:none;
       border:0;
       border-radius:0;
+    }
+    .metric-card:nth-child(2){
+      justify-self:center;
+    }
+    .metric-card:last-child{
+      justify-self:end;
     }
     .metric-card + .metric-card{
       border-left:0;
@@ -199,8 +206,8 @@
     .metric-icon{
       grid-column:1;
       grid-row:1;
-      width:1.65rem;
-      height:1.65rem;
+      width:2rem;
+      height:2rem;
       opacity:.86;
     }
     .metric-icon svg,
@@ -221,8 +228,8 @@
       fill:rgba(242,162,56,.14);
     }
     .metric-icon svg{
-      width:1.65rem;
-      height:1.65rem;
+      width:2rem;
+      height:2rem;
     }
     .metric-copy{
       grid-column:2;
@@ -254,6 +261,13 @@
       max-width:100%;
       margin-top:.72rem;
       text-align:left;
+    }
+    .topic-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      width:100%;
     }
     .topic-label{
       display:block;
@@ -291,17 +305,30 @@
       font-weight:650;
     }
     .topic-more-button{
-      border:0;
-      background:transparent;
-      min-height:28px;
-      padding:.3rem .1rem;
-      color:var(--oc-link);
+      display:inline-grid;
+      place-items:center;
+      flex:0 0 auto;
+      width:1.55rem;
+      height:1.55rem;
+      border:1px solid var(--oc-border);
+      border-radius:6px;
+      background:#fff;
+      padding:0;
+      color:var(--oc-ink);
       cursor:pointer;
       line-height:1.2;
+      margin-left:auto;
     }
     .topic-more-button:hover,
     .topic-more-button:focus{
-      text-decoration:underline;
+      border-color:#d6e2ee;
+      background:#f8fbff;
+      text-decoration:none;
+    }
+    .topic-toggle-mark{
+      font-size:1rem;
+      font-weight:700;
+      line-height:1;
     }
     .oc-section{ margin-top:34px; }
     .oc-kicker{
@@ -586,6 +613,11 @@
     }
     @media (max-width: 767.98px){
       .metric-grid{ grid-template-columns:1fr; }
+      .metric-card,
+      .metric-card:nth-child(2),
+      .metric-card:last-child{
+        justify-self:start;
+      }
       .metric-card + .metric-card{
         border-left:0;
         border-top:0;
@@ -711,7 +743,9 @@
         </div>
       </div>
       <div class="topic-strip" id="topicStrip" aria-label="Monthly focus areas">
-        <span class="topic-label">Focus Areas</span>
+        <div class="topic-head">
+          <span class="topic-label">Focus Areas</span>
+        </div>
         <div class="topic-chip-row">
           <span class="topic-empty">Loading focus areas...</span>
         </div>
@@ -1176,7 +1210,9 @@
     const labels = topicItems;
     if (!labels.length){
       topicStrip.innerHTML = `
-        <span class="topic-label">Focus Areas</span>
+        <div class="topic-head">
+          <span class="topic-label">Focus Areas</span>
+        </div>
         <div class="topic-chip-row">
           <span class="topic-empty">Tasks and applications not specified</span>
         </div>
@@ -1184,13 +1220,15 @@
       return;
     }
     const visible = topicExpanded ? labels : labels.slice(0, 8);
-    const remaining = labels.length - visible.length;
+    const canToggle = labels.length > 8;
+    const toggleLabel = topicExpanded ? 'Show fewer focus areas' : 'Show all focus areas';
     topicStrip.innerHTML = `
-      <span class="topic-label">Focus Areas</span>
+      <div class="topic-head">
+        <span class="topic-label">Focus Areas</span>
+        ${canToggle ? `<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="${topicExpanded ? 'true' : 'false'}" aria-label="${toggleLabel}" title="${toggleLabel}"><span class="topic-toggle-mark" aria-hidden="true">${topicExpanded ? '-' : '+'}</span></button>` : ''}
+      </div>
       <div class="topic-chip-row">
         ${visible.map((tag) => `<span class="topic-chip">${escapeHtml(tag)}</span>`).join('')}
-        ${remaining > 0 ? `<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="false">Show all</button>` : ''}
-        ${topicExpanded && labels.length > 8 ? '<button type="button" class="topic-more-button" data-topic-toggle aria-expanded="true">Show fewer</button>' : ''}
       </div>
     `;
   }
