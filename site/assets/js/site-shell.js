@@ -34,14 +34,24 @@
     'benchmark_results.html': 'benchmarks',
     'object_class': 'benchmarks',
     'object_class.html': 'benchmarks',
-    'schema': 'docs',
-    'schema.html': 'docs',
-    'tools': 'docs',
-    'tools.html': 'docs',
-    'guides': 'docs',
-    'guides.html': 'docs',
-    'mcp': 'docs',
-    'mcp.html': 'docs',
+    'learn': 'learn',
+    'learn.html': 'learn',
+    'academy': 'learn',
+    'academy.html': 'learn',
+    'tutorials': 'learn',
+    'tutorials.html': 'learn',
+    'guides-toolkits': 'learn',
+    'guides-toolkits.html': 'learn',
+    'references': 'learn',
+    'references.html': 'learn',
+    'schema': 'learn',
+    'schema.html': 'learn',
+    'tools': 'learn',
+    'tools.html': 'learn',
+    'guides': 'learn',
+    'guides.html': 'learn',
+    'mcp': 'learn',
+    'mcp.html': 'learn',
     'contribute': 'contribute',
     'contribute.html': 'contribute',
     'contributors': 'contributors',
@@ -63,7 +73,7 @@
 
   const ROUTE_GROUPS = {
     libraries: new Set(['dataset', 'models', 'deployments', 'oer']),
-    docs: new Set(['docs'])
+    learn: new Set(['learn'])
   };
 
   const CATALOG_TITLE_FILES = new Set(['dataset.html', 'models.html', 'deployments.html', 'oer.html']);
@@ -90,6 +100,26 @@
   };
 
   const DOCS_META = {
+    'learn.html': {
+      label: 'Learn',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8 12 4l9 4-9 4-9-4Z"></path><path class="oc-icon-fill" d="M7 11v4.2c0 1.5 2.3 3.1 5 3.1s5-1.6 5-3.1V11l-5 2.2L7 11Z"></path><path d="M7 11v4.2c0 1.5 2.3 3.1 5 3.1s5-1.6 5-3.1V11"></path><path d="M21 8v5"></path></svg>'
+    },
+    'academy.html': {
+      label: 'Academy',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8 12 4l9 4-9 4-9-4Z"></path><path class="oc-icon-fill" d="M7 11v4.2c0 1.5 2.3 3.1 5 3.1s5-1.6 5-3.1V11l-5 2.2L7 11Z"></path><path d="M7 11v4.2c0 1.5 2.3 3.1 5 3.1s5-1.6 5-3.1V11"></path><path d="M21 8v5"></path></svg>'
+    },
+    'tutorials.html': {
+      label: 'Tutorials',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="2"></rect><path class="oc-icon-fill" d="m10 8.5 4 2-4 2v-4Z"></path><path d="m10 8.5 4 2-4 2v-4Z"></path><path d="M8 20h8"></path><path d="M12 16v4"></path></svg>'
+    },
+    'guides-toolkits.html': {
+      label: 'Guides & Toolkits',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H11v17H7.5A2.5 2.5 0 0 0 5 22V5.5Z"></path><path d="M14 6h5"></path><path d="M14 10h5"></path><path d="M14 14h3"></path><path d="m15 19 1.5 1.5L20 17"></path></svg>'
+    },
+    'references.html': {
+      label: 'References',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3H18v17H7.8A1.8 1.8 0 0 1 6 18.2V4.8Z"></path><path d="M9 7h6"></path><path d="M9 11h6"></path><path d="M9 15h4"></path><path d="M18 3v17"></path></svg>'
+    },
     'schema.html': {
       label: 'Schema',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>'
@@ -133,9 +163,9 @@
       label: 'Benchmarks',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5"></circle><circle cx="12" cy="12" r="2.1"></circle><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path></svg>'
     },
-    docs: {
-      label: 'Docs',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>',
+    learn: {
+      label: 'Learn',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8 12 4l9 4-9 4-9-4Z"></path><path d="M7 11v4.2c0 1.5 2.3 3.1 5 3.1s5-1.6 5-3.1V11"></path><path d="M21 8v5"></path></svg>',
       dropdown: true
     },
     contribute: {
@@ -167,7 +197,10 @@
 
   function docsIconHtml(href, className){
     const file = fileForHref(href);
-    return iconHtml(DOCS_META[file], className, `oc-docs-icon-${file.replace(/\.html$/, '')}`);
+    const modifier = hashForHref(href)
+      ? hashForHref(href).replace(/^#/, '').replace(/[^a-z0-9]+/gi, '-')
+      : file.replace(/\.html$/, '');
+    return iconHtml(docsMetaForHref(href), className, `oc-docs-icon-${modifier}`);
   }
 
   function pageTitleIconHtml(file, className){
@@ -224,6 +257,16 @@
     }
   }
 
+  function hashForHref(href){
+    if (!href) return '';
+    try {
+      return new URL(href, window.location.href).hash || '';
+    } catch {
+      const match = String(href).match(/#.*$/);
+      return match ? match[0] : '';
+    }
+  }
+
   function markActive(element){
     if (!element) return;
     element.classList.add('active');
@@ -243,7 +286,7 @@
     if (ROUTE_GROUPS.libraries.has(route)) {
       document.getElementById('ddLibraries')?.classList.add('active');
     }
-    if (ROUTE_GROUPS.docs.has(route)) {
+    if (ROUTE_GROUPS.learn.has(route)) {
       const docsLink = document.getElementById('ddDocs') || document.getElementById('ddResourcesMenu');
       docsLink?.classList.add('active');
     }
@@ -264,7 +307,7 @@
     [
       { selector: '#ddLibraries, #ddCatalogs', key: 'catalog' },
       { selector: '.nav-link.plain[data-route="benchmarks"], .nav-link.plain[href$="benchmarks.html"]', key: 'benchmarks' },
-      { selector: '#ddDocs, #ddResourcesMenu', key: 'docs' },
+      { selector: '#ddDocs, #ddResourcesMenu', key: 'learn' },
       { selector: '.nav-link.plain[data-route="contribute"], .nav-link.plain[href$="contribute.html"]', key: 'contribute' },
       { selector: '.nav-link.plain[data-route="contributors"], .nav-link.plain[href$="contributors.html"]', key: 'contributors' }
     ].forEach(({ selector, key }) => {
@@ -454,7 +497,7 @@
     nav.querySelectorAll('.dropdown-item').forEach(item => {
       const itemHref = item.getAttribute('href');
       const itemRoute = routeForHref(itemHref);
-      if (itemRoute === currentRoute && (currentRoute !== 'docs' || fileForHref(itemHref) === currentFile)) {
+      if (itemRoute === currentRoute && (currentRoute !== 'learn' || fileForHref(itemHref) === currentFile)) {
         item.classList.add('active');
       }
     });
@@ -1158,6 +1201,12 @@
     });
   }
 
+  function bindHashNavigationRefresh(){
+    if (document.body.dataset.ocHashNavigationBound === 'true') return;
+    document.body.dataset.ocHashNavigationBound = 'true';
+    window.addEventListener('hashchange', applyActiveNav);
+  }
+
   function init(){
     setFooterYear();
     normalizeHeaderNav();
@@ -1169,6 +1218,7 @@
     bindProtectedShellRefresh();
     refreshProtectedShell();
     applyActiveNav();
+    bindHashNavigationRefresh();
     injectFooterFundingStyles();
     [250, 1000, 2500].forEach(delay => window.setTimeout(refreshProtectedShell, delay));
     bindSearchArrowActions();

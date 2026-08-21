@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenConstruction - Academy</title>
+  <meta name="description" content="A short free OpenConstruction Academy course for publishing responsible, reusable, FAIR, and AI-ready construction datasets.">
+  <link rel="canonical" href="https://www.openconstruction.org/academy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="OpenConstruction - Academy">
+  <meta property="og:description" content="Learn to publish responsible, reusable construction datasets and earn an OpenConstruction certificate.">
+  <meta property="og:url" content="https://www.openconstruction.org/academy.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#536273;--oc-muted:#6d7a88;--oc-border:#e2e9f0;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-soft:#f6f9fc;--oc-shadow:0 8px 24px rgba(15,46,75,.055);--oc-accent:#d98921;--oc-green:#2f7d5d;--oc-blue:#2f6fa7}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
+    .oc-container{max-width:1120px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#f8fbfe}
+    header.hero .content{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,460px);gap:2rem;align-items:center;padding:54px 0 38px;text-align:left}
+    header.hero h1{max-width:18ch;color:var(--oc-ink);font-size:clamp(2.05rem,1.4rem + 2.15vw,3.25rem);font-weight:820;letter-spacing:0;line-height:1.04;margin:0 0 .75rem}
+    header.hero p{max-width:60ch;color:var(--oc-sub);font-size:1.02rem;line-height:1.55;margin:0}
+    .kicker{color:#536273;font-size:.72rem;font-weight:820;letter-spacing:.12em;text-transform:uppercase}
+    .learn-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.2rem}
+    .learn-actions .btn{border-radius:8px;font-weight:750}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:1.25rem;max-width:620px}
+    .hero-stat{border:1px solid var(--oc-border);border-radius:8px;background:#fff;padding:.82rem .9rem}
+    .hero-stat strong{display:block;color:var(--oc-ink);font-size:1.18rem;line-height:1}
+    .hero-stat span{display:block;color:var(--oc-muted);font-size:.76rem;font-weight:720;line-height:1.25;margin-top:.26rem}
+    .academy-visual{position:relative;min-height:350px;border:1px solid #d8e3ec;border-radius:8px;background:#fff;box-shadow:var(--oc-shadow);overflow:hidden;padding:1rem}
+    .visual-diagram{display:grid;gap:.68rem;margin-top:2.7rem}
+    .pipeline-card{display:grid;grid-template-columns:40px minmax(0,1fr);gap:.7rem;align-items:center;border:1px solid var(--oc-border);border-radius:8px;background:#f8fbfe;padding:.78rem}
+    .pipeline-card .academy-icon{margin:0}
+    .pipeline-card strong{display:block;color:var(--oc-ink);font-size:.9rem;line-height:1.2}
+    .pipeline-card span{display:block;color:var(--oc-muted);font-size:.76rem;line-height:1.28;margin-top:.12rem}
+    .visual-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--oc-border);border-radius:8px;overflow:hidden;margin-top:1rem}
+    .visual-strip div{padding:.85rem .72rem;border-right:1px solid var(--oc-border)}
+    .visual-strip div:last-child{border-right:0}
+    .visual-strip strong{display:block;color:var(--oc-ink);font-size:.86rem;line-height:1.2}
+    .visual-strip span{display:block;color:var(--oc-muted);font-size:.72rem;font-weight:700;margin-top:.18rem}
+    .visual-badge{position:absolute;left:1rem;top:1rem;display:inline-flex;align-items:center;gap:.45rem;border:1px solid #d7e2ec;border-radius:999px;background:#fff;color:var(--oc-ink);font-size:.76rem;font-weight:820;padding:.36rem .66rem}
+    .learn-section{padding:34px 0;border-bottom:1px solid var(--oc-border)}
+    .learn-section.is-soft{background:var(--oc-soft)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
+    .section-head h2{color:var(--oc-ink);font-size:clamp(1.32rem,1.08rem + .85vw,1.82rem);font-weight:820;line-height:1.14;margin:.22rem 0 0}
+    .section-head p{max-width:34rem;color:var(--oc-sub);font-size:.92rem;line-height:1.48;margin:0}
+    .icon-grid,.module-grid,.media-grid,.certificate-grid,.adoption-grid{display:grid;gap:.8rem}
+    .icon-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .icon-card,.module-card,.media-card,.certificate-card,.adoption-card{border:1px solid var(--oc-border);border-radius:8px;background:#fff;box-shadow:var(--oc-shadow)}
+    .icon-card{padding:1rem;min-height:168px}
+    .academy-icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid #d7e2ec;border-radius:8px;background:#f8fafc;color:var(--oc-ink);margin-bottom:.78rem}
+    .academy-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .icon-card strong,.module-card strong,.certificate-card strong,.adoption-card strong{display:block;color:var(--oc-ink);font-size:.93rem;line-height:1.26}
+    .icon-card span,.module-card span,.certificate-card span,.adoption-card span{display:block;color:var(--oc-muted);font-size:.8rem;line-height:1.38;margin-top:.32rem}
+    .module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .module-card{position:relative;min-height:146px;padding:.95rem;overflow:hidden}
+    .module-card::after{content:attr(data-step);position:absolute;right:.7rem;bottom:-.42rem;color:#eef3f8;font-size:3.1rem;font-weight:900;line-height:1}
+    .module-card strong,.module-card span{position:relative;z-index:1}
+    .module-time{display:inline-flex;align-items:center;min-height:22px;border:1px solid var(--oc-border);border-radius:999px;color:#536273;font-size:.7rem;font-weight:820;line-height:1;padding:.18rem .48rem;margin-bottom:.58rem}
+    .media-grid{grid-template-columns:minmax(0,1fr) minmax(300px,.82fr)}
+    .media-card{overflow:hidden}
+    .media-copy{padding:1rem}
+    .media-copy h3{color:var(--oc-ink);font-size:1.14rem;font-weight:820;line-height:1.24;margin:.45rem 0 .7rem}
+    .checkpoint-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+    .checkpoint-row span{border:1px solid var(--oc-border);border-radius:8px;background:#f8fbfe;color:#536273;font-size:.76rem;font-weight:780;line-height:1.2;padding:.55rem}
+    .video-stage{display:grid;place-items:center;min-height:260px;background:#f8fbfe}
+    .script-panel{display:grid;gap:.55rem;padding:1rem;background:#fff}
+    .script-panel div{display:grid;grid-template-columns:28px minmax(0,1fr);gap:.55rem;align-items:start;border:1px solid var(--oc-border);border-radius:8px;background:#f8fbfe;padding:.62rem}
+    .script-panel b{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#fff;color:var(--oc-ink);font-size:.76rem}
+    .script-panel span{color:var(--oc-sub);font-size:.82rem;line-height:1.35}
+    .play-button{display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(15,46,75,.2);border-radius:50%;background:#fff;color:var(--oc-ink);box-shadow:0 12px 28px rgba(15,46,75,.12)}
+    .play-button svg{width:26px;height:26px;fill:currentColor;transform:translateX(2px)}
+    .status-pill{display:inline-flex;align-items:center;width:max-content;min-height:24px;border:1px solid #d9e6ef;border-radius:999px;background:#fff;color:#526071;font-size:.72rem;font-weight:850;line-height:1;padding:.22rem .55rem}
+    .certificate-grid{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(260px,340px)}
+    .certificate-card{padding:1rem;min-height:142px}
+    .certificate-card.is-preview{background:#f8fbfe}
+    .certificate-sheet{display:grid;gap:.58rem;border:1px solid #cbdce9;border-radius:8px;background:#fff;padding:1rem;min-height:170px}
+    .certificate-top{display:flex;justify-content:space-between;gap:1rem;align-items:start}
+    .certificate-mark{display:grid;place-items:center;width:52px;height:52px;border:2px solid var(--oc-accent);border-radius:50%;color:var(--oc-ink);font-weight:900}
+    .certificate-sheet h3{color:var(--oc-ink);font-size:1.04rem;font-weight:850;line-height:1.22;margin:0}
+    .certificate-sheet p{color:var(--oc-sub);font-size:.78rem;line-height:1.4;margin:0}
+    .certificate-lines{display:grid;gap:.38rem;margin-top:auto}
+    .certificate-lines span{height:8px;border-radius:999px;background:#edf3f8}
+    .certificate-lines span:nth-child(2){width:72%}
+    .adoption-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .adoption-card{padding:1rem;background:#fff}
+    @media (max-width:991.98px){header.hero .content,.section-head,.icon-grid,.module-grid,.media-grid,.certificate-grid,.adoption-grid{grid-template-columns:1fr}.section-head{align-items:start}.academy-visual{min-height:0}}
+    @media (max-width:575.98px){header.hero .content{padding:40px 0 26px}.hero-stats,.visual-strip,.checkpoint-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to academy</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item active" href="academy.html">Academy</a></li><li><a class="dropdown-item" href="tutorials.html">Tutorials</a></li><li><a class="dropdown-item" href="guides-toolkits.html">Guides &amp; Toolkits</a></li><li><a class="dropdown-item" href="references.html">References</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="hero">
+  <div class="container oc-container content">
+    <div>
+      <div class="kicker">OpenConstruction Academy</div>
+      <h1>Publish better construction datasets.</h1>
+      <p>A free, short course for students, researchers, and labs preparing construction datasets for responsible sharing, FAIR documentation, and AI-ready reuse.</p>
+      <div class="hero-stats" aria-label="Course summary">
+        <div class="hero-stat"><strong>70 min</strong><span>Total course</span></div>
+        <div class="hero-stat"><strong>8</strong><span>Micro-modules</span></div>
+        <div class="hero-stat"><strong>Free</strong><span>No sign-in to watch</span></div>
+      </div>
+      <div class="learn-actions"><a class="btn btn-primary" href="#modules">Start learning</a><a class="btn btn-outline-secondary" href="#certificate">View certificate</a></div>
+    </div>
+    <aside class="academy-visual" aria-label="OpenConstruction Academy course preview">
+      <span class="visual-badge">Dataset publishing workflow</span>
+      <div class="visual-diagram">
+        <div class="pipeline-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M7 4v16"></path><path d="M17 4v16"></path><path d="M4 17h16"></path></svg></div><div><strong>Plan</strong><span>Purpose, scope, sampling, quality</span></div></div>
+        <div class="pipeline-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 10h6"></path><path d="M9 14h6"></path></svg></div><div><strong>Document</strong><span>README, metadata, labels, limitations</span></div></div>
+        <div class="pipeline-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></div><div><strong>Release</strong><span>License, privacy, repository, DOI</span></div></div>
+      </div>
+      <div class="visual-strip">
+        <div><strong>Watch</strong><span>Modules open</span></div>
+        <div><strong>Assess</strong><span>Short quiz</span></div>
+        <div><strong>Certify</strong><span>Badge earned</span></div>
+      </div>
+    </aside>
+  </div>
+</header>
+<main id="mainContent">
+  <section class="learn-section" aria-labelledby="pathTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Course Path</div><h2 id="pathTitle">Easy to enter, useful to finish</h2></div><p>Keep the learning open. Use sign-in only when learners want progress, assessment, certification, or contribution.</p></div>
+      <div class="icon-grid">
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v12H5z"></path><path d="m10 8 5 2.5-5 2.5z"></path><path d="M8 20h8"></path></svg></div><strong>Watch</strong><span>All modules stay open without registration.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path><path d="m14 17 1.5 1.5L19 15"></path></svg></div><strong>Practice</strong><span>Each module improves one part of a dataset release.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"></circle><path d="M9 12l2 2 4-5"></path></svg></div><strong>Assess</strong><span>Short quiz plus a publishing-readiness checklist.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M8 4h8v8H8z"></path><path d="M9 12 7 21l5-3 5 3-2-9"></path></svg></div><strong>Certify</strong><span>Earn an OpenConstruction Data Publisher badge.</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="learn-section is-soft" aria-labelledby="outcomesTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Learning Outcomes</div><h2 id="outcomesTitle">What learners gain</h2></div><p>Construction-focused, not another generic research data management course.</p></div>
+      <div class="icon-grid">
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M7 4v16"></path><path d="M17 4v16"></path><path d="M4 17h16"></path></svg></div><strong>Plan</strong><span>Define scope, sampling, data quality, annotation, and provenance.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"></path><path d="M9 10h6"></path><path d="M9 14h6"></path><path d="M9 18h3"></path></svg></div><strong>Document</strong><span>Create README files, metadata, labels, schemas, and limitations.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg></div><strong>Protect</strong><span>Handle licensing, privacy, consent, and sensitive construction-site data.</span></div>
+        <div class="icon-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="M8 10h8"></path><path d="M8 14h5"></path><path d="M17 14h.01"></path></svg></div><strong>Publish</strong><span>Prepare FAIR, repository-ready, and AI-ready data submissions.</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="learn-section" id="modules" aria-labelledby="modulesTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Course Modules</div><h2 id="modulesTitle">Eight short lessons</h2></div><p>Enough detail to understand the course without turning the page into a syllabus.</p></div>
+      <div class="module-grid">
+        <article class="module-card" data-step="01"><span class="module-time">8 min</span><strong>Data Lifecycle</strong><span>Why sharing matters; planning to preservation and reuse.</span></article>
+        <article class="module-card" data-step="02"><span class="module-time">9 min</span><strong>Collection Quality</strong><span>Site imagery, video, point clouds, BIM exports, QA/QC.</span></article>
+        <article class="module-card" data-step="03"><span class="module-time">8 min</span><strong>Organization</strong><span>File structure, naming, versioning, storage, backups.</span></article>
+        <article class="module-card" data-step="04"><span class="module-time">10 min</span><strong>Metadata</strong><span>README, dataset cards, schemas, identifiers, provenance.</span></article>
+        <article class="module-card" data-step="05"><span class="module-time">9 min</span><strong>FAIR Principles</strong><span>Findable, accessible, interoperable, reusable in construction.</span></article>
+        <article class="module-card" data-step="06"><span class="module-time">10 min</span><strong>Licensing &amp; Ethics</strong><span>Open licenses, copyright, privacy, consent, sensitive sites.</span></article>
+        <article class="module-card" data-step="07"><span class="module-time">8 min</span><strong>Repositories</strong><span>Repository choice, DOI, preservation, TRUST, governance.</span></article>
+        <article class="module-card" data-step="08"><span class="module-time">8 min</span><strong>AI-Ready Publishing</strong><span>Machine-readable metadata, benchmarks, OpenConstruction example.</span></article>
+      </div>
+    </div>
+  </section>
+  <section class="learn-section is-soft" aria-labelledby="videoTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Featured Module</div><h2 id="videoTitle">Licensing, Ethics &amp; Responsible Sharing</h2></div><p>The first video can anchor the course because it is domain-specific and high-stakes.</p></div>
+      <div class="media-grid">
+        <article class="media-card">
+          <div class="script-panel" aria-label="Featured video storyboard">
+            <div><b>1</b><span>Dataset folder enters the release pipeline.</span></div>
+            <div><b>2</b><span>License, privacy, and site-sensitivity checks appear.</span></div>
+            <div><b>3</b><span>Repository DOI and reuse conditions are confirmed.</span></div>
+            <div><b>4</b><span>Dataset is marked responsible, FAIR, and reusable.</span></div>
+          </div>
+          <div class="media-copy"><span class="status-pill">Storyboard ready</span><h3>Dataset release checkpoints</h3><div class="checkpoint-row"><span>License</span><span>Privacy</span><span>Sensitive sites</span></div></div>
+        </article>
+        <article class="media-card">
+          <div class="video-stage" aria-label="Featured Academy video placeholder"><div class="play-button" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></div></div>
+          <div class="media-copy"><span class="status-pill">Coming soon</span><h3>60-90 sec preview video</h3><div class="checkpoint-row"><span>Animated</span><span>Narrated</span><span>Embeddable</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="learn-section" id="certificate" aria-labelledby="certificateTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Certificate</div><h2 id="certificateTitle">Recognition that motivates completion</h2></div><p>Optional, lightweight, and useful for students.</p></div>
+      <div class="certificate-grid">
+        <div class="certificate-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v12H5z"></path><path d="M8 20h8"></path></svg></div><strong>Finish modules</strong><span>Watch the course.</span></div>
+        <div class="certificate-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"></path><path d="M10 9h4"></path><path d="M10 13h4"></path></svg></div><strong>Pass quiz</strong><span>Short assessment.</span></div>
+        <div class="certificate-card"><div class="academy-icon"><svg viewBox="0 0 24 24"><path d="M4 12h16"></path><path d="M12 4v16"></path><path d="m8 8 8 8"></path><path d="m16 8-8 8"></path></svg></div><strong>Submit checklist</strong><span>Dataset readiness.</span></div>
+        <aside class="certificate-card is-preview" aria-label="Certificate preview">
+          <div class="certificate-sheet">
+            <div class="certificate-top"><div><div class="kicker">Preview</div><h3>OpenConstruction Data Publisher</h3></div><div class="certificate-mark">OC</div></div>
+            <p>Badge for completing the Academy path.</p>
+            <div class="certificate-lines" aria-hidden="true"><span></span><span></span><span></span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+  <section class="learn-section is-soft">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Adoption</div><h2>Built for courses and workshops</h2></div><p>Simple enough to assign before a lab, seminar, or data-publication workshop.</p></div>
+      <div class="adoption-grid">
+        <div class="adoption-card"><strong>University courses</strong><span>Research methods, BIM, construction technology, AI/computer vision, thesis orientation.</span></div>
+        <div class="adoption-card"><strong>Dataset workshops</strong><span>Participants complete micro-modules before publishing or improving a real dataset.</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script>
+<script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+</body>
+</html>

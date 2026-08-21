@@ -11,6 +11,7 @@ const expectedTopLevelDirs = new Set([
   "auth",
   "data",
   "datasets",
+  "fixtures",
   "models",
   "oers",
   "scripts",
@@ -19,6 +20,7 @@ const expectedTopLevelDirs = new Set([
 
 const expectedTopLevelHtml = new Set([
   "account.html",
+  "academy.html",
   "index.html",
   "benchmarks.html",
   "benchmark_application.html",
@@ -29,6 +31,7 @@ const expectedTopLevelHtml = new Set([
   "dataset.html",
   "deployments.html",
   "guides.html",
+  "learn.html",
   "maintainer.html",
   "mcp.html",
   "models.html",
@@ -40,6 +43,9 @@ const expectedTopLevelHtml = new Set([
   "schema.html",
   "taxonomy.html",
   "tools.html",
+  "tutorials.html",
+  "guides-toolkits.html",
+  "references.html",
   "verify.html",
 ]);
 
@@ -152,7 +158,7 @@ for (const file of [...topLevelHtml, ...nestedHtml]) {
   if (!labels.includes("Catalog") && !labels.includes("Libraries")) {
     fail(`site/${file} nav missing Catalog`);
   }
-  for (const label of ["Docs", "Contribute", "Community"]) {
+  for (const label of ["Learn", "Contribute", "Community"]) {
     if (!labels.includes(label)) fail(`site/${file} nav missing ${label}`);
   }
 }

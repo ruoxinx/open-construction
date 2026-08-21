@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenConstruction - Tutorials</title>
+  <meta name="description" content="OpenConstruction tutorial gallery and Q&A for submitting resources, preparing metadata, and using the platform.">
+  <link rel="canonical" href="https://www.openconstruction.org/tutorials.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="OpenConstruction - Tutorials">
+  <meta property="og:description" content="Tutorial videos, step-by-step guides, and Q&A for OpenConstruction users and contributors.">
+  <meta property="og:url" content="https://www.openconstruction.org/tutorials.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-card:#fff;--oc-shadow:0 8px 24px rgba(15,46,75,.06);--oc-radius:8px;--oc-accent:#f2a238;--oc-blue:#2f6fa7}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
+    .oc-container{max-width:1120px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:56px 0 30px;text-align:left}
+    header.hero h1{max-width:17ch;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 2vw,3rem);font-weight:800;line-height:1.06;margin:0 0 .75rem}
+    header.hero p{max-width:72ch;color:var(--oc-sub);font-size:1.06rem;line-height:1.6;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .tutorial-section{padding:34px 0;border-bottom:1px solid var(--oc-border)}
+    .section-head{display:grid;grid-template-columns:minmax(0,.82fr) minmax(280px,1fr);gap:2rem;align-items:start;margin-bottom:1.25rem}
+    .section-head h2{color:var(--oc-ink);font-size:clamp(1.42rem,1.14rem + 1vw,2rem);font-weight:800;line-height:1.12;margin:.22rem 0 0}
+    .section-head p{color:var(--oc-sub);line-height:1.58;margin:.15rem 0 0}
+    .video-card,.tutorial-card,.qa-panel{border:1px solid var(--oc-border);border-radius:8px;background:#fff;box-shadow:var(--oc-shadow)}
+    .video-card{display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,.85fr);gap:1rem;padding:1rem;background:#fbfdff}
+    .video-stage{position:relative;display:grid;place-items:center;min-height:250px;border:1px solid #d9e6ef;border-radius:8px;background:linear-gradient(135deg,#eef6ff 0%,#f8fafc 100%);overflow:hidden}
+    .video-stage::before{content:"";position:absolute;inset:12%;border:1px solid rgba(15,46,75,.12);border-radius:8px;background:rgba(255,255,255,.56)}
+    .play-button{position:relative;z-index:1;display:grid;place-items:center;width:64px;height:64px;border:1px solid rgba(15,46,75,.2);border-radius:50%;background:#fff;color:var(--oc-ink);box-shadow:0 12px 28px rgba(15,46,75,.12)}
+    .play-button svg{width:26px;height:26px;fill:currentColor;transform:translateX(2px)}
+    .status-pill{display:inline-flex;align-items:center;width:max-content;min-height:24px;border:1px solid #d9e6ef;border-radius:999px;background:#fff;color:#526071;font-size:.72rem;font-weight:850;line-height:1;padding:.22rem .55rem;margin-bottom:.7rem}
+    .video-copy h2{color:var(--oc-ink);font-size:1.18rem;font-weight:850;line-height:1.25;margin:0 0 .45rem}
+    .video-copy p,.video-copy li{color:var(--oc-sub);font-size:.9rem;line-height:1.48}
+    .video-copy ul{margin:.8rem 0 0;padding-left:1.1rem}
+    .tutorial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+    .tutorial-card{display:grid;gap:.55rem;padding:1rem}
+    .tutorial-card h3{color:var(--oc-ink);font-size:1.04rem;font-weight:850;line-height:1.28;margin:0}
+    .tutorial-card p{color:var(--oc-sub);font-size:.88rem;line-height:1.48;margin:0}
+    .mini-label{display:inline-flex;align-items:center;width:max-content;min-height:22px;border-radius:999px;background:#eef6ff;color:#245b89;font-size:.68rem;font-weight:850;line-height:1;padding:.18rem .45rem;text-transform:uppercase}
+    .tutorial-card a{font-weight:750;text-decoration:none}
+    .tutorial-card a:hover,.tutorial-card a:focus{text-decoration:underline;text-underline-offset:3px}
+    .qa-panel{padding:.4rem}
+    details{border-bottom:1px solid var(--oc-border)}
+    details:last-child{border-bottom:0}
+    summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:pointer;list-style:none;color:var(--oc-ink);font-weight:800;padding:.9rem}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--oc-border);border-radius:50%;color:var(--oc-sub);font-weight:800;line-height:1;flex:0 0 auto}
+    details[open] summary::after{content:"-"}
+    details p{color:var(--oc-sub);font-size:.92rem;line-height:1.55;margin:0;padding:0 .9rem .9rem}
+    @media (max-width:991.98px){.section-head,.video-card,.tutorial-grid{grid-template-columns:1fr}}
+    @media (max-width:575.98px){header.hero .content{padding:40px 0 24px}.video-stage{min-height:210px}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to tutorials</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item" href="academy.html">Academy</a></li><li><a class="dropdown-item active" href="tutorials.html">Tutorials</a></li><li><a class="dropdown-item" href="guides-toolkits.html">Guides &amp; Toolkits</a></li><li><a class="dropdown-item" href="references.html">References</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div>
+  </div>
+</nav>
+<header class="hero"><div class="container oc-container content"><div class="kicker">Tutorials</div><h1>Find the exact OpenConstruction task you need.</h1><p>Short videos, step-by-step guides, and Q&amp;A for submitting resources, preparing metadata, correcting records, and using the platform with less friction.</p></div></header>
+<main id="mainContent">
+  <section class="tutorial-section" aria-labelledby="featuredTutorialTitle">
+    <div class="container oc-container">
+      <div class="video-card">
+        <div class="video-stage" aria-label="Featured tutorial video placeholder"><div class="play-button" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg></div></div>
+        <div class="video-copy">
+          <span class="status-pill">Featured tutorial planned</span>
+          <h2 id="featuredTutorialTitle">Submit a Dataset to OpenConstruction</h2>
+          <p>The first tutorial video should be a 2-3 minute screen walkthrough. It shows a user preparing core metadata, opening the submission flow, selecting dataset, and understanding what reviewers need.</p>
+          <ul>
+            <li>Suggested production tool: Guidde for screen capture, captions, callouts, and AI narration.</li>
+            <li>Backup format: Scribe-style step-by-step guide using the same script.</li>
+            <li>Goal: help a first-time contributor submit with confidence.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="tutorial-section" aria-labelledby="galleryTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Gallery</div><h2 id="galleryTitle">Tutorials by task</h2></div><p>Keep tutorials small and task-specific. Each one can become a video, a step-by-step guide, or both.</p></div>
+      <div class="tutorial-grid">
+        <article class="tutorial-card"><span class="mini-label">Video</span><h3>Submit a dataset</h3><p>Prepare title, source, DOI, authors, license, modality, tasks, privacy notes, and reuse context.</p><a href="account.html?submit=resource">Start submission</a></article>
+        <article class="tutorial-card"><span class="mini-label">Step-by-step</span><h3>Submit a model</h3><p>Add model metadata, paper/code links, task labels, modalities, datasets, and evaluation notes.</p><a href="account.html?submit=resource">Submit resource</a></article>
+        <article class="tutorial-card"><span class="mini-label">Step-by-step</span><h3>Submit an OER</h3><p>Describe open educational materials, target audience, format, provider, license, and topic coverage.</p><a href="account.html?submit=resource">Submit resource</a></article>
+        <article class="tutorial-card"><span class="mini-label">Q&amp;A</span><h3>Choose a license</h3><p>Understand what license information reviewers need and when to add access or sensitivity notes.</p><a href="references.html">View references</a></article>
+        <article class="tutorial-card"><span class="mini-label">Support</span><h3>Correct a record</h3><p>Report broken links, incorrect metadata, outdated resources, duplicates, or license concerns.</p><a href="account.html?report=issue&amp;issue_type=metadata">Report correction</a></article>
+        <article class="tutorial-card"><span class="mini-label">Coming soon</span><h3>Use saved resources</h3><p>Bookmark resources, organize a personal library, and prepare course or project reading lists.</p><a href="account.html">Open workspace</a></article>
+      </div>
+    </div>
+  </section>
+  <section class="tutorial-section" aria-labelledby="qaTitle">
+    <div class="container oc-container">
+      <div class="section-head"><div><div class="kicker">Q&amp;A</div><h2 id="qaTitle">Common questions</h2></div><p>Use expandable answers so the page stays calm while still covering contributor details.</p></div>
+      <div class="qa-panel">
+        <details open><summary>What resources can I submit?</summary><p>You can submit datasets, models, workflows, OERs, benchmarks, tools, and construction data examples. The best submissions include a stable source link, clear ownership, a license or access condition, and enough metadata for others to evaluate reuse.</p></details>
+        <details><summary>Do I need to host files on OpenConstruction?</summary><p>No. OpenConstruction primarily indexes public metadata and points users to original repositories, project pages, DOIs, papers, or code. Use a stable repository or project page whenever possible.</p></details>
+        <details><summary>What metadata should I prepare before submitting a dataset?</summary><p>Prepare title, source URL, authors or contributors, year, license, data modality, tasks, classes or labels, collection context, repository or DOI, paper link if available, and notes about privacy, access limits, or known quality issues.</p></details>
+        <details><summary>What if my construction dataset contains sensitive site information?</summary><p>Document the sensitivity clearly. Review faces, license plates, site locations, critical infrastructure, worker privacy, contract restrictions, and consent conditions before sharing. If public release is not appropriate, describe access limits or provide metadata only.</p></details>
+        <details><summary>How do I report a broken link or incorrect metadata?</summary><p>Use the correction report workflow and explain what is wrong, what the corrected value should be, and any source that supports the change. This keeps issue reporting useful without making it the main tutorial story.</p></details>
+        <details><summary>Do I need an account?</summary><p>You can browse and watch learning content without an account. Sign in when you want to submit resources, save progress, take assessments, earn certificates, bookmark resources, or report corrections through the workspace.</p></details>
+        <details><summary>How long does review take?</summary><p>Review time depends on completeness and maintainer availability. Submissions with stable links, clear licensing, strong metadata, and concise reuse notes are easier to approve quickly.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script><script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script><script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+</body>
+</html>

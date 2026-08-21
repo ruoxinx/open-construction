@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenConstruction - Guides &amp; Toolkits</title>
+  <meta name="description" content="Reusable OpenConstruction checklists, templates, and instructor materials for publishing construction datasets.">
+  <link rel="canonical" href="https://www.openconstruction.org/guides-toolkits.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="OpenConstruction - Guides &amp; Toolkits">
+  <meta property="og:description" content="Dataset publishing checklists, templates, and workshop materials for open construction data.">
+  <meta property="og:url" content="https://www.openconstruction.org/guides-toolkits.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-card:#fff;--oc-shadow:0 8px 24px rgba(15,46,75,.06);--oc-radius:8px;--oc-accent:#f2a238}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
+    .oc-container{max-width:1120px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:56px 0 30px;text-align:left}
+    header.hero h1{max-width:18ch;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 2vw,3rem);font-weight:800;line-height:1.06;margin:0 0 .75rem}
+    header.hero p{max-width:72ch;color:var(--oc-sub);font-size:1.06rem;line-height:1.6;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .toolkit-section{padding:34px 0;border-bottom:1px solid var(--oc-border)}
+    .toolkit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+    .toolkit-card,.workshop-band{border:1px solid var(--oc-border);border-radius:8px;background:#fff;box-shadow:var(--oc-shadow);padding:1rem}
+    .toolkit-card h2,.workshop-band h2{color:var(--oc-ink);font-size:1.08rem;font-weight:850;line-height:1.28;margin:0 0 .45rem}
+    .toolkit-card p,.workshop-band p{color:var(--oc-sub);font-size:.9rem;line-height:1.48;margin:0}
+    .toolkit-card ul{margin:.75rem 0 0;padding-left:1.1rem;color:var(--oc-sub);font-size:.88rem;line-height:1.45}
+    .workshop-band{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,340px);gap:1rem;align-items:start;background:#f8fbff;margin-top:1rem}
+    .step-list{display:grid;gap:.55rem;margin:0;padding:0;list-style:none}
+    .step-list li{border:1px solid var(--oc-border);border-radius:8px;background:#fff;padding:.65rem;color:var(--oc-sub);font-size:.86rem}
+    .step-list strong{display:block;color:var(--oc-ink);margin-bottom:.15rem}
+    @media (max-width:991.98px){.toolkit-grid,.workshop-band{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to toolkits</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav"><div class="container oc-container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a><button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item" href="academy.html">Academy</a></li><li><a class="dropdown-item" href="tutorials.html">Tutorials</a></li><li><a class="dropdown-item active" href="guides-toolkits.html">Guides &amp; Toolkits</a></li><li><a class="dropdown-item" href="references.html">References</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div></div></nav>
+<header class="hero"><div class="container oc-container content"><div class="kicker">Guides &amp; Toolkits</div><h1>Reusable materials for better construction data releases.</h1><p>Use these toolkits to move from good intentions to publishable artifacts: checklists, templates, workshop materials, and instructor adoption assets.</p></div></header>
+<main id="mainContent">
+  <section class="toolkit-section"><div class="container oc-container">
+    <div class="toolkit-grid">
+      <article class="toolkit-card"><h2>Dataset publishing checklist</h2><p>Minimum fields, documentation, file structure, license, DOI, sensitive data review, benchmark readiness, and <a href="account.html?submit=resource">OpenConstruction submission</a> steps.</p><ul><li>Required metadata</li><li>Release readiness review</li><li>Reuse and citation notes</li></ul></article>
+      <article class="toolkit-card"><h2>README and dataset card templates</h2><p>Templates tailored to construction imagery, video, BIM, point clouds, geospatial layers, safety observations, equipment logs, and sensor streams.</p><ul><li>Collection protocol</li><li>Annotation definitions</li><li>Known limitations</li></ul></article>
+      <article class="toolkit-card"><h2>Instructor adoption kit</h2><p>Syllabus language, a one-week assignment, discussion prompts, assessment rubric, and a lightweight certificate completion report for faculty.</p><ul><li>Graduate course module</li><li>Thesis orientation activity</li><li>Workshop handout</li></ul></article>
+    </div>
+    <div class="workshop-band"><div><h2>Turn workshops into acquisition channels.</h2><p>Run practical events such as "How to Publish a High-Quality Open Construction Dataset." Participants complete pre-work, improve their own data during the session, and finish the Academy afterward.</p></div><ul class="step-list"><li><strong>Before</strong>Complete two or three micro-modules.</li><li><strong>During</strong>Apply the checklist to a real dataset.</li><li><strong>After</strong>Finish assessment and submit or improve a resource.</li></ul></div>
+  </div></section>
+</main>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script><script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script><script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+</body>
+</html>
