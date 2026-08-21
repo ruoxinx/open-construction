@@ -1019,6 +1019,28 @@
   function labelKey(value){
     return safeText(value).toLowerCase().replace(/\s+/g, ' ').trim();
   }
+  const TECHNICAL_LABELS = new Map([
+    ['2d', '2D'],
+    ['3d', '3D'],
+    ['4d', '4D'],
+    ['ai', 'AI'],
+    ['bim', 'BIM'],
+    ['cad', 'CAD'],
+    ['cnn', 'CNN'],
+    ['gnss', 'GNSS'],
+    ['gps', 'GPS'],
+    ['ifc', 'IFC'],
+    ['iot', 'IoT'],
+    ['lidar', 'LiDAR'],
+    ['mep', 'MEP'],
+    ['ml', 'ML'],
+    ['nlp', 'NLP'],
+    ['ocr', 'OCR'],
+    ['rgb', 'RGB'],
+    ['rgb-d', 'RGB-D'],
+    ['uav', 'UAV'],
+    ['vqa', 'VQA']
+  ]);
   function cleanLabel(value){
     return safeText(value).replace(/\s+/g, ' ');
   }
@@ -1043,13 +1065,29 @@
     }
     return candidateLabel.length > currentLabel.length ? candidateLabel : currentLabel;
   }
-  function startCaseLabel(value){
-    const raw = safeText(value);
+  function titleCaseToken(token){
+    const raw = safeText(token);
     if (!raw) return '';
-    return raw
-      .split(/\s+/)
-      .map((token) => token ? `${token.charAt(0).toUpperCase()}${token.slice(1).toLowerCase()}` : '')
-      .join(' ');
+    const special = TECHNICAL_LABELS.get(raw.toLowerCase());
+    if (special) return special;
+    if (/^[A-Z0-9]{2,}(?:[-/][A-Z0-9]+)*$/.test(raw)) return raw;
+    if (/[-/]/.test(raw)){
+      return raw
+        .split(/(-|\/)/)
+        .map((part) => /^[-/]$/.test(part) ? part : titleCaseToken(part))
+        .join('');
+    }
+    return `${raw.charAt(0).toUpperCase()}${raw.slice(1).toLowerCase()}`;
+  }
+  function titleCaseLabel(value){
+    return cleanLabel(value)
+      .split(/(\s+)/)
+      .map((part) => /^\s+$/.test(part) ? part : titleCaseToken(part))
+      .join('')
+      .trim();
+  }
+  function startCaseLabel(value){
+    return titleCaseLabel(value);
   }
   function buildTaskLabelLookup(vocabularyPayload){
     const lookup = new Map();
@@ -1164,7 +1202,7 @@
         if (!key) return;
         topics.set(key, preferredLabel(topics.get(key), item));
       });
-      topicItems = Array.from(topics.values()).sort((a, b) => a.localeCompare(b));
+      topicItems = Array.from(topics.values()).map(titleCaseLabel).sort((a, b) => a.localeCompare(b));
     }else{
       topicItems = [];
     }
