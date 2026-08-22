@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<!--
+  Copyright (c) 2024-2026 OpenConstruction Open Science Initiative
+  SPDX-License-Identifier: Apache-2.0
+-->
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Construction Asset Sharing License Guide</title>
+  <meta name="description" content="Interactive guide for choosing licenses and sharing terms for AEC datasets, models, workflows, OERs, and mixed construction research assets.">
+  <link rel="canonical" href="https://www.openconstruction.org/license-chooser.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="Construction Asset Sharing License Guide">
+  <meta property="og:description" content="Choose practical licenses and sharing terms for construction datasets, models, workflows, OERs, and mixed asset releases.">
+  <meta property="og:url" content="https://www.openconstruction.org/license-chooser.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <style>
+    :root{
+      --oc-bg:#ffffff;
+      --oc-text:#1e2a36;
+      --oc-sub:#526071;
+      --oc-border:#e0e8ef;
+      --oc-ink:#0f2e4b;
+      --oc-link:#0b66c3;
+      --oc-card:#ffffff;
+      --oc-soft:#f6f9fc;
+      --oc-accent:#f2a238;
+      --oc-green:#23735b;
+      --oc-blue:#1e6796;
+      --oc-red:#a64b4b;
+      --oc-radius:8px;
+      --oc-shadow:0 10px 28px rgba(15,46,75,.07);
+    }
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
+    .oc-container{max-width:1160px}
+    .license-hero{
+      border-bottom:1px solid var(--oc-border);
+      background:linear-gradient(180deg, #f7fafc 0%, #ffffff 100%);
+    }
+    .license-hero .content{padding:38px 0 20px}
+    .eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--oc-sub)}
+    h1{
+      max-width:16ch;
+      margin:.45rem 0 .7rem;
+      color:var(--oc-ink);
+      font-size:clamp(2rem,1.45rem + 2.1vw,3.15rem);
+      font-weight:800;
+      line-height:1.04;
+      letter-spacing:0;
+    }
+    .hero-copy{max-width:62ch;color:var(--oc-sub);font-size:1rem;line-height:1.58;margin:0}
+    .chooser-layout{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(330px,.58fr);gap:1rem;align-items:start;margin-top:1.1rem}
+    .chooser-panel,.recommendation-panel,.info-panel{
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+    }
+    .chooser-panel{padding:0}
+    .recommendation-panel{position:sticky;top:86px;overflow:hidden}
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.85rem;padding:1rem;border-bottom:1px solid var(--oc-border);background:#fbfdff}
+    .panel-title{margin:0;color:var(--oc-ink);font-size:1rem;font-weight:800;line-height:1.28}
+    .panel-subtitle{margin:.25rem 0 0;color:var(--oc-sub);font-size:.86rem;line-height:1.42}
+    .progress-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;padding:1rem;border-bottom:1px solid var(--oc-border)}
+    .progress-pill{display:inline-flex;align-items:center;justify-content:center;gap:.38rem;border:1px solid var(--oc-border);border-radius:999px;padding:.42rem .64rem;color:var(--oc-sub);background:#fff;font-size:.78rem;font-weight:800;text-align:center}
+    .progress-pill.active{border-color:#8eb5d1;background:#f4f9fd;color:var(--oc-ink)}
+    .progress-pill svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .wizard-step{display:none;padding:1rem}
+    .wizard-step.active{display:block}
+    .step h2{margin:0 0 .26rem;color:var(--oc-ink);font-size:1.05rem;font-weight:850}
+    .step-intro{max-width:66ch;color:var(--oc-sub);font-size:.88rem;line-height:1.48;margin:0 0 .85rem}
+    .asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.58rem}
+    .asset-option input,.choice-row input{position:absolute;opacity:0;pointer-events:none}
+    .asset-card{
+      display:flex;
+      min-height:108px;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:.45rem;
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      padding:.78rem;
+      color:var(--oc-text);
+      background:#fff;
+      cursor:pointer;
+      transition:border-color .16s ease, box-shadow .16s ease, transform .16s ease, background .16s ease;
+    }
+    .asset-card:hover,.asset-option input:focus-visible + .asset-card{border-color:#b8c9d8;box-shadow:0 8px 22px rgba(15,46,75,.08);transform:translateY(-1px)}
+    .asset-option input:checked + .asset-card{border-color:#8eb5d1;background:#f4f9fd;box-shadow:0 0 0 2px rgba(30,103,150,.12)}
+    .asset-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      background:#eef5fa;
+      color:var(--oc-ink);
+    }
+    .asset-icon svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    .asset-name{display:block;color:var(--oc-ink);font-weight:800;font-size:.9rem;line-height:1.2}
+    .asset-note{display:block;color:var(--oc-sub);font-size:.76rem;line-height:1.35}
+    .choice-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+    .choice-row{
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      gap:.64rem;
+      min-height:72px;
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      padding:.72rem;
+      cursor:pointer;
+      background:#fff;
+      transition:border-color .16s ease, background .16s ease;
+    }
+    .choice-row:hover,.choice-row:has(input:focus-visible){border-color:#b8c9d8;background:#fbfdff}
+    .choice-row:has(input:checked){border-color:#8eb5d1;background:#f4f9fd}
+    .choice-mark{
+      display:inline-flex;
+      flex:0 0 auto;
+      width:18px;
+      height:18px;
+      margin-top:.08rem;
+      border:1px solid #b8c4cf;
+      border-radius:5px;
+      background:#fff;
+      align-items:center;
+      justify-content:center;
+    }
+    .choice-row input:checked + .choice-mark{border-color:var(--oc-blue);background:var(--oc-blue)}
+    .choice-row input:checked + .choice-mark::after{content:"";width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(.5px,-.5px)}
+    .choice-label{display:block;color:var(--oc-ink);font-size:.88rem;font-weight:780;line-height:1.25}
+    .choice-help{display:block;margin-top:.18rem;color:var(--oc-sub);font-size:.76rem;line-height:1.34}
+    .choice-kind{display:inline-flex;margin:.24rem 0 .04rem;border-radius:999px;background:#f3f6f9;color:#5d6a78;padding:.12rem .42rem;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+    .result-body{padding:1rem}
+    .fit-badge{display:inline-flex;align-items:center;gap:.38rem;border-radius:999px;padding:.28rem .58rem;background:#eef8f4;color:var(--oc-green);font-size:.76rem;font-weight:800}
+    .fit-badge.warning{background:#fff5e6;color:#8a5a08}
+    .fit-badge.stop{background:#fff0f0;color:var(--oc-red)}
+    .license-name{margin:.72rem 0 .34rem;color:var(--oc-ink);font-size:1.45rem;font-weight:850;line-height:1.12}
+    .license-id{display:inline-flex;align-items:center;gap:.38rem;color:var(--oc-sub);font-size:.82rem;font-weight:750}
+    .license-id img{height:18px;width:auto}
+    .result-summary{margin:.75rem 0 0;color:#2d3a46;line-height:1.55}
+    .result-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+    .result-actions .btn{border-radius:7px;font-weight:760}
+    .option-list{display:grid;grid-template-columns:1fr;gap:.62rem;margin-top:.85rem}
+    .option-card{border:1px solid var(--oc-border);border-radius:8px;padding:.78rem;background:#fff}
+    .option-card h3{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:0;color:var(--oc-ink);font-size:.96rem;font-weight:850;line-height:1.25}
+    .option-name{display:inline-flex;align-items:center;gap:.36rem;min-width:0}
+    .option-icon{display:inline-flex;align-items:center;gap:.12rem;flex:0 0 auto}
+    .option-icon img{display:block;width:16px;height:16px;object-fit:contain}
+    .option-badges{display:inline-flex;align-items:center;gap:.3rem;flex:0 0 auto}
+    .option-card p{margin:.45rem 0 0;color:var(--oc-sub);font-size:.84rem;line-height:1.45}
+    .option-card .option-fit{display:inline-flex;border-radius:999px;background:#eef5fa;color:var(--oc-ink);padding:.2rem .45rem;font-size:.7rem;font-weight:800;white-space:nowrap}
+    .option-card .option-match{display:inline-flex;border-radius:999px;background:#eef8f4;color:var(--oc-green);padding:.2rem .45rem;font-size:.7rem;font-weight:800;white-space:nowrap}
+    .option-card .option-best{display:inline-flex;border-radius:999px;background:#fff5e6;color:#8a5a08;padding:.2rem .45rem;font-size:.7rem;font-weight:800;white-space:nowrap}
+    .option-card .option-link{display:inline-flex;margin-top:.5rem;font-size:.78rem;font-weight:780;text-decoration:none}
+    .option-card .option-link:hover,.option-card .option-link:focus{text-decoration:underline;text-underline-offset:3px}
+    .small-section{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--oc-border)}
+    .small-section h3{margin:0 0 .48rem;color:var(--oc-ink);font-size:.86rem;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+    .result-list{margin:0;padding-left:1.1rem;color:var(--oc-sub);font-size:.86rem;line-height:1.55}
+    .result-list li + li{margin-top:.28rem}
+    .component-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:.5rem;font-size:.84rem;overflow:hidden;border:1px solid var(--oc-border);border-radius:8px}
+    .component-table th,.component-table td{padding:.58rem .62rem;border-bottom:1px solid var(--oc-border);vertical-align:top}
+    .component-table th{background:#f7fafc;color:var(--oc-ink);font-weight:850}
+    .component-table tr:last-child td{border-bottom:0}
+    .context-links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem}
+    .context-links a{display:inline-flex;border:1px solid var(--oc-border);border-radius:999px;padding:.32rem .58rem;text-decoration:none;font-size:.76rem;font-weight:750;background:#fff}
+    .context-links a:hover,.context-links a:focus{text-decoration:underline;text-underline-offset:3px}
+    .step-actions{display:flex;justify-content:space-between;gap:.6rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--oc-border)}
+    .step-actions .btn{border-radius:7px;font-weight:780}
+    .reference-links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.85rem}
+    .reference-links a{display:inline-flex;border:1px solid var(--oc-border);border-radius:999px;padding:.36rem .64rem;text-decoration:none;font-size:.78rem;font-weight:750;background:#fff}
+    .reference-links a:hover,.reference-links a:focus{text-decoration:underline;text-underline-offset:3px}
+    .notice{
+      margin-top:1rem;
+      border-left:4px solid var(--oc-accent);
+      background:#fffaf2;
+      color:#5d4630;
+      padding:.75rem .86rem;
+      border-radius:0 8px 8px 0;
+      font-size:.84rem;
+      line-height:1.48;
+    }
+    @media (max-width:991.98px){
+      .chooser-layout{grid-template-columns:1fr}
+      .recommendation-panel{position:static}
+      .asset-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:575.98px){
+      .license-hero .content{padding:30px 0 18px}
+      .asset-grid,.choice-group{grid-template-columns:1fr}
+      .asset-card{min-height:92px}
+      .panel-head{display:block}
+      .progress-steps{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to license guide</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44">
+      <span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item" href="academy.html">Academy</a></li><li><a class="dropdown-item" href="tutorials.html">Tutorials</a></li><li><a class="dropdown-item" href="guides-toolkits.html">Guides &amp; Toolkits</a></li><li><a class="dropdown-item active" href="license-chooser.html">License Guide</a></li><li><a class="dropdown-item" href="references.html">References</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="license-hero">
+  <div class="container oc-container content">
+    <div class="eyebrow">Asset sharing guide</div>
+    <h1>Share construction assets with the right license.</h1>
+    <div class="chooser-layout" id="mainContent">
+      <section class="chooser-panel" aria-labelledby="chooserTitle">
+        <div class="panel-head">
+          <div>
+            <p class="panel-title" id="chooserTitle">License wizard</p>
+            <p class="panel-subtitle">Start with the asset type, then narrow the reuse terms.</p>
+          </div>
+        </div>
+        <div class="progress-steps" aria-label="License wizard progress">
+          <span class="progress-pill active" data-progress-step="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>1. Asset</span>
+          <span class="progress-pill" data-progress-step="2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"></path><path d="M7 8h10"></path><path d="M5 8l2 6h4L9 8"></path><path d="M15 8l-2 6h4l2-6"></path></svg>2. Sharing</span>
+        </div>
+        <div class="step wizard-step active" data-step="1">
+          <h2>1. Asset type</h2>
+          <p class="step-intro">Choose the main thing you want other people to reuse. If your release contains several kinds of files, choose mixed package.</p>
+          <div class="asset-grid" id="assetOptions"></div>
+          <div class="step-actions">
+            <span></span>
+            <button class="btn btn-primary btn-sm" type="button" data-next-step="2">Next</button>
+          </div>
+        </div>
+        <div class="step wizard-step" data-step="2">
+          <h2>2. Sharing requirements</h2>
+          <p class="step-intro">Select formal license conditions and practical sharing requirements. Matching options move to the top on the right.</p>
+          <div class="choice-group" id="goalOptions"></div>
+          <div class="context-links" aria-label="License concept references">
+            <a href="license-comparison.html">Compare available licenses</a>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline-secondary btn-sm" type="button" data-prev-step="1">Back</button>
+            <a class="btn btn-primary btn-sm" href="#resultTitle">Review result</a>
+          </div>
+        </div>
+      </section>
+
+      <aside class="recommendation-panel" aria-live="polite" aria-labelledby="resultTitle">
+        <div class="panel-head">
+          <div>
+            <p class="panel-title" id="resultTitle">License options</p>
+            <p class="panel-subtitle">Choose asset type first, then set sharing terms.</p>
+          </div>
+        </div>
+        <div class="result-body" id="resultBody"></div>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div>
+    <div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yearNow').textContent = new Date().getFullYear();
+let currentStep = 1;
+
+const assetTypes = [
+  {id:'dataset', name:'Dataset', note:'Measurements, labels, scans, benchmark data', icon:'<path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path>'},
+  {id:'model', name:'Model', note:'AI models, weights, model cards, configs', icon:'<circle cx="7" cy="8" r="2.5"></circle><circle cx="17" cy="6" r="2.5"></circle><circle cx="17" cy="18" r="2.5"></circle><path d="m9.4 7.5 5.2-1"></path><path d="m8.7 10 6.6 6"></path><path d="M7 10.5v4.8"></path><circle cx="7" cy="17.8" r="1.8"></circle>'},
+  {id:'workflow', name:'Workflow or tool', note:'Pipelines, scripts, SDKs, reusable methods', icon:'<circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="18" r="2.5"></circle><path d="M8.5 6H12a3 3 0 0 1 3 3v6"></path><path d="m12.5 12 2.5 3 2.5-3"></path>'},
+  {id:'oer', name:'OER', note:'Lessons, tutorials, slides, learning modules', icon:'<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H11v16H6.5A2.5 2.5 0 0 0 4 22V6.5Z"></path><path d="M20 6.5A2.5 2.5 0 0 0 17.5 4H13v16h4.5A2.5 2.5 0 0 1 20 22V6.5Z"></path>'},
+  {id:'mixed', name:'Mixed package', note:'Several OpenConstruction asset types together', icon:'<rect x="4" y="4" width="7" height="7" rx="1.4"></rect><rect x="13" y="4" width="7" height="7" rx="1.4"></rect><rect x="4" y="13" width="7" height="7" rx="1.4"></rect><rect x="13" y="13" width="7" height="7" rx="1.4"></rect>'}
+];
+
+const goals = [
+  {id:'attribution', kind:'License', label:'Require attribution', help:'Users should credit the creator, source, and license.'},
+  {id:'citation', kind:'Sharing', label:'Require citation metadata', help:'Users should cite a dataset, model, workflow, or OER in publications.'},
+  {id:'noncommercial', kind:'License', label:'Restrict commercial reuse', help:'Only noncommercial use should be allowed.'},
+  {id:'noDerivatives', kind:'License', label:'Restrict adaptations', help:'Users may share copies but should not modify the asset.'},
+  {id:'sharealike', kind:'License', label:'Require shared improvements', help:'Adaptations should stay under matching open or copyleft terms.'},
+  {id:'aiTraining', kind:'Sharing', label:'Allow AI training reuse', help:'Users may train, evaluate, or fine-tune models with the asset.'},
+  {id:'databaseTerms', kind:'Rights', label:'Need database terms', help:'The asset is a structured database or benchmark table.'},
+  {id:'patentTerms', kind:'Software', label:'Need software patent terms', help:'The asset includes reusable code, APIs, or algorithms.'},
+  {id:'sensitive', kind:'Access', label:'Contains restricted material', help:'Includes privacy, owner approval, site security, or proprietary files.'}
+];
+
+const licenseLinks = {
+  'CC-BY-4.0':'https://creativecommons.org/licenses/by/4.0/',
+  'CC-BY-SA-4.0':'https://creativecommons.org/licenses/by-sa/4.0/',
+  'CC-BY-NC-4.0':'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC-BY-NC-SA-4.0':'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+  'CC-BY-ND-4.0':'https://creativecommons.org/licenses/by-nd/4.0/',
+  'CC-BY-NC-ND-4.0':'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+  'CC0-1.0':'https://creativecommons.org/publicdomain/zero/1.0/',
+  'Apache-2.0':'https://www.apache.org/licenses/LICENSE-2.0',
+  'MIT':'https://choosealicense.com/licenses/mit/',
+  'BSD-3-Clause':'https://opensource.org/license/bsd-3-clause',
+  'GPL-3.0-only':'https://spdx.org/licenses/GPL-3.0-only.html',
+  'GPL-3.0-or-later':'https://spdx.org/licenses/GPL-3.0-or-later.html',
+  'LGPL-3.0-only':'https://spdx.org/licenses/LGPL-3.0-only.html',
+  'AGPL-3.0-only':'https://spdx.org/licenses/AGPL-3.0-only.html',
+  'ODC-By-1.0':'https://spdx.org/licenses/ODC-By-1.0.html',
+  'ODbL-1.0':'https://opendatacommons.org/licenses/odbl/',
+  'Component licenses':'#component-table',
+  'Controlled access':'contribute.html#terms'
+};
+
+function checked(id){
+  return document.querySelector(`#goal-${id}`)?.checked;
+}
+
+function selectedAsset(){
+  return document.querySelector('input[name="assetType"]:checked')?.value || '';
+}
+
+function iconForRecommendation(name){
+  if (name.startsWith('CC0')) return '<span class="option-icon"><img src="assets/img/licenses/zero.svg" alt="" aria-hidden="true"></span>';
+  if (name.startsWith('CC')) return '<span class="option-icon"><img src="assets/img/licenses/cc.svg" alt="" aria-hidden="true"><img src="assets/img/licenses/by.svg" alt="" aria-hidden="true"></span>';
+  return '';
+}
+
+function makeOption(name, fit, summary, tags = []){
+  return {name, fit, summary, tags, url: licenseLinks[name] || 'license-comparison.html'};
+}
+
+function selectedTags(){
+  return [
+    ['attribution', 'attribution'],
+    ['citation', 'citation'],
+    ['noncommercial', 'noncommercial'],
+    ['noDerivatives', 'noDerivatives'],
+    ['sharealike', 'sharealike'],
+    ['aiTraining', 'aiTraining'],
+    ['databaseTerms', 'database'],
+    ['patentTerms', 'patent'],
+  ]
+    .filter(([id]) => checked(id))
+    .map(([, tag]) => tag);
+}
+
+function rankOptions(options){
+  const tags = selectedTags();
+  return options
+    .map((option, index) => ({
+      ...option,
+      matchCount: tags.filter(tag => option.tags.includes(tag)).length,
+      index
+    }))
+    .sort((a, b) => b.matchCount - a.matchCount || a.index - b.index);
+}
+
+function licenseOptions(){
+  const asset = selectedAsset();
+  const noncommercial = checked('noncommercial');
+  const noDerivatives = checked('noDerivatives');
+  const sharealike = checked('sharealike');
+  const attribution = checked('attribution');
+  const sensitive = checked('sensitive');
+
+  if (!asset) {
+    return {
+      tone:'warning',
+      title:'Choose an asset type',
+      summary:'Select the asset type first. The wizard will then show available license options that fit the asset and constraints.',
+      options:[],
+      checklist:['Identify whether you are sharing a dataset, model, workflow/tool, OER, or mixed package.'],
+      cautions:['Do not select a license before checking third-party rights and source restrictions.']
+    };
+  }
+
+  if (sensitive) {
+    return {
+      tone:'stop',
+      title:'Controlled-access paths',
+      summary:'Do not rely on an open license until privacy, owner consent, security, export, and proprietary constraints are cleared.',
+      options:[
+        makeOption('Controlled access', 'Restricted release', 'Use an access agreement or data-use terms when users must be approved before receiving the asset.', ['restricted']),
+        makeOption('Component licenses', 'Split public and restricted parts', 'Publish only the components you can share openly, and keep restricted files behind controlled access.', ['restricted'])
+      ],
+      checklist:[
+        'Remove private, safety-critical, owner-restricted, or proprietary details before public release.',
+        'Document who can access the asset, the allowed purpose, citation terms, retention limits, and redistribution limits.',
+        'Publish metadata openly only if it does not reveal restricted project information.'
+      ],
+      cautions:[
+        'A license grants permissions. It does not make restricted material safe to publish.',
+        'If only part of the package is sensitive, split the public and controlled-access components.'
+      ]
+    };
+  }
+
+  if (asset === 'mixed') {
+    return {
+      tone:'warning',
+      title:'Component license options',
+      summary:'Mixed construction releases usually need one license per component rather than one broad label.',
+      options:[
+        makeOption('Component licenses', 'Mixed packages', 'Use a LICENSES.md table to map each folder or file group to its own terms.', ['citation']),
+        makeOption('CC-BY-4.0', 'Reusable data or OER components', 'Works for contributed documentation, figures, OER materials, and some datasets where adaptation should be allowed.', ['attribution', 'citation', 'aiTraining']),
+        makeOption('Apache-2.0', 'Workflow or code components', 'Works for scripts, SDKs, APIs, validation tools, and pipeline code.', ['patent', 'aiTraining']),
+        makeOption('ODC-By-1.0', 'Database components', 'Works when database attribution terms are preferred for data tables or structured databases.', ['attribution', 'database', 'citation'])
+      ],
+      checklist:[
+        'Add a LICENSES.md table that lists each component, owner, license, and source.',
+        'Keep datasets, models, workflows, OERs, and third-party files in clearly named folders.',
+        'Use SPDX identifiers in source files and metadata where possible.'
+      ],
+      cautions:[
+        'Do not apply one broad license to files you do not own or cannot relicense.',
+        'Do not relicense third-party data or media unless the upstream terms allow it.'
+      ],
+      table:true
+    };
+  }
+
+  if (asset === 'workflow') {
+    const options = [
+      makeOption('Apache-2.0', 'Permissive software with patent terms', 'A common choice for reusable workflows, SDKs, APIs, scripts, and tools.', ['patent', 'aiTraining']),
+      makeOption('MIT', 'Short permissive software', 'Simple and widely understood for examples, utilities, and smaller codebases.', ['aiTraining']),
+      makeOption('BSD-3-Clause', 'Permissive software', 'Similar permissive use with attribution and non-endorsement language.', ['attribution', 'aiTraining']),
+      makeOption('GPL-3.0-only', 'Reciprocal software', 'Use when distributed derivatives should remain under GPL-compatible terms.', ['sharealike', 'aiTraining']),
+      makeOption('LGPL-3.0-only', 'Library-style reciprocal software', 'Useful when you want weaker copyleft for libraries or reusable components.', ['sharealike', 'aiTraining']),
+      makeOption('AGPL-3.0-only', 'Network reciprocal software', 'Use when network-served modifications should also be shared.', ['sharealike', 'aiTraining'])
+    ];
+    return {
+      tone:'ok',
+      title:'Workflow and tool license options',
+      summary: sharealike ? 'Reciprocal software licenses are included because you selected shared improvements.' : 'Review permissive and reciprocal software licenses, then choose the obligations you are prepared to support.',
+      options,
+      checklist:['Place the license text in LICENSE.', 'Add SPDX identifiers to source files.', 'Keep datasets, model weights, and documentation licenses explicit in metadata.'],
+      cautions:['Datasets, models, and OER documentation can carry separate terms even when workflow code is Apache 2.0.']
+    };
+  }
+
+  if (asset === 'model') {
+    return {
+      tone:'warning',
+      title:'Model release license options',
+      summary:'Most model releases combine weights, code, model cards, configs, and training-data references. Treat those components separately unless they truly share the same terms.',
+      options:[
+        makeOption('Component licenses', 'Full model packages', 'Use a license map when weights, code, documentation, and training data references have different terms.', ['citation']),
+        makeOption('Apache-2.0', 'Model code and tools', 'Works for inference scripts, evaluation code, APIs, and supporting utilities.', ['patent', 'aiTraining']),
+        makeOption('MIT', 'Small model utilities', 'Works for small examples or helper scripts.', ['aiTraining']),
+        makeOption('CC-BY-4.0', 'Model cards and documentation', 'Works for documentation that should be reused with attribution.', ['attribution', 'citation']),
+        makeOption('Controlled access', 'Restricted weights or data', 'Use source-specific access terms when open reuse is not permitted.', ['noncommercial', 'restricted'])
+      ],
+      checklist:[
+        'License source code or inference scripts with Apache-2.0 when possible.',
+        'State the license for weights, checkpoints, configs, and model cards explicitly.',
+        'Link to the training data license and usage restrictions.'
+      ],
+      cautions:[
+        'A permissive code license does not automatically permit reuse of weights or training data.',
+        'Document evaluation limits and prohibited safety-critical uses when relevant.'
+      ],
+      table:true
+    };
+  }
+
+  if (asset === 'dataset') {
+    const options = [
+      makeOption('CC-BY-4.0', 'Attribution-based open data', 'Allows sharing, adaptation, and commercial reuse with attribution.', ['attribution', 'citation', 'aiTraining']),
+      makeOption('CC0-1.0', 'Maximum reuse', 'Useful when you want broad reuse without a required attribution condition.', ['aiTraining']),
+      makeOption('ODC-By-1.0', 'Database attribution', 'Useful when licensing a database and requiring attribution for database reuse.', ['attribution', 'database', 'citation']),
+      makeOption('ODbL-1.0', 'Database share-alike', 'Useful when derivative databases should stay under reciprocal database terms.', ['attribution', 'database', 'sharealike', 'citation']),
+      makeOption('CC-BY-NC-4.0', 'Noncommercial data reuse', 'Allows reuse with attribution but restricts commercial use.', ['attribution', 'noncommercial', 'citation']),
+      makeOption('CC-BY-ND-4.0', 'Redistribution only', 'Allows redistribution with attribution but blocks adaptations.', ['attribution', 'noDerivatives', 'citation']),
+      makeOption('CC-BY-NC-ND-4.0', 'Very limited reuse', 'Allows redistribution with attribution, but blocks commercial use and adaptations.', ['attribution', 'noncommercial', 'noDerivatives', 'citation'])
+    ];
+    return {
+      tone: noncommercial || noDerivatives || sharealike ? 'warning' : 'ok',
+      title:'Dataset license options',
+      summary:'Review open data and Creative Commons options based on attribution, adaptation, commercial use, and database-specific needs.',
+      options,
+      checklist:['Add the license to README, metadata, and download pages.', 'List upstream sources, collection context, contributors, and required citation.', 'Separate raw restricted files from public derivatives when needed.'],
+      cautions:['Avoid no-derivatives terms when labels, formats, or benchmark splits need to be improved by others.']
+    };
+  }
+
+  const oerOptions = [
+    makeOption('CC-BY-4.0', 'Attribution-based OER', 'Allows reuse, translation, adaptation, and commercial reuse with credit.', ['attribution', 'citation', 'aiTraining']),
+    makeOption('CC-BY-SA-4.0', 'Share-alike OER', 'Allows adaptation but requires adapted material to use the same license.', ['attribution', 'sharealike', 'citation']),
+    makeOption('CC-BY-NC-4.0', 'Noncommercial OER', 'Allows adaptation but restricts commercial use.', ['attribution', 'noncommercial', 'citation']),
+    makeOption('CC-BY-NC-SA-4.0', 'Noncommercial share-alike OER', 'Allows noncommercial adaptation when adaptations use the same license.', ['attribution', 'noncommercial', 'sharealike', 'citation']),
+    makeOption('CC-BY-ND-4.0', 'Fixed OER', 'Allows redistribution but blocks translations and adaptations.', ['attribution', 'noDerivatives', 'citation']),
+    makeOption('CC-BY-NC-ND-4.0', 'Fixed noncommercial OER', 'Allows noncommercial redistribution but blocks adaptations.', ['attribution', 'noncommercial', 'noDerivatives', 'citation']),
+    makeOption('MIT', 'OER with code or labs', 'Useful for code-heavy labs or computational notebooks when software terms fit better.', ['aiTraining'])
+  ];
+  return {
+    tone: noncommercial || noDerivatives ? 'warning' : 'ok',
+    title:'OER license options',
+    summary:'Choose a Creative Commons option for teaching material, and use software licenses for code-heavy labs.',
+    options: oerOptions,
+    checklist:['Mark the files or folder covered by the license.', 'Include creator, title, year, source URL, and preferred attribution text.', 'Remove third-party material you cannot license.'],
+    cautions:['No-derivatives terms limit translations, captions, annotations, and accessibility adaptations.']
+  };
+}
+
+function renderAssetOptions(){
+  const root = document.getElementById('assetOptions');
+  root.innerHTML = assetTypes.map((item) => `
+    <label class="asset-option">
+      <input type="radio" name="assetType" value="${item.id}">
+      <span class="asset-card">
+        <span class="asset-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${item.icon}</svg></span>
+        <span><span class="asset-name">${item.name}</span><span class="asset-note">${item.note}</span></span>
+      </span>
+    </label>
+  `).join('');
+}
+
+function renderGoalOptions(){
+  const root = document.getElementById('goalOptions');
+  root.innerHTML = goals.map(item => `
+    <label class="choice-row">
+      <input type="checkbox" id="goal-${item.id}" ${item.checked ? 'checked' : ''}>
+      <span class="choice-mark" aria-hidden="true"></span>
+      <span><span class="choice-label">${item.label}</span><span class="choice-kind">${item.kind}</span><span class="choice-help">${item.help}</span></span>
+    </label>
+  `).join('');
+}
+
+function renderResult(){
+  if (currentStep < 2 || !selectedAsset()) {
+    document.getElementById('resultBody').innerHTML = `
+      <span class="fit-badge warning">In progress</span>
+      <h2 class="license-name">No license options yet</h2>
+      <p class="result-summary">Choose an asset type first. The wizard will then show available license options, links to license details, and the minimum sharing notes to include with your asset.</p>
+    `;
+    return;
+  }
+
+  const result = licenseOptions();
+  const badgeClass = result.tone === 'stop' ? 'stop' : result.tone === 'warning' ? 'warning' : '';
+  const rankedOptions = rankOptions(result.options);
+  const activeTags = selectedTags();
+  const visibleOptions = activeTags.length
+    ? rankedOptions.filter(item => item.matchCount > 0).slice(0, 3)
+    : rankedOptions;
+  const displayedOptions = visibleOptions.length ? visibleOptions : rankedOptions.slice(0, 3);
+  const optionCards = displayedOptions.map((item, index) => {
+    const target = item.url || 'license-comparison.html';
+    const external = target.startsWith('http');
+    const matchBadge = item.matchCount ? `<span class="option-match">${item.matchCount} match${item.matchCount === 1 ? '' : 'es'}</span>` : '';
+    const bestBadge = activeTags.length && item.matchCount > 0 && index === 0 ? '<span class="option-best">Best fit</span>' : '';
+    return `
+      <article class="option-card">
+        <h3><span class="option-name">${iconForRecommendation(item.name)}<span>${item.name}</span></span><span class="option-badges">${bestBadge}${matchBadge}<span class="option-fit">${item.fit}</span></span></h3>
+        <p>${item.summary}</p>
+        <a class="option-link" href="${target}" target="${external ? '_blank' : '_self'}" rel="noopener">${external ? 'View license text' : 'View details'}</a>
+      </article>
+    `;
+  }).join('');
+  const optionSummary = activeTags.length && visibleOptions.length
+    ? `<p class="result-summary">Showing the closest ${displayedOptions.length} option${displayedOptions.length === 1 ? '' : 's'} for the requirements you selected. Use the comparison page for the full landscape.</p>`
+    : activeTags.length
+      ? `<p class="result-summary">No license directly matches the selected requirements for this asset type. Showing common options to review manually.</p>`
+      : '';
+  const table = result.table ? `
+    <div class="small-section" id="component-table">
+      <h3>Common license map</h3>
+      <table class="component-table">
+        <thead><tr><th>Component</th><th>Typical choice</th></tr></thead>
+        <tbody>
+          <tr><td>Source code, SDKs, validation scripts</td><td>Apache-2.0 or MIT</td></tr>
+          <tr><td>Datasets and benchmark records</td><td>CC-BY-4.0, CC0-1.0, ODC-By-1.0, or ODbL-1.0</td></tr>
+          <tr><td>Model weights, model cards, configs</td><td>Explicit model-specific terms plus attribution</td></tr>
+          <tr><td>Database structure with reciprocal terms</td><td>ODbL-1.0</td></tr>
+          <tr><td>OERs, tutorials, figures, media</td><td>CC-BY-4.0 or CC-BY-SA-4.0</td></tr>
+          <tr><td>Third-party files</td><td>Original upstream license or written permission</td></tr>
+        </tbody>
+      </table>
+    </div>` : '';
+
+  document.getElementById('resultBody').innerHTML = `
+    <span class="fit-badge ${badgeClass}">${result.tone === 'stop' ? 'Needs review' : result.tone === 'warning' ? 'Review constraints' : 'Options available'}</span>
+    <h2 class="license-name">${result.title}</h2>
+    <p class="result-summary">${result.summary}</p>
+    ${optionSummary}
+    <div class="option-list">${optionCards}</div>
+    <div class="result-actions">
+      <a class="btn btn-outline-secondary btn-sm" href="license-comparison.html">Compare available licenses</a>
+    </div>
+    <div class="small-section">
+      <h3>Before publishing</h3>
+      <ul class="result-list">${result.checklist.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+    <div class="small-section">
+      <h3>Watch for</h3>
+      <ul class="result-list">${result.cautions.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+    ${table}
+  `;
+}
+
+renderAssetOptions();
+renderGoalOptions();
+renderResult();
+
+function showStep(step){
+  currentStep = step;
+  document.querySelectorAll('.wizard-step').forEach(element => {
+    element.classList.toggle('active', Number(element.dataset.step) === step);
+  });
+  document.querySelectorAll('.progress-pill').forEach(element => {
+    element.classList.toggle('active', Number(element.dataset.progressStep) <= step);
+  });
+  document.querySelector('.recommendation-panel .panel-subtitle').textContent = step < 2
+    ? 'Choose asset type first, then set sharing terms.'
+    : 'Use this as a starting point, then verify rights and upstream terms.';
+  renderResult();
+}
+
+document.querySelectorAll('[data-next-step]').forEach(button => {
+  button.addEventListener('click', () => showStep(Number(button.dataset.nextStep)));
+});
+document.querySelectorAll('[data-prev-step]').forEach(button => {
+  button.addEventListener('click', () => showStep(Number(button.dataset.prevStep)));
+});
+document.getElementById('assetOptions').addEventListener('change', () => {
+  if (currentStep > 1) renderResult();
+});
+document.getElementById('goalOptions').addEventListener('change', () => {
+  if (currentStep > 1) renderResult();
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script>
+<script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+</body>
+</html>
+

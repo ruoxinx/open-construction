@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<!--
+  Copyright (c) 2024-2026 OpenConstruction Open Science Initiative
+  SPDX-License-Identifier: Apache-2.0
+-->
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>License Comparison for Shared Construction Assets</title>
+  <meta name="description" content="Compare available license options for sharing OpenConstruction datasets, models, workflows, OERs, and mixed asset packages.">
+  <link rel="canonical" href="https://www.openconstruction.org/license-comparison.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="License Comparison for Shared Construction Assets">
+  <meta property="og:description" content="Compare available license options for datasets, models, workflows, OERs, and mixed asset packages.">
+  <meta property="og:url" content="https://www.openconstruction.org/license-comparison.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#526071;--oc-border:#e0e8ef;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-shadow:0 10px 28px rgba(15,46,75,.07)}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link)}
+    .oc-container{max-width:1120px}
+    .page-hero{border-bottom:1px solid var(--oc-border);background:linear-gradient(180deg,#f7fafc 0%,#fff 100%)}
+    .page-hero .content{padding:38px 0 22px}
+    .eyebrow{font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--oc-sub)}
+    h1{max-width:18ch;margin:.42rem 0 0;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 2vw,3rem);font-weight:850;line-height:1.05}
+    .compare-section{padding:1.2rem 0 2rem}
+    .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin:0 0 .75rem}
+    .section-head h2{margin:0;color:var(--oc-ink);font-size:1.08rem;font-weight:850}
+    .section-head p{max-width:68ch;margin:.22rem 0 0;color:var(--oc-sub);font-size:.88rem;line-height:1.45}
+    .compare-table-wrap{border:1px solid var(--oc-border);border-radius:8px;box-shadow:var(--oc-shadow);overflow:auto;background:#fff}
+    .compare-table{width:100%;min-width:860px;border-collapse:separate;border-spacing:0;font-size:.88rem}
+    .compare-table th,.compare-table td{padding:.78rem .85rem;border-bottom:1px solid var(--oc-border);vertical-align:top}
+    .compare-table th{background:#f7fafc;color:var(--oc-ink);font-weight:850;white-space:nowrap}
+    .compare-table tr:last-child td{border-bottom:0}
+    .license-name{color:var(--oc-ink);font-weight:850}
+    .muted{color:var(--oc-sub)}
+    .best-for{display:inline-flex;border-radius:999px;background:#eef5fa;color:var(--oc-ink);padding:.24rem .52rem;font-size:.74rem;font-weight:800;white-space:nowrap}
+    .status-open{color:#23735b;font-weight:800}
+    .status-limited{color:#8a5a08;font-weight:800}
+    .status-closed{color:#a64b4b;font-weight:800}
+    .action-row{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
+    .action-row .btn{border-radius:7px;font-weight:780}
+    .note{margin-top:1rem;color:var(--oc-sub);font-size:.86rem;line-height:1.5}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to comparison</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item" href="academy.html">Academy</a></li><li><a class="dropdown-item" href="tutorials.html">Tutorials</a></li><li><a class="dropdown-item" href="guides-toolkits.html">Guides &amp; Toolkits</a></li><li><a class="dropdown-item active" href="license-chooser.html">License Guide</a></li><li><a class="dropdown-item" href="references.html">References</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header class="page-hero">
+  <div class="container oc-container content">
+    <div class="eyebrow">License comparison</div>
+    <h1>Compare sharing options by asset type.</h1>
+  </div>
+</header>
+<main id="mainContent" class="compare-section">
+  <div class="container oc-container">
+    <div class="section-head">
+      <div>
+        <h2>Available license families</h2>
+        <p>Use this table to understand common license paths for shared construction assets. It is intentionally practical, not a substitute for the full license text.</p>
+      </div>
+    </div>
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th>License path</th><th>Best fit</th><th>Reuse status</th><th>Allows</th><th>Requires</th><th>Watch for</th><th>Full text</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="license-name">CC-BY-4.0</span></td><td><span class="best-for">Datasets, OERs</span></td><td><span class="status-open">Open</span></td><td>Sharing, adaptation, commercial reuse</td><td>Attribution and license notice</td><td>Does not handle software patent terms</td><td><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">CC-BY-SA-4.0</span></td><td><span class="best-for">OERs</span></td><td><span class="status-open">Open reciprocal</span></td><td>Sharing, adaptation, commercial reuse</td><td>Attribution and same-license adaptations</td><td>Can limit reuse in mixed educational materials</td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">CC-BY-NC-4.0</span></td><td><span class="best-for">Limited datasets, OERs</span></td><td><span class="status-limited">Limited</span></td><td>Sharing and adaptation for noncommercial use</td><td>Attribution and noncommercial-only reuse</td><td>Can block industry adoption and commercial benchmarking</td><td><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">CC-BY-NC-SA-4.0</span></td><td><span class="best-for">Limited OERs</span></td><td><span class="status-limited">Limited reciprocal</span></td><td>Noncommercial sharing and adaptation</td><td>Attribution, noncommercial use, same-license adaptations</td><td>Common in OERs, but hard to combine with commercial or differently licensed materials</td><td><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">CC-BY-ND-4.0 / CC-BY-NC-ND-4.0</span></td><td><span class="best-for">Fixed materials</span></td><td><span class="status-limited">Very limited</span></td><td>Redistribution without adaptations</td><td>Attribution; may also restrict commercial use</td><td>Usually poor for datasets, translations, annotations, and accessibility edits</td><td><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">CC0-1.0</span></td><td><span class="best-for">Metadata, simple data</span></td><td><span class="status-open">Open dedication</span></td><td>Broad reuse with minimal friction</td><td>No attribution requirement</td><td>Only use when creators accept no required credit</td><td><a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">ODC-By-1.0</span></td><td><span class="best-for">Databases</span></td><td><span class="status-open">Open data</span></td><td>Database copying, use, and redistribution</td><td>Attribution for database reuse</td><td>Separate database contents may need their own terms</td><td><a href="https://opendatacommons.org/licenses/by/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">ODbL-1.0</span></td><td><span class="best-for">Shared data improvements</span></td><td><span class="status-open">Open data reciprocal</span></td><td>Database reuse and derivative databases</td><td>Attribution and share-alike database terms</td><td>More complex for contributors and downstream users</td><td><a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">MIT</span></td><td><span class="best-for">Small tools, examples</span></td><td><span class="status-open">Open software</span></td><td>Use, modification, distribution, commercial reuse</td><td>License and copyright notice</td><td>No explicit patent grant; use separate terms for data and model weights</td><td><a href="https://choosealicense.com/licenses/mit/" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">Apache-2.0</span></td><td><span class="best-for">Workflows, tools</span></td><td><span class="status-open">Open software</span></td><td>Use, modification, distribution, commercial reuse</td><td>License notice, copyright notice, state changes</td><td>Use separate terms for data, model weights, and OERs</td><td><a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">BSD / Modified BSD</span></td><td><span class="best-for">Tools, legacy code</span></td><td><span class="status-open">Open software</span></td><td>Use, modification, distribution, commercial reuse</td><td>Copyright and license notices</td><td>Check whether it is BSD-2-Clause, BSD-3-Clause, or a custom BSD-style notice</td><td><a href="https://opensource.org/license/bsd-3-clause" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">GPL-3.0-only / LGPL-3.0-only / AGPL-3.0-only</span></td><td><span class="best-for">Reciprocal software</span></td><td><span class="status-open">Open reciprocal software</span></td><td>Use, modification, distribution</td><td>Copyleft obligations vary by license family</td><td>AGPL has network-use obligations; LGPL differs from GPL; verify exact version</td><td><a href="https://www.gnu.org/licenses/licenses.html" target="_blank" rel="noopener">Open</a></td></tr>
+          <tr><td><span class="license-name">Custom access terms</span></td><td><span class="best-for">Restricted resources</span></td><td><span class="status-limited">Not a standard open license</span></td><td>Only what the owner explicitly permits</td><td>Purpose, user, redistribution, or institution limits</td><td>Use for controlled access; do not present as an open license</td><td><span class="muted">Source-specific</span></td></tr>
+          <tr><td><span class="license-name">Proprietary / all rights reserved</span></td><td><span class="best-for">Reference only</span></td><td><span class="status-closed">Closed</span></td><td>Only what the owner explicitly permits</td><td>Written permission or separate access agreement</td><td>Do not treat as open data or open educational resources</td><td><span class="muted">Source-specific</span></td></tr>
+          <tr><td><span class="license-name">Unspecified / not specified</span></td><td><span class="best-for">Needs cleanup</span></td><td><span class="status-closed">Unknown</span></td><td>No reliable reuse permissions</td><td>Ask owner or maintainer for a license</td><td>Absence of a license usually means reuse is not clearly permitted</td><td><span class="muted">Ask owner</span></td></tr>
+          <tr><td><span class="license-name">Component license map</span></td><td><span class="best-for">Models, mixed packages</span></td><td><span class="status-limited">Depends</span></td><td>Clear reuse by folder or file type</td><td>Separate terms for code, data, weights, docs, and third-party files</td><td>Requires careful README and LICENSES.md documentation</td><td><span class="muted">Project-specific</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="action-row">
+      <a class="btn btn-primary btn-sm" href="license-chooser.html">Back to wizard</a>
+      <a class="btn btn-outline-secondary btn-sm" href="contribute.html">Contribution rules</a>
+    </div>
+    <p class="note">This comparison is a practical guide, not legal advice. Always verify upstream rights, third-party assets, institutional requirements, and the full license text before publishing.</p>
+  </div>
+</main>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="contribute.html#terms" class="text-muted">Terms</a> &middot; <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="contribute.html#citation" class="text-muted">Citation</a></small></div></div></footer>
+<script>
+document.getElementById('yearNow').textContent = new Date().getFullYear();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script><script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script><script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+</body>
+</html>
+

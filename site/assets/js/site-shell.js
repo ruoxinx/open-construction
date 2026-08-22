@@ -42,6 +42,10 @@
     'tutorials.html': 'learn',
     'guides-toolkits': 'learn',
     'guides-toolkits.html': 'learn',
+    'license-chooser': 'learn',
+    'license-chooser.html': 'learn',
+    'license-comparison': 'learn',
+    'license-comparison.html': 'learn',
     'references': 'learn',
     'references.html': 'learn',
     'schema': 'learn',
@@ -77,7 +81,7 @@
   };
 
   const CATALOG_TITLE_FILES = new Set(['dataset.html', 'models.html', 'deployments.html', 'oer.html']);
-  const DOCS_TITLE_FILES = new Set(['schema.html', 'tools.html', 'guides.html', 'mcp.html']);
+  const DOCS_TITLE_FILES = new Set(['schema.html', 'tools.html', 'guides.html', 'license-chooser.html', 'mcp.html']);
   const PAGE_TITLE_FILES = new Set(['benchmarks.html', 'contribute.html', 'contributors.html']);
 
   const CATALOG_META = {
@@ -131,6 +135,10 @@
     'guides.html': {
       label: 'Guides',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H11v17H7.5A2.5 2.5 0 0 0 5 22V5.5Z"></path><path d="M19 5.5A2.5 2.5 0 0 0 16.5 3H13v17h3.5A2.5 2.5 0 0 1 19 22V5.5Z"></path></svg>'
+    },
+    'license-chooser.html': {
+      label: 'License Guide',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h7l4 4v12H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"></path><path d="M14 4v5h5"></path><path d="M8 13h7"></path><path d="M8 17h5"></path><path d="m9 9 1.2 1.2L13 7.5"></path></svg>'
     },
     'mcp.html': {
       label: 'API & MCP',
@@ -303,6 +311,14 @@
 
     const catalogToggle = navList.querySelector('#ddLibraries, #ddCatalogs');
     if (catalogToggle) catalogToggle.textContent = 'Catalog';
+
+    const learnMenu = navList.querySelector('#ddDocs, #ddResourcesMenu')?.closest('.nav-item')?.querySelector('.dropdown-menu');
+    if (learnMenu && !learnMenu.querySelector('a[href$="license-chooser.html"]')) {
+      const item = document.createElement('li');
+      item.innerHTML = `<a class="dropdown-item" href="${pagePrefix()}license-chooser.html">License Guide</a>`;
+      const referencesItem = learnMenu.querySelector('a[href$="references.html"]')?.closest('li');
+      learnMenu.insertBefore(item, referencesItem || null);
+    }
 
     [
       { selector: '#ddLibraries, #ddCatalogs', key: 'catalog' },
