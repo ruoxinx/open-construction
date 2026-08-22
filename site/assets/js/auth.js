@@ -180,8 +180,21 @@
     return value;
   }
 
+  function normalizeRoleName(value){
+    return String(value || '').trim().toLowerCase();
+  }
+
+  function roleNameFromRow(row){
+    if (typeof row === 'string') return normalizeRoleName(row);
+    return normalizeRoleName(row?.role || row?.role_name || row?.name);
+  }
+
+  function roleSetFrom(roles = []){
+    return new Set((Array.isArray(roles) ? roles : []).map(normalizeRoleName).filter(Boolean));
+  }
+
   function roleHomeHref(roles = []){
-    const roleSet = new Set(roles);
+    const roleSet = roleSetFrom(roles);
     return roleSet.has('admin') || roleSet.has('reviewer')
       ? relHref('maintainer.html')
       : relHref('account.html');
@@ -326,7 +339,7 @@
     const { data, error } = await sb.rpc('current_role_summary');
     if (!error) {
       (data || []).forEach(row => {
-        const role = typeof row === 'string' ? row : row?.role;
+        const role = roleNameFromRow(row);
         if (role) roles.add(role);
       });
     } else {
@@ -348,12 +361,12 @@
   }
 
   function hasAnyRole(roles, allowed){
-    const roleSet = new Set(Array.isArray(roles) ? roles : []);
-    return allowed.some(role => roleSet.has(role));
+    const roleSet = roleSetFrom(roles);
+    return allowed.map(normalizeRoleName).some(role => roleSet.has(role));
   }
 
   function canUseAskBetaRoles(roles){
-    return hasAnyRole(roles, ['admin', 'developer', 'tester', 'reviewer']);
+    return hasAnyRole(roles, ['admin', 'developer', 'tester']);
   }
 
   function canUseAgentDocsRoles(roles){
