@@ -204,6 +204,19 @@
     return `../benchmark_task.html?key=${encodeURIComponent(canonical)}`;
   }
 
+  function escapeHtml(s){
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function taskDisplayLabel(label){
+    return window.OCTerms?.prettyTermLabel ? window.OCTerms.prettyTermLabel(label) : String(label || '').trim();
+  }
+
   function pills(values, limit = Infinity, kind = ''){
     const arr = tokenize(values);
     if (!arr.length) return "";
@@ -214,12 +227,14 @@
           return `<span class="badge rounded-pill license-pill">${icons}<span>${t}</span></span>`;
         }
         if (kind === 'task') {
+          const label = taskDisplayLabel(t);
+          const safeLabel = escapeHtml(label);
           const href = taskHref(t);
           return href
-            ? `<a class="badge rounded-pill text-decoration-none" href="${href}" title="View task benchmark for ${t}">${t}</a>`
-            : `<span class="badge rounded-pill">${t}</span>`;
+            ? `<a class="badge rounded-pill text-decoration-none" href="${href}" title="View task benchmark for ${safeLabel}">${safeLabel}</a>`
+            : `<span class="badge rounded-pill">${safeLabel}</span>`;
         }
-        return `<span class="badge rounded-pill">${t}</span>`;
+        return `<span class="badge rounded-pill">${escapeHtml(t)}</span>`;
       })
       .join("");
     const more = arr.length > limit

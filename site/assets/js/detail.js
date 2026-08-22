@@ -169,11 +169,32 @@ function shareCardHtml(label){
       <div class="card-body">
         <h2 class="h6 text-uppercase text-muted mb-3">Share</h2>
         <div class="d-grid gap-2">
-          <button type="button" class="btn btn-outline-secondary btn-sm" data-oc-share data-share-label="${escapeHtml(label)}">Share or Copy Link</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm btn-with-icon" data-oc-share data-share-label="${escapeHtml(label)}">${actionButtonContent('share', 'Share or Copy Link')}</button>
         </div>
       </div>
     </div>
   `;
+}
+
+function actionButtonIcon(icon){
+  const icons = {
+    access: '<path d="M7 7h10v10"></path><path d="M7 17 17 7"></path><path d="M5 21h14a2 2 0 0 0 2-2V5"></path>',
+    paper: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 13h8"></path><path d="M8 17h6"></path>',
+    code: '<path d="m9 18-6-6 6-6"></path><path d="m15 6 6 6-6 6"></path>',
+    share: '<circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4"></path><path d="m8.6 13.5 6.8 4"></path>'
+  };
+  const paths = icons[icon] || icons.paper;
+  return `<svg class="btn-action-icon" viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
+}
+
+function actionButtonContent(icon, label){
+  return `${actionButtonIcon(icon)}<span class="btn-label">${escapeHtml(label)}</span>`;
+}
+
+function setActionButtonLabel(button, label){
+  const labelEl = button?.querySelector?.('.btn-label');
+  if (labelEl) labelEl.textContent = label;
+  else if (button) button.textContent = label;
 }
 
 function bookmarkInlineHtml(type, id, label){
@@ -463,9 +484,31 @@ function abstractToggleHtml(text, opts = {}){
   `;
 }
 
+function licenseDisplayLabel(licVal){
+  const norm = safeText(licVal);
+  if (norm === 'â€”') return '';
+  const key = String(licVal).trim().toUpperCase();
+  const labels = {
+    'CC0': 'Creative Commons CC0 Public Domain Dedication',
+    'CC BY 4.0': 'Creative Commons Attribution 4.0 International',
+    'CC-BY 4.0': 'Creative Commons Attribution 4.0 International',
+    'CC BY-NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+    'CC-BY-NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+    'CC BY NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+    'CC BY-NC 4.0': 'Creative Commons Attribution-NonCommercial 4.0 International',
+    'CC-BY-NC': 'Creative Commons Attribution-NonCommercial 4.0 International',
+    'CC BY-SA 4.0': 'Creative Commons Attribution-ShareAlike 4.0 International',
+    'CC BY-NC-ND 3.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 3.0',
+    'CC BY-NC-ND 4.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International',
+    'CC BY-NC-SA 4.0': 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International'
+  };
+  return labels[key] || norm;
+}
+
 
 function formatLicense(licVal){
   const norm = safeText(licVal);
+  const displayLabel = licenseDisplayLabel(licVal);
   if (norm === '—') return '';
   const key = String(licVal).trim().toUpperCase();
   const licenseMap = {
@@ -492,15 +535,16 @@ function formatLicense(licVal){
     'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
   };
   if (licenseMap[key]) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a></span></span>`;
+    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
-  return `<span class="license-inline"><span class="license-title-line">${norm}</span></span>`;
+  return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
 
 function formatLicense(licVal){
   const norm = safeText(licVal);
   if (norm === '—') return '';
 
+  const displayLabel = licenseDisplayLabel(licVal);
   const key = String(licVal).trim().toUpperCase();
   const licenseMap = {
     'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
@@ -534,9 +578,9 @@ function formatLicense(licVal){
   };
 
   if (licenseMap[key]) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${norm}</a></span></span>`;
+    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
-  return `<span class="license-inline"><span class="license-title-line">${norm}</span></span>`;
+  return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
 
 function licenseHrefFor(licVal){
@@ -796,7 +840,7 @@ function licenseTermIconHtml(label){
 }
 
 function resourceLicenseModalHtml({ license, resourceType = 'resource', modalTitle = 'Review resource license', actionLabel = 'Open resource source' } = {}){
-  const licenseLabel = safeText(license) === '—' ? 'Unspecified license' : safeText(license);
+  const licenseLabel = safeText(license) === '—' ? 'Unspecified license' : licenseDisplayLabel(license);
   const notice = licenseNoticeFor(license);
   const licenseUrl = licenseHrefFor(license);
   const licenseTerms = licenseUrl
@@ -1056,6 +1100,10 @@ function chipLane(list){
   return `<div class="chip-lane">${items.map(x => `<span class="chip">${x}</span>`).join('')}</div>`;
 }
 
+function taskChipLabel(label){
+  return prettyTermLabel(label) || String(label || '').trim();
+}
+
 function getTaskVocabularyEntry(raw){
   const key = normalizeOcTaskKey(raw);
   if (!key) return null;
@@ -1072,8 +1120,9 @@ function taskBenchmarkHref(raw){
 function linkedTaskChipLane(list){
   const items = tokenize(list);
   if (!items.length) return '';
-  return `<div class="chip-lane">${items.map(label => {
-    const href = taskBenchmarkHref(label);
+  return `<div class="chip-lane">${items.map(rawLabel => {
+    const label = taskChipLabel(rawLabel);
+    const href = taskBenchmarkHref(rawLabel);
     if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
     return `<a class="chip chip-link" href="${href}" title="View benchmark page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
   }).join('')}</div>`;
@@ -1386,6 +1435,8 @@ async function initDetail(){
           .meta-val{ font-weight:600; line-height:1.4; }
           .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
+          .btn-with-icon{ display:inline-flex; align-items:center; justify-content:center; gap:.45rem; }
+          .btn-action-icon{ width:1rem; height:1rem; flex:0 0 auto; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
           .abs{ white-space:pre-line; }
           .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
           .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
@@ -1566,8 +1617,8 @@ async function initDetail(){
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
               <div class="d-grid gap-2">
-                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>View Code</a>` : ''}
-                ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
+                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'View Code')}</a>` : ''}
+                ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${paperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View Paper')}</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
@@ -1605,7 +1656,7 @@ async function initDetail(){
           ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
+			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
 			<div class="text-muted small mb-2">
 			  Data source:
 			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
@@ -1642,15 +1693,15 @@ async function initDetail(){
       const shareBtn = root.querySelector('[data-oc-share]');
       if (shareBtn) {
         shareBtn.addEventListener('click', async () => {
-          const original = shareBtn.textContent;
+          const original = shareBtn.querySelector('.btn-label')?.textContent || shareBtn.textContent;
           const label = shareBtn.getAttribute('data-share-label') || modelTitle;
           const result = await shareResourceLink({
             title: label,
             text: `OpenConstruction resource: ${label}`
           });
           if (result === 'cancelled') return;
-          shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
-          window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+          setActionButtonLabel(shareBtn, result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed'));
+          window.setTimeout(() => { setActionButtonLabel(shareBtn, original); }, 1800);
         });
       }
       wireLicenseGate(root);
@@ -1884,6 +1935,8 @@ async function initDetail(){
         .meta-val{ font-weight:600; line-height:1.4; }
         .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
+        .btn-with-icon{ display:inline-flex; align-items:center; justify-content:center; gap:.45rem; }
+        .btn-action-icon{ width:1rem; height:1rem; flex:0 0 auto; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
         .detail-section{ padding:1.25rem 1.35rem; margin-bottom:1rem; }
         .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
         .detail-heading{ font-size:1.1rem; font-weight:700; color:var(--oc-ink); margin:0 0 .85rem; }
@@ -2058,8 +2111,8 @@ async function initDetail(){
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
-              ${datasetAccessUrl ? `<a class="btn btn-primary btn-sm" href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>Download dataset</a>` : ''}
-              ${datasetPaperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${datasetPaperUrl}" target="_blank" rel="noopener">View paper</a>` : ''}
+              ${datasetAccessUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('access', 'Access dataset')}</a>` : ''}
+              ${datasetPaperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${datasetPaperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View paper')}</a>` : ''}
               ${ds.blog_url ? `<a class="btn btn-outline-secondary btn-sm" href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">Blog</a>` : ''}
             </div>
           </div>
@@ -2099,7 +2152,7 @@ async function initDetail(){
         ${pubBadgesBlock ? `
           <div class="card border-0 shadow-sm">
             <div class="card-body">
-			<h2 class="h6 text-uppercase text-muted mb-2">Scholarly Records</h2>
+			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
 			<div class="text-muted small mb-2">
 			  Data source:
 			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
@@ -2125,15 +2178,15 @@ async function initDetail(){
     const shareBtn = root.querySelector('[data-oc-share]');
     if (shareBtn) {
       shareBtn.addEventListener('click', async () => {
-        const original = shareBtn.textContent;
+        const original = shareBtn.querySelector('.btn-label')?.textContent || shareBtn.textContent;
         const label = shareBtn.getAttribute('data-share-label') || ds.name || 'Dataset';
         const result = await shareResourceLink({
           title: label,
           text: `OpenConstruction resource: ${label}`
         });
         if (result === 'cancelled') return;
-        shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
-        window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+        setActionButtonLabel(shareBtn, result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed'));
+        window.setTimeout(() => { setActionButtonLabel(shareBtn, original); }, 1800);
       });
     }
     wireDatasetLicenseGate(root);

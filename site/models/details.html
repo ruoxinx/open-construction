@@ -175,6 +175,17 @@
     const s = String(val);
     return s.includes(',') ? s.split(',').map(t=>t.trim()).filter(Boolean) : [s.trim()].filter(Boolean);
   }
+  function escapeHtml(s){
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function taskDisplayLabel(label){
+    return window.OCTerms?.prettyTermLabel ? window.OCTerms.prettyTermLabel(label) : String(label || '').trim();
+  }
   function licenseIconStripHtml(licenseValue){
     const upper = String(licenseValue || '').trim().toUpperCase();
     const normalized = upper.replace(/[-_/]+/g, ' ');
@@ -199,7 +210,11 @@
         const icons = licenseIconStripHtml(t);
         return `<span class="badge rounded-pill license-pill">${icons}<span>${t}</span></span>`;
       }
-      return `<span class="badge rounded-pill">${t}</span>`;
+      if (kind === 'task') {
+        const label = taskDisplayLabel(t);
+        return `<span class="badge rounded-pill">${escapeHtml(label)}</span>`;
+      }
+      return `<span class="badge rounded-pill">${escapeHtml(t)}</span>`;
     }).join("");
     const more = arr.length > limit ? `<span class="badge rounded-pill">+${arr.length - limit} more</span>` : "";
     return shown + more;
@@ -214,7 +229,7 @@
   window.OC = {
     setBadges({modality, tasks, applications, license} = {}){
       putAsPills('badge-modality', modality, 2);
-      putAsPills('badge-tasks', tasks, 4);
+      putAsPills('badge-tasks', tasks, 4, 'task');
       putAsPills('badge-apps', applications, 4);
       putAsPills('badge-license', license, 1, 'license');
     },

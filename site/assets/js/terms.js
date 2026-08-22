@@ -128,7 +128,10 @@
     const key = normalizeKey(raw);
     if (!key) return '';
     const aliasMap = window.OC_TASK_VOCAB?.aliasToPreferred;
-    return aliasMap?.get(key) || PREFERRED_TERMS[key] || '';
+    const fallbackLabel = PREFERRED_TERMS[key];
+    if (fallbackLabel) return fallbackLabel;
+    const vocabLabel = aliasMap?.get(key);
+    return vocabLabel ? titleizeTerm(vocabLabel) : '';
   }
 
   function prettyTermLabel(raw){
