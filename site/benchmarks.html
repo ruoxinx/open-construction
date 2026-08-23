@@ -576,8 +576,8 @@
   </section>
 
   <section class="oc-section" aria-labelledby="compositionTitle">
-    <div class="oc-kicker mb-2">Composition</div>
-    <h2 class="h4 fw-bold mb-3" id="compositionTitle" style="color:var(--oc-ink);">Catalog Composition</h2>
+    <div class="oc-kicker mb-2">Metadata</div>
+    <h2 class="h4 fw-bold mb-3" id="compositionTitle" style="color:var(--oc-ink);">Metadata Profile</h2>
     <div class="composition-grid">
       <div class="composition-card">
         <h3>Data Modality</h3>
@@ -1157,7 +1157,7 @@
     return parts.length ? parts.join(' / ') : 'No linked resources';
   }
 
-  const DONUT_COLORS = ['#2f6fa7', '#368461', '#c9822d', '#6b7f92', '#765aa6', '#b8c4cf'];
+  const DONUT_COLORS = ['#2f6fa7', '#368461', '#c9822d', '#765aa6', '#2d8a9b', '#8a6f3f', '#6b7f92', '#b8c4cf'];
 
   function metadataTerms(...values){
     const out = [];
@@ -1168,7 +1168,7 @@
       }
       const text = normStr(value);
       if(!text) return;
-      text.split(/[,;|]+/).map(normStr).filter(Boolean).forEach(term => out.push(term));
+      text.split(/[,;|/]+|\s+\+\s+|\s+and\s+/i).map(normStr).filter(Boolean).forEach(term => out.push(term));
     }
     values.forEach(add);
     return out;
@@ -1177,14 +1177,20 @@
   function modalityFamilyLabel(term){
     const text = canonKey(term);
     if(!text) return '';
-    if(/\b(point cloud|lidar|laser scan|tls|als|pcd|3d scan)\b/.test(text)) return 'Point Cloud';
-    if(/\b(bim|ifc|revit|gbxml|building information model)\b/.test(text)) return 'BIM';
+    if(/\b(cad|drawing|drawings|blueprint|floor plan|floorplan|plan image|architectural plan|rasterized)\b/.test(text)) return 'CAD Drawings';
+    if(/\b(point cloud|point clouds|lidar|laser scan|tls|als|pcd|3d scan)\b/.test(text)) return 'Point Cloud';
+    if(/\b(bim|ifc|revit|gbxml|building information model)\b/.test(text)) return 'BIM / IFC';
     if(/\b(video|rgb-d video|sequence|time-lapse|timelapse)\b/.test(text)) return 'Video';
+    if(/\b(rgb-d|rgbd|depth|stereo)\b/.test(text)) return 'Depth / RGB-D';
+    if(/\b(mesh|3d model|3d geometry|geometry model|obj|ply)\b/.test(text)) return '3D Geometry';
+    if(/\b(thermal|infrared|ir image|thermography)\b/.test(text)) return 'Thermal Imagery';
     if(/\b(text|language|caption|document|report|specification|poi)\b/.test(text)) return 'Text';
-    if(/\b(sensor|imu|thermal|temperature|iot|wearable)\b/.test(text)) return 'Sensor';
+    if(/\b(sensor|imu|temperature|iot|wearable|accelerometer|gyroscope)\b/.test(text)) return 'Sensor';
     if(/\b(tabular|csv|spreadsheet|table|metadata)\b/.test(text)) return 'Tabular';
     if(/\b(map|gis|geospatial|gps|satellite|aerial|uav|drone)\b/.test(text)) return 'Geospatial';
     if(/\b(image|rgb|photo|photograph|visual|camera|frame)\b/.test(text)) return 'Image';
+    if(/\b(simulation|synthetic)\b/.test(text)) return 'Synthetic';
+    if(/\b(audio|speech|sound)\b/.test(text)) return 'Audio';
     return niceLabel(term);
   }
 
@@ -1207,11 +1213,14 @@
 
   function licenseStatus(item){
     const raw = normStr(item?.license || item?.licence || item?.license_name || item?.license_type);
-    if(!raw) return 'Unspecified';
+    if(!raw) return 'Not specified';
     const text = raw.toUpperCase();
-    if(/\b(NC|NONCOMMERCIAL|ND|NO DERIVATIVES|RESTRICTED)\b/.test(text)) return 'Limited reuse';
-    if(/\b(CC0|CC BY|MIT|APACHE|GPL|AGPL|LGPL|BSD|ODC|OPEN DATA COMMONS)\b/.test(text)) return 'Open license';
-    return 'Other / custom';
+    if(/\b(N\/A|NA|NONE|UNKNOWN|UNSPECIFIED|NOT SPECIFIED|SEE SOURCE|NO LICENSE)\b/.test(text)) return 'Not specified';
+    if(/\b(NC|NONCOMMERCIAL|NON-COMMERCIAL|ND|NO DERIVATIVES|RESTRICTED|RESEARCH ONLY|ACADEMIC ONLY|UPON REQUEST)\b/.test(text)) return 'Noncommercial / restricted';
+    if(/\b(CC0|CC BY|CC-BY|CC BY-SA|CC-BY-SA|ODC|OPEN DATA COMMONS|PDDL)\b/.test(text)) return 'Creative Commons / open data';
+    if(/\b(MIT|APACHE|BSD|GPL|AGPL|LGPL|MPL|EPL)\b/.test(text)) return 'Open-source software';
+    if(/\b(CUSTOM|PROPRIETARY|TERMS|SOURCE|DATA USE AGREEMENT|DUA)\b/.test(text)) return 'Custom / source terms';
+    return 'Custom / source terms';
   }
 
   function countBy(items, labeler){
@@ -1231,10 +1240,10 @@
     return other ? [...keep, { label: 'Other', count: other }] : keep;
   }
 
-  function renderDonut(containerId, title, rows){
+  function renderDonut(containerId, title, rows, limit = 5){
     const container = document.getElementById(containerId);
     if(!container) return;
-    const slices = compactSlices(rows.filter(row => row.count > 0), 5);
+    const slices = compactSlices(rows.filter(row => row.count > 0), limit);
     const total = slices.reduce((sum, row) => sum + row.count, 0);
     if(!total){
       container.textContent = 'No metadata is available yet.';
@@ -1268,8 +1277,8 @@
 
   function renderCatalogComposition(datasets, models){
     const resources = [...datasets, ...models];
-    renderDonut('modalityDonut', 'Data modality', countBy(resources, primaryModality));
-    renderDonut('licenseDonut', 'License status', countBy(resources, licenseStatus));
+    renderDonut('modalityDonut', 'Data modality', countBy(resources, primaryModality), 7);
+    renderDonut('licenseDonut', 'License status', countBy(resources, licenseStatus), 5);
   }
 
   function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12, scaleMax = 0}){
