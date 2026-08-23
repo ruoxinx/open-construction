@@ -88,8 +88,53 @@
       color:var(--oc-ink);
       font-size:1rem;
       font-weight:750;
-      margin:0 0 .85rem;
+      margin:0;
     }
+    .pattern-card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      margin-bottom:.85rem;
+    }
+    .rank-legend{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      color:var(--oc-subtle);
+      font-size:.72rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .rank-legend span{
+      display:inline-flex;
+      align-items:center;
+      gap:.26rem;
+    }
+    .rank-legend i{
+      width:.5rem;
+      height:.5rem;
+      border-radius:2px;
+      display:inline-block;
+    }
+    .rank-legend .dataset{background:#2f6fa7}
+    .rank-legend .model{background:#368461}
+    .rank-mix{
+      grid-column:1 / -1;
+      display:flex;
+      width:100%;
+      height:7px;
+      overflow:hidden;
+      border-radius:999px;
+      background:#edf3f8;
+    }
+    .rank-segment{
+      display:block;
+      min-width:2px;
+      height:100%;
+    }
+    .rank-segment.dataset{background:#2f6fa7}
+    .rank-segment.model{background:#368461}
     .rank-list{
       display:grid;
       gap:.7rem;
@@ -97,36 +142,36 @@
       padding:0;
       list-style:none;
     }
-    .rank-panel:not(.is-expanded) .rank-row.is-extra{display:none}
+    .rank-row.is-hidden{display:none}
     .rank-row{
       display:grid;
       grid-template-columns:minmax(0,1fr) auto;
-      gap:.5rem .8rem;
+      gap:.35rem .8rem;
       align-items:center;
+      padding:.15rem 0;
     }
     .rank-row a{
       color:var(--oc-text);
       font-size:.9rem;
-      font-weight:700;
+      font-weight:560;
       line-height:1.25;
       text-decoration:none;
       min-width:0;
     }
     .rank-row a:hover,.rank-row a:focus{color:var(--oc-link);text-decoration:underline}
-    .rank-count{color:var(--oc-subtle);font-size:.82rem;font-weight:700;white-space:nowrap}
-    .rank-track{
-      grid-column:1 / -1;
-      height:8px;
-      overflow:hidden;
-      border-radius:8px;
-      background:#edf3f8;
+    .rank-count{color:var(--oc-subtle);font-size:.82rem;font-weight:560;white-space:nowrap}
+    .rank-count{
+      display:inline-flex;
+      align-items:center;
+      gap:.42rem;
     }
-    .rank-fill{
-      display:block;
-      height:100%;
-      min-width:4px;
-      border-radius:inherit;
-      background:linear-gradient(90deg,#0f2e4b,#2f7fc1);
+    .rank-count::before{
+      content:"";
+      width:.44rem;
+      height:.44rem;
+      border-radius:50%;
+      background:#2f6fa7;
+      opacity:.75;
     }
     .pattern-toggle,
     .index-toggle{
@@ -172,7 +217,7 @@
     .time-dot{stroke:#fff;stroke-width:2}
     .time-dot.dataset{fill:#2f6fa7}
     .time-dot.model{fill:#368461}
-    .time-value{fill:var(--oc-ink);font-size:11px;font-weight:750;text-anchor:middle}
+    .time-value{fill:#5f6d7b;font-size:10px;font-weight:500;text-anchor:middle}
     .time-year{fill:var(--oc-subtle);font-size:12px;font-weight:750;text-anchor:middle}
     .time-y-label{fill:#7a8794;font-size:10px;font-weight:650;text-anchor:end}
     .time-segment.dataset{background:#2f6fa7}
@@ -386,11 +431,23 @@
     <h2 class="h4 fw-bold mb-3" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Frequency Patterns</h2>
     <div class="insight-grid">
       <div class="pattern-card">
-        <h3>Tasks</h3>
+        <div class="pattern-card-head">
+          <h3>Tasks</h3>
+          <div class="rank-legend" aria-label="Frequency composition legend">
+            <span><i class="dataset"></i>Datasets</span>
+            <span><i class="model"></i>Models</span>
+          </div>
+        </div>
         <div id="taskFrequencyBars" class="text-muted small">Loading...</div>
       </div>
       <div class="pattern-card">
-        <h3>Applications</h3>
+        <div class="pattern-card-head">
+          <h3>Applications</h3>
+          <div class="rank-legend" aria-label="Frequency composition legend">
+            <span><i class="dataset"></i>Datasets</span>
+            <span><i class="model"></i>Models</span>
+          </div>
+        </div>
         <div id="appFrequencyBars" class="text-muted small">Loading...</div>
       </div>
     </div>
@@ -838,7 +895,7 @@
           </button>
         </div>
       `);
-      note.textContent = `Showing ${state.shown} of ${total}.`;
+      note.textContent = '';
     } else if(total > state.batch){
       el.insertAdjacentHTML('beforeend', `
         <div class="d-grid" style="grid-column: 1 / -1;">
@@ -847,7 +904,7 @@
           </button>
         </div>
       `);
-      note.textContent = `Showing all ${total}.`;
+      note.textContent = '';
     } else {
       note.textContent = '';
     }
@@ -916,7 +973,7 @@
     return parts.length ? parts.join(' / ') : 'No linked resources';
   }
 
-  function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6}){
+  function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12}){
     const container = document.getElementById(containerId);
     if(!container) return;
     const ranked = items
@@ -927,27 +984,32 @@
       container.textContent = 'No coverage data is available yet.';
       return;
     }
-    const max = Math.max(...ranked.map(coverageTotal), 1);
     container.classList.remove('text-muted', 'small');
     container.innerHTML = `
       <div class="rank-panel" data-frequency-panel="${esc(containerId)}">
         <ol class="rank-list">
-          ${ranked.map((item, index) => {
+          ${ranked.slice(0, expandedLimit).map((item, index) => {
           const label = item.label || item.canon;
-          const total = coverageTotal(item);
-          const width = Math.max(6, Math.round((total / max) * 100));
+          const ds = Number(item?.dsCount || 0);
+          const models = Number(item?.modelCount || 0);
+          const total = Math.max(ds + models, 1);
+          const dsWidth = ds ? Math.round((ds / total) * 100) : 0;
+          const modelWidth = models ? 100 - dsWidth : 0;
           return `
-            <li class="rank-row${index >= limit ? ' is-extra' : ''}">
+            <li class="rank-row${index >= limit ? ' is-hidden' : ''}">
               <a href="${esc(hrefBuilder(item))}">${esc(label)}</a>
               <span class="rank-count">${esc(countLabel(item))}</span>
-              <span class="rank-track" aria-hidden="true"><span class="rank-fill" style="width:${width}%"></span></span>
+              <span class="rank-mix" aria-hidden="true">
+                ${ds ? `<span class="rank-segment dataset" style="width:${dsWidth}%"></span>` : ''}
+                ${models ? `<span class="rank-segment model" style="width:${modelWidth}%"></span>` : ''}
+              </span>
             </li>
           `;
           }).join('')}
         </ol>
         ${ranked.length > limit ? `
-          <button class="pattern-toggle mt-3" type="button" data-frequency-toggle="${esc(containerId)}" aria-expanded="false">
-            Show more (${ranked.length - limit} more)
+          <button class="pattern-toggle mt-3" type="button" data-frequency-toggle="${esc(containerId)}" data-collapsed-count="${limit}" data-expanded-count="${Math.min(expandedLimit, ranked.length)}" aria-expanded="false">
+            Show top ${Math.min(expandedLimit, ranked.length)}
           </button>
         ` : ''}
       </div>
@@ -1201,11 +1263,13 @@
         const panel = [...document.querySelectorAll('[data-frequency-panel]')]
           .find(node => node.getAttribute('data-frequency-panel') === target);
         if(!panel) return;
-        const expanded = !panel.classList.contains('is-expanded');
-        const hiddenCount = panel.querySelectorAll('.rank-row.is-extra').length;
-        panel.classList.toggle('is-expanded', expanded);
+        const expanded = frequencyBtn.getAttribute('aria-expanded') !== 'true';
+        const expandedCount = frequencyBtn.getAttribute('data-expanded-count') || '12';
+        panel.querySelectorAll('.rank-row.is-hidden').forEach(row => {
+          row.style.display = expanded ? 'grid' : '';
+        });
         frequencyBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-        frequencyBtn.textContent = expanded ? 'Show less' : `Show more (${hiddenCount} more)`;
+        frequencyBtn.textContent = expanded ? 'Show less' : `Show top ${expandedCount}`;
         return;
       }
       if(lessBtn){
