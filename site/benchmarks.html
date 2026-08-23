@@ -39,6 +39,13 @@
 
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+    .insight-hero-note{
+      max-width:620px;
+      margin:.75rem auto 0;
+      color:var(--oc-subtle);
+      font-size:.96rem;
+      line-height:1.6;
+    }
 
     /* Index cards */
 	.index-grid{
@@ -119,14 +126,20 @@
     }
     .rank-legend .dataset{background:#2f6fa7}
     .rank-legend .model{background:#368461}
-    .rank-mix{
+    .rank-scale{
       grid-column:1 / -1;
-      display:flex;
       width:100%;
       height:7px;
       overflow:hidden;
       border-radius:999px;
       background:#edf3f8;
+    }
+    .rank-mix{
+      display:flex;
+      height:100%;
+      min-width:10px;
+      overflow:hidden;
+      border-radius:inherit;
     }
     .rank-segment{
       display:block;
@@ -383,6 +396,7 @@
 <header class="hero">
   <div class="container oc-container content">
     <h1>Catalog Insights</h1>
+    <p class="insight-hero-note">Trends are derived from public metadata records currently indexed in OpenConstruction.</p>
   </div>
 </header>
 
@@ -428,7 +442,7 @@
 
   <section class="oc-section" aria-labelledby="frequencyPatternsTitle">
     <div class="oc-kicker mb-2">Patterns</div>
-    <h2 class="h4 fw-bold mb-3" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Frequency Patterns</h2>
+    <h2 class="h4 fw-bold mb-3" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Top Coverage Patterns</h2>
     <div class="insight-grid">
       <div class="pattern-card">
         <div class="pattern-card-head">
@@ -455,7 +469,7 @@
 
   <section class="oc-section" aria-labelledby="timePatternsTitle">
     <div class="oc-kicker mb-2">Timeline</div>
-    <h2 class="h4 fw-bold mb-3" id="timePatternsTitle" style="color:var(--oc-ink);">Coverage Over Time</h2>
+    <h2 class="h4 fw-bold mb-3" id="timePatternsTitle" style="color:var(--oc-ink);">Catalog Growth by Year</h2>
     <div class="time-card">
       <div id="timePatternBars" class="text-muted small">Loading...</div>
       <div class="time-legend" aria-label="Time pattern legend">
@@ -973,7 +987,7 @@
     return parts.length ? parts.join(' / ') : 'No linked resources';
   }
 
-  function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12}){
+  function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12, scaleMax = 0}){
     const container = document.getElementById(containerId);
     if(!container) return;
     const ranked = items
@@ -984,6 +998,7 @@
       container.textContent = 'No coverage data is available yet.';
       return;
     }
+    const maxTotal = Math.max(Number(scaleMax || 0), ...ranked.map(coverageTotal), 1);
     container.classList.remove('text-muted', 'small');
     container.innerHTML = `
       <div class="rank-panel" data-frequency-panel="${esc(containerId)}">
@@ -995,13 +1010,16 @@
           const total = Math.max(ds + models, 1);
           const dsWidth = ds ? Math.round((ds / total) * 100) : 0;
           const modelWidth = models ? 100 - dsWidth : 0;
+          const totalWidth = Math.max(8, Math.round((coverageTotal(item) / maxTotal) * 100));
           return `
             <li class="rank-row${index >= limit ? ' is-hidden' : ''}">
               <a href="${esc(hrefBuilder(item))}">${esc(label)}</a>
               <span class="rank-count">${esc(countLabel(item))}</span>
-              <span class="rank-mix" aria-hidden="true">
-                ${ds ? `<span class="rank-segment dataset" style="width:${dsWidth}%"></span>` : ''}
-                ${models ? `<span class="rank-segment model" style="width:${modelWidth}%"></span>` : ''}
+              <span class="rank-scale" aria-hidden="true">
+                <span class="rank-mix" style="width:${totalWidth}%">
+                  ${ds ? `<span class="rank-segment dataset" style="width:${dsWidth}%"></span>` : ''}
+                  ${models ? `<span class="rank-segment model" style="width:${modelWidth}%"></span>` : ''}
+                </span>
               </span>
             </li>
           `;
@@ -1215,14 +1233,22 @@
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
     document.getElementById('statApps').textContent  = String(apps.length || 0);
 
+    const coverageScaleMax = Math.max(
+      ...tasks.map(coverageTotal),
+      ...apps.map(coverageTotal),
+      1
+    );
+
     renderFrequencyBars({
       containerId: 'taskFrequencyBars',
       items: tasks,
+      scaleMax: coverageScaleMax,
       hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
     renderFrequencyBars({
       containerId: 'appFrequencyBars',
       items: apps,
+      scaleMax: coverageScaleMax,
       hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
     renderTimePattern(datasets, models);
