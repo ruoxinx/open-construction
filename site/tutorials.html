@@ -17,6 +17,51 @@
   <meta property="og:description" content="OpenConstruction tutorial videos, tutorial documentation, and submission guidance for contributors.">
   <meta property="og:url" content="https://www.openconstruction.org/tutorials.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "VideoObject",
+        "name": "How to Submit Assets to OpenConstruction",
+        "description": "A short walkthrough for preparing an asset submission and avoiding common metadata gaps.",
+        "embedUrl": "https://player.vimeo.com/video/1220638773",
+        "url": "https://www.openconstruction.org/tutorials.html",
+        "publisher": {
+          "@type": "Organization",
+          "name": "OpenConstruction Open Science Initiative",
+          "url": "https://www.openconstruction.org/"
+        },
+        "learningResourceType": "Tutorial video",
+        "associatedMedia": {
+          "@type": "MediaObject",
+          "name": "How to Submit an Asset to OpenConstruction tutorial documentation",
+          "contentUrl": "https://www.openconstruction.org/docs/tutorials/How%20to%20Submit%20an%20Asset%20to%20OpenConstruction.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      },
+      {
+        "@type": "VideoObject",
+        "name": "How to Report an Issue to OpenConstruction",
+        "description": "A short walkthrough for reporting broken links, incorrect metadata, duplicates, or license concerns.",
+        "embedUrl": "https://player.vimeo.com/video/1220638772",
+        "url": "https://www.openconstruction.org/tutorials.html",
+        "publisher": {
+          "@type": "Organization",
+          "name": "OpenConstruction Open Science Initiative",
+          "url": "https://www.openconstruction.org/"
+        },
+        "learningResourceType": "Tutorial video",
+        "associatedMedia": {
+          "@type": "MediaObject",
+          "name": "How to Report an Issue to OpenConstruction tutorial documentation",
+          "contentUrl": "https://www.openconstruction.org/docs/tutorials/How%20to%20Report%20an%20Issue%20to%20OpenConstruction.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -44,17 +89,19 @@
     .play-button svg{width:27px;height:27px;fill:currentColor;transform:translateX(2px)}
     .status-pill,.mini-label{display:inline-flex;align-items:center;width:max-content;min-height:22px;border:1px solid #d9e6ef;border-radius:6px;background:#f7fafc;color:#526071;font-size:.68rem;font-weight:850;line-height:1;padding:.18rem .45rem;text-transform:uppercase}
     .video-copy{display:flex;flex-direction:column;gap:.7rem;padding:.15rem .15rem .15rem 0}
-    .video-copy h2{color:var(--oc-ink);font-size:1.22rem;font-weight:850;line-height:1.25;margin:0}
+    .video-copy h2,.video-copy h3{color:var(--oc-ink);font-size:1.22rem;font-weight:850;line-height:1.25;margin:0}
     .video-copy p,.tutorial-card p{color:var(--oc-sub);font-size:.9rem;line-height:1.48;margin:0}
     .highlight-list{display:grid;gap:.35rem;margin:.15rem 0 0;padding-left:1.1rem;color:var(--oc-sub)}
     .highlight-list li{font-size:.9rem;line-height:1.42}
-    .tutorial-grid{display:grid;gap:.85rem}
-    .tutorial-card{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);gap:.55rem 1rem;align-items:start;padding:1rem;min-width:0}
+    .tutorial-grid{display:grid;gap:.7rem}
+    .tutorial-card{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:.42rem .9rem;align-items:start;padding:.78rem .9rem;min-width:0}
     .tutorial-card .card-video-frame{grid-column:1;grid-row:1 / span 4}
-    .tutorial-card .mini-label,.tutorial-card h3,.tutorial-card p,.tutorial-card .tutorial-actions{grid-column:2}
-    .tutorial-card h3{color:var(--oc-ink);font-size:1.04rem;font-weight:850;line-height:1.28;margin:0}
-    .tutorial-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.2rem}
-    .tutorial-actions a,.tutorial-actions button{display:inline-flex;align-items:center;min-height:34px;border:1px solid #d9e6ef;border-radius:6px;color:var(--oc-ink);background:#fff;font-size:.84rem;font-weight:750;line-height:1;text-decoration:none;padding:.45rem .65rem}
+    .tutorial-card .mini-label,.tutorial-card h3,.tutorial-card p,.tutorial-card .tutorial-tags,.tutorial-card .tutorial-actions{grid-column:2}
+    .tutorial-card h3{color:var(--oc-ink);font-size:1rem;font-weight:800;line-height:1.24;margin:0}
+    .tutorial-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin:.02rem 0 0}
+    .tutorial-tags span{display:inline-flex;align-items:center;min-height:21px;border:1px solid #e1e9f1;border-radius:6px;background:#fbfdff;color:var(--oc-sub);font-size:.7rem;font-weight:650;line-height:1;padding:.2rem .42rem}
+    .tutorial-actions{display:flex;flex-wrap:wrap;gap:.48rem;margin-top:.08rem}
+    .tutorial-actions a,.tutorial-actions button{display:inline-flex;align-items:center;min-height:32px;border:1px solid #d9e6ef;border-radius:6px;color:var(--oc-ink);background:#fff;font-size:.82rem;font-weight:750;line-height:1;text-decoration:none;padding:.4rem .6rem}
     .tutorial-actions button{cursor:pointer}
     .tutorial-actions .primary{border-color:#c8d8e8;background:#eef6ff;color:#1f4f82}
     .tutorial-actions a:hover,.tutorial-actions a:focus,.tutorial-actions button:hover,.tutorial-actions button:focus{border-color:#b9c8d6;color:var(--oc-link);text-decoration:none}
@@ -93,7 +140,7 @@
     .video-modal .btn-close{filter:invert(1);opacity:.8}
     .modal-video-frame{position:relative;aspect-ratio:16 / 9;background:#000}
     .modal-video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    @media (max-width:991.98px){.video-card,.tutorial-card{grid-template-columns:1fr}.tutorial-card .card-video-frame,.tutorial-card .mini-label,.tutorial-card h3,.tutorial-card p,.tutorial-card .tutorial-actions{grid-column:1;grid-row:auto}.video-copy{padding:.1rem}}
+    @media (max-width:991.98px){.video-card,.tutorial-card{grid-template-columns:1fr}.tutorial-card .card-video-frame,.tutorial-card .mini-label,.tutorial-card h3,.tutorial-card p,.tutorial-card .tutorial-tags,.tutorial-card .tutorial-actions{grid-column:1;grid-row:auto}.video-copy{padding:.1rem}}
     @media (max-width:767.98px){.section-head h2{white-space:normal}}
     @media (max-width:575.98px){header.hero .content{padding:40px 0 24px}}
   </style>
@@ -122,15 +169,20 @@
 </header>
 
 <main id="mainContent">
-  <section class="tutorial-section" aria-labelledby="featuredTutorialTitle">
+  <section class="tutorial-section" aria-labelledby="featuredSectionTitle">
     <div class="container oc-container">
+      <div class="section-head">
+        <div>
+          <h2 id="featuredSectionTitle">Featured Tutorial</h2>
+        </div>
+      </div>
       <div class="video-card">
         <div class="video-stage">
           <iframe src="https://player.vimeo.com/video/1220638773?badge=0&amp;autopause=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;player_id=0&amp;app_id=58479" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen title="How to Submit Assets to OpenConstruction"></iframe>
         </div>
         <div class="video-copy">
-          <span class="status-pill">Featured Video</span>
-          <h2 id="featuredTutorialTitle">Submit an Asset to OpenConstruction</h2>
+          <span class="status-pill">Submission Tutorial</span>
+          <h3 id="featuredTutorialTitle">Submit an Asset to OpenConstruction</h3>
           <p>A short walkthrough for preparing an asset submission and avoiding the most common metadata gaps.</p>
           <ul class="highlight-list">
             <li>Prepare title, source URL, license, and contributor information.</li>
@@ -151,7 +203,7 @@
       <div class="section-head">
         <div>
           <div class="kicker">Gallery</div>
-          <h2 id="tutorialGalleryTitle">Tutorial Library</h2>
+          <h2 id="tutorialGalleryTitle">Tutorial Videos</h2>
         </div>
       </div>
 
@@ -160,9 +212,14 @@
           <div class="card-video-frame">
             <iframe src="https://player.vimeo.com/video/1220638773?badge=0&amp;autopause=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;player_id=0&amp;app_id=58479" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen title="How to Submit Assets to OpenConstruction"></iframe>
           </div>
-          <span class="mini-label">Video + Documentation</span>
+          <span class="mini-label">Submission Tutorial</span>
           <h3>Submit an Asset</h3>
           <p>Prepare the key metadata fields before sending a resource for review.</p>
+          <div class="tutorial-tags" aria-label="Tutorial topics">
+            <span>Submission</span>
+            <span>Metadata</span>
+            <span>Documentation</span>
+          </div>
           <div class="tutorial-actions">
             <button class="primary" type="button" data-video-id="1220638773" data-video-title="How to Submit Assets to OpenConstruction">Watch</button>
             <a href="docs/tutorials/How%20to%20Submit%20an%20Asset%20to%20OpenConstruction.pdf">Tutorial Documentation</a>
@@ -173,9 +230,14 @@
           <div class="card-video-frame">
             <iframe src="https://player.vimeo.com/video/1220638772?badge=0&amp;autopause=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;player_id=0&amp;app_id=58479" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen title="How to Report an Issue to OpenConstruction"></iframe>
           </div>
-          <span class="mini-label">Video + Documentation</span>
+          <span class="mini-label">Issue Reporting Tutorial</span>
           <h3>Report an Issue</h3>
           <p>Report broken links, incorrect metadata, duplicates, or license concerns.</p>
+          <div class="tutorial-tags" aria-label="Tutorial topics">
+            <span>Issue Reporting</span>
+            <span>Corrections</span>
+            <span>Review</span>
+          </div>
           <div class="tutorial-actions">
             <button class="primary" type="button" data-video-id="1220638772" data-video-title="How to Report an Issue to OpenConstruction">Watch</button>
             <a href="docs/tutorials/How%20to%20Report%20an%20Issue%20to%20OpenConstruction.pdf">Tutorial Documentation</a>
@@ -232,7 +294,7 @@
   </div>
 </div>
 
-<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html#referencesTitle" class="text-muted">References</a></small></div></div></footer>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html#referencesTitle" class="text-muted">References</a></small></div></div></footer>
 <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
