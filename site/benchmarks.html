@@ -126,6 +126,24 @@
     }
     .rank-legend .dataset{background:#2f6fa7}
     .rank-legend .model{background:#368461}
+    .section-title-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+    .section-title-row h2{margin-bottom:0}
+    .section-note{
+      color:var(--oc-subtle);
+      font-size:.84rem;
+      margin:-.4rem 0 1rem;
+    }
+    .pattern-count{
+      color:var(--oc-subtle);
+      font-size:.78rem;
+      font-weight:550;
+    }
     .rank-scale{
       grid-column:1 / -1;
       width:100%;
@@ -166,42 +184,35 @@
     .rank-row a{
       color:var(--oc-text);
       font-size:.9rem;
-      font-weight:560;
+      font-weight:500;
       line-height:1.25;
       text-decoration:none;
       min-width:0;
     }
     .rank-row a:hover,.rank-row a:focus{color:var(--oc-link);text-decoration:underline}
-    .rank-count{color:var(--oc-subtle);font-size:.82rem;font-weight:560;white-space:nowrap}
+    .rank-count{color:var(--oc-subtle);font-size:.82rem;font-weight:500;white-space:nowrap}
     .rank-count{
       display:inline-flex;
       align-items:center;
-      gap:.42rem;
-    }
-    .rank-count::before{
-      content:"";
-      width:.44rem;
-      height:.44rem;
-      border-radius:50%;
-      background:#2f6fa7;
-      opacity:.75;
     }
     .pattern-toggle,
     .index-toggle{
-      border:1px solid #d9e3ee;
-      border-radius:8px;
-      background:#fff;
-      color:var(--oc-ink);
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--oc-link);
       font-size:.8rem;
-      font-weight:700;
-      padding:.34rem .7rem;
+      font-weight:650;
+      padding:.2rem 0;
+      text-decoration:none;
     }
     .pattern-toggle:hover,
     .pattern-toggle:focus,
     .index-toggle:hover,
     .index-toggle:focus{
-      border-color:#b9c8d6;
-      background:#f7fafc;
+      background:transparent;
+      color:var(--oc-ink);
+      text-decoration:underline;
     }
     .time-card{
       background:#fff;
@@ -344,6 +355,8 @@
 	  .index-grid{ grid-template-columns: 1fr; }
       .rank-row{grid-template-columns:1fr}
       .rank-count{white-space:normal}
+      .section-title-row{align-items:flex-start;flex-direction:column}
+      .rank-legend{white-space:normal}
       .section-inline-head{align-items:stretch;flex-direction:column}
       .index-search{width:100%}
 	}
@@ -430,7 +443,7 @@
 		<div class="col-md-4">
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
-			  <div class="oc-card-title">Datasets / Models</div>
+			  <div class="oc-card-title">Datasets and Models</div>
 			  <div class="display-6 fw-bold mb-1 stat-value">
 				<span id="statDatasets">&mdash;</span> / <span id="statModels">&mdash;</span>
 			  </div>
@@ -442,25 +455,24 @@
 
   <section class="oc-section" aria-labelledby="frequencyPatternsTitle">
     <div class="oc-kicker mb-2">Patterns</div>
-    <h2 class="h4 fw-bold mb-3" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Top Coverage Patterns</h2>
+    <div class="section-title-row">
+      <h2 class="h4 fw-bold" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Top Coverage Patterns</h2>
+      <div class="rank-legend" aria-label="Coverage bar legend">
+        <span><i class="dataset"></i>Datasets</span>
+        <span><i class="model"></i>Models</span>
+      </div>
+    </div>
+    <p class="section-note">Bars are scaled by total linked resources; color indicates the dataset and model mix.</p>
     <div class="insight-grid">
       <div class="pattern-card">
         <div class="pattern-card-head">
-          <h3>Tasks</h3>
-          <div class="rank-legend" aria-label="Frequency composition legend">
-            <span><i class="dataset"></i>Datasets</span>
-            <span><i class="model"></i>Models</span>
-          </div>
+          <h3>Tasks <span class="pattern-count" id="taskPatternCount"></span></h3>
         </div>
         <div id="taskFrequencyBars" class="text-muted small">Loading...</div>
       </div>
       <div class="pattern-card">
         <div class="pattern-card-head">
-          <h3>Applications</h3>
-          <div class="rank-legend" aria-label="Frequency composition legend">
-            <span><i class="dataset"></i>Datasets</span>
-            <span><i class="model"></i>Models</span>
-          </div>
+          <h3>Applications <span class="pattern-count" id="appPatternCount"></span></h3>
         </div>
         <div id="appFrequencyBars" class="text-muted small">Loading...</div>
       </div>
@@ -483,7 +495,7 @@
     <div class="section-inline-head">
       <div>
         <div class="oc-kicker mb-2">Browse</div>
-        <h2 class="h4 fw-bold" style="color:var(--oc-ink);">Task &amp; Application Index</h2>
+        <h2 class="h4 fw-bold" style="color:var(--oc-ink);">Browse Tasks and Applications</h2>
       </div>
       <label class="index-search" for="indexSearch">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
@@ -1232,6 +1244,8 @@
 
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
     document.getElementById('statApps').textContent  = String(apps.length || 0);
+    document.getElementById('taskPatternCount').textContent = `· ${tasks.length || 0} categories`;
+    document.getElementById('appPatternCount').textContent = `· ${apps.length || 0} categories`;
 
     const coverageScaleMax = Math.max(
       ...tasks.map(coverageTotal),
