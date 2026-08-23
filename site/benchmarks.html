@@ -558,7 +558,6 @@
         <span><i class="model"></i>Models</span>
       </div>
     </div>
-    <p class="section-note">Bars are scaled by total linked resources; color indicates the dataset and model mix.</p>
     <div class="insight-grid">
       <div class="pattern-card">
         <div class="pattern-card-head">
@@ -580,11 +579,11 @@
     <h2 class="h4 fw-bold mb-3" id="compositionTitle" style="color:var(--oc-ink);">Metadata Profile</h2>
     <div class="composition-grid">
       <div class="composition-card">
-        <h3>Data Modality</h3>
+        <h3>Primary Data Modality</h3>
         <div id="modalityDonut" class="text-muted small">Loading...</div>
       </div>
       <div class="composition-card">
-        <h3>License Status</h3>
+        <h3>Recorded License Status</h3>
         <div id="licenseDonut" class="text-muted small">Loading...</div>
       </div>
     </div>
@@ -1157,7 +1156,8 @@
     return parts.length ? parts.join(' / ') : 'No linked resources';
   }
 
-  const DONUT_COLORS = ['#2f6fa7', '#368461', '#c9822d', '#765aa6', '#2d8a9b', '#8a6f3f', '#6b7f92', '#b8c4cf'];
+  const DONUT_COLORS = ['#3d6f9f', '#4f8a70', '#9b7a45', '#7b7098', '#5c8a96', '#7f8792', '#b8c4cf'];
+  const DONUT_OTHER_COLOR = '#b8c4cf';
 
   function metadataTerms(...values){
     const out = [];
@@ -1250,11 +1250,14 @@
       return;
     }
     let cursor = 0;
+    const colorForSlice = (row, index) => row.label === 'Other'
+      ? DONUT_OTHER_COLOR
+      : DONUT_COLORS[index % DONUT_COLORS.length];
     const gradient = slices.map((row, index) => {
       const start = cursor;
       const end = cursor + (row.count / total) * 360;
       cursor = end;
-      return `${DONUT_COLORS[index % DONUT_COLORS.length]} ${start.toFixed(2)}deg ${end.toFixed(2)}deg`;
+      return `${colorForSlice(row, index)} ${start.toFixed(2)}deg ${end.toFixed(2)}deg`;
     }).join(', ');
     container.classList.remove('text-muted', 'small');
     container.innerHTML = `
@@ -1265,7 +1268,7 @@
         <ol class="composition-list">
           ${slices.map((row, index) => `
             <li>
-              <i style="background:${DONUT_COLORS[index % DONUT_COLORS.length]}"></i>
+              <i style="background:${colorForSlice(row, index)}"></i>
               <span class="composition-label">${esc(row.label)}</span>
               <span class="composition-value">${row.count}</span>
             </li>
