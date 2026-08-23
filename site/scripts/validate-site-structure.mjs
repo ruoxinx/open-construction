@@ -40,6 +40,8 @@ const expectedTopLevelHtml = new Set([
   "schema.html",
   "taxonomy.html",
   "tools.html",
+  "tutorials.html",
+  "references.html",
   "verify.html",
 ]);
 
@@ -152,7 +154,7 @@ for (const file of [...topLevelHtml, ...nestedHtml]) {
   if (!labels.includes("Catalog") && !labels.includes("Libraries")) {
     fail(`site/${file} nav missing Catalog`);
   }
-  for (const label of ["Docs", "Contribute", "Community"]) {
+  for (const label of ["Learn", "Contribute", "Community"]) {
     if (!labels.includes(label)) fail(`site/${file} nav missing ${label}`);
   }
 }

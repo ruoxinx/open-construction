@@ -34,6 +34,10 @@
     'benchmark_results.html': 'benchmarks',
     'object_class': 'benchmarks',
     'object_class.html': 'benchmarks',
+    'tutorials': 'learn',
+    'tutorials.html': 'learn',
+    'references': 'learn',
+    'references.html': 'learn',
     'schema': 'docs',
     'schema.html': 'docs',
     'tools': 'docs',
@@ -63,11 +67,11 @@
 
   const ROUTE_GROUPS = {
     libraries: new Set(['dataset', 'models', 'deployments', 'oer']),
-    docs: new Set(['docs'])
+    learn: new Set(['learn'])
   };
 
   const CATALOG_TITLE_FILES = new Set(['dataset.html', 'models.html', 'deployments.html', 'oer.html']);
-  const DOCS_TITLE_FILES = new Set(['schema.html', 'tools.html', 'guides.html', 'mcp.html']);
+  const DOCS_TITLE_FILES = new Set(['tutorials.html', 'references.html', 'schema.html', 'tools.html', 'guides.html', 'mcp.html']);
   const PAGE_TITLE_FILES = new Set(['benchmarks.html', 'contribute.html', 'contributors.html']);
 
   const CATALOG_META = {
@@ -90,6 +94,14 @@
   };
 
   const DOCS_META = {
+    'tutorials.html': {
+      label: 'Tutorial',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="m10 9 5 3-5 3V9Z"></path></svg>'
+    },
+    'references.html': {
+      label: 'Documentation',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2"></rect><path d="M8.5 8h7"></path><path d="M8.5 12h7"></path><path d="M8.5 16h4.5"></path><path d="M17 3.5v4h2"></path></svg>'
+    },
     'schema.html': {
       label: 'Schema',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>'
@@ -110,12 +122,12 @@
 
   const PAGE_TITLE_META = {
     'benchmarks.html': {
-      label: 'Benchmarks',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="oc-icon-fill" cx="12" cy="12" r="6.5"></circle><circle cx="12" cy="12" r="6.5"></circle><circle cx="12" cy="12" r="2.1"></circle><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path></svg>'
+      label: 'Catalog Insights',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>'
     },
     'contribute.html': {
       label: 'Contribute',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M5 17.5V20h2.5L18.4 9.1l-2.5-2.5L5 17.5Z"></path><path d="M5 17.5V20h2.5L18.4 9.1a1.8 1.8 0 0 0 0-2.5 1.8 1.8 0 0 0-2.5 0L5 17.5Z"></path><path d="m14.6 7.9 2.5 2.5"></path></svg>'
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M5 16.5h14V20H5v-3.5Z"></path><path d="M5 16.5V20h14v-3.5"></path><path d="M12 4v10"></path><path d="m8 8 4-4 4 4"></path><path d="M8.5 12.5h-2A1.5 1.5 0 0 0 5 14v2.5"></path><path d="M15.5 12.5h2A1.5 1.5 0 0 1 19 14v2.5"></path></svg>'
     },
     'contributors.html': {
       label: 'Community',
@@ -130,17 +142,17 @@
       dropdown: true
     },
     benchmarks: {
-      label: 'Benchmarks',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5"></circle><circle cx="12" cy="12" r="2.1"></circle><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path></svg>'
+      label: 'Insights',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>'
     },
-    docs: {
-      label: 'Docs',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>',
+    learn: {
+      label: 'Learn',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9 12 4l9 5-9 5-9-5Z"></path><path d="M7 11.2v4.1c0 1.4 2.2 2.7 5 2.7s5-1.3 5-2.7v-4.1"></path><path d="M21 9v5"></path></svg>',
       dropdown: true
     },
     contribute: {
       label: 'Contribute',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17.5V20h2.5L18.4 9.1a1.8 1.8 0 0 0 0-2.5 1.8 1.8 0 0 0-2.5 0L5 17.5Z"></path><path d="m14.6 7.9 2.5 2.5"></path></svg>'
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16.5V20h14v-3.5"></path><path d="M12 4v10"></path><path d="m8 8 4-4 4 4"></path><path d="M8.5 12.5h-2A1.5 1.5 0 0 0 5 14v2.5"></path><path d="M15.5 12.5h2A1.5 1.5 0 0 1 19 14v2.5"></path></svg>'
     },
     contributors: {
       label: 'Community',
@@ -243,9 +255,8 @@
     if (ROUTE_GROUPS.libraries.has(route)) {
       document.getElementById('ddLibraries')?.classList.add('active');
     }
-    if (ROUTE_GROUPS.docs.has(route)) {
-      const docsLink = document.getElementById('ddDocs') || document.getElementById('ddResourcesMenu');
-      docsLink?.classList.add('active');
+    if (ROUTE_GROUPS.learn.has(route)) {
+      document.getElementById('ddResourcesMenu')?.classList.add('active');
     }
   }
 
@@ -264,7 +275,7 @@
     [
       { selector: '#ddLibraries, #ddCatalogs', key: 'catalog' },
       { selector: '.nav-link.plain[data-route="benchmarks"], .nav-link.plain[href$="benchmarks.html"]', key: 'benchmarks' },
-      { selector: '#ddDocs, #ddResourcesMenu', key: 'docs' },
+      { selector: '#ddResourcesMenu', key: 'learn' },
       { selector: '.nav-link.plain[data-route="contribute"], .nav-link.plain[href$="contribute.html"]', key: 'contribute' },
       { selector: '.nav-link.plain[data-route="contributors"], .nav-link.plain[href$="contributors.html"]', key: 'contributors' }
     ].forEach(({ selector, key }) => {
@@ -454,7 +465,7 @@
     nav.querySelectorAll('.dropdown-item').forEach(item => {
       const itemHref = item.getAttribute('href');
       const itemRoute = routeForHref(itemHref);
-      if (itemRoute === currentRoute && (currentRoute !== 'docs' || fileForHref(itemHref) === currentFile)) {
+      if (itemRoute === currentRoute && (!['docs', 'learn'].includes(currentRoute) || fileForHref(itemHref) === currentFile)) {
         item.classList.add('active');
       }
     });
@@ -731,10 +742,8 @@
         margin-left:0;
         margin-right:0;
       }
-      header.hero .oc-docs-title{
-        justify-content:center;
-        margin-left:auto;
-        margin-right:auto;
+      header.hero h1.oc-docs-title{
+        max-width:100%;
       }
       .oc-docs-title-copy{
         min-width:0;
@@ -1035,7 +1044,7 @@
     if (document.getElementById('ocAiLauncher')) return;
     injectAiAssistantStyles();
     document.body.classList.add('oc-ai-floating-mounted');
-    const privacyHref = `${pagePrefix()}contribute.html#privacy`;
+    const privacyHref = `${pagePrefix()}references.html#privacy`;
     const examplePrompt = 'e.g. Find datasets for construction safety with worker, PPE, or equipment annotations';
     const wrap = document.createElement('div');
     wrap.innerHTML = `

@@ -45,6 +45,7 @@ database/
 *.log
 *.tmp
 *.temp
+tmp/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -91,6 +92,10 @@ site/assets/img/models/*
 
 # Downloaded/generated certificates
 openconstruction-*-certificate.pdf
+
+# Local-only source/support files for public tutorial assets
+site/docs/tutorials/*.docx
+/References
 
 # Local role-management SQL validation helpers
 site/scripts/validate-role-management.mjs

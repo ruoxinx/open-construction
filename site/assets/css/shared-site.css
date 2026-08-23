@@ -310,10 +310,8 @@ a{ color:var(--oc-link); }
   margin-right:0;
 }
 
-header.hero .oc-docs-title{
-  justify-content:center;
-  margin-left:auto;
-  margin-right:auto;
+header.hero h1.oc-docs-title{
+  max-width:100%;
 }
 
 .oc-docs-title-copy{

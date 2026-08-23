@@ -486,7 +486,7 @@ function abstractToggleHtml(text, opts = {}){
 
 function licenseDisplayLabel(licVal){
   const norm = safeText(licVal);
-  if (norm === 'â€”') return '';
+  if (norm === '—') return '';
   const key = String(licVal).trim().toUpperCase();
   const labels = {
     'CC0': 'Creative Commons CC0 Public Domain Dedication',
@@ -1124,7 +1124,7 @@ function linkedTaskChipLane(list){
     const label = taskChipLabel(rawLabel);
     const href = taskBenchmarkHref(rawLabel);
     if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
-    return `<a class="chip chip-link" href="${href}" title="View benchmark page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+    return `<a class="chip chip-link" href="${href}" title="View insight page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
   }).join('')}</div>`;
 }
 
@@ -1140,7 +1140,7 @@ function linkedApplicationChipLane(list){
   return `<div class="chip-lane">${items.map(label => {
     const href = applicationBenchmarkHref(label);
     if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
-    return `<a class="chip chip-link" href="${href}" title="View benchmark page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+    return `<a class="chip chip-link" href="${href}" title="View insight page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
   }).join('')}</div>`;
 }
 
@@ -1210,14 +1210,14 @@ function benchmarkLinksCardHtml(boards){
   return `
     <div class="card border-0 shadow-sm mb-3">
       <div class="card-body">
-        <h2 class="h6 text-uppercase text-muted mb-3">Benchmarks &amp; Leaderboards</h2>
+        <h2 class="h6 text-uppercase text-muted mb-3">Reported Results</h2>
         <div class="d-grid gap-2">
           ${boards.map(board => {
             const isExternal = !!board.results_url;
             const href = isExternal
               ? board.results_url
               : `../benchmark_results.html?id=${encodeURIComponent(board.id || '')}`;
-            const label = isExternal ? 'Open leaderboard' : 'View benchmark results';
+            const label = isExternal ? 'Open leaderboard' : 'View reported results';
             const title = board.page_title || board.name || label;
             return href
               ? `<a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(href)}" ${isExternal ? 'target="_blank" rel="noopener"' : ''}>${escapeHtml(label)}</a><div class="small text-muted">${escapeHtml(title)}</div>`

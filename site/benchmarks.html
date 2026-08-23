@@ -9,13 +9,13 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Benchmarks</title>
-  <meta name="description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <title>Catalog Insights | OpenConstruction</title>
+  <meta name="description" content="Explore task, application, dataset, and model patterns aggregated from OpenConstruction catalog metadata.">
   <link rel="canonical" href="https://www.openconstruction.org/benchmarks.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Benchmarks">
-  <meta property="og:description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <meta property="og:title" content="Catalog Insights | OpenConstruction">
+  <meta property="og:description" content="Explore task, application, dataset, and model patterns aggregated from OpenConstruction catalog metadata.">
   <meta property="og:url" content="https://www.openconstruction.org/benchmarks.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
@@ -31,7 +31,7 @@
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#4f5d6c; --oc-border:#e7edf3;
       --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
-      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+      --oc-radius:10px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
 	.oc-container{ max-width:1080px; }
 
@@ -41,23 +41,48 @@
     .search-wrap{
       background:#fff;
       border:1px solid var(--oc-border);
-      border-radius:999px;
-      padding:.7rem .85rem;
-      box-shadow:0 12px 28px rgba(15,46,75,.07);
-      margin-top:1.35rem;
+      border-radius:10px;
+      padding:.52rem .7rem;
+      box-shadow:0 6px 18px rgba(15,46,75,.05);
+      margin-top:1rem;
     }
     .search-wrap .form-control{
       border:0;
       box-shadow:none;
-      border-radius:999px;
+      border-radius:8px;
       background:transparent;
       color:var(--oc-text);
-      font-size:.98rem;
+      font-size:.94rem;
     }
     .search-wrap .form-control::placeholder{ color:#7d8793; opacity:1; }
     .search-wrap .form-control:focus{ box-shadow:none; }
     .search-wrap svg{ color:var(--oc-ink); opacity:.78; }
+    .search-wrap .oc-search-arrow{
+      width:34px;
+      min-height:34px;
+      flex:0 0 auto;
+    }
+    .search-wrap .oc-search-arrow svg{
+      width:19px;
+      height:19px;
+      opacity:1;
+    }
     .search-hint{ color:var(--oc-subtle); font-size:.85rem; margin-top:.7rem; text-align:center; }
+    .quick-filter-row .btn{
+      border-color:#d9e3ee;
+      border-radius:8px;
+      background:#fff;
+      color:#465666;
+      font-size:.8rem;
+      font-weight:650;
+      padding:.28rem .62rem;
+    }
+    .quick-filter-row .btn:hover,
+    .quick-filter-row .btn:focus{
+      border-color:#b9c8d6;
+      background:#f7fafc;
+      color:var(--oc-ink);
+    }
 
     .oc-section{ margin-top:34px; }
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
@@ -80,7 +105,7 @@
     .index-skeleton-card{
       min-height:104px;
       border:1px solid var(--oc-border);
-      border-radius:14px;
+      border-radius:10px;
       background:
         linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.7) 50%, rgba(255,255,255,0) 100%),
         var(--oc-muted);
@@ -93,12 +118,117 @@
       display:flex;
       align-items:center;
     }
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .pattern-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:10px;
+      box-shadow:var(--oc-shadow);
+      padding:1.05rem;
+      min-width:0;
+    }
+    .pattern-card h3{
+      color:var(--oc-ink);
+      font-size:1rem;
+      font-weight:750;
+      margin:0 0 .85rem;
+    }
+    .rank-list{
+      display:grid;
+      gap:.7rem;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .rank-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:.5rem .8rem;
+      align-items:center;
+    }
+    .rank-row a{
+      color:var(--oc-text);
+      font-size:.9rem;
+      font-weight:700;
+      line-height:1.25;
+      text-decoration:none;
+      min-width:0;
+    }
+    .rank-row a:hover,.rank-row a:focus{color:var(--oc-link);text-decoration:underline}
+    .rank-count{color:var(--oc-subtle);font-size:.82rem;font-weight:700;white-space:nowrap}
+    .rank-track{
+      grid-column:1 / -1;
+      height:8px;
+      overflow:hidden;
+      border-radius:8px;
+      background:#edf3f8;
+    }
+    .rank-fill{
+      display:block;
+      height:100%;
+      min-width:4px;
+      border-radius:inherit;
+      background:linear-gradient(90deg,#0f2e4b,#2f7fc1);
+    }
+    .time-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:10px;
+      box-shadow:var(--oc-shadow);
+      padding:1.05rem;
+    }
+    .time-bars{
+      display:flex;
+      align-items:flex-end;
+      gap:.5rem;
+      min-height:168px;
+      overflow-x:auto;
+      padding:.65rem .2rem .25rem;
+      border-bottom:1px solid var(--oc-border);
+    }
+    .time-bar{
+      display:grid;
+      grid-template-rows:1fr auto;
+      justify-items:center;
+      gap:.45rem;
+      min-width:42px;
+      height:158px;
+    }
+    .time-stack{
+      display:flex;
+      flex-direction:column-reverse;
+      width:24px;
+      height:120px;
+      overflow:hidden;
+      border-radius:5px 5px 2px 2px;
+      background:#edf3f8;
+      align-self:end;
+    }
+    .time-segment{display:block;width:100%}
+    .time-segment.dataset{background:#2f6fa7}
+    .time-segment.model{background:#368461}
+    .time-bar small{color:var(--oc-subtle);font-size:.68rem;font-weight:700;line-height:1}
+    .time-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.8rem;
+      color:var(--oc-subtle);
+      font-size:.82rem;
+      font-weight:700;
+      margin-top:.75rem;
+    }
+    .time-legend span{display:inline-flex;align-items:center;gap:.35rem}
+    .time-legend i{width:.65rem;height:.65rem;border-radius:2px;display:inline-block}
     @keyframes benchSkeleton{
       from{ background-position:-220px 0, 0 0; }
       to{ background-position:220px 0, 0 0; }
     }
     .index-card{
-      background:#fff; border:1px solid var(--oc-border); border-radius:14px; box-shadow:var(--oc-shadow);
+      background:#fff; border:1px solid var(--oc-border); border-radius:10px; box-shadow:var(--oc-shadow);
       padding:14px 14px 12px; text-decoration:none; color:inherit;
       transition:transform .12s ease, border-color .12s ease;
       display:flex; gap:12px; align-items:flex-start;
@@ -108,7 +238,7 @@
     /* thumbnail (PNG-first) */
 	.index-thumb{
 	  width:72px; height:72px;              
-	  border-radius:14px;
+	  border-radius:10px;
 	  border:1px solid var(--oc-border);
 	  object-fit:cover;
 	  background:var(--oc-muted);
@@ -117,6 +247,23 @@
 	}
 
     .index-title{ font-weight:650; color:var(--oc-ink); line-height:1.2; margin:0; }
+    .index-type{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      border:1px solid var(--oc-border);
+      border-radius:6px;
+      background:#f7fafc;
+      color:var(--oc-subtle);
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      line-height:1;
+      text-transform:uppercase;
+      padding:.24rem .42rem;
+      margin-bottom:.38rem;
+    }
     .index-meta{ color:var(--oc-subtle); font-size:.88rem; margin-top:6px; display:flex; flex-direction:column; gap:2px; }
     .index-meta .dotline{ display:flex; gap:8px; align-items:center; }
     .index-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
@@ -130,6 +277,7 @@
 
 	@media (max-width: 991.98px){
 	  .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .insight-grid{ grid-template-columns:1fr; }
 	}
 	
 	@media (max-width: 991.98px){
@@ -139,6 +287,8 @@
 	/* Mobile: 1 per row */
 	@media (max-width: 575.98px){
 	  .index-grid{ grid-template-columns: 1fr; }
+      .rank-row{grid-template-columns:1fr}
+      .rank-count{white-space:normal}
 	}
 </style>
 </head>
@@ -169,14 +319,12 @@
 			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Insights</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
-            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
-            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
-            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+            <li><a class="dropdown-item" href="tutorials.html">Tutorial</a></li>
+            <li><a class="dropdown-item" href="references.html">Documentation</a></li>
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
@@ -190,23 +338,26 @@
 
 <header class="hero">
   <div class="container oc-container content">
-    <h1>AEC Benchmarks</h1>
+    <h1>Catalog Insights</h1>
 
     <!-- Search -->
-    <div class="search-wrap mt-4 mx-auto" style="max-width: 840px;">
+    <div class="search-wrap hero-search-field mx-auto" style="max-width: 680px;">
       <div class="d-flex align-items-center gap-2 px-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
              viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
         <input id="globalSearch" class="form-control" type="search"
-               placeholder="Search tasks, applications, datasets, models…"
-               aria-label="Search benchmarks">
+               placeholder="Search tasks, applications, datasets, models..."
+               aria-label="Search catalog insights">
+        <button type="button" class="oc-search-arrow" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+        </button>
       </div>
     </div>
 
     <!-- Quick filters (outside search bar) -->
-    <div class="d-flex flex-wrap justify-content-center gap-2 mt-3"
+    <div class="quick-filter-row d-flex flex-wrap justify-content-center gap-2 mt-3"
          aria-label="Quick filters">
       <button class="btn btn-sm btn-outline-dark" type="button" data-q="Object detection">
         Object detection
@@ -222,9 +373,6 @@
       </button>
     </div>
 
-    <div class="text-center text-muted small mt-2">
-      Tip: quick filters prefill the search box and update both indices.
-    </div>
   </div>
 </header>
 
@@ -248,7 +396,7 @@
 	<section class="oc-section">
 	  <div class="oc-kicker mb-2">Overview</div>
 	  <p class="text-muted mb-3">
-		Summary statistics across all benchmarkable tasks, applications, datasets, and models in OpenConstruction.
+		Summary statistics across tasks, applications, datasets, and models indexed in OpenConstruction.
 	  </p>
 
 	  <div class="row g-3">
@@ -256,7 +404,7 @@
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Tasks</div>
-			  <div class="display-6 fw-bold mb-1 stat-value" id="statTasks">—</div>
+			  <div class="display-6 fw-bold mb-1 stat-value" id="statTasks">&mdash;</div>
 			</div>
 		  </div>
 		</div>
@@ -265,7 +413,7 @@
 		  <div class="oc-card h-100">
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Applications</div>
-			  <div class="display-6 fw-bold mb-1 stat-value" id="statApps">—</div>
+			  <div class="display-6 fw-bold mb-1 stat-value" id="statApps">&mdash;</div>
 			</div>
 		  </div>
 		</div>
@@ -275,7 +423,7 @@
 			<div class="oc-card-body">
 			  <div class="oc-card-title">Datasets / Models</div>
 			  <div class="display-6 fw-bold mb-1 stat-value">
-				<span id="statDatasets">—</span> / <span id="statModels">—</span>
+				<span id="statDatasets">&mdash;</span> / <span id="statModels">&mdash;</span>
 			  </div>
 			</div>
 		  </div>
@@ -283,47 +431,61 @@
 	  </div>
 	</section>
 
-  <section class="oc-section">
-    <div class="oc-kicker mb-2">Browse</div>
-    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Task index</h2>
-    <div class="index-grid is-loading" id="taskGrid">
-      <div class="index-grid-skeleton" aria-hidden="true">
-        <div class="index-skeleton-card"></div>
-        <div class="index-skeleton-card"></div>
-        <div class="index-skeleton-card"></div>
+  <section class="oc-section" aria-labelledby="frequencyPatternsTitle">
+    <div class="oc-kicker mb-2">Patterns</div>
+    <h2 class="h4 fw-bold mb-3" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Frequency Patterns</h2>
+    <div class="insight-grid">
+      <div class="pattern-card">
+        <h3>Tasks</h3>
+        <div id="taskFrequencyBars" class="text-muted small">Loading...</div>
+      </div>
+      <div class="pattern-card">
+        <h3>Applications</h3>
+        <div id="appFrequencyBars" class="text-muted small">Loading...</div>
       </div>
     </div>
-    <div class="mt-3 text-center text-muted small" id="taskGridNote"></div>
+  </section>
+
+  <section class="oc-section" aria-labelledby="timePatternsTitle">
+    <div class="oc-kicker mb-2">Timeline</div>
+    <h2 class="h4 fw-bold mb-3" id="timePatternsTitle" style="color:var(--oc-ink);">Coverage Over Time</h2>
+    <div class="time-card">
+      <div id="timePatternBars" class="text-muted small">Loading...</div>
+      <div class="time-legend" aria-label="Time pattern legend">
+        <span><i class="time-segment dataset"></i>Datasets</span>
+        <span><i class="time-segment model"></i>Models</span>
+      </div>
+    </div>
   </section>
 
   <section class="oc-section">
     <div class="oc-kicker mb-2">Browse</div>
-    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Application index</h2>
-    <div class="index-grid is-loading" id="appGrid">
+    <h2 class="h4 fw-bold mb-3" style="color:var(--oc-ink);">Task &amp; Application Index</h2>
+    <div class="index-grid is-loading" id="insightGrid">
       <div class="index-grid-skeleton" aria-hidden="true">
         <div class="index-skeleton-card"></div>
         <div class="index-skeleton-card"></div>
         <div class="index-skeleton-card"></div>
       </div>
     </div>
-    <div class="mt-3 text-center text-muted small" id="appGridNote"></div>
+    <div class="mt-3 text-center text-muted small" id="insightGridNote"></div>
   </section>
 </main>
 
 <footer class="py-4 mt-3 oc-site-footer">
   <div class="container oc-container small text-muted text-center">
-    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
     <div class="mt-1">
       <small>
         Licensed under Apache 2.0.
-        Images and thumbnails are © their respective creators unless otherwise noted.
+        Images and thumbnails are &copy; their respective creators unless otherwise noted.
       </small>
     </div>
     <div class="mt-1">
       <small>
-        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
-        <a href="contribute.html#citation" class="text-muted">Citation</a>
+        <a href="references.html#terms" class="text-muted">Terms</a> &middot;
+        <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot;
+        <a href="references.html#referencesTitle" class="text-muted">References</a>
       </small>
     </div>
   </div>
@@ -346,7 +508,7 @@
         <div style="position:absolute; left:-5000px" aria-hidden="true">
           <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
         </div>
-        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+        <p class="small text-muted mt-2 mb-0">We'll email only when new datasets or models are added. Unsubscribe anytime.</p>
       </form>
     </div>
   </div>
@@ -371,12 +533,21 @@
   function niceLabel(s){
     const raw = normStr(s);
     if(!raw) return '';
-    const hasCaps = /[A-Z]/.test(raw);
-    if(hasCaps && raw.length <= 14) return raw;
     const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
-    return raw.toLowerCase().replace(/\b\w+\b/g, word =>
-      acronymPattern.test(word) ? word.toUpperCase() : `${word.charAt(0).toUpperCase()}${word.slice(1)}`
-    );
+    const smallWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
+    let wordIndex = 0;
+    return canonKey(raw).split(' ').map(word =>
+      word.split('/').map(segment =>
+        segment.split('-').map(part => {
+          if(!part) return part;
+          const isFirst = wordIndex === 0;
+          wordIndex += 1;
+          if(acronymPattern.test(part)) return part.toUpperCase();
+          if(!isFirst && smallWords.has(part)) return part;
+          return `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
+        }).join('-')
+      ).join('/')
+    ).join(' ');
   }
   function slugifyKey(s){
     return normStr(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0, 90) || 'key';
@@ -486,7 +657,7 @@
     if(entry){
       return {
         canon: entry.canonical_key,
-        label: entry.preferred_label || niceLabel(rawText),
+        label: niceLabel(entry.preferred_label || rawText),
         taskId: entry.id || '',
         entry
       };
@@ -499,25 +670,7 @@
     };
   }
   function formatApplicationLabel(raw){
-    const key = canonKey(raw);
-    if(!key) return '';
-    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
-    let isFirstWord = true;
-    return key.split(' ').map(word => {
-      const rendered = word.split('/').map(segment =>
-        segment.split('-').map(part => {
-          if(!part) return part;
-          if (acronymPattern.test(part)) return part.toUpperCase();
-          if (isFirstWord) {
-            isFirstWord = false;
-            return `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
-          }
-          return part;
-        }).join('-')
-      ).join('/');
-      if (rendered) isFirstWord = false;
-      return rendered;
-    }).join(' ');
+    return niceLabel(raw);
   }
   function normalizeApplicationTerm(raw){
     const rawText = normStr(raw);
@@ -648,8 +801,7 @@
 
   // -------- Progressive reveal --------
   const gridState = {
-    task: { all: [], shown: 0, batch: 20 },
-    app:  { all: [], shown: 0, batch: 20 }
+    insight: { all: [], defaultAll: [], shown: 0, batch: 24 }
   };
 
   function thumbHtml(x){
@@ -666,15 +818,9 @@
     const note = document.getElementById(noteId);
     if(el) el.classList.remove('is-loading');
 
-    if(reset){
-      gridState[kind].all = items.slice();
-      gridState[kind].shown = 0;
-    } else {
-      gridState[kind].all = items.slice();
-    }
-
     const state = gridState[kind];
-    const total = state.all.length;
+    if(reset) state.shown = 0;
+    const total = items.length;
 
     if(!total){
       el.innerHTML = `
@@ -687,20 +833,14 @@
     }
 
     const nextShown = Math.min(total, state.shown + state.batch);
-    const shownItems = state.all.slice(0, nextShown);
+    const shownItems = items.slice(0, nextShown);
     state.shown = nextShown;
 
 	el.innerHTML = shownItems.map(x=>{
 	  const label = x.label || x.canon;
 	  const href = hrefBuilder(x);
 
-	  const metaHtml = (kind === 'app')
-		? `
-		  <div class="index-meta">
-			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
-		  </div>
-		`
-		: `
+	  const metaHtml = `
 		  <div class="index-meta">
 			<div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
 			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
@@ -708,9 +848,10 @@
 		`;
 
 	  return `
-		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
+		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open insight for ${esc(label)}">
 		  ${thumbHtml(x)}
 		  <div>
+            ${x.typeLabel ? `<div class="index-type">${esc(x.typeLabel)}</div>` : ''}
 			<div class="index-title">${esc(label)}</div>
 			${metaHtml}
 		  </div>
@@ -736,10 +877,7 @@
     const needle = q.trim().toLowerCase();
     const isSearching = needle.length > 0;
 
-    const taskBuilder = (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`;
-    const appBuilder  = (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`;
-
-    function renderAllMatches(kind, elId, noteId, hrefBuilder){
+    function renderAllMatches(kind, elId, noteId){
       const all = gridState[kind].all || [];
       const filtered = !needle ? all : all.filter(x => (x.searchText || x.label || x.canon || '').toLowerCase().includes(needle));
 
@@ -755,15 +893,9 @@
 
 	el.innerHTML = filtered.map(x=>{
 	  const label = x.label || x.canon;
-	  const href = hrefBuilder(x);
+	  const href = x.href || '#';
 
-	  const metaHtml = (kind === 'app')
-		? `
-		  <div class="index-meta">
-			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
-		  </div>
-		`
-		: `
+	  const metaHtml = `
 		  <div class="index-meta">
 			<div class="dotline"><span>${iconStack()} <strong>${x.dsCount}</strong> dataset${x.dsCount===1?'':'s'}</span></div>
 			<div class="dotline"><span>${iconModel()} <strong>${x.modelCount}</strong> model${x.modelCount===1?'':'s'}</span></div>
@@ -771,9 +903,10 @@
 		`;
 
 	  return `
-		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
+		<a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open insight for ${esc(label)}">
 		  ${thumbHtml(x)}
 		  <div>
+            ${x.typeLabel ? `<div class="index-type">${esc(x.typeLabel)}</div>` : ''}
 			<div class="index-title">${esc(label)}</div>
 			${metaHtml}
 		  </div>
@@ -784,12 +917,155 @@
     }
 
     if(isSearching){
-      renderAllMatches('task', 'taskGrid', 'taskGridNote', taskBuilder);
-      renderAllMatches('app',  'appGrid',  'appGridNote',  appBuilder);
+      renderAllMatches('insight', 'insightGrid', 'insightGridNote');
     } else {
-      renderIndexGrid({ items: gridState.task.all, elId:'taskGrid', noteId:'taskGridNote', hrefBuilder: taskBuilder, kind:'task', reset:true });
-      renderIndexGrid({ items: gridState.app.all,  elId:'appGrid',  noteId:'appGridNote',  hrefBuilder: appBuilder,  kind:'app',  reset:true });
+      renderIndexGrid({ items: gridState.insight.defaultAll, elId:'insightGrid', noteId:'insightGridNote', hrefBuilder: (x) => x.href || '#', kind:'insight', reset:true });
     }
+  }
+
+  function coverageTotal(item){
+    return Number(item?.dsCount || 0) + Number(item?.modelCount || 0);
+  }
+
+  function countLabel(item){
+    const ds = Number(item?.dsCount || 0);
+    const models = Number(item?.modelCount || 0);
+    const parts = [];
+    if(ds) parts.push(`${ds} dataset${ds === 1 ? '' : 's'}`);
+    if(models) parts.push(`${models} model${models === 1 ? '' : 's'}`);
+    return parts.length ? parts.join(' / ') : 'No linked resources';
+  }
+
+  function renderFrequencyBars({containerId, items, hrefBuilder, limit = 8}){
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    const ranked = items
+      .filter(item => coverageTotal(item) > 0)
+      .slice()
+      .sort((a,b) => coverageTotal(b) - coverageTotal(a) || (a.label || a.canon).localeCompare(b.label || b.canon))
+      .slice(0, limit);
+    if(!ranked.length){
+      container.textContent = 'No coverage data is available yet.';
+      return;
+    }
+    const max = Math.max(...ranked.map(coverageTotal), 1);
+    container.classList.remove('text-muted', 'small');
+    container.innerHTML = `
+      <ol class="rank-list">
+        ${ranked.map(item => {
+          const label = item.label || item.canon;
+          const total = coverageTotal(item);
+          const width = Math.max(6, Math.round((total / max) * 100));
+          return `
+            <li class="rank-row">
+              <a href="${esc(hrefBuilder(item))}">${esc(label)}</a>
+              <span class="rank-count">${esc(countLabel(item))}</span>
+              <span class="rank-track" aria-hidden="true"><span class="rank-fill" style="width:${width}%"></span></span>
+            </li>
+          `;
+        }).join('')}
+      </ol>
+    `;
+  }
+
+  function resourceYear(item){
+    const candidates = [
+      item?.year,
+      item?.publication_year,
+      item?.published_year,
+      item?.added,
+      item?.date,
+      item?.created_at,
+      item?.updated_at
+    ];
+    for(const value of candidates){
+      const match = String(value ?? '').match(/\b(19|20)\d{2}\b/);
+      if(match){
+        const year = Number(match[0]);
+        if(year >= 1990 && year <= 2100) return year;
+      }
+    }
+    return null;
+  }
+
+  function buildYearRows(datasets, models){
+    const map = new Map();
+    function touch(year){
+      if(!map.has(year)) map.set(year, { year, datasets:0, models:0 });
+      return map.get(year);
+    }
+    datasets.forEach(item => {
+      const year = resourceYear(item);
+      if(year) touch(year).datasets += 1;
+    });
+    models.forEach(item => {
+      const year = resourceYear(item);
+      if(year) touch(year).models += 1;
+    });
+    return Array.from(map.values()).sort((a,b) => a.year - b.year);
+  }
+
+  function renderTimePattern(datasets, models){
+    const container = document.getElementById('timePatternBars');
+    if(!container) return;
+    const rows = buildYearRows(datasets, models).filter(row => row.datasets + row.models > 0);
+    if(!rows.length){
+      container.textContent = 'No year metadata is available yet.';
+      return;
+    }
+    const visible = rows.length > 14 ? rows.slice(-14) : rows;
+    const max = Math.max(...visible.map(row => row.datasets + row.models), 1);
+    container.classList.remove('text-muted', 'small');
+    container.innerHTML = `
+      <div class="time-bars" aria-label="Dataset and model coverage by year">
+        ${visible.map(row => {
+          const total = row.datasets + row.models;
+          const height = Math.max(8, Math.round((total / max) * 120));
+          const dsHeight = total ? Math.max(row.datasets ? 2 : 0, Math.round((row.datasets / total) * height)) : 0;
+          const modelHeight = Math.max(0, height - dsHeight);
+          const title = `${row.year}: ${row.datasets} dataset${row.datasets === 1 ? '' : 's'}, ${row.models} model${row.models === 1 ? '' : 's'}`;
+          return `
+            <div class="time-bar" title="${esc(title)}">
+              <div class="time-stack" aria-label="${esc(title)}">
+                <span class="time-segment dataset" style="height:${dsHeight}px"></span>
+                <span class="time-segment model" style="height:${modelHeight}px"></span>
+              </div>
+              <small>${row.year}</small>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  function buildInsightIndex(tasks, apps){
+    const taskItems = tasks.map(item => ({
+      ...item,
+      typeLabel: 'Task',
+      href: `benchmark_task.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
+      searchText: [item.searchText, item.label, item.canon, 'task'].map(normStr).filter(Boolean).join(' ')
+    }));
+    const appItems = apps.map(item => ({
+      ...item,
+      typeLabel: 'Application',
+      href: `benchmark_application.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
+      searchText: [item.searchText, item.label, item.canon, 'application'].map(normStr).filter(Boolean).join(' ')
+    }));
+    return [...taskItems, ...appItems].sort((a,b) =>
+      (a.label || a.canon).localeCompare(b.label || b.canon) ||
+      (a.typeLabel || '').localeCompare(b.typeLabel || '')
+    );
+  }
+
+  function defaultInsightItems(items){
+    const filtered = items
+      .filter(item => coverageTotal(item) >= 2)
+      .sort((a,b) =>
+        coverageTotal(b) - coverageTotal(a) ||
+        (a.label || a.canon).localeCompare(b.label || b.canon) ||
+        (a.typeLabel || '').localeCompare(b.typeLabel || '')
+      );
+    return filtered.length ? filtered : items;
   }
 
   async function init(){
@@ -855,24 +1131,29 @@
     document.getElementById('statTasks').textContent = String(tasks.length || 0);
     document.getElementById('statApps').textContent  = String(apps.length || 0);
 
-    gridState.task.all = tasks.slice();
-    gridState.app.all  = apps.slice();
-
-    renderIndexGrid({
+    renderFrequencyBars({
+      containerId: 'taskFrequencyBars',
       items: tasks,
-      elId: 'taskGrid',
-      noteId: 'taskGridNote',
-      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
-      kind: 'task',
-      reset: true
+      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
+    renderFrequencyBars({
+      containerId: 'appFrequencyBars',
+      items: apps,
+      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
+    });
+    renderTimePattern(datasets, models);
+
+    const insights = buildInsightIndex(tasks, apps);
+    const defaultInsights = defaultInsightItems(insights);
+    gridState.insight.all = insights.slice();
+    gridState.insight.defaultAll = defaultInsights.slice();
 
     renderIndexGrid({
-      items: apps,
-      elId: 'appGrid',
-      noteId: 'appGridNote',
-      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
-      kind: 'app',
+      items: defaultInsights,
+      elId: 'insightGrid',
+      noteId: 'insightGridNote',
+      hrefBuilder: (x) => x.href || '#',
+      kind: 'insight',
       reset: true
     });
 
@@ -885,22 +1166,13 @@
       const btn = e.target.closest('button[data-show-more]');
       if(!btn) return;
       const kind = btn.getAttribute('data-show-more');
-      if(kind === 'task'){
+      if(kind === 'insight'){
         renderIndexGrid({
-          items: gridState.task.all,
-          elId: 'taskGrid',
-          noteId: 'taskGridNote',
-          hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
-          kind: 'task',
-          reset: false
-        });
-      } else if(kind === 'app'){
-        renderIndexGrid({
-          items: gridState.app.all,
-          elId: 'appGrid',
-          noteId: 'appGridNote',
-          hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`,
-          kind: 'app',
+          items: gridState.insight.defaultAll,
+          elId: 'insightGrid',
+          noteId: 'insightGridNote',
+          hrefBuilder: (x) => x.href || '#',
+          kind: 'insight',
           reset: false
         });
       }

@@ -9,13 +9,13 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OpenConstruction · Task Benchmark</title>
-  <meta name="description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <title>Task Insight | OpenConstruction</title>
+  <meta name="description" content="Explore datasets and models associated with a task label in the OpenConstruction catalog.">
   <link rel="canonical" href="https://www.openconstruction.org/benchmark_task.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="OpenConstruction · Task Benchmark">
-  <meta property="og:description" content="Explore open AEC datasets, models, workflows, benchmarks, tools, schema, and educational resources on OpenConstruction.">
+  <meta property="og:title" content="Task Insight | OpenConstruction">
+  <meta property="og:description" content="Explore datasets and models associated with a task label in the OpenConstruction catalog.">
   <meta property="og:url" content="https://www.openconstruction.org/benchmark_task.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
@@ -101,14 +101,12 @@
 			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Insights</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
-            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
-            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
-            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+            <li><a class="dropdown-item" href="tutorials.html">Tutorial</a></li>
+            <li><a class="dropdown-item" href="references.html">Documentation</a></li>
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
@@ -124,7 +122,7 @@
   <div class="container oc-container content">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
       <div>
-        <div class="oc-kicker">Benchmark</div>
+        <div class="oc-kicker">Insight</div>
         <h1 id="pageTitle">Task</h1>
         <p class="lead" id="pageSubtitle">
           Datasets and models associated with this task label.
@@ -204,9 +202,9 @@
     </div>
     <div class="mt-1">
       <small>
-        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
-        <a href="contribute.html#citation" class="text-muted">Citation</a>
+        <a href="references.html#terms" class="text-muted">Terms</a> ·
+        <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
+        <a href="references.html#referencesTitle" class="text-muted">References</a>
       </small>
     </div>
   </div>
@@ -370,7 +368,7 @@
     if(externalUrl){
       return `<a href="${esc(externalUrl)}" class="btn btn-sm btn-outline-dark" target="_blank" rel="noopener" title="Open external leaderboard" aria-label="Open external leaderboard">${externalLeaderboardIcon()}</a>`;
     }
-    return `<a href="benchmark_results.html?id=${encodeURIComponent(board.id)}" class="btn btn-sm btn-outline-dark" title="Open benchmark results" aria-label="Open benchmark results">${resultsIcon()}</a>`;
+    return `<a href="benchmark_results.html?id=${encodeURIComponent(board.id)}" class="btn btn-sm btn-outline-dark" title="Open reported results" aria-label="Open reported results">${resultsIcon()}</a>`;
   }
 
   function datasetRow(ds, board){
@@ -465,7 +463,7 @@
     const key = normalizedRequested.canon || canonKey(requested);
     const label = normalizedRequested.label || requested || key || 'Task';
 
-    document.title = `OpenConstruction · Task Benchmark · ${label}`;
+    document.title = `Task Insight | ${label} | OpenConstruction`;
     document.getElementById('pageTitle').textContent = label;
 
     const taskDefinition = normalizedRequested.entry?.description || '';

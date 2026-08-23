@@ -91,7 +91,7 @@ function metaRow(label, valueHTML){
 
 function formatLicense(licenseValue){
   const norm = String(licenseValue || '').trim();
-  if (!norm || norm === '—' || norm === 'â€”') return '';
+  if (!norm || norm === '—' || norm === '—') return '';
 
   const key = norm.toUpperCase();
   const licenseMap = {
@@ -128,7 +128,7 @@ function formatLicense(licenseValue){
 
 function licenseHrefFor(licenseValue){
   const norm = String(licenseValue || '').trim();
-  if (!norm || norm === '—' || norm === 'â€”') return '';
+  if (!norm || norm === '—' || norm === '—') return '';
 
   const key = norm.toUpperCase();
   const licenseMap = {

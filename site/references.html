@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation | OpenConstruction</title>
+  <meta name="description" content="OpenConstruction documentation for tutorials, schema metadata, contribution guidelines, terms, privacy, and academic references.">
+  <link rel="canonical" href="https://www.openconstruction.org/references.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="Documentation | OpenConstruction">
+  <meta property="og:description" content="Tutorials, schema metadata, contribution guidelines, policies, and academic references for OpenConstruction contributors.">
+  <meta property="og:url" content="https://www.openconstruction.org/references.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260823-title-icons-left" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3;--oc-accent:#f2a238}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link);text-underline-offset:3px}
+    .oc-container{max-width:1080px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:54px 0 32px;text-align:left}
+    header.hero h1{color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 1.7vw,2.85rem);font-weight:780;line-height:1.08;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem}
+    .doc-main{padding:34px 0 42px}
+    .doc-section{display:grid;grid-template-columns:minmax(190px,.38fr) minmax(0,1fr);gap:2rem;border-top:1px solid var(--oc-border);padding:1.55rem 0}
+    .doc-section:first-child{border-top:0;padding-top:0}
+    .doc-section h2{color:var(--oc-ink);font-size:1.08rem;font-weight:760;line-height:1.28;margin:0}
+    .doc-section p{color:var(--oc-sub);font-size:.94rem;line-height:1.56;margin:0 0 .7rem}
+    .doc-section p:last-child{margin-bottom:0}
+    .doc-links{display:flex;flex-wrap:wrap;gap:.45rem 1rem;margin:.8rem 0 0;padding:0;list-style:none}
+    .doc-links a{font-size:.9rem;font-weight:700;text-decoration:none}
+    .doc-links a:hover,.doc-links a:focus{text-decoration:underline}
+    .citation-list{display:grid;gap:1rem;margin:0;padding:0;list-style:none}
+    .citation-list li{max-width:78ch;color:var(--oc-sub);font-size:.92rem;line-height:1.55}
+    .paper-title{display:block;color:var(--oc-text);font-size:.96rem;line-height:1.35;margin-bottom:.18rem}
+    .reference-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin-top:.35rem}
+    .bib-copy{border:0;background:transparent;color:var(--oc-link);font-size:.86rem;font-weight:700;line-height:1.2;padding:0;text-decoration:none}
+    .bib-copy:hover,.bib-copy:focus{text-decoration:underline;text-underline-offset:3px}
+    .bib-status{color:var(--oc-sub);font-size:.82rem;line-height:1.2}
+    .doc-index{display:grid;gap:.45rem;margin:0;padding:0;list-style:none}
+    .doc-index li{max-width:78ch}
+    .doc-index a{font-weight:740;text-decoration:none}
+    .doc-index a:hover,.doc-index a:focus{text-decoration:underline}
+    .doc-list{display:grid;gap:.45rem;max-width:78ch;margin:.15rem 0 .85rem;padding-left:1.15rem;color:var(--oc-sub)}
+    .doc-list li{font-size:.92rem;line-height:1.5;padding-left:.12rem}
+    .doc-more{max-width:78ch;margin-top:.55rem}
+    .doc-more summary{cursor:pointer;list-style:none;color:var(--oc-link);font-size:.88rem;font-weight:740;line-height:1.35;padding:.25rem 0 .55rem}
+    .doc-more summary::-webkit-details-marker{display:none}
+    .doc-more summary:hover,.doc-more summary:focus{text-decoration:underline;text-underline-offset:3px}
+    .doc-more h3{color:var(--oc-text);font-size:.94rem;font-weight:760;line-height:1.35;margin:1rem 0 .35rem}
+    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.doc-section{grid-template-columns:1fr}.doc-section{gap:.75rem;padding:1.3rem 0}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to documentation</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav"><div class="container oc-container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a><button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Insights</a></li><li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+            <li><a class="dropdown-item" href="tutorials.html">Tutorial</a></li>
+            <li><a class="dropdown-item active" href="references.html">Documentation</a></li>
+          </ul>
+        </li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div></div></nav>
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="kicker">Learn</div>
+    <h1>OpenConstruction Documentation</h1>
+  </div>
+</header>
+<main id="mainContent" class="doc-main">
+  <div class="container oc-container">
+    <section class="doc-section" aria-labelledby="coreDocsTitle">
+      <h2 id="coreDocsTitle">Core Documentation</h2>
+      <div>
+        <ul class="doc-index">
+          <li><a href="tutorials.html">Tutorials</a></li>
+          <li><a href="schema.html">Schema</a></li>
+          <li><a href="guides.html">Guides &amp; Frameworks</a></li>
+          <li><a href="#contributionGuidelines">Contribution Guidelines</a></li>
+          <li><a href="#terms">Terms of Use</a></li>
+          <li><a href="#privacy">Data &amp; Privacy</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contributionGuidelines" aria-labelledby="contributionGuidelinesTitle">
+      <h2 id="contributionGuidelinesTitle">Contribution Guidelines</h2>
+      <div>
+        <p>Contributions should use the OpenConstruction schema, include clear attribution and licensing, and provide enough context for others to evaluate reuse. For data-related submissions, contributors should also consider privacy, consent, site sensitivity, and access restrictions before sharing.</p>
+        <details class="doc-more">
+          <summary>Show guidelines</summary>
+          <ul class="doc-list">
+            <li>Use the standardized metadata schemas so resources stay discoverable and interoperable.</li>
+            <li>Include a clear license and preserve attribution to original authors, institutions, and sources.</li>
+            <li>Provide descriptive titles, abstracts, tasks, modalities, and other structured metadata where applicable.</li>
+            <li>Respect privacy, consent, and ethical sharing expectations for any data-related contribution.</li>
+            <li>Platform contributions can also improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
+          </ul>
+          <p>Templates and validation scripts are available in the GitHub repository, and unclear cases can be sent to support before submission.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="doc-section" id="terms" aria-labelledby="termsTitle">
+      <h2 id="termsTitle">Terms of Use</h2>
+      <div>
+        <p>OpenConstruction is free to use for research, education, and other lawful purposes. The platform indexes public metadata and links to original sources; users should preserve attribution and follow the license and access terms of linked resources.</p>
+        <details class="doc-more">
+          <summary>Show terms</summary>
+          <h3>Scope</h3>
+          <p>The platform indexes publicly accessible research metadata and links to original sources. It does not host or redistribute third-party datasets, models, code, or paywalled publications unless explicitly noted.</p>
+          <p>Project-owned code, metadata schemas, and documentation are released under the <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache 2.0 License</a> unless otherwise stated.</p>
+          <h3>Permitted Uses</h3>
+          <ul class="doc-list">
+            <li>Access and use the platform for research, educational, and other lawful purposes.</li>
+            <li>Build upon or adapt project-owned code under the terms of the Apache 2.0 License.</li>
+            <li>Cite OpenConstruction Open Science Initiative in academic publications and derivative works.</li>
+          </ul>
+          <h3>Not Allowed</h3>
+          <ul class="doc-list">
+            <li>Removing or obscuring any attribution, copyright, or license notice.</li>
+            <li>Misrepresenting authorship, ownership, affiliation, or endorsement.</li>
+            <li>Violating the license or access terms of third-party resources linked through the platform.</li>
+            <li>Republishing this platform, or a substantially similar version of it, as a separate public service without prior written consent.</li>
+            <li>Using the "OpenConstruction Open Science Initiative" name, logo, or associated marks in a way that implies unauthorized affiliation or endorsement.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="doc-section" id="privacy" aria-labelledby="privacyTitle">
+      <h2 id="privacyTitle">Data &amp; Privacy</h2>
+      <div>
+        <p>OpenConstruction keeps the catalog centered on public research metadata. Account, submission, support, saved-resource, and search-related information is used only to operate the platform, coordinate contributions, improve catalog quality, and respond to user requests.</p>
+        <details class="doc-more">
+          <summary>Show data and privacy details</summary>
+          <h3>Catalog Metadata</h3>
+          <p>OpenConstruction indexes public metadata about datasets, models, workflows, benchmarks, tools, and educational resources. The catalog points users to original sources; rights to linked datasets, models, images, publications, and other third-party materials remain with their original creators, publishers, or providers.</p>
+          <h3>Information We Receive</h3>
+          <p>We may receive information you choose to provide through email, GitHub issues, update subscriptions, resource submissions, support reports, and optional account features such as saved resources, contribution activity, and workspace search history.</p>
+          <h3>Accounts and Workspace Data</h3>
+          <p>Sign-in is handled by third-party OAuth providers such as GitHub and Google. OpenConstruction does not manage passwords. User-owned profile, saved-resource, submission, support report, role, credential, and AI search records are stored in Supabase and protected with row-level access controls.</p>
+          <h3>AI-Assisted Search</h3>
+          <p>Ask OpenConstruction uses Google Gemini to enhance catalog search and summarize matching public resource records. Questions submitted to Ask OpenConstruction and selected catalog context may be processed by Google Gemini for this purpose. Users should not submit private, confidential, or sensitive information to AI-assisted search.</p>
+          <p>Signed-in users may optionally rate Ask OpenConstruction results or leave a short comment; this feedback is stored with the related query, answer, and returned result summaries to improve search quality.</p>
+          <h3>Use, Choices, and Services</h3>
+          <p>We use information only to operate the platform, respond to requests, coordinate community contributions, maintain personal workspace features, improve catalog quality, and send updates users explicitly request. OpenConstruction Open Science Initiative does not sell personal information.</p>
+          <p>Signed-in users can download their account data or request account deletion from the workspace account page. Privacy, access, correction, or deletion requests can also be sent to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. Third-party services such as GitHub, Google, Supabase, DOI providers, CDNs, mailing-list tools, and linked resource providers operate under their own policies and terms.</p>
+          <h3>Linked Resource Responsibility</h3>
+          <p>Users are responsible for reviewing and following the license, access, and reuse terms selected by each original provider before downloading, reproducing, adapting, or redistributing linked content.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="doc-section" aria-labelledby="referencesTitle">
+      <h2 id="referencesTitle">References</h2>
+      <div>
+        <p>Recommended publications for work that builds on or discusses OpenConstruction.</p>
+        <ul class="citation-list">
+          <li><span class="paper-title">OpenConstruction: A systematic synthesis of open visual data sets for data-centric intelligence in construction monitoring</span>Xiong, R., Wang, Y., Cai, J., Liu, K., Zhu, Y., Tang, P., and El-Gohary, N. Journal of Computing in Civil Engineering, 40(5), 03126002, 2026. <a href="https://doi.org/10.1061/JCCEE5.CPENG-7313" target="_blank" rel="noopener">https://doi.org/10.1061/JCCEE5.CPENG-7313</a><div class="reference-tools"><button class="bib-copy" type="button" data-copy-bibtex="openconstruction-synthesis">Copy BibTeX</button><span class="bib-status" aria-live="polite"></span></div></li>
+          <li><span class="paper-title">Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse</span>Xiong, R., Wang, Y., Cai, J., Liu, K., Zhu, Y., Tang, P., El-Gohary, N., and Gibson Jr, G. E. Developments in the Built Environment, 26, 100909, 2026. <a href="https://doi.org/10.1016/j.dibe.2026.100909" target="_blank" rel="noopener">https://doi.org/10.1016/j.dibe.2026.100909</a><div class="reference-tools"><button class="bib-copy" type="button" data-copy-bibtex="aec-open-science">Copy BibTeX</button><span class="bib-status" aria-live="polite"></span></div></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images and thumbnails are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html#referencesTitle" class="text-muted">References</a></small></div></div></footer>
+<script>
+document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+const referenceBibtex = {
+  'openconstruction-synthesis': `@article{xiong2026openconstruction,
+  title={OpenConstruction: A Systematic Synthesis of Open Visual Data Sets for Data-Centric Intelligence in Construction Monitoring},
+  author={Xiong, Ruoxin and Wang, Yanyu and Cai, Jiannan and Liu, Kaijian and Zhu, Yuansheng and Tang, Pingbo and El-Gohary, Nora},
+  journal={Journal of Computing in Civil Engineering},
+  volume={40},
+  number={5},
+  pages={03126002},
+  year={2026},
+  doi={10.1061/JCCEE5.CPENG-7313}
+}`,
+  'aec-open-science': `@article{xiong2026aecopenscience,
+  title={Toward Open Science in the AEC Community: An Ecosystem for Sustainable Digital Assets Sharing and Reuse},
+  author={Xiong, Ruoxin and Wang, Yanyu and Cai, Jiannan and Liu, Kaijian and Zhu, Yuansheng and Tang, Pingbo and El-Gohary, Nora and Gibson Jr, George E.},
+  journal={Developments in the Built Environment},
+  volume={26},
+  pages={100909},
+  year={2026},
+  doi={10.1016/j.dibe.2026.100909}
+}`
+};
+
+async function copyText(value){
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  const area = document.createElement('textarea');
+  area.value = value;
+  area.setAttribute('readonly', '');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand('copy');
+  area.remove();
+}
+
+document.querySelectorAll('[data-copy-bibtex]').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const status = button.parentElement.querySelector('.bib-status');
+    const bibtex = referenceBibtex[button.dataset.copyBibtex];
+    if (!bibtex) return;
+    try {
+      await copyText(bibtex);
+      status.textContent = 'Copied';
+      window.setTimeout(() => { status.textContent = ''; }, 1800);
+    } catch (error) {
+      status.textContent = 'Copy failed';
+    }
+  });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script><script src="assets/js/auth.js?v=20260819-auth-cta-balance"></script><script src="assets/js/site-shell.js?v=20260823-title-icons-left2"></script>
+</body>
+</html>

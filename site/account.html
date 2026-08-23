@@ -40,14 +40,12 @@
             <li><a class="dropdown-item" href="oer.html">OERs</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Benchmarks</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="benchmarks.html">Insights</a></li>
         <li class="nav-item dropdown">
-          <a class="nav-link plain dropdown-toggle" href="#" id="ddDocs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Docs</a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddDocs">
-            <li><a class="dropdown-item" href="schema.html">Schema</a></li>
-            <li><a class="dropdown-item" href="tools.html">Tools</a></li>
-            <li><a class="dropdown-item" href="guides.html">Guides</a></li>
-            <li><a class="dropdown-item" href="mcp.html">API &amp; MCP</a></li>
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+            <li><a class="dropdown-item" href="tutorials.html">Tutorial</a></li>
+            <li><a class="dropdown-item" href="references.html">Documentation</a></li>
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link plain" href="contribute.html">Contribute</a></li>
@@ -78,9 +76,9 @@
     </div>
     <div class="mt-1">
       <small>
-        <a href="contribute.html#terms" class="text-muted">Terms</a> ·
-        <a href="contribute.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
-        <a href="contribute.html#citation" class="text-muted">Citation</a>
+        <a href="references.html#terms" class="text-muted">Terms</a> ·
+        <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
+        <a href="references.html#referencesTitle" class="text-muted">References</a>
       </small>
     </div>
   </div>
@@ -799,7 +797,7 @@
   function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports }){
     return {
       exported_at: new Date().toISOString(),
-      privacy_notice: 'https://www.openconstruction.org/contribute.html#privacy',
+      privacy_notice: 'https://www.openconstruction.org/references.html#privacy',
       account: {
         id: user.id,
         email: user.email || null,
@@ -3253,7 +3251,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
             </button>
           </form>
-          <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+          <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
         </div>
       </section>
     `;
@@ -3575,7 +3573,7 @@
                 <textarea name="q" class="form-control" rows="1" placeholder="Ask about datasets, models, workflows, or OERs..."></textarea>
                 <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
               </form>
-              <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="contribute.html#privacy">Data &amp; Privacy</a>.</p>
+              <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
             </div>
           </section>
         </section>` : ''}
@@ -3621,7 +3619,7 @@
                   <h4>Privacy and data</h4>
                   <div class="oc-settings-actions is-column">
                     <button type="button" id="downloadAccountDataBtn" class="oc-text-action">Download my data</button>
-                    <a class="oc-text-action" href="contribute.html#privacy">Privacy notice</a>
+                    <a class="oc-text-action" href="references.html#privacy">Privacy notice</a>
                     <a id="requestDeletionBtn" class="oc-text-action" href="mailto:${PRIVACY_CONTACT_EMAIL}">Request account deletion</a>
                     <span id="privacyToolStatus" class="small text-muted" role="status"></span>
                   </div>
