@@ -11,6 +11,7 @@ const expectedTopLevelDirs = new Set([
   "auth",
   "data",
   "datasets",
+  "docs",
   "models",
   "oers",
   "scripts",
