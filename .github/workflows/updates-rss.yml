@@ -27,6 +27,10 @@ jobs:
           repository: ruoxinx/open-construction-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
           path: _catalog-data
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*.json
 
       - name: Copy catalog data into site/data
         run: cp _catalog-data/*.json site/data/

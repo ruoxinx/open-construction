@@ -29,6 +29,13 @@ jobs:
           repository: ruoxinx/open-construction-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
           path: _catalog-data
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*.json
+            /img/
+            !/img/Rebar-Counting.mp4
+            !/img/Buildee.gif
 
       - name: Copy catalog data into site/data
         run: cp _catalog-data/*.json site/data/
@@ -39,7 +46,7 @@ jobs:
       - name: Copy images into site/assets/img
         run: |
           if [ -d _catalog-data/img ]; then
-            cp -r _catalog-data/img/. site/assets/img/
+            rsync -a --exclude='Rebar-Counting.mp4' --exclude='Buildee.gif' _catalog-data/img/. site/assets/img/
           else
             echo "WARNING: No img/ folder in private repo"
           fi
