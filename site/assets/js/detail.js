@@ -484,9 +484,26 @@ function abstractToggleHtml(text, opts = {}){
   `;
 }
 
+function isCustomLicense(licVal){
+  const key = String(licVal || '').trim().toUpperCase();
+  if (!key) return false;
+  return (
+    /\bCUSTOM\b/.test(key) ||
+    /\bMIXED LICENSE\b/.test(key) ||
+    /\bCOMMONS CLAUSE\b/.test(key) ||
+    /\bACADEMIC USE ONLY\b/.test(key) ||
+    /\bRESEARCH AND EDUCATIONAL? PURPOSES? ONLY\b/.test(key) ||
+    /\bPROPRIETARY\b/.test(key) ||
+    /^FI-NCA?L$/.test(key) ||
+    /^MODIFIED BSD$/.test(key) ||
+    /^BSD-3-CLAUSE-STYLE LICENSE\b/.test(key)
+  );
+}
+
 function licenseDisplayLabel(licVal){
   const norm = safeText(licVal);
   if (norm === '—') return '';
+  if (isCustomLicense(licVal)) return 'Custom License';
   const key = String(licVal).trim().toUpperCase();
   const labels = {
     'CC0': 'Creative Commons CC0 Public Domain Dedication',
@@ -532,10 +549,12 @@ function formatLicense(licVal){
     'MIT License with Commons Clause Restriction':'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
 	'LGPL-3.0':'https://www.gnu.org/licenses/lgpl-3.0.html',
     'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
-    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
+    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
-  if (licenseMap[key]) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
+  const licenseUrl = licenseMap[key] || licenseHrefFor(licVal);
+  if (licenseUrl) {
+    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
   return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
@@ -574,11 +593,13 @@ function formatLicense(licVal){
     'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
     'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
     'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
-    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
+    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
 
-  if (licenseMap[key]) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseMap[key]}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
+  const licenseUrl = licenseMap[key] || licenseHrefFor(licVal);
+  if (licenseUrl) {
+    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
   return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
@@ -613,9 +634,12 @@ function licenseHrefFor(licVal){
     'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
     'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
     'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
-    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676'
+    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
-  return licenseMap[key] || '';
+  if (licenseMap[key]) return licenseMap[key];
+  const embeddedUrl = String(licVal || '').match(/https?:\/\/\S+/i)?.[0];
+  return safeHref(embeddedUrl);
 }
 
 function licenseNoticeFor(licVal){

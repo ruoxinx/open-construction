@@ -4727,6 +4727,54 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   text-underline-offset:3px;
 }
 
+.oc-footer-socials{
+  display:inline-flex;
+  align-items:center;
+  gap:.38rem;
+  vertical-align:middle;
+}
+
+.oc-footer-social-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.45rem;
+  height:1.45rem;
+  border-radius:999px;
+  color:var(--oc-text)!important;
+  line-height:1;
+  vertical-align:middle;
+  transition:background-color .15s ease, transform .15s ease;
+}
+
+.oc-site-footer .oc-footer-social-link:hover,
+.oc-site-footer .oc-footer-social-link:focus{
+  color:var(--oc-ink)!important;
+  background:#f4f7fb;
+  text-decoration:none;
+}
+
+.oc-footer-social-link svg,
+.oc-footer-social-icon{
+  display:block;
+  width:.95rem;
+  height:.95rem;
+  fill:currentColor;
+  transition:opacity .15s ease;
+}
+
+.oc-site-footer .oc-footer-social-link:hover,
+.oc-site-footer .oc-footer-social-link:focus{
+  transform:translateY(-1px);
+}
+
+.oc-site-footer .oc-footer-social-link[aria-label*="LinkedIn"]:hover .oc-footer-social-icon,
+.oc-site-footer .oc-footer-social-link[aria-label*="LinkedIn"]:focus .oc-footer-social-icon,
+.oc-site-footer .oc-footer-social-link[aria-label*="GitHub"]:hover .oc-footer-social-icon,
+.oc-site-footer .oc-footer-social-link[aria-label*="GitHub"]:focus .oc-footer-social-icon{
+  opacity:.82;
+}
+
 @media (min-width: 992px){
   .navbar .container{
     display:flex;

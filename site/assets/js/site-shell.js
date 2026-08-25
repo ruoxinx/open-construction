@@ -4,6 +4,7 @@
 (() => {
   const AWARD_URL = 'https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086';
   const LINKEDIN_URL = 'https://www.linkedin.com/company/openconstruction-open-science-initiative/';
+  const GITHUB_URL = 'https://github.com/ruoxinx/open-construction';
   const scriptSrc = document.currentScript?.getAttribute('src') || 'assets/js/site-shell.js';
   const assetPrefix = scriptSrc.replace(/assets\/js\/site-shell\.js(?:\?.*)?$/, 'assets/');
 
@@ -519,6 +520,44 @@
         color:var(--oc-ink,#0f2e4b)!important;
         text-decoration:underline;
         text-underline-offset:3px;
+      }
+      .oc-footer-socials{
+        display:inline-flex;
+        align-items:center;
+        gap:.38rem;
+      }
+      .oc-footer-social-link{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        width:1.45rem;
+        height:1.45rem;
+        border-radius:999px;
+        color:var(--oc-subtle,#4f5d6c)!important;
+        line-height:1;
+        vertical-align:middle;
+        transition:background-color .15s ease, transform .15s ease;
+      }
+      .oc-footer-social-link:hover,
+      .oc-footer-social-link:focus{
+        color:var(--oc-ink,#0f2e4b)!important;
+        background:#f4f7fb;
+        text-decoration:none!important;
+        transform:translateY(-1px);
+      }
+      .oc-footer-social-link svg,
+      .oc-footer-social-icon{
+        display:block;
+        width:.95rem;
+        height:.95rem;
+        fill:currentColor;
+        transition:opacity .15s ease;
+      }
+      .oc-footer-social-link[aria-label*="LinkedIn"]:hover .oc-footer-social-icon,
+      .oc-footer-social-link[aria-label*="LinkedIn"]:focus .oc-footer-social-icon,
+      .oc-footer-social-link[aria-label*="GitHub"]:hover .oc-footer-social-icon,
+      .oc-footer-social-link[aria-label*="GitHub"]:focus .oc-footer-social-icon{
+        opacity:.82;
       }
       .navbar .navbar-nav{
         align-items:center;
@@ -1132,11 +1171,26 @@
     if (linksClone) {
       linksClone.classList.add('oc-footer-links');
       const linkWrap = linksClone.querySelector('small') || linksClone;
-      if (!linkWrap.querySelector('a[href*="linkedin.com/company/openconstruction-open-science-initiative"]')) {
+      linkWrap.querySelectorAll('a[href*="references.html#referencesTitle"]').forEach(link => {
+        link.textContent = 'Documentation';
+        link.setAttribute('href', (link.getAttribute('href') || '').replace('#referencesTitle', ''));
+      });
+      if (!linkWrap.querySelector('.oc-footer-socials')) {
+        linkWrap.querySelectorAll('a[href*="linkedin.com/company/openconstruction-open-science-initiative"], a[href*="github.com/ruoxinx/open-construction"]').forEach(link => {
+          link.previousElementSibling?.matches?.('span[aria-hidden="true"]') && link.previousElementSibling.remove();
+          link.remove();
+        });
         linkWrap.insertAdjacentHTML(
           'beforeend',
           ` <span aria-hidden="true">&middot;</span>
-          <a href="${LINKEDIN_URL}" class="text-muted" target="_blank" rel="noopener noreferrer">LinkedIn</a>`
+          <span class="oc-footer-socials" aria-label="OpenConstruction social links">
+            <a href="${LINKEDIN_URL}" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn">
+              <img class="oc-footer-social-icon" src="${assetPrefix}img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16">
+            </a>
+            <a href="${GITHUB_URL}" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub">
+              <img class="oc-footer-social-icon" src="${assetPrefix}img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16">
+            </a>
+          </span>`
         );
       }
     }

@@ -364,10 +364,30 @@ function datasetCountSummary(ds){
 function formatLicenseLabel(raw){
   if (raw == null) return '';
   let s = String(raw).trim();
+  if (isCustomLicense(s)) return 'Custom License';
   s = s.replace(/\bapache\s*[- ]?\s*2\.?0\b/i, 'Apache-2.0');
   s = s.replace(/\bcc\s*0\b/i, 'CC0');
   s = s.replace(/\bcc\b/gi,'CC').replace(/\bby\b/gi,'BY').replace(/\bsa\b/gi,'SA').replace(/\bnc\b/gi,'NC').replace(/\bnd\b/gi,'ND');
   return s;
+}
+function isCustomLicense(raw){
+  const key = String(raw || '').trim().toUpperCase();
+  if (!key) return false;
+  return (
+    /\bCUSTOM\b/.test(key) ||
+    /\bMIXED LICENSE\b/.test(key) ||
+    /\bCOMMONS CLAUSE\b/.test(key) ||
+    /\bACADEMIC USE ONLY\b/.test(key) ||
+    /\bRESEARCH AND EDUCATIONAL? PURPOSES? ONLY\b/.test(key) ||
+    /\bPROPRIETARY\b/.test(key) ||
+    /^FI-NCA?L$/.test(key) ||
+    /^MODIFIED BSD$/.test(key) ||
+    /^BSD-3-CLAUSE-STYLE LICENSE\b/.test(key)
+  );
+}
+function licenseFacetValue(raw){
+  const label = formatLicenseLabel(raw);
+  return label || String(raw || '').trim();
 }
 
 // ---------- canonicalize datasets (tasks/classes/modalities) ----------
@@ -461,7 +481,16 @@ function collectFacets(){
     }
     if (ds.license){
       const raw = String(ds.license).trim();
-      if (raw && !LICENSES.has(raw)) LICENSES.set(raw, formatLicenseLabel(raw));
+      const value = licenseFacetValue(raw);
+      if (raw && !LICENSES.has(value)) {
+        LICENSES.set(value, {
+          label: formatLicenseLabel(raw),
+          search: [formatLicenseLabel(raw), raw].join(' ')
+        });
+      } else if (raw) {
+        const meta = LICENSES.get(value);
+        if (meta && !meta.search.includes(raw)) meta.search = `${meta.search} ${raw}`;
+      }
     }
     if (Array.isArray(ds.classes)){
       ds.classes.forEach(c=>{
@@ -487,7 +516,11 @@ function renderFacetLists(){
     facetsBound = true;
   }
 }
-function filterByQuery(items,q){ if(!q) return items; const ql=q.toLowerCase(); return items.filter(x=>x.label.toLowerCase().includes(ql)); }
+function filterByQuery(items,q){
+  if(!q) return items;
+  const ql=q.toLowerCase();
+  return items.filter(x=>String(x.search || x.label || '').toLowerCase().includes(ql));
+}
 
 function renderModalityList(){
   const id='filter-modality', btn='toggleModality';
@@ -510,7 +543,7 @@ function renderTaskList(){
 function renderLicenseList(){
   const id='filter-license', btn='toggleLicenses';
   const q = document.getElementById('licenseSearch')?.value || '';
-  let items = Array.from(LICENSES.entries()).map(([raw,label])=>({label,value:raw})).sort((a,b)=>a.label.localeCompare(b.label));
+  let items = Array.from(LICENSES.entries()).map(([value,meta])=>({label:meta.label,value,search:meta.search})).sort((a,b)=>a.label.localeCompare(b.label));
   items = filterByQuery(items,q);
   const limited = (!showAll.licenses && !q) ? items.slice(0,CLASS_LIMIT) : items;
   const node = document.getElementById(id);
@@ -608,7 +641,7 @@ function restoreStateFromUrl(){
 
   setCheckedValues('modality', splitParam(params.get('modalities')));
   setCheckedValues('task', splitParam(params.get('tasks')));
-  setCheckedValues('license', splitParam(params.get('licenses')));
+  setCheckedValues('license', splitParam(params.get('licenses')).map(licenseFacetValue));
   setCheckedValues('class', splitParam(params.get('classes')));
   syncingUrlState = false;
 }
@@ -642,7 +675,7 @@ function applyFilters(){
 	  
 	  const clsStr = dsClassKeys.join(' ');
 	  const tskStr = dsTaskKeys.join(' ');
-	  const licStr = dsLicenseRaw.toLowerCase();
+    const licStr = [dsLicenseRaw, formatLicenseLabel(dsLicenseRaw)].join(' ').toLowerCase();
 
 	  
 	  const authorsStr =
@@ -674,7 +707,7 @@ function applyFilters(){
     }
 
     if (f.tasks.length && !dsTaskKeys.some(t=>f.tasks.includes(t))) return false;
-    if (f.licenses.length && (!dsLicenseRaw || !f.licenses.includes(dsLicenseRaw))) return false;
+    if (f.licenses.length && (!dsLicenseRaw || !f.licenses.includes(licenseFacetValue(dsLicenseRaw)))) return false;
     if (f.classes.length && !f.classes.every(c=>dsClassKeys.includes(c))) return false;
 
     return true;

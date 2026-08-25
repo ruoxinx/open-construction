@@ -42,12 +42,48 @@
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
     'MIT License with Commons Clause Restriction': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
     'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
     'BSD 3-Clause': 'https://opensource.org/license/bsd-3-clause',
     'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
     'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
-    'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/'
+    'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
+    'Custom MIT License (University of Stuttgart)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'Mixed License, see https://xview2.org/terms': 'https://xview2.org/terms',
+    'Academic Use Only (University of Cambridge)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt'
   };
+
+  function isCustomLicense(license){
+    const key = String(license || '').trim().toUpperCase();
+    if (!key) return false;
+    return (
+      /\bCUSTOM\b/.test(key) ||
+      /\bMIXED LICENSE\b/.test(key) ||
+      /\bCOMMONS CLAUSE\b/.test(key) ||
+      /\bACADEMIC USE ONLY\b/.test(key) ||
+      /\bRESEARCH AND EDUCATIONAL? PURPOSES? ONLY\b/.test(key) ||
+      /\bPROPRIETARY\b/.test(key) ||
+      /^FI-NCA?L$/.test(key) ||
+      /^MODIFIED BSD$/.test(key) ||
+      /^BSD-3-CLAUSE-STYLE LICENSE\b/.test(key)
+    );
+  }
+  function licenseDisplayLabel(license){
+    const key = String(license || '').trim();
+    return isCustomLicense(key) ? 'Custom License' : key;
+  }
+  function licenseFacetValue(license){
+    const label = licenseDisplayLabel(license);
+    return label || String(license || '').trim();
+  }
+  function licenseUrlFor(license){
+    const key = String(license || '').trim();
+    if (!key) return '';
+    const exact = LICENSE_URLS[key] || Object.entries(LICENSE_URLS).find(([name]) => name.toUpperCase() === key.toUpperCase())?.[1];
+    if (exact) return exact;
+    const embeddedUrl = key.match(/https?:\/\/\S+/i)?.[0];
+    return safeHref(embeddedUrl);
+  }
 
   // ---------- small helpers ----------
   const uniq   = a => [...new Set(a)];
@@ -74,9 +110,10 @@
     if (!license) return '';
     const key = String(license).trim();
     if (!key || key.toLowerCase() === 'unspecified') return '';
-    const url = LICENSE_URLS[key];
-    if (!url) return esc(key);
-    return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(key)}</a></span>`;
+    const label = licenseDisplayLabel(key);
+    const url = licenseUrlFor(key);
+    if (!url) return esc(label);
+    return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(label)}</a></span>`;
   }
 
   function licenseIconStripHTML(license){
@@ -285,8 +322,9 @@
     renderFacet(els.topics, 'topic', items, selectedValues, 'toggleTopics', 'topics', ()=>renderTopicFacet(), q);
   }
   function renderLicenseFacet(selectedValues = readChecked(els.license)){
+    selectedValues = selectedValues.map(licenseFacetValue);
     const q = (els.licenseSearch?.value || '').trim();
-    const items = filterFacetItems(uniq(state.all.map(r=>r.license || 'See source')).sort((a,b)=>a.localeCompare(b)), q);
+    const items = filterFacetItems(uniq(state.all.map(r=>licenseFacetValue(r.license || 'See source'))).sort((a,b)=>a.localeCompare(b)), q);
     renderFacet(els.license, 'lic', items, selectedValues, 'toggleLicenses', 'licenses', ()=>renderLicenseFacet(), q);
   }
   function renderMediaFacet(selectedValues = readChecked(els.media)){
@@ -388,7 +426,7 @@
       list = list.filter(r => r.language.some(x => langSel.includes(x)));
     }
     if(licSel.length){
-      list = list.filter(r => licSel.includes(r.license || 'See source'));
+      list = list.filter(r => licSel.includes(licenseFacetValue(r.license || 'See source')));
     }
     if(medSel.length){
       list = list.filter(r => r.media.some(x => medSel.includes(x)));
@@ -400,7 +438,7 @@
       list = list.filter(r => r.topics.some(t => has(t, topicQ)));
     }
     if(licQ){
-      list = list.filter(r => has(r.license, licQ));
+      list = list.filter(r => has(r.license, licQ) || has(licenseDisplayLabel(r.license), licQ));
     }
 
     const s = els.sort?.value || 'added-desc';

@@ -41,6 +41,27 @@ function normKey(val){
   return String(val || '').trim().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').toLowerCase();
 }
 
+function isCustomLicense(licenseValue){
+  const key = String(licenseValue || '').trim().toUpperCase();
+  if (!key) return false;
+  return (
+    /\bCUSTOM\b/.test(key) ||
+    /\bMIXED LICENSE\b/.test(key) ||
+    /\bCOMMONS CLAUSE\b/.test(key) ||
+    /\bACADEMIC USE ONLY\b/.test(key) ||
+    /\bRESEARCH AND EDUCATIONAL? PURPOSES? ONLY\b/.test(key) ||
+    /\bPROPRIETARY\b/.test(key) ||
+    /^FI-NCA?L$/.test(key) ||
+    /^MODIFIED BSD$/.test(key) ||
+    /^BSD-3-CLAUSE-STYLE LICENSE\b/.test(key)
+  );
+}
+
+function licenseDisplayLabel(licenseValue){
+  const label = String(licenseValue || '').trim();
+  return isCustomLicense(label) ? 'Custom License' : label;
+}
+
 function setBadge(id, values){
   const el = byId(id);
   const list = normalizeList(values);
@@ -49,9 +70,9 @@ function setBadge(id, values){
   const isLicense = id === 'badge-license';
   el.innerHTML = list.map(v => {
     const content = isLicense
-      ? `${licenseMiniIconStripHtml(v)}<span>${escapeHtml(v)}</span>`
+      ? `${licenseMiniIconStripHtml(v)}<span>${escapeHtml(licenseDisplayLabel(v))}</span>`
       : escapeHtml(v);
-    return `<span class="badge${isLicense ? ' license-pill' : ''}">${content}</span>`;
+    return `<span class="badge${isLicense ? ' license-pill' : ''}"${isLicense ? ` title="${escapeHtml(v)}"` : ''}>${content}</span>`;
   }).join('');
 }
 
@@ -117,13 +138,21 @@ function formatLicense(licenseValue){
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
-    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause'
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause',
+    'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
+    'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
+    'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
 
-  const href = licenseMap[key];
+  const href = licenseMap[key] || licenseHrefFor(licenseValue);
+  const label = licenseDisplayLabel(norm);
   return href
-    ? `<span class="license-inline">${licenseIconStripHtml(licenseValue)}<span class="license-title-line"><a href="${href}" target="_blank" rel="noopener">${escapeHtml(norm)}</a></span></span>`
-    : `<span class="license-inline"><span class="license-title-line">${escapeHtml(norm)}</span></span>`;
+    ? `<span class="license-inline">${licenseIconStripHtml(licenseValue)}<span class="license-title-line"><a href="${href}" target="_blank" rel="noopener">${escapeHtml(label)}</a></span></span>`
+    : `<span class="license-inline"><span class="license-title-line">${escapeHtml(label)}</span></span>`;
 }
 
 function licenseHrefFor(licenseValue){
@@ -154,9 +183,18 @@ function licenseHrefFor(licenseValue){
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'ODC-BY': 'https://opendatacommons.org/licenses/by/',
-    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause'
+    'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause',
+    'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
+    'MODIFIED BSD': 'https://github.com/LBNL-ETA/EnergyPlus-MCP/blob/main/License.txt',
+    'BSD-3-CLAUSE-STYLE LICENSE (COPYRIGHT 2019 CARNEGIE MELLON UNIVERSITY)': 'https://github.com/DIUx-xView/xView2_baseline/blob/master/LICENSE.md',
+    'ACADEMIC USE ONLY (UNIVERSITY OF CAMBRIDGE)': 'https://github.com/mac137/ConSLAM/blob/main/LICENCE.txt',
+    'FI-NCAL': 'https://github.com/fraunhofer-italia/AID-AI-Infraction-Detection/blob/main/LICENSE.md',
+    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
+    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
-  return licenseMap[key] || '';
+  if (licenseMap[key]) return licenseMap[key];
+  const embeddedUrl = norm.match(/https?:\/\/\S+/i)?.[0];
+  return safeHref(embeddedUrl);
 }
 
 function licenseNoticeFor(licenseValue){
@@ -366,7 +404,7 @@ function licenseTermIconHtml(label){
 }
 
 function oerLicenseModalHtml(item){
-  const licenseLabel = item?.license ? String(item.license).trim() : 'Unspecified license';
+  const licenseLabel = item?.license ? licenseDisplayLabel(item.license) : 'Unspecified license';
   const notice = licenseNoticeFor(item?.license);
   const licenseUrl = licenseHrefFor(item?.license);
   const licenseTerms = licenseUrl

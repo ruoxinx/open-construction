@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260819-settings-layout" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260825-footer-social-icons" rel="stylesheet">
 
   <!-- Leaflet core -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
@@ -415,6 +415,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      gap:.38rem;
       min-height:36px;
       padding:.46rem .9rem;
       border:1px solid var(--oc-ink);
@@ -440,6 +441,23 @@
       color:var(--oc-ink);
       text-decoration:none;
       transform:translateY(-1px);
+    }
+    .monthly-action-link .linkedin-icon{
+      width:.92rem;
+      height:.92rem;
+      flex:0 0 auto;
+      fill:currentColor;
+    }
+    .monthly-action-link.linkedin-action{
+      border-color:#0a66c2;
+      color:#0a66c2;
+      background:#fff;
+    }
+    .monthly-action-link.linkedin-action:hover,
+    .monthly-action-link.linkedin-action:focus{
+      border-color:#0a66c2;
+      color:#0a66c2;
+      background:#eef7ff;
     }
     .monthly-action-link.primary:hover,
     .monthly-action-link.primary:focus{
@@ -774,7 +792,12 @@
             <p id="communityMonthlySummary"></p>
             <div class="monthly-teaser-footer" aria-label="Monthly digest actions">
               <a class="monthly-action-link primary" href="monthly-highlights.html">View community digest</a>
-              <a class="monthly-action-link" href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">Follow on LinkedIn</a>
+              <a class="monthly-action-link linkedin-action" href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener noreferrer">
+                <svg class="linkedin-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0Z"></path>
+                </svg>
+                <span>Follow on LinkedIn</span>
+              </a>
             </div>
           </div>
           <div class="monthly-teaser-side">
@@ -1009,7 +1032,7 @@
       <small>
         <a href="references.html#terms" class="text-muted">Terms</a> &middot;
         <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot;
-        <a href="references.html#referencesTitle" class="text-muted">References</a>
+        <a href="references.html" class="text-muted">Documentation</a> &middot; <span class="oc-footer-socials" aria-label="OpenConstruction social links"><a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn"><img class="oc-footer-social-icon" src="assets/img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a><a href="https://github.com/ruoxinx/open-construction" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub"><img class="oc-footer-social-icon" src="assets/img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a></span>
       </small>
     </div>
   </div>
@@ -1043,7 +1066,7 @@ api.renderInstitutionMarquee({
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
-<script src="assets/js/site-shell.js?v=20260819-account-menu-polish"></script>
+<script src="assets/js/site-shell.js?v=20260825-footer-social-icons"></script>
 
 <style>
   /* Optional: soft ocean background to avoid gray gaps */
