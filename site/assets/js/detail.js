@@ -523,43 +523,46 @@ function licenseDisplayLabel(licVal){
 }
 
 
-function formatLicense(licVal){
-  const norm = safeText(licVal);
-  const displayLabel = licenseDisplayLabel(licVal);
-  if (norm === '—') return '';
-  const key = String(licVal).trim().toUpperCase();
-  const licenseMap = {
-    'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
-	'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
-    'CC0': 'https://creativecommons.org/public-domain/cc0/',
-    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-    'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
-    'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
-    'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
-    'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
-    'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
-    'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
-    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-    'MIT': 'https://opensource.org/licenses/MIT',
-    'ODC-BY': 'https://opendatacommons.org/licenses/by/',
-    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
-    'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
-    'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
-    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
-    'MIT License with Commons Clause Restriction':'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
-	'LGPL-3.0':'https://www.gnu.org/licenses/lgpl-3.0.html',
-    'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
-    'CUSTOM MIT LICENSE (UNIVERSITY OF STUTTGART)': 'https://darus.uni-stuttgart.de/api/datasets/:persistentId/versions/1.0/customlicense?persistentId=doi:10.18419/DARUS-5676',
-    'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
-  };
-  const licenseUrl = licenseMap[key] || licenseHrefFor(licVal);
-  if (licenseUrl) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
+function recordLicenseHref(record){
+  if (!record) return '';
+  const fields = [
+    record.license_url,
+    record.licence_url,
+    record.license_link,
+    record.licence_link,
+    record.terms_url,
+    record.access_terms_url,
+    record.usage_terms_url
+  ];
+  for (const value of fields) {
+    const href = safeHref(value);
+    if (href) return href;
   }
-  return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
+  return '';
 }
 
-function formatLicense(licVal){
+function recordSourceHref(record){
+  if (!record) return '';
+  const fields = [
+    record.source_url,
+    record.source,
+    record.code_url,
+    record.code,
+    record.data_url,
+    record.access,
+    record.url,
+    record.link,
+    record.paper_url,
+    record.paper
+  ];
+  for (const value of fields) {
+    const href = safeHref(value);
+    if (href) return href;
+  }
+  return '';
+}
+
+function formatLicense(licVal, record){
   const norm = safeText(licVal);
   if (norm === '—') return '';
 
@@ -597,17 +600,19 @@ function formatLicense(licVal){
     'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
 
-  const licenseUrl = licenseMap[key] || licenseHrefFor(licVal);
+  const licenseUrl = licenseMap[key] || licenseHrefFor(licVal, record);
   if (licenseUrl) {
     return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
   return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
 
-function licenseHrefFor(licVal){
+function licenseHrefFor(licVal, record){
   const norm = safeText(licVal);
   if (norm === '—') return '';
   const key = String(licVal).trim().toUpperCase();
+  const recordUrl = recordLicenseHref(record);
+  if (recordUrl) return recordUrl;
   const licenseMap = {
     'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
     'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
@@ -639,7 +644,9 @@ function licenseHrefFor(licVal){
   };
   if (licenseMap[key]) return licenseMap[key];
   const embeddedUrl = String(licVal || '').match(/https?:\/\/\S+/i)?.[0];
-  return safeHref(embeddedUrl);
+  const embeddedHref = safeHref(embeddedUrl);
+  if (embeddedHref) return embeddedHref;
+  return isCustomLicense(licVal) ? recordSourceHref(record) : '';
 }
 
 function licenseNoticeFor(licVal){
@@ -863,10 +870,10 @@ function licenseTermIconHtml(label){
   return term ? licenseBadgeHtml(term.kind, term.label) : '';
 }
 
-function resourceLicenseModalHtml({ license, resourceType = 'resource', modalTitle = 'Review resource license', actionLabel = 'Open resource source' } = {}){
+function resourceLicenseModalHtml({ license, resource, resourceType = 'resource', modalTitle = 'Review resource license', actionLabel = 'Open resource source' } = {}){
   const licenseLabel = safeText(license) === '—' ? 'Unspecified license' : licenseDisplayLabel(license);
   const notice = licenseNoticeFor(license);
-  const licenseUrl = licenseHrefFor(license);
+  const licenseUrl = licenseHrefFor(license, resource);
   const licenseTerms = licenseUrl
     ? `<a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(licenseLabel)}</a>`
     : escapeHtml(licenseLabel);
@@ -925,6 +932,7 @@ function resourceLicenseModalHtml({ license, resourceType = 'resource', modalTit
 function datasetLicenseModalHtml(ds){
   return resourceLicenseModalHtml({
     license: ds?.license,
+    resource: ds,
     resourceType: 'dataset',
     modalTitle: 'Review dataset license',
     actionLabel: 'Open dataset source'
@@ -934,6 +942,7 @@ function datasetLicenseModalHtml(ds){
 function modelLicenseModalHtml(model){
   return resourceLicenseModalHtml({
     license: model?.license,
+    resource: model,
     resourceType: 'model',
     modalTitle: 'Review model license',
     actionLabel: 'Open model source'
@@ -1304,13 +1313,13 @@ async function initDetail(){
       const modelTitle = m.title || m.name || 'Untitled';
       const year = (m.year !== undefined && m.year !== null) ? m.year : '—';
 
-      const imgBase = `../assets/img/models/${encodeURIComponent(m.id || id)}`;
+      const codeUrl  = (m.code_url  || m.code  || '').trim();
+      const imgCandidates = getModelImageCandidates(m, id, codeUrl);
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
       const rawPaperField = safeText(m.paper || '');
       const paperFieldIsUrl = rawPaperField !== '—' && !!safeHref(rawPaperField);
       const paperUrl = safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
-      const codeUrl  = (m.code_url  || m.code  || '').trim();
       const modelSourceUrl = safeHref(codeUrl);
       const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
       const doiUrl = doiSource
@@ -1318,7 +1327,7 @@ async function initDetail(){
         : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
       const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
-      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license)}</div>` : '';
+      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license, m)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
       const badgeIdSource = (m.doi && String(m.doi).trim()) ? m.doi : paperUrl;
       const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
@@ -1347,7 +1356,7 @@ async function initDetail(){
         { label: 'Tasks', value: taskList.length ? linkedTaskChipLane(taskList) : '—' },
         { label: 'Primary Application', value: appList.length ? linkedApplicationChipLane(appList.slice(0, 1)) : '—' },
         { label: 'Modality', value: modalityList.length ? escapeHtml(modalityList[0]) : '—' },
-        { label: 'License', value: formatLicense(m.license) || '—' }
+        { label: 'License', value: formatLicense(m.license, m) || '—' }
       ];
 
       function datasetHref(ds){
@@ -1596,7 +1605,7 @@ async function initDetail(){
             ${metaRow('Source status', escapeHtml(formatSourceStatus(m.source_status)))}
             ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a>` : '—')}
             ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
-            ${metaRow('License', formatLicense(m.license) || '—')}
+            ${metaRow('License', formatLicense(m.license, m) || '—')}
           </dl>
         </section>
 
@@ -1733,8 +1742,7 @@ async function initDetail(){
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
-      // ensure model thumbnails work for .png/.jpg/.jpeg/.gif/.webp
-      if (imgEl) setImgWithFallback(imgEl, imgBase, imgPlaceholder);
+      if (imgEl) setImgWithFallback(imgEl, imgCandidates, imgPlaceholder);
       if (imgEl && modalEl) {
         imgEl.addEventListener('click', () => {
           const modalImg = modalEl.querySelector('.modal-img');
@@ -1823,7 +1831,7 @@ async function initDetail(){
       { label: 'Classes', value: escapeHtml(safeFormatInt(ds.num_classes)) },
       { label: 'Primary Task', value: datasetTaskList.length ? escapeHtml(datasetTaskList[0]) : '—' },
       { label: 'Modality', value: datasetModalityList.length ? escapeHtml(datasetModalityList[0]) : '—' },
-      { label: 'License', value: formatLicense(ds.license) || '—' }
+      { label: 'License', value: formatLicense(ds.license, ds) || '—' }
     ];
     quickFacts[3] = { label: 'Tasks', value: datasetTaskList.length ? linkedTaskChipLane(datasetTaskList) : '—' };
     quickFacts[4] = { label: 'Modalities', value: datasetModalityList.length ? chipLane(datasetModalityList) : '—' };
@@ -2084,7 +2092,7 @@ async function initDetail(){
           ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
           ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a>` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
-          ${metaRow('License', formatLicense(ds.license) || '—')}
+          ${metaRow('License', formatLicense(ds.license, ds) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
         </dl>
       </section>
@@ -2107,7 +2115,7 @@ async function initDetail(){
     `;
 
     const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
-    const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license)}</div>` : '';
+    const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license, ds)}</div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
     // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
     const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
@@ -2234,22 +2242,118 @@ async function initDetail(){
 
 document.addEventListener('DOMContentLoaded', initDetail);
 
-/* ---------- model image fallback (png/jpg/jpeg/gif/webp) ---------- */
-function setImgWithFallback(imgEl, basePath, placeholderPath) {
-  const exts = ['png','jpg','jpeg','gif','webp'];
-  imgEl.dataset.base = basePath;
-  imgEl.dataset.placeholder = placeholderPath || '';
-  imgEl.dataset.extIndex = imgEl.dataset.extIndex || '0';
-  // start with png
-  imgEl.src = `${basePath}.${exts[0]}`;
+/* ---------- model image fallback ---------- */
+const OC_MODEL_IMAGE_EXTS = ['png','jpg','jpeg','gif','webp'];
+
+function getModelImageCandidates(model, id, codeUrl) {
+  const candidates = [];
+  const addValue = (value) => {
+    if (!value) return;
+    if (Array.isArray(value)) {
+      value.forEach(addValue);
+      return;
+    }
+    if (typeof value === 'object') {
+      addValue(value.url || value.src || value.image || value.image_url || value.thumbnail || value.thumb);
+      return;
+    }
+    expandModelImageCandidate(value).forEach(src => candidates.push(src));
+  };
+
+  [
+    model?.image,
+    model?.image_url,
+    model?.thumbnail,
+    model?.thumb,
+    model?.preview_image,
+    model?.cover_image,
+    model?.media
+  ].forEach(addValue);
+
+  const repoSlug = repoSlugFromUrl(codeUrl || model?.code_url || model?.code || '');
+  if (repoSlug) addValue(`../assets/img/models/${encodeURIComponent(repoSlug)}`);
+  addValue(`../assets/img/models/${encodeURIComponent(model?.id || id)}`);
+
+  return uniqueStrings(candidates);
+}
+
+function expandModelImageCandidate(value) {
+  const src = normalizeModelImagePath(value);
+  if (!src) return [];
+  if (/^https?:\/\//i.test(src)) return [src];
+  if (/\.(png|jpe?g|gif|webp)([?#].*)?$/i.test(src)) return [src];
+  return OC_MODEL_IMAGE_EXTS.map(ext => `${src}.${ext}`);
+}
+
+function normalizeModelImagePath(value) {
+  const raw = String(value || '').trim();
+  if (!raw || /^(javascript|data):/i.test(raw)) return '';
+
+  const absolute = safeHref(raw);
+  if (absolute) return absolute;
+
+  const path = raw.replace(/\\/g, '/').replace(/^\.\//, '');
+  if (!path) return '';
+  if (path.startsWith('../') || path.startsWith('/')) return encodeURI(path);
+  if (path.startsWith('site/assets/')) return encodeURI(`../${path.slice(5)}`);
+  if (path.startsWith('assets/')) return encodeURI(`../${path}`);
+  if (path.startsWith('img/models/')) return encodeURI(`../assets/${path}`);
+  if (!path.includes('/')) return encodeURI(`../assets/img/models/${path}`);
+  return encodeURI(path);
+}
+
+function repoSlugFromUrl(url) {
+  const safeUrl = safeHref(url);
+  if (!safeUrl) return '';
+  try {
+    const u = new URL(safeUrl);
+    if (!/github\.com$/i.test(u.hostname)) return '';
+    const parts = u.pathname.split('/').filter(Boolean);
+    return parts.length >= 2 ? decodeURIComponent(parts[1]).replace(/\.git$/i, '') : '';
+  } catch {
+    return '';
+  }
+}
+
+function uniqueStrings(values) {
+  const seen = new Set();
+  return values.filter(value => {
+    const key = String(value || '').trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function setImgWithFallback(imgEl, sources, placeholderPath) {
+  const baseCandidates = Array.isArray(sources)
+    ? sources.filter(Boolean)
+    : expandModelImageCandidate(sources);
+  const candidates = uniqueStrings([
+    ...baseCandidates,
+    placeholderPath
+  ]);
+  let index = 0;
+
+  const applyCandidate = () => {
+    const src = candidates[index] || placeholderPath || '';
+    if (!src) return;
+    imgEl.src = src;
+    imgEl.setAttribute('data-zoom-src', src);
+  };
+
   imgEl.onerror = () => {
-    const i = parseInt(imgEl.dataset.extIndex || '0', 10) + 1;
-    imgEl.dataset.extIndex = String(i);
-    if (i < exts.length) {
-      imgEl.src = `${basePath}.${exts[i]}`;
-    } else if (imgEl.dataset.placeholder) {
-      imgEl.onerror = null;
-      imgEl.src = imgEl.dataset.placeholder;
+    index += 1;
+    if (index < candidates.length) {
+      applyCandidate();
+      return;
+    }
+    imgEl.onerror = null;
+    if (placeholderPath && imgEl.src !== placeholderPath) {
+      imgEl.src = placeholderPath;
+      imgEl.setAttribute('data-zoom-src', placeholderPath);
     }
   };
+
+  applyCandidate();
 }

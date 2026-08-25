@@ -170,12 +170,15 @@
     .coming-soon-art svg{width:64px;height:64px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
     .coming-soon h3,.coming-soon .mini-label{position:relative;z-index:1;grid-column:1 / -1;justify-self:center}
     .coming-soon .tutorial-index{display:none}
-    .qa-panel{padding:.4rem}
+    .qa-panel{padding:.4rem;counter-reset:qa-item}
     details{border-bottom:1px solid #eef2f6}
     details:last-child{border-bottom:0}
-    summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:pointer;list-style:none;color:var(--oc-ink);font-weight:800;padding:.9rem}
+    .qa-panel details{counter-increment:qa-item}
+    summary{display:flex;align-items:center;gap:.72rem;cursor:pointer;list-style:none;color:var(--oc-ink);font-weight:800;padding:.9rem}
+    .qa-panel summary::before{content:counter(qa-item, decimal-leading-zero);flex:0 0 auto;color:#8a98a8;font-size:.72rem;font-weight:700;letter-spacing:.04em}
+    .qa-panel summary span{flex:1;min-width:0}
     summary::-webkit-details-marker{display:none}
-    summary::after{content:"+";display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--oc-border);border-radius:50%;color:var(--oc-sub);font-weight:800;line-height:1;flex:0 0 auto}
+    summary::after{content:"+";display:grid;place-items:center;width:24px;height:24px;margin-left:auto;border:1px solid var(--oc-border);border-radius:50%;color:var(--oc-sub);font-weight:800;line-height:1;flex:0 0 auto}
     details[open] summary::after{content:"-"}
     details p{color:var(--oc-sub);font-size:.92rem;line-height:1.55;margin:0;padding:0 .9rem .9rem}
     .video-modal .modal-content{background:#05070a;border:0;border-radius:8px;overflow:hidden}
@@ -323,13 +326,18 @@
         </div>
       </div>
       <div class="qa-panel">
-        <details open><summary>What resources can I submit?</summary><p>You can submit datasets, models, workflows, OERs, benchmarks, tools, and AEC data examples. The best submissions include a stable source link, clear ownership, a license or access condition, and enough metadata for others to evaluate reuse.</p></details>
-        <details><summary>Do I need to host files on OpenConstruction?</summary><p>No. OpenConstruction primarily indexes public metadata and points users to original repositories, project pages, DOIs, papers, or code. Use a stable repository or project page whenever possible.</p></details>
-        <details><summary>What metadata should I prepare before submitting a resource?</summary><p>Prepare the resource title, a public source link, basic contributor or organization information, and any known license or access notes. Add a short description so reviewers can understand what the resource is and how it may be reused.</p></details>
-        <details><summary>What if my dataset contains sensitive site information?</summary><p>Document the sensitivity clearly. Review faces, license plates, site locations, critical infrastructure, worker privacy, contract restrictions, and consent conditions before sharing. If public release is not appropriate, describe access limits or provide metadata only.</p></details>
-        <details><summary>How do I report a broken link or incorrect metadata?</summary><p>Use the correction report workflow and explain what is wrong, what the corrected value should be, and any source that supports the change.</p></details>
-        <details><summary>Do I need an account?</summary><p>You can browse content without an account. Sign in when you want to submit resources, bookmark resources, or report corrections through the workspace.</p></details>
-        <details><summary>How long does review take?</summary><p>Review time depends on completeness and maintainer availability. Submissions with stable links, clear licensing, strong metadata, and concise reuse notes are easier to approve quickly.</p></details>
+        <details open><summary><span>What resources can I submit?</span></summary><p>You can submit construction and AEC datasets, models, workflows, benchmarks, tools, OERs, and reusable data examples. Strong submissions have a stable source link, clear ownership, documented license or access terms, and enough context for others to evaluate reuse.</p></details>
+        <details><summary><span>What information should I prepare before submitting?</span></summary><p>Prepare the resource title, public source link, author or organization information, resource type, short description, license or access notes, and any relevant task, domain, modality, or format details. See the <a href="schema.html">metadata fields</a> for the full catalog schema.</p></details>
+        <details><summary><span>Do I need to host files on OpenConstruction?</span></summary><p>No. OpenConstruction primarily indexes public metadata and points users to original repositories, project pages, DOIs, papers, or code. Use a stable repository, DOI, or project page whenever possible.</p></details>
+        <details><summary><span>Can I submit someone else's resource?</span></summary><p>Yes, if the resource is public or you have permission from the authors or rights holders to suggest it. Provide clear attribution, a stable source link, and known license or access terms. Do not present third-party resources as your own work.</p></details>
+        <details><summary><span>What if the license is unclear?</span></summary><p>You can still suggest the resource, but mark the license as unknown or explain what information is available. Maintainers may defer publication until reuse terms, ownership, or access conditions are clarified.</p></details>
+        <details><summary><span>Can I update an existing record instead of submitting a new one?</span></summary><p>Yes. Use the <a href="account.html?report=issue&amp;issue_type=metadata">report workflow</a> for broken links, metadata corrections, license updates, duplicate records, or other improvements to resources already listed in OpenConstruction.</p></details>
+        <details><summary><span>Can restricted-access resources be listed?</span></summary><p>Yes, if the public metadata is useful and the access conditions are clear. OpenConstruction can list metadata for controlled or request-only resources without hosting or redistributing the underlying files.</p></details>
+        <details><summary><span>What may be deferred or declined?</span></summary><p>Submissions may be deferred or declined if they are outside AEC, duplicate an existing record, rely on broken or unstable links, have unclear ownership, lack reuse terms, or raise unresolved privacy, consent, safety, or site-sensitivity concerns.</p></details>
+        <details><summary><span>What if my dataset contains sensitive site information?</span></summary><p>Document the sensitivity clearly. Review faces, license plates, site locations, critical infrastructure, worker privacy, contract restrictions, and consent conditions before sharing. If public release is not appropriate, describe access limits or submit metadata only.</p></details>
+        <details><summary><span>How do I report a broken link or incorrect metadata?</span></summary><p>Use the <a href="account.html?report=issue&amp;issue_type=metadata">report workflow</a> and explain what is wrong, what the corrected value should be, and any source that supports the change.</p></details>
+        <details><summary><span>Do I need an account?</span></summary><p>You can browse content without an account. <a href="auth/sign-in.html?mode=login" rel="nofollow">Sign in</a> when you want to submit resources, bookmark resources, or report corrections through the workspace.</p></details>
+        <details><summary><span>How long does review take?</span></summary><p>Review time depends on completeness and maintainer availability. Submissions with stable links, clear licensing or access terms, complete metadata, and concise reuse notes are easier to evaluate quickly.</p></details>
       </div>
     </div>
   </section>

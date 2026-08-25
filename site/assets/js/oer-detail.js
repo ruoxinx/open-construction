@@ -110,7 +110,42 @@ function metaRow(label, valueHTML){
   return `<div class="meta-row"><dt class="meta-label">${label}</dt><dd class="meta-val">${valueHTML}</dd></div>`;
 }
 
-function formatLicense(licenseValue){
+function recordLicenseHref(record){
+  if (!record) return '';
+  const fields = [
+    record.license_url,
+    record.licence_url,
+    record.license_link,
+    record.licence_link,
+    record.terms_url,
+    record.access_terms_url,
+    record.usage_terms_url
+  ];
+  for (const value of fields) {
+    const href = safeHref(value);
+    if (href) return href;
+  }
+  return '';
+}
+
+function recordSourceHref(record){
+  if (!record) return '';
+  const fields = [
+    record.source_url,
+    record.source,
+    record.data_url,
+    record.access,
+    record.url,
+    record.link
+  ];
+  for (const value of fields) {
+    const href = safeHref(value);
+    if (href) return href;
+  }
+  return '';
+}
+
+function formatLicense(licenseValue, record){
   const norm = String(licenseValue || '').trim();
   if (!norm || norm === '—' || norm === '—') return '';
 
@@ -148,18 +183,20 @@ function formatLicense(licenseValue){
     'MIXED LICENSE, SEE HTTPS://XVIEW2.ORG/TERMS': 'https://xview2.org/terms'
   };
 
-  const href = licenseMap[key] || licenseHrefFor(licenseValue);
+  const href = licenseMap[key] || licenseHrefFor(licenseValue, record);
   const label = licenseDisplayLabel(norm);
   return href
     ? `<span class="license-inline">${licenseIconStripHtml(licenseValue)}<span class="license-title-line"><a href="${href}" target="_blank" rel="noopener">${escapeHtml(label)}</a></span></span>`
     : `<span class="license-inline"><span class="license-title-line">${escapeHtml(label)}</span></span>`;
 }
 
-function licenseHrefFor(licenseValue){
+function licenseHrefFor(licenseValue, record){
   const norm = String(licenseValue || '').trim();
   if (!norm || norm === '—' || norm === '—') return '';
 
   const key = norm.toUpperCase();
+  const recordUrl = recordLicenseHref(record);
+  if (recordUrl) return recordUrl;
   const licenseMap = {
     'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
     'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
@@ -194,7 +231,9 @@ function licenseHrefFor(licenseValue){
   };
   if (licenseMap[key]) return licenseMap[key];
   const embeddedUrl = norm.match(/https?:\/\/\S+/i)?.[0];
-  return safeHref(embeddedUrl);
+  const embeddedHref = safeHref(embeddedUrl);
+  if (embeddedHref) return embeddedHref;
+  return isCustomLicense(licenseValue) ? recordSourceHref(record) : '';
 }
 
 function licenseNoticeFor(licenseValue){
@@ -406,7 +445,7 @@ function licenseTermIconHtml(label){
 function oerLicenseModalHtml(item){
   const licenseLabel = item?.license ? licenseDisplayLabel(item.license) : 'Unspecified license';
   const notice = licenseNoticeFor(item?.license);
-  const licenseUrl = licenseHrefFor(item?.license);
+  const licenseUrl = licenseHrefFor(item?.license, item);
   const licenseTerms = licenseUrl
     ? `<a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(licenseLabel)}</a>`
     : escapeHtml(licenseLabel);
@@ -516,11 +555,15 @@ function normalizeResource(record){
     title: record.title || record.name || record.resource_title || '',
     provider: record.provider || record.authors || record.author || record.creator || '',
     year: record.year || '',
-    source: record.source || record.url || record.link || '',
+    source: record.source || record.data_url || record.access || record.url || record.link || '',
     image: record.image || record.image_url || record.thumbnail || record.thumb || '',
     language: normalizeList(record.language || record.languages || record.lang),
     topics: normalizeList(record.topics || record.topic || record.tags || record.keywords || record.subjects),
     license: record.license || record.licence || record.license_name || '',
+    license_url: record.license_url || record.licence_url || record.license_link || record.licence_link || record.terms_url || record.access_terms_url || record.usage_terms_url || '',
+    source_url: record.source_url || '',
+    data_url: record.data_url || '',
+    access: record.access || '',
     media: normalizeList(record.media || record.format || record.formats || record.media_format),
     added: record.added || record.added_date || record.created_at || '',
     publisher: record.publisher || '',
@@ -631,7 +674,7 @@ async function initOerDetail(){
       { label: 'Publisher', value: escapeHtml(item.publisher || '—') },
       { label: 'Language', value: escapeHtml(item.language.join(', ') || '—') },
       { label: 'Media', value: escapeHtml(item.media.join(', ') || '—') },
-      { label: 'License', value: formatLicense(item.license) || '—' },
+      { label: 'License', value: formatLicense(item.license, item) || '—' },
       { label: 'Added', value: escapeHtml(fmtDate(item.added) || '—') }
     ];
 
@@ -739,7 +782,7 @@ async function initOerDetail(){
             <h2 class="detail-heading">How to access and verify it</h2>
             <dl class="meta mb-0">
               ${metaRow('OER source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(sourceUrl)}</a>` : '—')}
-              ${metaRow('License', formatLicense(item.license) || '—')}
+              ${metaRow('License', formatLicense(item.license, item) || '—')}
               ${metaRow('Added to catalog', escapeHtml(fmtDate(item.added) || '—'))}
               ${metaRow('Submitted by', item.contributor ? (contributorUrl ? `<a href="${contributorUrl}" target="_blank" rel="noopener">${escapeHtml(item.contributor)}</a>` : escapeHtml(item.contributor)) : '—')}
             </dl>

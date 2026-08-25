@@ -9,12 +9,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Documentation | OpenConstruction</title>
-  <meta name="description" content="OpenConstruction documentation for tutorials, schema metadata, contribution guidelines, terms, privacy, and academic references.">
+  <meta name="description" content="OpenConstruction documentation for tutorials, schema metadata, contribution guidelines, terms, privacy, funding, support, and academic references.">
   <link rel="canonical" href="https://www.openconstruction.org/references.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
   <meta property="og:title" content="Documentation | OpenConstruction">
-  <meta property="og:description" content="Tutorials, schema metadata, contribution guidelines, policies, and academic references for OpenConstruction contributors.">
+  <meta property="og:description" content="Tutorials, schema metadata, contribution guidelines, policies, funding, support, and academic references for OpenConstruction contributors.">
   <meta property="og:url" content="https://www.openconstruction.org/references.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,10 +47,13 @@
     .bib-copy{border:0;background:transparent;color:var(--oc-link);font-size:.86rem;font-weight:700;line-height:1.2;padding:0;text-decoration:none}
     .bib-copy:hover,.bib-copy:focus{text-decoration:underline;text-underline-offset:3px}
     .bib-status{color:var(--oc-sub);font-size:.82rem;line-height:1.2}
-    .doc-index{display:grid;gap:.45rem;margin:0;padding:0;list-style:none}
+    .doc-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem 1.65rem;max-width:78ch}
     .doc-index li{max-width:78ch}
-    .doc-index a{font-weight:740;text-decoration:none}
+    .doc-index a{display:inline-flex;font-size:.92rem;font-weight:600;line-height:1.32;text-decoration:none}
     .doc-index a:hover,.doc-index a:focus{text-decoration:underline}
+    .doc-index-group{display:grid;gap:.32rem;margin:.32rem 0 0;padding:0;list-style:none}
+    .doc-index-group:last-child{margin-bottom:0}
+    .doc-index-label{color:var(--oc-sub);font-size:.82rem;font-weight:650;line-height:1.3}
     .doc-list{display:grid;gap:.45rem;max-width:78ch;margin:.15rem 0 .85rem;padding-left:1.15rem;color:var(--oc-sub)}
     .doc-list li{font-size:.92rem;line-height:1.5;padding-left:.12rem}
     .doc-more{max-width:78ch;margin-top:.55rem}
@@ -58,7 +61,16 @@
     .doc-more summary::-webkit-details-marker{display:none}
     .doc-more summary:hover,.doc-more summary:focus{text-decoration:underline;text-underline-offset:3px}
     .doc-more h3{color:var(--oc-text);font-size:.94rem;font-weight:760;line-height:1.35;margin:1rem 0 .35rem}
-    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.doc-section{grid-template-columns:1fr}.doc-section{gap:.75rem;padding:1.3rem 0}}
+    .doc-callout{display:flex;align-items:flex-start;gap:1rem;max-width:78ch;background:transparent;padding:.2rem 0}
+    .doc-callout img{flex:0 0 auto;width:58px;height:58px;object-fit:contain}
+    .doc-contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.42rem 1.2rem;max-width:78ch;margin:.65rem 0 0;padding:0;list-style:none}
+    .doc-contact-actions li{margin:0}
+    .doc-action-link{display:inline-flex;align-items:center;gap:.42rem;width:max-content;max-width:100%;min-height:28px;padding:.05rem 0;color:var(--oc-sub);font-size:.92rem;font-weight:400;line-height:1.35;text-decoration:none}
+    .doc-action-link:hover,.doc-action-link:focus{color:var(--oc-link);text-decoration:underline;text-underline-offset:3px}
+    .doc-action-link svg,.doc-action-link img{flex:0 0 auto;width:15px;height:15px;opacity:.9}
+    .doc-action-link svg{fill:currentColor}
+    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.doc-section{grid-template-columns:1fr}.doc-section{gap:.75rem;padding:1.3rem 0}.doc-index{grid-template-columns:1fr;gap:.95rem}}
+    @media (max-width:575.98px){.doc-callout{display:block}.doc-callout img{margin:0 0 .8rem}}
   </style>
 </head>
 <body>
@@ -81,31 +93,52 @@
     <section class="doc-section" aria-labelledby="coreDocsTitle">
       <h2 id="coreDocsTitle">Core Documentation</h2>
       <div>
-        <ul class="doc-index">
-          <li><a href="tutorials.html">Tutorials</a></li>
-          <li><a href="schema.html">Schema</a></li>
-          <li><a href="guides.html">Guides &amp; Frameworks</a></li>
-          <li><a href="#contributionGuidelines">Contribution Guidelines</a></li>
-          <li><a href="#terms">Terms of Use</a></li>
-          <li><a href="#privacy">Data &amp; Privacy</a></li>
-        </ul>
+        <div class="doc-index" aria-label="Core documentation links">
+          <div>
+            <div class="doc-index-label">Using OpenConstruction</div>
+            <ul class="doc-index-group">
+              <li><a href="tutorials.html">Tutorials</a></li>
+              <li><a href="schema.html">Schema</a></li>
+              <li><a href="guides.html">Guides &amp; Frameworks</a></li>
+              <li><a href="#contributionGuidelines">Contribution Guidelines</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="doc-index-label">Policies</div>
+            <ul class="doc-index-group">
+              <li><a href="#terms">Terms of Use</a></li>
+              <li><a href="#privacy">Data &amp; Privacy</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="doc-index-label">Project Info</div>
+            <ul class="doc-index-group">
+              <li><a href="#funding">Funding &amp; Acknowledgment</a></li>
+              <li><a href="#contactSupport">Contact &amp; Support</a></li>
+              <li><a href="#referencesTitle">References</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="doc-section" id="contributionGuidelines" aria-labelledby="contributionGuidelinesTitle">
       <h2 id="contributionGuidelinesTitle">Contribution Guidelines</h2>
       <div>
-        <p>Contributions should use the OpenConstruction schema, include clear attribution and licensing, and provide enough context for others to evaluate reuse. For data-related submissions, contributors should also consider privacy, consent, site sensitivity, and access restrictions before sharing.</p>
+        <p>OpenConstruction welcomes contributions that help the AEC community discover and reuse digital resources, including datasets, models, workflows, benchmarks, tools, OERs, and reusable data examples. Submissions should point to a stable source, use the OpenConstruction metadata schema, preserve attribution and licensing, and include enough context for others to evaluate reuse. Data-related submissions should also document privacy, consent, site sensitivity, and access restrictions where relevant.</p>
         <details class="doc-more">
           <summary>Show guidelines</summary>
           <ul class="doc-list">
-            <li>Use the standardized metadata schemas so resources stay discoverable and interoperable.</li>
-            <li>Include a clear license and preserve attribution to original authors, institutions, and sources.</li>
-            <li>Provide descriptive titles, abstracts, tasks, modalities, and other structured metadata where applicable.</li>
-            <li>Respect privacy, consent, and ethical sharing expectations for any data-related contribution.</li>
-            <li>Platform contributions can also improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
+            <li>Submit resources that are relevant to construction, AEC research, education, practice, or open-science infrastructure.</li>
+            <li>Provide a stable source link such as a repository, DOI, project page, publication, or access page.</li>
+            <li>Use the standardized metadata schemas so resources remain discoverable and interoperable.</li>
+            <li>Include descriptive titles, summaries, tasks, modalities, formats, and other structured metadata where applicable.</li>
+            <li>Preserve attribution to original authors, institutions, and sources, and document the license or access terms.</li>
+            <li>Document privacy, consent, site sensitivity, and access restrictions for data-related contributions.</li>
+            <li>Resources may be deferred when links are unstable, ownership or reuse terms are unclear, the record duplicates existing catalog content, or sensitivity concerns need review.</li>
+            <li>Platform contributions can improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
           </ul>
-          <p>Templates and validation scripts are available in the GitHub repository, and unclear cases can be sent to support before submission.</p>
+          <p>Templates and validation scripts are available in the GitHub repository, and unclear cases can be sent through the support channels before submission.</p>
         </details>
       </div>
     </section>
@@ -158,6 +191,49 @@
           <h3>Linked Resource Responsibility</h3>
           <p>Users are responsible for reviewing and following the license, access, and reuse terms selected by each original provider before downloading, reproducing, adapting, or redistributing linked content.</p>
         </details>
+      </div>
+    </section>
+
+    <section class="doc-section" id="funding" aria-labelledby="fundingTitle">
+      <h2 id="fundingTitle">Funding &amp; Acknowledgment</h2>
+      <div>
+        <div class="doc-callout">
+          <img src="assets/img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="58" height="58" loading="lazy">
+          <p>This material is supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>. Any opinions, findings, conclusions, or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contactSupport" aria-labelledby="contactSupportTitle">
+      <h2 id="contactSupportTitle">Contact &amp; Support</h2>
+      <div>
+        <p>Questions, corrections, and platform feedback are welcome through the project support channels.</p>
+        <ul class="doc-contact-actions" aria-label="Contact and support actions">
+          <li>
+            <a class="doc-action-link" href="account.html?report=issue&amp;issue_type=platform">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4Zm0 3.1c.4 0 .7.3.7.7v3.6a.7.7 0 1 1-1.4 0V5.2c0-.4.3-.7.7-.7Zm0 7.2a.85.85 0 1 1 0-1.7.85.85 0 0 1 0 1.7Z"/></svg>
+              Report issue
+            </a>
+          </li>
+          <li>
+            <a class="doc-action-link" href="mailto:support@openconstruction.org" aria-label="Email support at support@openconstruction.org">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.4 3h11.2c.77 0 1.4.63 1.4 1.4v7.2c0 .77-.63 1.4-1.4 1.4H2.4c-.77 0-1.4-.63-1.4-1.4V4.4C1 3.63 1.63 3 2.4 3Zm.08 1.25L8 8.02l5.52-3.77H2.48Zm11.27 1.12-5.35 3.65a.7.7 0 0 1-.8 0L2.25 5.37v6.23c0 .08.07.15.15.15h11.2c.08 0 .15-.07.15-.15V5.37Z"/></svg>
+              Email
+            </a>
+          </li>
+          <li>
+            <a class="doc-action-link" href="https://github.com/ruoxinx/open-construction" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.56v-2.16c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18A11 11 0 0 1 12 6.04c.98 0 1.95.13 2.87.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.18c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a class="doc-action-link" href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0Z"/></svg>
+              LinkedIn
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
 

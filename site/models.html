@@ -407,23 +407,64 @@ function safeLicenseHref(href){
   } catch {}
   return '';
 }
-function licenseUrlFor(license){
+function recordLicenseUrl(record){
+  if (!record) return '';
+  const fields = [
+    record.license_url,
+    record.licence_url,
+    record.license_link,
+    record.licence_link,
+    record.terms_url,
+    record.access_terms_url,
+    record.usage_terms_url
+  ];
+  for (const value of fields) {
+    const href = safeLicenseHref(value);
+    if (href) return href;
+  }
+  return '';
+}
+function recordSourceUrl(record){
+  if (!record) return '';
+  const fields = [
+    record.source_url,
+    record.source,
+    record.code_url,
+    record.code,
+    record.data_url,
+    record.access,
+    record.url,
+    record.link,
+    record.paper_url,
+    record.paper
+  ];
+  for (const value of fields) {
+    const href = safeLicenseHref(value);
+    if (href) return href;
+  }
+  return '';
+}
+function licenseUrlFor(license, record){
   const key = String(license || '').trim();
   if (!key) return '';
+  const recordUrl = recordLicenseUrl(record);
+  if (recordUrl) return recordUrl;
   const exact = LICENSE_URLS[key] || Object.entries(LICENSE_URLS).find(([name]) => name.toUpperCase() === key.toUpperCase())?.[1];
   if (exact) return exact;
   const embeddedUrl = key.match(/https?:\/\/\S+/i)?.[0];
-  return safeLicenseHref(embeddedUrl);
+  const embeddedHref = safeLicenseHref(embeddedUrl);
+  if (embeddedHref) return embeddedHref;
+  return isCustomLicense(key) ? recordSourceUrl(record) : '';
 }
 
-function licenseLinkHTML(license){
+function licenseLinkHTML(license, record){
   if (!license) return '';
 
   const key = String(license).trim();
   if (!key || key.toLowerCase() === 'unspecified') return '';
 
   const label = licenseDisplayLabel(key);
-  const url = licenseUrlFor(key);
+  const url = licenseUrlFor(key, record);
   if (!url) return esc(label);
   return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(label)}</a></span>`;
 }
@@ -1012,7 +1053,7 @@ function render(items){
         <div class="flex-grow-1">
           <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${displayTitle || 'Untitled'}</a></h3>
 			${(() => {
-			  const licHTML = licenseLinkHTML(m.license);
+			  const licHTML = licenseLinkHTML(m.license, m);
 			  return `
 				<div class="meta mb-1">
 				  ${(m.authors && m.authors.length) ? `${esc(m.authors.join(', '))} • ` : ''}
@@ -1243,11 +1284,13 @@ async function loadModels(){
         _app_keys: appKeys,              // filter (AND)
 
         license: m.license || '',
+        license_url: m.license_url || m.licence_url || m.license_link || m.licence_link || m.terms_url || m.access_terms_url || '',
         authors: Array.isArray(m.authors) ? m.authors : (m.authors ? String(m.authors).split(/,\s*/) : []),
         abstract: m.abstract || '',
         doi: m.doi || '',
         paper_url: m.paper_url || m.paper || '',
         code_url: m.code_url || m.code || '',
+        data_url: m.data_url || m.access || m.source || '',
         thumbnail: m.thumbnail || m.image_url || (m.id ? `assets/img/models/${m.id}.png` : ''),
         icon: m.icon || '',
         added_date: added || null,

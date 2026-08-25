@@ -76,13 +76,51 @@
     const label = licenseDisplayLabel(license);
     return label || String(license || '').trim();
   }
-  function licenseUrlFor(license){
+  function recordLicenseUrl(record){
+    if (!record) return '';
+    const fields = [
+      record.license_url,
+      record.licence_url,
+      record.license_link,
+      record.licence_link,
+      record.terms_url,
+      record.access_terms_url,
+      record.usage_terms_url
+    ];
+    for (const value of fields) {
+      const href = safeHref(value);
+      if (href) return href;
+    }
+    return '';
+  }
+  function recordSourceUrl(record){
+    if (!record) return '';
+    const fields = [
+      record.source_url,
+      record.source,
+      record.data_url,
+      record.access,
+      record.url,
+      record.link,
+      record.href
+    ];
+    for (const value of fields) {
+      const href = safeHref(value);
+      if (href) return href;
+    }
+    return '';
+  }
+  function licenseUrlFor(license, record){
     const key = String(license || '').trim();
     if (!key) return '';
+    const recordUrl = recordLicenseUrl(record);
+    if (recordUrl) return recordUrl;
     const exact = LICENSE_URLS[key] || Object.entries(LICENSE_URLS).find(([name]) => name.toUpperCase() === key.toUpperCase())?.[1];
     if (exact) return exact;
     const embeddedUrl = key.match(/https?:\/\/\S+/i)?.[0];
-    return safeHref(embeddedUrl);
+    const embeddedHref = safeHref(embeddedUrl);
+    if (embeddedHref) return embeddedHref;
+    return isCustomLicense(key) ? recordSourceUrl(record) : '';
   }
 
   // ---------- small helpers ----------
@@ -106,12 +144,12 @@
     return '';
   }
 
-  function licenseLinkHTML(license){
+  function licenseLinkHTML(license, record){
     if (!license) return '';
     const key = String(license).trim();
     if (!key || key.toLowerCase() === 'unspecified') return '';
     const label = licenseDisplayLabel(key);
-    const url = licenseUrlFor(key);
+    const url = licenseUrlFor(key, record);
     if (!url) return esc(label);
     return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(label)}</a></span>`;
   }
@@ -181,11 +219,12 @@
     const title = r.title || r.name || r.resource_title || '';
     const provider = r.provider || r.authors || r.author || r.creator || r.publisher || '';
     const image = r.image || r.image_url || r.thumbnail || r.thumb || '';
-    const source = r.source || r.url || r.link || r.href || '#';
+    const source = r.source || r.data_url || r.access || r.url || r.link || r.href || '#';
     const language = r.language || r.languages || r.lang || [];
     const topics = r.topics || r.topic || r.tags || r.keywords || r.subjects || [];
     const media = r.media || r.media_format || r.format || r.formats || [];
     const license = r.license || r.licence || r.license_name || r.license_type || '';
+    const license_url = r.license_url || r.licence_url || r.license_link || r.licence_link || r.terms_url || r.access_terms_url || r.usage_terms_url || '';
 
     const yearRaw  = r.year || r.publication_year || r.date || r.added || r.created_at || r.updated_at || '';
     const year     = fmtYear(yearRaw);
@@ -204,6 +243,10 @@
       topics: tokens(topics),
       media: tokens(media),
       license, year, added,
+      license_url,
+      source_url: r.source_url || '',
+      data_url: r.data_url || '',
+      access: r.access || '',
       contributor, contributor_url,
       publisher,
       institutions: tokens(institutions)
@@ -351,7 +394,7 @@
       const sourceHref = safeHref(r.source);
       const contributorHref = safeHref(r.contributor_url);
       const providerLine = r.provider || '';
-      const licHTML = licenseLinkHTML(r.license);
+      const licHTML = licenseLinkHTML(r.license, r);
       const tagsHTML =
         sec('Topics', r.topics, 'topic') +
         sec('Media', r.media, 'media') +
