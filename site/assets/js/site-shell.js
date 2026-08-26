@@ -1227,7 +1227,7 @@
     const pageFile = cleanFile(window.location.pathname);
     if (!pageFile || pageFile === 'index.html') return;
     const script = document.createElement('script');
-    script.src = `${assetPrefix}js/visit-logger.js?v=20260821-catalog-searches`;
+    script.src = `${assetPrefix}js/visit-logger.js?v=20260826-geo-ua-cleanup`;
     script.async = true;
     script.dataset.ocUsageLogger = 'true';
     script.dataset.page = window.location.pathname.replace(/^\/+|\/+$/g, '').replace(/\.html$/i, '') || 'index';

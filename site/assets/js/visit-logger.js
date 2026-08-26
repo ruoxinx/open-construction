@@ -50,6 +50,16 @@
     return clean ? clean.slice(0, limit) : null;
   }
 
+  function cleanUserAgent(value){
+    const clean = cleanText(value, 500);
+    return clean ? clean.replace(/^["'\s]+|["'\s]+$/g, '').slice(0, 500) || null : null;
+  }
+
+  function finiteNumber(value){
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
   function numericText(element){
     const match = String(element?.textContent || '').match(/\d[\d,]*/);
     return match ? Number(match[0].replace(/,/g, '')) : null;
@@ -148,33 +158,62 @@
     return sha256hex(base);
   }
 
+  function normalizeGeo(raw){
+    if (!raw || raw.error) return null;
+    const lat = finiteNumber(raw.latitude ?? raw.lat);
+    const lon = finiteNumber(raw.longitude ?? raw.lon);
+    const cleanGeo = {
+      ip: cleanText(raw.ip, 80),
+      lat,
+      lon,
+      city: cleanText(raw.city, 120),
+      region: cleanText(raw.region || raw.regionName, 120),
+      country: cleanText(raw.country_name || raw.country, 120)
+    };
+    return (cleanGeo.city || cleanGeo.region || cleanGeo.country || lat !== null || lon !== null)
+      ? cleanGeo
+      : null;
+  }
+
+  async function fetchJsonWithTimeout(url, timeoutMs = 3200){
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = controller ? window.setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const response = await fetch(url, {
+        cache: 'no-store',
+        signal: controller?.signal
+      });
+      if (!response.ok) return null;
+      return response.json();
+    } catch (_) {
+      return null;
+    } finally {
+      if (timer) window.clearTimeout(timer);
+    }
+  }
+
+  function cacheGeo(cleanGeo){
+    if (!cleanGeo) return;
+    try {
+      sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify({
+        expires: Date.now() + 6 * 60 * 60 * 1000,
+        geo: cleanGeo
+      }));
+    } catch (_) {}
+  }
+
   async function getGeo(){
     try {
       const cached = JSON.parse(sessionStorage.getItem(GEO_CACHE_KEY) || 'null');
       if (cached?.expires > Date.now()) return cached.geo || null;
     } catch (_) {}
-    try {
-      const response = await fetch('https://get.geojs.io/v1/ip/geo.json', { cache:'no-store' });
-      if (!response.ok) return null;
-      const geo = await response.json();
-      if (geo && geo.latitude && geo.longitude) {
-        const cleanGeo = {
-          ip: geo.ip || null,
-          lat: +geo.latitude,
-          lon: +geo.longitude,
-          city: geo.city || null,
-          region: geo.region || null,
-          country: geo.country || null
-        };
-        try {
-          sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify({
-            expires: Date.now() + 6 * 60 * 60 * 1000,
-            geo: cleanGeo
-          }));
-        } catch (_) {}
+    for (const url of ['https://get.geojs.io/v1/ip/geo.json', 'https://ipapi.co/json/']) {
+      const cleanGeo = normalizeGeo(await fetchJsonWithTimeout(url));
+      if (cleanGeo) {
+        cacheGeo(cleanGeo);
         return cleanGeo;
       }
-    } catch (_) {}
+    }
     return null;
   }
 
@@ -465,7 +504,7 @@
       country: geo?.country || null,
       lat: (geo && typeof geo.lat === 'number') ? geo.lat : null,
       lon: (geo && typeof geo.lon === 'number') ? geo.lon : null,
-      ua: navigator.userAgent,
+      ua: cleanUserAgent(navigator.userAgent),
       referrer: document.referrer || null
     };
 
