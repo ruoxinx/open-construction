@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: MEP Plant Room Pipe Routing Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=mep_plant_room_pipe_routing</link>
+    <guid isPermaLink="false">datasets:mep_plant_room_pipe_routing:2026-08-26</guid>
+    <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: ELectrical INstallation symbols from Architectural plans (ELINA) Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=elina</link>
     <guid isPermaLink="false">datasets:elina:2026-08-21</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:FARM-Project:2026-08-11</guid>
     <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Robot navigation model using RGB-D (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: Long-context Construction Regulatory Document QA Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=Self-reflective-vision-language-model-for-construction-documents</link>
-    <guid isPermaLink="false">datasets:Self-reflective-vision-language-model-for-construction-documents:2026-08-09</guid>
-    <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
 </rss>
