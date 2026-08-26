@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: BIM-Edit Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=bim_edit</link>
+    <guid isPermaLink="false">datasets:bim_edit:2026-08-26</guid>
+    <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: ELectrical INstallation symbols from Architectural plans (ELINA) Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=elina</link>
     <guid isPermaLink="false">datasets:elina:2026-08-21</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:rl-powered-data-quality-evaluation:2026-08-11</guid>
     <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Data-efficient Model Training model using Ground RGB (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: FARM: Find Anything using Relational Spatial Memory]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:FARM-Project:2026-08-11</guid>
-    <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Robot navigation model using RGB-D (2026)]]></description>
   </item>
   </channel>
 </rss>
