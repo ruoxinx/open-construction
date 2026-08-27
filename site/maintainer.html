@@ -512,9 +512,6 @@
         { label: 'searches', value: row => row.searches },
         { label: 'filters', value: row => row.filters },
         { label: 'resource_clicks', value: row => row.resource_clicks },
-        { label: 'download_clicks', value: row => row.download_clicks },
-        { label: 'outbound_clicks', value: row => row.outbound_clicks },
-        { label: 'action_clicks', value: row => row.action_clicks },
         { label: 'form_opens', value: row => row.form_opens },
         { label: 'form_starts', value: row => row.form_starts },
         { label: 'form_submits', value: row => row.form_submits }
@@ -542,15 +539,6 @@
         { label: 'filter_value', value: row => row.filter_value },
         { label: 'count', value: row => row.count },
         { label: 'avg_results', value: row => row.avg_results }
-      ]],
-      ['top_downloads', usageAnalytics.top_downloads, [
-        { label: 'label', value: row => row.label },
-        { label: 'target', value: row => row.target },
-        { label: 'count', value: row => row.count }
-      ]],
-      ['top_actions', usageAnalytics.top_actions, [
-        { label: 'action', value: row => row.action },
-        { label: 'count', value: row => row.count }
       ]],
       ['form_funnel', usageAnalytics.form_funnel, [
         { label: 'page', value: row => row.page },
@@ -1095,13 +1083,6 @@
     return Number.isFinite(number) ? number.toLocaleString() : fallback;
   }
 
-  function usagePercent(numerator, denominator){
-    const a = Number(numerator);
-    const b = Number(denominator);
-    if (!Number.isFinite(a) || !Number.isFinite(b) || b <= 0) return '0%';
-    return `${Math.round((a / b) * 100)}%`;
-  }
-
   function usageDateLabel(value){
     const date = validDate(value);
     return date ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : String(value || '');
@@ -1121,9 +1102,6 @@
     const filters = usageTotal('filters');
     const visits = usageTotal('visits');
     const resourceClicks = usageTotal('resource_clicks');
-    const downloadClicks = usageTotal('download_clicks');
-    const outboundClicks = usageTotal('outbound_clicks');
-    const actionClicks = usageTotal('action_clicks');
     const formOpens = usageTotal('form_opens');
     const formStarts = usageTotal('form_starts');
     const formSubmits = usageTotal('form_submits');
@@ -1146,7 +1124,6 @@
       { key: 'searches', label: 'Searches', color: '#b86b16', source: 'events' },
       { key: 'filters', label: 'Filters', color: '#2f7d5b', source: 'events' },
       { key: 'resource_clicks', label: 'Clicks', color: '#5c6670', source: 'events' },
-      { key: 'download_clicks', label: 'Downloads', color: '#c2410c', source: 'events' },
       { key: 'form_submits', label: 'Forms', color: '#7c3aed', source: 'events' }
     ];
     const width = 760;
@@ -1173,7 +1150,7 @@
           <div>
             <p class="oc-auth-kicker mb-2">Trend</p>
             <h2 class="h5 fw-bold mb-0">Usage trend & engagement</h2>
-            <p class="text-muted small mb-0">One panel combining historical visit trends with interaction ratios.</p>
+            <p class="text-muted small mb-0">One panel combining historical visit trends with interaction metrics.</p>
           </div>
           <span class="badge text-bg-light">${esc(usageRangeLabel())}</span>
         </div>
@@ -1221,8 +1198,8 @@
             Page tracking is active: ${usageNumber(pageViews)} page-view event${pageViews === 1 ? '' : 's'} received in <code>site_usage_events</code>.
             Interaction events: ${usageNumber(interactionEvents)}.
             ${interactionTrackingActive
-              ? 'Engagement ratios are now based on recorded search, filter, click, and form events.'
-              : 'The ratios below are 0 because no search, filter, click, or form interaction events have been recorded yet.'}
+              ? 'Engagement metrics are now based on recorded search, filter, click, and form events.'
+              : 'The metrics below are 0 because no search, filter, click, or form interaction events have been recorded yet.'}
           </div>
           <div class="oc-usage-ratio-grid">
             ${[
@@ -1230,12 +1207,10 @@
               ['Interaction events', usageNumber(interactionEvents)],
               ['Searches per visit', visits ? (searches / visits).toFixed(2) : '0.00'],
               ['Filters per visit', visits ? (filters / visits).toFixed(2) : '0.00'],
-              ['Resource click rate', usagePercent(resourceClicks, visits)],
-              ['Download click rate', usagePercent(downloadClicks, visits)],
-              ['Outbound click rate', usagePercent(outboundClicks, visits)],
-              ['Action clicks', usageNumber(actionClicks)],
-              ['Form start rate', usagePercent(formStarts, formOpens)],
-              ['Form submit rate', usagePercent(formSubmits, formOpens)]
+              ['Resource clicks per visit', visits ? (resourceClicks / visits).toFixed(2) : '0.00'],
+              ['Form opens', usageNumber(formOpens)],
+              ['Form starts', usageNumber(formStarts)],
+              ['Form submits', usageNumber(formSubmits)]
             ].map(([label, value]) => `
               <div class="oc-dashboard-mini-row">
                 <span>${esc(label)}</span>
@@ -1318,10 +1293,7 @@
     const filters = usageTotal('filters');
     const visits = usageTotal('visits');
     const resourceClicks = usageTotal('resource_clicks');
-    const downloadClicks = usageTotal('download_clicks');
-    const actionClicks = usageTotal('action_clicks');
     const formSubmits = usageTotal('form_submits');
-    const usageEvents = usageTotal('usage_events');
     const pageViews = usageTotal('page_views');
     const interactionEvents = usageTotal('interaction_events');
     const topCounties = Array.isArray(usageAnalytics.top_counties) ? usageAnalytics.top_counties : [];
@@ -1354,8 +1326,6 @@
             ['Searches', searches],
             ['Filters', filters],
             ['Resource clicks', resourceClicks],
-            ['Download clicks', downloadClicks],
-            ['Button actions', actionClicks],
             ['Form submits', formSubmits]
           ].map(([label, value]) => `
             <div class="oc-account-stat">
@@ -1397,15 +1367,6 @@
             { label: 'Count', render: row => esc(usageNumber(row.count)) },
             { label: 'Avg results', render: row => esc(usageNumber(row.avg_results, '—')) }
           ], 'Filter events will appear after visitors use facets, sorting, or quick filters.')}
-          ${renderUsageTable('Top downloads and outbound links', 'Access', usageAnalytics.top_downloads, [
-            { label: 'Label', key: 'label' },
-            { label: 'Target', key: 'target' },
-            { label: 'Count', render: row => esc(usageNumber(row.count)) }
-          ], 'Download, source, DOI, paper, code, and outbound clicks will appear after visitors open those links.')}
-          ${renderUsageTable('Top button actions', 'Interface', usageAnalytics.top_actions, [
-            { label: 'Action', key: 'action' },
-            { label: 'Count', render: row => esc(usageNumber(row.count)) }
-          ], 'Button action events will appear after visitors use share, bookmark, show more, or export-style controls.')}
           ${renderUsageTable('Submission funnel', 'Contributions', usageAnalytics.form_funnel, [
             { label: 'Form/page', key: 'page' },
             { label: 'Opens', render: row => esc(usageNumber(row.opens)) },
