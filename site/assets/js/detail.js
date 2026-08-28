@@ -182,7 +182,6 @@ function publicationsListHtml(publications){
         return `
           <li class="publication-item">
             <div class="publication-title">${title}</div>
-            ${pub.doi ? `<div class="publication-doi">DOI: ${formatDoi(pub.doi)}</div>` : ''}
           </li>
         `;
       }).join('')}
@@ -1560,10 +1559,14 @@ async function initDetail(){
           .quickfact-value{ font-weight:700; line-height:1.35; }
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
-          .publication-list{ display:grid; gap:.9rem; padding-left:1.25rem; }
+          .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; cursor:pointer; list-style:none; }
+          .publications-disclosure summary::-webkit-details-marker{ display:none; }
+          .publications-disclosure .publication-toggle{ width:1.65rem; height:1.65rem; flex:0 0 1.65rem; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--oc-border); border-radius:999px; color:var(--oc-link); font-weight:800; line-height:1; }
+          .publications-disclosure .publication-toggle::before{ content:"+"; }
+          .publications-disclosure[open] .publication-toggle::before{ content:"-"; }
+          .publication-list{ display:grid; gap:.75rem; padding-left:1.25rem; margin-top:1rem; }
           .publication-item{ padding-left:.15rem; }
           .publication-title{ font-weight:700; line-height:1.4; }
-          .publication-doi{ color:var(--oc-sub); font-size:.9rem; line-height:1.4; margin-top:.18rem; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
@@ -1686,9 +1689,13 @@ async function initDetail(){
 
         ${publications.length > 1 ? `
         <section id="publications" class="detail-section">
-          <div class="detail-kicker">Publications</div>
-          <h2 class="detail-heading">Related publications</h2>
-          ${publicationsListHtml(publications)}
+          <details class="publications-disclosure" open>
+            <summary>
+              <h2 class="detail-heading mb-0">Related publications</h2>
+              <span class="publication-toggle" aria-hidden="true"></span>
+            </summary>
+            ${publicationsListHtml(publications)}
+          </details>
         </section>` : ''}
 
         <section id="related-resources" class="detail-section">
