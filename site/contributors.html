@@ -158,13 +158,28 @@
     .person-card.org-card .card-body.compact-body{
       gap:.95rem !important;
     }
-    .person-card .headshot.is-logo{
-      width:92px;
-      height:64px;
-      object-fit:contain;
+    .contributor-logo-slot{
+      width:124px;
+      height:82px;
+      display:grid;
+      place-items:center;
+      flex:0 0 124px;
+      border:1px solid rgba(231,237,243,.95);
       border-radius:10px;
       background:#fff;
-      padding:7px 9px;
+      box-shadow:0 4px 12px rgba(0,0,0,.05);
+      overflow:hidden;
+      padding:6px;
+    }
+    .person-card .headshot.is-logo{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+      padding:0;
     }
     .person-card .person-meta{
       min-width:0;
@@ -621,6 +636,11 @@
       #visitorMap{height:300px}
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
+      .contributor-logo-slot{
+        width:104px;
+        height:72px;
+        flex-basis:104px;
+      }
     }
   </style>
 
@@ -662,9 +682,11 @@
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06);
     }
     .headshot.is-initials.is-logo{
-      width:92px;
-      height:64px;
-      border-radius:10px;
+      width:100%;
+      height:100%;
+      border:0;
+      border-radius:0;
+      box-shadow:none;
       font-size:.88rem;
       line-height:1;
       letter-spacing:0;
@@ -1336,8 +1358,9 @@ api.renderInstitutionMarquee({
     const isOrg = isOrgContributor(c);
     const searchText = [c.name, c.role, c.affiliation, c.type].map(value => String(value || '')).join(' ').toLowerCase();
     const imageAlt = isOrg ? `${c.name || 'Organization'} logo` : '';
-    const img = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${c.image}" alt="${esc(imageAlt)}">`
+    const media = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${c.image}" alt="${esc(imageAlt)}">`
                         : `<div class="headshot is-initials${isOrg ? ' is-logo' : ''}">${initials(c.name)}</div>`;
+    const img = isOrg ? `<div class="contributor-logo-slot">${media}</div>` : media;
     const body = `<div class="card oc-card person-card${isOrg ? ' org-card' : ''} h-100">
         <div class="card-body compact-body d-flex">${img}
           <div class="person-meta"><h5 class="card-title">${c.name||''}</h5>
