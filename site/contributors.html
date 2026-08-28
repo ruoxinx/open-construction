@@ -159,17 +159,17 @@
       gap:.95rem !important;
     }
     .contributor-logo-slot{
-      width:136px;
-      height:88px;
+      width:152px;
+      height:96px;
       display:grid;
       place-items:center;
-      flex:0 0 136px;
+      flex:0 0 152px;
       border:1px solid rgba(231,237,243,.95);
       border-radius:10px;
       background:#fff;
       box-shadow:0 4px 12px rgba(0,0,0,.05);
       overflow:hidden;
-      padding:6px;
+      padding:8px;
     }
     .person-card .headshot.is-logo{
       width:100%;
@@ -181,9 +181,6 @@
       box-shadow:none;
       padding:0;
       transform-origin:center;
-    }
-    .contributor-logo-slot .headshot.is-logo.is-square-logo{
-      transform:scale(1.22);
     }
     .person-card .person-meta{
       min-width:0;
@@ -641,9 +638,10 @@
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
       .contributor-logo-slot{
-        width:112px;
-        height:76px;
-        flex-basis:112px;
+        width:124px;
+        height:78px;
+        flex-basis:124px;
+        padding:7px;
       }
     }
   </style>
@@ -1403,15 +1401,6 @@ window.OpenConstructionContributorData = (() => {
   const DATA   = people.concat(orgs);
 
   $grid.innerHTML = DATA.map(cardHTML).join('');
-  $grid.querySelectorAll('.contributor-logo-slot img.is-logo').forEach((img) => {
-    const markSquareLogo = () => {
-      if (!img.naturalWidth || !img.naturalHeight) return;
-      const ratio = img.naturalWidth / img.naturalHeight;
-      if (ratio > .72 && ratio < 1.38) img.classList.add('is-square-logo');
-    };
-    if (img.complete) markSquareLogo();
-    else img.addEventListener('load', markSquareLogo, { once:true });
-  });
   const allNodes = Array.from($grid.children);
   let nodes = allNodes.slice();
   $grid.remove();

@@ -316,7 +316,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="assets/js/config.js"></script>
-<script src="assets/js/terms.js?v=20260826-mep-acronym"></script>
+<script src="assets/js/terms.js?v=20260827-idm-mvd-acronym"></script>
 <script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
 <script src="assets/js/site-shell.js?v=20260825-footer-social-icons"></script>
 
@@ -540,7 +540,7 @@ function formatModelTitle(raw){
   const text = String(raw || '').trim();
   if (!text) return '';
   const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'with']);
-  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|idm|mvd|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
 
   return text.split(/\s+/).map((token, index, arr) => {
     const parts = token.match(/^([^A-Za-z0-9]*)([A-Za-z0-9][A-Za-z0-9-]*)([^A-Za-z0-9]*)$/);
@@ -654,7 +654,7 @@ function prettyTermLabel(raw){
   };
   if (preferred[key]) return preferred[key];
   const minorWords = new Set(['a', 'an', 'and', 'as', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs', 'with']);
-  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
+  const acronymPattern = /^(2d|3d|4d|rgb|rgbd|rgb-d|slam|lidar|cnn|rnn|gan|svm|ml|ai|nlp|uav|imu|sar|bim|ifc|idm|mvd|gpr|vlm|llm|qa|hvac|lod3|ui|pcd|fob|cif|dap)$/i;
   const tokens = key.split(/\s+/).filter(Boolean);
   return tokens.map((token, index) => {
     const parts = token.match(/^([^a-z0-9]*)([a-z0-9-]+)([^a-z0-9]*)$/i);

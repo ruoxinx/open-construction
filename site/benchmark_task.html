@@ -251,7 +251,7 @@
     if(!raw) return '';
     const hasCaps = /[A-Z]/.test(raw);
     if(hasCaps && raw.length <= 14) return raw;
-    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|hvac|lod3|ui|fob|cif|dap)$/i;
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|idm|mvd|hvac|lod3|ui|fob|cif|dap)$/i;
     return raw.toLowerCase().replace(/\b\w+\b/g, word =>
       acronymPattern.test(word) ? word.toUpperCase() : `${word.charAt(0).toUpperCase()}${word.slice(1)}`
     );
