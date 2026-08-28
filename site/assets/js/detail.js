@@ -174,19 +174,20 @@ function recordPublications(record){
 function publicationsListHtml(publications){
   if (!Array.isArray(publications) || !publications.length) return '';
   return `
-    <ol class="publication-list mb-0">
-      ${publications.map(pub => {
-        const title = pub.url
-          ? `<a href="${pub.url}" target="_blank" rel="noopener">${escapeHtml(pub.title)}</a>`
-          : escapeHtml(pub.title);
-        const year = pub.year ? ` <span class="publication-year">(${escapeHtml(pub.year)})</span>` : '';
+    <div class="publication-list" role="list">
+      ${publications.map((pub, index) => {
+        const tag = pub.url ? 'a' : 'div';
+        const href = pub.url ? ` href="${pub.url}" target="_blank" rel="noopener"` : '';
+        const year = pub.year ? `<span class="publication-year">${escapeHtml(pub.year)}</span>` : '';
         return `
-          <li class="publication-item">
-            <div class="publication-title">${title}${year}</div>
-          </li>
+          <${tag} class="publication-row${pub.url ? ' is-link' : ''}"${href} role="listitem">
+            <span class="publication-index" aria-hidden="true">${index + 1}</span>
+            <span class="publication-title">${escapeHtml(pub.title)}</span>
+            ${year}
+          </${tag}>
         `;
       }).join('')}
-    </ol>
+    </div>
   `;
 }
 
@@ -1580,10 +1581,14 @@ async function initDetail(){
           .publications-disclosure .publication-toggle{ width:1.65rem; height:1.65rem; flex:0 0 1.65rem; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--oc-border); border-radius:999px; color:var(--oc-link); font-weight:800; line-height:1; }
           .publications-disclosure .publication-toggle::before{ content:"+"; }
           .publications-disclosure[open] .publication-toggle::before{ content:"-"; }
-          .publication-list{ display:grid; gap:.75rem; padding-left:1.25rem; margin-top:1rem; }
-          .publication-item{ padding-left:.15rem; }
-          .publication-title{ font-weight:700; line-height:1.4; }
-          .publication-year{ color:var(--oc-sub); font-weight:600; white-space:nowrap; }
+          .publication-list{ display:grid; gap:.55rem; margin-top:.95rem; }
+          .publication-row{ display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:start; gap:.72rem; padding:.72rem .78rem; border:1px solid #dce8f3; border-radius:12px; background:#f8fbff; color:inherit; text-decoration:none; transition:background .15s ease, border-color .15s ease, transform .15s ease; }
+          .publication-row.is-link .publication-title{ color:var(--oc-link); }
+          .publication-row.is-link:hover{ background:#f4f9ff; border-color:#c8dcec; transform:translateY(-1px); }
+          .publication-row.is-link:hover .publication-title{ text-decoration:underline; text-underline-offset:.16em; }
+          .publication-index{ width:1.7rem; height:1.7rem; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#eef5ff; color:#0b5cad; font-size:.78rem; font-weight:800; line-height:1; }
+          .publication-title{ min-width:0; color:var(--oc-ink); font-weight:700; line-height:1.38; transition:color .15s ease; }
+          .publication-year{ justify-self:end; padding:.18rem .48rem; border:1px solid #dce8f3; border-radius:999px; background:#fff; color:var(--oc-sub); font-size:.78rem; font-weight:800; line-height:1.2; white-space:nowrap; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
@@ -1635,6 +1640,8 @@ async function initDetail(){
             .ds-cap{ padding-inline:1rem; }
             .quickfact-label{ font-size:.76rem; }
             .related-link{ padding:.7rem 0; }
+            .publication-row{ grid-template-columns:auto minmax(0,1fr); }
+            .publication-year{ grid-column:2; justify-self:start; }
           }
 
 /* Abstract show more/less */
