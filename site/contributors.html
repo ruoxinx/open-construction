@@ -159,11 +159,11 @@
       gap:.95rem !important;
     }
     .contributor-logo-slot{
-      width:124px;
-      height:82px;
+      width:136px;
+      height:88px;
       display:grid;
       place-items:center;
-      flex:0 0 124px;
+      flex:0 0 136px;
       border:1px solid rgba(231,237,243,.95);
       border-radius:10px;
       background:#fff;
@@ -180,6 +180,10 @@
       background:transparent;
       box-shadow:none;
       padding:0;
+      transform-origin:center;
+    }
+    .contributor-logo-slot .headshot.is-logo.is-square-logo{
+      transform:scale(1.22);
     }
     .person-card .person-meta{
       min-width:0;
@@ -637,9 +641,9 @@
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
       .contributor-logo-slot{
-        width:104px;
-        height:72px;
-        flex-basis:104px;
+        width:112px;
+        height:76px;
+        flex-basis:112px;
       }
     }
   </style>
@@ -1188,6 +1192,26 @@ api.renderInstitutionMarquee({
 })();
 </script>
 
+<script>
+window.OpenConstructionContributorData = (() => {
+  const urls = ['data/contributors.json'];
+
+  async function load(fallback = []) {
+    for (const url of urls) {
+      try {
+        const res = await fetch(new URL(url, location.href).toString(), { cache:'no-store' });
+        if (res.ok) return await res.json();
+      } catch (error) {
+        console.warn(`[contributors] Could not load ${url}`, error);
+      }
+    }
+    return fallback;
+  }
+
+  return { urls, load };
+})();
+</script>
+
 <!-- Community metric circles-->
 <script>
 (() => {
@@ -1237,13 +1261,7 @@ api.renderInstitutionMarquee({
   }
 
   async function countContributorsFromJSON() {
-    // Use absolute path so refresh in subpaths never breaks
-    const base = new URL('.', location.href);
-    const url = new URL('data/contributors.json', base).toString();
-
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error("Cannot load contributors.json");
-    const data = await res.json();
+    const data = await window.OpenConstructionContributorData.load([]);
     return Array.isArray(data) ? data.length + 7 : 7; // keep your +7 behavior
   }
 
@@ -1313,7 +1331,6 @@ api.renderInstitutionMarquee({
 <!-- Contributors JSON loader + carousel -->
 <script>
 (async function(){
-  const JSON_URL = 'data/contributors.json';
   const GRID_ID  = 'contributorsGrid';
   const WRAP_ID  = 'occContrib';
   const DOTS_ID  = 'occDots';
@@ -1373,9 +1390,8 @@ api.renderInstitutionMarquee({
 
   let rows=[];
   try{
-    const res=await fetch(JSON_URL,{cache:'no-store'});
-    if(!res.ok) throw new Error('Failed to fetch contributors.json');
-    rows = await res.json();
+    rows = await window.OpenConstructionContributorData.load([]);
+    if (!Array.isArray(rows)) throw new Error('Failed to fetch contributors.json');
   }catch(e){
     console.error(e);
     $grid.innerHTML = '<p class="text-muted">Could not load contributors.</p>';
@@ -1387,6 +1403,15 @@ api.renderInstitutionMarquee({
   const DATA   = people.concat(orgs);
 
   $grid.innerHTML = DATA.map(cardHTML).join('');
+  $grid.querySelectorAll('.contributor-logo-slot img.is-logo').forEach((img) => {
+    const markSquareLogo = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const ratio = img.naturalWidth / img.naturalHeight;
+      if (ratio > .72 && ratio < 1.38) img.classList.add('is-square-logo');
+    };
+    if (img.complete) markSquareLogo();
+    else img.addEventListener('load', markSquareLogo, { once:true });
+  });
   const allNodes = Array.from($grid.children);
   let nodes = allNodes.slice();
   $grid.remove();
@@ -1610,7 +1635,7 @@ api.renderInstitutionMarquee({
   Promise.all([
     fetch('data/datasets.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : {}),
     fetch('data/models.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : []),
-    fetch('data/contributors.json', { cache:'no-store' }).then((res) => res.ok ? res.json() : [])
+    window.OpenConstructionContributorData.load([])
   ]).then(([datasetsPayload, modelsPayload, contributorsPayload]) => {
     const registry = new Map();
     (Array.isArray(contributorsPayload) ? contributorsPayload : []).forEach((row) => {
