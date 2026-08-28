@@ -1521,6 +1521,18 @@ async function initDetail(){
               `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
             </div>
           </div>
+          ${publications.length > 1 ? `
+          <div class="col-12">
+            <div class="detail-subcard">
+              <details class="publications-disclosure" open>
+                <summary>
+                  <div class="detail-subhead mb-0">Related publications</div>
+                  <span class="publication-toggle" aria-hidden="true"></span>
+                </summary>
+                ${publicationsListHtml(publications)}
+              </details>
+            </div>
+          </div>` : ''}
         </div>
       `;
 
@@ -1691,17 +1703,6 @@ async function initDetail(){
           </dl>
         </section>
 
-        ${publications.length > 1 ? `
-        <section id="publications" class="detail-section">
-          <details class="publications-disclosure" open>
-            <summary>
-              <h2 class="detail-heading mb-0">Related publications</h2>
-              <span class="publication-toggle" aria-hidden="true"></span>
-            </summary>
-            ${publicationsListHtml(publications)}
-          </details>
-        </section>` : ''}
-
         <section id="related-resources" class="detail-section">
           <div class="detail-kicker">Related Resources</div>
           <h2 class="detail-heading">Keep exploring from here</h2>
@@ -1745,7 +1746,6 @@ async function initDetail(){
               <div class="d-grid gap-2">
                 ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'View Code')}</a>` : ''}
                 ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${paperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View Paper')}</a>` : ''}
-                ${publications.length > 1 ? `<a class="btn btn-outline-secondary btn-sm" href="#publications">View all publications</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
@@ -1759,7 +1759,6 @@ async function initDetail(){
               <div class="d-grid gap-2 small">
                 <a href="#overview">Overview</a>
                 <a href="#technical-profile">Technical Profile</a>
-                ${publications.length > 1 ? '<a href="#publications">Publications</a>' : ''}
                 <a href="#related-resources">Related Resources</a>
               </div>
             </div>
