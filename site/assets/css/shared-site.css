@@ -42,11 +42,24 @@ body{
 }
 
 html{
+  min-height:100%;
   scrollbar-gutter:stable;
 }
 
 body{
+  min-height:100vh;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
   overflow-y:scroll;
+}
+
+body > main{
+  flex:1 0 auto;
+}
+
+body > .oc-site-footer{
+  flex-shrink:0;
 }
 
 a{ color:var(--oc-link); }
