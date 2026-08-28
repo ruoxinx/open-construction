@@ -20,8 +20,10 @@ const expectedTopLevelDirs = new Set([
 
 const expectedTopLevelHtml = new Set([
   "account.html",
+  "application.html",
   "index.html",
   "benchmarks.html",
+  "benchmark_explorer.html",
   "benchmark_application.html",
   "benchmark_results.html",
   "benchmark_task.html",
@@ -40,6 +42,7 @@ const expectedTopLevelHtml = new Set([
   "ontology.html",
   "schema.html",
   "taxonomy.html",
+  "task.html",
   "tools.html",
   "tutorials.html",
   "references.html",

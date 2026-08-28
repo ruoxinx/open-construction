@@ -25,16 +25,18 @@
     'oer': 'oer',
     'oer.html': 'oer',
     'oers': 'oer',
-    'benchmarks': 'benchmarks',
-    'benchmarks.html': 'benchmarks',
-    'benchmark_task': 'benchmarks',
-    'benchmark_task.html': 'benchmarks',
-    'benchmark_application': 'benchmarks',
-    'benchmark_application.html': 'benchmarks',
-    'benchmark_results': 'benchmarks',
-    'benchmark_results.html': 'benchmarks',
-    'object_class': 'benchmarks',
-    'object_class.html': 'benchmarks',
+    'benchmarks': 'catalog_analytics',
+    'benchmarks.html': 'catalog_analytics',
+    'benchmark_explorer': 'benchmark_explorer',
+    'benchmark_explorer.html': 'benchmark_explorer',
+    'benchmark_task': 'benchmark_explorer',
+    'benchmark_task.html': 'benchmark_explorer',
+    'benchmark_application': 'benchmark_explorer',
+    'benchmark_application.html': 'benchmark_explorer',
+    'benchmark_results': 'benchmark_explorer',
+    'benchmark_results.html': 'benchmark_explorer',
+    'object_class': 'benchmark_explorer',
+    'object_class.html': 'benchmark_explorer',
     'tutorials': 'learn',
     'tutorials.html': 'learn',
     'references': 'learn',
@@ -68,12 +70,13 @@
 
   const ROUTE_GROUPS = {
     libraries: new Set(['dataset', 'models', 'deployments', 'oer']),
+    insights: new Set(['catalog_analytics', 'benchmark_explorer']),
     learn: new Set(['learn'])
   };
 
   const CATALOG_TITLE_FILES = new Set(['dataset.html', 'models.html', 'deployments.html', 'oer.html']);
   const DOCS_TITLE_FILES = new Set(['tutorials.html', 'references.html', 'schema.html', 'tools.html', 'guides.html', 'mcp.html']);
-  const PAGE_TITLE_FILES = new Set(['benchmarks.html', 'contribute.html', 'contributors.html']);
+  const PAGE_TITLE_FILES = new Set(['benchmarks.html', 'benchmark_explorer.html', 'contribute.html', 'contributors.html']);
 
   const CATALOG_META = {
     dataset: {
@@ -123,8 +126,12 @@
 
   const PAGE_TITLE_META = {
     'benchmarks.html': {
-      label: 'Catalog Insights',
+      label: 'Analytics',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>'
+    },
+    'benchmark_explorer.html': {
+      label: 'Benchmark',
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M6 13h3v6H6z"></path><path class="oc-icon-fill" d="M11 8h3v11h-3z"></path><path class="oc-icon-fill" d="M16 5h3v14h-3z"></path><path d="M4 19h16"></path><path d="M7.5 13v6"></path><path d="M12.5 8v11"></path><path d="M17.5 5v14"></path></svg>'
     },
     'contribute.html': {
       label: 'Contribute',
@@ -144,7 +151,8 @@
     },
     benchmarks: {
       label: 'Insights',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>'
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>',
+      dropdown: true
     },
     learn: {
       label: 'Learn',
@@ -256,9 +264,50 @@
     if (ROUTE_GROUPS.libraries.has(route)) {
       document.getElementById('ddLibraries')?.classList.add('active');
     }
+    if (ROUTE_GROUPS.insights.has(route)) {
+      document.getElementById('ddInsights')?.classList.add('active');
+    }
     if (ROUTE_GROUPS.learn.has(route)) {
       document.getElementById('ddResourcesMenu')?.classList.add('active');
     }
+  }
+
+  function normalizeInsightsNav(navList){
+    const prefix = pagePrefix();
+    const existingToggle = navList.querySelector('#ddInsights');
+    if (existingToggle) {
+      const existingItem = existingToggle.closest('.nav-item');
+      if (existingItem) existingItem.classList.add('dropdown');
+      let menu = existingItem?.querySelector('.dropdown-menu');
+      if (!menu && existingItem) {
+        existingItem.insertAdjacentHTML('beforeend', '<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddInsights"></ul>');
+        menu = existingItem.querySelector('.dropdown-menu');
+      }
+      if (menu) {
+        menu.innerHTML = `
+          <li><a class="dropdown-item" href="${prefix}benchmarks.html">Analytics</a></li>
+          <li><a class="dropdown-item" href="${prefix}benchmark_explorer.html">Benchmark</a></li>
+        `;
+      }
+      existingToggle.classList.add('dropdown-toggle');
+      existingToggle.setAttribute('data-bs-toggle', 'dropdown');
+      existingToggle.setAttribute('role', 'button');
+      existingToggle.setAttribute('aria-expanded', 'false');
+      return existingToggle;
+    }
+
+    const insightsLink = navList.querySelector('.nav-link.plain[data-route="benchmarks"], .nav-link.plain[href$="benchmarks.html"]');
+    const insightsItem = insightsLink?.closest('.nav-item');
+    if (!insightsItem) return null;
+    insightsItem.classList.add('dropdown');
+    insightsItem.innerHTML = `
+      <a class="nav-link plain dropdown-toggle" href="#" id="ddInsights" role="button" data-bs-toggle="dropdown" aria-expanded="false">Insights</a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddInsights">
+        <li><a class="dropdown-item" href="${prefix}benchmarks.html">Analytics</a></li>
+        <li><a class="dropdown-item" href="${prefix}benchmark_explorer.html">Benchmark</a></li>
+      </ul>
+    `;
+    return insightsItem.querySelector('#ddInsights');
   }
 
   function normalizeHeaderNav(){
@@ -272,10 +321,11 @@
 
     const catalogToggle = navList.querySelector('#ddLibraries, #ddCatalogs');
     if (catalogToggle) catalogToggle.textContent = 'Catalog';
+    normalizeInsightsNav(navList);
 
     [
       { selector: '#ddLibraries, #ddCatalogs', key: 'catalog' },
-      { selector: '.nav-link.plain[data-route="benchmarks"], .nav-link.plain[href$="benchmarks.html"]', key: 'benchmarks' },
+      { selector: '#ddInsights, .nav-link.plain[data-route="benchmarks"], .nav-link.plain[href$="benchmarks.html"]', key: 'benchmarks' },
       { selector: '#ddResourcesMenu', key: 'learn' },
       { selector: '.nav-link.plain[data-route="contribute"], .nav-link.plain[href$="contribute.html"]', key: 'contribute' },
       { selector: '.nav-link.plain[data-route="contributors"], .nav-link.plain[href$="contributors.html"]', key: 'contributors' }
@@ -299,6 +349,11 @@
       const docsMeta = docsMetaForHref(href);
       if (docsMeta) {
         item.innerHTML = `${docsIconHtml(href, 'oc-nav-menu-icon')}<span>${docsMeta.label}</span>`;
+        return;
+      }
+      const pageMeta = PAGE_TITLE_META[fileForHref(href)];
+      if (pageMeta) {
+        item.innerHTML = `${pageTitleIconHtml(fileForHref(href), 'oc-nav-menu-icon')}<span>${pageMeta.label}</span>`;
       }
     });
 

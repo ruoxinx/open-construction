@@ -5,8 +5,16 @@
     <lastmod>2026-07-04</lastmod>
   </url>
   <url>
+    <loc>https://www.openconstruction.org/application.html</loc>
+    <lastmod>2026-08-28</lastmod>
+  </url>
+  <url>
     <loc>https://www.openconstruction.org/benchmarks.html</loc>
     <lastmod>2026-07-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/benchmark_explorer.html</loc>
+    <lastmod>2026-08-28</lastmod>
   </url>
   <url>
     <loc>https://www.openconstruction.org/contribute.html</loc>
@@ -67,6 +75,10 @@
   <url>
     <loc>https://www.openconstruction.org/taxonomy.html</loc>
     <lastmod>2026-07-04</lastmod>
+  </url>
+  <url>
+    <loc>https://www.openconstruction.org/task.html</loc>
+    <lastmod>2026-08-28</lastmod>
   </url>
   <url>
     <loc>https://www.openconstruction.org/tools.html</loc>

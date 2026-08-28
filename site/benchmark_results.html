@@ -9,13 +9,13 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reported Results | OpenConstruction</title>
-  <meta name="description" content="Review reported result pages for OpenConstruction datasets and models.">
+  <title>Benchmark Results | OpenConstruction</title>
+  <meta name="description" content="Review benchmark leaderboards and reported metrics for OpenConstruction tasks.">
   <link rel="canonical" href="https://www.openconstruction.org/benchmark_results.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="Reported Results | OpenConstruction">
-  <meta property="og:description" content="Review reported results for specific OpenConstruction datasets and tasks.">
+  <meta property="og:title" content="Benchmark Results | OpenConstruction">
+  <meta property="og:description" content="Review benchmark leaderboards and reported metrics for OpenConstruction tasks.">
   <meta property="og:url" content="https://www.openconstruction.org/benchmark_results.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
@@ -37,127 +37,122 @@
       --oc-focus:#86b7fe;
       --oc-gold:#f2a238;
     }
-    .oc-container{ max-width:1240px; }
+    .container.oc-container{width:100%;max-width:1240px;margin-right:auto;margin-left:auto;padding-right:16px;padding-left:16px;box-sizing:border-box}
     .oc-section{ margin-top:28px; }
-    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
-    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
-    .badge-external{ background:#fff4df; color:#7a4a09; border-color:#f3d199; }
-    .card-shell,.table-wrap,.dataset-hero,.empty-card{
+    .empty-card{
       background:#fff;
       border:1px solid var(--oc-border);
       border-radius:var(--oc-radius);
       box-shadow:var(--oc-shadow);
     }
-    .dataset-hero{
-      display:grid;
-      grid-template-columns:minmax(300px, 1.02fr) minmax(360px, .98fr);
-      overflow:hidden;
-    }
-    .dataset-media{
-      background:#f8fbff;
-      border-right:1px solid var(--oc-border);
-      min-height:320px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .dataset-media img{
-      width:100%;
-      height:100%;
-      max-height:420px;
-      object-fit:contain;
-      display:block;
-    }
-    .dataset-copy{ padding:1.35rem 1.35rem 1.2rem; }
-    .facts-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:.8rem 1rem; }
-    .fact{ border-top:1px solid var(--oc-border); padding-top:.7rem; }
-    .fact-label{ color:var(--oc-subtle); font-size:.76rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.2rem; }
-    .fact-value{ font-weight:700; line-height:1.35; }
-    .external-actions{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:.85rem;
-      flex-wrap:wrap;
-      margin-top:1.15rem;
-      padding-top:1rem;
-      border-top:1px solid var(--oc-border);
-    }
-    .external-actions-primary,
-    .external-actions-secondary{
-      display:flex;
-      align-items:center;
-      gap:.55rem;
-      flex-wrap:wrap;
-    }
-    .btn-leaderboard{
-      --bs-btn-color:#1e2a36;
-      --bs-btn-bg:var(--oc-gold);
-      --bs-btn-border-color:#d98c1c;
-      --bs-btn-hover-color:#111820;
-      --bs-btn-hover-bg:#ffb64f;
-      --bs-btn-hover-border-color:#c77f17;
-      --bs-btn-active-color:#111820;
-      --bs-btn-active-bg:#e99a23;
-      --bs-btn-active-border-color:#b87014;
-      box-shadow:0 8px 18px rgba(242,162,56,.22);
-      font-weight:700;
-    }
-    .card-shell{ padding:1.1rem 1.25rem; }
-    .metric-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:.45rem .75rem;
-      border-radius:999px;
-      border:1px solid var(--oc-border);
-      background:#fff;
-      font-weight:600;
-    }
-    .figure-shell{
-      width:100%;
-      max-width:760px;
-      margin:0 auto;
-      overflow:hidden;
-    }
-    .figure-shell svg{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-    .figure-caption{ color:var(--oc-subtle); font-size:.92rem; margin-top:.75rem; }
-    .results-table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.88rem; }
-    .results-table th,.results-table td{
-      padding:.72rem .7rem;
-      border-top:1px solid var(--oc-border);
-      vertical-align:middle;
-    }
-    .results-table thead th{
-      border-top:0;
-      color:var(--oc-ink);
-      font-weight:700;
-      background:#f7fbff;
-      white-space:nowrap;
-    }
-    .results-table th.compact,.results-table td.compact{
-      width:58px;
-      min-width:58px;
-      text-align:center;
-    }
     .muted-note{ color:var(--oc-subtle); font-size:.95rem; }
-:focus-visible{
+    :focus-visible{
       outline:2px solid var(--oc-focus);
       outline-offset:2px;
       border-radius:6px;
     }
+    .benchmark-return{
+      border-bottom:0;
+      background:#fff;
+    }
+    .benchmark-return .oc-container{
+      min-height:36px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .detail-back-link{display:inline-flex;align-items:center;gap:.35rem;color:#475569;font-size:.9rem;font-weight:700;text-decoration:none}
+    .detail-back-link:hover{color:#0f2e4b;text-decoration:none}
+    .benchmark-page{color:#1e293b;min-width:0;overflow-x:hidden}
+    #contentMount{margin-top:.25rem}
+    .benchmark-page-header{margin:0 0 1rem;padding:.65rem 0 .9rem;background:#fff}
+    .benchmark-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,34%);gap:1.25rem;align-items:start;min-width:0}
+    .benchmark-header-content{min-width:0}
+    .benchmark-page-title{margin:0;color:var(--oc-ink);font-size:clamp(2rem,1.6rem + 1.2vw,2.8rem);font-weight:700;letter-spacing:0;line-height:1.12;overflow-wrap:anywhere;word-break:break-word}
+    .benchmark-page-meta{margin:.65rem 0 0;color:#64748b;font-size:1rem;line-height:1.5;max-width:860px;overflow-wrap:anywhere}
+    .benchmark-link-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;min-width:0}
+    .benchmark-action{display:inline-flex;align-items:center;gap:.42rem;min-height:34px;min-width:0;border:1px solid #d6dde6;border-radius:4px;background:#fff;color:#334155;font-family:inherit;font-size:.92rem;font-weight:700;line-height:1.2;padding:.42rem .66rem;text-decoration:none}
+    .benchmark-action:hover{border-color:#0f2e4b;color:#0f2e4b;background:#fff;text-decoration:none}
+    .benchmark-action.primary{border-color:#0d6efd;background:#0d6efd;color:#fff}
+    .benchmark-action.primary:hover{border-color:#0a58ca;background:#0b5ed7;color:#fff}
+    .benchmark-action svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .benchmark-action .oc-icon-fill{fill:rgba(15,46,75,.12);stroke:none}
+    .benchmark-action.primary .oc-icon-fill{fill:rgba(255,255,255,.22)}
+    .benchmark-link-row .oc-bookmark-btn{width:34px;height:34px;border:1px solid #d6dde6;border-radius:4px;color:#334155;background:#fff}
+    .benchmark-link-row .oc-bookmark-btn:hover{border-color:#f2a238;color:#f2a238;background:#fff8ec}
+    .benchmark-preview-media{margin:0;min-width:0;width:100%;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .benchmark-preview-media img{width:100%;aspect-ratio:16 / 10;height:auto;display:block;object-fit:cover}
+    .benchmark-media-note{margin:0;padding:.48rem .65rem .55rem;border-top:1px solid #e2e8f0;color:#64748b;background:#fff;font-size:.75rem;line-height:1.4;overflow-wrap:break-word}
+    .benchmark-main-grid,.benchmark-stack{display:grid;gap:.9rem;min-width:0}
+    .benchmark-section-card,.performance-card{border:1px solid #dbe4ee;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .benchmark-section-card{padding:1.25rem 1.35rem}
+    .section-heading{margin:0 0 .85rem;color:#0f172a;font-size:1.3rem;font-weight:700;line-height:1.2}
+    .benchmark-overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem 1rem}
+    .benchmark-definition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem;margin:0}
+    .benchmark-definition-grid dt,.benchmark-side-label{color:#64748b;font-size:.74rem;font-weight:800;letter-spacing:.08em;line-height:1.2;text-transform:uppercase}
+    .benchmark-definition-grid dd,.benchmark-side-value{margin:.22rem 0 0;color:#334155;font-size:1rem;line-height:1.45}
+    .benchmark-side-value a{color:#0b66c3;text-decoration:none;text-underline-offset:2px}
+    .benchmark-side-value a:hover{text-decoration:underline}
+    .benchmark-summary-row{margin-top:1rem;padding-top:.95rem;border-top:1px solid #e7edf3;color:#334155;font-size:1rem;line-height:1.55}
+    .license-inline{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:.45rem;min-width:0;max-width:100%}
+    .license-title-line{display:inline-flex;align-items:center;min-width:0}
+    .license-title-line a{white-space:nowrap}
+    .license-icon-strip{display:inline-flex;flex:0 0 auto;align-items:center;gap:.24rem}
+    .license-badge{display:block;width:1.25rem;min-width:1.25rem;height:1.25rem;object-fit:contain}
+    .performance-card{padding:1.35rem}
+    .performance-heading-row{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin-bottom:1rem}
+    .performance-heading-row h2{margin:0;color:var(--oc-ink);font-size:1.3rem;font-weight:700;line-height:1.12}
+    .leaderboard-controls{display:flex;align-items:center;flex-wrap:wrap;justify-content:flex-end;gap:.5rem .65rem;margin:0}
+    .leaderboard-controls label{color:#64748b;font-size:.78rem;font-weight:700}
+    .leaderboard-controls .form-select{width:180px;min-height:36px;border-color:#cbd5e1;border-radius:3px;color:#334155;font-size:.92rem}
+    .leaderboard-sort-select{width:140px;min-height:36px;border:1px solid #dbe4ee;border-radius:4px;background:#fff;color:#334155;padding:.36rem .6rem;font-size:.92rem;font-weight:500}
+    .leaderboard-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:1.2rem;align-items:start}
+    .leaderboard-plot-title{margin:0 0 .32rem;color:#64748b;font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .leaderboard-chart{width:100%;overflow-x:auto;padding-bottom:.3rem}
+    .leaderboard-chart svg{display:block;max-width:100%;height:auto;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .lb-grid-line{stroke:#e2e8f0;stroke-width:1}
+    .lb-axis-line{stroke:#5c5b58;stroke-width:1}
+    .lb-axis-label{fill:#6b6960;font-size:8.5px}
+    .lb-rank-label{fill:#3a3a37;font-size:8.5px;font-weight:700}
+    .lb-model-label{fill:#6b6960;font-size:8px}
+    .lb-value-label{fill:#3a3a37;font-size:8.5px;font-weight:700}
+    .lb-dot{fill:#d8704c;stroke:#d8704c;stroke-width:1}
+    .lb-dot.claimed{fill:#ebc5a8;stroke:#5c5b58;stroke-width:1.5}
+    .leaderboard-table-wrap{overflow-x:auto;border:1px solid #dbe4ee;border-radius:6px}
+    .leaderboard-table{width:100%;min-width:360px;border-collapse:collapse;font-size:.92rem}
+    .leaderboard-table thead{background:#f8fafc}
+    .leaderboard-table th{padding:.72rem;color:#64748b;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase;vertical-align:bottom}
+    .leaderboard-table td{padding:.62rem .72rem;color:#1e293b;vertical-align:top;border-top:1px solid rgba(226,232,240,.65)}
+    .leaderboard-table tbody tr:nth-child(even){background:#f8fafc66}
+    .leaderboard-table .rank-cell{width:42px;color:#475569;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    .leaderboard-table .model-cell{font-weight:700;line-height:1.25}
+    .leaderboard-table .model-cell a{color:inherit;text-decoration:none}
+    .leaderboard-table .model-cell a:hover{color:#0b66c3;text-decoration:underline}
+    .leaderboard-table .value-cell{text-align:right;color:#1d4ed8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;white-space:nowrap}
+    .verify-badge{display:inline-flex;align-items:center;margin-left:.35rem;border:1px solid #fed7aa;border-radius:4px;background:#fff7ed;color:#9a3412;padding:.12rem .3rem;font-size:.6rem;font-weight:800;line-height:1;vertical-align:1px}
+    .empty-state{border:1px dashed #cbd5e1;border-radius:4px;background:#f8fafc;color:#64748b;padding:1rem;text-align:center}
     @media (max-width: 991.98px){
-      .dataset-hero{ grid-template-columns:1fr; }
-      .dataset-media{
-        border-right:0;
-        border-bottom:1px solid var(--oc-border);
-        min-height:240px;
-      }
-      .facts-grid{ grid-template-columns:1fr; }
+      .benchmark-hero-grid,.benchmark-overview-grid,.leaderboard-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 575.98px){
+      .benchmark-page-header{padding:1.15rem 0}
+      .benchmark-page,
+      .benchmark-header-content,
+      .benchmark-preview-media,
+      .benchmark-section-card,
+      .performance-card{max-width:calc(100vw - 32px)}
+      .benchmark-page-meta,
+      .benchmark-link-row{width:calc(100vw - 48px);max-width:100%}
+      .benchmark-page-title{width:280px;max-width:calc(100vw - 80px);font-size:1.55rem;line-height:1.08}
+      .benchmark-section-card,.performance-card{padding:1rem}
+      .benchmark-definition-grid{grid-template-columns:1fr}
+      .benchmark-link-row .benchmark-action{flex:1 1 100%;justify-content:center}
+      .benchmark-link-row .oc-bookmark-btn{flex:0 0 34px}
+      .performance-heading-row{display:block}
+      .leaderboard-controls{justify-content:flex-start;margin-top:.8rem}
+      .leaderboard-controls .form-select,.leaderboard-sort-select{width:100%}
+      .license-inline{flex-wrap:wrap}
+      .license-title-line a{white-space:normal}
     }
   </style>
 </head>
@@ -205,11 +200,10 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="container oc-container content">
+<header class="benchmark-return">
+  <div class="container oc-container">
     <div class="d-flex justify-content-end flex-wrap gap-2">
-      <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html">&larr; All insights</a>
-      <a class="btn btn-sm btn-outline-dark rounded-pill" id="taskBackLink" href="benchmarks.html">Related task</a>
+      <a class="detail-back-link" href="benchmark_explorer.html">&larr; Benchmark</a>
     </div>
   </div>
 </header>
@@ -337,481 +331,556 @@
     return map;
   }
 
-  function githubIcon(){
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                 0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0
-                 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013
-                 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-      </svg>`;
+  function actionIcon(type){
+    const icons = {
+      data: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>',
+      paper: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5"></path><path d="M10 13h6"></path><path d="M10 17h6"></path></svg>',
+      code: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 9-4 3 4 3"></path><path d="m16 9 4 3-4 3"></path><path d="m14 5-4 14"></path></svg>',
+      share: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4"></path><path d="m8.6 13.5 6.8 4"></path></svg>',
+      leaderboard: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9"></path><path d="M10 19V5"></path><path d="M16 19v-8"></path><path d="M3 19h18"></path><path d="M16 5h5v5"></path><path d="m14 12 7-7"></path></svg>'
+    };
+    return icons[type] || icons.data;
   }
 
-  function externalLeaderboardIcon(){
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <path d="M2 13.5V8h2v5.5H2Zm5 0V4h2v9.5H7Zm5 0V6h2v7.5h-2Z"/>
-        <path d="M10.5 1h4v4h-1V2.707L9.854 6.354l-.708-.708L12.793 2H10.5V1Z"/>
-        <path d="M1 15h14v1H1v-1Z"/>
-      </svg>`;
+  function actionLink(href, label, iconType, external = false){
+    if (!href) return '';
+    return `<a class="benchmark-action" href="${esc(href)}" ${external ? 'target="_blank" rel="noopener"' : ''}>${actionIcon(iconType)}<span>${esc(label)}</span></a>`;
   }
 
-  function formatMetric(metricDef, value){
-    if (value == null || value === '') return '<span class="text-muted">&mdash;</span>';
-    if (typeof value === 'number') {
-      const digits = Number.isInteger(metricDef?.precision) ? metricDef.precision : 2;
-      return value.toFixed(digits);
+  function shareBenchmarkButton(label){
+    return `<button type="button" class="benchmark-action" data-benchmark-share data-share-label="${esc(label)}">${actionIcon('share')}<span>Share benchmark</span></button>`;
+  }
+
+  function benchmarkBookmarkButton(board, label){
+    if (!window.OCBookmark || !board?.id) return '';
+    return window.OCBookmark.buttonHtml({
+      type: 'benchmark',
+      id: board.id,
+      title: label,
+      url: `benchmark_results.html?id=${encodeURIComponent(board.id)}`
+    });
+  }
+
+  function firstValue(...values){
+    return values.map(normStr).find(Boolean) || '';
+  }
+
+  function compactList(values, limit = 3){
+    const list = Array.from(new Set(normArray(values).flatMap(value =>
+      normStr(value).split(',').map(item => normStr(item)).filter(Boolean)
+    )));
+    if (!list.length) return '';
+    const shown = list.slice(0, limit);
+    const more = list.length > limit ? ` +${list.length - limit}` : '';
+    return `${shown.join(', ')}${more}`;
+  }
+
+  function authorYearHtml(dataset){
+    const authors = normArray(dataset?.authors).map(normStr).filter(Boolean).join(', ');
+    return [authors, dataset?.year].filter(Boolean).map(esc).join('&nbsp;&bull;&nbsp;');
+  }
+
+  function paperHref(board, dataset){
+    const source = firstValue(board.source_url, board.paper_url);
+    if (source) return source;
+    const doi = firstValue(dataset?.doi, dataset?.paper_doi);
+    return doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, '')}` : '';
+  }
+
+  function codeHref(board, dataset){
+    const direct = firstValue(board.code_url, board.github_url, board.repository_url, board.repo_url, dataset?.code_url, dataset?.github_url, dataset?.repository_url, dataset?.repo_url);
+    if (/github\.com/i.test(direct)) return direct;
+    return (board.results || []).map(row => normStr(row.code_url)).find(url => /github\.com/i.test(url)) || '';
+  }
+
+  function recordLicenseHref(record){
+    if (!record) return '';
+    const fields = [record.license_url, record.licence_url, record.license_link, record.licence_link, record.terms_url, record.access_terms_url, record.usage_terms_url];
+    return fields.map(value => normStr(value)).find(value => /^https?:\/\//i.test(value)) || '';
+  }
+
+  function licenseDisplayLabel(licenseValue){
+    const value = normStr(licenseValue);
+    if (!value) return '';
+    const labels = {
+      'CC0': 'Creative Commons CC0 Public Domain Dedication',
+      'CC BY 4.0': 'Creative Commons Attribution 4.0 International',
+      'CC-BY 4.0': 'Creative Commons Attribution 4.0 International',
+      'CC BY-NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+      'CC-BY-NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+      'CC BY NC 3.0': 'Creative Commons Attribution-NonCommercial 3.0',
+      'CC BY-NC 4.0': 'Creative Commons Attribution-NonCommercial 4.0 International',
+      'CC-BY-NC': 'Creative Commons Attribution-NonCommercial 4.0 International',
+      'CC BY-SA 4.0': 'Creative Commons Attribution-ShareAlike 4.0 International',
+      'CC BY-NC-ND 3.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 3.0',
+      'CC BY-NC-ND 4.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International',
+      'CC BY-NC-SA 4.0': 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International'
+    };
+    return labels[value.toUpperCase()] || value;
+  }
+
+  function licenseHrefFor(licenseValue, record){
+    const recordUrl = recordLicenseHref(record);
+    if (recordUrl) return recordUrl;
+    const key = normStr(licenseValue).toUpperCase();
+    const licenseMap = {
+      'APACHE-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+      'APACHE 2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+      'CC0': 'https://creativecommons.org/public-domain/cc0/',
+      'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+      'CC-BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+      'CC BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+      'CC-BY-NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+      'CC BY NC 3.0': 'https://creativecommons.org/licenses/by-nc/3.0/',
+      'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+      'CC-BY-NC': 'https://creativecommons.org/licenses/by-nc/4.0/',
+      'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+      'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
+      'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+      'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+      'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+      'GPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+      'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+      'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
+      'MIT': 'https://opensource.org/licenses/MIT',
+      'ODC-BY': 'https://opendatacommons.org/licenses/by/',
+      'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
+      'BSD 3-CLAUSE': 'https://opensource.org/license/bsd-3-clause'
+    };
+    return licenseMap[key] || '';
+  }
+
+  function licenseBadgeHtml(kind, label){
+    return `<img class="license-badge license-badge-${esc(kind)}" src="assets/img/licenses/${esc(kind)}.svg" alt="" title="${esc(label)}" aria-hidden="true" loading="lazy" decoding="async">`;
+  }
+
+  function licenseIconStripHtml(licenseValue){
+    const upper = normStr(licenseValue).toUpperCase();
+    const normalized = upper.replace(/[-_/]+/g, ' ');
+    if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
+    const badges = [{ kind: 'cc', label: 'Creative Commons' }];
+    if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
+      badges.push({ kind: 'zero', label: 'Public Domain Dedication' });
+    } else {
+      if (/\bBY\b/.test(normalized)) badges.push({ kind: 'by', label: 'Attribution' });
+      if (/\bNC\b/.test(normalized)) badges.push({ kind: 'nc', label: 'NonCommercial' });
+      if (/\bSA\b/.test(normalized)) badges.push({ kind: 'sa', label: 'ShareAlike' });
+      if (/\bND\b/.test(normalized)) badges.push({ kind: 'nd', label: 'NoDerivatives' });
     }
-    return esc(value);
+    const label = badges.map(badge => badge.label).join(', ');
+    return `<span class="license-icon-strip" role="img" aria-label="${esc(label)}">${badges.map(badge => licenseBadgeHtml(badge.kind, badge.label)).join('')}</span>`;
   }
 
-  function formatResultValue(value){
-    if (value == null || value === '') return '<span class="text-muted">&mdash;</span>';
-    return esc(value);
+  function formatLicenseHtml(licenseValue, record){
+    const label = licenseDisplayLabel(licenseValue);
+    if (!label) return '';
+    const href = licenseHrefFor(licenseValue, record);
+    const labelHtml = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>` : esc(label);
+    return `<span class="license-inline">${licenseIconStripHtml(licenseValue)}<span class="license-title-line">${labelHtml}</span></span>`;
+  }
+
+  function metricDisplayLabel(metricDefOrLabel){
+    const raw = typeof metricDefOrLabel === 'object'
+      ? firstValue(metricDefOrLabel.label, metricDefOrLabel.key)
+      : normStr(metricDefOrLabel);
+    const labels = {
+      acc: 'Accuracy',
+      accuracy: 'Accuracy',
+      pre: 'Precision',
+      prec: 'Precision',
+      precision: 'Precision',
+      recall: 'Recall',
+      rec: 'Recall',
+      f1: 'F1',
+      miou: 'mIoU',
+      iou: 'IoU',
+      mae: 'MAE',
+      wer: 'WER'
+    };
+    return labels[raw.toLowerCase()] || raw;
   }
 
   function sortedResults(board){
     return (board.results || []).slice();
   }
 
-  function uniqueValues(rows, key){
-    return Array.from(new Set(rows.map(row => normStr(row?.[key])).filter(Boolean)));
-  }
-
-  function buildCompareRows(board){
-    const byMethod = new Map();
-    (board.results || []).forEach(row => {
-      const source = normStr(row.data_source);
-      const metric = row.metrics?.[board.primary_metric_key];
-      if (!source || typeof metric !== 'number') return;
-      if (!byMethod.has(row.method)) byMethod.set(row.method, new Map());
-      byMethod.get(row.method).set(source, metric);
-    });
-    const series = Array.from(new Set((board.results || []).map(r => normStr(r.data_source)).filter(Boolean)));
-    if (!series.length) return { series: [], rows: [] };
-    const rows = Array.from(byMethod.entries()).map(([name, vals]) => ({
-      name,
-      values: series.map(seriesName => vals.get(seriesName))
-    })).filter(row => row.values.some(v => typeof v === 'number'));
-    return { series, rows };
-  }
-
-  function compareRange(board, values){
-    const chartConfig = board.comparison_chart || {};
-    const numericValues = values.filter(v => typeof v === 'number' && Number.isFinite(v));
-    const fallbackMax = numericValues.length ? Math.max(...numericValues) : 1;
-    const minValue = Number.isFinite(chartConfig.min_value) ? chartConfig.min_value : 0;
-    const maxValue = Number.isFinite(chartConfig.max_value)
-      ? chartConfig.max_value
-      : (fallbackMax <= 1 ? Math.min(1, fallbackMax + 0.06) : Math.ceil((fallbackMax + 5) / 10) * 10);
-    const safeMax = maxValue > minValue ? maxValue : (minValue + 1);
-    return { minValue, maxValue: safeMax };
-  }
-
-  function horizontalCompareCard(board){
+  function numericMetricDefs(board){
     const rows = sortedResults(board);
-    const chartConfig = board.comparison_chart || {};
-    const metricDefs = metricLookup(board);
-    const metricDef = metricDefs.get(board.primary_metric_key) || { key: board.primary_metric_key, label: board.primary_metric_key };
-    const metricKeys = (chartConfig.metric_keys || [])
-      .filter(key => metricDefs.has(key) && rows.some(row => typeof row.metrics?.[key] === 'number'));
-    const useMetricSeries = metricKeys.length > 0;
-    const metricItems = metricKeys.map(key => metricDefs.get(key));
-    const categories = chartConfig.category_order?.length ? chartConfig.category_order : uniqueValues(rows, 'data_source');
-    const categoryItems = useMetricSeries
-      ? rows.map((row, idx) => ({
-          key: `row-${idx}`,
-          label: normStr(row.method),
-          sublabel: normStr(row.metrics?.backbone)
-        }))
-      : categories.map(category => ({ key: normStr(category), label: normStr(category), sublabel: '' }));
-    const series = chartConfig.series_order?.length
-      ? chartConfig.series_order
-      : (useMetricSeries ? metricItems.map(item => item.label) : uniqueValues(rows, 'method'));
-    if (!categoryItems.length || !series.length) return '';
-
-    const seriesColors = chartConfig.series_colors || {};
-    const defaultColors = ['#d9c4a7', '#f5c48a', '#a7f195', '#8f8de6', '#ee9999', '#8cc6ff'];
-    const values = useMetricSeries
-      ? rows.flatMap(row => metricKeys.map(key => row.metrics?.[key]).filter(value => typeof value === 'number'))
-      : rows.map(row => row.metrics?.[board.primary_metric_key]);
-    const { minValue, maxValue } = compareRange(board, values);
-    const valueRange = maxValue - minValue;
-
-    const width = 880;
-    const height = Math.max(360, 180 + categoryItems.length * (useMetricSeries ? 92 : 150));
-    const left = useMetricSeries ? 232 : 176;
-    const right = 28;
-    const top = 118;
-    const bottom = 92;
-    const chartW = width - left - right;
-    const chartH = height - top - bottom;
-    const groupH = chartH / Math.max(categoryItems.length, 1);
-    const barGap = 8;
-    const innerPad = useMetricSeries ? 16 : 12;
-    const availableBarH = Math.max(groupH - innerPad * 2 - Math.max(series.length - 1, 0) * barGap, 10);
-    const barH = Math.min(useMetricSeries ? 24 : 30, availableBarH / Math.max(series.length, 1));
-    const xAt = (value) => {
-      const clipped = Math.max(minValue, Math.min(maxValue, value));
-      return left + ((clipped - minValue) / Math.max(valueRange, 0.001)) * chartW;
-    };
-    const fmt = (value, seriesIdx) => {
-      if (typeof value !== 'number') return '';
-      const activeMetricDef = useMetricSeries ? metricItems[seriesIdx] : metricDef;
-      const digits = Number.isInteger(activeMetricDef?.precision) ? activeMetricDef.precision : (Number.isInteger(value) ? 0 : 1);
-      return value.toFixed(digits).replace(/\.0+$/,'');
-    };
-    const lookup = new Map();
-    if (useMetricSeries) {
-      rows.forEach((row, rowIdx) => {
-        metricItems.forEach(metricItem => {
-          lookup.set(`row-${rowIdx}||${metricItem.label}`, row.metrics?.[metricItem.key]);
-        });
-      });
-    } else {
-      rows.forEach(row => {
-        lookup.set(`${normStr(row.data_source)}||${normStr(row.method)}`, row.metrics?.[board.primary_metric_key]);
-      });
-    }
-    const ticks = Array.from({ length: 7 }, (_, i) => {
-      const raw = minValue + (valueRange * i / 6);
-      return valueRange > 12 ? Math.round(raw / 5) * 5 : raw;
-    }).filter((value, index, arr) => index === 0 || value !== arr[index - 1]);
-
-    return `
-      <div class="card-shell">
-        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
-          <div>
-            <div class="oc-kicker">Performance</div>
-          </div>
-          <div class="metric-pill">${esc(chartConfig.metric_label || metricDef.label)}</div>
-        </div>
-        <div class="figure-shell" style="max-width:880px;">
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(metricDef.label)} grouped horizontal bar chart">
-            <defs>
-              <marker id="axis-arrow-x" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-                <path d="M0,0 L8,4 L0,8 Z" fill="#1e2a36"></path>
-              </marker>
-            </defs>
-            <g transform="translate(${left}, 24)">
-              ${series.map((seriesName, idx) => {
-                const color = seriesColors[seriesName] || defaultColors[idx % defaultColors.length];
-                const col = idx % 2;
-                const row = Math.floor(idx / 2);
-                const tx = col * 220;
-                const ty = row * 30;
-                return `
-                  <g transform="translate(${tx}, ${ty})">
-                    <rect x="0" y="-10" width="18" height="10" fill="${color}" stroke="#5b4221" stroke-width="1"/>
-                    <text x="26" y="-1" font-size="12" fill="#1e2a36">${esc(seriesName)}</text>
-                  </g>
-                `;
-              }).join('')}
-            </g>
-            ${ticks.map(tick => {
-              const x = xAt(tick);
-              const label = Number.isInteger(tick) ? String(tick) : tick.toFixed(1);
-              return `
-                <g>
-                  <line x1="${x}" x2="${x}" y1="${top}" y2="${top + chartH}" stroke="#e7edf3" stroke-width="1"/>
-                  <text x="${x}" y="${height - 30}" text-anchor="middle" font-size="12" fill="#1e2a36">${esc(label)}</text>
-                </g>
-              `;
-            }).join('')}
-            <line x1="${left}" x2="${left}" y1="${top + chartH}" y2="${top}" stroke="#1e2a36" stroke-width="1.3"/>
-            <line x1="${left}" x2="${width - right + 8}" y1="${top + chartH}" y2="${top + chartH}" stroke="#1e2a36" stroke-width="1.3" marker-end="url(#axis-arrow-x)"/>
-            ${categoryItems.map((category, categoryIdx) => {
-              const topY = top + categoryIdx * groupH + innerPad;
-              const labelY = top + categoryIdx * groupH + groupH / 2 + (category.sublabel ? -2 : 6);
-              return `
-                <g>
-                  <text x="${left - 12}" y="${labelY}" text-anchor="end" font-size="14" fill="#1e2a36">${esc(category.label)}</text>
-                  ${category.sublabel ? `<text x="${left - 12}" y="${labelY + 17}" text-anchor="end" font-size="11" fill="#4f5d6c">${esc(category.sublabel)}</text>` : ''}
-                  ${series.map((seriesName, seriesIdx) => {
-                    const value = lookup.get(`${category.key}||${seriesName}`);
-                    if (typeof value !== 'number') return '';
-                    const y = topY + seriesIdx * (barH + barGap);
-                    const x = xAt(value);
-                    const color = seriesColors[seriesName] || defaultColors[seriesIdx % defaultColors.length];
-                    return `
-                      <rect x="${left}" y="${y}" width="${Math.max(x - left, 0)}" height="${barH}" fill="${color}" stroke="#5b4221" stroke-width="1"/>
-                      <text x="${Math.min(x + 14, width - right + 2)}" y="${y + barH / 2 + 4}" font-size="12" fill="#1e2a36">${esc(fmt(value, seriesIdx))}</text>
-                    `;
-                  }).join('')}
-                </g>
-              `;
-            }).join('')}
-            <text x="${left + chartW / 2}" y="${height - 4}" text-anchor="middle" font-size="13" fill="#1e2a36">${esc(chartConfig.x_axis_label || metricDef.label)}</text>
-          </svg>
-        </div>
-        <div class="figure-caption">${esc(chartConfig.caption || `Comparison of reported ${metricDef.label} across the result subsets.`)}</div>
-      </div>
-    `;
+    return (board.metric_columns || []).filter(col =>
+      rows.some(row => typeof row.metrics?.[col.key] === 'number' && Number.isFinite(row.metrics[col.key]))
+    );
   }
 
-  function compareCard(board){
-    if (board.comparison_chart?.enabled === false) return '';
-    if ((board.comparison_chart?.orientation || '').toLowerCase() === 'horizontal-grouped') {
-      return horizontalCompareCard(board);
-    }
-    const { series, rows } = buildCompareRows(board);
-    const metricDef = metricLookup(board).get(board.primary_metric_key) || { label: board.primary_metric_key };
-    if (!rows.length || !series.length) return '';
-
-    const width = 760;
-    const height = 320;
-    const left = 58;
-    const right = 20;
-    const top = 52;
-    const bottom = 74;
-    const chartW = width - left - right;
-    const chartH = height - top - bottom;
-    const allValues = rows.flatMap(row => row.values.filter(v => typeof v === 'number'));
-    const { minValue, maxValue } = compareRange(board, allValues);
-    const yAt = (val) => top + chartH - (((val - minValue) / Math.max(maxValue - minValue, 0.001)) * chartH);
-    const groupW = chartW / Math.max(rows.length, 1);
-    const gap = 8;
-    const barW = Math.min(26, (groupW - (series.length - 1) * gap - 18) / Math.max(series.length, 1));
-    const totalBarsW = (barW * series.length) + (gap * Math.max(series.length - 1, 0));
-    const colors = ['#0b66c3', '#5c7cfa', '#f2a238'];
-
-    return `
-      <div class="card-shell">
-        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
-          <div>
-            <div class="oc-kicker">Performance</div>
-          </div>
-          <div class="metric-pill">${esc(metricDef.label)}</div>
-        </div>
-        <div class="figure-shell">
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(metricDef.label)} grouped bar chart">
-            ${Array.from({ length: 5 }, (_, i) => {
-              const value = minValue + ((maxValue - minValue) * i / 4);
-              const y = yAt(value);
-              return `
-                <g>
-                  <line x1="${left}" x2="${width - right}" y1="${y}" y2="${y}" stroke="#e7edf3" stroke-width="1"/>
-                  <text x="${left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#4f5d6c">${value.toFixed(value > 1 ? 0 : 3)}</text>
-                </g>
-              `;
-            }).join('')}
-            <line x1="${left}" x2="${left}" y1="${top}" y2="${top + chartH}" stroke="#9fb6cc" stroke-width="1.2"/>
-            <line x1="${left}" x2="${width - right}" y1="${top + chartH}" y2="${top + chartH}" stroke="#9fb6cc" stroke-width="1.2"/>
-            ${rows.map((row, idx) => {
-              const cx = left + groupW * idx + groupW / 2;
-              const startX = cx - totalBarsW / 2;
-              const labelY = top + chartH + 22;
-              return `
-                <g>
-                  ${row.values.map((value, seriesIdx) => {
-                    if (typeof value !== 'number') return '';
-                    const x = startX + seriesIdx * (barW + gap);
-                    const y = yAt(value);
-                    return `
-                      <rect x="${x}" y="${y}" width="${barW}" height="${top + chartH - y}" rx="6" fill="${colors[seriesIdx % colors.length]}"/>
-                      <text x="${x + barW / 2}" y="${y - 7}" text-anchor="middle" font-size="11" fill="#1e2a36">${value.toFixed(3)}</text>
-                    `;
-                  }).join('')}
-                  <text x="${cx}" y="${labelY}" text-anchor="middle" font-size="12" fill="#1e2a36">${esc(row.name)}</text>
-                </g>
-              `;
-            }).join('')}
-            <g transform="translate(${left}, 18)">
-              ${series.map((seriesName, idx) => `
-                <g transform="translate(${idx * 172}, 0)">
-                  <rect x="0" y="-10" width="14" height="14" rx="3" fill="${colors[idx % colors.length]}"/>
-                  <text x="22" y="1" font-size="12" fill="#1e2a36">${esc(seriesName)}</text>
-                </g>
-              `).join('')}
-            </g>
-          </svg>
-        </div>
-        <div class="figure-caption">Overall ${esc(metricDef.label)} comparison across the reported TLS, TLS 13, 17, 19, and MLS 13, 17, 19 subsets.</div>
-      </div>
-    `;
+  function defaultMetricKey(board){
+    const metrics = numericMetricDefs(board);
+    if (metrics.some(col => col.key === board.primary_metric_key)) return board.primary_metric_key;
+    return metrics[0]?.key || '';
   }
 
-  function boardHtml(board, dataset, models, taskVocabulary){
-    const results = sortedResults(board);
-    const metricDefs = board.metric_columns || [];
-    const primaryDef = metricDefs.find(col => col.key === board.primary_metric_key) || metricDefs[0];
-    const modelMap = new Map((models || []).map(model => [model.id, model]));
+  function rowNeedsVerify(row){
+    const flag = `${normStr(row.provenance_flag)} ${normStr(row.provenance)} ${normStr(row.status)} ${normStr(row.verification_status)}`.toLowerCase();
+    return /\bverify\b|\bclaimed\b|\bunconfirmed\b|\bunverified\b/.test(flag);
+  }
+
+  function resultContext(row, rowColumns){
+    const values = (rowColumns || []).map(col => normStr(row[col.key])).filter(Boolean);
+    if (!values.length && normStr(row.data_source)) values.push(normStr(row.data_source));
+    return values.join(' / ');
+  }
+
+  function modelHref(row, modelMap){
+    const externalLinks = {
+      'UNet3D': 'https://github.com/traveller59/spconv',
+      'KPConv': 'https://openaccess.thecvf.com/content_ICCV_2019/html/Thomas_KPConv_Flexible_and_Deformable_Convolution_for_Point_Clouds_ICCV_2019_paper.html',
+      'PTv2': 'https://proceedings.neurips.cc/paper_files/paper/2022/hash/d78ece6613953f46501b958b7bb4582f-Abstract-Conference.html'
+    };
+    const model = modelMap.get(row.model_id);
+    return externalLinks[row.method] || (model?.id ? `models/details.html?id=${encodeURIComponent(model.id)}` : '');
+  }
+
+  function modelLabelHtml(row, modelMap){
+    const href = modelHref(row, modelMap);
+    return href
+      ? `<a href="${esc(href)}" ${href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(row.method || 'Model')}</a>`
+      : esc(row.method || 'Model');
+  }
+
+  function formatNumber(value, metricDef){
+    const digits = Number.isInteger(metricDef?.precision) ? metricDef.precision : (Number.isInteger(value) ? 0 : 2);
+    return value.toFixed(digits).replace(/\.0+$/,'');
+  }
+
+  function rankedMetricRows(board, metricKey, direction = 'desc'){
+    const metricDef = metricLookup(board).get(metricKey) || { key: metricKey, label: metricKey };
     const rowColumns = Array.isArray(board.row_columns) ? board.row_columns : [];
-    const showYearColumn = board.hide_year_column !== true;
-    const methodColumnLabel = board.method_column_label || 'Model';
-    const normalizedTask = normalizeTaskTerm(board.task, taskVocabulary);
-    const taskDefinition = normalizedTask.entry?.description || board.task_description || board.summary;
-    const datasetHref = dataset?.id ? `datasets/detail.html?id=${encodeURIComponent(dataset.id)}` : (board.dataset_url || '#');
-    const datasetLabel = normStr(dataset?.name || board.dataset_name || board.dataset_id);
-    const datasetImg = dataset?.image_url || (dataset?.id ? `assets/img/datasets/${encodeURIComponent(dataset.id)}.png` : 'assets/img/icon.png');
-    const metricSummary = metricDefs.length
-      ? metricDefs.map(col => col.label).join(', ')
-      : (primaryDef?.label || '-');
-    const datasetFacts = [
-      { label: 'Task', value: normalizedTask.label || board.task },
-      { label: 'Year', value: dataset?.year || '-' },
-      { label: 'Modality', value: dataset?.data_modality || '-' },
-      { label: 'Classes', value: dataset?.num_classes || '-' },
-      { label: 'Metric', value: metricSummary }
-    ];
-    const taskKey = normalizedTask.canon || canonKey(board.task);
-    const taskLabel = normalizedTask.label || board.task;
-    document.getElementById('taskBackLink').href = taskKey ? `benchmark_task.html?key=${encodeURIComponent(taskKey)}&label=${encodeURIComponent(taskLabel)}` : 'benchmarks.html';
-    document.title = `OpenConstruction - ${board.dataset_name || board.page_title || board.name}`;
+    return sortedResults(board)
+      .map((row, index) => ({
+        row,
+        index,
+        value: typeof row.metrics?.[metricKey] === 'number' && Number.isFinite(row.metrics[metricKey]) ? row.metrics[metricKey] : null,
+        model: row.method || 'Model',
+        context: resultContext(row, rowColumns),
+        verify: rowNeedsVerify(row)
+      }))
+      .filter(item => item.value !== null)
+      .sort((a, b) => direction === 'asc'
+        ? (a.value - b.value) || (a.index - b.index)
+        : (b.value - a.value) || (a.index - b.index)
+      )
+      .map((item, index) => ({
+        ...item,
+        rank: index + 1,
+        formattedValue: formatNumber(item.value, metricDef),
+        chartLabel: [item.model, item.context].filter(Boolean).join(' / ')
+      }));
+  }
 
-    if (board.results_url) {
-      const externalFacts = datasetFacts.filter(fact => fact.label !== 'Metric');
-      return `
-        <div class="dataset-hero">
-          <div class="dataset-media">
-            <div class="w-100">
-              <img src="${esc(datasetImg)}" alt="${esc(datasetLabel)} preview" onerror="this.onerror=null;this.src='assets/img/icon.png';">
-              <div class="figure-caption px-3 pb-3 text-center">Sample from the dataset</div>
-            </div>
-          </div>
-          <div class="dataset-copy">
-            <div class="oc-kicker mb-2">Dataset</div>
-            <h2 class="h3 mb-2">${datasetHref && datasetHref !== '#'
-              ? `<a href="${esc(datasetHref)}">${esc(datasetLabel)}</a>`
-              : esc(datasetLabel)}</h2>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-              <span class="badge badge-oc rounded-pill">${esc(taskLabel)}</span>
-              <span class="badge badge-oc badge-external rounded-pill">External leaderboard</span>
-            </div>
-            <div class="facts-grid">
-              ${externalFacts.map(fact => `
-                <div class="fact">
-                  <div class="fact-label">${esc(fact.label)}</div>
-                  <div class="fact-value">${esc(fact.value)}</div>
-                </div>
-              `).join('')}
-            </div>
-            <div class="external-actions">
-              <div class="external-actions-primary">
-                <a class="btn btn-sm btn-leaderboard d-inline-flex align-items-center gap-1" href="${esc(board.results_url)}" target="_blank" rel="noopener">${externalLeaderboardIcon()}<span>Open leaderboard</span></a>
-              </div>
-              <div class="external-actions-secondary">
-                ${datasetHref && datasetHref !== '#'
-                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(datasetHref)}">View dataset</a>`
-                  : ''}
-                ${board.source_url
-                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.source_url)}" target="_blank" rel="noopener">View paper</a>`
-                  : ''}
-                ${board.dataset_url
-                  ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.dataset_url)}" target="_blank" rel="noopener">Source repository</a>`
-                  : ''}
-              </div>
-            </div>
-          </div>
-        </div>
+  function truncateLabel(value, limit){
+    const text = normStr(value);
+    return text.length > limit ? `${text.slice(0, limit - 1)}...` : text;
+  }
 
-        <section class="oc-section">
-          <div class="card-shell">
-            <div class="oc-kicker mb-2">What This Task Is</div>
-            <p class="mb-0">${esc(taskDefinition)}</p>
-          </div>
-        </section>`;
-    }
-
+  function resultFigureCard(board){
+    const metrics = numericMetricDefs(board);
+    if (!metrics.length) return '';
+    const defaultKey = defaultMetricKey(board);
     return `
-      <div class="dataset-hero">
-        <div class="dataset-media">
-          <div class="w-100">
-            <img src="${esc(datasetImg)}" alt="${esc(datasetLabel)} preview" onerror="this.onerror=null;this.src='assets/img/icon.png';">
-            <div class="figure-caption px-3 pb-3 text-center">Sample from the dataset</div>
-          </div>
+      <section class="performance-card">
+        <div class="performance-heading-row">
+          <h2>Leaderboard</h2>
+          <form class="leaderboard-controls" id="leaderboardControls">
+            <label for="leaderboardMetric">Metric</label>
+            <select class="form-select" id="leaderboardMetric">
+              ${metrics.map(col => `<option value="${esc(col.key)}" ${col.key === defaultKey ? 'selected' : ''}>${esc(metricDisplayLabel(col))}</option>`).join('')}
+            </select>
+            <label for="leaderboardDirection">Rank</label>
+            <select class="leaderboard-sort-select" id="leaderboardDirection">
+              <option value="desc" selected>High to Low</option>
+              <option value="asc">Low to High</option>
+            </select>
+          </form>
         </div>
-        <div class="dataset-copy">
-          <div class="oc-kicker mb-2">Dataset</div>
-          <h2 class="h3 mb-2">${datasetHref && datasetHref !== '#'
-            ? `<a href="${esc(datasetHref)}">${esc(datasetLabel)}</a>`
-            : esc(datasetLabel)}</h2>
-          <div class="d-flex flex-wrap gap-2 mb-3">
-            <span class="badge badge-oc rounded-pill">${esc(taskLabel)}</span>
-            <span class="badge badge-oc rounded-pill">${results.length} reported result${results.length === 1 ? '' : 's'}</span>
-            <span class="badge badge-oc rounded-pill">${esc(primaryDef?.label || 'mIoU')}</span>
-          </div>
-          <div class="facts-grid">
-            ${datasetFacts.map(fact => `
-              <div class="fact">
-                <div class="fact-label">${esc(fact.label)}</div>
-                <div class="fact-value">${esc(fact.value)}</div>
-              </div>
-            `).join('')}
-          </div>
-          <div class="d-flex flex-wrap gap-2 mt-3">
-            ${datasetHref && datasetHref !== '#'
-              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(datasetHref)}">View dataset</a>`
-              : ''}
-            ${board.source_url
-              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.source_url)}" target="_blank" rel="noopener">View paper</a>`
-              : ''}
-            ${board.dataset_url
-              ? `<a class="btn btn-sm btn-outline-dark" href="${esc(board.dataset_url)}" target="_blank" rel="noopener">Source repository</a>`
-              : ''}
-          </div>
-        </div>
-      </div>
-
-      <section class="oc-section">
-        <div class="card-shell">
-          <div class="oc-kicker mb-2">What This Task Is</div>
-          <p class="mb-0">${esc(taskDefinition)}</p>
-        </div>
-      </section>
-
-      ${compareCard(board) ? `<section class="oc-section">${compareCard(board)}</section>` : ''}
-
-      <section class="oc-section">
-        <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center mb-2">
+        <div class="leaderboard-grid">
           <div>
-            <div class="oc-kicker">Results</div>
+            <p class="leaderboard-plot-title">Model Values</p>
+            <div class="leaderboard-chart" id="resultLeaderboardChart"></div>
           </div>
-        </div>
-        <div class="table-wrap">
-          <div class="table-responsive">
-            <table class="results-table">
+          <div class="leaderboard-table-wrap">
+            <table class="leaderboard-table" id="resultLeaderboardTable">
               <thead>
                 <tr>
-                  ${rowColumns.length
-                    ? rowColumns.map(col => `<th style="min-width:${esc(col.min_width || '88px')};">${esc(col.label || col.key)}</th>`).join('')
-                    : '<th style="min-width:88px;">Data</th>'}
-                  <th style="min-width:132px;">${esc(methodColumnLabel)}</th>
-                  ${showYearColumn ? '<th class="compact">Year</th>' : ''}
-                  ${metricDefs.map(col => `<th class="compact">${esc(col.label)}</th>`).join('')}
-                  <th class="compact">Code</th>
+                  <th>#</th>
+                  <th>Model</th>
+                  <th class="text-end">Value</th>
                 </tr>
               </thead>
-              <tbody>
-                ${results.map((row) => {
-                  const externalModelLinks = {
-                    'UNet3D': 'https://github.com/traveller59/spconv',
-                    'KPConv': 'https://openaccess.thecvf.com/content_ICCV_2019/html/Thomas_KPConv_Flexible_and_Deformable_Convolution_for_Point_Clouds_ICCV_2019_paper.html',
-                    'PTv2': 'https://proceedings.neurips.cc/paper_files/paper/2022/hash/d78ece6613953f46501b958b7bb4582f-Abstract-Conference.html'
-                  };
-                  const model = modelMap.get(row.model_id);
-                  const modelHref = externalModelLinks[row.method] || (model?.id ? `models/details.html?id=${encodeURIComponent(model.id)}` : null);
-                  return `
-                    <tr>
-                      ${rowColumns.length
-                        ? rowColumns.map(col => `<td class="fw-semibold">${formatResultValue(row[col.key])}</td>`).join('')
-                        : `<td class="fw-semibold">${esc(row.data_source || '-')}</td>`}
-                      <td class="fw-semibold">${modelHref ? `<a href="${esc(modelHref)}" ${modelHref.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(row.method)}</a>` : esc(row.method)}</td>
-                      ${showYearColumn ? `<td class="compact">${normStr(row.year) ? esc(row.year) : '<span class="text-muted">&mdash;</span>'}</td>` : ''}
-                      ${metricDefs.map(col => `<td class="compact">${formatMetric(col, row.metrics?.[col.key])}</td>`).join('')}
-                      <td class="compact">${row.code_url ? `<a href="${esc(row.code_url)}" target="_blank" rel="noopener" aria-label="Open repository" title="Open repository">${githubIcon()}</a>` : '<span class="text-muted">&mdash;</span>'}</td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
+              <tbody id="resultLeaderboardBody"></tbody>
             </table>
           </div>
         </div>
-      </section>
+      </section>`;
+  }
+
+  function initResultFigure(board, models){
+    const metricSelect = document.getElementById('leaderboardMetric');
+    const dirSelect = document.getElementById('leaderboardDirection');
+    const tbody = document.getElementById('resultLeaderboardBody');
+    const chart = document.getElementById('resultLeaderboardChart');
+    const controls = document.getElementById('leaderboardControls');
+    if (!metricSelect || !dirSelect || !tbody || !chart || !controls) return;
+    const modelMap = new Map((models || []).map(model => [model.id, model]));
+
+    function currentMetric(){
+      return metricSelect.value || defaultMetricKey(board);
+    }
+
+    function presentationRows(){
+      return rankedMetricRows(board, currentMetric(), dirSelect.value === 'asc' ? 'asc' : 'desc');
+    }
+
+    function renderTable(){
+      tbody.innerHTML = presentationRows().map(item => {
+        const context = item.context ? `<div class="small text-muted fw-normal mt-1">${esc(item.context)}</div>` : '';
+        const verify = item.verify ? '<span class="verify-badge">[VERIFY]</span>' : '';
+        return `
+          <tr>
+            <td class="rank-cell">${item.rank}</td>
+            <td class="model-cell">${modelLabelHtml(item.row, modelMap)}${verify}${context}</td>
+            <td class="value-cell">${esc(item.formattedValue)}</td>
+          </tr>`;
+      }).join('');
+    }
+
+    function renderChart(){
+      const metricDef = metricLookup(board).get(currentMetric()) || { key: currentMetric(), label: currentMetric() };
+      const rows = presentationRows();
+      if (!rows.length) {
+        chart.innerHTML = '<div class="empty-state">No numeric rows are available for this metric.</div>';
+        return;
+      }
+      const values = rows.map(item => item.value);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const pad = max === min ? Math.max(Math.abs(max) * .1, 1) : (max - min) * .08;
+      const yMin = min - pad;
+      const yMax = max + pad;
+      const plotW = Math.max(280, rows.length * 64);
+      const padL = 44;
+      const padR = 18;
+      const padT = 18;
+      const padB = 86;
+      const width = padL + plotW + padR;
+      const height = 290;
+      const chartH = height - padT - padB;
+      const yFor = value => padT + ((yMax - value) / Math.max(yMax - yMin, .001)) * chartH;
+      const xFor = index => padL + (rows.length === 1 ? plotW / 2 : (index / (rows.length - 1)) * plotW);
+      const tickLabel = value => value.toFixed(Math.abs(value) < 1 ? 2 : 1).replace(/\.0+$/,'');
+      const guides = Array.from({ length: 5 }, (_, tick) => {
+        const value = yMin + ((yMax - yMin) * tick / 4);
+        const y = yFor(value);
+        return `<line class="lb-grid-line" x1="${padL}" y1="${y.toFixed(1)}" x2="${padL + plotW}" y2="${y.toFixed(1)}"></line><text class="lb-axis-label" x="${padL - 6}" y="${(y + 3).toFixed(1)}" text-anchor="end">${esc(tickLabel(value))}</text>`;
+      }).join('');
+      chart.innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" width="${Math.max(360, width)}" height="${height}" role="img" aria-label="${esc(metricDef.label || metricDef.key)} leaderboard" style="min-width:${Math.max(360, width)}px">
+          ${guides}
+          <line class="lb-axis-line" x1="${padL}" y1="${padT + chartH}" x2="${padL + plotW}" y2="${padT + chartH}"></line>
+          ${rows.map((item, index) => {
+            const x = xFor(index);
+            const y = yFor(item.value);
+            return `<g><circle class="lb-dot${item.verify ? ' claimed' : ''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"><title>Rank ${item.rank}: ${esc(item.model)}, ${esc(item.formattedValue)}</title></circle><text class="lb-value-label" x="${x.toFixed(1)}" y="${Math.max(10, y - 8).toFixed(1)}" text-anchor="middle">${esc(item.formattedValue)}</text><text class="lb-rank-label" x="${x.toFixed(1)}" y="${height - padB + 16}" text-anchor="middle">#${item.rank}</text><text class="lb-model-label" x="${x.toFixed(1)}" y="${height - padB + 29}" text-anchor="end" transform="rotate(-45 ${x.toFixed(1)} ${height - padB + 29})">${esc(truncateLabel(item.chartLabel, 18))}</text></g>`;
+          }).join('')}
+        </svg>`;
+    }
+
+    function render(){
+      renderTable();
+      renderChart();
+    }
+
+    metricSelect.addEventListener('change', render);
+    dirSelect.addEventListener('change', render);
+    controls.addEventListener('submit', event => event.preventDefault());
+    render();
+  }
+
+  function benchmarkImageCandidates(dataset, board){
+    const candidates = [];
+    const add = (value) => {
+      const src = normStr(value);
+      if (src && !candidates.includes(src)) candidates.push(src);
+    };
+    const addDatasetAsset = (value) => {
+      const name = normStr(value);
+      if (name) add(`assets/img/datasets/${encodeURIComponent(name)}.png`);
+    };
+    const explicit = normStr(dataset?.image_url || dataset?.thumbnail);
+    const isGenericIcon = /(?:^|\/)(?:icon|placeholder)\.(?:png|jpe?g|gif|webp)(?:[?#].*)?$/i.test(explicit);
+    if (explicit && !isGenericIcon) add(explicit);
+    addDatasetAsset(dataset?.name);
+    addDatasetAsset(board?.dataset_name);
+    addDatasetAsset(dataset?.id);
+    addDatasetAsset(board?.dataset_id);
+    if (explicit && isGenericIcon) add(explicit);
+    add('assets/img/icon.png');
+    return candidates;
+  }
+
+  window.advanceBenchmarkImageFallback = function(img){
+    let fallbacks = [];
+    try {
+      fallbacks = JSON.parse(img.getAttribute('data-fallbacks') || '[]');
+    } catch {}
+    const index = Number(img.getAttribute('data-fallback-index') || 0);
+    const next = fallbacks[index];
+    if (!next) {
+      img.onerror = null;
+      return;
+    }
+    img.setAttribute('data-fallback-index', String(index + 1));
+    img.src = next;
+  };
+
+  function benchmarkImageHtml(dataset, board, label){
+    const candidates = benchmarkImageCandidates(dataset, board);
+    const [src, ...fallbacks] = candidates;
+    return `<img class="benchmark-img" src="${esc(src || 'assets/img/icon.png')}" alt="${esc(label)} preview" data-fallbacks='${esc(JSON.stringify(fallbacks))}' data-fallback-index="0" onerror="advanceBenchmarkImageFallback(this)">`;
+  }
+
+  function boardBenchmarkHtml(board, dataset, taskVocabulary){
+    const results = sortedResults(board);
+    const metricDefs = board.metric_columns || [];
+    const primaryDef = metricDefs.find(col => col.key === board.primary_metric_key) || metricDefs[0];
+    const normalizedTask = normalizeTaskTerm(board.task, taskVocabulary);
+    const datasetDetailHref = dataset?.id ? `datasets/detail.html?id=${encodeURIComponent(dataset.id)}` : '';
+    const datasetHref = datasetDetailHref || (board.dataset_url || '#');
+    const datasetActionHref = datasetHref && datasetHref !== '#' ? datasetHref : '';
+    const sourceHref = paperHref(board, dataset);
+    const repositoryHref = codeHref(board, dataset);
+    const datasetLabel = normStr(dataset?.name || board.dataset_name || board.dataset_id);
+    const metricSummary = metricDefs.length ? metricDefs.map(metricDisplayLabel).join(', ') : (metricDisplayLabel(primaryDef) || '-');
+    const taskLabel = normalizedTask.label || board.task;
+    const summary = firstValue(board.summary, board.task_description, dataset?.description, dataset?.summary);
+    const pageTitle = firstValue(board.page_title, board.name, `${datasetLabel} ${taskLabel}`);
+    const metaHtml = authorYearHtml(dataset);
+    const licenseRecord = Object.assign({}, board || {}, dataset || {});
+    const leaderboardHtml = board.results_url
+      ? `<a class="benchmark-action" href="${esc(board.results_url)}" target="_blank" rel="noopener">${actionIcon('leaderboard')}<span>Open Leaderboard</span></a>`
+      : '';
+    const headerLinks = [
+      datasetActionHref ? actionLink(datasetActionHref, 'View Dataset', 'data', !datasetDetailHref).replace('benchmark-action', 'benchmark-action primary') : '',
+      sourceHref ? actionLink(sourceHref, 'View paper', 'paper', true) : '',
+      shareBenchmarkButton(pageTitle),
+      repositoryHref ? actionLink(repositoryHref, 'Access Code', 'code', true) : '',
+      leaderboardHtml,
+      benchmarkBookmarkButton(board, pageTitle)
+    ].filter(Boolean).join('');
+    const detailRows = [
+      { label: 'Primary Metric', value: metricDisplayLabel(primaryDef) || board.primary_metric_key || '-' },
+      { label: 'Reported Rows', value: results.length },
+      { label: 'Metric Columns', value: metricSummary },
+      { label: 'Data Combination', value: compactList(results.map(row => row.data_combination), 6) || firstValue(dataset?.data_modality) }
+    ].filter(item => normStr(item.value));
+    const overviewRows = [
+      { label: 'Tasks', value: compactList(dataset?.tasks || dataset?.potential_tasks || taskLabel, 4) },
+      { label: 'Modality', value: firstValue(dataset?.data_modality, compactList(dataset?.modalities || dataset?.modality || dataset?.data_types, 5)) },
+      { label: 'Data', value: firstValue(dataset?.num_images, dataset?.num_samples, dataset?.num_instances, dataset?.size) },
+      { label: 'Classes', value: firstValue(dataset?.num_classes, compactList(dataset?.classes, 4)) },
+      { label: 'Annotations', value: compactList(dataset?.annotation_types || dataset?.annotations || dataset?.annotation, 4) },
+      { label: 'Location', value: firstValue(dataset?.geographical_location, dataset?.location, compactList(dataset?.locations, 3)) },
+      { label: 'License', value: formatLicenseHtml(firstValue(dataset?.license, board.license), licenseRecord), html: true }
+    ].filter(item => normStr(item.value));
+    document.title = `OpenConstruction - ${pageTitle}`;
+
+    return `
+      <div class="benchmark-page">
+        <section class="benchmark-page-header">
+          <div class="benchmark-hero-grid">
+            <div class="benchmark-header-content">
+              <h1 class="benchmark-page-title">${esc(pageTitle)}</h1>
+              ${metaHtml ? `<p class="benchmark-page-meta">${metaHtml}</p>` : ''}
+              ${headerLinks ? `<div class="benchmark-link-row">${headerLinks}</div>` : ''}
+            </div>
+            <figure class="benchmark-preview-media" aria-label="${esc(datasetLabel || pageTitle)} preview">
+              ${benchmarkImageHtml(dataset, board, datasetLabel || pageTitle)}
+              <figcaption class="benchmark-media-note">Media from public websites are &copy; their respective creators unless otherwise noted</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <div class="benchmark-main-grid">
+          <div class="benchmark-stack">
+            <section class="benchmark-section-card">
+              <h2 class="section-heading">Benchmark Overview</h2>
+              <div class="benchmark-overview-grid">
+                ${overviewRows.map(item => `
+                  <div>
+                    <div class="benchmark-side-label">${esc(item.label)}</div>
+                    <div class="benchmark-side-value">${item.html ? item.value : esc(item.value)}</div>
+                  </div>`).join('')}
+              </div>
+            </section>
+            <section class="benchmark-section-card">
+              <h2 class="section-heading">Task Evaluation</h2>
+              <dl class="benchmark-definition-grid">
+                ${detailRows.map(item => `
+                  <div>
+                    <dt>${esc(item.label)}</dt>
+                    <dd>${esc(item.value)}</dd>
+                  </div>`).join('')}
+              </dl>
+              ${summary ? `<p class="benchmark-summary-row mb-0">${esc(summary)}</p>` : ''}
+            </section>
+            ${board.results_url ? '' : resultFigureCard(board)}
+          </div>
+        </div>
+      </div>
     `;
+  }
+
+  async function copyBenchmarkLink(){
+    const url = window.location.href;
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+      return true;
+    }
+    const input = document.createElement('textarea');
+    input.value = url;
+    input.setAttribute('readonly', '');
+    input.style.position = 'fixed';
+    input.style.top = '-1000px';
+    document.body.appendChild(input);
+    input.select();
+    const ok = document.execCommand('copy');
+    input.remove();
+    return ok;
+  }
+
+  function setShareButtonLabel(button, label){
+    const span = button?.querySelector('span');
+    if (span) span.textContent = label;
+  }
+
+  function wireBenchmarkActions(root){
+    const shareButton = root.querySelector('[data-benchmark-share]');
+    if (shareButton) {
+      shareButton.addEventListener('click', async () => {
+        const original = shareButton.querySelector('span')?.textContent || 'Share benchmark';
+        const label = shareButton.getAttribute('data-share-label') || document.title;
+        try {
+          if (navigator.share) {
+            await navigator.share({ title: label, text: `OpenConstruction benchmark: ${label}`, url: window.location.href });
+            setShareButtonLabel(shareButton, 'Shared');
+          } else {
+            const copied = await copyBenchmarkLink();
+            setShareButtonLabel(shareButton, copied ? 'Link copied' : 'Copy failed');
+          }
+        } catch (err) {
+          if (err?.name !== 'AbortError') setShareButtonLabel(shareButton, 'Copy failed');
+        }
+        window.setTimeout(() => setShareButtonLabel(shareButton, original), 1800);
+      });
+    }
+    window.OCBookmark?.mount?.(root);
   }
 
   async function init(){
@@ -829,15 +898,18 @@
       const models = getModels(modelPayload);
       const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
       const board = boards.find(item => item.id === boardId) || boards[0];
-      if (!board) throw new Error('No reported results were found.');
+      if (!board) throw new Error('No benchmark results were found.');
       const dataset = findDatasetById(datasets, board.dataset_id);
-      document.getElementById('contentMount').innerHTML = boardHtml(board, dataset, models, taskVocabulary);
+      const mount = document.getElementById('contentMount');
+      mount.innerHTML = boardBenchmarkHtml(board, dataset, taskVocabulary);
+      wireBenchmarkActions(mount);
+      initResultFigure(board, models);
     }catch(err){
       console.error(err);
       document.getElementById('contentMount').innerHTML = `
         <div class="empty-card p-4 text-center">
-          <h2 class="h5 mb-2">Reported results unavailable</h2>
-          <p class="text-muted mb-0">We could not load these reported results right now.</p>
+          <h2 class="h5 mb-2">Benchmark unavailable</h2>
+          <p class="text-muted mb-0">We could not load this benchmark right now.</p>
         </div>`;
     }
   }

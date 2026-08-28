@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Task Insight | OpenConstruction</title>
+  <meta name="description" content="Explore datasets and models associated with a task label in the OpenConstruction catalog.">
+  <link rel="canonical" href="https://www.openconstruction.org/task.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="Task Insight | OpenConstruction">
+  <meta property="og:description" content="Explore datasets and models associated with a task label in the OpenConstruction catalog.">
+  <meta property="og:url" content="https://www.openconstruction.org/task.html">
+  <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260825-footer-social-icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+
+  <style>
+    :root{
+      --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#4f5d6c; --oc-border:#e7edf3;
+      --oc-ink:#0f2e4b; --oc-accent:#f2a238; --oc-link:#0b66c3;
+      --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
+      --oc-radius:14px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
+    }
+	.oc-container{ max-width:1080px; }
+    .hl{ background:linear-gradient(180deg,transparent 60%,rgba(242,162,56,.25) 0); padding:0 .06em; font-weight:700; }
+    /* shared shell styles live in assets/css/shared-site.css */
+
+    .oc-section{ margin-top:38px; }
+    main .oc-section:first-child{ margin-top:36px; }
+    main .oc-section + .oc-section{ margin-top:48px; }
+    .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
+
+    .pill-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
+
+    .table-wrap{
+      border:1px solid var(--oc-border);
+      border-radius:var(--oc-radius);
+      overflow:hidden;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+    }
+    .table thead th{
+      background:#f7fbff;
+      color:var(--oc-ink);
+      font-weight:600;
+      border-bottom:1px solid var(--oc-border);
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+    .table-wrap table{
+      table-layout:fixed;
+      min-width:860px;
+    }
+    .table th,
+    .table td{
+      padding:14px 12px;
+      vertical-align:middle;
+    }
+    .col-title{ width:42%; }
+    .col-year{ width:7rem; }
+    .col-meta{ width:22%; }
+    .col-license{ width:18%; }
+
+    .search-mini{
+      width:100%;
+      max-width:760px;
+      border:1px solid var(--oc-border);
+      border-radius:999px;
+      padding:8px 12px;
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
+      box-shadow:0 10px 24px rgba(15,46,75,.06);
+    }
+    .search-mini input{ border:0; box-shadow:none; background:transparent; }
+    .search-mini input:focus{ box-shadow:none; }
+    :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
+</style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-white sticky-top oc-nav">
+  <div class="container oc-container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo">
+      <span class="brand-wordmark">
+        <span class="oc-open">OpenConstruction</span>
+        <span class="oc-construction">Open Science</span>
+      </span>
+    </a>
+    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li>
+		<li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddCatalogs" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddCatalogs">
+            <li><a class="dropdown-item" href="dataset.html">Datasets</a></li>
+            <li><a class="dropdown-item" href="models.html">Models</a></li>
+            <li><a class="dropdown-item" href="deployments.html">Workflows</a></li>
+			<li><a class="dropdown-item" href="oer.html">OERs</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain active" href="benchmarks.html" data-route="benchmarks">Insights</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link plain dropdown-toggle" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu">
+            <li><a class="dropdown-item" href="tutorials.html">Tutorial</a></li>
+            <li><a class="dropdown-item" href="references.html">Documentation</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li>
+        <li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li>
+        <li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <div class="oc-kicker">Insight</div>
+        <h1 id="pageTitle">Task</h1>
+        <p class="lead" id="pageSubtitle">
+          Datasets and models associated with this task label.
+        </p>
+      </div>
+      <div class="pill-row">
+        <a class="btn btn-sm btn-outline-dark rounded-pill" href="benchmarks.html" style="border-radius:999px;">← Back</a>
+        <span class="badge badge-oc rounded-pill" id="pillDatasets">— datasets</span>
+        <span class="badge badge-oc rounded-pill" id="pillModels">— models</span>
+      </div>
+    </div>
+
+    <div class="mt-3 search-mini">
+      <div class="d-flex align-items-center gap-2 px-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+        <input id="tableSearch" class="form-control" type="search" placeholder="Filter tables..." aria-label="Filter tables">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container oc-container">
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Datasets</div>
+    <div class="table-wrap">
+      <div class="table-responsive" style="max-height: 520px;">
+        <table class="table table-hover mb-0 align-middle catalog-table">
+          <colgroup>
+            <col class="col-title">
+            <col class="col-year">
+            <col class="col-meta">
+            <col class="col-license">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Year</th>
+              <th>Modality</th>
+              <th>License</th>
+            </tr>
+          </thead>
+          <tbody id="dsBody">
+            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="oc-section">
+    <div class="oc-kicker mb-2">Models</div>
+    <div class="table-wrap">
+      <div class="table-responsive" style="max-height: 520px;">
+        <table class="table table-hover mb-0 align-middle catalog-table">
+          <colgroup>
+            <col class="col-title">
+            <col class="col-year">
+            <col class="col-meta">
+            <col class="col-license">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Year</th>
+              <th>Modalities</th>
+              <th>License</th>
+            </tr>
+          </thead>
+          <tbody id="mBody">
+            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer">
+  <div class="container oc-container small text-muted text-center">
+    <div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> © <span id="yearNow"></span> OpenConstruction Open Science Initiative</div>
+    <div class="mt-1">
+      <small>
+        Licensed under Apache 2.0.
+        Images and thumbnails are © their respective creators unless otherwise noted.
+      </small>
+    </div>
+    <div class="mt-1">
+      <small>
+        <a href="references.html#terms" class="text-muted">Terms</a> ·
+        <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> ·
+        <a href="references.html" class="text-muted">Documentation</a> &middot; <span class="oc-footer-socials" aria-label="OpenConstruction social links"><a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn"><img class="oc-footer-social-icon" src="assets/img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a><a href="https://github.com/ruoxinx/open-construction" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub"><img class="oc-footer-social-icon" src="assets/img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a></span>
+      </small>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating button -->
+<!-- Subscribe Modal -->
+<div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content p-3 rounded-3 shadow">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="m-0 fw-semibold">Subscribe</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="https://github.us5.list-manage.com/subscribe/post?u=12fa0b9a59e8110ba3a89fc76&amp;id=696e3eb0b3&amp;f_id=006fbeedf0"
+            method="post" target="_blank" rel="noopener noreferrer" novalidate>
+        <label for="sub-email" class="form-label small text-muted mb-1">Email</label>
+        <input type="email" id="sub-email" name="EMAIL" class="form-control mb-2" placeholder="you@university.edu" required>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Subscribe</button>
+        <div style="position:absolute; left:-5000px" aria-hidden="true">
+          <input type="text" name="b_12fa0b9a59e8110ba3a89fc76_696e3eb0b3" tabindex="-1" value="">
+        </div>
+        <p class="small text-muted mt-2 mb-0">We’ll email only when new datasets or models are added. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
+<script src="assets/js/site-shell.js?v=20260828-benchmark-results"></script>
+
+<script>
+  const esc = (s) => String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'","&#39;");
+  const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
+  const normStr = (v) => (v == null ? '' : String(v).trim());
+  function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+  function niceLabel(s){
+    const raw = normStr(s);
+    if(!raw) return '';
+    const hasCaps = /[A-Z]/.test(raw);
+    if(hasCaps && raw.length <= 14) return raw;
+    const acronymPattern = /^(2d|3d|4d|ai|bim|cad|idm|mvd|hvac|lod3|ui|fob|cif|dap)$/i;
+    return raw.toLowerCase().replace(/\b\w+\b/g, word =>
+      acronymPattern.test(word) ? word.toUpperCase() : `${word.charAt(0).toUpperCase()}${word.slice(1)}`
+    );
+  }
+  function emptyTaskVocabulary(){ return { byCanonical: new Map(), byAlias: new Map() }; }
+  function buildTaskVocabulary(payload){
+    const vocab = emptyTaskVocabulary();
+    const tasks = Array.isArray(payload?.tasks) ? payload.tasks : [];
+    tasks.forEach(task => {
+      const canonical = canonKey(task.canonical_key || task.preferred_label || '');
+      if(!canonical) return;
+      const entry = {
+        ...task,
+        canonical_key: canonical,
+        preferred_label: normStr(task.preferred_label || task.canonical_key || '')
+      };
+      vocab.byCanonical.set(canonical, entry);
+      [entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)].forEach(alias => {
+        const aliasKey = canonKey(alias);
+        if(aliasKey) vocab.byAlias.set(aliasKey, entry);
+      });
+    });
+    return vocab;
+  }
+  function normalizeTaskTerm(raw, vocab){
+    const rawText = normStr(raw);
+    const rawCanon = canonKey(rawText);
+    const entry = vocab?.byAlias?.get(rawCanon) || null;
+    if(entry){
+      return {
+        canon: entry.canonical_key,
+        label: entry.preferred_label || rawText,
+        entry
+      };
+    }
+    return {
+      canon: rawCanon,
+      label: niceLabel(rawText),
+      entry: null
+    };
+  }
+
+  function getDatasetTasks(ds){
+    return [...normArray(ds.tasks), ...normArray(ds.task), ...normArray(ds.potential_tasks)]
+      .map(normStr).filter(Boolean);
+  }
+  function getDatasetModalities(ds){
+    const mods = [...normArray(ds.modalities), ...normArray(ds.modality)].map(normStr).filter(Boolean);
+    const dm = normStr(ds.data_modality);
+    if(dm) mods.push(...dm.split(',').map(v => normStr(v)).filter(Boolean));
+    return Array.from(new Set(mods));
+  }
+
+  function getModelTasks(m){
+    return [...normArray(m.tasks), ...normArray(m.task)].map(normStr).filter(Boolean);
+  }
+  function getModelModalities(m){
+    const mods = [...normArray(m.modalities), ...normArray(m.modality)].flatMap(v => normStr(v).split(',').map(x => normStr(x))).filter(Boolean);
+    return Array.from(new Set(mods));
+  }
+
+  async function loadJsonSafe(url){
+    try{
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const data = await res.json();
+      if(Array.isArray(data)) return data;
+      if(data?.items && Array.isArray(data.items)) return data.items;
+      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
+      return [];
+    }catch(err){
+      console.warn('Could not load', url, err);
+      return [];
+    }
+  }
+
+  function joinAuthors(authors){
+    if(Array.isArray(authors)) return authors.filter(Boolean).join(', ');
+    return normStr(authors);
+  }
+
+  function datasetRow(ds){
+    const title = normStr(ds.name || ds.title || ds.id || 'Untitled dataset');
+    const year = normStr(ds.year || '');
+    const authors = joinAuthors(ds.authors);
+    const mods = getDatasetModalities(ds).slice(0,3)
+      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
+    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
+
+    const href = ds.id ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}` : (ds.access || ds.doi || '#');
+    const link = href && href !== '#'
+      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="dataset">
+        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td>${lic}</td>
+      </tr>`;
+  }
+
+  function modelRow(m){
+    const title = normStr(m.title || m.name || m.id || 'Untitled model');
+    const year = normStr(m.year || '');
+    const authors = joinAuthors(m.authors);
+    const mods = getModelModalities(m).slice(0,3)
+      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
+      || '<span class="text-muted">—</span>';
+    const license = normStr(m.license || '')
+      ? `<span class="badge badge-oc rounded-pill">${esc(m.license)}</span>`
+      : '<span class="text-muted">—</span>';
+
+    const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
+    const href = m.id ? `models/details.html?id=${encodeURIComponent(m.id)}` : (codeUrl || '#');
+    const link = href && href !== '#'
+      ? `<a href="${esc(href)}" ${href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
+      : esc(title);
+
+    return `
+      <tr data-row="model">
+        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
+        <td>${year || '<span class="text-muted">—</span>'}</td>
+        <td>${mods}</td>
+        <td>${license}</td>
+      </tr>`;
+  }
+
+  function applyRowFilter(q){
+    const needle = q.trim().toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(tr=>{
+      const ok = !needle || tr.textContent.toLowerCase().includes(needle);
+      tr.style.display = ok ? '' : 'none';
+    });
+  }
+
+  async function init(){
+    const params = new URLSearchParams(location.search);
+    const requested = normStr(params.get('label') || params.get('key') || '');
+
+    const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
+      loadJsonSafe('data/datasets.json'),
+      loadJsonSafe('data/models.json'),
+      (async () => {
+        try {
+          const res = await fetch('data/benchmark-results.json', { cache:'no-store' });
+          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          return await res.json();
+        } catch (err) {
+          console.warn('Could not load benchmark-results.json', err);
+          return { benchmarks: [] };
+        }
+      })(),
+      (async () => {
+        try {
+          const res = await fetch('data/task-vocabulary.json', { cache:'no-store' });
+          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          return await res.json();
+        } catch (err) {
+          console.warn('Could not load task-vocabulary.json', err);
+          return {};
+        }
+      })()
+    ]);
+    const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
+    const normalizedRequested = normalizeTaskTerm(requested, taskVocabulary);
+    const key = normalizedRequested.canon || canonKey(requested);
+    const label = normalizedRequested.label || requested || key || 'Task';
+
+    document.title = `Task Insight | ${label} | OpenConstruction`;
+    document.getElementById('pageTitle').textContent = label;
+
+    const taskDefinition = normalizedRequested.entry?.description || '';
+    if(taskDefinition){
+      document.getElementById('pageSubtitle').textContent = taskDefinition;
+    }
+
+    let dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key));
+    const mMatched  = models
+      .filter(m => getModelTasks(m).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key))
+      .filter(m => !/^semanticbridge-(unet3d|kpconv|ptv2)$/i.test(normStr(m.id)));
+    const allBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
+    const exactBoards = allBoards.filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
+    const matchedDatasetIds = new Set(dsMatched.map(ds => canonKey(ds.id)));
+    exactBoards.forEach(board => {
+      const datasetId = canonKey(board.dataset_id);
+      if(!datasetId || matchedDatasetIds.has(datasetId)) return;
+      const dataset = datasetById.get(datasetId);
+      if(dataset){
+        dsMatched.push(dataset);
+        matchedDatasetIds.add(datasetId);
+      }
+    });
+    const requestedTaskId = normalizedRequested.entry?.id || '';
+    const relatedBoards = allBoards.filter(board => {
+      const normalizedBoardTask = normalizeTaskTerm(board.task, taskVocabulary);
+      const datasetId = canonKey(board.dataset_id);
+      if(!datasetId || !matchedDatasetIds.has(datasetId)) return false;
+      if(normalizedBoardTask.canon === key) return false;
+      const boardRelatedIds = normArray(normalizedBoardTask.entry?.related_task_ids);
+      const requestedRelatedIds = normArray(normalizedRequested.entry?.related_task_ids);
+      return (requestedTaskId && boardRelatedIds.includes(requestedTaskId))
+        || (normalizedBoardTask.entry?.id && requestedRelatedIds.includes(normalizedBoardTask.entry.id));
+    });
+    const boards = [...exactBoards, ...relatedBoards];
+    const boardByDatasetId = new Map();
+    boards.forEach(board => {
+      const datasetId = canonKey(board.dataset_id);
+      if(datasetId && !boardByDatasetId.has(datasetId)) boardByDatasetId.set(datasetId, board);
+    });
+
+    dsMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
+    mMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.title||a.name).localeCompare(normStr(b.title||b.name)));
+
+    document.getElementById('pillDatasets').textContent = `${dsMatched.length} dataset${dsMatched.length===1?'':'s'}`;
+    document.getElementById('pillModels').textContent = `${mMatched.length} model${mMatched.length===1?'':'s'}`;
+
+    document.getElementById('dsBody').innerHTML = dsMatched.length
+      ? dsMatched.map(ds => datasetRow(ds)).join('')
+      : `<tr><td colspan="4" class="text-muted">No datasets linked to this task yet.</td></tr>`;
+
+    document.getElementById('mBody').innerHTML = mMatched.length
+      ? mMatched.map(modelRow).join('')
+      : `<tr><td colspan="4" class="text-muted">No models linked to this task yet.</td></tr>`;
+
+    const input = document.getElementById('tableSearch');
+    input.addEventListener('input', (e)=> applyRowFilter(e.target.value));
+
+    const q = params.get('q');
+    if(q){ input.value = q; applyRowFilter(q); }
+  }
+  init();
+</script>
+</body>
+</html>

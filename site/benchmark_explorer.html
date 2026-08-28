@@ -9,14 +9,14 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catalog Analytics | OpenConstruction</title>
-  <meta name="description" content="Explore task, application, dataset, and model patterns aggregated from OpenConstruction catalog metadata.">
-  <link rel="canonical" href="https://www.openconstruction.org/benchmarks.html">
+  <title>Benchmark Explorer | OpenConstruction</title>
+  <meta name="description" content="Browse OpenConstruction benchmarks by task, application area, and data modality, then open reported result figures.">
+  <link rel="canonical" href="https://www.openconstruction.org/benchmark_explorer.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenConstruction.org">
-  <meta property="og:title" content="Catalog Analytics | OpenConstruction">
-  <meta property="og:description" content="Explore task, application, dataset, and model patterns aggregated from OpenConstruction catalog metadata.">
-  <meta property="og:url" content="https://www.openconstruction.org/benchmarks.html">
+  <meta property="og:title" content="Benchmark Explorer | OpenConstruction">
+  <meta property="og:description" content="Browse OpenConstruction benchmarks by task, application area, and data modality, then open reported result figures.">
+  <meta property="og:url" content="https://www.openconstruction.org/benchmark_explorer.html">
   <meta property="og:image" content="https://www.openconstruction.org/assets/img/icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +38,8 @@
     /* shared shell styles live in assets/css/shared-site.css */
 
     .oc-section{ margin-top:34px; }
+    header.hero h1 .oc-page-title-icon{display:none}
+    header.hero h1 .oc-page-title-copy{white-space:normal;overflow-wrap:anywhere}
     .oc-kicker{ font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; color:var(--oc-subtle); }
     .insight-hero-note{
       max-width:620px;
@@ -45,6 +47,46 @@
       color:var(--oc-subtle);
       font-size:.96rem;
       line-height:1.6;
+    }
+    .grouped-index{
+      display:grid;
+      gap:26px;
+    }
+    .benchmark-search-dock .oc-catalog-search-wrap{
+      max-width:720px;
+      margin:0 auto;
+      border:1px solid #d5dde7;
+      border-radius:999px;
+      background:#fff;
+      box-shadow:0 6px 18px rgba(15,46,75,.08);
+      padding:.12rem .35rem .12rem 0;
+      transition:border-color .18s ease, box-shadow .18s ease;
+    }
+    .benchmark-search-dock .oc-catalog-search-wrap:focus-within{
+      border-color:#94b8df;
+      box-shadow:0 10px 26px rgba(15,46,75,.12), 0 0 0 4px rgba(59,130,246,.08);
+    }
+    .benchmark-search-dock .oc-catalog-search-wrap .search-input{
+      max-width:none;
+      margin:0;
+      border:0;
+      background:transparent;
+      box-shadow:none;
+    }
+    .index-group{
+      display:grid;
+      gap:12px;
+    }
+    .index-group-title{
+      color:var(--oc-ink);
+      font-size:1.02rem;
+      font-weight:800;
+      margin:0;
+    }
+    .index-group-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
     }
 
     /* Index cards */
@@ -363,30 +405,6 @@
       margin-bottom:1rem;
     }
     .section-inline-head h2{margin-bottom:0}
-    .index-search{
-      display:flex;
-      align-items:center;
-      gap:.45rem;
-      width:min(320px, 100%);
-      border:1px solid var(--oc-border);
-      border-radius:9px;
-      background:#fff;
-      padding:.38rem .56rem;
-      box-shadow:0 4px 14px rgba(15,46,75,.04);
-    }
-    .index-search svg{
-      flex:0 0 auto;
-      color:var(--oc-subtle);
-    }
-    .index-search input{
-      width:100%;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--oc-text);
-      font-size:.86rem;
-    }
-    .index-search input::placeholder{color:#7d8793}
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:10px; box-shadow:var(--oc-shadow);
       padding:16px; text-decoration:none; color:inherit;
@@ -435,18 +453,17 @@
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
 	@media (max-width: 991.98px){
-	  .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .index-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .insight-grid{ grid-template-columns:1fr; }
       .composition-grid{grid-template-columns:1fr}
 	}
 	
-	@media (max-width: 991.98px){
-	  .index-thumb{ width:64px; height:64px; }
-	}
-
 	/* Mobile: 1 per row */
 	@media (max-width: 575.98px){
+      header.hero h1.oc-page-title{font-size:1.75rem;width:100%}
 	  .index-grid{ grid-template-columns: 1fr; }
+      .index-group-grid{grid-template-columns:1fr}
       .index-card{grid-template-columns:64px minmax(0,1fr);padding:14px;min-height:112px}
       .index-thumb-wrap{width:64px;height:64px}
       .rank-row{grid-template-columns:1fr}
@@ -454,7 +471,6 @@
       .section-title-row{align-items:flex-start;flex-direction:column}
       .rank-legend{white-space:normal}
       .section-inline-head{align-items:stretch;flex-direction:column}
-      .index-search{width:100%}
       .composition-body{grid-template-columns:1fr}
       .donut-chart{width:120px}
 	}
@@ -506,119 +522,27 @@
 
 <header class="hero">
   <div class="container oc-container content">
-    <h1>Catalog Analytics</h1>
+    <h1>Benchmark Explorer</h1>
+    <div class="benchmark-search-dock mt-3">
+      <div class="oc-catalog-search-wrap">
+        <input id="indexSearch" type="text" class="form-control form-control-lg search-input" data-insight-search placeholder="Search benchmark tasks ..." aria-label="Search benchmark tasks">
+        <button type="button" class="oc-search-arrow" aria-label="Search benchmarks">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+        </button>
+      </div>
+    </div>
   </div>
 </header>
 
 
 <main class="container oc-container">
-	<section class="oc-section">
-	  <div class="oc-kicker mb-2">Overview</div>
-	  <p class="text-muted mb-3">
-		Summary statistics across tasks, applications, datasets, and models indexed in OpenConstruction.
-	  </p>
-
-	  <div class="row g-3">
-		<div class="col-md-4">
-		  <div class="oc-card h-100">
-			<div class="oc-card-body">
-			  <div class="oc-card-title">Tasks</div>
-			  <div class="display-6 fw-bold mb-1 stat-value" id="statTasks">&mdash;</div>
-			</div>
-		  </div>
-		</div>
-
-		<div class="col-md-4">
-		  <div class="oc-card h-100">
-			<div class="oc-card-body">
-			  <div class="oc-card-title">Applications</div>
-			  <div class="display-6 fw-bold mb-1 stat-value" id="statApps">&mdash;</div>
-			</div>
-		  </div>
-		</div>
-
-		<div class="col-md-4">
-		  <div class="oc-card h-100">
-			<div class="oc-card-body">
-			  <div class="oc-card-title">Datasets and Models</div>
-			  <div class="display-6 fw-bold mb-1 stat-value">
-				<span id="statDatasets">&mdash;</span> / <span id="statModels">&mdash;</span>
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</section>
-
-  <section class="oc-section" aria-labelledby="frequencyPatternsTitle">
-    <div class="oc-kicker mb-2">Patterns</div>
-    <div class="section-title-row">
-      <h2 class="h4 fw-bold" id="frequencyPatternsTitle" style="color:var(--oc-ink);">Top Coverage Patterns</h2>
-      <div class="rank-legend" aria-label="Coverage bar legend">
-        <span><i class="dataset"></i>Datasets</span>
-        <span><i class="model"></i>Models</span>
-      </div>
-    </div>
-    <div class="insight-grid">
-      <div class="pattern-card">
-        <div class="pattern-card-head">
-          <h3>Tasks <span class="pattern-count" id="taskPatternCount"></span></h3>
-        </div>
-        <div id="taskFrequencyBars" class="text-muted small">Loading...</div>
-      </div>
-      <div class="pattern-card">
-        <div class="pattern-card-head">
-          <h3>Applications <span class="pattern-count" id="appPatternCount"></span></h3>
-        </div>
-        <div id="appFrequencyBars" class="text-muted small">Loading...</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="oc-section" aria-labelledby="compositionTitle">
-    <div class="oc-kicker mb-2">Metadata</div>
-    <h2 class="h4 fw-bold mb-3" id="compositionTitle" style="color:var(--oc-ink);">Metadata Profile</h2>
-    <div class="composition-grid">
-      <div class="composition-card">
-        <h3>Primary Data Modality</h3>
-        <div id="modalityDonut" class="text-muted small">Loading...</div>
-      </div>
-      <div class="composition-card">
-        <h3>Recorded License Status</h3>
-        <div id="licenseDonut" class="text-muted small">Loading...</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="oc-section" aria-labelledby="timePatternsTitle">
-    <div class="oc-kicker mb-2">Timeline</div>
-    <div class="section-title-row">
-      <h2 class="h4 fw-bold" id="timePatternsTitle" style="color:var(--oc-ink);">Catalog Growth by Year</h2>
-      <div class="time-legend" aria-label="Time pattern legend">
-        <span><i class="time-segment dataset"></i>Datasets</span>
-        <span><i class="time-segment model"></i>Models</span>
-      </div>
-    </div>
-    <div class="time-card">
-      <div id="timePatternBars" class="text-muted small">Loading...</div>
-    </div>
-  </section>
-
   <section class="oc-section">
     <div class="section-inline-head">
       <div>
-        <div class="oc-kicker mb-2">Browse</div>
-        <h2 class="h4 fw-bold" style="color:var(--oc-ink);">Tasks and Applications</h2>
+        <h2 class="h2 fw-bold" style="color:var(--oc-ink);">Browse Benchmark Tasks</h2>
       </div>
-      <label class="index-search" for="indexSearch">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
-             viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-        </svg>
-        <input id="indexSearch" type="search" data-insight-search placeholder="Search index" aria-label="Search task and application index">
-      </label>
     </div>
-    <div class="index-grid is-loading" id="insightGrid">
+    <div class="grouped-index is-loading" id="insightGrid">
       <div class="index-grid-skeleton" aria-hidden="true">
         <div class="index-skeleton-card"></div>
         <div class="index-skeleton-card"></div>
@@ -746,51 +670,6 @@
     return `<span class="index-thumb-wrap" aria-hidden="true"><img class="index-thumb" src="${esc(src)}" alt="" onerror="${onerr}"><span class="index-thumb-glyph">${insightThumbGlyph()}</span></span>`;
   }
 
-  function iconDataset(){
-    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-      <path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path>
-      <path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path>
-      <path d="m4 12 8 3.4 8-3.4"></path>
-      <path d="m4 16.8 8 3.4 8-3.4"></path>
-    </svg>`;
-  }
-
-  function iconModel(){
-    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-      <circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle>
-      <circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle>
-      <circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle>
-      <circle cx="7" cy="8" r="2.5"></circle>
-      <circle cx="17" cy="6" r="2.5"></circle>
-      <circle cx="17" cy="18" r="2.5"></circle>
-      <path d="m9.4 7.5 5.2-1"></path>
-      <path d="m8.7 10 6.6 6"></path>
-      <path d="M7 10.5v4.8"></path>
-      <circle cx="7" cy="17.8" r="1.8"></circle>
-    </svg>`;
-  }
-
-  function pluralCount(count, singular, plural){
-    const value = Number(count || 0);
-    return `${value} ${value === 1 ? singular : plural}`;
-  }
-
-  function indexCardHtml(x, hrefBuilder){
-    const label = x.label || x.canon;
-    const href = hrefBuilder ? hrefBuilder(x) : (x.href || '#');
-    return `
-      <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open insight for ${esc(label)}">
-        ${thumbHtml(x)}
-        <div class="index-content">
-          <div class="index-title">${esc(label)}</div>
-          <div class="index-meta">
-            <span>${iconDataset()} ${esc(pluralCount(x.dsCount, 'dataset', 'datasets'))}</span>
-            <span>${iconModel()} ${esc(pluralCount(x.modelCount, 'model', 'models'))}</span>
-          </div>
-        </div>
-      </a>`;
-  }
-
   // Prefer PNG; fallback to original (e.g., GIF) if PNG fails
   function toPngFirst(url){
     const u = normStr(url);
@@ -861,9 +740,27 @@
     }
   }
 
+  function boardHasResults(board){
+    return Array.isArray(board?.results) && board.results.length > 0;
+  }
+
   function emptyTaskVocabulary(){
     return { byCanonical: new Map(), byAlias: new Map() };
   }
+
+  const APPLICATION_LABELS = new Map([
+    ['construction drawing understanding', 'Construction Drawing Understanding'],
+    ['drawing understanding', 'Construction Drawing Understanding'],
+    ['automated code compliance checking', 'Code Compliance Checking'],
+    ['code compliance checking', 'Code Compliance Checking'],
+    ['construction progress monitoring', 'Construction Progress Monitoring'],
+    ['progress monitoring', 'Construction Progress Monitoring'],
+    ['construction safety monitoring', 'Construction Safety Monitoring'],
+    ['site safety monitoring', 'Construction Safety Monitoring'],
+    ['structural health monitoring', 'Structural Health Monitoring'],
+    ['building energy modeling', 'Building Energy Modeling'],
+    ['building function classification', 'Urban Function Analysis']
+  ]);
 
   function buildTaskVocabulary(payload){
     const vocab = emptyTaskVocabulary();
@@ -905,20 +802,30 @@
     };
   }
   function formatApplicationLabel(raw){
-    return niceLabel(raw);
+    return APPLICATION_LABELS.get(canonKey(raw)) || niceLabel(raw);
   }
   function normalizeApplicationTerm(raw){
     const rawText = normStr(raw);
+    const standardLabel = formatApplicationLabel(rawText);
     return {
-      canon: canonKey(rawText),
-      label: formatApplicationLabel(rawText),
+      canon: canonKey(standardLabel || rawText),
+      label: standardLabel,
       taskId: '',
       entry: null
     };
   }
 
+  function addModalitiesToNode(node, item){
+    if(!node) return;
+    node.modalityCounts = node.modalityCounts || {};
+    const labels = taskModalitiesFromItem(item);
+    labels.forEach(label => {
+      node.modalityCounts[label] = (node.modalityCounts[label] || 0) + 1;
+    });
+  }
+
   function buildMergedIndex({datasets, models, extractor, imageGetter, normalizer}){
-    // canonical -> { label, canon, dsCount, modelCount, imgPrimary, imgFallback }
+    // canonical -> { label, canon, dsCount, modelCount, imgPrimary, imgFallback, modalityCounts }
     const map = new Map();
 
     function touch(raw){
@@ -935,6 +842,7 @@
           modelCount:0,
           imgPrimary:'',
           imgFallback:'',
+          modalityCounts:{},
           searchText: [normalized.label, canon].filter(Boolean).join(' ')
         });
       }
@@ -951,6 +859,7 @@
           node.dsCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+          addModalitiesToNode(node, ds);
           node.searchText = [node.searchText, ds.id, ds.name, ds.title].map(normStr).filter(Boolean).join(' ');
         }
       });
@@ -966,6 +875,7 @@
           node.modelCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+          addModalitiesToNode(node, m);
           node.searchText = [node.searchText, m.id, m.name, m.title].map(normStr).filter(Boolean).join(' ');
         }
       });
@@ -1001,6 +911,7 @@
           modelCount: 0,
           imgPrimary: '',
           imgFallback: '',
+          modalityCounts: {},
           searchText: [normalized.label, canon].filter(Boolean).join(' ')
         };
         byCanon.set(canon, node);
@@ -1015,7 +926,17 @@
       if(boardDatasetKey && !datasetAlreadyLinked && !node._benchmarkDatasetKeys.has(boardDatasetKey)){
         node._benchmarkDatasetKeys.add(boardDatasetKey);
         node.dsCount += 1;
+        addModalitiesToNode(node, dataset || board);
       }
+
+      node._benchmarkModelKeys = node._benchmarkModelKeys || new Set();
+      normArray(board.results).forEach(result => {
+        const modelKey = canonKey(result?.model_id || result?.method || result?.model || result?.name);
+        if(modelKey && !node._benchmarkModelKeys.has(modelKey)){
+          node._benchmarkModelKeys.add(modelKey);
+          node.modelCount += 1;
+        }
+      });
 
       const img = toPngFirst(getDatasetCardImage(dataset));
       node.imgPrimary = betterImage(node.imgPrimary, img.primary);
@@ -1063,6 +984,7 @@
             modelCount: 0,
             imgPrimary: '',
             imgFallback: '',
+            modalityCounts: {},
             searchText: [normalized.label, canon].filter(Boolean).join(' ')
           };
           byCanon.set(canon, node);
@@ -1072,6 +994,7 @@
         node.dsCount += 1;
         node.imgPrimary = betterImage(node.imgPrimary, img.primary);
         if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
+        addModalitiesToNode(node, ds);
         node.searchText = [node.searchText, ds.id, ds.name, ds.title, task].map(normStr).filter(Boolean).join(' ');
       });
     });
@@ -1083,6 +1006,93 @@
   const gridState = {
     insight: { all: [], defaultAll: [], shown: 0, batch: 12 }
   };
+
+  function iconDataset(){
+    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+      <path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path>
+      <path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path>
+      <path d="m4 12 8 3.4 8-3.4"></path>
+      <path d="m4 16.8 8 3.4 8-3.4"></path>
+    </svg>`;
+  }
+
+  function iconModel(){
+    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+      <circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle>
+      <circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle>
+      <circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle>
+      <circle cx="7" cy="8" r="2.5"></circle>
+      <circle cx="17" cy="6" r="2.5"></circle>
+      <circle cx="17" cy="18" r="2.5"></circle>
+      <path d="m9.4 7.5 5.2-1"></path>
+      <path d="m8.7 10 6.6 6"></path>
+      <path d="M7 10.5v4.8"></path>
+      <circle cx="7" cy="17.8" r="1.8"></circle>
+    </svg>`;
+  }
+
+  function pluralCount(count, singular, plural){
+    const value = Number(count || 0);
+    return `${value} ${value === 1 ? singular : plural}`;
+  }
+
+  function indexCardHtml(x, hrefBuilder){
+    const label = x.label || x.canon;
+    const href = hrefBuilder ? hrefBuilder(x) : (x.href || '#');
+    return `
+      <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open insight for ${esc(label)}">
+        ${thumbHtml(x)}
+        <div class="index-content">
+          <div class="index-title">${esc(label)}</div>
+          <div class="index-meta">
+            <span>${iconDataset()} ${esc(pluralCount(x.dsCount, 'dataset', 'datasets'))}</span>
+          </div>
+        </div>
+      </a>`;
+  }
+
+  function primaryGroupLabel(item){
+    const labelText = `${item?.label || ''} ${item?.canon || ''} ${item?.searchText || ''}`.toLowerCase();
+    const modalities = taskModalities(item);
+    if(modalities.length > 1) return 'General';
+    if(/\b(point cloud|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
+    if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(labelText)) return 'Video';
+    if(/\b(text classification|document classification|information retrieval|named entity recognition|language|caption|question answering|report|specification|text)\b/.test(labelText)) return 'Language';
+    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(labelText)) return '3D';
+    if(/\b(object detection|segmentation|image classification|visual|vision|image|rgb|photo|camera|street view|remote sensing)\b/.test(labelText)) return 'Vision';
+    if(modalities.includes('Point Cloud')) return 'Point Cloud';
+    if(modalities.includes('Video')) return 'Video';
+    if(modalities.includes('Text')) return 'Language';
+    if(modalities.includes('3D')) return '3D';
+    if(modalities.includes('Images') || modalities.includes('Depth / RGB-D') || modalities.includes('Thermal Imagery')) return 'Vision';
+    return 'General';
+  }
+
+  const GROUP_ORDER = ['General', 'Vision', 'Video', 'Language', 'Point Cloud', '3D', 'Tables', 'Graphs', 'Time Series', 'Audio'];
+
+  function groupRank(label){
+    const index = GROUP_ORDER.indexOf(label);
+    return index === -1 ? GROUP_ORDER.length : index;
+  }
+
+  function renderGroupedCards(items, hrefBuilder){
+    const groups = new Map();
+    items.forEach(item => {
+      const label = primaryGroupLabel(item);
+      if(!groups.has(label)) groups.set(label, []);
+      groups.get(label).push(item);
+    });
+    return Array.from(groups, ([label, groupItems]) => ({ label, items: groupItems }))
+      .sort((a,b) => groupRank(a.label) - groupRank(b.label) || a.label.localeCompare(b.label))
+      .map(group => `
+        <section class="index-group">
+          <h3 class="index-group-title">${esc(group.label)}</h3>
+          <div class="index-group-grid">
+            ${group.items.map(item => indexCardHtml(item, hrefBuilder)).join('')}
+          </div>
+        </section>
+      `).join('');
+  }
 
   function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
     const el = document.getElementById(elId);
@@ -1096,8 +1106,8 @@
     if(!total){
       el.innerHTML = `
         <div class="oc-card"><div class="oc-card-body">
-          <div class="oc-card-title mb-1">No entries found</div>
-          <div class="text-muted">Add the corresponding fields in JSON to populate this index.</div>
+          <div class="oc-card-title mb-1">No benchmark results found</div>
+          <div class="text-muted">Add result rows in benchmark-results.json to list benchmark tasks here.</div>
         </div></div>`;
       note.textContent = '';
       return;
@@ -1107,13 +1117,13 @@
     const shownItems = items.slice(0, nextShown);
     state.shown = nextShown;
 
-	el.innerHTML = shownItems.map(x => indexCardHtml(x, hrefBuilder)).join('');
+	el.innerHTML = renderGroupedCards(shownItems, hrefBuilder);
 
 
     const remaining = total - state.shown;
     if(remaining > 0){
       el.insertAdjacentHTML('beforeend', `
-        <div class="d-grid" style="grid-column: 1 / -1;">
+        <div class="d-grid">
           <button class="index-toggle" type="button" data-show-more="${kind}">
             Show more (${remaining} remaining)
           </button>
@@ -1122,7 +1132,7 @@
       note.textContent = '';
     } else if(total > state.batch){
       el.insertAdjacentHTML('beforeend', `
-        <div class="d-grid" style="grid-column: 1 / -1;">
+        <div class="d-grid">
           <button class="index-toggle" type="button" data-show-less="${kind}">
             Show less
           </button>
@@ -1152,7 +1162,7 @@
         return;
       }
 
-	el.innerHTML = filtered.map(x => indexCardHtml(x, (item) => item.href || '#')).join('');
+	el.innerHTML = renderGroupedCards(filtered, (x) => x.href || '#');
 
       note.textContent = `Search results: ${filtered.length}.`;
     }
@@ -1165,24 +1175,12 @@
   }
 
   function coverageTotal(item){
-    return Number(item?.dsCount || 0) + Number(item?.modelCount || 0);
+    return Number(item?.dsCount || 0);
   }
 
   function countLabel(item){
     const ds = Number(item?.dsCount || 0);
-    const models = Number(item?.modelCount || 0);
-    const parts = [];
-    if(ds) parts.push(`${ds} dataset${ds === 1 ? '' : 's'}`);
-    if(models) parts.push(`${models} model${models === 1 ? '' : 's'}`);
-    return parts.length ? parts.join(' / ') : 'No linked resources';
-  }
-
-  function taskInsightHref(item){
-    return `task.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`;
-  }
-
-  function applicationInsightHref(item){
-    return `application.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`;
+    return ds ? `${ds} benchmark${ds === 1 ? '' : 's'}` : 'No linked benchmarks';
   }
 
   const DONUT_COLORS = ['#3d6f9f', '#4f8a70', '#9b7a45', '#7b7098', '#5c8a96', '#7f8792', '#b8c4cf'];
@@ -1211,16 +1209,96 @@
     if(/\b(bim|ifc|revit|gbxml|building information model)\b/.test(text)) return 'BIM / IFC';
     if(/\b(video|rgb-d video|sequence|time-lapse|timelapse)\b/.test(text)) return 'Video';
     if(/\b(rgb-d|rgbd|depth|stereo)\b/.test(text)) return 'Depth / RGB-D';
-    if(/\b(mesh|3d model|3d geometry|geometry model|obj|ply)\b/.test(text)) return '3D Geometry';
+    if(/\b(mesh|3d model|3d geometry|geometry model|obj|ply)\b/.test(text)) return '3D';
     if(/\b(thermal|infrared|ir image|thermography)\b/.test(text)) return 'Thermal Imagery';
-    if(/\b(text|language|caption|document|report|specification|poi)\b/.test(text)) return 'Text';
-    if(/\b(sensor|imu|temperature|iot|wearable|accelerometer|gyroscope)\b/.test(text)) return 'Sensor';
-    if(/\b(tabular|csv|spreadsheet|table|metadata)\b/.test(text)) return 'Tabular';
+    if(/\b(text|language|caption|document|report|specification)\b/.test(text)) return 'Text';
+    if(/\b(sensor|imu|temperature|iot|wearable|accelerometer|gyroscope)\b/.test(text)) return 'Sensors';
+    if(/\b(tabular|csv|spreadsheet|table|metadata|poi|points of interest)\b/.test(text)) return 'Tables';
     if(/\b(map|gis|geospatial|gps|satellite|aerial|uav|drone)\b/.test(text)) return 'Geospatial';
-    if(/\b(image|rgb|photo|photograph|visual|camera|frame)\b/.test(text)) return 'Image';
+    if(/\b(image|rgb|photo|photograph|visual|camera|frame|street view|ground rgb|remote sensing)\b/.test(text)) return 'Images';
     if(/\b(simulation|synthetic)\b/.test(text)) return 'Synthetic';
     if(/\b(audio|speech|sound)\b/.test(text)) return 'Audio';
     return niceLabel(term);
+  }
+
+  const MODALITY_ORDER = [
+    'Images',
+    'Text',
+    'Point Cloud',
+    '3D',
+    'Video',
+    'Tables',
+    'Graphs',
+    'Time Series',
+    'Audio',
+    'Depth / RGB-D',
+    'CAD Drawings',
+    'BIM / IFC',
+    'Thermal Imagery',
+    'Geospatial',
+    'Sensors',
+    'Synthetic',
+    'Unspecified'
+  ];
+
+  function modalityRank(label){
+    const index = MODALITY_ORDER.indexOf(label);
+    return index === -1 ? MODALITY_ORDER.length : index;
+  }
+
+  function taskModalitiesFromText(...values){
+    const text = values.map(normStr).filter(Boolean).join(' ').toLowerCase();
+    const labels = new Set();
+    if(!text) return labels;
+    if(/\b(object detection|semantic segmentation|instance segmentation|panoptic segmentation|image classification|visual question answering|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(text)) labels.add('Images');
+    if(/\b(text classification|document classification|question answering|named entity recognition|information retrieval|language model|caption|text|document|report|specification|nlp)\b/.test(text)) labels.add('Text');
+    if(/\b(point cloud|lidar|laser scan|3d scan|point-cloud)\b/.test(text)) labels.add('Point Cloud');
+    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(text)) labels.add('3D');
+    if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(text)) labels.add('Video');
+    if(/\b(table|tabular|metadata|csv|spreadsheet|poi|points of interest)\b/.test(text)) labels.add('Tables');
+    if(/\b(graph|knowledge graph|node classification|link prediction)\b/.test(text)) labels.add('Graphs');
+    if(/\b(time series|forecasting|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
+    if(/\b(audio|speech|sound)\b/.test(text)) labels.add('Audio');
+    if(/\b(bim|ifc|revit|building information model)\b/.test(text)) labels.add('BIM / IFC');
+    if(/\b(cad|drawing|blueprint|floor plan|floorplan|architectural plan)\b/.test(text)) labels.add('CAD Drawings');
+    return labels;
+  }
+
+  function taskModalitiesFromItem(item){
+    const labels = new Set();
+    const terms = metadataTerms(
+      item?.data_modality,
+      item?.data_modalities,
+      item?.modality,
+      item?.modalities,
+      item?.media,
+      item?.format,
+      item?.formats
+    );
+    terms.forEach(term => {
+      const label = modalityFamilyLabel(term);
+      if(label) labels.add(label);
+    });
+    taskModalitiesFromText(
+      item?.task,
+      item?.tasks,
+      item?.potential_tasks,
+      item?.summary,
+      item?.description,
+      item?.task_description,
+      item?.name,
+      item?.title
+    ).forEach(label => labels.add(label));
+    return labels.size ? [...labels] : ['Unspecified'];
+  }
+
+  function taskModalities(item){
+    const counted = Object.entries(item?.modalityCounts || {})
+      .filter(([, count]) => Number(count) > 0)
+      .map(([label]) => label);
+    const inferred = [...taskModalitiesFromText(item?.label, item?.canon, item?.searchText)];
+    const labels = [...new Set([...counted, ...inferred])];
+    return labels.length ? labels : ['Unspecified'];
   }
 
   function primaryModality(item){
@@ -1311,6 +1389,62 @@
     const resources = [...datasets, ...models];
     renderDonut('modalityDonut', 'Data modality', countBy(resources, primaryModality), 7);
     renderDonut('licenseDonut', 'License status', countBy(resources, licenseStatus), 5);
+  }
+
+  function buildTaskModalityGroups(tasks){
+    const groups = new Map();
+    tasks.forEach(task => {
+      taskModalities(task).forEach(label => {
+        if(!groups.has(label)) groups.set(label, []);
+        groups.get(label).push(task);
+      });
+    });
+    return Array.from(groups, ([label, items]) => ({
+      label,
+      items: items
+        .slice()
+        .sort((a,b) =>
+          coverageTotal(b) - coverageTotal(a) ||
+          (a.label || a.canon).localeCompare(b.label || b.canon)
+        )
+    })).sort((a,b) =>
+      modalityRank(a.label) - modalityRank(b.label) ||
+      b.items.length - a.items.length ||
+      a.label.localeCompare(b.label)
+    );
+  }
+
+  function renderTaskModalityGroups(tasks){
+    const container = document.getElementById('taskModalityGrid');
+    if(!container) return [];
+    const groups = buildTaskModalityGroups(tasks).filter(group => group.items.length > 0);
+    if(!groups.length){
+      container.innerHTML = '<p class="modality-empty">No task modality metadata is available yet.</p>';
+      return [];
+    }
+    container.innerHTML = groups.map(group => `
+      <article class="modality-card">
+        <div class="modality-card-head">
+          <h3>${esc(group.label)}</h3>
+          <span class="modality-count">${group.items.length} task${group.items.length === 1 ? '' : 's'}</span>
+        </div>
+        <ol class="modality-list">
+          ${group.items.slice(0, 5).map(task => {
+            const label = task.label || task.canon;
+            const href = `benchmark_task.html?key=${encodeURIComponent(task.canon)}&label=${encodeURIComponent(label)}`;
+            return `
+              <li>
+                <a href="${esc(href)}">
+                  <span>${esc(label)}</span>
+                  <span>${esc(countLabel(task))}</span>
+                </a>
+              </li>
+            `;
+          }).join('')}
+        </ol>
+      </article>
+    `).join('');
+    return groups;
   }
 
   function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12, scaleMax = 0}){
@@ -1469,13 +1603,13 @@
     const taskItems = tasks.map(item => ({
       ...item,
       typeLabel: 'Task',
-      href: taskInsightHref(item),
+      href: `benchmark_task.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
       searchText: [item.searchText, item.label, item.canon, 'task'].map(normStr).filter(Boolean).join(' ')
     }));
     const appItems = apps.map(item => ({
       ...item,
       typeLabel: 'Application',
-      href: applicationInsightHref(item),
+      href: `benchmark_application.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
       searchText: [item.searchText, item.label, item.canon, 'application'].map(normStr).filter(Boolean).join(' ')
     }));
     return [...taskItems, ...appItems].sort((a,b) =>
@@ -1498,10 +1632,8 @@
   async function init(){
     // Keep your existing site paths:
     // - data/datasets.json is an object keyed by id (we read Object.values)
-    // - data/models.json is an array
-    const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
+    const [datasets, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
-      loadJsonSafe('data/models.json'),
       (async () => {
         try{
           const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
@@ -1525,9 +1657,18 @@
     ]);
     const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
     const benchmarkBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
+    const resultBackedBoards = benchmarkBoards.filter(boardHasResults);
+    const resultBackedTaskCanons = new Set(
+      resultBackedBoards
+        .map(board => normalizeTaskTerm(board.task, taskVocabulary).canon)
+        .filter(Boolean)
+    );
+    const models = [];
 
+    const statBenchmarks = document.getElementById('statBenchmarks');
     const statDatasets = document.getElementById('statDatasets');
     const statModels = document.getElementById('statModels');
+    if (statBenchmarks) statBenchmarks.textContent = String(resultBackedBoards.length || 0);
     if (statDatasets) statDatasets.textContent = String(datasets.length || 0);
     if (statModels) statModels.textContent = String(models.length || 0);
     renderCatalogComposition(datasets, models);
@@ -1539,33 +1680,31 @@
 	  extractor: (obj, kind) =>
 		kind === 'dataset'
 		  ? getDatasetTasks(obj)
-		  : getModelTasks(obj),
+		  : [],
 	  normalizer: (raw) => normalizeTaskTerm(raw, taskVocabulary),
 	  imageGetter: (obj, kind) =>
 		kind === 'dataset'
 		  ? getDatasetCardImage(obj)
 		  : getModelCardImage(obj)
-	})
-    tasks = mergeBenchmarkTasks(tasks, benchmarkBoards, datasets, taskVocabulary);
-    tasks = tasks.filter(item => !isApplicationOnlyTerm(item));
+	});
+    tasks = mergeBenchmarkTasks(tasks, resultBackedBoards, datasets, taskVocabulary);
+    tasks = tasks.filter(item => resultBackedTaskCanons.has(item.canon) && !isApplicationOnlyTerm(item));
 
-    // Build PNG-first index for APPLICATIONS
-    let apps = buildMergedIndex({
-      datasets, models,
-      extractor: (obj, kind) => kind === 'dataset' ? getDatasetApps(obj) : getModelApps(obj),
-      normalizer: normalizeApplicationTerm,
-      imageGetter: (obj, kind) => kind === 'dataset'
-        ? getDatasetCardImage(obj)
-        : getModelCardImage(obj)
-    });
-    apps = mergeDatasetTaskMatchesIntoApplications(apps, datasets);
+    const apps = [];
 
     const statTasks = document.getElementById('statTasks');
     const statApps = document.getElementById('statApps');
+    const statModalities = document.getElementById('statModalities');
     if (statTasks) statTasks.textContent = String(tasks.length || 0);
     if (statApps) statApps.textContent = String(apps.length || 0);
-    document.getElementById('taskPatternCount').textContent = `· ${tasks.length || 0} categories`;
-    document.getElementById('appPatternCount').textContent = `· ${apps.length || 0} categories`;
+    const modalityGroups = renderTaskModalityGroups(tasks);
+    if (statModalities) {
+      statModalities.textContent = String(modalityGroups.filter(group => group.label !== 'Unspecified').length || 0);
+    }
+    const taskPatternCount = document.getElementById('taskPatternCount');
+    const appPatternCount = document.getElementById('appPatternCount');
+    if (taskPatternCount) taskPatternCount.textContent = `· ${tasks.length || 0} categories`;
+    if (appPatternCount) appPatternCount.textContent = `· ${apps.length || 0} categories`;
 
     const coverageScaleMax = Math.max(
       ...tasks.map(coverageTotal),
@@ -1577,13 +1716,13 @@
       containerId: 'taskFrequencyBars',
       items: tasks,
       scaleMax: coverageScaleMax,
-      hrefBuilder: taskInsightHref
+      hrefBuilder: (x) => `benchmark_task.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
     renderFrequencyBars({
       containerId: 'appFrequencyBars',
       items: apps,
       scaleMax: coverageScaleMax,
-      hrefBuilder: applicationInsightHref
+      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
     });
     renderTimePattern(datasets, models);
 
