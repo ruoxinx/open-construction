@@ -175,15 +175,13 @@ function publicationsListHtml(publications){
   if (!Array.isArray(publications) || !publications.length) return '';
   return `
     <div class="publication-list" role="list">
-      ${publications.map((pub, index) => {
+      ${publications.map(pub => {
         const tag = pub.url ? 'a' : 'div';
         const href = pub.url ? ` href="${pub.url}" target="_blank" rel="noopener"` : '';
-        const year = pub.year ? `<span class="publication-year">${escapeHtml(pub.year)}</span>` : '';
+        const year = pub.year ? ` <span class="publication-year">(${escapeHtml(pub.year)})</span>` : '';
         return `
           <${tag} class="publication-row${pub.url ? ' is-link' : ''}"${href} role="listitem">
-            <span class="publication-index" aria-hidden="true">${index + 1}</span>
-            <span class="publication-title">${escapeHtml(pub.title)}</span>
-            ${year}
+            <span class="publication-title">${escapeHtml(pub.title)}${year}</span>
           </${tag}>
         `;
       }).join('')}
@@ -1573,19 +1571,17 @@ async function initDetail(){
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
           .publication-subcard{ padding:.15rem 0 0; border:0; box-shadow:none; background:transparent; }
-          .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.1rem 0 .65rem; cursor:pointer; list-style:none; border-bottom:1px solid var(--oc-border); }
+          .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.1rem 0 .35rem; cursor:pointer; list-style:none; }
           .publications-disclosure summary::-webkit-details-marker{ display:none; }
           .publications-disclosure .publication-toggle{ width:1.3rem; height:1.3rem; flex:0 0 1.3rem; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:999px; color:var(--oc-sub); font-size:.95rem; font-weight:700; line-height:1; }
           .publications-disclosure .publication-toggle::before{ content:"+"; }
           .publications-disclosure[open] .publication-toggle::before{ content:"-"; }
-          .publication-list{ display:grid; gap:0; margin-top:.35rem; }
-          .publication-row{ display:grid; grid-template-columns:2rem minmax(0,1fr) auto; align-items:baseline; gap:.6rem; padding:.7rem 0; border-bottom:1px solid var(--oc-border); color:inherit; text-decoration:none; transition:color .15s ease; }
-          .publication-row:last-child{ border-bottom:0; }
+          .publication-list{ display:grid; gap:.45rem; margin-top:.45rem; }
+          .publication-row{ display:block; padding:.18rem 0; color:inherit; text-decoration:none; }
           .publication-row.is-link .publication-title{ color:var(--oc-ink); }
           .publication-row.is-link:hover .publication-title{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.18em; }
-          .publication-index{ color:var(--oc-sub); font-size:.78rem; font-weight:700; line-height:1.4; text-align:right; }
           .publication-title{ min-width:0; color:var(--oc-ink); font-size:.95rem; font-weight:600; line-height:1.42; transition:color .15s ease; }
-          .publication-year{ justify-self:end; color:var(--oc-sub); font-size:.8rem; font-weight:700; line-height:1.3; white-space:nowrap; }
+          .publication-year{ color:var(--oc-sub); font-weight:600; white-space:nowrap; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
@@ -1637,8 +1633,6 @@ async function initDetail(){
             .ds-cap{ padding-inline:1rem; }
             .quickfact-label{ font-size:.76rem; }
             .related-link{ padding:.7rem 0; }
-            .publication-row{ grid-template-columns:auto minmax(0,1fr); }
-            .publication-year{ grid-column:2; justify-self:start; }
           }
 
 /* Abstract show more/less */
