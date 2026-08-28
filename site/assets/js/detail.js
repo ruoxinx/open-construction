@@ -123,6 +123,73 @@ function safeHref(href){
   return '';
 }
 
+function publicationDoiHref(doi){
+  if (!doi) return '';
+  const raw = String(doi).trim();
+  return safeHref(raw.startsWith('http') ? raw : `https://doi.org/${raw}`);
+}
+
+function normalizePublicationEntry(pub){
+  if (!pub) return null;
+  if (typeof pub === 'string') {
+    const title = pub.trim();
+    return title ? { title } : null;
+  }
+  if (typeof pub !== 'object') return null;
+  const title = String(pub.title || pub.paper || pub.name || pub.publication || '').trim();
+  const doi = String(pub.doi || '').trim();
+  const url = safeHref(pub.url || pub.paper_url || pub.link || pub.href || '') || publicationDoiHref(doi);
+  if (!title && !url) return null;
+  return {
+    title: title || url,
+    authors: pub.authors || pub.author || [],
+    year: pub.year || pub.publication_year || '',
+    venue: pub.venue || pub.journal || pub.conference || '',
+    volume: pub.volume || '',
+    issue: pub.issue || '',
+    pages: pub.pages || '',
+    doi,
+    url,
+    location: pub.location || ''
+  };
+}
+
+function recordPublications(record){
+  const pubs = Array.isArray(record?.publications)
+    ? record.publications.map(normalizePublicationEntry).filter(Boolean)
+    : [];
+  const legacyTitle = String(record?.paper || record?.Paper || record?.paper_title || record?.paper_name || record?.publication || '').trim();
+  const legacyUrl = safeHref(record?.paper_url || record?.paper_link || '') || (safeHref(legacyTitle) ? safeHref(legacyTitle) : '');
+  if (legacyTitle || legacyUrl) {
+    const legacyPub = normalizePublicationEntry({ title: safeHref(legacyTitle) ? legacyUrl : legacyTitle, url: legacyUrl, doi: record?.doi || '' });
+    const duplicate = legacyPub && pubs.some(pub =>
+      (legacyPub.url && pub.url === legacyPub.url) ||
+      (legacyPub.title && pub.title && legacyPub.title.toLowerCase() === pub.title.toLowerCase())
+    );
+    if (legacyPub && !duplicate) pubs.unshift(legacyPub);
+  }
+  return pubs;
+}
+
+function publicationsListHtml(publications){
+  if (!Array.isArray(publications) || !publications.length) return '';
+  return `
+    <ol class="publication-list mb-0">
+      ${publications.map(pub => {
+        const title = pub.url
+          ? `<a href="${pub.url}" target="_blank" rel="noopener">${escapeHtml(pub.title)}</a>`
+          : escapeHtml(pub.title);
+        return `
+          <li class="publication-item">
+            <div class="publication-title">${title}</div>
+            ${pub.doi ? `<div class="publication-doi">DOI: ${formatDoi(pub.doi)}</div>` : ''}
+          </li>
+        `;
+      }).join('')}
+    </ol>
+  `;
+}
+
 function detailPageUrl(){
   try {
     return window.location.href;
@@ -1319,9 +1386,12 @@ async function initDetail(){
       const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
       const rawPaperField = safeText(m.paper || '');
       const paperFieldIsUrl = rawPaperField !== '—' && !!safeHref(rawPaperField);
-      const paperUrl = safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
+      const publications = recordPublications(m);
+      const primaryPublication = publications[0] || null;
+      const primaryPublicationUrl = primaryPublication?.url || '';
+      const paperUrl = primaryPublicationUrl || safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
       const modelSourceUrl = safeHref(codeUrl);
-      const doiSource = m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
+      const doiSource = primaryPublication?.doi || m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
       const doiUrl = doiSource
         ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
         : '';
@@ -1329,12 +1399,13 @@ async function initDetail(){
       const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license, m)}</div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
-      const badgeIdSource = (m.doi && String(m.doi).trim()) ? m.doi : paperUrl;
+      const badgeIdSource = doiSource || paperUrl;
       const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
       const modelPaperTitle = safeText(
+        primaryPublication?.title ||
         (rawPaperField !== '—' && !paperFieldIsUrl ? rawPaperField : '') ||
         m.Paper ||
         m.paper_title ||
@@ -1489,6 +1560,10 @@ async function initDetail(){
           .quickfact-value{ font-weight:700; line-height:1.35; }
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
+          .publication-list{ display:grid; gap:.9rem; padding-left:1.25rem; }
+          .publication-item{ padding-left:.15rem; }
+          .publication-title{ font-weight:700; line-height:1.4; }
+          .publication-doi{ color:var(--oc-sub); font-size:.9rem; line-height:1.4; margin-top:.18rem; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
@@ -1609,6 +1684,13 @@ async function initDetail(){
           </dl>
         </section>
 
+        ${publications.length > 1 ? `
+        <section id="publications" class="detail-section">
+          <div class="detail-kicker">Publications</div>
+          <h2 class="detail-heading">Related publications</h2>
+          ${publicationsListHtml(publications)}
+        </section>` : ''}
+
         <section id="related-resources" class="detail-section">
           <div class="detail-kicker">Related Resources</div>
           <h2 class="detail-heading">Keep exploring from here</h2>
@@ -1652,6 +1734,7 @@ async function initDetail(){
               <div class="d-grid gap-2">
                 ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'View Code')}</a>` : ''}
                 ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${paperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View Paper')}</a>` : ''}
+                ${publications.length > 1 ? `<a class="btn btn-outline-secondary btn-sm" href="#publications">View all publications</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
             </div>
@@ -1665,6 +1748,7 @@ async function initDetail(){
               <div class="d-grid gap-2 small">
                 <a href="#overview">Overview</a>
                 <a href="#technical-profile">Technical Profile</a>
+                ${publications.length > 1 ? '<a href="#publications">Publications</a>' : ''}
                 <a href="#related-resources">Related Resources</a>
               </div>
             </div>
