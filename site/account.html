@@ -982,6 +982,7 @@
   }
 
   const catalogCache = new Map();
+  const CATALOG_SOURCE_REPOSITORY = 'https://github.com/ruoxinx/open-construction-data';
   const catalogSources = {
     ai: 'data/ai-catalog.json',
     dataset: 'data/datasets.json',
@@ -1371,10 +1372,35 @@
 
   function shouldRefineAiResults(query){
     const clean = String(query || '');
-    if (/\b(only|filter|refine|narrow|current results?|previous results?|within these|compare|largest|biggest|smallest|most|downloadable|has code|has data|license|licence|cc\s*[- ]?\s*by|creative commons|noncommercial|non-commercial)\b/i.test(clean)) return true;
+    if (/\b(only|filter|refine|narrow|current results?|previous results?|within these|these|those|them|compare|largest|biggest|smallest|most|downloadable|has code|has data|license|licence|cc\s*[- ]?\s*by|creative commons|noncommercial|non-commercial)\b/i.test(clean)) return true;
     if (/\b(with|without)\s+(code|github|repo|repository|data|download|source)\b/i.test(clean)) return true;
     if (/\bcc\s*[- ]?\s*by(?:\s*[- ]?\s*n[ac])?\b/i.test(clean)) return true;
     return isTypeOnlyAiQuery(clean);
+  }
+
+  function aiOrdinalLimit(query){
+    const clean = normalizeAiText(query);
+    if (/\b(first|top)\s+(two|2)\b/.test(clean)) return 2;
+    if (/\b(first|top)\s+(three|3)\b/.test(clean)) return 3;
+    if (/\b(first|top)\s+(four|4)\b/.test(clean)) return 4;
+    if (/\b(first|top)\s+(five|5)\b/.test(clean)) return 5;
+    return 0;
+  }
+
+  function aiConversationSearchContext(messages, limit = 4){
+    return (Array.isArray(messages) ? messages : [])
+      .filter(message => message?.role === 'user')
+      .slice(-limit)
+      .map(message => message.text)
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  function aiSearchTextWithContext(query, previousMessages){
+    return [aiConversationSearchContext(previousMessages), query]
+      .map(value => String(value || '').trim())
+      .filter(Boolean)
+      .join(' ');
   }
 
   function normalizeAiLicense(value){
@@ -1882,6 +1908,8 @@
     if (!previous.length) return [];
     let rows = previous.slice();
     const clean = String(query || '');
+    const ordinalLimit = aiOrdinalLimit(clean);
+    if (ordinalLimit) rows = rows.slice(0, ordinalLimit);
     const wantsOnly = /\bonly\b|\bfilter\b|\bshow\b/i.test(clean);
     const typeMatches = aiTypeMatches(clean);
     const licenseTerms = requestedAiLicenseTerms(clean);
@@ -2122,12 +2150,14 @@
     return picked;
   }
 
-  async function askOpenConstructionWithGemini(query, candidates, previousMessages){
-    if (!sb?.functions?.invoke || !candidates?.length) return null;
+  async function askOpenConstructionWithGemini(query, candidates, previousMessages, previousResources = []){
+    if (!sb?.functions?.invoke) return null;
     const { data, error } = await sb.functions.invoke('ask-openconstruction', {
       body: {
         query,
         candidates: candidatesForGeminiAi(candidates),
+        previousResources: candidatesForGeminiAi(previousResources, 40),
+        catalogSourceRepository: CATALOG_SOURCE_REPOSITORY,
         responseContract: {
           resourceReferences: 'Return selected catalog resources as resourceHrefs or resourceKeys using the provided href/key values only.'
         },
@@ -3256,6 +3286,9 @@
       </section>
     `;
 
+    let anonymousAiMessages = [];
+    let anonymousResourceRounds = [];
+
     function renderAnonymousResults(query, answer, results, visibleLimit = AI_INITIAL_RESULT_LIMIT){
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
@@ -3269,17 +3302,40 @@
       const trustHtml = round ? `
         <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(query))}">Search catalog</a>.</p>
       ` : '';
-      threadEl.innerHTML = `
-        ${accountAiMessageHtml({ role: 'user', text: query })}
-        ${accountAiMessageHtml({ role: 'assistant', text: answer }, { trustHtml })}
-        ${accountAiMessageResourcesBlockHtml(round, 0, true, visibleLimit)}
-      `;
+      const thread = anonymousAiMessages.length
+        ? anonymousAiMessages
+        : [
+          { role: 'user', text: query },
+          { role: 'assistant', text: answer }
+        ];
+      const sourceRounds = anonymousResourceRounds.length ? anonymousResourceRounds : (round ? [round] : []);
+      const assistantResourceRounds = sourceRounds.map((item, sourceIndex) => (
+        item?.changed !== false && Array.isArray(item.resources) && item.resources.length
+          ? { ...item, sourceIndex }
+          : null
+      ));
+      const latestAssistantIndex = thread.reduce((latest, message, index) => message.role === 'assistant' ? index : latest, -1);
+      let assistantRoundIndex = 0;
+      threadEl.innerHTML = thread.map((message, index) => {
+        const roundIndex = message.role === 'assistant' ? assistantRoundIndex++ : -1;
+        const messageRound = roundIndex >= 0 ? assistantResourceRounds[roundIndex] : null;
+        const isLatestAssistant = index === latestAssistantIndex;
+        const messageTrustHtml = messageRound ? `
+          <p class="oc-ai-trust-note">Based on matching public OpenConstruction records. <a href="${esc(normalSearchHrefAi(messageRound.query || query))}">Search catalog</a>.</p>
+        ` : (isLatestAssistant ? trustHtml : '');
+        return `
+          ${accountAiMessageHtml(message, { trustHtml: messageTrustHtml })}
+          ${accountAiMessageResourcesBlockHtml(messageRound, messageRound?.sourceIndex ?? roundIndex, isLatestAssistant, isLatestAssistant ? visibleLimit : AI_INITIAL_RESULT_LIMIT)}
+        `;
+      }).join('');
       resultsEl.innerHTML = '';
       threadEl.querySelectorAll('[data-ai-show-more]').forEach(button => button.addEventListener('click', event => {
         const grid = event.currentTarget.closest('[data-ai-reply-results]')?.querySelector('.oc-ai-reply-resource-grid');
-        if (!round || !grid) return;
+        const details = event.currentTarget.closest('[data-ai-reply-results]');
+        const sourceRound = assistantResourceRounds[Number(details?.dataset.aiReplyResults || -1)];
+        if (!sourceRound || !grid) return;
         const nextVisible = Number(event.currentTarget.dataset.nextVisible || AI_INITIAL_RESULT_LIMIT);
-        grid.innerHTML = accountAiResourceCardsHtml(round.resources, round.query || '', nextVisible, true);
+        grid.innerHTML = accountAiResourceCardsHtml(sourceRound.resources, sourceRound.query || '', nextVisible, true);
         window.OCBookmark?.mount?.(grid);
       }));
       window.OCBookmark?.mount?.(threadEl);
@@ -3317,6 +3373,11 @@
         return;
       }
       try {
+        const priorMessages = anonymousAiMessages.slice();
+        const priorRounds = anonymousResourceRounds.slice();
+        const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
+        const previousResources = latestRound?.resources || [];
+        const isRefinement = Boolean(previousResources.length && shouldRefineAiResults(clean));
         const form = document.getElementById('anonymousAskForm');
         setAskFormBusy(form, true);
         const output = document.getElementById('accountAiOutput');
@@ -3327,23 +3388,35 @@
           document.querySelector('.oc-ask-workspace')?.classList.add('has-results');
           output.hidden = false;
           if (resultsShell) resultsShell.hidden = true;
-          threadEl.innerHTML = `
-            ${accountAiMessageHtml({ role: 'user', text: clean })}
-            ${accountAiMessageHtml({ role: 'assistant', text: 'Searching OpenConstruction resources...' }, { loading: true })}
-          `;
+          threadEl.innerHTML = [
+            ...priorMessages,
+            { role: 'user', text: clean },
+            { role: 'assistant', text: 'Searching OpenConstruction resources...' }
+          ].map((message, index, rows) => accountAiMessageHtml(message, { loading: message.role === 'assistant' && index === rows.length - 1 })).join('');
           resultsEl.innerHTML = '';
         }
         const catalog = await loadAccountAiCatalog();
-        let results = selectAiCandidates(catalog, clean);
-        let answer = answerForAiQuery(clean, results, Boolean(catalog.length));
+        const searchText = isRefinement ? clean : aiSearchTextWithContext(clean, priorMessages);
+        let results = isRefinement
+          ? refineAiResultsFromPrevious(previousResources, clean)
+          : selectAiCandidates(catalog, searchText);
+        if (!results.length && isRefinement) {
+          results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
+        }
+        let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
         try {
-          const geminiCandidates = candidatePoolForGemini(catalog, clean, results);
-          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, []);
+          const geminiCandidates = isRefinement
+            ? (results.length ? results : previousResources)
+            : candidatePoolForGemini(catalog, searchText, results);
+          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
           if (gemini?.limited) {
             renderAnonymousLimit(clean);
             return;
+          } else if (gemini?.outOfScope) {
+            answer = gemini.answer;
+            results = [];
           } else if (gemini?.answer) {
-            const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
+            const citedResults = pickGeminiResultsAi([...previousResources, ...geminiCandidates], geminiResourceRefsAi(gemini));
             if (citedResults.length) {
               recordAiUsage(null);
               answer = gemini.answer;
@@ -3361,6 +3434,23 @@
         if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
           answer = `${answer}\n\n${aiVisibleSummary(results)}`;
         }
+        const now = new Date().toISOString();
+        anonymousAiMessages = [
+          ...priorMessages,
+          { role: 'user', text: clean, created_at: now },
+          { role: 'assistant', text: answer, created_at: now }
+        ].slice(-12);
+        anonymousResourceRounds = [
+          ...priorRounds,
+          {
+            query: clean,
+            answer,
+            resources: results,
+            created_at: now,
+            mode: isRefinement ? 'refine' : 'search',
+            changed: didAiResultsChange(previousResources, results)
+          }
+        ].slice(-6);
         renderAnonymousResults(clean, answer, results);
         resetAskField(document.getElementById('anonymousAskForm'));
       } finally {
@@ -4038,20 +4128,19 @@
       }
       try {
       const catalog = await loadAccountAiCatalog();
-      const contextText = priorMessages
-        .filter(message => message.role === 'user')
-        .map(message => message.text)
-        .join(' ');
       const priorRounds = aiResourceRounds(existingChat);
       const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
       const previousResources = latestRound?.resources || existingChat?.resources || [];
       const isRefinement = Boolean(previousResources.length && shouldRefineAiResults(clean));
-      const searchText = isRefinement ? clean : (existingChat ? clean : `${contextText} ${clean}`.trim());
+      const searchText = isRefinement ? clean : aiSearchTextWithContext(clean, priorMessages);
       let results = isRefinement
         ? refineAiResultsFromPrevious(previousResources, clean)
         : [];
       if (!results.length && !isRefinement) {
         results = selectAiCandidates(catalog, searchText);
+      }
+      if (!results.length && isRefinement) {
+        results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
       }
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
       const remainingAiSearches = aiUsageRemaining(user);
@@ -4062,12 +4151,15 @@
           const geminiCandidates = isRefinement
             ? (results.length ? results : previousResources)
             : candidatePoolForGemini(catalog, searchText, results);
-          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages);
+          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
           if (gemini?.limited) {
             answer = gemini.answer;
             results = isRefinement ? previousResources : results;
+          } else if (gemini?.outOfScope) {
+            answer = gemini.answer;
+            results = [];
           } else if (gemini?.answer) {
-            const citedResults = pickGeminiResultsAi(geminiCandidates, geminiResourceRefsAi(gemini));
+            const citedResults = pickGeminiResultsAi([...previousResources, ...geminiCandidates], geminiResourceRefsAi(gemini));
             if (citedResults.length) {
               if (!hasUnlimitedAiAccess) {
                 recordAiUsage(user);
