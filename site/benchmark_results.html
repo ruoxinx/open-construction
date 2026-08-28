@@ -269,13 +269,31 @@
   const canonKey = (s) => normStr(s).toLowerCase().replace(/\s+/g, ' ').trim();
 
   async function loadJson(url){
+    if(window.OCData?.loadFirstJson){
+      if(/data\/benchmark-results\.json$/i.test(url)){
+        const data = await window.OCData.loadFirstJson('benchmarkResults', url);
+        if(data) return data;
+      }
+      if(/data\/datasets\.json$/i.test(url)){
+        const data = await window.OCData.loadFirstJson('datasets', url);
+        if(data) return data;
+      }
+    }
     const res = await fetch(url, { cache: 'no-store' });
     if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     return res.json();
   }
 
   function getBenchmarks(payload){ return Array.isArray(payload?.benchmarks) ? payload.benchmarks : []; }
-  function getDatasets(payload){ return (payload && typeof payload === 'object' && !Array.isArray(payload)) ? payload : {}; }
+  function getDatasets(payload){
+    if(Array.isArray(payload)){
+      return Object.fromEntries(payload.filter(item => item?.id).map(item => [item.id, item]));
+    }
+    if(payload?.items && Array.isArray(payload.items)){
+      return getDatasets(payload.items);
+    }
+    return (payload && typeof payload === 'object') ? payload : {};
+  }
   function getModels(payload){ return Array.isArray(payload) ? payload : []; }
   function findDatasetById(datasets, id){
     const rawId = normStr(id);

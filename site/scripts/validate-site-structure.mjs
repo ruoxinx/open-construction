@@ -24,7 +24,6 @@ const expectedTopLevelHtml = new Set([
   "index.html",
   "benchmarks.html",
   "benchmark_explorer.html",
-  "benchmark_application.html",
   "benchmark_results.html",
   "benchmark_task.html",
   "contribute.html",

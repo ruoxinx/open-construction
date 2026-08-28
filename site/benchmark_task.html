@@ -340,8 +340,16 @@
     .result-control.benchmark-control .form-select{width:280px}
     .result-control.metric-control .form-select{width:190px}
     .result-control.plot-control .form-select{width:120px}
-    .result-chart-note{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-    .result-chart-mount{padding:1rem;min-height:260px;display:flex;align-items:center;justify-content:center}
+    .result-chart-note{
+      margin:.9rem 1rem 0;
+      color:#475569;
+      font-size:.82rem;
+      font-weight:650;
+      line-height:1.35;
+      text-align:center;
+    }
+    .result-chart-note:empty{display:none}
+    .result-chart-mount{padding:.75rem 1rem 1rem;min-height:260px;display:flex;align-items:center;justify-content:center}
     .bar-chart-wrap{width:100%;overflow:auto}
     .bar-chart-svg{display:block;min-width:672px;max-width:672px;width:100%;height:auto;margin:0 auto;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .bar-grid{stroke:#e2e8f0;stroke-width:1;stroke-dasharray:3 3}
@@ -648,16 +656,35 @@
 
   async function loadJsonSafe(url){
     try{
+      if(window.OCData?.loadFirstJsonArray && /data\/datasets\.json$/i.test(url)){
+        return await window.OCData.loadFirstJsonArray('datasets', url);
+      }
       const res = await fetch(url, {cache:'no-store'});
       if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const data = await res.json();
-      if(Array.isArray(data)) return data;
-      if(data?.items && Array.isArray(data.items)) return data.items;
-      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
-      return [];
+      return window.OCData?.toArray ? window.OCData.toArray(data) : (
+        Array.isArray(data) ? data :
+        data?.items && Array.isArray(data.items) ? data.items :
+        data && typeof data === 'object' ? Object.values(data).filter(v => v && typeof v === 'object') :
+        []
+      );
     }catch(err){
       console.warn('Could not load', url, err);
       return [];
+    }
+  }
+
+  async function loadBenchmarkPayload(){
+    if(window.OCData?.loadFirstJson){
+      return await window.OCData.loadFirstJson('benchmarkResults', 'data/benchmark-results.json') || { benchmarks: [] };
+    }
+    try {
+      const res = await fetch('data/benchmark-results.json', { cache:'no-store' });
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('Could not load benchmark-results.json', err);
+      return { benchmarks: [] };
     }
   }
 
@@ -667,12 +694,33 @@
   }
 
   function resultsCell(board){
-    if(!board) return '<span class="result-unavailable">No results</span>';
+    if(!board) return '';
     const externalUrl = normStr(board.results_url || '');
     if(externalUrl){
       return `<a href="${esc(externalUrl)}" class="btn btn-sm btn-primary benchmark-result-btn" target="_blank" rel="noopener">View Results</a>`;
     }
     return `<a href="benchmark_results.html?id=${encodeURIComponent(board.id)}" class="btn btn-sm btn-primary benchmark-result-btn">View Results</a>`;
+  }
+
+  function boardHasResults(board){
+    return !!normStr(board?.results_url || '') || normArray(board?.results).length > 0;
+  }
+
+  function datasetFallbackFromBoard(board){
+    return {
+      id: normStr(board?.dataset_id || board?.id),
+      name: normStr(board?.dataset_name || board?.name || board?.page_title),
+      year: board?.year || '',
+      access: board?.dataset_url || '',
+      license: board?.license || '',
+      tasks: board?.task ? [board.task] : [],
+      data_modality: board?.data_modality || board?.modality || '',
+      image_url: board?.image_url || board?.thumbnail || 'assets/img/icon.png'
+    };
+  }
+
+  function datasetForBoard(board, datasetById){
+    return datasetById.get(canonKey(board?.dataset_id)) || datasetFallbackFromBoard(board);
   }
 
   function datasetTitle(ds, board){
@@ -826,11 +874,11 @@
       </article>`;
   }
 
-  function renderBenchmarkCards(datasets, boardByDatasetId){
+  function renderBenchmarkCards(benchmarks){
     const el = document.getElementById('benchmarkCards');
     if(!el) return;
-    el.innerHTML = datasets.length
-      ? datasets.map(ds => benchmarkCard(ds, boardByDatasetId.get(canonKey(ds.id)))).join('')
+    el.innerHTML = benchmarks.length
+      ? benchmarks.map(item => benchmarkCard(item.dataset, item.board)).join('')
       : '<div class="empty-card">No benchmarks linked to this task yet.</div>';
     window.OCBookmark?.mount?.(el);
   }
@@ -944,9 +992,8 @@
       const maxVal = Math.max(...rows.map(item => Math.abs(item.score)), 0);
       const dispMax = maxVal <= 0 ? 1 : maxVal * 1.08;
       const LW = 210;
-      const VW = 92;
       const TW = 672;
-      const BA = TW - LW - VW;
+      const BA = TW - LW - 36;
       const BH = 24;
       const GAP = 7;
       const RH = BH + GAP;
@@ -977,7 +1024,6 @@
                   </a>
                   <rect class="bar-shape" x="${LW}" y="${(y + 1).toFixed(1)}" width="${barW.toFixed(1)}" height="${BH - 2}" rx="2"></rect>
                   <text class="bar-score" x="${(LW + barW + 5).toFixed(1)}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="start" dominant-baseline="middle">${esc(score)}</text>
-                  <text class="bar-tick-label" x="${TW - 4}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="end" dominant-baseline="middle">${esc(truncateLabel(item.benchmark, 22))}</text>
                 </g>`;
             }).join('')}
           </svg>
@@ -1029,7 +1075,10 @@
         return;
       }
       const metric = metricDisplayLabel(rows[0].metricDef);
-      if(note) note.textContent = `${benchmarkSelect.selectedOptions[0]?.textContent || 'All benchmarks'} / ${metric}`;
+      if(note){
+        const selectedLabel = benchmarkSelect.selectedOptions[0]?.textContent || 'All benchmarks';
+        note.textContent = `${selectedLabel} - ${metric}`;
+      }
       body.innerHTML = plotSelect.value === 'scatter' ? renderScatter(rows) : renderBar(rows);
     }
 
@@ -1057,16 +1106,7 @@
 
     const [datasets, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
-      (async () => {
-        try {
-          const res = await fetch('data/benchmark-results.json', { cache:'no-store' });
-          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-          return await res.json();
-        } catch (err) {
-          console.warn('Could not load benchmark-results.json', err);
-          return { benchmarks: [] };
-        }
-      })(),
+      loadBenchmarkPayload(),
       (async () => {
         try {
           const res = await fetch('data/task-vocabulary.json', { cache:'no-store' });
@@ -1086,26 +1126,19 @@
     document.title = `Task Insight | ${label} | OpenConstruction`;
     document.getElementById('pageTitle').textContent = label;
 
-    let dsMatched = datasets.filter(ds => getDatasetTasks(ds).some(t => normalizeTaskTerm(t, taskVocabulary).canon === key));
     const allBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
-    const exactBoards = allBoards.filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const exactBoards = allBoards
+      .filter(board => boardHasResults(board))
+      .filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
     const taskDefinition = normalizedRequested.entry?.description
       || exactBoards.map(board => normStr(board.task_description)).find(Boolean)
       || 'Task definition not available yet.';
     document.getElementById('pageSubtitle').textContent = taskDefinition;
     const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
-    const matchedDatasetIds = new Set(dsMatched.map(ds => canonKey(ds.id)));
-    exactBoards.forEach(board => {
-      const datasetId = canonKey(board.dataset_id);
-      if(!datasetId || matchedDatasetIds.has(datasetId)) return;
-      const dataset = datasetById.get(datasetId);
-      if(dataset){
-        dsMatched.push(dataset);
-        matchedDatasetIds.add(datasetId);
-      }
-    });
+    const matchedDatasetIds = new Set(exactBoards.map(board => canonKey(board.dataset_id)).filter(Boolean));
     const requestedTaskId = normalizedRequested.entry?.id || '';
     const relatedBoards = allBoards.filter(board => {
+      if(!boardHasResults(board)) return false;
       const normalizedBoardTask = normalizeTaskTerm(board.task, taskVocabulary);
       const datasetId = canonKey(board.dataset_id);
       if(!datasetId || !matchedDatasetIds.has(datasetId)) return false;
@@ -1122,12 +1155,14 @@
       if(datasetId && !boardByDatasetId.has(datasetId)) boardByDatasetId.set(datasetId, board);
     });
 
-    dsMatched.sort((a,b)=> (Number(b.year)||0)-(Number(a.year)||0) || normStr(a.name||a.title).localeCompare(normStr(b.name||b.title)));
+    const benchmarks = boards.map(board => ({ board, dataset: datasetForBoard(board, datasetById) }))
+      .sort((a,b)=> (Number(b.dataset?.year || b.board?.year)||0)-(Number(a.dataset?.year || a.board?.year)||0) || datasetTitle(a.dataset, a.board).localeCompare(datasetTitle(b.dataset, b.board)));
+    const dsMatched = benchmarks.map(item => item.dataset);
 
     const cardCountNote = document.getElementById('cardCountNote');
-    if(cardCountNote) cardCountNote.textContent = dsMatched.length ? `${dsMatched.length} benchmark${dsMatched.length===1?'':'s'}` : '';
+    if(cardCountNote) cardCountNote.textContent = benchmarks.length ? `${benchmarks.length} benchmark${benchmarks.length===1?'':'s'}` : '';
 
-    renderBenchmarkCards(dsMatched, boardByDatasetId);
+    renderBenchmarkCards(benchmarks);
     renderTaskMedia(dsMatched, boardByDatasetId);
     renderLeaderboard(boards, datasetById);
 

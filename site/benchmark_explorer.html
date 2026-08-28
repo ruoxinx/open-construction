@@ -727,21 +727,40 @@
 
   async function loadJsonSafe(url){
     try{
+      if(window.OCData?.loadFirstJsonArray && /data\/datasets\.json$/i.test(url)){
+        return await window.OCData.loadFirstJsonArray('datasets', url);
+      }
       const res = await fetch(url, {cache:'no-store'});
       if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const data = await res.json();
-      if(Array.isArray(data)) return data;
-      if(data?.items && Array.isArray(data.items)) return data.items;
-      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
-      return [];
+      return window.OCData?.toArray ? window.OCData.toArray(data) : (
+        Array.isArray(data) ? data :
+        data?.items && Array.isArray(data.items) ? data.items :
+        data && typeof data === 'object' ? Object.values(data).filter(v => v && typeof v === 'object') :
+        []
+      );
     }catch(err){
       console.warn('Could not load', url, err);
       return [];
     }
   }
 
+  async function loadBenchmarkPayload(){
+    if(window.OCData?.loadFirstJson){
+      return await window.OCData.loadFirstJson('benchmarkResults', 'data/benchmark-results.json') || { benchmarks: [] };
+    }
+    try{
+      const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    }catch(err){
+      console.warn('Could not load benchmark-results.json', err);
+      return { benchmarks: [] };
+    }
+  }
+
   function boardHasResults(board){
-    return Array.isArray(board?.results) && board.results.length > 0;
+    return !!normStr(board?.results_url || '') || (Array.isArray(board?.results) && board.results.length > 0);
   }
 
   function emptyTaskVocabulary(){
@@ -1606,12 +1625,7 @@
       href: `benchmark_task.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
       searchText: [item.searchText, item.label, item.canon, 'task'].map(normStr).filter(Boolean).join(' ')
     }));
-    const appItems = apps.map(item => ({
-      ...item,
-      typeLabel: 'Application',
-      href: `benchmark_application.html?key=${encodeURIComponent(item.canon)}&label=${encodeURIComponent(item.label || item.canon)}`,
-      searchText: [item.searchText, item.label, item.canon, 'application'].map(normStr).filter(Boolean).join(' ')
-    }));
+    const appItems = [];
     return [...taskItems, ...appItems].sort((a,b) =>
       (a.label || a.canon).localeCompare(b.label || b.canon) ||
       (a.typeLabel || '').localeCompare(b.typeLabel || '')
@@ -1634,16 +1648,7 @@
     // - data/datasets.json is an object keyed by id (we read Object.values)
     const [datasets, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
-      (async () => {
-        try{
-          const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
-          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-          return await res.json();
-        }catch(err){
-          console.warn('Could not load benchmark-results.json', err);
-          return { benchmarks: [] };
-        }
-      })(),
+      loadBenchmarkPayload(),
       (async () => {
         try{
           const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});
@@ -1722,7 +1727,7 @@
       containerId: 'appFrequencyBars',
       items: apps,
       scaleMax: coverageScaleMax,
-      hrefBuilder: (x) => `benchmark_application.html?key=${encodeURIComponent(x.canon)}&label=${encodeURIComponent(x.label || x.canon)}`
+      hrefBuilder: (x) => x.href || '#'
     });
     renderTimePattern(datasets, models);
 

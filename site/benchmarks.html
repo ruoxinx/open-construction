@@ -848,16 +848,35 @@
 
   async function loadJsonSafe(url){
     try{
+      if(window.OCData?.loadFirstJsonArray && /data\/datasets\.json$/i.test(url)){
+        return await window.OCData.loadFirstJsonArray('datasets', url);
+      }
       const res = await fetch(url, {cache:'no-store'});
       if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const data = await res.json();
-      if(Array.isArray(data)) return data;
-      if(data?.items && Array.isArray(data.items)) return data.items;
-      if(data && typeof data === 'object') return Object.values(data).filter(v => v && typeof v === 'object');
-      return [];
+      return window.OCData?.toArray ? window.OCData.toArray(data) : (
+        Array.isArray(data) ? data :
+        data?.items && Array.isArray(data.items) ? data.items :
+        data && typeof data === 'object' ? Object.values(data).filter(v => v && typeof v === 'object') :
+        []
+      );
     }catch(err){
       console.warn('Could not load', url, err);
       return [];
+    }
+  }
+
+  async function loadBenchmarkPayload(){
+    if(window.OCData?.loadFirstJson){
+      return await window.OCData.loadFirstJson('benchmarkResults', 'data/benchmark-results.json') || { benchmarks: [] };
+    }
+    try{
+      const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
+      if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return await res.json();
+    }catch(err){
+      console.warn('Could not load benchmark-results.json', err);
+      return { benchmarks: [] };
     }
   }
 
@@ -1502,16 +1521,7 @@
     const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
       loadJsonSafe('data/models.json'),
-      (async () => {
-        try{
-          const res = await fetch('data/benchmark-results.json', {cache:'no-store'});
-          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-          return await res.json();
-        }catch(err){
-          console.warn('Could not load benchmark-results.json', err);
-          return { benchmarks: [] };
-        }
-      })(),
+      loadBenchmarkPayload(),
       (async () => {
         try{
           const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});

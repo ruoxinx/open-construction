@@ -1231,20 +1231,10 @@ function linkedTaskChipLane(list){
   }).join('')}</div>`;
 }
 
-function applicationBenchmarkHref(raw){
-  const key = normKey(raw);
-  if (!key) return '';
-  return `../benchmark_application.html?key=${encodeURIComponent(key)}&label=${encodeURIComponent(String(raw).trim())}`;
-}
-
 function linkedApplicationChipLane(list){
   const items = tokenize(list);
   if (!items.length) return '';
-  return `<div class="chip-lane">${items.map(label => {
-    const href = applicationBenchmarkHref(label);
-    if (!href) return `<span class="chip">${escapeHtml(label)}</span>`;
-    return `<a class="chip chip-link" href="${href}" title="View insight page for ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
-  }).join('')}</div>`;
+  return `<div class="chip-lane">${items.map(label => `<span class="chip">${escapeHtml(label)}</span>`).join('')}</div>`;
 }
 
 /* ---------- conditional meta-row ---------- */
@@ -1288,10 +1278,12 @@ function findModelById(modelsArr, id){
 }
 
 async function loadBenchmarkPayload(){
-  const candidates = [
-    '../data/benchmark-results.json',
-    '/open-construction/data/benchmark-results.json'
-  ];
+  const candidates = window.OCData?.candidates
+    ? window.OCData.candidates('benchmarkResults', '../data/benchmark-results.json')
+    : [
+      '../data/benchmark-results.json',
+      '/open-construction/data/benchmark-results.json'
+    ];
   for (const url of candidates) {
     try {
       const res = await fetch(url, { cache: 'no-cache' });
@@ -1301,11 +1293,15 @@ async function loadBenchmarkPayload(){
   return { benchmarks: [] };
 }
 
+function benchmarkBoardHasResults(board){
+  return !!String(board?.results_url || '').trim() || (Array.isArray(board?.results) && board.results.length > 0);
+}
+
 function datasetBenchmarkBoards(benchmarkPayload, ds){
   const wanted = normKey(ds?.id || ds?.name || '');
   if (!wanted) return [];
   return (Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [])
-    .filter(board => normKey(board?.dataset_id) === wanted);
+    .filter(board => benchmarkBoardHasResults(board) && normKey(board?.dataset_id) === wanted);
 }
 
 function benchmarkLinksCardHtml(boards){

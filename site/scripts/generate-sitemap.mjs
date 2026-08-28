@@ -10,7 +10,6 @@ const baseUrl = "https://www.openconstruction.org";
 const ignoredTopLevelDirs = new Set(["assets", "auth", "data", "scripts"]);
 const ignoredHtmlFiles = new Set([
   "account.html",
-  "benchmark_application.html",
   "benchmark_results.html",
   "benchmark_task.html",
   "datasets/detail.html",

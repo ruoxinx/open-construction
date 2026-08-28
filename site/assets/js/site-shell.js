@@ -31,8 +31,6 @@
     'benchmark_explorer.html': 'benchmark_explorer',
     'benchmark_task': 'benchmark_explorer',
     'benchmark_task.html': 'benchmark_explorer',
-    'benchmark_application': 'benchmark_explorer',
-    'benchmark_application.html': 'benchmark_explorer',
     'benchmark_results': 'benchmark_explorer',
     'benchmark_results.html': 'benchmark_explorer',
     'object_class': 'benchmark_explorer',
