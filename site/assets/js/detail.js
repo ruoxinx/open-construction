@@ -179,9 +179,10 @@ function publicationsListHtml(publications){
         const title = pub.url
           ? `<a href="${pub.url}" target="_blank" rel="noopener">${escapeHtml(pub.title)}</a>`
           : escapeHtml(pub.title);
+        const year = pub.year ? ` <span class="publication-year">(${escapeHtml(pub.year)})</span>` : '';
         return `
           <li class="publication-item">
-            <div class="publication-title">${title}</div>
+            <div class="publication-title">${title}${year}</div>
           </li>
         `;
       }).join('')}
@@ -693,6 +694,8 @@ function licenseHrefFor(licVal, record){
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
     'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'GPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
@@ -1567,6 +1570,7 @@ async function initDetail(){
           .publication-list{ display:grid; gap:.75rem; padding-left:1.25rem; margin-top:1rem; }
           .publication-item{ padding-left:.15rem; }
           .publication-title{ font-weight:700; line-height:1.4; }
+          .publication-year{ color:var(--oc-sub); font-weight:600; white-space:nowrap; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
