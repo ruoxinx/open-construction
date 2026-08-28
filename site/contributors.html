@@ -155,11 +155,16 @@
     .team-card .headshot,
     .person-card .headshot,
     .headshot.is-initials{ width:64px; height:64px; }
+    .person-card.org-card .card-body.compact-body{
+      gap:.95rem !important;
+    }
     .person-card .headshot.is-logo{
+      width:92px;
+      height:64px;
       object-fit:contain;
-      border-radius:12px;
+      border-radius:10px;
       background:#fff;
-      padding:6px;
+      padding:7px 9px;
     }
     .person-card .person-meta{
       min-width:0;
@@ -655,6 +660,14 @@
       display:grid; place-items:center; width:64px; height:64px; border-radius:50%;
       background:#eef3f8; color:var(--oc-ink); font-weight:700; font-size:1rem;
       border:2px solid rgba(0,0,0,.03); box-shadow:0 4px 12px rgba(0,0,0,.06);
+    }
+    .headshot.is-initials.is-logo{
+      width:92px;
+      height:64px;
+      border-radius:10px;
+      font-size:.88rem;
+      line-height:1;
+      letter-spacing:0;
     }
   </style>
 </head>
@@ -1312,14 +1325,20 @@ api.renderInstitutionMarquee({
   const esc = value => String(value ?? '')
     .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
     .replaceAll('"','&quot;').replaceAll("'","&#39;");
+  const isOrgContributor = c => {
+    const type = String(c?.type || '').toLowerCase().trim();
+    const name = String(c?.name || '').toLowerCase();
+    return ['org', 'organization', 'lab', 'group', 'team'].includes(type)
+      || /\b(lab|laboratory|group|team|center|centre|institute|forum)\b/.test(name);
+  };
 
   function cardHTML(c){
-    const isOrg = String(c.type || '').toLowerCase() === 'org';
+    const isOrg = isOrgContributor(c);
     const searchText = [c.name, c.role, c.affiliation, c.type].map(value => String(value || '')).join(' ').toLowerCase();
     const imageAlt = isOrg ? `${c.name || 'Organization'} logo` : '';
     const img = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${c.image}" alt="${esc(imageAlt)}">`
-                        : `<div class="headshot is-initials">${initials(c.name)}</div>`;
-    const body = `<div class="card oc-card person-card h-100">
+                        : `<div class="headshot is-initials${isOrg ? ' is-logo' : ''}">${initials(c.name)}</div>`;
+    const body = `<div class="card oc-card person-card${isOrg ? ' org-card' : ''} h-100">
         <div class="card-body compact-body d-flex">${img}
           <div class="person-meta"><h5 class="card-title">${c.name||''}</h5>
           <div class="role">${c.role||''}</div>
@@ -1340,8 +1359,8 @@ api.renderInstitutionMarquee({
     return;
   }
 
-  const people = rows.filter(r=>(r.type||'person')!=='org').sort((a,b)=>byLastKey(a.name).localeCompare(byLastKey(b.name)));
-  const orgs   = rows.filter(r=>(r.type||'person')==='org').sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+  const people = rows.filter(r=>!isOrgContributor(r)).sort((a,b)=>byLastKey(a.name).localeCompare(byLastKey(b.name)));
+  const orgs   = rows.filter(isOrgContributor).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
   const DATA   = people.concat(orgs);
 
   $grid.innerHTML = DATA.map(cardHTML).join('');
