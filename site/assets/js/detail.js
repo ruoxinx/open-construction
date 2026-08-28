@@ -1521,7 +1521,7 @@ async function initDetail(){
           </div>
           ${relatedPublications.length ? `
           <div class="col-12">
-            <div class="detail-subcard">
+            <div class="detail-subcard publication-subcard">
               <details class="publications-disclosure" open>
                 <summary>
                   <div class="detail-subhead mb-0">Related publications</div>
@@ -1572,19 +1572,20 @@ async function initDetail(){
           .quickfact-value{ font-weight:700; line-height:1.35; }
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
-          .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; cursor:pointer; list-style:none; }
+          .publication-subcard{ padding:.15rem 0 0; border:0; box-shadow:none; background:transparent; }
+          .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.1rem 0 .65rem; cursor:pointer; list-style:none; border-bottom:1px solid var(--oc-border); }
           .publications-disclosure summary::-webkit-details-marker{ display:none; }
-          .publications-disclosure .publication-toggle{ width:1.65rem; height:1.65rem; flex:0 0 1.65rem; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--oc-border); border-radius:999px; color:var(--oc-link); font-weight:800; line-height:1; }
+          .publications-disclosure .publication-toggle{ width:1.3rem; height:1.3rem; flex:0 0 1.3rem; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:999px; color:var(--oc-sub); font-size:.95rem; font-weight:700; line-height:1; }
           .publications-disclosure .publication-toggle::before{ content:"+"; }
           .publications-disclosure[open] .publication-toggle::before{ content:"-"; }
-          .publication-list{ display:grid; gap:.55rem; margin-top:.95rem; }
-          .publication-row{ display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:start; gap:.72rem; padding:.72rem .78rem; border:1px solid #dce8f3; border-radius:12px; background:#f8fbff; color:inherit; text-decoration:none; transition:background .15s ease, border-color .15s ease, transform .15s ease; }
-          .publication-row.is-link .publication-title{ color:var(--oc-link); }
-          .publication-row.is-link:hover{ background:#f4f9ff; border-color:#c8dcec; transform:translateY(-1px); }
-          .publication-row.is-link:hover .publication-title{ text-decoration:underline; text-underline-offset:.16em; }
-          .publication-index{ width:1.7rem; height:1.7rem; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#eef5ff; color:#0b5cad; font-size:.78rem; font-weight:800; line-height:1; }
-          .publication-title{ min-width:0; color:var(--oc-ink); font-weight:700; line-height:1.38; transition:color .15s ease; }
-          .publication-year{ justify-self:end; padding:.18rem .48rem; border:1px solid #dce8f3; border-radius:999px; background:#fff; color:var(--oc-sub); font-size:.78rem; font-weight:800; line-height:1.2; white-space:nowrap; }
+          .publication-list{ display:grid; gap:0; margin-top:.35rem; }
+          .publication-row{ display:grid; grid-template-columns:2rem minmax(0,1fr) auto; align-items:baseline; gap:.6rem; padding:.7rem 0; border-bottom:1px solid var(--oc-border); color:inherit; text-decoration:none; transition:color .15s ease; }
+          .publication-row:last-child{ border-bottom:0; }
+          .publication-row.is-link .publication-title{ color:var(--oc-ink); }
+          .publication-row.is-link:hover .publication-title{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.18em; }
+          .publication-index{ color:var(--oc-sub); font-size:.78rem; font-weight:700; line-height:1.4; text-align:right; }
+          .publication-title{ min-width:0; color:var(--oc-ink); font-size:.95rem; font-weight:600; line-height:1.42; transition:color .15s ease; }
+          .publication-year{ justify-self:end; color:var(--oc-sub); font-size:.8rem; font-weight:700; line-height:1.3; white-space:nowrap; }
           .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
           .related-link + .related-link{ border-top:1px solid var(--oc-border); }
           .related-link:hover .related-link-title{ color:var(--oc-link); }
