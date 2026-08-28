@@ -278,6 +278,14 @@
         const data = await window.OCData.loadFirstJson('datasets', url);
         if(data) return data;
       }
+      if(/data\/models\.json$/i.test(url)){
+        const data = await window.OCData.loadFirstJson('models', url);
+        if(data) return data;
+      }
+      if(/data\/task-vocabulary\.json$/i.test(url)){
+        const data = await window.OCData.loadFirstJson('taskVocabulary', url);
+        if(data) return data;
+      }
     }
     const res = await fetch(url, { cache: 'no-store' });
     if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
@@ -294,7 +302,12 @@
     }
     return (payload && typeof payload === 'object') ? payload : {};
   }
-  function getModels(payload){ return Array.isArray(payload) ? payload : []; }
+  function getModels(payload){
+    if(Array.isArray(payload)) return payload;
+    if(payload?.items && Array.isArray(payload.items)) return payload.items;
+    if(payload && typeof payload === 'object') return Object.values(payload);
+    return [];
+  }
   function findDatasetById(datasets, id){
     const rawId = normStr(id);
     if(!rawId) return null;

@@ -1109,6 +1109,10 @@
       loadBenchmarkPayload(),
       (async () => {
         try {
+          if(window.OCData?.loadFirstJson){
+            const data = await window.OCData.loadFirstJson('taskVocabulary', 'data/task-vocabulary.json');
+            if(data) return data;
+          }
           const res = await fetch('data/task-vocabulary.json', { cache:'no-store' });
           if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
           return await res.json();

@@ -6,8 +6,18 @@ window.SUPABASE_URL = 'https://nytzjmixkvrnwvaenxme.supabase.co';
 window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55dHpqbWl4a3Zybnd2YWVueG1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4NjU3MTQsImV4cCI6MjA3MzQ0MTcxNH0.FCs06N70457f06fpGfIqK4aip0pfTib9qZYQ_rAvE8s';
 
 window.OC_DATA_SOURCES = {
-  datasets: [],
-  benchmarkResults: []
+  datasets: [
+    'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/datasets.json'
+  ],
+  models: [
+    'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/models.json'
+  ],
+  benchmarkResults: [
+    'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/benchmark-results.json'
+  ],
+  taskVocabulary: [
+    'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/task-vocabulary.json'
+  ]
 };
 
 window.OCData = window.OCData || {};

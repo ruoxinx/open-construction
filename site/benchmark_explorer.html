@@ -913,6 +913,7 @@
 
   function mergeBenchmarkTasks(index, boards, datasets, taskVocabulary){
     const byCanon = new Map(index.map(item => [item.canon, item]));
+    const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
 
     boards.forEach(board => {
       const normalized = normalizeTaskTerm(board.task, taskVocabulary);
@@ -936,15 +937,12 @@
         byCanon.set(canon, node);
       }
 
-      const dataset = findDatasetById(datasets, board.dataset_id);
+      const dataset = datasetById.get(canonKey(board.dataset_id)) || findDatasetById(datasets, board.dataset_id);
       const boardDatasetKey = canonKey(board.dataset_id || board.dataset_name || board.id);
-      const datasetAlreadyLinked = dataset
-        ? getDatasetTasks(dataset).some(task => normalizeTaskTerm(task, taskVocabulary).canon === canon)
-        : false;
       node._benchmarkDatasetKeys = node._benchmarkDatasetKeys || new Set();
-      if(boardDatasetKey && !datasetAlreadyLinked && !node._benchmarkDatasetKeys.has(boardDatasetKey)){
+      if(boardDatasetKey && !node._benchmarkDatasetKeys.has(boardDatasetKey)){
         node._benchmarkDatasetKeys.add(boardDatasetKey);
-        node.dsCount += 1;
+        node.dsCount = node._benchmarkDatasetKeys.size;
         addModalitiesToNode(node, dataset || board);
       }
 
@@ -1633,14 +1631,12 @@
   }
 
   function defaultInsightItems(items){
-    const filtered = items
-      .filter(item => coverageTotal(item) >= 2)
+    return items
       .sort((a,b) =>
         coverageTotal(b) - coverageTotal(a) ||
         (a.label || a.canon).localeCompare(b.label || b.canon) ||
         (a.typeLabel || '').localeCompare(b.typeLabel || '')
       );
-    return filtered.length ? filtered : items;
   }
 
   async function init(){
@@ -1651,6 +1647,10 @@
       loadBenchmarkPayload(),
       (async () => {
         try{
+          if(window.OCData?.loadFirstJson){
+            const data = await window.OCData.loadFirstJson('taskVocabulary', 'data/task-vocabulary.json');
+            if(data) return data;
+          }
           const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});
           if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
           return await res.json();
@@ -1678,22 +1678,10 @@
     if (statModels) statModels.textContent = String(models.length || 0);
     renderCatalogComposition(datasets, models);
 
-    // Build PNG-first index for TASKS
-	let tasks = buildMergedIndex({
-	  datasets,
-	  models,
-	  extractor: (obj, kind) =>
-		kind === 'dataset'
-		  ? getDatasetTasks(obj)
-		  : [],
-	  normalizer: (raw) => normalizeTaskTerm(raw, taskVocabulary),
-	  imageGetter: (obj, kind) =>
-		kind === 'dataset'
-		  ? getDatasetCardImage(obj)
-		  : getModelCardImage(obj)
-	});
-    tasks = mergeBenchmarkTasks(tasks, resultBackedBoards, datasets, taskVocabulary);
-    tasks = tasks.filter(item => resultBackedTaskCanons.has(item.canon) && !isApplicationOnlyTerm(item));
+    // Benchmark task cards count datasets that have reported benchmark boards,
+    // not every catalog dataset that lists the task as a possible use.
+    let tasks = mergeBenchmarkTasks([], resultBackedBoards, datasets, taskVocabulary);
+    tasks = tasks.filter(item => resultBackedTaskCanons.has(item.canon));
 
     const apps = [];
 
