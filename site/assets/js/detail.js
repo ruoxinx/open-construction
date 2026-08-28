@@ -1390,6 +1390,7 @@ async function initDetail(){
       const paperFieldIsUrl = rawPaperField !== '—' && !!safeHref(rawPaperField);
       const publications = recordPublications(m);
       const primaryPublication = publications[0] || null;
+      const relatedPublications = publications.slice(1);
       const primaryPublicationUrl = primaryPublication?.url || '';
       const paperUrl = primaryPublicationUrl || safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
       const modelSourceUrl = safeHref(codeUrl);
@@ -1521,7 +1522,7 @@ async function initDetail(){
               `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
             </div>
           </div>
-          ${publications.length > 1 ? `
+          ${relatedPublications.length ? `
           <div class="col-12">
             <div class="detail-subcard">
               <details class="publications-disclosure" open>
@@ -1529,7 +1530,7 @@ async function initDetail(){
                   <div class="detail-subhead mb-0">Related publications</div>
                   <span class="publication-toggle" aria-hidden="true"></span>
                 </summary>
-                ${publicationsListHtml(publications)}
+                ${publicationsListHtml(relatedPublications)}
               </details>
             </div>
           </div>` : ''}
