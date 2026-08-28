@@ -75,14 +75,6 @@
     .paper-card .license-inline{display:inline-flex;align-items:center;gap:.28rem;vertical-align:middle}
     .paper-card .license-icon-strip{display:inline-flex;align-items:center;gap:.12rem;line-height:1}
     .paper-card .license-icon{display:block;width:.82rem;height:.82rem;min-width:.82rem;object-fit:contain;opacity:.78}
-    .paper-card .publication-teaser{
-      display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .5rem;color:var(--oc-sub);
-      line-height:1.35;
-    }
-    .paper-card .publication-teaser a{font-weight:600;text-decoration:none}
-    .paper-card .publication-teaser a:hover{text-decoration:underline}
-    .paper-card .publication-label{font-weight:700;color:#314255}
-
     /* Tag styling */
     .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
     .badge-task{
@@ -474,66 +466,6 @@ function licenseLinkHTML(license, record){
   const url = licenseUrlFor(key, record);
   if (!url) return esc(label);
   return `<span class="license-inline">${licenseIconStripHTML(key)}<a href="${url}" target="_blank" rel="noopener" title="View license">${esc(label)}</a></span>`;
-}
-
-function publicationDoiHref(doi){
-  if (!doi) return '';
-  const raw = String(doi).trim();
-  return safeLicenseHref(raw.startsWith('http') ? raw : `https://doi.org/${raw}`);
-}
-
-function normalizePublicationEntry(pub){
-  if (!pub) return null;
-  if (typeof pub === 'string') {
-    const title = pub.trim();
-    return title ? { title } : null;
-  }
-  if (typeof pub !== 'object') return null;
-  const title = String(pub.title || pub.paper || pub.name || pub.publication || '').trim();
-  const doi = String(pub.doi || '').trim();
-  const url = safeLicenseHref(pub.url || pub.paper_url || pub.link || pub.href || '') || publicationDoiHref(doi);
-  if (!title && !url) return null;
-  return {
-    title: title || url,
-    url,
-    doi,
-    year: pub.year || pub.publication_year || '',
-    venue: pub.venue || pub.journal || pub.conference || ''
-  };
-}
-
-function recordPublications(record){
-  const pubs = Array.isArray(record?.publications)
-    ? record.publications.map(normalizePublicationEntry).filter(Boolean)
-    : [];
-
-  const legacyTitle = String(record?.paper || record?.Paper || record?.paper_title || record?.paper_name || record?.publication || '').trim();
-  const legacyUrl = safeLicenseHref(record?.paper_url || record?.paper_link || '') || (safeLicenseHref(legacyTitle) ? safeLicenseHref(legacyTitle) : '');
-  if (legacyTitle || legacyUrl) {
-    const legacyPub = normalizePublicationEntry({ title: safeLicenseHref(legacyTitle) ? legacyUrl : legacyTitle, url: legacyUrl, doi: record?.doi || '' });
-    const duplicate = legacyPub && pubs.some(pub =>
-      (legacyPub.url && pub.url === legacyPub.url) ||
-      (legacyPub.title && pub.title && legacyPub.title.toLowerCase() === pub.title.toLowerCase())
-    );
-    if (legacyPub && !duplicate) pubs.unshift(legacyPub);
-  }
-  return pubs;
-}
-
-function publicationTeaserHtml(publications, detailHref){
-  if (!Array.isArray(publications) || publications.length < 2) return '';
-  const primary = publications[0];
-  const title = primary.title || 'Primary publication';
-  const linkedTitle = primary.url
-    ? `<a href="${primary.url}" target="_blank" rel="noopener">${esc(title)}</a>`
-    : esc(title);
-  return `
-    <div class="publication-teaser small mb-2">
-      <span class="publication-label">Primary publication:</span>
-      <span>${linkedTitle}</span>
-      <a href="${detailHref}#publications">View all ${publications.length} publications</a>
-    </div>
-  `;
 }
 
 function licenseIconStripHTML(license){
@@ -1091,7 +1023,6 @@ function render(items){
     const isLong = abstract.length > MAX;
     const shortAbs = isLong ? abstract.slice(0, MAX) + '…' : abstract;
     const displayTitle = formatModelTitle(m.title || 'Untitled');
-    const publications = Array.isArray(m.publications) ? m.publications : [];
 
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
     const detailHref = `models/details.html?id=${encodeURIComponent(m.id)}`;
@@ -1130,8 +1061,6 @@ function render(items){
 				</div>
 			  `;
 			})()}
-
-          ${publicationTeaserHtml(publications, detailHref)}
 
           <!-- Compact combined tag row -->
           <div class="tag-row">
@@ -1359,7 +1288,6 @@ async function loadModels(){
         doi: m.doi || '',
         paper: m.paper || m.Paper || m.paper_title || m.paper_name || m.publication || '',
         paper_url: m.paper_url || m.paper_link || (safeLicenseHref(m.paper) ? m.paper : ''),
-        publications: recordPublications(m),
         code_url: m.code_url || m.code || '',
         data_url: m.data_url || m.access || m.source || '',
         thumbnail: m.thumbnail || m.image_url || (m.id ? `assets/img/models/${m.id}.png` : ''),
