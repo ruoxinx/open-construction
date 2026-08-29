@@ -99,6 +99,9 @@ openconstruction-*-certificate.pdf
 site/docs/tutorials/*.docx
 /References
 
+# Local-only site pages
+site/mcp.html
+
 # Local role-management SQL validation helpers
 site/scripts/validate-role-management.mjs
 scripts/generate_ai_catalog.py

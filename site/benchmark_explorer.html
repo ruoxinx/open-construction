@@ -1126,15 +1126,18 @@
   }
 
   function primaryGroupLabel(item){
-    const labelText = `${item?.label || ''} ${item?.canon || ''} ${item?.searchText || ''}`.toLowerCase();
+    // Keyword checks look at the task name/alias only. The dataset name and summary
+    // (searchText) are deliberately excluded so a dataset blurb that happens to say
+    // "multimodal", "image", etc. cannot hijack the group for an unrelated task.
+    const labelText = `${item?.label || ''} ${item?.canon || ''}`.toLowerCase();
     const modalities = taskModalities(item);
     // A task is not a modality. The same task (e.g. activity recognition) can be
     // IMU/time-series, image, or video, so bucket by the benchmark's data first
     // and fall back to task-name keywords only when no modality metadata exists.
     if(/\b(3d semantic segmentation|point cloud segmentation|point-cloud segmentation|lidar segmentation|laser scan segmentation)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
-    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
     if(/\b(bim|ifc|revit|industry foundation classes|building information model|building information modeling)\b/.test(labelText)) return 'BIM / IFC';
+    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
     if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
     if(modalities.includes('Time Series') || modalities.includes('Sensors')) return 'Time Series';
     if(/\b(instance segmentation|object detection|semantic segmentation|panoptic segmentation|image classification|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(labelText)) return 'Image';
