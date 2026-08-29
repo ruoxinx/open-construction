@@ -93,10 +93,11 @@
     .benchmark-definition-grid dd,.benchmark-side-value{margin:.22rem 0 0;color:#334155;font-size:1rem;line-height:1.45}
     .benchmark-side-value a{color:#0b66c3;text-decoration:none;text-underline-offset:2px}
     .benchmark-side-value a:hover{text-decoration:underline}
-    .benchmark-summary-row{margin-top:1rem;padding-top:.95rem;border-top:1px solid #e7edf3;color:#334155;font-size:1rem;line-height:1.55}
-    .license-inline{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:.45rem;min-width:0;max-width:100%}
-    .license-title-line{display:inline-flex;align-items:center;min-width:0}
-    .license-title-line a{white-space:nowrap}
+    .benchmark-summary-row{margin-top:1rem;color:#334155;font-size:1rem;line-height:1.55}
+    .benchmark-summary-row .summary-note-label{font-weight:700;color:#475569}
+    .license-inline{display:inline-flex;flex-wrap:wrap;align-items:center;gap:.45rem;min-width:0;max-width:100%}
+    .license-title-line{display:inline-flex;align-items:center;min-width:0;flex:1 1 0}
+    .license-title-line a{white-space:normal;overflow-wrap:break-word}
     .license-icon-strip{display:inline-flex;flex:0 0 auto;align-items:center;gap:.24rem}
     .license-badge{display:block;width:1.25rem;min-width:1.25rem;height:1.25rem;object-fit:contain}
     .performance-card{padding:1.35rem}
@@ -1009,7 +1010,7 @@
                     <dd>${esc(item.value)}</dd>
                   </div>`).join('')}
               </dl>
-              ${summary ? `<p class="benchmark-summary-row mb-0">${esc(summary)}</p>` : ''}
+              ${summary ? `<p class="benchmark-summary-row mb-0"><span class="summary-note-label">Note:</span> ${esc(summary)}</p>` : ''}
             </section>
             ${board.results_url ? benchmarkSourceYearHtml(board, dataset) : resultFigureCard(board, dataset)}
           </div>

@@ -208,7 +208,7 @@
       display:flex;
       flex-direction:column;
       align-items:flex-start;
-      gap:1rem;
+      gap:.75rem;
       height:100%;
       min-height:0;
       padding:1rem;
@@ -227,17 +227,13 @@
     .benchmark-card-media{
       width:100%;
       min-width:0;
-      aspect-ratio:16/9;
+      aspect-ratio:16/10;
       height:auto;
       flex:0 0 auto;
-      background:#f7fbff;
-      border:1px solid var(--oc-border);
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:.75rem;
+      background:#fff;
+      border-radius:10px;
       overflow:hidden;
+      box-shadow:inset 0 0 0 1px rgba(15,46,75,.05);
     }
     .benchmark-card-media img{
       width:100%;
@@ -293,25 +289,26 @@
       flex:0 0 auto;
       white-space:nowrap;
     }
-    .license-inline{
-      display:inline-flex;
-      align-items:center;
-      color:var(--oc-link);
-      font-weight:400;
-      text-decoration:underline;
-      text-underline-offset:2px;
+    .benchmark-card-footer{
+      display:flex;
+      flex-direction:column;
+      gap:.6rem;
+      width:100%;
+      margin-top:auto;
+      padding-top:.15rem;
     }
     .benchmark-card-best{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:.75rem;
+      gap:.65rem;
       width:100%;
-      border-top:1px solid #edf2f7;
-      padding-top:.55rem;
+      padding:.45rem .65rem;
+      background:var(--oc-muted);
+      border-radius:8px;
       color:#64748b;
-      font-size:.8rem;
-      line-height:1.25;
+      font-size:.78rem;
+      line-height:1.3;
     }
     .benchmark-card-best strong{
       color:#1d4ed8;
@@ -325,8 +322,6 @@
       justify-content:flex-start;
       flex-wrap:nowrap;
       gap:.5rem;
-      margin-top:auto;
-      padding-top:.2rem;
       min-width:0;
       max-width:100%;
     }
@@ -524,7 +519,7 @@
       .benchmark-section-tools{ justify-content:flex-start; min-width:0; width:100%; flex-basis:100%; }
       .search-mini{ width:100%; }
       .benchmark-grid{ grid-template-columns:1fr; }
-      .benchmark-card-media{ width:100%;height:auto;aspect-ratio:16/9;flex:none; }
+      .benchmark-card-media{ width:100%;height:auto;aspect-ratio:16/10;flex:none; }
       .benchmark-card-heading{ flex-direction:column; gap:.65rem; }
       .benchmark-actions{ justify-content:flex-start; flex-wrap:wrap; }
       .result-controls{ align-items:stretch; }
@@ -907,6 +902,14 @@
     return normStr(authors);
   }
 
+  function shortenAuthors(authors){
+    const list = Array.isArray(authors)
+      ? authors.map(normStr).filter(Boolean)
+      : normStr(authors).split(',').map(part => part.trim()).filter(Boolean);
+    if(!list.length) return '';
+    return list.length === 1 ? list[0] : `${list[0]} et al.`;
+  }
+
   function resultsCell(board){
     if(!board) return '';
     const externalUrl = normStr(board.results_url || '');
@@ -951,26 +954,6 @@
   function datasetAccessHref(ds, board){
     const doi = normStr(ds?.doi || '');
     return normStr(board?.dataset_url || ds?.access || (doi ? `https://doi.org/${doi}` : ''));
-  }
-
-  function licenseHref(license){
-    const key = normStr(license).toLowerCase().replace(/\s+/g, ' ');
-    if(!key) return '';
-    if(key === 'cc by 4.0' || key === 'cc-by-4.0') return 'https://creativecommons.org/licenses/by/4.0/';
-    if(key === 'cc by-sa 4.0' || key === 'cc-by-sa-4.0') return 'https://creativecommons.org/licenses/by-sa/4.0/';
-    if(key === 'cc0' || key === 'cc0 1.0') return 'https://creativecommons.org/publicdomain/zero/1.0/';
-    if(key === 'mit') return 'https://opensource.org/license/mit/';
-    if(key === 'apache-2.0' || key === 'apache 2.0') return 'https://www.apache.org/licenses/LICENSE-2.0';
-    return '';
-  }
-
-  function licenseInline(license){
-    const text = normStr(license);
-    if(!text) return '';
-    const href = licenseHref(text);
-    return href
-      ? `<a class="license-inline" href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}</a>`
-      : `<span class="license-inline">${esc(text)}</span>`;
   }
 
   function benchmarkHref(ds, board){
@@ -1058,19 +1041,21 @@
 
   function benchmarkCard(ds, board){
     const title = datasetTitle(ds, board);
-    const authors = joinAuthors(ds?.authors);
+    const authors = shortenAuthors(ds?.authors);
     const year = normStr(ds?.year || board?.year || '');
-    const license = normStr(ds?.license || '');
     const best = bestResultForBoard(board);
+    const entryCount = normArray(board?.results).length;
     const detailHref = datasetDetailHref(ds);
     const titleHref = detailHref || datasetAccessHref(ds, board);
     const titleExternal = titleHref && titleHref.startsWith('http');
     const titleLink = titleHref
       ? `<a href="${esc(titleHref)}" ${titleExternal ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
       : esc(title);
-    const yearLicense = [year ? esc(year) : '', license ? licenseInline(license) : ''].filter(Boolean).join(' &bull; ');
+    const statLabel = best
+      ? `Top ${esc(metricDisplayLabel(best.metricDef))}${entryCount ? ` &middot; ${entryCount} model${entryCount === 1 ? '' : 's'}` : ''}`
+      : '';
     const bestHtml = best
-      ? `<div class="benchmark-card-best"><span>Top ${esc(metricDisplayLabel(best.metricDef))}</span><strong>${esc(formatScore(best.score, best.metricDef))}</strong></div>`
+      ? `<div class="benchmark-card-best"><span>${statLabel}</span><strong>${esc(formatScore(best.score, best.metricDef))}</strong></div>`
       : '';
     return `
       <article class="benchmark-card" data-filter-row="benchmark">
@@ -1081,16 +1066,18 @@
           <div class="benchmark-card-heading">
             <h3 class="benchmark-card-title">${titleLink}</h3>
           </div>
-          ${(authors || yearLicense) ? `
+          ${(authors || year) ? `
             <div class="benchmark-card-meta">
               ${authors ? `<span class="benchmark-authors-inline">${esc(authors)}</span>` : ''}
-              ${(authors && yearLicense) ? '<span aria-hidden="true">&bull;</span>' : ''}
-              ${yearLicense ? `<span class="benchmark-year-license">${yearLicense}</span>` : ''}
+              ${(authors && year) ? '<span aria-hidden="true">&bull;</span>' : ''}
+              ${year ? `<span class="benchmark-year-license">${esc(year)}</span>` : ''}
             </div>` : ''}
-          ${bestHtml}
-          <div class="benchmark-actions">
-            ${resultsCell(board)}
-            ${bookmarkButton(ds, board, title)}
+          <div class="benchmark-card-footer">
+            ${bestHtml}
+            <div class="benchmark-actions">
+              ${resultsCell(board)}
+              ${bookmarkButton(ds, board, title)}
+            </div>
           </div>
         </div>
       </article>`;
