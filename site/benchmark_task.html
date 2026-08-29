@@ -269,9 +269,9 @@
     .benchmark-card-title a:hover{ color:var(--oc-link); text-decoration:underline; }
     .benchmark-card-meta{
       display:flex;
-      align-items:center;
-      flex-wrap:nowrap;
-      gap:.45rem;
+      align-items:baseline;
+      flex-wrap:wrap;
+      gap:.2rem .45rem;
       margin-top:.05rem;
       color:var(--oc-subtle);
       font-size:.85rem;
@@ -281,9 +281,8 @@
     }
     .benchmark-authors-inline{
       min-width:0;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
+      white-space:normal;
+      overflow-wrap:anywhere;
     }
     .benchmark-year-license{
       flex:0 0 auto;
@@ -902,14 +901,6 @@
     return normStr(authors);
   }
 
-  function shortenAuthors(authors){
-    const list = Array.isArray(authors)
-      ? authors.map(normStr).filter(Boolean)
-      : normStr(authors).split(',').map(part => part.trim()).filter(Boolean);
-    if(!list.length) return '';
-    return list.length === 1 ? list[0] : `${list[0]} et al.`;
-  }
-
   function resultsCell(board){
     if(!board) return '';
     const externalUrl = normStr(board.results_url || '');
@@ -1041,7 +1032,7 @@
 
   function benchmarkCard(ds, board){
     const title = datasetTitle(ds, board);
-    const authors = shortenAuthors(ds?.authors);
+    const authors = joinAuthors(ds?.authors);
     const year = normStr(ds?.year || board?.year || '');
     const best = bestResultForBoard(board);
     const entryCount = normArray(board?.results).length;
