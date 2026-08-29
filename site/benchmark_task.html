@@ -427,12 +427,18 @@
     .leaderboard-data-table .score-cell{
       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
       white-space:nowrap;
+      font-variant-numeric:tabular-nums;
     }
     .leaderboard-data-table .score-cell{
       color:#1d4ed8;
       font-weight:800;
       text-align:right;
     }
+    .leaderboard-data-table th.score-col{ text-align:right; letter-spacing:0; }
+    .leaderboard-data-table th:not(.method-col),
+    .leaderboard-data-table td:not(.method-col){ width:1%; white-space:nowrap; }
+    .leaderboard-data-table th.method-col,
+    .leaderboard-data-table td.method-col{ width:auto; white-space:normal; }
     .leaderboard-data-table a{ color:var(--oc-link); text-decoration:none; }
     .leaderboard-data-table a:hover{ text-decoration:underline; }
     .bar-chart-wrap{width:100%;overflow:auto}
@@ -1300,10 +1306,10 @@
           <thead>
             <tr>
               <th scope="col">Rank</th>
-              <th scope="col">Method</th>
+              <th scope="col" class="method-col">Method</th>
               <th scope="col">Metric</th>
               <th scope="col">Direction</th>
-              <th scope="col">Score</th>
+              <th scope="col" class="score-col">Score</th>
               <th scope="col">Results</th>
             </tr>
           </thead>
@@ -1315,7 +1321,7 @@
               return `
                 <tr>
                   <td class="rank-cell">#${item.rank}</td>
-                  <td>${esc(item.method)}</td>
+                  <td class="method-col">${esc(item.method)}</td>
                   <td>${esc(metricDisplayLabel(item.metricDef))}</td>
                   <td>${esc(direction)}</td>
                   <td class="score-cell">${esc(score)}</td>

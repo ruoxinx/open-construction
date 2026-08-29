@@ -120,16 +120,19 @@
     .lb-dot{fill:#d8704c;stroke:#d8704c;stroke-width:1}
     .lb-dot.claimed{fill:#ebc5a8;stroke:#5c5b58;stroke-width:1.5}
     .leaderboard-table-wrap{overflow-x:auto;border:1px solid #dbe4ee;border-radius:6px}
-    .leaderboard-table{width:100%;min-width:360px;border-collapse:collapse;font-size:.92rem}
+    .leaderboard-table{width:100%;border-collapse:collapse;font-size:.92rem;table-layout:auto}
     .leaderboard-table thead{background:#f8fafc}
-    .leaderboard-table th{padding:.72rem;color:#64748b;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase;vertical-align:bottom}
-    .leaderboard-table td{padding:.62rem .72rem;color:#1e293b;vertical-align:top;border-top:1px solid rgba(226,232,240,.65)}
+    .leaderboard-table th{padding:.72rem .8rem;color:#64748b;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase;vertical-align:bottom}
+    .leaderboard-table td{padding:.62rem .8rem;color:#1e293b;vertical-align:top;border-top:1px solid rgba(226,232,240,.65)}
     .leaderboard-table tbody tr:nth-child(even){background:#f8fafc66}
-    .leaderboard-table .rank-cell{width:42px;color:#475569;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    .leaderboard-table th.col-rank,.leaderboard-table th.col-value{text-align:right;letter-spacing:0}
+    .leaderboard-table th.col-model{width:auto}
+    .leaderboard-table .rank-cell{width:1%;white-space:nowrap;text-align:right;padding-right:.55rem;color:#475569;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-variant-numeric:tabular-nums}
+    .leaderboard-table th.col-rank{padding-right:.55rem}
     .leaderboard-table .model-cell{font-weight:700;line-height:1.25}
     .leaderboard-table .model-cell a{color:inherit;text-decoration:none}
     .leaderboard-table .model-cell a:hover{color:#0b66c3;text-decoration:underline}
-    .leaderboard-table .value-cell{text-align:right;color:#1d4ed8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;white-space:nowrap}
+    .leaderboard-table .value-cell{width:1%;text-align:right;color:#1d4ed8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
     .verify-badge{display:inline-flex;align-items:center;margin-left:.35rem;border:1px solid #fed7aa;border-radius:4px;background:#fff7ed;color:#9a3412;padding:.12rem .3rem;font-size:.6rem;font-weight:800;line-height:1;vertical-align:1px}
     .empty-state{border:1px dashed #cbd5e1;border-radius:4px;background:#f8fafc;color:#64748b;padding:1rem;text-align:center}
     .benchmark-provenance-note{display:flex;flex-wrap:wrap;gap:.2rem .75rem;align-items:center;margin:-.35rem 0 1rem;color:#64748b;font-size:.82rem;line-height:1.45}
@@ -789,9 +792,9 @@
             <table class="leaderboard-table" id="resultLeaderboardTable">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Model</th>
-                  <th class="text-end">Value</th>
+                  <th class="col-rank">#</th>
+                  <th class="col-model">Model</th>
+                  <th class="col-value">Value</th>
                 </tr>
               </thead>
               <tbody id="resultLeaderboardBody"></tbody>
