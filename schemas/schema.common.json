@@ -6,7 +6,8 @@
   "definitions": {
     "id": {
       "type": "string",
-      "pattern": "^[a-z0-9\\-_.]+$"
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9\\-_.]+$"
     },
     "url": {
       "type": "string",

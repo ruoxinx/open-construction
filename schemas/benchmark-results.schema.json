@@ -2,97 +2,230 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openconstruction.org/schemas/benchmark-results.schema.json",
   "title": "OpenConstruction Benchmark Results Schema",
+  "description": "Reported leaderboard results for OpenConstruction benchmarks.",
   "type": "object",
   "required": ["schema_version", "benchmarks"],
   "properties": {
-    "schema_version": { "type": "string" },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
     "benchmarks": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "task",
-          "dataset_id",
-          "summary"
-        ],
-        "anyOf": [
-          { "required": ["results_url"] },
-          { "required": ["primary_metric_key", "metric_columns", "results"] }
-        ],
-        "properties": {
-          "id": { "$ref": "schema.common.json#/definitions/id" },
-          "name": { "type": "string" },
-          "task": { "type": "string" },
-          "dataset_id": { "$ref": "schema.common.json#/definitions/id" },
-          "dataset_name": { "type": "string" },
-          "page_title": { "type": "string" },
-          "summary": { "type": "string" },
-          "task_description": { "type": "string" },
-          "comparison_scope": { "type": "string" },
-          "split": { "type": "string" },
-          "protocol": { "type": "string" },
-          "submission_policy": { "type": "string" },
-          "source_label": { "type": "string" },
-          "source_url": { "$ref": "schema.common.json#/definitions/url" },
-          "dataset_url": { "$ref": "schema.common.json#/definitions/url" },
-          "results_url": { "$ref": "schema.common.json#/definitions/url" },
-          "primary_metric_key": { "type": "string" },
-          "metric_columns": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "object",
-              "required": ["key", "label", "direction"],
-              "properties": {
-                "key": { "type": "string" },
-                "label": { "type": "string" },
-                "unit": { "type": "string" },
-                "direction": { "enum": ["higher", "lower"] },
-                "precision": { "type": "integer", "minimum": 0, "maximum": 6 }
-              },
-              "additionalProperties": false
-            }
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["method", "metrics"],
-              "properties": {
-                "method": { "type": "string" },
-                "model_id": { "$ref": "schema.common.json#/definitions/id" },
-                "data_source": { "type": "string" },
-                "authors": {
-                  "oneOf": [
-                    { "type": "string" },
-                    {
-                      "type": "array",
-                      "items": { "type": "string" }
-                    }
-                  ]
-                },
-                "year": { "$ref": "schema.common.json#/definitions/year" },
-                "paper_url": { "$ref": "schema.common.json#/definitions/url" },
-                "code_url": { "$ref": "schema.common.json#/definitions/url" },
-                "source_label": { "type": "string" },
-                "source_url": { "$ref": "schema.common.json#/definitions/url" },
-                "date": { "type": "string" },
-                "metrics": {
-                  "type": "object",
-                  "minProperties": 1,
-                  "additionalProperties": { "type": ["number", "string", "null"] }
-                },
-                "notes": { "type": "string" }
-              },
-              "additionalProperties": false
-            }
-          }
-        },
-        "additionalProperties": false
-      }
+      "items": { "$ref": "#/$defs/benchmark" }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "benchmark": {
+      "type": "object",
+      "required": ["id", "name", "task", "dataset_id", "summary"],
+      "anyOf": [
+        { "required": ["results_url"] },
+        { "required": ["primary_metric_key", "metric_columns", "results"] }
+      ],
+      "properties": {
+        "id": { "$ref": "schema.common.json#/definitions/id" },
+        "name": { "type": "string" },
+        "task": { "type": "string" },
+        "subtasks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Finer-grained task labels covered by this benchmark; free text today, should be reconciled against task-vocabulary.json."
+        },
+        "dataset_id": { "$ref": "schema.common.json#/definitions/id" },
+        "dataset_name": { "type": "string" },
+        "page_title": { "type": "string" },
+        "summary": {
+          "type": "string",
+          "description": "Short lead paragraph rendered under the benchmark title."
+        },
+        "benchmark_description": {
+          "type": "string",
+          "description": "Longer prose describing what the benchmark measures. Optional; falls back to summary when absent."
+        },
+        "task_description": { "type": "string" },
+        "comparison_scope": { "type": "string" },
+        "split": { "type": "string" },
+        "protocol": { "type": "string" },
+        "submission_policy": { "type": "string" },
+        "source_label": { "type": "string" },
+        "source_url": { "$ref": "schema.common.json#/definitions/url" },
+        "dataset_url": { "$ref": "schema.common.json#/definitions/url" },
+        "results_url": {
+          "$ref": "schema.common.json#/definitions/url",
+          "description": "External leaderboard. When present the site links out instead of rendering a local table/figure."
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO date (YYYY-MM-DD) the reported numbers were last reconciled with the source."
+        },
+        "data_note": {
+          "type": "string",
+          "description": "Curator note about gaps, exclusions, or caveats in the reported rows."
+        },
+        "hide_year_column": {
+          "type": "boolean",
+          "description": "Force-hide the Year column even when row years are present (e.g. every row is the same year)."
+        },
+        "method_column_label": {
+          "type": "string",
+          "description": "Header label for the method column (e.g. \"Model\", \"Large model\", \"Model / Baseline\"). Defaults to \"Model\"."
+        },
+        "primary_metric_key": {
+          "type": "string",
+          "description": "metric_columns[].key selected by default in the figure/metric picker."
+        },
+        "metric_columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["key", "label", "direction"],
+            "properties": {
+              "key": { "type": "string" },
+              "label": { "type": "string" },
+              "unit": { "type": "string" },
+              "direction": {
+                "enum": ["higher", "lower"],
+                "description": "Which way is better. Drives default figure sort direction and the up/down indicator."
+              },
+              "precision": { "type": "integer", "minimum": 0, "maximum": 6 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "row_columns": {
+          "type": "array",
+          "description": "Non-metric row dimensions promoted to real leaderboard-table columns (e.g. model type, family, data combination).",
+          "items": {
+            "type": "object",
+            "required": ["key", "label"],
+            "properties": {
+              "key": {
+                "type": "string",
+                "description": "Result-row property to read (e.g. model_type, model_family, category, data_combination, data_source)."
+              },
+              "label": { "type": "string" },
+              "min_width": {
+                "type": "string",
+                "pattern": "^[0-9]+(px|rem|em|ch|%)$",
+                "description": "CSS min-width for the rendered column."
+              },
+              "position": {
+                "enum": ["before_method", "after_method"],
+                "description": "Where the column sits relative to the method column. Default: before_method."
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "comparison_chart": {
+          "type": "object",
+          "description": "Configuration for the grouped comparison figure. Set {\"enabled\": false} to suppress it.",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "orientation": {
+              "enum": ["horizontal-grouped", "vertical-grouped", "horizontal", "vertical"]
+            },
+            "metric_label": { "type": "string" },
+            "x_axis_label": { "type": "string" },
+            "y_axis_label": { "type": "string" },
+            "min_value": { "type": "number" },
+            "max_value": { "type": "number" },
+            "metric_keys": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "metric_columns[].key values to plot as grouped series."
+            },
+            "category_order": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Explicit ordering of row groups (matched against a row_columns key or data_source)."
+            },
+            "series_order": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "series_colors": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+              }
+            },
+            "caption": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "results": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/result" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "required": ["method", "metrics"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "Model / system / baseline name shown in the method column."
+        },
+        "model_id": { "$ref": "schema.common.json#/definitions/id" },
+        "model_type": {
+          "type": "string",
+          "description": "Source leaderboard's own class label, transcribed verbatim for display (e.g. \"Proprietary\", \"Open\", \"Open Source\", \"Reasoning\", \"Large\", \"Human baseline\", \"Baseline\"). Not a controlled value — use `access` for a normalized field."
+        },
+        "access": {
+          "enum": ["proprietary", "open-weight", "human", "baseline"],
+          "description": "Normalized provenance class. Required on every row of a benchmark that classifies entries by provenance (i.e. that sets `model_type`)."
+        },
+        "model_family": {
+          "type": "string",
+          "description": "Architecture / lineage grouping, e.g. \"Conv-based\", \"Transformer-based\"."
+        },
+        "category": {
+          "type": "string",
+          "description": "Benchmark-defined bucket for the row (e.g. class-count regime \"26\" / \"14\")."
+        },
+        "data_source": {
+          "type": "string",
+          "description": "Evaluation subset / sensor / split the row was measured on."
+        },
+        "data_combination": {
+          "type": "string",
+          "description": "Input-modality combination code used for the row (benchmark-defined, e.g. \"T\", \"ST\", \"RST\")."
+        },
+        "authors": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "year": { "$ref": "schema.common.json#/definitions/year" },
+        "date": {
+          "type": "string",
+          "description": "Optional finer-grained date (ISO YYYY-MM-DD) when year is not specific enough."
+        },
+        "paper_url": { "$ref": "schema.common.json#/definitions/url" },
+        "code_url": { "$ref": "schema.common.json#/definitions/url" },
+        "source_label": {
+          "type": "string",
+          "description": "Where this row's numbers were reported (paper, leaderboard, repo)."
+        },
+        "source_url": { "$ref": "schema.common.json#/definitions/url" },
+        "metrics": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": ["number", "null"] },
+          "description": "Metric key -> value. number = reported; null = metric applies to this row but the source did not report it; omit the key entirely = metric is not part of this row's evaluation. The string \"N/A\" is not allowed."
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
 }
