@@ -401,46 +401,64 @@
     }
     .leaderboard-data-table{
       width:100%;
-      min-width:640px;
+      max-width:672px; /* same width + centering as the chart above it */
+      min-width:420px;
+      margin-inline:auto;
       border-collapse:collapse;
-      font-size:.86rem;
+      font-size:.88rem;
+      table-layout:auto;
     }
     .leaderboard-data-table th{
-      padding:.55rem .65rem;
-      border-bottom:1px solid #dbe4ee;
+      padding:.5rem .75rem .55rem;
+      border-bottom:1.5px solid #cbd5e1;
       color:#64748b;
-      font-size:.7rem;
+      font-size:.68rem;
       font-weight:800;
-      letter-spacing:.07em;
+      letter-spacing:.08em;
       text-align:left;
       text-transform:uppercase;
       white-space:nowrap;
     }
     .leaderboard-data-table td{
-      padding:.58rem .65rem;
+      padding:.6rem .75rem;
       border-top:1px solid rgba(226,232,240,.72);
       color:#1e293b;
       vertical-align:top;
     }
     .leaderboard-data-table tbody tr:nth-child(even){ background:#f8fafc; }
-    .leaderboard-data-table .rank-cell,
+    .leaderboard-data-table tbody tr:hover{ background:#eef4fb; }
+    /* column widths: rank / score / results hug their content, model takes the slack */
+    .leaderboard-data-table th.rank-col,   .leaderboard-data-table td.rank-cell,
+    .leaderboard-data-table th.score-col,  .leaderboard-data-table td.score-cell,
+    .leaderboard-data-table th.results-col,.leaderboard-data-table td.results-cell{
+      width:1%;
+      white-space:nowrap;
+    }
+    .leaderboard-data-table th.method-col,
+    .leaderboard-data-table td.method-col{ width:100%; white-space:normal; }
+    .leaderboard-data-table .rank-col{ text-align:right; }
+    .leaderboard-data-table .rank-cell{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+      font-variant-numeric:tabular-nums;
+      text-align:right;
+      color:#94a3b8;
+      padding-right:1.1rem;
+    }
+    .leaderboard-data-table .score-col{ text-align:right; text-transform:none; letter-spacing:.02em; }
     .leaderboard-data-table .score-cell{
       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-      white-space:nowrap;
       font-variant-numeric:tabular-nums;
-    }
-    .leaderboard-data-table .score-cell{
       color:#1d4ed8;
       font-weight:800;
       text-align:right;
     }
-    .leaderboard-data-table th.score-col{ text-align:right; letter-spacing:0; }
-    .leaderboard-data-table th:not(.method-col),
-    .leaderboard-data-table td:not(.method-col){ width:1%; white-space:nowrap; }
-    .leaderboard-data-table th.method-col,
-    .leaderboard-data-table td.method-col{ width:auto; white-space:normal; }
+    .leaderboard-data-table .results-col{ text-align:right; }
+    .leaderboard-data-table .results-cell{ text-align:right; }
+    .leaderboard-data-table .results-cell a{ font-weight:700; font-size:.82rem; }
     .leaderboard-data-table a{ color:var(--oc-link); text-decoration:none; }
     .leaderboard-data-table a:hover{ text-decoration:underline; }
+    .leaderboard-data-table .lb-method-name{ display:block; font-weight:700; color:#1e293b; line-height:1.3; }
+    .leaderboard-data-table .lb-method-context{ display:block; margin-top:.12rem; color:#64748b; font-size:.78rem; line-height:1.3; }
     .bar-chart-wrap{width:100%;overflow:auto}
     .bar-chart-svg{display:block;min-width:672px;max-width:672px;width:100%;height:auto;margin:0 auto;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .bar-grid{stroke:#e2e8f0;stroke-width:1;stroke-dasharray:3 3}
@@ -1174,28 +1192,37 @@
         const ds = datasetById.get(canonKey(board.dataset_id));
         const metricDef = numericMetricDefs(board).find(metric => metric.key === metricKey);
         if(!metricDef) return [];
+        const rowCols = normArray(board.row_columns);
         return normArray(board.results)
           .filter(row => typeof row?.metrics?.[metricKey] === 'number' && Number.isFinite(row.metrics[metricKey]))
-          .map(row => ({
-            ds,
-            board,
-            row,
-            metricDef,
-            score: row.metrics[metricKey],
-            benchmark: datasetTitle(ds, board),
-            method: normStr(row.method || row.model || 'Reported method')
-          }));
+          .map(row => {
+            const method = normStr(row.method || row.model || 'Reported method');
+            const contextValues = rowCols.map(col => normStr(row[col.key])).filter(Boolean);
+            if(!contextValues.length && normStr(row.data_source)) contextValues.push(normStr(row.data_source));
+            const qualifier = contextValues.join(' / ');
+            return {
+              ds,
+              board,
+              row,
+              metricDef,
+              score: row.metrics[metricKey],
+              benchmark: datasetTitle(ds, board),
+              method,
+              context: qualifier,
+              label: qualifier ? `${method} — ${qualifier}` : method
+            };
+          });
       });
       const metricDef = rows[0]?.metricDef || metricOptions(selectedBoards()).find(metric => metric.key === metricKey);
       const direction = normStr(metricDef?.direction || 'higher').toLowerCase();
       return rows
         .sort((a,b) => direction === 'lower'
-          ? a.score - b.score || a.benchmark.localeCompare(b.benchmark)
-          : b.score - a.score || a.benchmark.localeCompare(b.benchmark))
+          ? a.score - b.score || a.benchmark.localeCompare(b.benchmark) || a.label.localeCompare(b.label)
+          : b.score - a.score || a.benchmark.localeCompare(b.benchmark) || a.label.localeCompare(b.label))
         .map((item, index) => ({ ...item, rank: index + 1 }));
     }
     function rowDisplayLabel(item, maxLength){
-      return truncateLabel(item.method, maxLength);
+      return truncateLabel(item.label || item.method, maxLength);
     }
     function rowResultHref(item){
       const id = normStr(item.board?.id);
@@ -1245,7 +1272,7 @@
               const scoreAnchor = item.score < 0 ? 'end' : 'start';
               return `
                 <g data-chart-row="benchmark">
-                  <title>${esc(item.benchmark)} - ${esc(item.method)}: ${esc(score)} ${esc(metric)}</title>
+                  <title>${esc(item.benchmark)} - ${esc(item.label)}: ${esc(score)} ${esc(metric)}</title>
                   <a href="${esc(href)}" ${rowResultTarget(item)}>
                     <text class="bar-name" x="${LW - 6}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="end" dominant-baseline="middle">${esc(rowDisplayLabel(item, 32))}</text>
                   </a>
@@ -1289,7 +1316,7 @@
               const y = yFor(item.score);
               const score = formatScore(item.score, item.metricDef);
               const href = rowResultHref(item);
-              return `<g data-chart-row="benchmark"><a href="${esc(href)}" ${rowResultTarget(item)}><circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"><title>#${item.rank} ${esc(item.benchmark)} - ${esc(item.method)}: ${esc(score)}</title></circle></a><text class="scatter-score" x="${x.toFixed(1)}" y="${Math.max(10, y - 9).toFixed(1)}" text-anchor="middle">${esc(score)}</text><text class="scatter-rank" x="${x.toFixed(1)}" y="${H - B + 17}" text-anchor="middle">#${item.rank}</text><text class="scatter-label" x="${x.toFixed(1)}" y="${H - B + 31}" text-anchor="end" transform="rotate(-45 ${x.toFixed(1)} ${H - B + 31})">${esc(rowDisplayLabel(item, 18))}</text></g>`;
+              return `<g data-chart-row="benchmark"><a href="${esc(href)}" ${rowResultTarget(item)}><circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"><title>#${item.rank} ${esc(item.benchmark)} - ${esc(item.label)}: ${esc(score)}</title></circle></a><text class="scatter-score" x="${x.toFixed(1)}" y="${Math.max(10, y - 9).toFixed(1)}" text-anchor="middle">${esc(score)}</text><text class="scatter-rank" x="${x.toFixed(1)}" y="${H - B + 17}" text-anchor="middle">#${item.rank}</text><text class="scatter-label" x="${x.toFixed(1)}" y="${H - B + 31}" text-anchor="end" transform="rotate(-45 ${x.toFixed(1)} ${H - B + 31})">${esc(rowDisplayLabel(item, 18))}</text></g>`;
             }).join('')}
           </svg>
         </div>`;
@@ -1300,32 +1327,29 @@
       const caption = benchmarkName
         ? `Leaderboard rows for ${esc(benchmarkName)} - ${esc(metric)}`
         : `Leaderboard rows for ${esc(metric)}`;
+      const direction = normStr(rows[0]?.metricDef?.direction || 'higher').toLowerCase();
+      const scoreHint = direction === 'lower' ? '&darr;' : '&uarr;';
       return `
         <table class="leaderboard-data-table" aria-describedby="leaderboardNote">
-          <caption class="visually-hidden">${caption}</caption>
+          <caption class="visually-hidden">${caption} (ranked, ${direction} is better)</caption>
           <thead>
             <tr>
-              <th scope="col">Rank</th>
-              <th scope="col" class="method-col">Method</th>
-              <th scope="col">Metric</th>
-              <th scope="col">Direction</th>
-              <th scope="col" class="score-col">Score</th>
-              <th scope="col">Results</th>
+              <th scope="col" class="rank-col">#</th>
+              <th scope="col" class="method-col">Model</th>
+              <th scope="col" class="score-col">${esc(metric)} <span aria-hidden="true">${scoreHint}</span></th>
+              <th scope="col" class="results-col"><span class="visually-hidden">Results</span></th>
             </tr>
           </thead>
           <tbody>
             ${rows.map(item => {
               const score = formatScore(item.score, item.metricDef);
-              const direction = normStr(item.metricDef?.direction || 'higher');
               const href = rowResultHref(item);
               return `
                 <tr>
-                  <td class="rank-cell">#${item.rank}</td>
-                  <td class="method-col">${esc(item.method)}</td>
-                  <td>${esc(metricDisplayLabel(item.metricDef))}</td>
-                  <td>${esc(direction)}</td>
+                  <td class="rank-cell">${item.rank}</td>
+                  <td class="method-col"><span class="lb-method-name">${esc(item.method)}</span>${item.context ? `<span class="lb-method-context">${esc(item.context)}</span>` : ''}</td>
                   <td class="score-cell">${esc(score)}</td>
-                  <td><a href="${esc(href)}" ${rowResultTarget(item)}>Open</a></td>
+                  <td class="results-cell"><a href="${esc(href)}" ${rowResultTarget(item)}>Open</a></td>
                 </tr>`;
             }).join('')}
           </tbody>
