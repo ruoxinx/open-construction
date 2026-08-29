@@ -757,6 +757,7 @@
     if (!field) return;
     field.value = '';
     field.placeholder = placeholder;
+    form?._ocAskContext?.clear?.();
     autoSizeAskField(field);
     syncAskFormState(form);
   }
@@ -779,6 +780,7 @@
       });
       field.addEventListener('keydown', event => {
         if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+          if (field.form?._ocAskContext?.isOpen?.()) return;
           event.preventDefault();
           if (typeof field.form?.requestSubmit === 'function') {
             field.form.requestSubmit();
@@ -787,6 +789,298 @@
           }
         }
       });
+    });
+  }
+
+  function askMentionMatch(field){
+    if (!field || field.disabled) return null;
+    const cursor = field.selectionStart ?? String(field.value || '').length;
+    const before = String(field.value || '').slice(0, cursor);
+    const match = before.match(/(^|\s)@([^\s@]*)$/);
+    if (!match) return null;
+    const query = match[2] || '';
+    return {
+      query,
+      start: cursor - query.length - 1,
+      end: cursor
+    };
+  }
+
+  function askContextKey(resource){
+    return `${resourceKind(resource?.type || resource?.label)}:${resourceKeyAi(resource?.href || resource?.title)}`;
+  }
+
+  function uniqueAiResources(resources, limit = AI_MAX_RESULT_LIMIT){
+    const out = [];
+    const seen = new Set();
+    (Array.isArray(resources) ? resources : []).forEach(resource => {
+      if (!resource?.title) return;
+      const key = askContextKey(resource);
+      if (seen.has(key)) return;
+      seen.add(key);
+      out.push(resource);
+    });
+    return out.slice(0, limit);
+  }
+
+  function selectedAskContext(form){
+    return uniqueAiResources(form?._ocAskContext?.selected?.() || []);
+  }
+
+  function askContextSearchText(resources){
+    return (Array.isArray(resources) ? resources : [])
+      .map(resource => [resource.title, resource.label, resource.meta, resource.summary, resource.haystack].filter(Boolean).join(' '))
+      .join(' ');
+  }
+
+  function askContextPickerIcon(type){
+    const kind = resourceKind(type || 'resource');
+    const icons = {
+      dataset: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="M4 7.2 12 3.8l8 3.4-8 3.4-8-3.4Z"></path><path d="m4 12 8 3.4 8-3.4"></path><path d="m4 16.8 8 3.4 8-3.4"></path></svg>',
+      model: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle class="oc-icon-fill" cx="7" cy="8" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="6" r="2.5"></circle><circle class="oc-icon-fill" cx="17" cy="18" r="2.5"></circle><circle cx="7" cy="8" r="2.5"></circle><circle cx="17" cy="6" r="2.5"></circle><circle cx="17" cy="18" r="2.5"></circle><path d="m9.4 7.5 5.2-1"></path><path d="m8.7 10 6.6 6"></path><path d="M7 10.5v4.8"></path><circle cx="7" cy="17.8" r="1.8"></circle></svg>',
+      workflow: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="18" r="2.5"></circle><path d="M8.5 6H12a3 3 0 0 1 3 3v6"></path><path d="m12.5 12 2.5 3 2.5-3"></path></svg>',
+      oer: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"></path><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5A2.5 2.5 0 0 1 20 21.5v-16Z"></path></svg>',
+      benchmark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18h16"></path><path d="M5 14.5 9 11l3.2 2.6L18.5 6.8"></path><path d="M14.5 6.8h4v4"></path></svg>',
+      tool: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 4 4"></path><path d="M4 20 15.5 8.5"></path><path d="m14.5 4.5 5 5"></path><path d="M7 5l12 12"></path><path d="m5 7 2-2 3 3-2 2-3-3Z"></path></svg>',
+      guide: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H11v17H7.5A2.5 2.5 0 0 0 5 22V5.5Z"></path><path d="M19 5.5A2.5 2.5 0 0 0 16.5 3H13v17h3.5A2.5 2.5 0 0 1 19 22V5.5Z"></path></svg>',
+      resource: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>'
+    };
+    return `<span class="oc-ask-context-kind-mark oc-ask-context-kind-${esc(kind)}" aria-hidden="true">${icons[kind] || icons.resource}</span>`;
+  }
+
+  function askContextPickerMediaHtml(resource){
+    if (resource?.media) {
+      return `<span class="oc-ask-context-media"><img src="${esc(resource.media)}" alt="" loading="lazy" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">${askContextPickerIcon(resource.type).replace('aria-hidden="true"', 'aria-hidden="true" hidden')}</span>`;
+    }
+    return askContextPickerIcon(resource?.type);
+  }
+
+  function askContextChipsHtml(resources){
+    const rows = Array.isArray(resources) ? resources : [];
+    return rows.map((resource, index) => `
+      <span class="oc-ask-context-chip">
+        ${askContextPickerIcon(resource.type)}
+        <span>${esc(resource.title)}</span>
+        <button type="button" data-ask-context-remove="${index}" aria-label="Remove ${esc(resource.title)}" title="Remove context">x</button>
+      </span>
+    `).join('');
+  }
+
+  function askContextDisplayHtml(resources){
+    const rows = Array.isArray(resources) ? resources : [];
+    if (!rows.length) return '';
+    return `
+      <div class="oc-ask-message-context" aria-label="Selected context">
+        <span>Context</span>
+        ${rows.slice(0, 6).map(resource => `
+          <a href="${esc(resource.href || '#')}">
+            ${askContextPickerIcon(resource.type)}
+            <span>${esc(resource.title)}</span>
+          </a>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function askContextMatches(resource, query, type){
+    if (type && type !== 'all' && resource.type !== type) return false;
+    const clean = normalizeAiText(query);
+    if (!clean) return true;
+    return clean.split(/\s+/).every(term => containsAiTerm(normalizeAiText([resource.title, resource.label, resource.meta, resource.summary, resource.haystack].join(' ')), term));
+  }
+
+  function askContextPickerResult(catalog, query, type, selected, limit = 60){
+    const selectedKeys = new Set((selected || []).map(askContextKey));
+    const clean = String(query || '').trim();
+    const pool = clean
+      ? selectAiCandidates(catalog, clean, 60)
+      : (Array.isArray(catalog) ? catalog : []).slice().sort((a, b) => a.type.localeCompare(b.type) || a.title.localeCompare(b.title));
+    const filtered = pool
+      .filter(resource => !selectedKeys.has(askContextKey(resource)))
+      .filter(resource => askContextMatches(resource, clean, type));
+    return {
+      rows: filtered.slice(0, limit),
+      total: filtered.length
+    };
+  }
+
+  function askContextPickerHtml(state){
+    const types = [
+      ['all', 'All'],
+      ['dataset', 'Datasets'],
+      ['model', 'Models'],
+      ['benchmark', 'Benchmarks'],
+      ['workflow', 'Workflows'],
+      ['oer', 'OERs'],
+      ['tool', 'Tools'],
+      ['guide', 'Guides']
+    ];
+    const rows = state.rows || [];
+    return `
+      <div class="oc-ask-context-picker-head">
+        <span>Add OpenConstruction context</span>
+        <small>${state.loading ? 'Loading resources' : `Showing ${rows.length} of ${state.total || rows.length}`}</small>
+      </div>
+      <div class="oc-ask-context-types" role="tablist" aria-label="Context type">
+        ${types.map(([value, label]) => `
+          <button type="button" data-ask-context-type="${value}" aria-selected="${state.type === value ? 'true' : 'false'}">${label}</button>
+        `).join('')}
+      </div>
+      <div class="oc-ask-context-options" role="listbox">
+        ${state.loading ? '<div class="oc-ask-context-empty">Loading resources...</div>' : rows.length ? rows.map((resource, index) => `
+          <button type="button" class="oc-ask-context-option${index === state.activeIndex ? ' active' : ''}" data-ask-context-index="${index}" role="option" aria-selected="${index === state.activeIndex ? 'true' : 'false'}">
+            ${askContextPickerMediaHtml(resource)}
+            <span>
+              <strong>${esc(resource.title)}</strong>
+              <small>${esc([resource.label, resource.meta].filter(Boolean).join(' - ') || 'Catalog resource')}</small>
+            </span>
+          </button>
+        `).join('') : '<div class="oc-ask-context-empty">No matching resources</div>'}
+      </div>
+    `;
+  }
+
+  function bindAskContextPicker(form, options = {}){
+    const field = form?.querySelector('textarea[name="q"]');
+    const chipsEl = form?.querySelector('[data-ask-context-chips]');
+    const pickerEl = form?.querySelector('[data-ask-context-picker]');
+    if (!form || !field || !chipsEl || !pickerEl || form.dataset.ocAskContextBound === 'true') return;
+    form.dataset.ocAskContextBound = 'true';
+    const state = {
+      selected: [],
+      rows: [],
+      total: 0,
+      query: '',
+      type: 'all',
+      activeIndex: 0,
+      loading: false,
+      open: false,
+      mention: null
+    };
+
+    function renderChips(){
+      chipsEl.innerHTML = askContextChipsHtml(state.selected);
+      chipsEl.hidden = !state.selected.length;
+      form.classList.toggle('has-context-ui', state.open || Boolean(state.selected.length));
+      syncAskFormState(form);
+    }
+
+    function closePicker(){
+      state.open = false;
+      pickerEl.hidden = true;
+      pickerEl.innerHTML = '';
+      form.classList.toggle('has-context-ui', Boolean(state.selected.length));
+    }
+
+    async function renderPicker(){
+      if (!state.open) return;
+      state.loading = true;
+      form.classList.add('has-context-ui');
+      pickerEl.hidden = false;
+      pickerEl.innerHTML = askContextPickerHtml(state);
+      const catalog = await (options.getCatalog ? options.getCatalog() : loadAccountAiCatalog()).catch(() => []);
+      if (!state.open) return;
+      state.loading = false;
+      const result = askContextPickerResult(catalog, state.query, state.type, state.selected);
+      state.rows = result.rows;
+      state.total = result.total;
+      state.activeIndex = Math.min(state.activeIndex, Math.max(state.rows.length - 1, 0));
+      pickerEl.innerHTML = askContextPickerHtml(state);
+    }
+
+    function removeMention(){
+      const mention = state.mention;
+      if (!mention) return;
+      const value = String(field.value || '');
+      field.value = `${value.slice(0, mention.start)}${value.slice(mention.end)}`.replace(/[ \t]{2,}/g, ' ');
+      const nextCursor = mention.start;
+      field.setSelectionRange(nextCursor, nextCursor);
+      autoSizeAskField(field);
+    }
+
+    function addResource(resource){
+      if (!resource) return;
+      state.selected = uniqueAiResources([...state.selected, resource], 12);
+      removeMention();
+      state.query = '';
+      state.mention = null;
+      state.open = true;
+      renderChips();
+      renderPicker();
+      field.focus();
+    }
+
+    function updateFromField(){
+      const mention = askMentionMatch(field);
+      if (!mention) {
+        closePicker();
+        return;
+      }
+      state.mention = mention;
+      state.query = mention.query;
+      state.activeIndex = 0;
+      state.open = true;
+      renderPicker();
+    }
+
+    form._ocAskContext = {
+      selected: () => state.selected.slice(),
+      isOpen: () => state.open,
+      clear: () => {
+        state.selected = [];
+        closePicker();
+        renderChips();
+      }
+    };
+
+    field.addEventListener('input', updateFromField);
+    field.addEventListener('keydown', event => {
+      if (!state.open) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closePicker();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        state.activeIndex = Math.min(state.activeIndex + 1, Math.max(state.rows.length - 1, 0));
+        pickerEl.innerHTML = askContextPickerHtml(state);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        state.activeIndex = Math.max(state.activeIndex - 1, 0);
+        pickerEl.innerHTML = askContextPickerHtml(state);
+      } else if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        if (state.rows.length) addResource(state.rows[state.activeIndex]);
+      }
+    });
+
+    chipsEl.addEventListener('click', event => {
+      const button = event.target.closest('[data-ask-context-remove]');
+      if (!button) return;
+      state.selected.splice(Number(button.dataset.askContextRemove), 1);
+      renderChips();
+      field.focus();
+    });
+
+    pickerEl.addEventListener('mousedown', event => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+    pickerEl.addEventListener('click', event => {
+      event.stopPropagation();
+      const typeButton = event.target.closest('[data-ask-context-type]');
+      if (typeButton) {
+        state.type = typeButton.dataset.askContextType || 'all';
+        state.activeIndex = 0;
+        renderPicker();
+        return;
+      }
+      const option = event.target.closest('[data-ask-context-index]');
+      if (!option) return;
+      addResource(state.rows[Number(option.dataset.askContextIndex)]);
+    });
+
+    document.addEventListener('click', event => {
+      if (!form.contains(event.target)) closePicker();
     });
   }
 
@@ -988,6 +1282,7 @@
     ai: 'data/ai-catalog.json',
     benchmark: 'data/benchmark-results.json',
     dataset: 'data/datasets.json',
+    guide: 'data/guides.json',
     model: 'data/models.json',
     workflow: 'data/use-cases.json',
     oer: 'data/oer.json',
@@ -999,6 +1294,7 @@
     if (raw === 'deployment' || raw === 'deployments' || raw === 'use-case' || raw === 'usecase') return 'workflow';
     if (raw === 'oers' || raw === 'learning-resource' || raw === 'learning_resource') return 'oer';
     if (raw === 'tools') return 'tool';
+    if (raw === 'guides') return 'guide';
     if (raw === 'benchmarks') return 'benchmark';
     if (raw === 'datasets') return 'dataset';
     if (raw === 'models') return 'model';
@@ -1039,6 +1335,7 @@
         (section.items || []).map(item => ({ category: section.title, ...item, id: item.id || item.name }))
       );
     }
+    if (kind === 'guide') return Array.isArray(payload?.guides) ? payload.guides : (Array.isArray(payload) ? payload : []);
     return [];
   }
 
@@ -1473,8 +1770,11 @@
     return [
       ['dataset', /\bdatasets?\b/i],
       ['model', /\bmodels?\b/i],
+      ['benchmark', /\bbenchmarks?|leaderboards?|results?\b/i],
       ['workflow', /\bworkflows?\b|\bdeployments?\b/i],
-      ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i]
+      ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i],
+      ['tool', /\btools?|software|utilities\b/i],
+      ['guide', /\bguides?|documentation|docs\b/i]
     ].filter(([, pattern]) => pattern.test(clean)).map(([type]) => type);
   }
 
@@ -1482,7 +1782,7 @@
     const types = aiTypeMatches(query);
     if (!types.length) return false;
     const rest = normalizeAiText(query)
-      .replace(/\b(only|show|find|list|give|me|resources?|catalog|openconstruction|datasets?|models?|workflows?|deployments?|oers?|courses?|teaching|education)\b/g, ' ')
+      .replace(/\b(only|show|find|list|give|me|resources?|catalog|openconstruction|datasets?|models?|benchmarks?|leaderboards?|results?|workflows?|deployments?|oers?|courses?|teaching|education|tools?|software|guides?|documentation|docs)\b/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
     return !rest;
@@ -1675,6 +1975,55 @@
         haystack: normalizeAiText([titleValue, meta, item.summary, item.description, item.provider, item.license, listAi(item.applications).join(' '), listAi(item.stakeholders).join(' ')].join(' '))
       };
     }
+    if (kind === 'benchmark') {
+      const task = item.task || item.task_description || firstAi(item.potential_tasks);
+      const meta = compactAi([item.year, task, item.dataset_name, item.primary_metric_key]).join(' - ');
+      const href = item.id ? `benchmark_results.html?id=${encodeURIComponent(item.id)}` : 'benchmark_results.html';
+      return {
+        type: 'benchmark',
+        label: 'Benchmark',
+        title,
+        href,
+        dataUrl: urlFromAi(item, ['dataset_url', 'data_url', 'url', 'source_url']),
+        codeUrl: urlFromAi(item, ['code_url', 'repo_url', 'repository']),
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.summary || item.task_description || ''),
+        haystack: normalizeAiText([title, meta, item.summary, item.task_description, item.source_label, item.dataset_name, task].join(' '))
+      };
+    }
+    if (kind === 'tool') {
+      const meta = compactAi([item.category, item.kicker, item.subtitle]).join(' - ');
+      const href = item.url || item.docs || item.repo || 'tools.html';
+      return {
+        type: 'tool',
+        label: 'Tool',
+        title,
+        href,
+        dataUrl: urlFromAi(item, ['url', 'docs']),
+        codeUrl: urlFromAi(item, ['repo', 'code_url', 'github_url', 'repository']),
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.summary || firstAi(item.details) || ''),
+        haystack: normalizeAiText([title, meta, item.summary, listAi(item.details).join(' ')].join(' '))
+      };
+    }
+    if (kind === 'guide') {
+      const meta = compactAi([item.kicker, item.subtitle, item.license]).join(' - ');
+      const href = item.url || item.docs || 'guides.html';
+      return {
+        type: 'guide',
+        label: 'Guide',
+        title,
+        href,
+        dataUrl: urlFromAi(item, ['url', 'docs']),
+        codeUrl: '',
+        media: commonMedia,
+        meta,
+        summary: firstSentenceAi(item.summary || firstAi(item.practices) || ''),
+        haystack: normalizeAiText([title, meta, item.summary, listAi(item.when).join(' '), listAi(item.practices).join(' '), listAi(item.apply).join(' ')].join(' '))
+      };
+    }
     const topics = listAi(item.topics || item.topic || item.keywords || item.tags);
     const media = listAi(item.media || item.formats || item.format || item.resource_types || item.resource_type);
     const language = listAi(item.language || item.languages);
@@ -1779,15 +2128,21 @@
     accountAiCatalogPromise = Promise.all([
       loadAiCatalogIndex(),
       Promise.all([
+        loadCatalog('benchmark'),
         loadCatalog('dataset'),
+        loadCatalog('guide'),
         loadCatalog('model'),
+        loadCatalog('tool'),
         loadCatalog('workflow'),
         loadCatalog('oer')
       ])
-    ]).then(([indexRows, [datasets, models, workflows, oers]]) => {
+    ]).then(([indexRows, [benchmarks, datasets, guides, models, tools, workflows, oers]]) => {
       const directRows = [
+        ...benchmarks.map(item => accountAiResourceFromRecord('benchmark', item)),
         ...datasets.map(item => accountAiResourceFromRecord('dataset', item)),
+        ...guides.map(item => accountAiResourceFromRecord('guide', item)),
         ...models.map(item => accountAiResourceFromRecord('model', item)),
+        ...tools.map(item => accountAiResourceFromRecord('tool', item)),
         ...workflows.map(item => accountAiResourceFromRecord('workflow', item)),
         ...oers.map(item => accountAiResourceFromRecord('oer', item))
       ].filter(item => item.title && item.href);
@@ -1824,6 +2179,8 @@
       'me',
       'dataset',
       'datasets',
+      'benchmark',
+      'benchmarks',
       'model',
       'models',
       'of',
@@ -1837,6 +2194,10 @@
       'that',
       'the',
       'to',
+      'tool',
+      'tools',
+      'guide',
+      'guides',
       'workflow',
       'workflows',
       'with'
@@ -1902,6 +2263,9 @@
       [/\bopen educational resources?\b|\boers?\b/, ['open educational resource', 'education', 'teaching', 'course', 'tutorial']],
       [/\bwith code\b|\bgithub\b|\brepositor(?:y|ies)\b/, ['code', 'github', 'repository', 'repo', 'source code']],
       [/\bwith data\b|\bdownload(?:able)?\b|\bdata source\b/, ['data', 'download', 'source', 'url']],
+      [/\bbenchmarks?|leaderboards?|evaluation results?\b/, ['benchmark', 'leaderboard', 'metrics', 'results', 'evaluation']],
+      [/\btools?|software|utilities\b/, ['tool', 'software', 'docs', 'repository']],
+      [/\bguides?|documentation|docs\b/, ['guide', 'documentation', 'practices', 'how to']],
       [/\bcc\s*[- ]?\s*by\s*[- ]?\s*n[ac]\b|\bnon[- ]?commercial\b/, ['cc by nc', 'cc-by-nc', 'noncommercial', 'non commercial']],
       [/\bcc\s*[- ]?\s*by\b|\bcreative commons\b/, ['cc by', 'cc-by', 'creative commons', 'license']],
       [/\bopen data\b|\bresponsible reuse\b|\bdata reuse\b/, ['open data', 'responsible reuse', 'license', 'data ethics']],
@@ -1924,8 +2288,11 @@
     const explicitPatterns = [
       ['dataset', /\b(data\s*sets?|datasets?|benchmark datasets?|data catalog)\b/],
       ['model', /\b(models?|trained models?|checkpoints?|architectures?)\b/],
+      ['benchmark', /\b(benchmarks?|leaderboards?|evaluation results?)\b/],
       ['workflow', /\b(workflows?|use cases?|deployments?|pipelines?|processes?)\b/],
-      ['oer', /\b(oers?|open educational resources?|courses?|teaching|education|tutorials?|lectures?|syllabus)\b/]
+      ['oer', /\b(oers?|open educational resources?|courses?|teaching|education|tutorials?|lectures?|syllabus)\b/],
+      ['tool', /\b(tools?|software|utilities)\b/],
+      ['guide', /\b(guides?|documentation|docs|best practices?)\b/]
     ];
     explicitPatterns.forEach(([type, pattern]) => {
       if (pattern.test(text)) explicit.push(type);
@@ -1936,8 +2303,11 @@
     const inferredPatterns = [
       ['dataset', /\b(annotations?|annotated|labels?|labeled|labelled|bounding boxes?|image sets?|video sets?)\b/],
       ['model', /\b(detectors?|segmenters?|classifiers?|recognizers?|foundation models?|llms?|vlms?)\b/],
+      ['benchmark', /\b(metrics?|evaluation|scores?|performance)\b/],
       ['workflow', /\b(case studies?|deployed|deployment|implementation|project controls?)\b/],
-      ['oer', /\b(learning materials?|training materials?|lesson plans?)\b/]
+      ['oer', /\b(learning materials?|training materials?|lesson plans?)\b/],
+      ['tool', /\b(annotation platform|versioning|viewer|repository|repo)\b/],
+      ['guide', /\b(fair|license|licensing|reuse|practices?)\b/]
     ];
     inferredPatterns.forEach(([type, pattern]) => {
       if (pattern.test(text)) inferred.push(type);
@@ -2109,10 +2479,12 @@
     const label = role === 'assistant' ? '<span class="oc-account-ai-label">OpenConstruction</span>' : '';
     const loadingClass = options.loading ? ' is-loading' : '';
     const trust = options.trustHtml || '';
+    const context = role === 'user' ? askContextDisplayHtml(message?.context) : '';
     return `
       <div class="oc-account-ai-message is-${role}${loadingClass}">
         ${label}
         <p>${esc(message?.text || '')}</p>
+        ${context}
         ${role === 'assistant' ? trust : ''}
       </div>
     `;
@@ -3394,7 +3766,11 @@
         </section>
         <div class="oc-ask-input-dock">
           <form class="oc-ask-form" id="anonymousAskForm" aria-label="Ask OpenConstruction follow-up">
-            <textarea name="q" class="form-control" rows="1" placeholder="Ask about datasets, models, workflows, or OERs...">${esc(cleanInitial)}</textarea>
+            <div class="oc-ask-context-layer">
+              <div class="oc-ask-context-chips" data-ask-context-chips hidden></div>
+              <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
+            </div>
+            <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context">${esc(cleanInitial)}</textarea>
             <button type="submit" class="oc-primary-action" aria-label="Send">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
             </button>
@@ -3490,13 +3866,14 @@
         renderAnonymousLimit(clean);
         return;
       }
+      const form = document.getElementById('anonymousAskForm');
+      const contextResources = selectedAskContext(form);
       try {
         const priorMessages = anonymousAiMessages.slice();
         const priorRounds = anonymousResourceRounds.slice();
         const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
-        const previousResources = latestRound?.resources || [];
-        const isRefinement = Boolean(previousResources.length && shouldRefineAiResults(clean));
-        const form = document.getElementById('anonymousAskForm');
+        const previousResources = contextResources.length ? contextResources : (latestRound?.resources || []);
+        const isRefinement = Boolean(previousResources.length && (contextResources.length || shouldRefineAiResults(clean)));
         setAskFormBusy(form, true);
         const output = document.getElementById('accountAiOutput');
         const threadEl = document.getElementById('accountAiThread');
@@ -3508,24 +3885,24 @@
           if (resultsShell) resultsShell.hidden = true;
           threadEl.innerHTML = [
             ...priorMessages,
-            { role: 'user', text: clean },
+            { role: 'user', text: clean, context: contextResources },
             { role: 'assistant', text: 'Searching OpenConstruction resources...' }
           ].map((message, index, rows) => accountAiMessageHtml(message, { loading: message.role === 'assistant' && index === rows.length - 1 })).join('');
           resultsEl.innerHTML = '';
         }
         const catalog = await loadAccountAiCatalog();
-        const searchText = isRefinement ? clean : aiSearchTextWithContext(clean, priorMessages);
-        let results = isRefinement
-          ? refineAiResultsFromPrevious(previousResources, clean)
-          : selectAiCandidates(catalog, searchText);
+        const searchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+        let results = contextResources.length
+          ? uniqueAiResources([...(refineAiResultsFromPrevious(contextResources, clean) || []), ...contextResources])
+          : (isRefinement ? refineAiResultsFromPrevious(previousResources, clean) : selectAiCandidates(catalog, searchText));
         if (!results.length && isRefinement) {
           results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
         }
         let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
         try {
           const geminiCandidates = isRefinement
-            ? (results.length ? results : previousResources)
-            : candidatePoolForGemini(catalog, searchText, results);
+            ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
+            : uniqueAiResources([...contextResources, ...candidatePoolForGemini(catalog, searchText, results)]);
           const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
           if (gemini?.limited) {
             renderAnonymousLimit(clean);
@@ -3555,7 +3932,7 @@
         const now = new Date().toISOString();
         anonymousAiMessages = [
           ...priorMessages,
-          { role: 'user', text: clean, created_at: now },
+          { role: 'user', text: clean, created_at: now, context: contextResources },
           { role: 'assistant', text: answer, created_at: now }
         ].slice(-12);
         anonymousResourceRounds = [
@@ -3564,6 +3941,7 @@
             query: clean,
             answer,
             resources: results,
+            contextResources,
             created_at: now,
             mode: isRefinement ? 'refine' : 'search',
             changed: didAiResultsChange(previousResources, results)
@@ -3587,6 +3965,7 @@
       run(query);
     });
     bindAskFieldAutosize(root);
+    bindAskContextPicker(document.getElementById('anonymousAskForm'), { getCatalog: loadAccountAiCatalog });
 
     if (cleanInitial) await run(cleanInitial);
   }
@@ -3778,7 +4157,11 @@
             </section>
             <div class="oc-ask-input-dock">
               <form class="oc-ask-form" aria-label="Ask OpenConstruction follow-up">
-                <textarea name="q" class="form-control" rows="1" placeholder="Ask about datasets, models, workflows, or OERs..."></textarea>
+                <div class="oc-ask-context-layer">
+                  <div class="oc-ask-context-chips" data-ask-context-chips hidden></div>
+                  <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
+                </div>
+                <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context"></textarea>
                 <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
               </form>
               <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
@@ -4212,7 +4595,7 @@
             const input = document.querySelector('.oc-ask-form [name="q"]');
             if (output) output.hidden = true;
             if (examples) examples.hidden = false;
-            if (input) input.placeholder = 'Ask about datasets, models, workflows, or OERs...';
+            if (input) input.placeholder = 'Ask about OpenConstruction resources or type @ to add context';
             document.querySelector('.oc-ask-workspace')?.classList.remove('has-results');
           }
           accountDataExport.search_sessions = currentAiChats;
@@ -4226,6 +4609,7 @@
       if (!clean) return;
       const form = document.querySelector('.oc-ask-form');
       if (form?.dataset.busy === 'true') return;
+      const contextResources = selectedAskContext(form);
       setAskFormBusy(form, true);
       const output = document.getElementById('accountAiOutput');
       const threadEl = document.getElementById('accountAiThread');
@@ -4239,7 +4623,7 @@
         if (resultsShell) resultsShell.hidden = true;
         threadEl.innerHTML = [
           ...priorMessages,
-          { role: 'user', text: clean },
+          { role: 'user', text: clean, context: contextResources },
           { role: 'assistant', text: 'Searching OpenConstruction resources...' }
         ].map((message, index, rows) => accountAiMessageHtml(message, { loading: message.role === 'assistant' && index === rows.length - 1 })).join('');
         resultsEl.innerHTML = '';
@@ -4248,12 +4632,12 @@
       const catalog = await loadAccountAiCatalog();
       const priorRounds = aiResourceRounds(existingChat);
       const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
-      const previousResources = latestRound?.resources || existingChat?.resources || [];
-      const isRefinement = Boolean(previousResources.length && shouldRefineAiResults(clean));
-      const searchText = isRefinement ? clean : aiSearchTextWithContext(clean, priorMessages);
-      let results = isRefinement
-        ? refineAiResultsFromPrevious(previousResources, clean)
-        : [];
+      const previousResources = contextResources.length ? contextResources : (latestRound?.resources || existingChat?.resources || []);
+      const isRefinement = Boolean(previousResources.length && (contextResources.length || shouldRefineAiResults(clean)));
+      const searchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+      let results = contextResources.length
+        ? uniqueAiResources([...(refineAiResultsFromPrevious(contextResources, clean) || []), ...contextResources])
+        : (isRefinement ? refineAiResultsFromPrevious(previousResources, clean) : []);
       if (!results.length && !isRefinement) {
         results = selectAiCandidates(catalog, searchText);
       }
@@ -4267,8 +4651,8 @@
       } else if (results.length || !isRefinement) {
         try {
           const geminiCandidates = isRefinement
-            ? (results.length ? results : previousResources)
-            : candidatePoolForGemini(catalog, searchText, results);
+            ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
+            : uniqueAiResources([...contextResources, ...candidatePoolForGemini(catalog, searchText, results)]);
           const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
           if (gemini?.limited) {
             answer = gemini.answer;
@@ -4306,6 +4690,7 @@
           query: clean,
           answer,
           resources: results,
+          contextResources,
           created_at: now,
           mode: isRefinement ? 'refine' : 'search',
           changed: didAiResultsChange(previousResources, results)
@@ -4318,7 +4703,7 @@
           updated_at: now,
           messages: [
             ...priorMessages,
-            { role: 'user', text: clean, created_at: now },
+            { role: 'user', text: clean, created_at: now, context: contextResources },
             { role: 'assistant', text: answer, created_at: now }
           ],
           resources: results,
@@ -4332,7 +4717,7 @@
           created_at: now,
           updated_at: now,
           messages: [
-            { role: 'user', text: clean, created_at: now },
+            { role: 'user', text: clean, created_at: now, context: contextResources },
             { role: 'assistant', text: answer, created_at: now }
           ],
           resources: results,
@@ -4359,6 +4744,7 @@
         submitAccountAsk(input?.value || '');
       });
       bindAskFieldAutosize(document);
+      bindAskContextPicker(form, { getCatalog: loadAccountAiCatalog });
       const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
       if (initialQuery && input && !form.dataset.initialAskHandled) {
         form.dataset.initialAskHandled = 'true';
@@ -4370,7 +4756,7 @@
         if (input) {
           input.focus();
         }
-        resetAskField(form, 'Ask about datasets, models, workflows, or OERs...');
+        resetAskField(form, 'Ask about OpenConstruction resources or type @ to add context');
         const examples = document.querySelector('.oc-ask-examples');
         if (examples) examples.hidden = false;
         const output = document.getElementById('accountAiOutput');
