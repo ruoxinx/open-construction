@@ -24,8 +24,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
-
   <style>
     :root{
       --oc-bg:#ffffff; --oc-text:#1e2a36; --oc-subtle:#4f5d6c; --oc-border:#e7edf3;
@@ -163,13 +161,42 @@
       margin:0;
     }
     .section-note{ color:var(--oc-subtle); font-size:.9rem; }
+    .benchmark-list-head{
+      align-items:flex-end;
+      gap:.75rem 1rem;
+    }
+    .benchmark-title-wrap{
+      display:flex;
+      align-items:baseline;
+      gap:.65rem;
+      min-width:0;
+    }
+    .benchmark-title-wrap .section-note{
+      display:inline-flex;
+      align-items:center;
+      min-height:24px;
+      border:1px solid #dbe4ee;
+      border-radius:999px;
+      background:#f8fafc;
+      color:#64748b;
+      font-size:.78rem;
+      font-weight:700;
+      line-height:1;
+      padding:.25rem .55rem;
+      white-space:nowrap;
+    }
+    .benchmark-title-wrap .section-note:empty{ display:none; }
     .benchmark-section-tools{
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap:.8rem;
-      flex-wrap:wrap;
-      min-width:min(100%, 430px);
+      gap:.65rem;
+      flex:1 1 320px;
+      min-width:280px;
+    }
+    .benchmark-section-tools .search-mini{
+      width:min(100%, 326px);
+      margin-left:auto;
     }
     .benchmark-grid{
       display:grid;
@@ -274,6 +301,24 @@
       text-decoration:underline;
       text-underline-offset:2px;
     }
+    .benchmark-card-best{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.75rem;
+      width:100%;
+      border-top:1px solid #edf2f7;
+      padding-top:.55rem;
+      color:#64748b;
+      font-size:.8rem;
+      line-height:1.25;
+    }
+    .benchmark-card-best strong{
+      color:#1d4ed8;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+      font-size:.92rem;
+      white-space:nowrap;
+    }
     .benchmark-actions{
       display:flex;
       align-items:center;
@@ -350,6 +395,56 @@
     }
     .result-chart-note:empty{display:none}
     .result-chart-mount{padding:.75rem 1rem 1rem;min-height:260px;display:flex;align-items:center;justify-content:center}
+    .leaderboard-table-shell{
+      margin:0 1rem 1rem;
+      padding-top:.9rem;
+      border-top:1px solid #e2e8f0;
+      overflow-x:auto;
+    }
+    .leaderboard-table-title{
+      margin:0 0 .55rem;
+      color:#64748b;
+      font-size:.72rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .leaderboard-data-table{
+      width:100%;
+      min-width:640px;
+      border-collapse:collapse;
+      font-size:.86rem;
+    }
+    .leaderboard-data-table th{
+      padding:.55rem .65rem;
+      border-bottom:1px solid #dbe4ee;
+      color:#64748b;
+      font-size:.7rem;
+      font-weight:800;
+      letter-spacing:.07em;
+      text-align:left;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .leaderboard-data-table td{
+      padding:.58rem .65rem;
+      border-top:1px solid rgba(226,232,240,.72);
+      color:#1e293b;
+      vertical-align:top;
+    }
+    .leaderboard-data-table tbody tr:nth-child(even){ background:#f8fafc; }
+    .leaderboard-data-table .rank-cell,
+    .leaderboard-data-table .score-cell{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+      white-space:nowrap;
+    }
+    .leaderboard-data-table .score-cell{
+      color:#1d4ed8;
+      font-weight:800;
+      text-align:right;
+    }
+    .leaderboard-data-table a{ color:var(--oc-link); text-decoration:none; }
+    .leaderboard-data-table a:hover{ text-decoration:underline; }
     .bar-chart-wrap{width:100%;overflow:auto}
     .bar-chart-svg{display:block;min-width:672px;max-width:672px;width:100%;height:auto;margin:0 auto;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
     .bar-grid{stroke:#e2e8f0;stroke-width:1;stroke-dasharray:3 3}
@@ -378,6 +473,26 @@
       padding:1.35rem;
       text-align:center;
     }
+    .state-card{
+      grid-column:1 / -1;
+      border:1px solid var(--oc-border);
+      border-radius:12px;
+      background:#fff;
+      box-shadow:var(--oc-shadow);
+      color:#475569;
+      padding:1.35rem;
+      text-align:left;
+    }
+    .state-card h3{
+      margin:0 0 .35rem;
+      color:var(--oc-ink);
+      font-size:1.05rem;
+      font-weight:750;
+    }
+    .state-card p{ margin:0; line-height:1.55; }
+    .state-card a{ color:var(--oc-link); font-weight:700; text-decoration:none; }
+    .state-card a:hover{ text-decoration:underline; }
+    .filter-empty{ margin-top:1rem; }
 
     .search-mini{
       width:260px;
@@ -404,7 +519,9 @@
       .task-back-link{ width:calc(100vw - 48px); max-width:100%; }
       .task-media-card{ justify-self:start; width:100%; }
       .section-head{ align-items:flex-start; }
-      .benchmark-section-tools{ justify-content:flex-start; min-width:0; width:100%; }
+      .benchmark-list-head{ align-items:flex-start; }
+      .benchmark-title-wrap{ width:100%; }
+      .benchmark-section-tools{ justify-content:flex-start; min-width:0; width:100%; flex-basis:100%; }
       .search-mini{ width:100%; }
       .benchmark-grid{ grid-template-columns:1fr; }
       .benchmark-card-media{ width:100%;height:auto;aspect-ratio:16/9;flex:none; }
@@ -416,6 +533,7 @@
       .result-control.benchmark-control .form-select,
       .result-control.metric-control .form-select,
       .result-control.plot-control .form-select{ width:100%; }
+      .leaderboard-table-shell{ margin-right:.75rem; margin-left:.75rem; }
     }
     @media (min-width: 821px) and (max-width: 1050px){
       .benchmark-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
@@ -489,11 +607,11 @@
 <main class="container oc-container">
   <section class="oc-section">
     <div class="section-head benchmark-list-head">
-      <div>
+      <div class="benchmark-title-wrap">
         <h2 class="section-title">Benchmarks</h2>
+        <div class="section-note" id="cardCountNote"></div>
       </div>
       <div class="benchmark-section-tools">
-        <div class="section-note" id="cardCountNote"></div>
         <div class="search-mini">
           <div class="d-flex align-items-center gap-2 px-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
@@ -507,6 +625,7 @@
     <div class="benchmark-grid" id="benchmarkCards">
       <div class="empty-card">Loading benchmarks...</div>
     </div>
+    <div class="empty-card filter-empty" id="benchmarkFilterEmpty" hidden>No benchmarks match your filter.</div>
   </section>
 
   <section class="oc-section" id="leaderboardSection">
@@ -520,7 +639,7 @@
         <div class="result-control benchmark-control">
           <label for="leaderboardBenchmarkSelect">Benchmark</label>
           <select class="form-select" id="leaderboardBenchmarkSelect" aria-label="Leaderboard benchmark">
-            <option selected>All benchmarks</option>
+            <option selected>Loading benchmark...</option>
           </select>
         </div>
         <div class="result-control metric-control">
@@ -540,6 +659,10 @@
       <p class="result-chart-note" id="leaderboardNote"></p>
       <div class="result-chart-mount" id="leaderboardBody">
         <div class="empty-state">Loading results...</div>
+      </div>
+      <div class="leaderboard-table-shell" id="leaderboardTableWrap" hidden>
+        <h3 class="leaderboard-table-title">Leaderboard Data</h3>
+        <div id="leaderboardTable"></div>
       </div>
     </div>
   </section>
@@ -600,7 +723,93 @@
     .replaceAll('"','&quot;').replaceAll("'","&#39;");
   const normArray = (v) => Array.isArray(v) ? v.filter(Boolean) : (v ? [v] : []);
   const normStr = (v) => (v == null ? '' : String(v).trim());
+  const DATA_LOAD_ERRORS = [];
   function canonKey(s){ return normStr(s).toLowerCase().replace(/\s+/g,' ').trim(); }
+  function taskPageUrl(key){
+    const url = new URL(location.href);
+    url.hash = '';
+    url.search = key ? `?key=${encodeURIComponent(key)}` : '';
+    return url.href;
+  }
+  function setMeta(selector, attr, value){
+    const el = document.querySelector(selector);
+    if(el && value) el.setAttribute(attr, value);
+  }
+  function updateDynamicMeta(label, key, description){
+    const cleanLabel = normStr(label) || 'Benchmark Task';
+    const cleanDescription = normStr(description) || `Explore OpenConstruction benchmarks associated with ${cleanLabel}.`;
+    const title = `Task Insight | ${cleanLabel} | OpenConstruction`;
+    document.title = title;
+    setMeta('meta[name="description"]', 'content', cleanDescription);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', cleanDescription);
+    setMeta('meta[property="og:url"]', 'content', taskPageUrl(key));
+    setMeta('link[rel="canonical"]', 'href', taskPageUrl(key));
+  }
+  function setLeaderboardDisabled(disabled){
+    ['leaderboardBenchmarkSelect', 'leaderboardMetricSelect', 'leaderboardPlotSelect'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.disabled = disabled;
+    });
+  }
+  function hideLeaderboardTable(){
+    const tableWrap = document.getElementById('leaderboardTableWrap');
+    const table = document.getElementById('leaderboardTable');
+    if(tableWrap) tableWrap.hidden = true;
+    if(table) table.innerHTML = '';
+  }
+  function renderDataLoadError(){
+    document.getElementById('pageTitle').textContent = 'Benchmark data unavailable';
+    document.getElementById('pageSubtitle').textContent = 'The benchmark source could not be loaded. Please try refreshing the page.';
+    updateDynamicMeta('Benchmark data unavailable', '', 'The OpenConstruction benchmark source could not be loaded.');
+    const cards = document.getElementById('benchmarkCards');
+    if(cards){
+      cards.innerHTML = `
+        <div class="state-card" role="alert">
+          <h3>Could not load benchmark data</h3>
+          <p>The page is reachable, but the benchmark results feed did not load. Refresh the page or return to the <a href="benchmark_explorer.html">Benchmark Explorer</a>.</p>
+        </div>`;
+    }
+    const count = document.getElementById('cardCountNote');
+    if(count) count.textContent = '';
+    const media = document.getElementById('taskMedia');
+    if(media){
+      media.hidden = true;
+      media.innerHTML = '';
+    }
+    document.getElementById('taskHeroGrid')?.classList.add('no-media');
+    document.getElementById('leaderboardBody').innerHTML = '<div class="empty-state" role="alert">Benchmark results could not be loaded.</div>';
+    const note = document.getElementById('leaderboardNote');
+    if(note) note.textContent = '';
+    setLeaderboardDisabled(true);
+    hideLeaderboardTable();
+  }
+  function renderTaskNotFound(requested){
+    const label = normStr(requested) || 'Task not found';
+    document.getElementById('pageTitle').textContent = 'Task not found';
+    document.getElementById('pageSubtitle').textContent = label === 'Task not found'
+      ? 'Choose a task from the Benchmark Explorer to view linked benchmarks.'
+      : `No benchmark task matches "${label}".`;
+    updateDynamicMeta('Task not found', '', 'No matching OpenConstruction benchmark task was found.');
+    const cards = document.getElementById('benchmarkCards');
+    if(cards){
+      cards.innerHTML = `
+        <div class="state-card">
+          <h3>No matching task</h3>
+          <p>Open the <a href="benchmark_explorer.html">Benchmark Explorer</a> and choose a task from the current index.</p>
+        </div>`;
+    }
+    const count = document.getElementById('cardCountNote');
+    if(count) count.textContent = '';
+    const media = document.getElementById('taskMedia');
+    if(media){
+      media.hidden = true;
+      media.innerHTML = '';
+    }
+    document.getElementById('taskHeroGrid')?.classList.add('no-media');
+    const leaderboard = document.getElementById('leaderboardSection');
+    if(leaderboard) leaderboard.hidden = true;
+  }
   function niceLabel(s){
     const raw = normStr(s);
     if(!raw) return '';
@@ -670,13 +879,17 @@
       );
     }catch(err){
       console.warn('Could not load', url, err);
+      DATA_LOAD_ERRORS.push({ url, err });
       return [];
     }
   }
 
   async function loadBenchmarkPayload(){
     if(window.OCData?.loadFirstJson){
-      return await window.OCData.loadFirstJson('benchmarkResults', 'data/benchmark-results.json') || { benchmarks: [] };
+      const data = await window.OCData.loadFirstJson('benchmarkResults', 'data/benchmark-results.json');
+      if(data) return data;
+      DATA_LOAD_ERRORS.push({ url:'data/benchmark-results.json', err:new Error('No benchmark results source loaded') });
+      return { benchmarks: [] };
     }
     try {
       const res = await fetch('data/benchmark-results.json', { cache:'no-store' });
@@ -684,6 +897,7 @@
       return await res.json();
     } catch (err) {
       console.warn('Could not load benchmark-results.json', err);
+      DATA_LOAD_ERRORS.push({ url:'data/benchmark-results.json', err });
       return { benchmarks: [] };
     }
   }
@@ -699,7 +913,10 @@
     if(externalUrl){
       return `<a href="${esc(externalUrl)}" class="btn btn-sm btn-primary benchmark-result-btn" target="_blank" rel="noopener">View Results</a>`;
     }
-    return `<a href="benchmark_results.html?id=${encodeURIComponent(board.id)}" class="btn btn-sm btn-primary benchmark-result-btn">View Results</a>`;
+    const id = normStr(board.id);
+    return id
+      ? `<a href="benchmark_results.html?id=${encodeURIComponent(id)}" class="btn btn-sm btn-primary benchmark-result-btn">View Results</a>`
+      : '<span class="result-unavailable">Results unavailable</span>';
   }
 
   function boardHasResults(board){
@@ -844,6 +1061,7 @@
     const authors = joinAuthors(ds?.authors);
     const year = normStr(ds?.year || board?.year || '');
     const license = normStr(ds?.license || '');
+    const best = bestResultForBoard(board);
     const detailHref = datasetDetailHref(ds);
     const titleHref = detailHref || datasetAccessHref(ds, board);
     const titleExternal = titleHref && titleHref.startsWith('http');
@@ -851,8 +1069,11 @@
       ? `<a href="${esc(titleHref)}" ${titleExternal ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
       : esc(title);
     const yearLicense = [year ? esc(year) : '', license ? licenseInline(license) : ''].filter(Boolean).join(' &bull; ');
+    const bestHtml = best
+      ? `<div class="benchmark-card-best"><span>Top ${esc(metricDisplayLabel(best.metricDef))}</span><strong>${esc(formatScore(best.score, best.metricDef))}</strong></div>`
+      : '';
     return `
-      <article class="benchmark-card" data-row="benchmark">
+      <article class="benchmark-card" data-filter-row="benchmark">
         <div class="benchmark-card-media">
           <img src="${esc(getDatasetImage(ds))}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/img/icon.png';">
         </div>
@@ -866,6 +1087,7 @@
               ${(authors && yearLicense) ? '<span aria-hidden="true">&bull;</span>' : ''}
               ${yearLicense ? `<span class="benchmark-year-license">${yearLicense}</span>` : ''}
             </div>` : ''}
+          ${bestHtml}
           <div class="benchmark-actions">
             ${resultsCell(board)}
             ${bookmarkButton(ds, board, title)}
@@ -880,6 +1102,8 @@
     el.innerHTML = benchmarks.length
       ? benchmarks.map(item => benchmarkCard(item.dataset, item.board)).join('')
       : '<div class="empty-card">No benchmarks linked to this task yet.</div>';
+    const filterEmpty = document.getElementById('benchmarkFilterEmpty');
+    if(filterEmpty) filterEmpty.hidden = true;
     window.OCBookmark?.mount?.(el);
   }
 
@@ -913,30 +1137,33 @@
     const metricSelect = document.getElementById('leaderboardMetricSelect');
     const plotSelect = document.getElementById('leaderboardPlotSelect');
     const note = document.getElementById('leaderboardNote');
+    const tableWrap = document.getElementById('leaderboardTableWrap');
+    const tableMount = document.getElementById('leaderboardTable');
     if(!body || !benchmarkSelect || !metricSelect || !plotSelect) return;
 
     const availableBoards = normArray(boards).filter(board => numericMetricDefs(board).length);
     if(!availableBoards.length){
       body.innerHTML = '<div class="empty-state">No numeric reported results are available for this task yet.</div>';
+      if(note) note.textContent = '';
+      setLeaderboardDisabled(true);
+      hideLeaderboardTable();
       return;
     }
+    setLeaderboardDisabled(false);
 
     const boardById = new Map(availableBoards.map((board, index) => [normStr(board.id) || `board-${index}`, board]));
-    const previousBenchmark = benchmarkSelect.value || '__all__';
-    benchmarkSelect.innerHTML = [
-      '<option value="__all__">All benchmarks</option>',
-      ...availableBoards.map((board, index) => {
+    const defaultBenchmark = boardById.keys().next().value || '';
+    const previousBenchmark = benchmarkSelect.value || defaultBenchmark;
+    benchmarkSelect.innerHTML = availableBoards.map((board, index) => {
         const id = normStr(board.id) || `board-${index}`;
         const ds = datasetById.get(canonKey(board.dataset_id));
         return `<option value="${esc(id)}">${esc(truncateLabel(datasetTitle(ds, board), 64))}</option>`;
-      })
-    ].join('');
-    benchmarkSelect.value = boardById.has(previousBenchmark) ? previousBenchmark : '__all__';
+      }).join('');
+    benchmarkSelect.value = boardById.has(previousBenchmark) ? previousBenchmark : defaultBenchmark;
 
     function selectedBoards(){
-      if(benchmarkSelect.value === '__all__') return availableBoards;
       const board = boardById.get(benchmarkSelect.value);
-      return board ? [board] : availableBoards;
+      return board ? [board] : (defaultBenchmark && boardById.has(defaultBenchmark) ? [boardById.get(defaultBenchmark)] : []);
     }
 
     function metricOptions(activeBoards){
@@ -987,10 +1214,24 @@
           : b.score - a.score || a.benchmark.localeCompare(b.benchmark))
         .map((item, index) => ({ ...item, rank: index + 1 }));
     }
+    function rowDisplayLabel(item, maxLength){
+      return truncateLabel(item.method, maxLength);
+    }
+    function rowResultHref(item){
+      const id = normStr(item.board?.id);
+      return item.board?.results_url || (id ? `benchmark_results.html?id=${encodeURIComponent(id)}` : '#leaderboardSection');
+    }
+    function rowResultTarget(item){
+      return item.board?.results_url ? 'target="_blank" rel="noopener"' : '';
+    }
 
     function renderBar(rows){
-      const maxVal = Math.max(...rows.map(item => Math.abs(item.score)), 0);
-      const dispMax = maxVal <= 0 ? 1 : maxVal * 1.08;
+      const scores = rows.map(item => item.score);
+      const rawMin = Math.min(...scores, 0);
+      const rawMax = Math.max(...scores, 0);
+      const dispMin = rawMin < 0 ? rawMin * 1.08 : 0;
+      const dispMax = rawMax > 0 ? rawMax * 1.08 : 0;
+      const span = Math.max(dispMax - dispMin, .001);
       const LW = 210;
       const TW = 672;
       const BA = TW - LW - 36;
@@ -1000,30 +1241,36 @@
       const TM = 36;
       const BM = 24;
       const height = TM + rows.length * RH + BM;
-      const xAt = value => LW + (Math.max(0, value) / dispMax) * BA;
+      const xAt = value => LW + ((value - dispMin) / span) * BA;
+      const zeroX = xAt(0);
       return `
         <div class="bar-chart-wrap">
           <svg class="bar-chart-svg" viewBox="0 0 ${TW} ${height}" role="img" aria-label="Task leaderboard bar chart">
             ${Array.from({ length: 6 }, (_, i) => {
-              const tick = dispMax * i / 5;
+              const tick = dispMin + span * i / 5;
               const x = xAt(tick);
               return `<line class="bar-grid" x1="${x.toFixed(1)}" y1="${TM - 4}" x2="${x.toFixed(1)}" y2="${(TM + rows.length * RH).toFixed(1)}"></line><text class="bar-tick-label" x="${x.toFixed(1)}" y="${TM - 10}" text-anchor="middle">${esc(formatChartTick(tick))}</text>`;
             }).join('')}
             <line class="bar-axis-top" x1="${LW}" y1="${TM - 4}" x2="${LW + BA}" y2="${TM - 4}"></line>
+            <line class="bar-rule" x1="${zeroX.toFixed(1)}" y1="${TM - 4}" x2="${zeroX.toFixed(1)}" y2="${(TM + rows.length * RH).toFixed(1)}"></line>
             ${rows.map((item, index) => {
               const y = TM + index * RH;
-              const barW = Math.max(2, xAt(item.score) - LW);
+              const valueX = xAt(item.score);
+              const barX = Math.min(zeroX, valueX);
+              const barW = Math.max(2, Math.abs(valueX - zeroX));
               const metric = metricDisplayLabel(item.metricDef);
-              const href = item.board?.results_url || `benchmark_results.html?id=${encodeURIComponent(item.board.id)}`;
+              const href = rowResultHref(item);
               const score = formatScore(item.score, item.metricDef);
+              const scoreX = item.score < 0 ? barX - 5 : barX + barW + 5;
+              const scoreAnchor = item.score < 0 ? 'end' : 'start';
               return `
-                <g data-row="benchmark">
+                <g data-chart-row="benchmark">
                   <title>${esc(item.benchmark)} - ${esc(item.method)}: ${esc(score)} ${esc(metric)}</title>
-                  <a href="${esc(href)}" ${item.board?.results_url ? 'target="_blank" rel="noopener"' : ''}>
-                    <text class="bar-name" x="${LW - 6}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="end" dominant-baseline="middle">${esc(truncateLabel(item.method))}</text>
+                  <a href="${esc(href)}" ${rowResultTarget(item)}>
+                    <text class="bar-name" x="${LW - 6}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="end" dominant-baseline="middle">${esc(rowDisplayLabel(item, 32))}</text>
                   </a>
-                  <rect class="bar-shape" x="${LW}" y="${(y + 1).toFixed(1)}" width="${barW.toFixed(1)}" height="${BH - 2}" rx="2"></rect>
-                  <text class="bar-score" x="${(LW + barW + 5).toFixed(1)}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="start" dominant-baseline="middle">${esc(score)}</text>
+                  <rect class="bar-shape" x="${barX.toFixed(1)}" y="${(y + 1).toFixed(1)}" width="${barW.toFixed(1)}" height="${BH - 2}" rx="2"></rect>
+                  <text class="bar-score" x="${scoreX.toFixed(1)}" y="${(y + BH / 2 + 1).toFixed(1)}" text-anchor="${scoreAnchor}" dominant-baseline="middle">${esc(score)}</text>
                 </g>`;
             }).join('')}
           </svg>
@@ -1061,25 +1308,66 @@
               const x = xFor(index);
               const y = yFor(item.score);
               const score = formatScore(item.score, item.metricDef);
-              const href = item.board?.results_url || `benchmark_results.html?id=${encodeURIComponent(item.board.id)}`;
-              return `<g data-row="benchmark"><a href="${esc(href)}" ${item.board?.results_url ? 'target="_blank" rel="noopener"' : ''}><circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"><title>#${item.rank} ${esc(item.benchmark)} - ${esc(item.method)}: ${esc(score)}</title></circle></a><text class="scatter-score" x="${x.toFixed(1)}" y="${Math.max(10, y - 9).toFixed(1)}" text-anchor="middle">${esc(score)}</text><text class="scatter-rank" x="${x.toFixed(1)}" y="${H - B + 17}" text-anchor="middle">#${item.rank}</text><text class="scatter-label" x="${x.toFixed(1)}" y="${H - B + 31}" text-anchor="end" transform="rotate(-45 ${x.toFixed(1)} ${H - B + 31})">${esc(truncateLabel(item.method, 18))}</text></g>`;
+              const href = rowResultHref(item);
+              return `<g data-chart-row="benchmark"><a href="${esc(href)}" ${rowResultTarget(item)}><circle class="scatter-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"><title>#${item.rank} ${esc(item.benchmark)} - ${esc(item.method)}: ${esc(score)}</title></circle></a><text class="scatter-score" x="${x.toFixed(1)}" y="${Math.max(10, y - 9).toFixed(1)}" text-anchor="middle">${esc(score)}</text><text class="scatter-rank" x="${x.toFixed(1)}" y="${H - B + 17}" text-anchor="middle">#${item.rank}</text><text class="scatter-label" x="${x.toFixed(1)}" y="${H - B + 31}" text-anchor="end" transform="rotate(-45 ${x.toFixed(1)} ${H - B + 31})">${esc(rowDisplayLabel(item, 18))}</text></g>`;
             }).join('')}
           </svg>
         </div>`;
+    }
+    function renderAccessibleTable(rows){
+      const metric = rows[0] ? metricDisplayLabel(rows[0].metricDef) : 'Metric';
+      return `
+        <table class="leaderboard-data-table" aria-describedby="leaderboardNote">
+          <caption class="visually-hidden">Leaderboard rows for ${esc(metric)}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Benchmark</th>
+              <th scope="col">Method</th>
+              <th scope="col">Metric</th>
+              <th scope="col">Direction</th>
+              <th scope="col">Score</th>
+              <th scope="col">Results</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(item => {
+              const score = formatScore(item.score, item.metricDef);
+              const direction = normStr(item.metricDef?.direction || 'higher');
+              const href = rowResultHref(item);
+              return `
+                <tr>
+                  <td class="rank-cell">#${item.rank}</td>
+                  <td>${esc(item.benchmark)}</td>
+                  <td>${esc(item.method)}</td>
+                  <td>${esc(metricDisplayLabel(item.metricDef))}</td>
+                  <td>${esc(direction)}</td>
+                  <td class="score-cell">${esc(score)}</td>
+                  <td><a href="${esc(href)}" ${rowResultTarget(item)}>Open</a></td>
+                </tr>`;
+            }).join('')}
+          </tbody>
+        </table>`;
     }
 
     function renderPlot(){
       const rows = rowsForSelection();
       if(!rows.length){
         body.innerHTML = '<div class="empty-state">No rows are available for the selected benchmark and metric.</div>';
+        if(note) note.textContent = '';
+        hideLeaderboardTable();
         return;
       }
       const metric = metricDisplayLabel(rows[0].metricDef);
       if(note){
-        const selectedLabel = benchmarkSelect.selectedOptions[0]?.textContent || 'All benchmarks';
+        const selectedLabel = benchmarkSelect.selectedOptions[0]?.textContent || 'Selected benchmark';
         note.textContent = `${selectedLabel} - ${metric}`;
       }
       body.innerHTML = plotSelect.value === 'scatter' ? renderScatter(rows) : renderBar(rows);
+      if(tableWrap && tableMount){
+        tableMount.innerHTML = renderAccessibleTable(rows);
+        tableWrap.hidden = false;
+      }
     }
 
     populateMetrics();
@@ -1094,10 +1382,15 @@
 
   function applyRowFilter(q){
     const needle = q.trim().toLowerCase();
-    document.querySelectorAll('[data-row="benchmark"]').forEach(row=>{
+    const rows = Array.from(document.querySelectorAll('#benchmarkCards [data-filter-row="benchmark"]'));
+    let visibleCount = 0;
+    rows.forEach(row=>{
       const ok = !needle || row.textContent.toLowerCase().includes(needle);
       row.style.display = ok ? '' : 'none';
+      if(ok) visibleCount += 1;
     });
+    const filterEmpty = document.getElementById('benchmarkFilterEmpty');
+    if(filterEmpty) filterEmpty.hidden = !needle || visibleCount > 0 || rows.length === 0;
   }
 
   async function init(){
@@ -1127,17 +1420,26 @@
     const key = normalizedRequested.canon || canonKey(requested);
     const label = normalizedRequested.label || requested || key || 'Task';
 
-    document.title = `Task Insight | ${label} | OpenConstruction`;
+    const allBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
+    const benchmarkLoadFailed = DATA_LOAD_ERRORS.some(item => /benchmark-results\.json/i.test(item.url || '')) && !allBoards.length;
+    if(benchmarkLoadFailed){
+      renderDataLoadError();
+      return;
+    }
+    const allTaskBoards = allBoards.filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    if(!requested || (!normalizedRequested.entry && !allTaskBoards.length)){
+      renderTaskNotFound(requested);
+      return;
+    }
+    document.getElementById('leaderboardSection').hidden = false;
     document.getElementById('pageTitle').textContent = label;
 
-    const allBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
-    const exactBoards = allBoards
-      .filter(board => boardHasResults(board))
-      .filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const exactBoards = allTaskBoards.filter(board => boardHasResults(board));
     const taskDefinition = normalizedRequested.entry?.description
       || exactBoards.map(board => normStr(board.task_description)).find(Boolean)
       || 'Task definition not available yet.';
     document.getElementById('pageSubtitle').textContent = taskDefinition;
+    updateDynamicMeta(label, key, taskDefinition);
     const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
     const matchedDatasetIds = new Set(exactBoards.map(board => canonKey(board.dataset_id)).filter(Boolean));
     const requestedTaskId = normalizedRequested.entry?.id || '';

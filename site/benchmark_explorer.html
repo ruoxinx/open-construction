@@ -405,6 +405,50 @@
       margin-bottom:1rem;
     }
     .section-inline-head h2{margin-bottom:0}
+    .benchmark-collection-note{
+      color:var(--oc-subtle);
+      font-size:.84rem;
+      font-weight:650;
+      line-height:1.35;
+      white-space:nowrap;
+    }
+    .benchmark-guidance{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:12px;
+      margin:-.2rem 0 1.2rem;
+    }
+    .benchmark-guidance-panel{
+      min-width:0;
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      background:#f8fafc;
+      padding:.82rem .95rem;
+    }
+    .benchmark-guidance-panel h3{
+      margin:0 0 .35rem;
+      color:var(--oc-ink);
+      font-size:.84rem;
+      font-weight:800;
+      letter-spacing:.04em;
+      line-height:1.2;
+      text-transform:uppercase;
+    }
+    .benchmark-guidance-panel p{
+      margin:0;
+      color:#526173;
+      font-size:.88rem;
+      line-height:1.5;
+    }
+    .benchmark-guidance-panel a{
+      color:var(--oc-link);
+      font-weight:750;
+      text-decoration:none;
+      text-underline-offset:3px;
+    }
+    .benchmark-guidance-panel a:hover{
+      text-decoration:underline;
+    }
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:10px; box-shadow:var(--oc-shadow);
       padding:16px; text-decoration:none; color:inherit;
@@ -457,6 +501,7 @@
       .index-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .insight-grid{ grid-template-columns:1fr; }
       .composition-grid{grid-template-columns:1fr}
+      .benchmark-guidance{grid-template-columns:1fr}
 	}
 	
 	/* Mobile: 1 per row */
@@ -471,6 +516,7 @@
       .section-title-row{align-items:flex-start;flex-direction:column}
       .rank-legend{white-space:normal}
       .section-inline-head{align-items:stretch;flex-direction:column}
+      .benchmark-collection-note{white-space:normal}
       .composition-body{grid-template-columns:1fr}
       .donut-chart{width:120px}
 	}
@@ -525,7 +571,7 @@
     <h1>Benchmark Explorer</h1>
     <div class="benchmark-search-dock mt-3">
       <div class="oc-catalog-search-wrap">
-        <input id="indexSearch" type="text" class="form-control form-control-lg search-input" data-insight-search placeholder="Search benchmark tasks ..." aria-label="Search benchmark tasks">
+        <input id="indexSearch" type="text" class="form-control form-control-lg search-input" data-insight-search placeholder="Search benchmarks..." aria-label="Search benchmarks">
         <button type="button" class="oc-search-arrow" aria-label="Search benchmarks">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
         </button>
@@ -539,8 +585,19 @@
   <section class="oc-section">
     <div class="section-inline-head">
       <div>
-        <h2 class="h2 fw-bold" style="color:var(--oc-ink);">Browse Benchmark Tasks</h2>
+        <h2 class="h2 fw-bold" style="color:var(--oc-ink);">Browse Benchmarks</h2>
       </div>
+      <div class="benchmark-collection-note" id="benchmarkCollectionNote" aria-live="polite"></div>
+    </div>
+    <div class="benchmark-guidance" aria-label="Benchmark card guidance">
+      <article class="benchmark-guidance-panel">
+        <h3>Benchmark Record</h3>
+        <p>Benchmarks are included when a defined task is evaluated on specified data using stated protocols and metrics. Cards organize comparable method results.</p>
+      </article>
+      <article class="benchmark-guidance-panel">
+        <h3>Contribute</h3>
+        <p>Community members can suggest a benchmark or update results through the workspace. <a href="account.html?tab=reports&amp;report=issue&amp;issue_type=benchmark_update&amp;page=https%3A%2F%2Fwww.openconstruction.org%2Fbenchmark_explorer.html&amp;summary=Benchmark%20suggestion%20or%20result%20update&amp;details=Please%20include%20the%20benchmark%20task%2C%20source%20or%20citation%2C%20dataset%20or%20test%20split%2C%20evaluation%20setting%2C%20metric%20names%20and%20values%2C%20and%20model%20or%20method%20names.">Submit benchmark update</a> or email <a href="mailto:support@openconstruction.org?subject=Benchmark%20suggestion%20or%20result%20update">support@openconstruction.org</a>.</p>
+      </article>
     </div>
     <div class="grouped-index is-loading" id="insightGrid">
       <div class="index-grid-skeleton" aria-hidden="true">
@@ -1057,12 +1114,12 @@
     const label = x.label || x.canon;
     const href = hrefBuilder ? hrefBuilder(x) : (x.href || '#');
     return `
-      <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open insight for ${esc(label)}">
+      <a class="index-card" href="${esc(href)}" data-index-card="1" data-label="${esc(label)}" aria-label="Open benchmark for ${esc(label)}">
         ${thumbHtml(x)}
         <div class="index-content">
           <div class="index-title">${esc(label)}</div>
           <div class="index-meta">
-            <span>${iconDataset()} ${esc(pluralCount(x.dsCount, 'dataset', 'datasets'))}</span>
+            <span>${iconDataset()} ${esc(pluralCount(x.dsCount, 'benchmark', 'benchmarks'))}</span>
           </div>
         </div>
       </a>`;
@@ -1071,21 +1128,26 @@
   function primaryGroupLabel(item){
     const labelText = `${item?.label || ''} ${item?.canon || ''} ${item?.searchText || ''}`.toLowerCase();
     const modalities = taskModalities(item);
-    if(modalities.length > 1) return 'General';
-    if(/\b(point cloud|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
+    if(/\b(3d semantic segmentation|point cloud segmentation|point-cloud segmentation|lidar segmentation|laser scan segmentation)\b/.test(labelText)) return 'Point Cloud';
+    if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
+    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
+    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
+    if(/\b(instance segmentation|object detection|semantic segmentation|panoptic segmentation|image classification|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(labelText)) return 'Image';
     if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(labelText)) return 'Video';
     if(/\b(text classification|document classification|information retrieval|named entity recognition|language|caption|question answering|report|specification|text)\b/.test(labelText)) return 'Language';
-    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(labelText)) return '3D';
-    if(/\b(object detection|segmentation|image classification|visual|vision|image|rgb|photo|camera|street view|remote sensing)\b/.test(labelText)) return 'Vision';
-    if(modalities.includes('Point Cloud')) return 'Point Cloud';
+    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(labelText)) return '3D Geometry';
+    if(modalities.includes('Multimodal') || modalities.includes('Multimodal / Vision-Language')) return 'Multimodal / Vision-Language';
+    if(modalities.includes('Point Cloud') || modalities.includes('Point Clouds')) return 'Point Cloud';
+    if((modalities.includes('Image') || modalities.includes('Images') || modalities.includes('CAD Drawings') || modalities.includes('BIM / IFC')) && modalities.includes('Text')) return 'Multimodal / Vision-Language';
+    if(modalities.includes('Time Series')) return 'Time Series';
     if(modalities.includes('Video')) return 'Video';
     if(modalities.includes('Text')) return 'Language';
-    if(modalities.includes('3D')) return '3D';
-    if(modalities.includes('Images') || modalities.includes('Depth / RGB-D') || modalities.includes('Thermal Imagery')) return 'Vision';
-    return 'General';
+    if(modalities.includes('3D') || modalities.includes('3D Geometry')) return '3D Geometry';
+    if(modalities.includes('Image') || modalities.includes('Images') || modalities.includes('Depth / RGB-D') || modalities.includes('Thermal Imagery')) return 'Image';
+    return 'Other';
   }
 
-  const GROUP_ORDER = ['General', 'Vision', 'Video', 'Language', 'Point Cloud', '3D', 'Tables', 'Graphs', 'Time Series', 'Audio'];
+  const GROUP_ORDER = ['Image', 'Point Cloud', 'Multimodal / Vision-Language', 'Time Series', '3D Geometry', 'Video', 'Language', 'BIM / IFC', 'CAD Drawings', 'Tables', 'Graphs', 'Audio', 'Other'];
 
   function groupRank(label){
     const index = GROUP_ORDER.indexOf(label);
@@ -1226,31 +1288,32 @@
     if(/\b(bim|ifc|revit|gbxml|building information model)\b/.test(text)) return 'BIM / IFC';
     if(/\b(video|rgb-d video|sequence|time-lapse|timelapse)\b/.test(text)) return 'Video';
     if(/\b(rgb-d|rgbd|depth|stereo)\b/.test(text)) return 'Depth / RGB-D';
-    if(/\b(mesh|3d model|3d geometry|geometry model|obj|ply)\b/.test(text)) return '3D';
+    if(/\b(mesh|3d model|3d geometry|geometry model|obj|ply)\b/.test(text)) return '3D Geometry';
     if(/\b(thermal|infrared|ir image|thermography)\b/.test(text)) return 'Thermal Imagery';
     if(/\b(text|language|caption|document|report|specification)\b/.test(text)) return 'Text';
     if(/\b(sensor|imu|temperature|iot|wearable|accelerometer|gyroscope)\b/.test(text)) return 'Sensors';
     if(/\b(tabular|csv|spreadsheet|table|metadata|poi|points of interest)\b/.test(text)) return 'Tables';
     if(/\b(map|gis|geospatial|gps|satellite|aerial|uav|drone)\b/.test(text)) return 'Geospatial';
-    if(/\b(image|rgb|photo|photograph|visual|camera|frame|street view|ground rgb|remote sensing)\b/.test(text)) return 'Images';
+    if(/\b(image|rgb|photo|photograph|visual|camera|frame|street view|ground rgb|remote sensing)\b/.test(text)) return 'Image';
     if(/\b(simulation|synthetic)\b/.test(text)) return 'Synthetic';
     if(/\b(audio|speech|sound)\b/.test(text)) return 'Audio';
     return niceLabel(term);
   }
 
   const MODALITY_ORDER = [
-    'Images',
-    'Text',
+    'Image',
     'Point Cloud',
-    '3D',
+    'Multimodal / Vision-Language',
+    'Time Series',
+    '3D Geometry',
     'Video',
+    'Text',
+    'BIM / IFC',
+    'CAD Drawings',
     'Tables',
     'Graphs',
-    'Time Series',
     'Audio',
     'Depth / RGB-D',
-    'CAD Drawings',
-    'BIM / IFC',
     'Thermal Imagery',
     'Geospatial',
     'Sensors',
@@ -1267,14 +1330,15 @@
     const text = values.map(normStr).filter(Boolean).join(' ').toLowerCase();
     const labels = new Set();
     if(!text) return labels;
-    if(/\b(object detection|semantic segmentation|instance segmentation|panoptic segmentation|image classification|visual question answering|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(text)) labels.add('Images');
+    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|vision-language|vision language|multimodal)\b/.test(text)) labels.add('Multimodal / Vision-Language');
+    if(/\b(object detection|semantic segmentation|instance segmentation|panoptic segmentation|image classification|visual question answering|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(text)) labels.add('Image');
     if(/\b(text classification|document classification|question answering|named entity recognition|information retrieval|language model|caption|text|document|report|specification|nlp)\b/.test(text)) labels.add('Text');
-    if(/\b(point cloud|lidar|laser scan|3d scan|point-cloud)\b/.test(text)) labels.add('Point Cloud');
-    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(text)) labels.add('3D');
+    if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(text)) labels.add('Point Cloud');
+    if(/\b(3d|mesh|geometry|reconstruction)\b/.test(text)) labels.add('3D Geometry');
     if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(text)) labels.add('Video');
     if(/\b(table|tabular|metadata|csv|spreadsheet|poi|points of interest)\b/.test(text)) labels.add('Tables');
     if(/\b(graph|knowledge graph|node classification|link prediction)\b/.test(text)) labels.add('Graphs');
-    if(/\b(time series|forecasting|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
+    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
     if(/\b(audio|speech|sound)\b/.test(text)) labels.add('Audio');
     if(/\b(bim|ifc|revit|building information model)\b/.test(text)) labels.add('BIM / IFC');
     if(/\b(cad|drawing|blueprint|floor plan|floorplan|architectural plan)\b/.test(text)) labels.add('CAD Drawings');
@@ -1531,6 +1595,19 @@
     return null;
   }
 
+  function latestBenchmarkResultYear(boards){
+    const years = [];
+    normArray(boards).forEach(board => {
+      const boardYear = resourceYear(board);
+      if(boardYear) years.push(boardYear);
+      normArray(board?.results).forEach(result => {
+        const resultYear = resourceYear(result);
+        if(resultYear) years.push(resultYear);
+      });
+    });
+    return years.length ? Math.max(...years) : null;
+  }
+
   function buildYearRows(datasets, models){
     const map = new Map();
     function touch(year){
@@ -1663,6 +1740,14 @@
     const taskVocabulary = buildTaskVocabulary(taskVocabularyPayload);
     const benchmarkBoards = Array.isArray(benchmarkPayload?.benchmarks) ? benchmarkPayload.benchmarks : [];
     const resultBackedBoards = benchmarkBoards.filter(boardHasResults);
+    const collectionNote = document.getElementById('benchmarkCollectionNote');
+    if(collectionNote){
+      const latestYear = latestBenchmarkResultYear(resultBackedBoards);
+      collectionNote.textContent = [
+        pluralCount(resultBackedBoards.length, 'benchmark record', 'benchmark records'),
+        latestYear ? `Latest result year ${latestYear}` : ''
+      ].filter(Boolean).join(' | ');
+    }
     const resultBackedTaskCanons = new Set(
       resultBackedBoards
         .map(board => normalizeTaskTerm(board.task, taskVocabulary).canon)

@@ -356,8 +356,8 @@
       <div class="modal-header">
         <div>
           <p class="oc-auth-kicker mb-1">OpenConstruction support</p>
-          <h2 class="modal-title oc-resource-title">Report issue</h2>
-          <p class="oc-resource-subtitle">Report broken links, metadata problems, access issues, or platform feedback.</p>
+          <h2 class="modal-title oc-resource-title">Submit feedback</h2>
+          <p class="oc-resource-subtitle">Share benchmark updates, metadata corrections, broken links, access problems, or platform feedback.</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -365,11 +365,12 @@
         <div class="modal-body">
           <div class="oc-resource-sections">
             <fieldset class="oc-resource-fieldset">
-              <legend>Issue details</legend>
+              <legend>Feedback details</legend>
               <div class="oc-resource-form-grid">
                 <div>
-                  <label for="reportIssueType" class="form-label">Issue type</label>
+                  <label for="reportIssueType" class="form-label">Feedback type</label>
                   <select id="reportIssueType" name="issue_type" class="form-select" required>
+                    <option value="Benchmark update">Benchmark update</option>
                     <option value="Broken link">Broken link</option>
                     <option value="Metadata correction">Metadata correction</option>
                     <option value="Access or download problem">Access or download problem</option>
@@ -384,11 +385,11 @@
                 </div>
                 <div class="oc-resource-form-wide">
                   <label for="reportSummary" class="form-label">Summary</label>
-                  <input id="reportSummary" name="summary" class="form-control" placeholder="Short description of the issue" required>
+                  <input id="reportSummary" name="summary" class="form-control" placeholder="Short description" required>
                 </div>
                 <div class="oc-resource-form-wide">
                   <label for="reportDetails" class="form-label">Details</label>
-                  <textarea id="reportDetails" name="details" class="form-control" rows="4" placeholder="What happened? What should be corrected? Include enough context for maintainers to review." required></textarea>
+                  <textarea id="reportDetails" name="details" class="form-control" rows="4" placeholder="What should be added, updated, or corrected? Include enough context for maintainers to review." required></textarea>
                 </div>
               </div>
             </fieldset>
@@ -411,7 +412,7 @@
         <div class="modal-footer">
           <div id="issueReportStatus" class="small text-muted me-auto" role="status"></div>
           <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Submit report</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Submit feedback</button>
         </div>
       </form>
     </div>
@@ -3155,6 +3156,9 @@
     return {
       broken_link: 'Broken link',
       'Broken link': 'Broken link',
+      benchmark: 'Benchmark update',
+      benchmark_update: 'Benchmark update',
+      'Benchmark update': 'Benchmark update',
       metadata: 'Metadata correction',
       'Metadata correction': 'Metadata correction',
       access: 'Access or download',
@@ -3216,7 +3220,7 @@
   function issueReportListHtml(reports, ready = true){
     if (!ready) return '';
     const rows = Array.isArray(reports) ? reports : [];
-    if (!rows.length) return empty('No reports yet', 'Use Report issue when you find a broken link, metadata problem, or platform issue.');
+    if (!rows.length) return empty('No feedback yet', 'Use Submit feedback to share benchmark updates, metadata corrections, broken links, access problems, or platform feedback.');
     return rows.map(report => `
       <article class="oc-account-row oc-activity-row">
         <span class="oc-activity-body">
@@ -3628,6 +3632,10 @@
     if (requestedType && Array.from(form.elements.issue_type.options).some(option => option.value === requestedType)) {
       form.elements.issue_type.value = requestedType;
     }
+    const summary = params.get('summary') || '';
+    if (summary) form.elements.summary.value ||= summary;
+    const details = params.get('details') || '';
+    if (details) form.elements.details.value ||= details;
     form.addEventListener('submit', async event => {
       event.preventDefault();
       const status = document.getElementById('issueReportStatus');
@@ -3647,14 +3655,14 @@
       const { data, error } = await sb.from('site_issue_reports').insert(payload).select('*').single();
       button.disabled = false;
       if (error) {
-        status.textContent = error.message || 'Could not submit report.';
+        status.textContent = error.message || 'Could not submit feedback.';
         return;
       }
       if (typeof onSubmitted === 'function') onSubmitted(data || payload);
       form.reset();
       form.elements.reporter_name.value = user.user_metadata?.full_name || user.user_metadata?.name || '';
       form.elements.reporter_email.value = user.email || '';
-      status.textContent = 'Report submitted. Thank you.';
+      status.textContent = 'Feedback submitted. Thank you.';
       window.setTimeout(() => {
         window.bootstrap?.Modal.getInstance(document.getElementById('reportIssueModal'))?.hide();
         document.querySelector('[data-workspace-tab="reports"]')?.click();
@@ -4351,7 +4359,7 @@
               <div class="oc-activity-actions">
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">${workspaceIcon('upload')}<span>Submit resource</span></button>
                 ${canUseSkills ? `<button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#submitSkillModal">${workspaceIcon('skill')}<span>Submit skill</span></button>` : ''}
-                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Report issue</span></button>
+                <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Submit feedback</span></button>
               </div>
             </div>
             <div id="issueReportsDashboard">
@@ -4364,7 +4372,7 @@
               </div>
             </div>
             <div class="oc-status-section">
-              <h4>Issue reports <span>${issueReportsReady ? issueReports.length : 0}</span></h4>
+              <h4>Feedback reports <span>${issueReportsReady ? issueReports.length : 0}</span></h4>
               <div id="issueReportsList" class="oc-report-list">
                 ${issueReportListHtml(issueReports, issueReportsReady)}
               </div>
