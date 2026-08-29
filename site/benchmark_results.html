@@ -65,12 +65,12 @@
     .detail-back-link:hover{color:#0f2e4b;text-decoration:none}
     .benchmark-page{color:#1e293b;min-width:0;overflow-x:hidden}
     #contentMount{margin-top:.25rem}
-    .benchmark-page-header{margin:0 0 1rem;padding:.65rem 0 .9rem;background:#fff}
-    .benchmark-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,34%);gap:1.25rem;align-items:start;min-width:0}
-    .benchmark-header-content{min-width:0}
+    .benchmark-page-header{margin:0 0 .9rem;padding:.55rem 0 1.05rem;background:#fff}
+    .benchmark-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,420px);gap:1.55rem;align-items:start;min-width:0}
+    .benchmark-header-content{min-width:0;padding-top:.15rem}
     .benchmark-page-title{margin:0;color:var(--oc-ink);font-size:clamp(2rem,1.6rem + 1.2vw,2.8rem);font-weight:700;letter-spacing:0;line-height:1.12;overflow-wrap:anywhere;word-break:break-word}
     .benchmark-page-meta{margin:.65rem 0 0;color:#64748b;font-size:1rem;line-height:1.5;max-width:860px;overflow-wrap:anywhere}
-    .benchmark-link-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;min-width:0}
+    .benchmark-link-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.05rem;min-width:0}
     .benchmark-action{display:inline-flex;align-items:center;gap:.42rem;min-height:34px;min-width:0;border:1px solid #d6dde6;border-radius:4px;background:#fff;color:#334155;font-family:inherit;font-size:.92rem;font-weight:700;line-height:1.2;padding:.42rem .66rem;text-decoration:none}
     .benchmark-action:hover{border-color:#0f2e4b;color:#0f2e4b;background:#fff;text-decoration:none}
     .benchmark-action.primary{border-color:#0d6efd;background:#0d6efd;color:#fff}
@@ -80,9 +80,9 @@
     .benchmark-action.primary .oc-icon-fill{fill:rgba(255,255,255,.22)}
     .benchmark-link-row .oc-bookmark-btn{width:34px;height:34px;border:1px solid #d6dde6;border-radius:4px;color:#334155;background:#fff}
     .benchmark-link-row .oc-bookmark-btn:hover{border-color:#f2a238;color:#f2a238;background:#fff8ec}
-    .benchmark-preview-media{margin:0;min-width:0;width:100%;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-    .benchmark-preview-media img{width:100%;aspect-ratio:16 / 10;height:auto;display:block;object-fit:cover}
-    .benchmark-media-note{margin:0;padding:.48rem .65rem .55rem;border-top:1px solid #e2e8f0;color:#64748b;background:#fff;font-size:.75rem;line-height:1.4;overflow-wrap:break-word}
+    .benchmark-preview-media{justify-self:end;margin:0;min-width:0;width:100%;max-width:420px;background:transparent}
+    .benchmark-preview-media img{width:100%;aspect-ratio:16 / 10;height:auto;display:block;object-fit:cover;border-radius:6px}
+    .benchmark-media-note{margin:.42rem 0 0;padding:0;color:#64748b;background:transparent;font-size:.75rem;line-height:1.4;overflow-wrap:break-word}
     .benchmark-main-grid,.benchmark-stack{display:grid;gap:.9rem;min-width:0}
     .benchmark-section-card,.performance-card{border:1px solid #dbe4ee;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.04)}
     .benchmark-section-card{padding:1.25rem 1.35rem}
@@ -131,6 +131,17 @@
     .leaderboard-table .value-cell{text-align:right;color:#1d4ed8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-weight:800;white-space:nowrap}
     .verify-badge{display:inline-flex;align-items:center;margin-left:.35rem;border:1px solid #fed7aa;border-radius:4px;background:#fff7ed;color:#9a3412;padding:.12rem .3rem;font-size:.6rem;font-weight:800;line-height:1;vertical-align:1px}
     .empty-state{border:1px dashed #cbd5e1;border-radius:4px;background:#f8fafc;color:#64748b;padding:1rem;text-align:center}
+    .benchmark-provenance-note{display:flex;flex-wrap:wrap;gap:.2rem .75rem;align-items:center;margin:-.35rem 0 1rem;color:#64748b;font-size:.82rem;line-height:1.45}
+    .benchmark-provenance-note strong{color:#718096;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .benchmark-provenance-note a{color:#0b66c3;text-decoration:none;text-underline-offset:2px}
+    .benchmark-provenance-note a:hover{text-decoration:underline}
+    .benchmark-citation-details{margin:.85rem 0 0;color:#8a97a8;line-height:1.35}
+    .benchmark-citation-title{margin:0 0 .45rem;color:#64748b;font-size:.74rem;font-weight:800;letter-spacing:.08em;line-height:1.2;text-transform:uppercase}
+    .benchmark-citation-copy{margin-top:.35rem;max-width:100%;color:#7d8ba0;font-size:.68rem}
+    .benchmark-citation-details a{color:#7d8ba0;text-decoration:underline;text-decoration-color:#d8e0ea;text-underline-offset:2px}
+    .benchmark-citation-details a:hover{color:#475569;text-decoration-color:#94a3b8}
+    .benchmark-publication-badges{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin:0;opacity:.9}
+    .benchmark-publication-badges > div{display:inline-flex;align-items:center;overflow:visible}
     @media (max-width: 991.98px){
       .benchmark-hero-grid,.benchmark-overview-grid,.leaderboard-grid{grid-template-columns:1fr}
     }
@@ -143,7 +154,7 @@
       .performance-card{max-width:calc(100vw - 32px)}
       .benchmark-page-meta,
       .benchmark-link-row{width:calc(100vw - 48px);max-width:100%}
-      .benchmark-page-title{width:280px;max-width:calc(100vw - 80px);font-size:1.55rem;line-height:1.08}
+      .benchmark-page-title{width:100%;max-width:100%;font-size:1.55rem;line-height:1.12}
       .benchmark-section-card,.performance-card{padding:1rem}
       .benchmark-definition-grid{grid-template-columns:1fr}
       .benchmark-link-row .benchmark-action{flex:1 1 100%;justify-content:center}
@@ -153,6 +164,8 @@
       .leaderboard-controls .form-select,.leaderboard-sort-select{width:100%}
       .license-inline{flex-wrap:wrap}
       .license-title-line a{white-space:normal}
+      .benchmark-preview-media{justify-self:stretch;max-width:none}
+      .benchmark-citation-copy{margin-top:.4rem}
     }
   </style>
 </head>
@@ -418,6 +431,139 @@
     return doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, '')}` : '';
   }
 
+  function paperDoi(board, dataset){
+    return firstValue(board.doi, board.paper_doi, dataset?.doi, dataset?.paper_doi, board.source_url, board.paper_url);
+  }
+
+  function benchmarkSourceLabel(board, dataset){
+    const explicit = firstValue(board.source_label, board.paper_label, dataset?.paper, dataset?.publication);
+    if (explicit) return explicit;
+    const href = paperHref(board, dataset);
+    if (!href) return '';
+    try {
+      const host = new URL(href).hostname.replace(/^www\./, '');
+      return host || href;
+    } catch {
+      return href;
+    }
+  }
+
+  function benchmarkYear(board, dataset){
+    const years = [];
+    const addYear = (value) => {
+      const match = normStr(value).match(/\b(19|20)\d{2}\b/);
+      if (match) years.push(Number(match[0]));
+    };
+    addYear(board?.year);
+    addYear(dataset?.year);
+    normArray(board?.results).forEach(row => addYear(row?.year));
+    return years.length ? String(Math.max(...years)) : '';
+  }
+
+  function ensureExternalScript(src, id){
+    if (!src) return;
+    if (id && document.getElementById(id)) return;
+    const exists = Array.from(document.scripts || []).some(script => script?.src === src);
+    if (exists) return;
+    const script = document.createElement('script');
+    if (id) script.id = id;
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
+  function parseScholarlyId(idVal){
+    const raw = normStr(idVal);
+    if (!raw) return { kind: 'unknown', value: '' };
+    try {
+      const url = new URL(raw);
+      const host = (url.hostname || '').toLowerCase();
+      if (host === 'doi.org' || host === 'dx.doi.org') {
+        const doi = (url.pathname || '').replace(/^\/+/, '');
+        return doi ? { kind: 'doi', value: doi } : { kind: 'unknown', value: raw };
+      }
+      if (host.endsWith('arxiv.org')) {
+        const abs = (url.pathname || '').match(/^\/abs\/([^\/?#]+)/i);
+        if (abs?.[1]) return { kind: 'arxiv', value: abs[1].replace(/\.pdf$/i, '') };
+        const pdf = (url.pathname || '').match(/^\/pdf\/([^\/?#]+)/i);
+        if (pdf?.[1]) return { kind: 'arxiv', value: pdf[1].replace(/\.pdf$/i, '') };
+      }
+      return { kind: 'unknown', value: raw };
+    } catch {}
+    if (/^pub\.\d+$/i.test(raw)) return { kind: 'dimensions_id', value: raw };
+    if (/^\d{6,10}$/.test(raw)) return { kind: 'pmid', value: raw };
+    if (/^\d{4}\.\d{4,5}(v\d+)?$/i.test(raw)) return { kind: 'arxiv', value: raw };
+    const arxiv = raw.match(/^arxiv:\s*(\d{4}\.\d{4,5}(v\d+)?)$/i);
+    if (arxiv) return { kind: 'arxiv', value: arxiv[1] };
+    return { kind: 'doi', value: raw.replace(/^https?:\/\/doi\.org\//i, '') };
+  }
+
+  function publicationBadgesHtml(doiVal, cfg){
+    const id = parseScholarlyId(doiVal);
+    if (!id.value || id.kind === 'unknown') return '';
+    const asBool = value => (value === true || value === false) ? value : undefined;
+    const isZero = value => value === 0 || value === '0' || value === '0.0';
+    const altmetricOn = isZero(cfg?.altmetric) ? false : (asBool(cfg?.altmetric) ?? true);
+    const dimensionsOn = isZero(cfg?.dimensions) ? false : (asBool(cfg?.dimensions) ?? true);
+    const blocks = [];
+
+    if (altmetricOn) {
+      let altAttr = '';
+      if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${esc(id.value)}"`;
+      else if (id.kind === 'pmid') altAttr = `data-pmid="${esc(id.value)}"`;
+      else altAttr = `data-doi="${esc(id.value)}"`;
+      blocks.push(`<div><div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div></div>`);
+    }
+
+    if (dimensionsOn) {
+      let dimAttr = '';
+      if (id.kind === 'doi') dimAttr = `data-doi="${esc(id.value)}"`;
+      else if (id.kind === 'pmid') dimAttr = `data-pmid="${esc(id.value)}"`;
+      else if (id.kind === 'dimensions_id') dimAttr = `data-id="${esc(id.value)}"`;
+      if (dimAttr) blocks.push(`<div><span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_rectangle"></span></div>`);
+    }
+
+    if (!blocks.length) return '';
+    if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
+    if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
+    return `<div class="benchmark-publication-badges">${blocks.join('')}</div>`;
+  }
+
+  function benchmarkSourceYearHtml(board, dataset){
+    const sourceHref = paperHref(board, dataset);
+    const sourceLabel = benchmarkSourceLabel(board, dataset);
+    const year = benchmarkYear(board, dataset);
+    if (!sourceLabel && !year) return '';
+    const sourceHtml = sourceLabel
+      ? (sourceHref ? `<a href="${esc(sourceHref)}" target="_blank" rel="noopener">${esc(sourceLabel)}</a>` : esc(sourceLabel))
+      : '';
+    return `
+      <div class="benchmark-provenance-note">
+        ${sourceHtml ? `<span><strong>Source</strong> ${sourceHtml}</span>` : ''}
+        ${year ? `<span><strong>Year</strong> ${esc(year)}</span>` : ''}
+      </div>`;
+  }
+
+  function benchmarkCitationAttentionHtml(board, dataset){
+    const badges = publicationBadgesHtml(paperDoi(board, dataset), {
+      altmetric: board?.altmetric ?? dataset?.altmetric,
+      dimensions: board?.dimensions ?? dataset?.dimensions
+    });
+    if (!badges) return '';
+    return `
+      <div class="benchmark-citation-details">
+        <h3 class="benchmark-citation-title">Citation &amp; Attention</h3>
+        ${badges}
+        <div class="benchmark-citation-copy">
+          Data source:
+          <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
+          <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
+          (records may be incomplete and coverage varies by venue and year).
+        </div>
+      </div>`;
+  }
+
   function codeHref(board, dataset){
     const direct = firstValue(board.code_url, board.github_url, board.repository_url, board.repo_url, dataset?.code_url, dataset?.github_url, dataset?.repository_url, dataset?.repo_url);
     if (/github\.com/i.test(direct)) return direct;
@@ -611,10 +757,11 @@
     return text.length > limit ? `${text.slice(0, limit - 1)}...` : text;
   }
 
-  function resultFigureCard(board){
+  function resultFigureCard(board, dataset){
     const metrics = numericMetricDefs(board);
     if (!metrics.length) return '';
     const defaultKey = defaultMetricKey(board);
+    const sourceYearHtml = benchmarkSourceYearHtml(board, dataset);
     return `
       <section class="performance-card">
         <div class="performance-heading-row">
@@ -631,6 +778,7 @@
             </select>
           </form>
         </div>
+        ${sourceYearHtml}
         <div class="leaderboard-grid">
           <div>
             <p class="leaderboard-plot-title">Model Values</p>
@@ -820,6 +968,7 @@
       { label: 'Location', value: firstValue(dataset?.geographical_location, dataset?.location, compactList(dataset?.locations, 3)) },
       { label: 'License', value: formatLicenseHtml(firstValue(dataset?.license, board.license), licenseRecord), html: true }
     ].filter(item => normStr(item.value));
+    const citationHtml = benchmarkCitationAttentionHtml(board, dataset);
     document.title = `OpenConstruction - ${pageTitle}`;
 
     return `
@@ -849,6 +998,7 @@
                     <div class="benchmark-side-value">${item.html ? item.value : esc(item.value)}</div>
                   </div>`).join('')}
               </div>
+              ${citationHtml}
             </section>
             <section class="benchmark-section-card">
               <h2 class="section-heading">Task Evaluation</h2>
@@ -861,7 +1011,7 @@
               </dl>
               ${summary ? `<p class="benchmark-summary-row mb-0">${esc(summary)}</p>` : ''}
             </section>
-            ${board.results_url ? '' : resultFigureCard(board)}
+            ${board.results_url ? benchmarkSourceYearHtml(board, dataset) : resultFigureCard(board, dataset)}
           </div>
         </div>
       </div>
