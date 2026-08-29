@@ -268,11 +268,7 @@
     .benchmark-card-title a{ color:inherit; text-decoration:none; }
     .benchmark-card-title a:hover{ color:var(--oc-link); text-decoration:underline; }
     .benchmark-card-meta{
-      display:flex;
-      align-items:baseline;
-      flex-wrap:wrap;
-      gap:.2rem .45rem;
-      margin-top:.05rem;
+      margin:.05rem 0 0;
       color:var(--oc-subtle);
       font-size:.85rem;
       line-height:1.45;
@@ -280,12 +276,12 @@
       width:100%;
     }
     .benchmark-authors-inline{
-      min-width:0;
-      white-space:normal;
       overflow-wrap:anywhere;
     }
+    .benchmark-meta-sep{
+      margin:0 .15em;
+    }
     .benchmark-year-license{
-      flex:0 0 auto;
       white-space:nowrap;
     }
     .benchmark-card-footer{
@@ -1058,11 +1054,11 @@
             <h3 class="benchmark-card-title">${titleLink}</h3>
           </div>
           ${(authors || year) ? `
-            <div class="benchmark-card-meta">
+            <p class="benchmark-card-meta">
               ${authors ? `<span class="benchmark-authors-inline">${esc(authors)}</span>` : ''}
-              ${(authors && year) ? '<span aria-hidden="true">&bull;</span>' : ''}
+              ${(authors && year) ? '<span class="benchmark-meta-sep" aria-hidden="true">&middot;</span>' : ''}
               ${year ? `<span class="benchmark-year-license">${esc(year)}</span>` : ''}
-            </div>` : ''}
+            </p>` : ''}
           <div class="benchmark-card-footer">
             ${bestHtml}
             <div class="benchmark-actions">
