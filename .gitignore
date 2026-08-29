@@ -99,7 +99,6 @@ openconstruction-*-certificate.pdf
 site/docs/tutorials/*.docx
 /References
 
-# Local-only site pages
 site/mcp.html
 
 # Local role-management SQL validation helpers
