@@ -1136,6 +1136,9 @@
     // and fall back to task-name keywords only when no modality metadata exists.
     if(/\b(3d semantic segmentation|point cloud segmentation|point-cloud segmentation|lidar segmentation|laser scan segmentation)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
+    // Scan-to-BIM (a.k.a. point-cloud-to-BIM) always takes a point cloud as input,
+    // so it is grouped under Point Cloud even though its label contains "BIM".
+    if(/\b(scan[- ]to[- ]bim|scan2bim|point[- ]cloud[- ]to[- ]bim|pcd[- ]to[- ]bim)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(bim|ifc|revit|industry foundation classes|building information model|building information modeling)\b/.test(labelText)) return 'BIM / IFC';
     if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
     if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
@@ -1341,14 +1344,15 @@
     if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|vision-language|vision language|multimodal)\b/.test(text)) labels.add('Multimodal / Vision-Language');
     if(/\b(object detection|semantic segmentation|instance segmentation|panoptic segmentation|image classification|visual question answering|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(text)) labels.add('Image');
     if(/\b(text classification|document classification|question answering|named entity recognition|information retrieval|language model|caption|text|document|report|specification|nlp)\b/.test(text)) labels.add('Text');
-    if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(text)) labels.add('Point Cloud');
+    const isScanToBim = /\b(scan[- ]to[- ]bim|scan2bim|point[- ]cloud[- ]to[- ]bim|pcd[- ]to[- ]bim)\b/.test(text);
+    if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(text) || isScanToBim) labels.add('Point Cloud');
     if(/\b(3d|mesh|geometry|reconstruction)\b/.test(text)) labels.add('3D Geometry');
     if(/\b(video|tracking|temporal localization|time-lapse|timelapse)\b/.test(text)) labels.add('Video');
     if(/\b(table|tabular|metadata|csv|spreadsheet|poi|points of interest)\b/.test(text)) labels.add('Tables');
     if(/\b(graph|knowledge graph|node classification|link prediction)\b/.test(text)) labels.add('Graphs');
     if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
     if(/\b(audio|speech|sound)\b/.test(text)) labels.add('Audio');
-    if(/\b(bim|ifc|revit|building information model)\b/.test(text)) labels.add('BIM / IFC');
+    if(/\b(bim|ifc|revit|building information model)\b/.test(text) && !isScanToBim) labels.add('BIM / IFC');
     if(/\b(cad|drawing|blueprint|floor plan|floorplan|architectural plan)\b/.test(text)) labels.add('CAD Drawings');
     return labels;
   }
