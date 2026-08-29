@@ -45,35 +45,114 @@
     .pill-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .badge-oc{ background:#eef3f8; color:var(--oc-ink); border:1px solid var(--oc-border); font-weight:700; }
 
-    .table-wrap{
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.8rem;
+      align-items:stretch;
+    }
+    .insight-card{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      height:100%;
       border:1px solid var(--oc-border);
-      border-radius:var(--oc-radius);
-      overflow:hidden;
+      border-radius:10px;
       background:#fff;
       box-shadow:var(--oc-shadow);
+      padding:.72rem;
+      transition:border-color .14s ease, box-shadow .14s ease, transform .14s ease;
     }
-    .table thead th{
-      background:#f7fbff;
+    .insight-card-media{
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      width:100%;
+      aspect-ratio:2 / 1;
+      border:1px solid var(--oc-border);
+      border-radius:8px;
+      background:linear-gradient(135deg,#eef5fb,#f8fbfd);
+      margin-bottom:.72rem;
+    }
+    .insight-card-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .insight-card-body{
+      display:flex;
+      flex:1 1 auto;
+      flex-direction:column;
+      min-width:0;
+    }
+    .insight-card:hover{
+      border-color:#d7e1eb;
+      box-shadow:0 10px 26px rgba(15,46,75,.09);
+      transform:translateY(-1px);
+    }
+    .insight-card-title{
+      display:-webkit-box;
+      overflow:hidden;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2;
       color:var(--oc-ink);
-      font-weight:600;
-      border-bottom:1px solid var(--oc-border);
-      position:sticky;
-      top:0;
-      z-index:1;
+      font-size:.95rem;
+      font-weight:750;
+      line-height:1.24;
+      margin:0;
     }
-    .table-wrap table{
-      table-layout:fixed;
-      min-width:860px;
+    .insight-card-title a{
+      color:inherit;
+      text-decoration:none;
     }
-    .table th,
-    .table td{
-      padding:14px 12px;
-      vertical-align:middle;
+    .insight-card-title a:hover{
+      color:var(--oc-link);
+      text-decoration:underline;
+      text-underline-offset:3px;
     }
-    .col-title{ width:42%; }
-    .col-year{ width:7rem; }
-    .col-meta{ width:22%; }
-    .col-license{ width:18%; }
+    .insight-card-meta-line{
+      display:-webkit-box;
+      overflow:hidden;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:1;
+      color:var(--oc-subtle);
+      font-size:.8rem;
+      font-weight:560;
+      line-height:1.35;
+      margin-top:.42rem;
+    }
+    .insight-card-action{
+      display:flex;
+      align-items:center;
+      gap:.42rem;
+      margin-top:auto;
+      padding-top:.7rem;
+    }
+    .insight-card-action .btn{
+      border-radius:6px;
+      font-size:.82rem;
+      font-weight:700;
+      line-height:1.2;
+      min-height:32px;
+      padding:.34rem .64rem;
+    }
+    .insight-card-action [data-oc-bookmark]{
+      flex:0 0 auto;
+    }
+    .insight-empty{
+      grid-column:1 / -1;
+      border:1px dashed var(--oc-border);
+      border-radius:12px;
+      color:var(--oc-subtle);
+      padding:1.25rem;
+      text-align:center;
+    }
+    @media (max-width: 991.98px){
+      .insight-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 575.98px){
+      .insight-grid{ grid-template-columns:1fr; }
+    }
 
     .search-mini{
       width:100%;
@@ -155,7 +234,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" style="opacity:.75;">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
-        <input id="tableSearch" class="form-control" type="search" placeholder="Filter tables..." aria-label="Filter tables">
+        <input id="tableSearch" class="form-control" type="search" placeholder="Filter cards..." aria-label="Filter cards">
       </div>
     </div>
   </div>
@@ -164,55 +243,15 @@
 <main class="container oc-container">
   <section class="oc-section">
     <div class="oc-kicker mb-2">Datasets</div>
-    <div class="table-wrap">
-      <div class="table-responsive" style="max-height: 520px;">
-        <table class="table table-hover mb-0 align-middle catalog-table">
-          <colgroup>
-            <col class="col-title">
-            <col class="col-year">
-            <col class="col-meta">
-            <col class="col-license">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Dataset</th>
-              <th>Year</th>
-              <th>Modality</th>
-              <th>License</th>
-            </tr>
-          </thead>
-          <tbody id="dsBody">
-            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div id="dsBody" class="insight-grid" aria-live="polite" aria-busy="true">
+      <div class="insight-empty">Loading…</div>
     </div>
   </section>
 
   <section class="oc-section">
     <div class="oc-kicker mb-2">Models</div>
-    <div class="table-wrap">
-      <div class="table-responsive" style="max-height: 520px;">
-        <table class="table table-hover mb-0 align-middle catalog-table">
-          <colgroup>
-            <col class="col-title">
-            <col class="col-year">
-            <col class="col-meta">
-            <col class="col-license">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>Year</th>
-              <th>Modalities</th>
-              <th>License</th>
-            </tr>
-          </thead>
-          <tbody id="mBody">
-            <tr><td colspan="4" class="text-muted">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div id="mBody" class="insight-grid" aria-live="polite" aria-busy="true">
+      <div class="insight-empty">Loading…</div>
     </div>
   </section>
 </main>
@@ -377,61 +416,98 @@
     if(Array.isArray(authors)) return authors.filter(Boolean).join(', ');
     return normStr(authors);
   }
+  const PLACEHOLDER_IMG = 'assets/img/placeholder/placeholder.png';
+  function datasetImageSrc(ds){
+    return normStr(ds.image_url || ds.thumbnail || ds.image || '')
+      || (ds.id ? `assets/img/datasets/${encodeURIComponent(ds.id)}.png` : PLACEHOLDER_IMG);
+  }
+  function modelImageSrc(m){
+    return normStr(m.thumbnail || m.image_url || m.icon || '')
+      || (m.id ? `assets/img/models/${encodeURIComponent(m.id)}.png` : PLACEHOLDER_IMG);
+  }
+  function linkAttrs(href){
+    return href && href.startsWith('http') ? 'target="_blank" rel="noopener"' : '';
+  }
+  function metaLine(authors, year){
+    return [authors, year].filter(Boolean).join(' • ') || 'Details available';
+  }
+  function bookmarkButton(type, id, title, url){
+    return window.OCBookmark
+      ? window.OCBookmark.buttonHtml({ type, id: id || title, title, url })
+      : '';
+  }
 
   function datasetRow(ds){
     const title = normStr(ds.name || ds.title || ds.id || 'Untitled dataset');
     const year = normStr(ds.year || '');
     const authors = joinAuthors(ds.authors);
-    const mods = getDatasetModalities(ds).slice(0,3)
-      .map(m=>`<span class="badge badge-oc rounded-pill me-1">${esc(m)}</span>`).join('')
-      || '<span class="text-muted">—</span>';
-    const lic  = normStr(ds.license || '') ? `<span class="badge badge-oc rounded-pill">${esc(ds.license)}</span>` : '<span class="text-muted">—</span>';
+    const modalities = getDatasetModalities(ds);
 
     const href = ds.id ? `datasets/detail.html?id=${encodeURIComponent(ds.id)}` : (ds.access || ds.doi || '#');
     const link = href && href !== '#'
-      ? `<a href="${esc(href)}" ${href.startsWith('http')?'target="_blank" rel="noopener"':''}>${esc(title)}</a>`
+      ? `<a href="${esc(href)}" ${linkAttrs(href)}>${esc(title)}</a>`
       : esc(title);
+    const action = href && href !== '#'
+      ? `<a class="btn btn-sm btn-primary" href="${esc(href)}" ${linkAttrs(href)}>View details</a>`
+      : '';
+    const bookmark = href && href !== '#'
+      ? bookmarkButton('dataset', ds.id || title, title, href)
+      : '';
+    const imageSrc = datasetImageSrc(ds);
+    const searchText = [title, authors, year, ...modalities, ds.license].filter(Boolean).join(' ');
 
     return `
-      <tr data-row="dataset">
-        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
-        <td>${year || '<span class="text-muted">—</span>'}</td>
-        <td>${mods}</td>
-        <td>${lic}</td>
-      </tr>`;
+      <article class="insight-card" data-row="dataset" data-search="${esc(searchText)}">
+        <div class="insight-card-media">
+          <img src="${esc(imageSrc)}" alt="${esc(title)} preview" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';">
+        </div>
+        <div class="insight-card-body">
+          <h3 class="insight-card-title">${link}</h3>
+          <div class="insight-card-meta-line">${esc(metaLine(authors, year))}</div>
+          ${(action || bookmark) ? `<div class="insight-card-action">${action}${bookmark}</div>` : ''}
+        </div>
+      </article>`;
   }
 
   function modelRow(m){
     const title = normStr(m.title || m.name || m.id || 'Untitled model');
     const year = normStr(m.year || '');
     const authors = joinAuthors(m.authors);
-    const mods = getModelModalities(m).slice(0,3)
-      .map(x=>`<span class="badge badge-oc rounded-pill me-1">${esc(x)}</span>`).join('')
-      || '<span class="text-muted">—</span>';
-    const license = normStr(m.license || '')
-      ? `<span class="badge badge-oc rounded-pill">${esc(m.license)}</span>`
-      : '<span class="text-muted">—</span>';
+    const modalities = getModelModalities(m);
 
     const codeUrl  = normStr(m.code_url || m.code || m.repo_url || '');
     const href = m.id ? `models/details.html?id=${encodeURIComponent(m.id)}` : (codeUrl || '#');
     const link = href && href !== '#'
-      ? `<a href="${esc(href)}" ${href.startsWith('http') ? 'target="_blank" rel="noopener"' : ''}>${esc(title)}</a>`
+      ? `<a href="${esc(href)}" ${linkAttrs(href)}>${esc(title)}</a>`
       : esc(title);
+    const action = href && href !== '#'
+      ? `<a class="btn btn-sm btn-primary" href="${esc(href)}" ${linkAttrs(href)}>View details</a>`
+      : '';
+    const bookmark = href && href !== '#'
+      ? bookmarkButton('model', m.id || title, title, href)
+      : '';
+    const imageSrc = modelImageSrc(m);
+    const searchText = [title, authors, year, ...modalities, m.license].filter(Boolean).join(' ');
 
     return `
-      <tr data-row="model">
-        <td class="fw-semibold">${link}${authors ? `<div class="text-muted small mt-1">${esc(authors)}</div>` : ''}</td>
-        <td>${year || '<span class="text-muted">—</span>'}</td>
-        <td>${mods}</td>
-        <td>${license}</td>
-      </tr>`;
+      <article class="insight-card" data-row="model" data-search="${esc(searchText)}">
+        <div class="insight-card-media">
+          <img src="${esc(imageSrc)}" alt="${esc(title)} preview" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}';">
+        </div>
+        <div class="insight-card-body">
+          <h3 class="insight-card-title">${link}</h3>
+          <div class="insight-card-meta-line">${esc(metaLine(authors, year))}</div>
+          ${(action || bookmark) ? `<div class="insight-card-action">${action}${bookmark}</div>` : ''}
+        </div>
+      </article>`;
   }
 
   function applyRowFilter(q){
     const needle = q.trim().toLowerCase();
-    document.querySelectorAll('tbody tr').forEach(tr=>{
-      const ok = !needle || tr.textContent.toLowerCase().includes(needle);
-      tr.style.display = ok ? '' : 'none';
+    document.querySelectorAll('[data-row]').forEach(card=>{
+      const haystack = `${card.textContent || ''} ${card.dataset.search || ''}`.toLowerCase();
+      const ok = !needle || haystack.includes(needle);
+      card.hidden = !ok;
     });
   }
 
@@ -508,13 +584,19 @@
     document.getElementById('pillDatasets').textContent = `${dsMatched.length} dataset${dsMatched.length===1?'':'s'}`;
     document.getElementById('pillModels').textContent = `${mMatched.length} model${mMatched.length===1?'':'s'}`;
 
-    document.getElementById('dsBody').innerHTML = dsMatched.length
+    const dsBody = document.getElementById('dsBody');
+    dsBody.innerHTML = dsMatched.length
       ? dsMatched.map(ds => datasetRow(ds)).join('')
-      : `<tr><td colspan="4" class="text-muted">No datasets linked to this task yet.</td></tr>`;
+      : `<div class="insight-empty">No datasets linked to this task yet.</div>`;
+    dsBody.setAttribute('aria-busy', 'false');
+    window.OCBookmark?.mount(dsBody);
 
-    document.getElementById('mBody').innerHTML = mMatched.length
+    const mBody = document.getElementById('mBody');
+    mBody.innerHTML = mMatched.length
       ? mMatched.map(modelRow).join('')
-      : `<tr><td colspan="4" class="text-muted">No models linked to this task yet.</td></tr>`;
+      : `<div class="insight-empty">No models linked to this task yet.</div>`;
+    mBody.setAttribute('aria-busy', 'false');
+    window.OCBookmark?.mount(mBody);
 
     const input = document.getElementById('tableSearch');
     input.addEventListener('input', (e)=> applyRowFilter(e.target.value));

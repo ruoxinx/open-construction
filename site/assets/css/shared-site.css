@@ -4605,6 +4605,129 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   max-width:100%;
 }
 
+.oc-selected-account-insights{
+  display:grid;
+  gap:.9rem;
+  border-top:1px solid var(--oc-border);
+  border-bottom:1px solid var(--oc-border);
+  padding:1rem 0;
+}
+
+.oc-selected-account-block{
+  display:grid;
+  gap:.65rem;
+}
+
+.oc-selected-account-block-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.oc-selected-account-stats{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.oc-account-fact-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.55rem;
+}
+
+.oc-account-fact{
+  display:grid;
+  gap:.2rem;
+  min-width:0;
+  border:1px solid var(--oc-border);
+  border-radius:8px;
+  background:#fbfcfe;
+  padding:.7rem .76rem;
+}
+
+.oc-account-fact span{
+  color:var(--oc-sub);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.oc-account-fact strong{
+  overflow:hidden;
+  color:var(--oc-ink);
+  font-size:.92rem;
+  font-weight:750;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.oc-selected-account-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1rem;
+}
+
+.oc-selected-account-section{
+  display:grid;
+  gap:.7rem;
+  min-width:0;
+}
+
+.oc-selected-account-section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.oc-selected-account-section-head span{
+  min-width:1.75rem;
+  border:1px solid #d7e5f6;
+  border-radius:999px;
+  background:#f6f9fc;
+  color:var(--oc-ink);
+  font-size:.78rem;
+  font-weight:800;
+  padding:.18rem .5rem;
+  text-align:center;
+}
+
+.oc-account-summary-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+}
+
+.oc-account-summary-chips span{
+  border:1px solid var(--oc-border);
+  border-radius:999px;
+  background:#fff;
+  color:var(--oc-sub);
+  font-size:.78rem;
+  font-weight:700;
+  padding:.28rem .5rem;
+}
+
+.oc-selected-account-list{
+  display:grid;
+  gap:.5rem;
+}
+
+.oc-selected-resource-row{
+  grid-template-columns:minmax(0,1fr);
+  padding:.72rem;
+}
+
+.oc-selected-resource-row strong{
+  display:block;
+  overflow:hidden;
+  color:var(--oc-ink);
+  font-size:.95rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 .oc-account-type{
   display:inline-flex;
   align-items:center;
@@ -4835,6 +4958,9 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   .oc-dashboard-overview-grid,
   .oc-dashboard-split,
   .oc-resource-review-layout,
+  .oc-selected-account-stats,
+  .oc-account-fact-grid,
+  .oc-selected-account-grid,
   .oc-resource-detail-grid,
   .oc-resource-recent-list{
     grid-template-columns:1fr;

@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260828-maintainer-account-details" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to dashboard tools</a>
@@ -121,6 +121,10 @@
   let catalogResources = [];
   let catalogContributorRecords = [];
   let catalogAuthorRecords = [];
+  let accountIdentities = [];
+  let resourceBookmarks = [];
+  let accountCollections = [];
+  let resourceNotes = [];
   let usageAnalytics = null;
   let usageAnalyticsDays = 30;
   let selectedUserId = '';
@@ -206,6 +210,53 @@
 
   function rolesFor(userId){
     return userRoles.filter(row => row.user_id === userId).map(row => row.role);
+  }
+
+  function rowsForUser(rows, userId){
+    return (rows || []).filter(row => row.user_id === userId);
+  }
+
+  function safeRows(query, label){
+    return query
+      .then(({ data, error }) => {
+        if (error) {
+          console.warn(`[dashboard] ${label} unavailable`, error);
+          return [];
+        }
+        return Array.isArray(data) ? data : [];
+      })
+      .catch(error => {
+        console.warn(`[dashboard] ${label} unavailable`, error);
+        return [];
+      });
+  }
+
+  function formatDate(value, fallback = 'Not available'){
+    const date = validDate(value);
+    return date ? date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : fallback;
+  }
+
+  function formatDateTime(value, fallback = 'Not available'){
+    const date = validDate(value);
+    return date ? date.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : fallback;
+  }
+
+  function daysSince(value){
+    const date = validDate(value);
+    if (!date) return null;
+    return Math.max(0, Math.floor((Date.now() - date.getTime()) / 86400000));
+  }
+
+  function durationLabel(value){
+    const days = daysSince(value);
+    if (days === null) return 'Not available';
+    if (days < 1) return 'Today';
+    if (days < 30) return `${days} day${days === 1 ? '' : 's'}`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} month${months === 1 ? '' : 's'}`;
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+    return `${years} year${years === 1 ? '' : 's'}${remainingMonths ? ` ${remainingMonths} mo` : ''}`;
   }
 
   function reviewerProfiles(){
@@ -488,7 +539,11 @@
       analytics: canAdmin ? usageAnalytics : null,
       profiles: canAdmin ? profiles : [],
       user_roles: canAdmin ? userRoles : [],
+      user_identities: canAdmin ? accountIdentities : [],
       badges: canAdmin ? badges : [],
+      saved_resources: canAdmin ? resourceBookmarks : [],
+      resource_collections: canAdmin ? accountCollections : [],
+      resource_notes: canAdmin ? resourceNotes : [],
       resource_suggestions: canAdmin ? suggestions : activeSuggestions,
       site_issue_reports: canAdmin ? issueReports : activeIssues,
       catalog_resources: catalogResources.map(row => ({
@@ -815,6 +870,17 @@
     return row.title || row.name || row.id || 'Untitled resource';
   }
 
+  function typeLabel(value){
+    const labels = {
+      dataset: 'Dataset',
+      model: 'Model',
+      oer: 'OER',
+      workflow: 'Workflow',
+      resource: 'Resource'
+    };
+    return labels[String(value || '').toLowerCase()] || String(value || 'Resource').replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+  }
+
   function buildCatalogRecords(catalogs){
     const resources = [];
     const contributorMap = new Map();
@@ -851,6 +917,81 @@
       contributorRecords: Array.from(contributorMap.values()),
       authorRecords: Array.from(authorMap.values())
     };
+  }
+
+  function normalizedResourceType(value){
+    const text = String(value || '').toLowerCase();
+    if (text === 'deployment' || text === 'use-case' || text === 'use_case') return 'workflow';
+    return text || 'resource';
+  }
+
+  function resourceKey(type, id){
+    return `${normalizedResourceType(type)}:${String(id || '').trim().toLowerCase()}`;
+  }
+
+  function bookmarkKey(row){
+    return resourceKey(row.resource_type || row.type, row.resource_id || row.id);
+  }
+
+  function compactText(value){
+    if (Array.isArray(value)) return value.map(compactText).filter(Boolean).join(', ');
+    if (value && typeof value === 'object') return compactText(value.name || value.title || value.label);
+    return String(value || '').trim();
+  }
+
+  function catalogProvider(row){
+    return compactText(row?.provider || row?.publisher || row?.organization || row?.contributor || row?.authors || row?.author || '');
+  }
+
+  function catalogHref(row){
+    return row?.source || row?.access || row?.url || row?.links?.source || row?.href || '';
+  }
+
+  function matchingCatalogRecord(bookmark){
+    const type = normalizedResourceType(bookmark.resource_type || bookmark.type);
+    const id = bookmark.resource_id || bookmark.id || '';
+    const title = bookmark.resource_title || bookmark.title || '';
+    const href = bookmark.resource_url || bookmark.url || '';
+    const idKey = resourceKey(type, id);
+    const titleKey = String(title || '').trim().toLowerCase();
+    const hrefKey = String(href || '').trim().toLowerCase();
+    return catalogResources.find(row => {
+      if (normalizedResourceType(row.resource_type) !== type) return false;
+      if (id && [row.id, row.name, row.title].some(value => resourceKey(type, value) === idKey)) return true;
+      if (titleKey && String(row.catalog_title || row.title || row.name || '').trim().toLowerCase() === titleKey) return true;
+      return hrefKey && String(catalogHref(row)).trim().toLowerCase() === hrefKey;
+    }) || null;
+  }
+
+  function enrichedBookmarkRows(userId){
+    return rowsForUser(resourceBookmarks, userId).map(row => {
+      const record = matchingCatalogRecord(row);
+      return {
+        row,
+        record,
+        type: normalizedResourceType(row.resource_type || row.type),
+        title: row.resource_title || row.title || record?.catalog_title || record?.title || record?.name || row.resource_id || row.id || 'Saved resource',
+        provider: row.provider || catalogProvider(record),
+        href: row.resource_url || row.url || catalogHref(record)
+      };
+    });
+  }
+
+  function profileIdentities(userId){
+    const rows = rowsForUser(accountIdentities, userId);
+    if (rows.length) return rows;
+    const profile = profiles.find(row => row.user_id === userId);
+    return profile?.github_username ? [{ user_id: userId, provider: 'github', username: profile.github_username }] : [];
+  }
+
+  function identityProviderLabel(provider){
+    const labels = {
+      github: 'GitHub',
+      google: 'Google',
+      email: 'Email',
+      'custom:orcid': 'ORCID'
+    };
+    return labels[String(provider || '').toLowerCase()] || typeLabel(provider);
   }
 
   function renderTrendCard(title, total, rows, emptyMessage){
@@ -1413,6 +1554,7 @@
         <section class="oc-workspace-card">
           ${selected ? `
             ${renderSelectedAccountHeader(selected)}
+            ${renderSelectedAccountInsights(selected)}
             ${renderPermissionEditor(selected)}
           ` : statusBox('No signed-in users yet.', 'secondary')}
         </section>
@@ -1551,6 +1693,7 @@
   function renderAccountManagement(profile){
     return `
       ${renderSelectedAccountHeader(profile)}
+      ${renderSelectedAccountInsights(profile)}
       <div class="oc-maintainer-management-grid">
         <section class="oc-maintainer-management-section">
           ${renderPermissionEditor(profile)}
@@ -1559,6 +1702,186 @@
           ${renderBadgeAllocation(profile)}
         </section>
       </div>
+    `;
+  }
+
+  function mostRecentDate(values){
+    const dates = values.map(validDate).filter(Boolean);
+    if (!dates.length) return null;
+    return dates.reduce((latest, date) => date > latest ? date : latest, dates[0]);
+  }
+
+  function emailDomain(value){
+    const match = String(value || '').trim().toLowerCase().match(/@([^@\s]+)$/);
+    return match ? match[1] : '';
+  }
+
+  function countBy(rows, getKey){
+    return rows.reduce((acc, row) => {
+      const key = getKey(row);
+      if (key) acc.set(key, (acc.get(key) || 0) + 1);
+      return acc;
+    }, new Map());
+  }
+
+  function topCountLabels(map, limit = 3){
+    return Array.from(map.entries())
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit)
+      .map(([label, count]) => `${label} (${count})`);
+  }
+
+  function renderAccountFact(label, value){
+    return `
+      <div class="oc-account-fact">
+        <span>${esc(label)}</span>
+        <strong>${esc(value || 'Not available')}</strong>
+      </div>
+    `;
+  }
+
+  function renderSelectedAccountInsights(profile){
+    const userId = profile.user_id;
+    const userBadges = badgesFor(userId);
+    const userRolesForAccount = rolesFor(userId);
+    const userSuggestions = rowsForUser(suggestions, userId);
+    const userIssues = rowsForUser(issueReports, userId);
+    const userCollections = rowsForUser(accountCollections, userId);
+    const userNotes = rowsForUser(resourceNotes, userId);
+    const bookmarks = enrichedBookmarkRows(userId);
+    const identities = profileIdentities(userId);
+    const assignedReviews = suggestions.filter(row => row.assigned_reviewer_id === userId);
+    const submittedEmails = Array.from(new Set(userSuggestions.map(row => row.submitter_email).filter(Boolean)));
+    const institutionDomains = Array.from(new Set(submittedEmails.map(emailDomain).filter(Boolean)));
+    const providerLabels = identities.map(row => row.provider || row.identity_provider).filter(Boolean);
+    const providerSummary = providerLabels.length ? providerLabels.map(identityProviderLabel).join(', ') : 'Email';
+    const resourceTypeSummary = topCountLabels(countBy(bookmarks, item => typeLabel(item.type)), 4);
+    const resourceProviderSummary = topCountLabels(countBy(bookmarks, item => item.provider || 'Provider not listed'), 4);
+    const latestActivity = mostRecentDate([
+      profile.updated_at,
+      profile.created_at,
+      ...bookmarks.map(item => item.row.updated_at || item.row.created_at),
+      ...userSuggestions.map(row => row.updated_at || row.reviewed_at || row.created_at),
+      ...assignedReviews.map(row => row.reviewed_at || row.updated_at || row.created_at),
+      ...userIssues.map(row => row.updated_at || row.created_at),
+      ...userBadges.map(row => row.awarded_at || row.updated_at || row.created_at),
+      ...userRoles.filter(row => row.user_id === userId).map(row => row.granted_at || row.created_at),
+      ...userCollections.map(row => row.updated_at || row.created_at),
+      ...userNotes.map(row => row.updated_at || row.created_at)
+    ]);
+    const recentSaved = bookmarks
+      .slice()
+      .sort((a, b) => String(b.row.created_at || '').localeCompare(String(a.row.created_at || '')))
+      .slice(0, 5);
+    const recentActivity = [
+      ...userSuggestions.map(row => ({
+        label: `${typeLabel(row.resource_type)} submission`,
+        title: row.title || row.resource_title || 'Untitled submission',
+        meta: `${String(row.status || 'pending').replace(/_/g, ' ')}${row.created_at ? ` - ${formatDate(row.created_at)}` : ''}`
+      })),
+      ...assignedReviews.map(row => ({
+        label: 'Review assignment',
+        title: row.title || row.resource_title || 'Untitled resource',
+        meta: `${String(row.status || 'pending').replace(/_/g, ' ')}${row.assigned_at ? ` - assigned ${formatDate(row.assigned_at)}` : ''}`
+      })),
+      ...userIssues.map(row => ({
+        label: 'Issue report',
+        title: row.summary || row.page_url || 'Issue report',
+        meta: `${String(row.status || 'pending').replace(/_/g, ' ')}${row.created_at ? ` - ${formatDate(row.created_at)}` : ''}`
+      }))
+    ].slice(0, 5);
+    const savedResourcesSection = recentSaved.length ? `
+      <article class="oc-selected-account-section">
+        <div class="oc-selected-account-section-head">
+          <h3 class="h6 fw-bold mb-0">Saved resources</h3>
+          <span>${esc(String(bookmarks.length))}</span>
+        </div>
+        ${(resourceTypeSummary.length || resourceProviderSummary.length) ? `
+          <div class="oc-account-summary-chips">
+            ${resourceTypeSummary.map(label => `<span>${esc(label)}</span>`).join('')}
+            ${resourceProviderSummary.map(label => `<span>${esc(label)}</span>`).join('')}
+          </div>
+        ` : ''}
+        <div class="oc-selected-account-list">
+          ${recentSaved.map(item => {
+            const body = `
+              <span>
+                <span class="oc-account-type">${esc(typeLabel(item.type))}${item.provider ? ` - ${esc(item.provider)}` : ''}</span>
+                <strong>${esc(item.title)}</strong>
+                <span class="oc-account-meta">${esc(formatDate(item.row.created_at, 'Saved date not available'))}</span>
+              </span>
+            `;
+            return item.href
+              ? `<a class="oc-account-row oc-selected-resource-row" href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${body}</a>`
+              : `<div class="oc-account-row oc-selected-resource-row">${body}</div>`;
+          }).join('')}
+        </div>
+      </article>
+    ` : '';
+    const contributionActivitySection = recentActivity.length ? `
+      <article class="oc-selected-account-section">
+        <div class="oc-selected-account-section-head">
+          <h3 class="h6 fw-bold mb-0">Contribution activity</h3>
+          <span>${esc(String(userSuggestions.length + assignedReviews.length + userIssues.length))}</span>
+        </div>
+        <div class="oc-selected-account-list">
+          ${recentActivity.map(item => `
+            <div class="oc-account-row oc-selected-resource-row">
+              <span>
+                <span class="oc-account-type">${esc(item.label)}</span>
+                <strong>${esc(item.title)}</strong>
+                <span class="oc-account-meta">${esc(item.meta)}</span>
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      </article>
+    ` : '';
+
+    return `
+      <section class="oc-selected-account-insights mb-4" aria-label="Selected account details">
+        <div class="oc-selected-account-block">
+          <div class="oc-selected-account-block-head">
+            <h3 class="h6 fw-bold mb-0">Account details</h3>
+          </div>
+          <div class="oc-account-fact-grid">
+            ${renderAccountFact('Account created', formatDate(profile.created_at))}
+            ${renderAccountFact('Member for', durationLabel(profile.created_at))}
+            ${renderAccountFact('Last activity', latestActivity ? formatDateTime(latestActivity) : 'Not available')}
+            ${renderAccountFact('Profile updated', formatDate(profile.updated_at))}
+            ${renderAccountFact('Permissions', userRolesForAccount.length ? userRolesForAccount.map(role => role.replace(/^\w/, c => c.toUpperCase())).join(', ') : 'User')}
+            ${renderAccountFact('Sign-in method', providerSummary)}
+            ${renderAccountFact('Institution', profile.affiliation || institutionDomains[0] || 'Not available')}
+            ${renderAccountFact('Email', submittedEmails[0] || profile.email || 'Not synced to dashboard')}
+          </div>
+        </div>
+
+        <div class="oc-selected-account-block">
+          <div class="oc-selected-account-block-head">
+            <h3 class="h6 fw-bold mb-0">Activity summary</h3>
+          </div>
+          <div class="oc-account-stat-grid oc-selected-account-stats">
+            ${[
+              ['Saved resources', bookmarks.length],
+              ['Submissions', userSuggestions.length],
+              ['Reviews', assignedReviews.length],
+              ['Badges', userBadges.length]
+            ].map(([label, value]) => `
+              <div class="oc-account-stat">
+                <div class="oc-account-stat-value">${esc(String(value))}</div>
+                <div class="oc-account-stat-label">${esc(label)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        ${(savedResourcesSection || contributionActivitySection) ? `
+          <div class="oc-selected-account-grid">
+            ${savedResourcesSection}
+            ${contributionActivitySection}
+          </div>
+        ` : ''}
+      </section>
     `;
   }
 
@@ -2308,7 +2631,7 @@
   }
 
   async function loadDashboard(resetSelection = true){
-    const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at').order('created_at', { ascending: false }).limit(200);
+    const profilesRequest = sb.from('profiles').select('user_id,display_name,github_username,affiliation,public_profile,created_at,updated_at').order('created_at', { ascending: false }).limit(200);
     const contributorsRequest = fetchFirstJson(contributorDataUrls, []);
     const catalogRequests = [
       ['dataset', 'data/datasets.json'],
@@ -2322,7 +2645,7 @@
     const usageRequest = canAdmin
       ? sb.rpc('site_usage_summary', { days: usageAnalyticsDays })
       : Promise.resolve({ data: null, error: null });
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, identitiesRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
@@ -2330,6 +2653,18 @@
       canAdmin
         ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
         : Promise.resolve({ data: [], error: null }),
+      canAdmin
+        ? safeRows(sb.from('user_identities').select('*').order('updated_at', { ascending: false }).limit(1000), 'linked identities')
+        : Promise.resolve([]),
+      canAdmin
+        ? safeRows(sb.from('resource_bookmarks').select('*').order('created_at', { ascending: false }).limit(2000), 'saved resources')
+        : Promise.resolve([]),
+      canAdmin
+        ? safeRows(sb.from('resource_collections').select('*').order('updated_at', { ascending: false }).limit(1000), 'resource collections')
+        : Promise.resolve([]),
+      canAdmin
+        ? safeRows(sb.from('resource_notes').select('*').order('updated_at', { ascending: false }).limit(1000), 'resource notes')
+        : Promise.resolve([]),
       contributorsRequest,
       Promise.all(catalogRequests),
       usageRequest
@@ -2341,6 +2676,10 @@
     suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
     issueReports = issueReportsRes.error ? [] : (issueReportsRes.data || []);
     userRoles = rolesRes.error ? [] : (rolesRes.data || []);
+    accountIdentities = Array.isArray(identitiesRes) ? identitiesRes : [];
+    resourceBookmarks = Array.isArray(bookmarksRes) ? bookmarksRes : [];
+    accountCollections = Array.isArray(collectionsRes) ? collectionsRes : [];
+    resourceNotes = Array.isArray(notesRes) ? notesRes : [];
     contributors = Array.isArray(contributorsRes) ? contributorsRes : [];
     const catalogRecords = buildCatalogRecords(Array.isArray(catalogRes) ? catalogRes : []);
     catalogResources = catalogRecords.resources;

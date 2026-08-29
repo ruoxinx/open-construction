@@ -247,6 +247,7 @@ function actionButtonIcon(icon){
     access: '<path d="M7 7h10v10"></path><path d="M7 17 17 7"></path><path d="M5 21h14a2 2 0 0 0 2-2V5"></path>',
     paper: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M8 13h8"></path><path d="M8 17h6"></path>',
     code: '<path d="m9 18-6-6 6-6"></path><path d="m15 6 6 6-6 6"></path>',
+    benchmark: '<path d="M3 3v18h18"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path>',
     share: '<circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4"></path><path d="m8.6 13.5 6.8 4"></path>'
   };
   const paths = icons[icon] || icons.paper;
@@ -1307,17 +1308,15 @@ function benchmarkLinksCardHtml(boards){
   return `
     <div class="card border-0 shadow-sm mb-3">
       <div class="card-body">
-        <h2 class="h6 text-uppercase text-muted mb-3">Reported Results</h2>
+        <h2 class="h6 text-uppercase text-muted mb-3">Benchmarks</h2>
         <div class="d-grid gap-2">
           ${boards.map(board => {
             const isExternal = !!board.results_url;
             const href = isExternal
               ? board.results_url
               : `../benchmark_results.html?id=${encodeURIComponent(board.id || '')}`;
-            const label = isExternal ? 'Open leaderboard' : 'View reported results';
-            const title = board.page_title || board.name || label;
             return href
-              ? `<a class="btn btn-outline-secondary btn-sm" href="${escapeHtml(href)}" ${isExternal ? 'target="_blank" rel="noopener"' : ''}>${escapeHtml(label)}</a><div class="small text-muted">${escapeHtml(title)}</div>`
+              ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${escapeHtml(href)}" ${isExternal ? 'target="_blank" rel="noopener"' : ''}>${actionButtonContent('benchmark', 'View benchmark')}</a>`
               : '';
           }).join('')}
         </div>
