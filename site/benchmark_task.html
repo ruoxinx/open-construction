@@ -1290,13 +1290,16 @@
     }
     function renderAccessibleTable(rows){
       const metric = rows[0] ? metricDisplayLabel(rows[0].metricDef) : 'Metric';
+      const benchmarkName = normStr(rows[0]?.benchmark);
+      const caption = benchmarkName
+        ? `Leaderboard rows for ${esc(benchmarkName)} - ${esc(metric)}`
+        : `Leaderboard rows for ${esc(metric)}`;
       return `
         <table class="leaderboard-data-table" aria-describedby="leaderboardNote">
-          <caption class="visually-hidden">Leaderboard rows for ${esc(metric)}</caption>
+          <caption class="visually-hidden">${caption}</caption>
           <thead>
             <tr>
               <th scope="col">Rank</th>
-              <th scope="col">Benchmark</th>
               <th scope="col">Method</th>
               <th scope="col">Metric</th>
               <th scope="col">Direction</th>
@@ -1312,7 +1315,6 @@
               return `
                 <tr>
                   <td class="rank-cell">#${item.rank}</td>
-                  <td>${esc(item.benchmark)}</td>
                   <td>${esc(item.method)}</td>
                   <td>${esc(metricDisplayLabel(item.metricDef))}</td>
                   <td>${esc(direction)}</td>
