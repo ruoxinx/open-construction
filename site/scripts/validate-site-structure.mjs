@@ -32,7 +32,6 @@ const expectedTopLevelHtml = new Set([
   "deployments.html",
   "guides.html",
   "maintainer.html",
-  "mcp.html",
   "models.html",
   "monthly-highlights.html",
   "object_class.html",
@@ -46,6 +45,11 @@ const expectedTopLevelHtml = new Set([
   "tutorials.html",
   "references.html",
   "verify.html",
+]);
+
+// Local-only pages: allowed to exist on disk but not required in the repo.
+const ignoredTopLevelHtml = new Set([
+  "mcp.html",
 ]);
 
 const expectedNestedHtml = new Set([
@@ -135,7 +139,7 @@ for (const file of expectedTopLevelHtml) {
 }
 
 for (const file of topLevelHtml) {
-  if (!expectedTopLevelHtml.has(file)) fail(`unexpected top-level page: site/${file}`);
+  if (!expectedTopLevelHtml.has(file) && !ignoredTopLevelHtml.has(file)) fail(`unexpected top-level page: site/${file}`);
 }
 
 for (const file of expectedNestedHtml) {
@@ -151,6 +155,7 @@ for (const file of expectedDataFiles) {
 }
 
 for (const file of [...topLevelHtml, ...nestedHtml]) {
+  if (ignoredTopLevelHtml.has(file)) continue;
   const html = fs.readFileSync(path.join(siteRoot, file), "utf8");
   const labels = navLabels(html);
   if (!labels) continue;
