@@ -1435,7 +1435,17 @@
       if(datasetId && !boardByDatasetId.has(datasetId)) boardByDatasetId.set(datasetId, board);
     });
 
+    const seenDatasetKeys = new Set();
     const benchmarks = boards.map(board => ({ board, dataset: datasetForBoard(board, datasetById) }))
+      .filter(item => {
+        // Each dataset card is keyed on its dataset; a dataset with several boards
+        // under this task (or related tasks) must still appear only once.
+        const dedupeKey = canonKey(item.board?.dataset_id) || canonKey(item.dataset?.id) || canonKey(item.board?.id);
+        if(!dedupeKey) return true;
+        if(seenDatasetKeys.has(dedupeKey)) return false;
+        seenDatasetKeys.add(dedupeKey);
+        return true;
+      })
       .sort((a,b)=> (Number(b.dataset?.year || b.board?.year)||0)-(Number(a.dataset?.year || a.board?.year)||0) || datasetTitle(a.dataset, a.board).localeCompare(datasetTitle(b.dataset, b.board)));
     const dsMatched = benchmarks.map(item => item.dataset);
 
