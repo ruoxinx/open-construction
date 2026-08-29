@@ -33,7 +33,7 @@
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:10px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
-	.oc-container{ max-width:1080px; }
+	.oc-container{ max-width:1140px; }
 
     /* shared shell styles live in assets/css/shared-site.css */
 
@@ -86,13 +86,13 @@
     .index-group-grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:12px;
+      gap:16px;
     }
 
     /* Index cards */
 	.index-grid{
 	  display:grid;
-	  gap:12px;
+	  gap:16px;
 	  grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
     .index-grid.is-loading{
@@ -451,15 +451,15 @@
     }
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:10px; box-shadow:var(--oc-shadow);
-      padding:11px; text-decoration:none; color:inherit;
+      padding:16px; text-decoration:none; color:inherit;
       transition:transform .12s ease, border-color .12s ease;
-      display:grid; grid-template-columns:52px minmax(0,1fr); gap:11px; align-items:center;
-      min-height:0;
+      display:grid; grid-template-columns:64px minmax(0,1fr); gap:14px; align-items:center;
+      min-height:84px;
     }
     .index-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
 
     .index-thumb-wrap{
-      width:52px; height:52px;
+      width:64px; height:64px;
       border-radius:8px;
       border:1px solid var(--oc-border);
       background:#f8fbff;
@@ -478,11 +478,11 @@
       display:none;
       place-items:center;
     }
-    .index-thumb-glyph svg{ width:22px; height:22px; opacity:.88; }
+    .index-thumb-glyph svg{ width:26px; height:26px; opacity:.88; }
     .index-thumb-wrap.is-fallback .index-thumb{display:none}
     .index-thumb-wrap.is-fallback .index-thumb-glyph{display:grid}
     .index-content{min-width:0;display:grid;gap:.25rem}
-    .index-title{ font-size:.95rem; font-weight:800; color:var(--oc-ink); line-height:1.25; margin:0; overflow-wrap:anywhere; }
+    .index-title{ font-size:1rem; font-weight:800; color:var(--oc-ink); line-height:1.25; margin:0; overflow-wrap:anywhere; }
     .index-meta{ color:var(--oc-subtle); font-size:.82rem; margin:0; display:flex; flex-wrap:wrap; gap:.35rem .8rem; }
     .index-meta span{ display:inline-flex; gap:6px; align-items:center; }
     .index-meta .dotline{ display:flex; gap:8px; align-items:center; }
@@ -509,8 +509,8 @@
       header.hero h1.oc-page-title{font-size:1.75rem;width:100%}
 	  .index-grid{ grid-template-columns: 1fr; }
       .index-group-grid{grid-template-columns:1fr}
-      .index-card{grid-template-columns:48px minmax(0,1fr);padding:10px;min-height:0}
-      .index-thumb-wrap{width:48px;height:48px}
+      .index-card{grid-template-columns:56px minmax(0,1fr);padding:12px;min-height:0}
+      .index-thumb-wrap{width:56px;height:56px}
       .rank-row{grid-template-columns:1fr}
       .rank-count{white-space:normal}
       .section-title-row{align-items:flex-start;flex-direction:column}
@@ -1128,18 +1128,23 @@
   function primaryGroupLabel(item){
     const labelText = `${item?.label || ''} ${item?.canon || ''} ${item?.searchText || ''}`.toLowerCase();
     const modalities = taskModalities(item);
+    // A task is not a modality. The same task (e.g. activity recognition) can be
+    // IMU/time-series, image, or video, so bucket by the benchmark's data first
+    // and fall back to task-name keywords only when no modality metadata exists.
     if(/\b(3d semantic segmentation|point cloud segmentation|point-cloud segmentation|lidar segmentation|laser scan segmentation)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
-    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
+    if(/\b(bim|ifc|revit|industry foundation classes|building information model|building information modeling)\b/.test(labelText)) return 'BIM / IFC';
+    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
+    if(modalities.includes('Time Series') || modalities.includes('Sensors')) return 'Time Series';
     if(/\b(instance segmentation|object detection|semantic segmentation|panoptic segmentation|image classification|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(labelText)) return 'Image';
-    if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(labelText)) return 'Video';
+    if(/\b(video|tracking|temporal localization|time-lapse|timelapse)\b/.test(labelText)) return 'Video';
     if(/\b(text classification|document classification|information retrieval|named entity recognition|language|caption|question answering|report|specification|text)\b/.test(labelText)) return 'Language';
     if(/\b(3d|mesh|geometry|reconstruction)\b/.test(labelText)) return '3D Geometry';
     if(modalities.includes('Multimodal') || modalities.includes('Multimodal / Vision-Language')) return 'Multimodal / Vision-Language';
     if(modalities.includes('Point Cloud') || modalities.includes('Point Clouds')) return 'Point Cloud';
     if((modalities.includes('Image') || modalities.includes('Images') || modalities.includes('CAD Drawings') || modalities.includes('BIM / IFC')) && modalities.includes('Text')) return 'Multimodal / Vision-Language';
-    if(modalities.includes('Time Series')) return 'Time Series';
+    if(modalities.includes('BIM / IFC')) return 'BIM / IFC';
     if(modalities.includes('Video')) return 'Video';
     if(modalities.includes('Text')) return 'Language';
     if(modalities.includes('3D') || modalities.includes('3D Geometry')) return '3D Geometry';
@@ -1335,10 +1340,10 @@
     if(/\b(text classification|document classification|question answering|named entity recognition|information retrieval|language model|caption|text|document|report|specification|nlp)\b/.test(text)) labels.add('Text');
     if(/\b(point cloud|point clouds|lidar|laser scan|3d scan|point-cloud)\b/.test(text)) labels.add('Point Cloud');
     if(/\b(3d|mesh|geometry|reconstruction)\b/.test(text)) labels.add('3D Geometry');
-    if(/\b(video|tracking|action recognition|temporal localization|time-lapse|timelapse)\b/.test(text)) labels.add('Video');
+    if(/\b(video|tracking|temporal localization|time-lapse|timelapse)\b/.test(text)) labels.add('Video');
     if(/\b(table|tabular|metadata|csv|spreadsheet|poi|points of interest)\b/.test(text)) labels.add('Tables');
     if(/\b(graph|knowledge graph|node classification|link prediction)\b/.test(text)) labels.add('Graphs');
-    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
+    if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(text)) labels.add('Time Series');
     if(/\b(audio|speech|sound)\b/.test(text)) labels.add('Audio');
     if(/\b(bim|ifc|revit|building information model)\b/.test(text)) labels.add('BIM / IFC');
     if(/\b(cad|drawing|blueprint|floor plan|floorplan|architectural plan)\b/.test(text)) labels.add('CAD Drawings');
