@@ -112,6 +112,7 @@ site/docs/tutorials/*.docx
 /References
 
 site/mcp.html
+site/tools.html
 
 # Local role-management SQL validation helpers
 site/scripts/validate-role-management.mjs

@@ -41,8 +41,6 @@
     'references.html': 'learn',
     'schema': 'docs',
     'schema.html': 'docs',
-    'tools': 'docs',
-    'tools.html': 'docs',
     'guides': 'docs',
     'guides.html': 'docs',
     'mcp': 'docs',
@@ -73,7 +71,7 @@
   };
 
   const CATALOG_TITLE_FILES = new Set(['dataset.html', 'models.html', 'deployments.html', 'oer.html']);
-  const DOCS_TITLE_FILES = new Set(['tutorials.html', 'references.html', 'schema.html', 'tools.html', 'guides.html', 'mcp.html']);
+  const DOCS_TITLE_FILES = new Set(['tutorials.html', 'references.html', 'schema.html', 'guides.html', 'mcp.html']);
   const PAGE_TITLE_FILES = new Set(['benchmarks.html', 'benchmark_explorer.html', 'contribute.html', 'contributors.html']);
 
   const CATALOG_META = {
@@ -108,10 +106,6 @@
       label: 'Schema',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>'
     },
-    'tools.html': {
-      label: 'Tools',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6 4 4"></path><path d="M4 20 15.5 8.5"></path><path d="m14.5 4.5 5 5"></path><path d="M7 5l12 12"></path><path d="m5 7 2-2 3 3-2 2-3-3Z"></path></svg>'
-    },
     'guides.html': {
       label: 'Guides',
       icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H11v17H7.5A2.5 2.5 0 0 0 5 22V5.5Z"></path><path d="M19 5.5A2.5 2.5 0 0 0 16.5 3H13v17h3.5A2.5 2.5 0 0 1 19 22V5.5Z"></path></svg>'
@@ -129,7 +123,7 @@
     },
     'benchmark_explorer.html': {
       label: 'Benchmark',
-      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="oc-icon-fill" d="M6 13h3v6H6z"></path><path class="oc-icon-fill" d="M11 8h3v11h-3z"></path><path class="oc-icon-fill" d="M16 5h3v14h-3z"></path><path d="M4 19h16"></path><path d="M7.5 13v6"></path><path d="M12.5 8v11"></path><path d="M17.5 5v14"></path></svg>'
+      icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 15.5 11-11 4 4-11 11-4-4Z"></path><path d="m8.2 11.8 1.4 1.4"></path><path d="m10.8 9.2 1.4 1.4"></path><path d="m13.4 6.6 1.4 1.4"></path></svg>'
     },
     'contribute.html': {
       label: 'Contribute',

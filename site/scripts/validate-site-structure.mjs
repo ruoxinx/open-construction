@@ -41,7 +41,6 @@ const expectedTopLevelHtml = new Set([
   "schema.html",
   "taxonomy.html",
   "task.html",
-  "tools.html",
   "tutorials.html",
   "references.html",
   "verify.html",
@@ -50,6 +49,7 @@ const expectedTopLevelHtml = new Set([
 // Local-only pages: allowed to exist on disk but not required in the repo.
 const ignoredTopLevelHtml = new Set([
   "mcp.html",
+  "tools.html",
 ]);
 
 const expectedNestedHtml = new Set([

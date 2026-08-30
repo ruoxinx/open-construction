@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260830-ask-context-search" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to account</a>
@@ -423,7 +423,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
-<script src="assets/js/site-shell.js?v=20260828-benchmark-results"></script>
+<script src="assets/js/site-shell.js?v=20260830-benchmark-ruler"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -1032,6 +1032,13 @@
   function askContextPickerResult(catalog, query, type, selected, limit = 60){
     const selectedKeys = new Set((selected || []).map(askContextKey));
     const clean = String(query || '').trim();
+    if (!clean && (!type || type === 'all')) {
+      return {
+        rows: [],
+        total: Array.isArray(catalog) ? catalog.length : 0,
+        needsQuery: true
+      };
+    }
     const pool = clean
       ? selectAiCandidates(catalog, clean, 60)
       : (Array.isArray(catalog) ? catalog : []).slice().sort((a, b) => a.type.localeCompare(b.type) || a.title.localeCompare(b.title));
@@ -1040,7 +1047,8 @@
       .filter(resource => askContextMatches(resource, clean, type));
     return {
       rows: filtered.slice(0, limit),
-      total: filtered.length
+      total: filtered.length,
+      needsQuery: false
     };
   }
 
@@ -1052,14 +1060,13 @@
       ['benchmark', 'Benchmarks'],
       ['workflow', 'Workflows'],
       ['oer', 'OERs'],
-      ['tool', 'Tools'],
       ['guide', 'Guides']
     ];
     const rows = state.rows || [];
+    const query = String(state.query || '');
     return `
-      <div class="oc-ask-context-picker-head">
-        <span>Add OpenConstruction context</span>
-        <small>${state.loading ? 'Loading resources' : `Showing ${rows.length} of ${state.total || rows.length}`}</small>
+      <div class="oc-ask-context-search">
+        <input type="search" data-ask-context-search aria-label="Search OpenConstruction context" placeholder="Search" value="${esc(query)}" autocomplete="off">
       </div>
       <div class="oc-ask-context-types" role="tablist" aria-label="Context type">
         ${types.map(([value, label]) => `
@@ -1067,12 +1074,15 @@
         `).join('')}
       </div>
       <div class="oc-ask-context-options" role="listbox">
-        ${state.loading ? '<div class="oc-ask-context-empty">Loading resources...</div>' : rows.length ? rows.map((resource, index) => `
+        ${state.loading ? '<div class="oc-ask-context-empty">Loading resources...</div>' : state.needsQuery ? '' : rows.length ? rows.map((resource, index) => `
           <button type="button" class="oc-ask-context-option${index === state.activeIndex ? ' active' : ''}" data-ask-context-index="${index}" role="option" aria-selected="${index === state.activeIndex ? 'true' : 'false'}">
             ${askContextPickerMediaHtml(resource)}
-            <span>
+            <span class="oc-ask-context-option-text">
               <strong>${esc(resource.title)}</strong>
               <small>${esc([resource.label, resource.meta].filter(Boolean).join(' - ') || 'Catalog resource')}</small>
+            </span>
+            <span class="oc-ask-context-option-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 12h10"></path><path d="m13 8 4 4-4 4"></path></svg>
             </span>
           </button>
         `).join('') : '<div class="oc-ask-context-empty">No matching resources</div>'}
@@ -1095,7 +1105,9 @@
       activeIndex: 0,
       loading: false,
       open: false,
-      mention: null
+      mention: null,
+      needsQuery: true,
+      focusSearch: false
     };
 
     function renderChips(){
@@ -1114,6 +1126,7 @@
 
     async function renderPicker(){
       if (!state.open) return;
+      const shouldRestoreSearchFocus = state.focusSearch || pickerEl.querySelector('[data-ask-context-search]') === document.activeElement;
       state.loading = true;
       form.classList.add('has-context-ui');
       pickerEl.hidden = false;
@@ -1124,8 +1137,14 @@
       const result = askContextPickerResult(catalog, state.query, state.type, state.selected);
       state.rows = result.rows;
       state.total = result.total;
+      state.needsQuery = Boolean(result.needsQuery);
       state.activeIndex = Math.min(state.activeIndex, Math.max(state.rows.length - 1, 0));
       pickerEl.innerHTML = askContextPickerHtml(state);
+      if (shouldRestoreSearchFocus) {
+        const searchInput = pickerEl.querySelector('[data-ask-context-search]');
+        searchInput?.focus();
+        searchInput?.setSelectionRange?.(searchInput.value.length, searchInput.value.length);
+      }
     }
 
     function removeMention(){
@@ -1144,20 +1163,21 @@
       removeMention();
       state.query = '';
       state.mention = null;
+      state.focusSearch = true;
       state.open = true;
       renderChips();
       renderPicker();
-      field.focus();
     }
 
     function openPicker(){
       closeAskModelMenu(form);
       state.mention = askMentionMatch(field);
       state.query = state.mention?.query || '';
+      state.focusSearch = !state.mention;
       state.activeIndex = 0;
       state.open = true;
       renderPicker();
-      field.focus();
+      if (state.mention) field.focus();
     }
 
     function updateFromField(){
@@ -1168,6 +1188,7 @@
       }
       state.mention = mention;
       state.query = mention.query;
+      state.focusSearch = false;
       state.activeIndex = 0;
       state.open = true;
       renderPicker();
@@ -1219,8 +1240,44 @@
     });
 
     pickerEl.addEventListener('mousedown', event => {
+      if (event.target.closest('[data-ask-context-search]')) {
+        event.stopPropagation();
+        return;
+      }
       event.preventDefault();
       event.stopPropagation();
+    });
+    pickerEl.addEventListener('input', event => {
+      const searchInput = event.target.closest('[data-ask-context-search]');
+      if (!searchInput) return;
+      state.query = searchInput.value;
+      state.mention = null;
+      state.focusSearch = true;
+      state.activeIndex = 0;
+      renderPicker();
+    });
+    pickerEl.addEventListener('keydown', event => {
+      if (!event.target.closest('[data-ask-context-search]')) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closePicker();
+        field.focus();
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        state.activeIndex = Math.min(state.activeIndex + 1, Math.max(state.rows.length - 1, 0));
+        state.focusSearch = true;
+        pickerEl.innerHTML = askContextPickerHtml(state);
+        pickerEl.querySelector('[data-ask-context-search]')?.focus();
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        state.activeIndex = Math.max(state.activeIndex - 1, 0);
+        state.focusSearch = true;
+        pickerEl.innerHTML = askContextPickerHtml(state);
+        pickerEl.querySelector('[data-ask-context-search]')?.focus();
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (state.rows.length) addResource(state.rows[state.activeIndex]);
+      }
     });
     pickerEl.addEventListener('click', event => {
       event.stopPropagation();
@@ -1228,6 +1285,7 @@
       if (typeButton) {
         state.type = typeButton.dataset.askContextType || 'all';
         state.activeIndex = 0;
+        state.focusSearch = true;
         renderPicker();
         return;
       }
@@ -1442,8 +1500,7 @@
     guide: 'data/guides.json',
     model: 'data/models.json',
     workflow: 'data/use-cases.json',
-    oer: 'data/oer.json',
-    tool: 'data/tools.json'
+    oer: 'data/oer.json'
   };
 
   function resourceKind(type){
@@ -1930,7 +1987,6 @@
       ['benchmark', /\bbenchmarks?|leaderboards?|results?\b/i],
       ['workflow', /\bworkflows?\b|\bdeployments?\b/i],
       ['oer', /\boers?\b|\bcourses?\b|\bteaching\b|\beducation\b/i],
-      ['tool', /\btools?|software|utilities\b/i],
       ['guide', /\bguides?|documentation|docs\b/i]
     ].filter(([, pattern]) => pattern.test(clean)).map(([type]) => type);
   }
@@ -2185,7 +2241,7 @@
     }
     if (kind === 'tool') {
       const meta = compactAi([item.category, item.kicker, item.subtitle]).join(' - ');
-      const href = item.url || item.docs || item.repo || 'tools.html';
+      const href = item.url || item.docs || item.repo || '';
       return {
         type: 'tool',
         label: 'Tool',
@@ -2310,7 +2366,7 @@
     return fetch(catalogSources.ai, { cache: 'no-store' })
       .then(response => response.ok ? response.json() : Promise.reject(new Error(`Could not load ${catalogSources.ai}`)))
       .then(payload => Array.isArray(payload) ? payload : [])
-      .then(rows => rows.map(accountAiResourceFromIndex).filter(item => item.title && item.href))
+      .then(rows => rows.map(accountAiResourceFromIndex).filter(item => item.type !== 'tool' && item.title && item.href))
       .catch(() => []);
   }
 
@@ -2323,17 +2379,15 @@
         loadCatalog('dataset'),
         loadCatalog('guide'),
         loadCatalog('model'),
-        loadCatalog('tool'),
         loadCatalog('workflow'),
         loadCatalog('oer')
       ])
-    ]).then(([indexRows, [benchmarks, datasets, guides, models, tools, workflows, oers]]) => {
+    ]).then(([indexRows, [benchmarks, datasets, guides, models, workflows, oers]]) => {
       const directRows = [
         ...benchmarks.map(item => accountAiResourceFromRecord('benchmark', item)),
         ...datasets.map(item => accountAiResourceFromRecord('dataset', item)),
         ...guides.map(item => accountAiResourceFromRecord('guide', item)),
         ...models.map(item => accountAiResourceFromRecord('model', item)),
-        ...tools.map(item => accountAiResourceFromRecord('tool', item)),
         ...workflows.map(item => accountAiResourceFromRecord('workflow', item)),
         ...oers.map(item => accountAiResourceFromRecord('oer', item))
       ].filter(item => item.title && item.href);
@@ -2385,8 +2439,6 @@
       'that',
       'the',
       'to',
-      'tool',
-      'tools',
       'guide',
       'guides',
       'workflow',
@@ -2455,7 +2507,6 @@
       [/\bwith code\b|\bgithub\b|\brepositor(?:y|ies)\b/, ['code', 'github', 'repository', 'repo', 'source code']],
       [/\bwith data\b|\bdownload(?:able)?\b|\bdata source\b/, ['data', 'download', 'source', 'url']],
       [/\bbenchmarks?|leaderboards?|evaluation results?\b/, ['benchmark', 'leaderboard', 'metrics', 'results', 'evaluation']],
-      [/\btools?|software|utilities\b/, ['tool', 'software', 'docs', 'repository']],
       [/\bguides?|documentation|docs\b/, ['guide', 'documentation', 'practices', 'how to']],
       [/\bcc\s*[- ]?\s*by\s*[- ]?\s*n[ac]\b|\bnon[- ]?commercial\b/, ['cc by nc', 'cc-by-nc', 'noncommercial', 'non commercial']],
       [/\bcc\s*[- ]?\s*by\b|\bcreative commons\b/, ['cc by', 'cc-by', 'creative commons', 'license']],
@@ -2482,7 +2533,6 @@
       ['benchmark', /\b(benchmarks?|leaderboards?|evaluation results?)\b/],
       ['workflow', /\b(workflows?|use cases?|deployments?|pipelines?|processes?)\b/],
       ['oer', /\b(oers?|open educational resources?|courses?|teaching|education|tutorials?|lectures?|syllabus)\b/],
-      ['tool', /\b(tools?|software|utilities)\b/],
       ['guide', /\b(guides?|documentation|docs|best practices?)\b/]
     ];
     explicitPatterns.forEach(([type, pattern]) => {
@@ -2497,7 +2547,6 @@
       ['benchmark', /\b(metrics?|evaluation|scores?|performance)\b/],
       ['workflow', /\b(case studies?|deployed|deployment|implementation|project controls?)\b/],
       ['oer', /\b(learning materials?|training materials?|lesson plans?)\b/],
-      ['tool', /\b(annotation platform|versioning|viewer|repository|repo)\b/],
       ['guide', /\b(fair|license|licensing|reuse|practices?)\b/]
     ];
     inferredPatterns.forEach(([type, pattern]) => {
@@ -3971,7 +4020,7 @@
               <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
             </div>
             ${askComposerToolbarHtml()}
-            <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context">${esc(cleanInitial)}</textarea>
+            <textarea name="q" class="form-control" rows="1" placeholder="Ask OpenConstruction or type @ to add context">${esc(cleanInitial)}</textarea>
             <button type="submit" class="oc-primary-action" aria-label="Send">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
             </button>
@@ -4380,7 +4429,7 @@
                   <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
                 </div>
                 ${askComposerToolbarHtml()}
-                <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context"></textarea>
+                <textarea name="q" class="form-control" rows="1" placeholder="Ask OpenConstruction or type @ to add context"></textarea>
                 <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
               </form>
               <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>

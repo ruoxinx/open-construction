@@ -2445,14 +2445,14 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   bottom:calc(100% + .45rem);
   z-index:20;
   display:grid;
-  gap:.5rem;
-  max-height:min(460px, 70vh);
+  gap:.42rem;
+  max-height:min(420px, 66vh);
   overflow:auto;
   border:1px solid #dbe5ef;
   border-radius:10px;
   background:#fff;
-  box-shadow:0 18px 44px rgba(15,46,75,.18);
-  padding:.65rem;
+  box-shadow:0 12px 28px rgba(15,46,75,.1);
+  padding:.6rem;
 }
 
 .oc-ask-context-picker-head{
@@ -2464,66 +2464,138 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .oc-ask-context-picker-head span{
   color:var(--oc-ink);
-  font-size:.88rem;
-  font-weight:850;
+  font-size:.84rem;
+  font-weight:780;
   line-height:1.2;
 }
 
 .oc-ask-context-picker-head small{
   color:var(--oc-sub);
-  font-size:.74rem;
-  font-weight:700;
+  font-size:.72rem;
+  font-weight:620;
   line-height:1.25;
+}
+
+.oc-ask-context-search{
+  display:flex;
+  align-items:center;
+  min-height:34px;
+}
+
+.oc-ask-context-search input{
+  width:100%;
+  min-width:0;
+  min-height:34px;
+  border:1px solid #e4ebf2;
+  border-radius:8px;
+  background:#fff;
+  color:var(--oc-text);
+  font-size:.84rem;
+  font-weight:520;
+  line-height:1.25;
+  padding:.42rem .58rem;
+  box-shadow:inset 0 1px 1px rgba(15,46,75,.03);
+}
+
+.oc-ask-context-search input::placeholder{
+  color:#7b8797;
+  font-weight:520;
+}
+
+.oc-ask-context-search input:focus{
+  outline:2px solid rgba(15,46,75,.08);
+  border-color:#cbd8e5;
+  background:#fff;
 }
 
 .oc-ask-context-types{
   display:flex;
   flex-wrap:wrap;
-  gap:.28rem;
+  gap:.22rem;
 }
 
 .oc-ask-context-types button{
-  min-height:28px;
-  border:1px solid #dbe5ef;
+  min-height:26px;
+  border:1px solid transparent;
   border-radius:999px;
-  background:#f8fafc;
-  color:#475569;
-  font-size:.74rem;
-  font-weight:800;
+  background:transparent;
+  color:#5f6d7f;
+  font-size:.72rem;
+  font-weight:680;
   line-height:1;
-  padding:.2rem .55rem;
+  padding:.18rem .5rem;
 }
 
 .oc-ask-context-types button[aria-selected="true"]{
-  border-color:#9bc1eb;
-  background:#eaf4ff;
-  color:#164b82;
+  border-color:#dbe5ef;
+  background:#f8fafc;
+  color:#24384d;
 }
 
 .oc-ask-context-options{
   display:grid;
-  gap:.18rem;
+  gap:.08rem;
+  min-height:.2rem;
 }
 
 .oc-ask-context-option{
   width:100%;
   display:grid;
-  grid-template-columns:34px minmax(0,1fr);
+  grid-template-columns:28px minmax(0,1fr) 18px;
   align-items:center;
-  gap:.52rem;
-  min-height:44px;
+  gap:.48rem;
+  min-height:38px;
   border:0;
-  border-radius:7px;
+  border-radius:6px;
   background:transparent;
   color:var(--oc-text);
-  padding:.38rem .42rem;
+  padding:.28rem .36rem;
   text-align:left;
+}
+
+.oc-ask-context-option > .oc-ask-context-media{
+  width:28px;
+  height:28px;
+  border-radius:6px;
+}
+
+.oc-ask-context-option > .oc-ask-context-kind-mark{
+  width:20px;
+  height:20px;
+}
+
+.oc-ask-context-option-arrow{
+  display:grid;
+  place-items:center;
+  width:18px;
+  height:18px;
+  color:#a8b3c2;
+  opacity:.55;
+  transition:color .14s ease, opacity .14s ease, transform .14s ease;
+}
+
+.oc-ask-context-option-arrow svg{
+  width:14px;
+  height:14px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
 .oc-ask-context-option:hover,
 .oc-ask-context-option:focus,
 .oc-ask-context-option.active{
-  background:#f1f6fb;
+  background:#f7fafd;
+}
+
+.oc-ask-context-option:hover .oc-ask-context-option-arrow,
+.oc-ask-context-option:focus .oc-ask-context-option-arrow,
+.oc-ask-context-option.active .oc-ask-context-option-arrow{
+  color:#6c7f95;
+  opacity:.82;
+  transform:translateX(1px);
 }
 
 .oc-ask-context-option strong,
@@ -2537,24 +2609,36 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .oc-ask-context-option strong{
   color:#223049;
-  font-size:.84rem;
-  font-weight:800;
+  font-size:.8rem;
+  font-weight:720;
   line-height:1.2;
 }
 
 .oc-ask-context-option small{
-  color:#64748b;
-  font-size:.72rem;
-  font-weight:650;
+  color:#718196;
+  font-size:.7rem;
+  font-weight:560;
   line-height:1.25;
-  margin-top:.1rem;
+  margin-top:.06rem;
 }
 
 .oc-ask-context-empty{
-  color:#64748b;
-  font-size:.84rem;
-  font-weight:700;
-  padding:.7rem .45rem;
+  display:grid;
+  gap:.16rem;
+  color:#6b7788;
+  font-size:.8rem;
+  font-weight:620;
+  padding:.62rem .45rem;
+}
+
+.oc-ask-context-empty strong{
+  color:#223049;
+  font-size:.86rem;
+}
+
+.oc-ask-context-empty span{
+  font-size:.76rem;
+  font-weight:650;
 }
 
 .oc-ask-message-context{

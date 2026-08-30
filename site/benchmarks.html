@@ -351,6 +351,174 @@
       font-weight:600;
       white-space:nowrap;
     }
+    .geo-card{
+      background:#fff;
+      border:1px solid var(--oc-border);
+      border-radius:10px;
+      box-shadow:var(--oc-shadow);
+      overflow:hidden;
+    }
+    .geo-layout{
+      display:grid;
+      grid-template-columns:minmax(0, 60%) minmax(320px, 1fr);
+      min-height:360px;
+    }
+    .geo-map{
+      min-height:360px;
+      height:100%;
+      background:#eef4f9;
+      border-right:1px solid var(--oc-border);
+      z-index:0;
+    }
+    .geo-marker{
+      display:grid;
+      place-items:center;
+      border:2px solid #fff;
+      border-radius:999px;
+      background:#d98b1d;
+      color:#fff;
+      font-size:.72rem;
+      font-weight:800;
+      line-height:1;
+      box-shadow:0 8px 18px rgba(15,46,75,.22);
+    }
+    .geo-marker span{
+      transform:translateY(.01rem);
+    }
+    .geo-panel{
+      display:grid;
+      grid-template-rows:auto minmax(0,1fr) auto;
+      gap:.55rem;
+      padding:1rem;
+      min-width:0;
+      min-height:0;
+    }
+    .geo-panel-title{
+      color:var(--oc-ink);
+      font-size:.86rem;
+      font-weight:700;
+      line-height:1.2;
+      margin:0;
+    }
+    .geo-list{
+      display:grid;
+      align-content:start;
+      min-height:0;
+      max-height:248px;
+      overflow-y:auto;
+      padding-right:.55rem;
+      margin:0;
+      list-style:none;
+      scrollbar-gutter:stable;
+      scrollbar-width:thin;
+    }
+    .geo-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:.2rem .55rem;
+      align-items:center;
+      border-bottom:1px solid var(--oc-border);
+      padding:.38rem 0;
+    }
+    .geo-row:first-child{padding-top:0}
+    .geo-row:last-child{border-bottom:0;padding-bottom:0}
+    .geo-row-context .geo-row-bar span{
+      background:#8b95a1;
+    }
+    .geo-row-label{
+      color:var(--oc-text);
+      font-size:.82rem;
+      font-weight:400;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .geo-row-context .geo-row-label{
+      color:#526071;
+    }
+    .geo-row-count{
+      color:var(--oc-subtle);
+      font-size:.76rem;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .geo-row-bar{
+      grid-column:1 / -1;
+      height:4px;
+      border-radius:999px;
+      background:#edf3f8;
+      overflow:hidden;
+    }
+    .geo-row-bar span{
+      display:block;
+      height:100%;
+      min-width:6px;
+      border-radius:inherit;
+      background:#d99a38;
+    }
+    .geo-empty{
+      display:grid;
+      place-items:center;
+      min-height:360px;
+      color:var(--oc-subtle);
+      font-size:.9rem;
+      padding:1rem;
+      text-align:center;
+    }
+    .geo-popup{
+      min-width:220px;
+      max-width:280px;
+    }
+    .geo-popup-title{
+      color:var(--oc-ink);
+      font-weight:800;
+      line-height:1.2;
+      margin-bottom:.25rem;
+    }
+    .geo-popup-meta{
+      color:var(--oc-subtle);
+      font-size:.74rem;
+      font-weight:700;
+      margin-bottom:.45rem;
+    }
+    .geo-popup-list{
+      display:grid;
+      gap:.28rem;
+      max-height:142px;
+      overflow-y:auto;
+      margin:0;
+      padding:0 .35rem 0 0;
+      list-style:none;
+      scrollbar-gutter:stable;
+      scrollbar-width:thin;
+    }
+    .geo-popup-item{
+      display:grid;
+      grid-template-columns:.32rem minmax(0,1fr);
+      gap:.38rem;
+      align-items:start;
+      color:var(--oc-text);
+      font-size:.76rem;
+      line-height:1.25;
+      overflow-wrap:anywhere;
+    }
+    .geo-popup-item::before{
+      content:"";
+      width:.26rem;
+      height:.26rem;
+      border-radius:999px;
+      background:#9aa7b3;
+      margin-top:.38em;
+    }
+    .geo-popup-item a{
+      color:var(--oc-text);
+      text-decoration:none;
+    }
+    .geo-popup-item a:hover,
+    .geo-popup-item a:focus{
+      color:var(--oc-link);
+      text-decoration:underline;
+    }
     @keyframes benchSkeleton{
       from{ background-position:-220px 0, 0 0; }
       to{ background-position:220px 0, 0 0; }
@@ -435,9 +603,11 @@
     :focus-visible{ outline:2px solid var(--oc-focus); outline-offset:2px; border-radius:6px; }
 
 	@media (max-width: 991.98px){
-	  .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .index-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .insight-grid{ grid-template-columns:1fr; }
       .composition-grid{grid-template-columns:1fr}
+      .geo-layout{grid-template-columns:1fr}
+      .geo-map{border-right:0;border-bottom:1px solid var(--oc-border)}
 	}
 	
 	@media (max-width: 991.98px){
@@ -590,6 +760,23 @@
     </div>
   </section>
 
+  <section class="oc-section" aria-labelledby="geoPatternsTitle">
+    <div class="oc-kicker mb-2">Geography</div>
+    <h2 class="h4 fw-bold mb-3" id="geoPatternsTitle" style="color:var(--oc-ink);">Dataset Geography</h2>
+    <p class="section-note">Counts group datasets by collection location.</p>
+    <div class="geo-card" id="datasetGeoCard">
+      <div class="geo-layout">
+        <div class="geo-map" id="datasetGeoMap" role="img" aria-label="World map of reported dataset collection sites"></div>
+        <aside class="geo-panel" aria-label="Dataset geography summary">
+          <h3 class="geo-panel-title">Data Collection Sites</h3>
+          <ol class="geo-list" id="geoLocationList">
+            <li class="text-muted small">Loading...</li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
   <section class="oc-section" aria-labelledby="timePatternsTitle">
     <div class="oc-kicker mb-2">Timeline</div>
     <div class="section-title-row">
@@ -675,7 +862,8 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
-<script src="assets/js/site-shell.js?v=20260828-benchmark-results"></script>
+<script src="assets/js/site-shell.js?v=20260830-benchmark-ruler"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
 
 <script>
   // ---------- Helpers ----------
@@ -1332,6 +1520,293 @@
     renderDonut('licenseDonut', 'License status', countBy(resources, licenseStatus), 5);
   }
 
+  const GEO_LOCATIONS = [
+    { key:'australia', label:'Australia', lat:-25.27, lon:133.78 },
+    { key:'bahamas', label:'Bahamas', lat:25.03, lon:-77.40 },
+    { key:'canada', label:'Canada', lat:56.13, lon:-106.35 },
+    { key:'china', label:'China', lat:35.86, lon:104.20 },
+    { key:'denmark', label:'Denmark', lat:56.26, lon:9.50 },
+    { key:'finland', label:'Finland', lat:61.92, lon:25.75 },
+    { key:'france', label:'France', lat:46.23, lon:2.21 },
+    { key:'germany', label:'Germany', lat:51.17, lon:10.45 },
+    { key:'greece', label:'Greece', lat:39.07, lon:21.82 },
+    { key:'hong kong', label:'Hong Kong', lat:22.32, lon:114.17 },
+    { key:'japan', label:'Japan', lat:36.20, lon:138.25 },
+    { key:'macau', label:'Macau', lat:22.20, lon:113.54 },
+    { key:'morocco', label:'Morocco', lat:31.79, lon:-7.09 },
+    { key:'pakistan', label:'Pakistan', lat:30.38, lon:69.35 },
+    { key:'peru', label:'Peru', lat:-9.19, lon:-75.02 },
+    { key:'south korea', label:'South Korea', lat:35.91, lon:127.77 },
+    { key:'sweden', label:'Sweden', lat:60.13, lon:18.64 },
+    { key:'switzerland', label:'Switzerland', lat:46.82, lon:8.23 },
+    { key:'turkiye', label:'Turkiye', lat:38.96, lon:35.24 },
+    { key:'united arab emirates', label:'United Arab Emirates', lat:23.42, lon:53.85 },
+    { key:'united kingdom', label:'United Kingdom', lat:55.38, lon:-3.44 },
+    { key:'united states', label:'United States', lat:39.83, lon:-98.58 }
+  ];
+  const GEO_LOCATION_INDEX = new Map(GEO_LOCATIONS.map(item => [item.key, item]));
+  const GEO_ALIASES = {
+    'america':'united states',
+    'england':'united kingdom',
+    'great britain':'united kingdom',
+    'south korea republic of korea':'south korea',
+    'turkey':'turkiye',
+    'u k':'united kingdom',
+    'uk':'united kingdom',
+    'united states of america':'united states',
+    'us':'united states',
+    'u s':'united states',
+    'usa':'united states',
+    'u s a':'united states'
+  };
+
+  function normalizeGeoKey(value){
+    const key = normStr(value)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/&/g, ' and ')
+      .replace(/[.']/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+    return GEO_ALIASES[key] || key;
+  }
+
+  function datasetLocationTerms(item){
+    const values = [
+      item?.geographical_location,
+      item?.geography,
+      item?.location,
+      item?.locations,
+      item?.country,
+      item?.countries
+    ];
+    const out = [];
+    function add(value){
+      if(Array.isArray(value)){
+        value.forEach(add);
+        return;
+      }
+      const text = normStr(value);
+      if(!text) return;
+      text.split(/[,;|/]+|\s+\+\s+|\s+and\s+|\s*&\s*/i)
+        .map(normStr)
+        .filter(Boolean)
+        .forEach(term => out.push(term));
+    }
+    values.forEach(add);
+    return out;
+  }
+
+  function geoContextType(key){
+    if(!key || /\b(not specified|unspecified|unknown|none|na|n a)\b/.test(key)) return 'unspecified';
+    if(/\b(global|worldwide)\b/.test(key)) return 'global';
+    if(/\b(virtual|simulator|synthetic)\b/.test(key)) return 'virtual';
+    if(/\b(internet|youtube|wikipedia|website|web source|open source)\b/.test(key)) return 'web';
+    return '';
+  }
+
+  function geoContextLabel(type){
+    return {
+      global: 'Global',
+      virtual: 'Synthetic / virtual',
+      web: 'Web-source',
+      unspecified: 'Not specified',
+      unmapped: 'Needs review'
+    }[type] || niceLabel(type);
+  }
+
+  function datasetGeoEntry(dataset, index){
+    const title = normStr(dataset?.name || dataset?.title || dataset?.id || `Dataset ${index + 1}`);
+    const id = normStr(dataset?.id || dataset?.name || title);
+    return {
+      title,
+      href: id ? `datasets/detail.html?id=${encodeURIComponent(id)}` : ''
+    };
+  }
+
+  function buildDatasetGeoSummary(datasets){
+    const locations = new Map();
+    const summary = {
+      mappedDatasets: 0,
+      unspecified: 0,
+      global: 0,
+      virtual: 0,
+      web: 0,
+      unmapped: 0
+    };
+
+    datasets.forEach((dataset, index) => {
+      const terms = datasetLocationTerms(dataset);
+      if(!terms.length){
+        summary.unspecified += 1;
+        return;
+      }
+
+      const seenLocations = new Set();
+      const contextSeen = new Set();
+      let hasMappedLocation = false;
+      let hasContext = false;
+
+      terms.forEach(term => {
+        const key = normalizeGeoKey(term);
+        const context = geoContextType(key);
+        if(context){
+          contextSeen.add(context);
+          hasContext = true;
+          return;
+        }
+
+        const location = GEO_LOCATION_INDEX.get(key);
+        if(location){
+          hasMappedLocation = true;
+          if(seenLocations.has(location.key)) return;
+          seenLocations.add(location.key);
+          if(!locations.has(location.key)){
+            locations.set(location.key, {
+              ...location,
+              count: 0,
+              examples: []
+            });
+          }
+          const row = locations.get(location.key);
+          row.count += 1;
+          row.examples.push(datasetGeoEntry(dataset, index));
+          return;
+        }
+
+        contextSeen.add('unmapped');
+        hasContext = true;
+      });
+
+      contextSeen.forEach(context => {
+        summary[context] += 1;
+      });
+      if(hasMappedLocation){
+        summary.mappedDatasets += 1;
+      } else if(!hasContext){
+        summary.unspecified += 1;
+      }
+    });
+
+    const rows = Array.from(locations.values())
+      .sort((a,b) => b.count - a.count || a.label.localeCompare(b.label));
+    const contextRows = ['global', 'virtual', 'web', 'unmapped']
+      .filter(type => summary[type] > 0)
+      .map(type => ({
+        key: `context-${type}`,
+        label: geoContextLabel(type),
+        count: summary[type],
+        isContext: true
+      }));
+    return { rows, contextRows, summary };
+  }
+
+  function renderDatasetGeoFallback(mapEl, rows){
+    if(!mapEl) return;
+    mapEl.innerHTML = rows.length
+      ? '<div class="geo-empty">Map tiles are unavailable, but the location summary is still shown.</div>'
+      : '<div class="geo-empty">No mappable dataset geography is available yet.</div>';
+  }
+
+  function geoListRow(row, maxCount){
+    const isContext = row.isContext === true;
+    return `
+      <li class="geo-row${isContext ? ' geo-row-context' : ''}">
+        <span class="geo-row-label">${esc(row.label)}</span>
+        <span class="geo-row-count">${esc(row.count)}</span>
+        <span class="geo-row-bar" aria-hidden="true"><span style="width:${Math.max(8, Math.round((row.count / maxCount) * 100))}%"></span></span>
+      </li>
+    `;
+  }
+
+  function geoPopupHtml(row){
+    const examples = Array.isArray(row.examples) ? row.examples : [];
+    return `
+      <div class="geo-popup">
+        <div class="geo-popup-title">${esc(row.label)}</div>
+        <div class="geo-popup-meta">${esc(pluralCount(row.count, 'dataset', 'datasets'))}</div>
+        <ol class="geo-popup-list">
+          ${examples.map((dataset, index) => `
+            <li class="geo-popup-item">
+              ${dataset?.href
+                ? `<a href="${esc(dataset.href)}">${esc(dataset.title)}</a>`
+                : esc(dataset?.title || dataset)}
+            </li>
+          `).join('')}
+        </ol>
+      </div>
+    `;
+  }
+
+  function renderDatasetGeo(datasets){
+    const mapEl = document.getElementById('datasetGeoMap');
+    const listEl = document.getElementById('geoLocationList');
+    if(!mapEl || !listEl) return;
+
+    const { rows, contextRows } = buildDatasetGeoSummary(datasets);
+    const displayRows = [...rows, ...contextRows];
+
+    if(!displayRows.length){
+      listEl.innerHTML = '<li class="text-muted small">No geography metadata yet.</li>';
+      renderDatasetGeoFallback(mapEl, rows);
+      return;
+    }
+
+    const maxCount = Math.max(...displayRows.map(row => row.count), 1);
+    listEl.innerHTML = displayRows.map(row => geoListRow(row, maxCount)).join('');
+
+    if(!window.L){
+      renderDatasetGeoFallback(mapEl, rows);
+      return;
+    }
+
+    mapEl.innerHTML = '';
+    const map = L.map(mapEl, {
+      attributionControl: true,
+      maxBounds: [[-85, -180], [85, 180]],
+      maxBoundsViscosity: 0.8,
+      scrollWheelZoom: true,
+      worldCopyJump: false
+    }).setView([20, 8], 2);
+    window.ocDatasetGeoMap = map;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 1,
+      maxZoom: 5,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const bounds = [];
+    rows.forEach(row => {
+      const size = Math.round(18 + Math.sqrt(row.count / maxCount) * 24);
+      const icon = L.divIcon({
+        className: '',
+        html: `<div class="geo-marker" style="width:${size}px;height:${size}px"><span>${esc(row.count)}</span></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+        popupAnchor: [0, -size / 2]
+      });
+      const marker = L.marker([row.lat, row.lon], { icon }).addTo(map);
+      marker.bindPopup(`
+        ${geoPopupHtml(row)}
+      `, {
+        autoPan: true,
+        autoPanPaddingTopLeft: [28, 28],
+        autoPanPaddingBottomRight: [28, 28],
+        keepInView: true,
+        maxHeight: 210,
+        maxWidth: 300
+      });
+      bounds.push([row.lat, row.lon]);
+    });
+
+    if(bounds.length > 1){
+      map.fitBounds(bounds, { padding: [22, 22], maxZoom: 3 });
+    }
+    window.setTimeout(() => map.invalidateSize(), 80);
+  }
+
   function renderFrequencyBars({containerId, items, hrefBuilder, limit = 6, expandedLimit = 12, scaleMax = 0}){
     const container = document.getElementById(containerId);
     if(!container) return;
@@ -1541,6 +2016,7 @@
     if (statDatasets) statDatasets.textContent = String(datasets.length || 0);
     if (statModels) statModels.textContent = String(models.length || 0);
     renderCatalogComposition(datasets, models);
+    renderDatasetGeo(datasets);
 
     // Build PNG-first index for TASKS
 	let tasks = buildMergedIndex({
