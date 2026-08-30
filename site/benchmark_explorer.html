@@ -254,69 +254,6 @@
       color:var(--oc-ink);
       text-decoration:underline;
     }
-    .benchmark-result-controls{
-      display:grid;
-      grid-template-columns:minmax(0,1fr) auto;
-      gap:.45rem .9rem;
-      align-items:center;
-      max-width:520px;
-      margin:1.15rem auto 0;
-    }
-    .benchmark-result-controls[hidden]{display:none}
-    .benchmark-result-controls label{
-      color:var(--oc-ink);
-      font-size:.78rem;
-      font-weight:800;
-      letter-spacing:.04em;
-      line-height:1.2;
-      text-transform:uppercase;
-    }
-    .benchmark-result-count{
-      color:var(--oc-subtle);
-      font-size:.82rem;
-      font-weight:700;
-      line-height:1.2;
-      white-space:nowrap;
-    }
-    .benchmark-slider-wrap{
-      grid-column:1 / -1;
-      position:relative;
-      height:28px;
-      display:flex;
-      align-items:center;
-    }
-    .benchmark-result-slider{
-      width:100%;
-      height:6px;
-      border-radius:999px;
-      background:linear-gradient(to right, var(--oc-accent) 0%, var(--oc-accent) var(--slider-progress, 0%), var(--oc-border) var(--slider-progress, 0%), var(--oc-border) 100%);
-      outline:0;
-      -webkit-appearance:none;
-      appearance:none;
-    }
-    .benchmark-result-slider::-webkit-slider-thumb{
-      width:18px;
-      height:18px;
-      border:2px solid #fff;
-      border-radius:50%;
-      background:var(--oc-ink);
-      box-shadow:0 0 0 1px rgba(15,46,75,.16), 0 2px 6px rgba(15,46,75,.14);
-      -webkit-appearance:none;
-      appearance:none;
-    }
-    .benchmark-result-slider::-moz-range-thumb{
-      width:18px;
-      height:18px;
-      border:2px solid #fff;
-      border-radius:50%;
-      background:var(--oc-ink);
-      box-shadow:0 0 0 1px rgba(15,46,75,.16), 0 2px 6px rgba(15,46,75,.14);
-    }
-    .benchmark-result-slider::-moz-range-track{
-      height:6px;
-      border-radius:999px;
-      background:transparent;
-    }
     .time-card{
       background:#fff;
       border:1px solid var(--oc-border);
@@ -562,8 +499,6 @@
       .rank-count{white-space:normal}
       .section-title-row{align-items:flex-start;flex-direction:column}
       .rank-legend{white-space:normal}
-      .benchmark-result-controls{grid-template-columns:1fr}
-      .benchmark-result-count{white-space:normal}
       .composition-body{grid-template-columns:1fr}
       .donut-chart{width:120px}
 	}
@@ -646,13 +581,6 @@
         <div class="index-skeleton-card"></div>
         <div class="index-skeleton-card"></div>
         <div class="index-skeleton-card"></div>
-      </div>
-    </div>
-    <div class="benchmark-result-controls" id="insightLimitControl" hidden>
-      <label for="insightLimitSlider">Visible benchmarks</label>
-      <output class="benchmark-result-count" id="insightLimitValue" for="insightLimitSlider"></output>
-      <div class="benchmark-slider-wrap">
-        <input class="benchmark-result-slider" id="insightLimitSlider" type="range" min="1" max="1" step="1" value="1" aria-label="Visible benchmark card count">
       </div>
     </div>
     <div class="mt-3 text-center text-muted small" id="insightGridNote"></div>
@@ -1142,16 +1070,11 @@
     return Array.from(byCanon.values()).sort((a,b)=> a.label.localeCompare(b.label));
   }
 
-  // -------- Progressive reveal --------
+  // -------- Index state --------
   const gridState = {
     insight: {
       all: [],
-      defaultAll: [],
-      shown: 0,
-      batch: 9,
-      controlId: 'insightLimitControl',
-      sliderId: 'insightLimitSlider',
-      valueId: 'insightLimitValue'
+      defaultAll: []
     }
   };
 
@@ -1286,43 +1209,11 @@
       .join('');
   }
 
-  function setSliderProgress(slider){
-    if(!slider) return;
-    const min = Number(slider.min || 0);
-    const max = Number(slider.max || 0);
-    const value = Number(slider.value || 0);
-    const progress = max > min ? ((value - min) / (max - min)) * 100 : 100;
-    slider.style.setProperty('--slider-progress', `${Math.max(0, Math.min(100, progress))}%`);
-  }
-
-  function setIndexLimitControl(kind, total, shown, hidden=false){
-    const state = gridState[kind];
-    const control = document.getElementById(state?.controlId || '');
-    if(!control) return;
-
-    const slider = document.getElementById(state.sliderId);
-    const value = document.getElementById(state.valueId);
-    const canAdjust = !hidden && total > state.batch;
-    control.hidden = !canAdjust;
-    if(!slider || !value || !canAdjust) return;
-
-    const minShown = Math.min(state.batch, total);
-    slider.min = String(minShown);
-    slider.max = String(total);
-    slider.step = '1';
-    slider.value = String(Math.max(minShown, Math.min(total, shown)));
-    slider.setAttribute('aria-valuetext', `Showing ${slider.value} of ${total} benchmark cards`);
-    value.value = `Showing ${slider.value} of ${total}`;
-    value.textContent = value.value;
-    setSliderProgress(slider);
-  }
-
-  function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
+  function renderIndexGrid({items, elId, noteId, hrefBuilder}){
     const el = document.getElementById(elId);
     const note = document.getElementById(noteId);
     if(el) el.classList.remove('is-loading');
 
-    const state = gridState[kind];
     const total = groupedCardCount(items);
 
     if(!total){
@@ -1332,18 +1223,12 @@
           <div class="text-muted">Add result rows in benchmark-results.json to list benchmark tasks here.</div>
         </div></div>`;
       note.textContent = '';
-      setIndexLimitControl(kind, total, 0, true);
       return;
     }
 
-    const minShown = Math.min(total, state.batch);
-    if(reset || !state.shown) state.shown = minShown;
-    state.shown = Math.max(minShown, Math.min(total, state.shown));
-
-	el.innerHTML = renderGroupedCards(items, hrefBuilder, state.shown);
+	el.innerHTML = renderGroupedCards(items, hrefBuilder);
 
     note.textContent = '';
-    setIndexLimitControl(kind, total, state.shown);
   }
 
   function applyFilter(q){
@@ -1361,20 +1246,18 @@
       if(!filtered.length){
         el.innerHTML = `<div class="text-muted">No matches.</div>`;
         note.textContent = '';
-        setIndexLimitControl(kind, 0, 0, true);
         return;
       }
 
 	el.innerHTML = renderGroupedCards(filtered, (x) => x.href || '#');
 
       note.textContent = `Search results: ${filtered.length}.`;
-      setIndexLimitControl(kind, filtered.length, filtered.length, true);
     }
 
     if(isSearching){
       renderAllMatches('insight', 'insightGrid', 'insightGridNote');
     } else {
-      renderIndexGrid({ items: gridState.insight.defaultAll, elId:'insightGrid', noteId:'insightGridNote', hrefBuilder: (x) => x.href || '#', kind:'insight', reset:true });
+      renderIndexGrid({ items: gridState.insight.defaultAll, elId:'insightGrid', noteId:'insightGridNote', hrefBuilder: (x) => x.href || '#' });
     }
   }
 
@@ -1918,9 +1801,7 @@
       items: defaultInsights,
       elId: 'insightGrid',
       noteId: 'insightGridNote',
-      hrefBuilder: (x) => x.href || '#',
-      kind: 'insight',
-      reset: true
+      hrefBuilder: (x) => x.href || '#'
     });
 
     // search
@@ -1934,22 +1815,6 @@
         applyFilter(value);
       });
     });
-
-    const insightLimitSlider = document.getElementById('insightLimitSlider');
-    if(insightLimitSlider){
-      insightLimitSlider.addEventListener('input', (e) => {
-        const value = Number(e.target.value || 0);
-        gridState.insight.shown = value;
-        renderIndexGrid({
-          items: gridState.insight.defaultAll,
-          elId: 'insightGrid',
-          noteId: 'insightGridNote',
-          hrefBuilder: (x) => x.href || '#',
-          kind: 'insight',
-          reset: false
-        });
-      });
-    }
 
     // expandable frequency lists
     document.addEventListener('click', (e)=>{
