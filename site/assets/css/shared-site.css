@@ -1967,13 +1967,13 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 }
 
 #searchDock .oc-catalog-search-wrap{
-  max-width:720px;
+  max-width:880px;
   margin:0 auto;
   border:1px solid #d5dde7;
   border-radius:999px;
   background:#fff;
   box-shadow:0 6px 18px rgba(15,46,75,.08);
-  padding:.12rem .35rem .12rem 0;
+  padding:.22rem .42rem .22rem .08rem;
   transition:border-color .18s ease, box-shadow .18s ease;
 }
 
@@ -1988,6 +1988,16 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   border:0;
   background:transparent;
   box-shadow:none;
+  font-size:.95rem;
+  line-height:1.35;
+  padding:1rem 1.1rem;
+}
+
+#searchDock .oc-catalog-search-wrap input.search-input.form-control.form-control-lg::placeholder{
+  color:#7a8795;
+  font-size:.88rem;
+  font-weight:400;
+  opacity:1;
 }
 
 .navbar-search .oc-catalog-search-wrap{
@@ -2008,6 +2018,12 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   border:0;
   background:transparent;
   box-shadow:none;
+}
+
+.navbar-search .oc-catalog-search-wrap .form-control::placeholder{
+  color:#7a8795;
+  font-size:.86rem;
+  opacity:1;
 }
 
 .oc-search-arrow{
@@ -2037,6 +2053,12 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 .oc-search-arrow:focus{
   background:#eef6ff;
   color:#1f4f82;
+}
+
+#searchDock .oc-search-arrow{
+  width:46px;
+  min-height:46px;
+  border-radius:999px;
 }
 
 .navbar-search .oc-search-arrow{
@@ -2689,6 +2711,13 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .oc-ask-form .form-control:focus{
   box-shadow:none;
+}
+
+.oc-ask-form .form-control::placeholder{
+  color:#8c98a6;
+  font-size:.9rem;
+  font-weight:400;
+  opacity:1;
 }
 
 .oc-ask-form .form-control:disabled{

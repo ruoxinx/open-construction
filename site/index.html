@@ -185,8 +185,8 @@
     }
     .hero p.lead{ max-width:54ch; margin:0 auto; color:var(--oc-subtle); font-size:1.06rem; line-height:1.55; }
     .hero-search{
-      width:min(920px, 100%);
-      margin:1.1rem auto 0;
+      width:min(960px, 100%);
+      margin:1rem auto 0;
       text-align:left;
     }
     .hero-search-form{
@@ -200,10 +200,10 @@
     .hero-search-field{
       display:flex;
       align-items:center;
-      gap:.55rem;
+      gap:.45rem;
       min-width:0;
       min-height:60px;
-      padding:.35rem .4rem .35rem .48rem;
+      padding:.3rem .36rem .3rem .5rem;
       border:1px solid var(--oc-border);
       border-radius:16px;
       background:#fff;
@@ -216,26 +216,24 @@
       transform:translateY(-1px);
     }
     .hero-search-icon{
-      flex:0 0 auto;
-      color:var(--oc-subtle);
-      margin-left:.15rem;
+      display:none;
     }
     .hero-search-scope{
-      flex:0 0 152px;
+      flex:0 0 104px;
       border:0;
       border-right:1px solid var(--oc-border);
       border-radius:0;
-      padding:.8rem 2rem .8rem .35rem;
+      padding:.65rem 1.55rem .65rem .25rem;
       font:inherit;
-      font-size:.94rem;
+      font-size:.9rem;
       font-weight:700;
       color:var(--oc-brand-ink);
       background:
         linear-gradient(45deg, transparent 50%, var(--oc-subtle) 50%),
         linear-gradient(135deg, var(--oc-subtle) 50%, transparent 50%);
       background-position:
-        calc(100% - 18px) calc(50% - 2px),
-        calc(100% - 12px) calc(50% - 2px);
+        calc(100% - 14px) calc(50% - 2px),
+        calc(100% - 8px) calc(50% - 2px);
       background-size:6px 6px, 6px 6px;
       background-repeat:no-repeat;
       appearance:none;
@@ -245,39 +243,39 @@
     .hero-search-scope:focus{ outline:none; }
     .hero-search-input{
       border:0;
-      padding:1rem .2rem;
+      padding:.95rem .2rem;
       font:inherit;
-      font-size:1.04rem;
+      font-size:1rem;
       color:var(--oc-text);
       background:transparent;
       min-width:0;
       width:100%;
     }
     .hero-search-input:focus{ outline:none; }
-    .hero-search-field .oc-search-arrow{
-      width:44px;
-      min-height:44px;
+    .hero-search-field .oc-search-submit{
+      width:46px;
+      min-height:46px;
       display:grid;
       place-items:center;
       flex:0 0 auto;
       border:0;
-      border-radius:10px;
-      background:transparent;
-      color:#3f3f46;
+      border-radius:12px;
+      background:#f7fbff;
+      color:var(--oc-brand-ink);
       padding:0;
       transition:background-color .18s ease, color .18s ease, transform .18s ease;
     }
-    .hero-search-field .oc-search-arrow svg{
-      width:21px;
-      height:21px;
+    .hero-search-field .oc-search-submit svg{
+      width:19px;
+      height:19px;
       fill:none;
       stroke:currentColor;
       stroke-width:2;
       stroke-linecap:round;
       stroke-linejoin:round;
     }
-    .hero-search-field .oc-search-arrow:hover,
-    .hero-search-field .oc-search-arrow:focus{
+    .hero-search-field .oc-search-submit:hover,
+    .hero-search-field .oc-search-submit:focus{
       background:#eef6ff;
       color:#1f4f82;
       transform:translateY(-1px);
@@ -367,17 +365,20 @@
       align-items:center;
       justify-content:space-between;
       gap:1rem;
-      margin-bottom:1rem;
+      margin-bottom:.8rem;
+      flex-wrap:wrap;
     }
     .featured-rail-copy{
       min-width:0;
       flex:1;
     }
-    .featured-rail-footer{
+    .featured-rail-actions{
       display:flex;
       align-items:center;
+      gap:.6rem;
+      flex:0 0 auto;
       justify-content:flex-end;
-      margin-top:1rem;
+      flex-wrap:wrap;
     }
     .section-text-link{
       display:inline-flex;
@@ -402,19 +403,25 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:42px;
-      height:42px;
+      width:34px;
+      height:34px;
       border:1px solid var(--oc-border);
       border-radius:999px;
       background:#fff;
       color:var(--oc-brand-ink);
-      box-shadow:0 6px 16px rgba(15,46,75,.06);
-      transition:background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+      box-shadow:0 4px 12px rgba(15,46,75,.05);
+      transition:background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
     }
-    .featured-rail-btn:hover{
+    .featured-rail-btn:not(:disabled):hover{
       background:#f8fbff;
       border-color:#d6e2ee;
       transform:translateY(-1px);
+      box-shadow:0 8px 18px rgba(15,46,75,.08);
+    }
+    .featured-rail-btn:focus-visible,
+    .featured-card .featured-card-link:focus-visible{
+      outline:3px solid rgba(15, 46, 75, .18);
+      outline-offset:3px;
     }
     .featured-rail-btn[disabled]{
       opacity:.42;
@@ -423,8 +430,8 @@
       box-shadow:none;
     }
     .featured-rail-btn svg{
-      width:18px;
-      height:18px;
+      width:16px;
+      height:16px;
     }
     .featured-rail-viewport{
       position:relative;
@@ -437,16 +444,22 @@
       z-index:3;
     }
     .featured-rail-btn-floating.prev{
-      left:12px;
+      left:10px;
     }
     .featured-rail-btn-floating.next{
-      right:12px;
+      right:10px;
+    }
+    .featured-rail-btn-floating[disabled]{
+      transform:translateY(-50%);
+    }
+    .featured-rail-btn-floating:not(:disabled):hover{
+      transform:translateY(calc(-50% - 1px));
     }
     .featured-rail-fade{
       position:absolute;
       top:0;
       bottom:0;
-      width:76px;
+      width:48px;
       pointer-events:none;
       z-index:2;
       transition:opacity .18s ease;
@@ -465,8 +478,8 @@
     .featured-grid{
       display:grid;
       grid-auto-flow:column;
-      grid-auto-columns:calc((100% - (1.15rem * 3)) / 4);
-      gap:1.15rem;
+      grid-auto-columns:calc((100% - (.75rem * 3)) / 4);
+      gap:.75rem;
       overflow-x:auto;
       scroll-snap-type:x mandatory;
       scroll-behavior:smooth;
@@ -480,7 +493,7 @@
     .featured-card{
       background:#fff;
       border:1px solid var(--oc-border);
-      border-radius:16px;
+      border-radius:12px;
       box-shadow:var(--oc-shadow);
       overflow:hidden;
       height:100%;
@@ -488,8 +501,8 @@
       transition:transform .2s ease, box-shadow .2s ease;
     }
     .featured-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 12px 32px rgba(15,46,75,.1);
+      transform:translateY(-2px);
+      box-shadow:0 10px 26px rgba(15,46,75,.09);
     }
     .featured-card .featured-card-link{
       display:flex;
@@ -497,6 +510,7 @@
       height:100%;
       color:inherit;
       text-decoration:none;
+      border-radius:12px;
     }
     .featured-media{
       position:relative;
@@ -528,20 +542,13 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-    .featured-media .submitted-by.is-clickable{
-      cursor:pointer;
-    }
-    .featured-media .submitted-by.is-clickable:hover{
-      color:#0f2e4b;
-      border-color:#cfd8e6;
-      box-shadow:0 4px 10px rgba(0,0,0,.08);
-    }
     .featured-body{
-      padding:1rem 1.05rem 1.05rem;
+      padding:.78rem .86rem .86rem;
       display:flex;
       flex-direction:column;
-      gap:.45rem;
+      gap:.34rem;
       flex:1;
+      min-width:0;
     }
     .featured-topline{
       display:flex;
@@ -552,15 +559,16 @@
     }
     .featured-type{
       display:inline-flex;
+      align-items:center;
       align-self:flex-start;
-      padding:.2rem .55rem;
-      border-radius:999px;
-      background:#eef4fb;
-      border:1px solid #dbe6f0;
-      color:var(--oc-brand-ink);
+      padding:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--oc-subtle);
       font-size:.74rem;
       font-weight:700;
-      letter-spacing:.06em;
+      letter-spacing:.08em;
       text-transform:uppercase;
     }
     .featured-year{
@@ -570,31 +578,25 @@
     }
     .featured-title{
       margin:0;
-      font-size:1.02rem;
+      font-size:.94rem;
       font-weight:700;
       color:var(--oc-brand-ink);
-      line-height:1.35;
-    }
-    .featured-desc{
-      margin:0;
-      color:var(--oc-text);
-      font-size:.93rem;
-      line-height:1.45;
+      line-height:1.3;
+      min-height:calc(1.3em * 5);
       display:-webkit-box;
-      -webkit-line-clamp:2;
+      -webkit-line-clamp:5;
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
     .featured-meta{
-      margin:0;
+      margin:.56rem 0 0;
       color:var(--oc-subtle);
-      font-size:.88rem;
-    }
-    .featured-link{
-      margin-top:auto;
-      color:var(--oc-link);
-      font-weight:700;
-      font-size:.9rem;
+      font-size:.82rem;
+      line-height:1.35;
+      display:-webkit-box;
+      -webkit-line-clamp:5;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
     }
     .logo-marquee{
       position:relative;
@@ -902,26 +904,18 @@
       }
     }
 
-    @media (max-width:991.98px){
-      .featured-grid{
-        grid-auto-columns:calc((100% - 1.15rem) / 2);
-      }
-    }
-
     @media (max-width:767.98px){
       .featured-rail-head{
-        align-items:flex-start;
-        flex-direction:column;
+        align-items:center;
       }
-      .featured-rail-footer{
-        width:100%;
-        justify-content:flex-start;
+      .featured-rail-actions{
+        gap:.5rem;
       }
       .featured-grid{
         grid-auto-columns:100%;
       }
       .featured-rail-fade{
-        width:52px;
+        width:36px;
       }
       .featured-rail-btn-floating.prev{
         left:8px;
@@ -1264,27 +1258,42 @@
     }
 
     @media (max-width: 991.98px){
-      .featured-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+      .featured-grid{ grid-auto-columns:calc((100% - .75rem) / 2); }
     }
 
     @media (max-width: 575.98px){
-      .featured-grid{ grid-template-columns:1fr; }
+      .featured-grid{ grid-auto-columns:100%; }
+      .featured-rail-head{
+        align-items:flex-start;
+        gap:.65rem;
+      }
+      .featured-rail-actions{
+        width:100%;
+        justify-content:space-between;
+      }
+      .section-text-link{
+        white-space:normal;
+      }
       .hero .content{ padding:48px 0 36px; }
+      .hero-search{
+        width:100%;
+      }
       .hero-search-field{
-        flex-wrap:wrap;
+        flex-wrap:nowrap;
         align-items:center;
       }
       .hero-search-scope{
-        flex:1 1 100%;
-        border-right:0;
-        border-bottom:1px solid var(--oc-border);
-        padding:.75rem 2rem .7rem .2rem;
+        flex:0 0 82px;
+        border-right:1px solid var(--oc-border);
+        border-bottom:0;
+        padding:.65rem 1.35rem .65rem .2rem;
         background-position:
-          calc(100% - 10px) calc(50% - 2px),
-          calc(100% - 4px) calc(50% - 2px);
+          calc(100% - 12px) calc(50% - 2px),
+          calc(100% - 6px) calc(50% - 2px);
       }
       .hero-search-input{
         flex:1 1 auto;
+        font-size:.94rem;
       }
       .hero-search-results{ left:0; right:0; }
       .metrics{ gap:.65rem; }
@@ -1524,7 +1533,7 @@
             </span>
             <label class="visually-hidden" for="homeSearchScope">Filter search by resource type</label>
             <select id="homeSearchScope" class="hero-search-scope" aria-label="Filter search by resource type">
-              <option value="all">All resources</option>
+              <option value="all">All</option>
               <option value="dataset">Datasets</option>
               <option value="model">Models</option>
               <option value="workflow">Workflows</option>
@@ -1534,11 +1543,14 @@
               id="homeSearchInput"
               class="hero-search-input"
               type="search"
-              placeholder="Search resources, authors, titles, or keywords ..."
+              placeholder="Search datasets, models, authors, or tasks"
               aria-label="Search the catalog"
               autocomplete="off">
-            <button type="submit" class="oc-search-arrow" aria-label="Search">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
+            <button type="submit" class="oc-search-submit" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5"></circle>
+                <path d="M16.2 16.2 20 20"></path>
+              </svg>
             </button>
           </div>
         </form>
@@ -1554,7 +1566,14 @@
   <section class="oc-section" aria-labelledby="featured-resources-heading">
     <div class="oc-card">
       <div class="oc-card-body">
-        <div class="oc-kicker mb-2">Latest catalog additions</div>
+        <div class="featured-rail-head">
+          <div class="featured-rail-copy">
+            <h2 class="oc-kicker mb-0" id="featured-resources-heading">Latest catalog additions</h2>
+          </div>
+          <div class="featured-rail-actions">
+            <a class="section-text-link" href="monthly-highlights.html">Community digest <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
         <div class="featured-rail-viewport">
           <div class="featured-rail-fade left is-hidden" id="featuredLeftFade" aria-hidden="true"></div>
           <button class="featured-rail-btn featured-rail-btn-floating prev" id="featuredPrevBtn" type="button" aria-label="Show earlier updates" disabled>
@@ -1576,9 +1595,6 @@
               <path d="M9.5 6.5 15 12l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
-        </div>
-        <div class="featured-rail-footer">
-          <a class="section-text-link" href="monthly-highlights.html">Community digest <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -1980,12 +1996,9 @@
 
     function contributorOverlayHtml(contributors){
       if (!Array.isArray(contributors) || !contributors.length) return '';
-      const names = contributors.map((entry) => {
-        const label = `<strong>${esc(normalizeContributorHandle(entry.name))}</strong>`;
-        return entry.url
-          ? `<a href="${esc(entry.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${label}</a>`
-          : label;
-      }).join(', ');
+      const names = contributors
+        .map(entry => `<strong>${esc(normalizeContributorHandle(entry.name))}</strong>`)
+        .join(', ');
       return `
         <div class="submitted-by">
           Proposed by ${names}
@@ -2118,13 +2131,13 @@
     function renderSearchResults(items, query, scope){
       if (!searchResults) return;
       const scopeLabels = {
-        all: 'All resources',
+        all: 'All',
         dataset: 'Datasets',
         model: 'Models',
         workflow: 'Workflows',
         oer: 'OERs'
       };
-      const label = scopeLabels[scope] || 'All resources';
+      const label = scopeLabels[scope] || 'All';
       if (!query){
         searchResults.hidden = true;
         searchResults.innerHTML = '';
@@ -2233,7 +2246,7 @@
         type: 'Model',
         title: formatCatalogTitle(m.title || 'Untitled model'),
         description: firstLine(m.abstract) || 'Model entry with tasks, code, and paper links.',
-        meta: [Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task, Array.isArray(m.modalities) ? m.modalities[0] : m.modality].filter(Boolean).join(' · '),
+        meta: [Array.isArray(m.modalities) ? m.modalities.join(', ') : m.modality, Array.isArray(m.tasks) ? m.tasks.join(', ') : m.task].filter(Boolean).join(' · '),
         year: m.year,
         href: `models/details.html?id=${encodeURIComponent(m.id || m.title || '')}`,
         image: m.thumbnail || (m.id ? `assets/img/models/${m.id}.png` : 'assets/img/models/_placeholder.png'),
@@ -2296,11 +2309,9 @@
 
       grid.innerHTML = items.map(item => `
         <article class="featured-card">
-          <div class="featured-card-link" role="link" tabindex="0"
-               onclick="${item.external ? `window.open('${esc(item.href)}', '_blank', 'noopener')` : `window.location.href='${esc(item.href)}'`}"
-               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); ${item.external ? `window.open('${esc(item.href)}', '_blank', 'noopener')` : `window.location.href='${esc(item.href)}'`};}">
+          <a class="featured-card-link" href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''}>
             <div class="featured-media">
-              <img src="${esc(item.image)}" alt="${esc(item.title)}"
+              <img src="${esc(item.image)}" alt=""
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
               ${contributorOverlayHtml(item.contributors)}
             </div>
@@ -2311,9 +2322,8 @@
               </div>
               <h3 class="featured-title">${esc(item.title)}</h3>
               <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
-              <a class="featured-link" href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''} onclick="event.stopPropagation()">${esc(item.cta)}</a>
             </div>
-          </div>
+          </a>
         </article>
       `).join('');
     }
