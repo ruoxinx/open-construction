@@ -1,0 +1,2 @@
+[functions.ask-openconstruction]
+verify_jwt = true

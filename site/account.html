@@ -681,6 +681,138 @@
 
   const AI_DAILY_LIMIT_SIGNED_IN = 5;
   const AI_DAILY_LIMIT_ANONYMOUS = 1;
+  const ASK_MODEL_STORAGE_KEY = 'oc_ask_model';
+  const ASK_MODEL_OPTIONS = [
+    {
+      id: 'gemini-3.5-flash-lite',
+      aliases: ['gemini'],
+      label: 'Gemini 3.5 Flash Lite',
+      allowFallback: true
+    },
+    {
+      id: 'qwen-3.6-27b',
+      aliases: ['qwen', 'qwen-local', 'qwen_local', 'local-qwen'],
+      label: 'Qwen 3.6-27B',
+      allowFallback: false
+    }
+  ];
+
+  function askControlIcon(name){
+    const icons = {
+      model: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14"></path><path d="M8 12h8"></path><path d="M10 17.5h4"></path></svg>',
+      context: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>'
+    };
+    return icons[name] || '';
+  }
+
+  function askModelById(modelId){
+    const clean = String(modelId || '').trim().toLowerCase();
+    return ASK_MODEL_OPTIONS.find(option => option.id === clean || (option.aliases || []).includes(clean)) || ASK_MODEL_OPTIONS[0];
+  }
+
+  function storedAskModelId(){
+    try {
+      return localStorage.getItem(ASK_MODEL_STORAGE_KEY) || ASK_MODEL_OPTIONS[0].id;
+    } catch (_) {
+      return ASK_MODEL_OPTIONS[0].id;
+    }
+  }
+
+  function saveAskModelId(modelId){
+    try {
+      localStorage.setItem(ASK_MODEL_STORAGE_KEY, askModelById(modelId).id);
+    } catch (_) {}
+  }
+
+  function selectedAskModel(form){
+    return askModelById(form?._ocAskModel || storedAskModelId());
+  }
+
+  function askModelUnavailableNotice(model){
+    return `${model.label} is selected but is not configured or reachable yet. Configure the model in the Supabase Edge Function secrets, or switch back to Gemini 3.5 Flash Lite.`;
+  }
+
+  function askComposerToolbarHtml(){
+    const selected = askModelById(storedAskModelId());
+    return `
+      <div class="oc-ask-toolbar" aria-label="Ask controls">
+        <div class="oc-ask-model-control">
+          <button type="button" class="oc-ask-tool-button" data-ask-model-toggle aria-expanded="false" aria-label="Select LLM model" title="Select LLM model">
+            ${askControlIcon('model')}
+            <span data-ask-model-label>${esc(selected.label)}</span>
+          </button>
+          <div class="oc-ask-model-menu" data-ask-model-menu hidden>
+            ${ASK_MODEL_OPTIONS.map(option => `
+              <button type="button" data-ask-model="${esc(option.id)}" aria-selected="${option.id === selected.id ? 'true' : 'false'}">
+                <strong>${esc(option.label)}</strong>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        <button type="button" class="oc-ask-tool-button" data-ask-add-context aria-label="Add context" title="Add context">
+          ${askControlIcon('context')}
+          <span>Context</span>
+        </button>
+      </div>
+    `;
+  }
+
+  function closeAskModelMenu(form){
+    const menu = form?.querySelector('[data-ask-model-menu]');
+    const toggle = form?.querySelector('[data-ask-model-toggle]');
+    if (menu) menu.hidden = true;
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function syncAskModelControls(form){
+    if (!form) return;
+    const selected = selectedAskModel(form);
+    form._ocAskModel = selected.id;
+    form.querySelectorAll('[data-ask-model-label]').forEach(label => {
+      label.textContent = selected.label;
+    });
+    form.querySelectorAll('[data-ask-model]').forEach(button => {
+      button.setAttribute('aria-selected', button.dataset.askModel === selected.id ? 'true' : 'false');
+    });
+  }
+
+  function syncAllAskModelControls(modelId){
+    const selected = askModelById(modelId);
+    document.querySelectorAll('.oc-ask-form').forEach(form => {
+      form._ocAskModel = selected.id;
+      syncAskModelControls(form);
+    });
+  }
+
+  function bindAskModelPicker(rootEl = document){
+    rootEl.querySelectorAll('.oc-ask-form').forEach(form => {
+      syncAskModelControls(form);
+      if (form.dataset.ocAskModelBound === 'true') return;
+      form.dataset.ocAskModelBound = 'true';
+      const toggle = form.querySelector('[data-ask-model-toggle]');
+      const menu = form.querySelector('[data-ask-model-menu]');
+      toggle?.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        form._ocAskContext?.close?.();
+        const open = menu?.hidden !== false;
+        if (menu) menu.hidden = !open;
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      menu?.addEventListener('click', event => {
+        event.stopPropagation();
+        const option = event.target.closest('[data-ask-model]');
+        if (!option) return;
+        const modelId = option.dataset.askModel || ASK_MODEL_OPTIONS[0].id;
+        saveAskModelId(modelId);
+        syncAllAskModelControls(modelId);
+        closeAskModelMenu(form);
+      });
+      document.addEventListener('click', event => {
+        if (!form.contains(event.target)) closeAskModelMenu(form);
+      });
+    });
+  }
 
   function todayUsageStamp(){
     return new Date().toISOString().slice(0, 10);
@@ -739,6 +871,9 @@
     form.dataset.busy = busy ? 'true' : 'false';
     const field = form.querySelector('[name="q"]');
     const submit = form.querySelector('button[type="submit"]');
+    form.querySelectorAll('[data-ask-model-toggle], [data-ask-add-context]').forEach(button => {
+      button.disabled = Boolean(busy);
+    });
     if (field) field.disabled = Boolean(busy);
     if (submit) {
       submit.disabled = Boolean(busy) || !String(field?.value || '').trim();
@@ -849,18 +984,22 @@
     return `<span class="oc-ask-context-kind-mark oc-ask-context-kind-${esc(kind)}" aria-hidden="true">${icons[kind] || icons.resource}</span>`;
   }
 
-  function askContextPickerMediaHtml(resource){
+  function askContextMediaHtml(resource){
     if (resource?.media) {
       return `<span class="oc-ask-context-media"><img src="${esc(resource.media)}" alt="" loading="lazy" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">${askContextPickerIcon(resource.type).replace('aria-hidden="true"', 'aria-hidden="true" hidden')}</span>`;
     }
     return askContextPickerIcon(resource?.type);
   }
 
+  function askContextPickerMediaHtml(resource){
+    return askContextMediaHtml(resource);
+  }
+
   function askContextChipsHtml(resources){
     const rows = Array.isArray(resources) ? resources : [];
     return rows.map((resource, index) => `
       <span class="oc-ask-context-chip">
-        ${askContextPickerIcon(resource.type)}
+        ${askContextMediaHtml(resource)}
         <span>${esc(resource.title)}</span>
         <button type="button" data-ask-context-remove="${index}" aria-label="Remove ${esc(resource.title)}" title="Remove context">x</button>
       </span>
@@ -875,7 +1014,7 @@
         <span>Context</span>
         ${rows.slice(0, 6).map(resource => `
           <a href="${esc(resource.href || '#')}">
-            ${askContextPickerIcon(resource.type)}
+            ${askContextMediaHtml(resource)}
             <span>${esc(resource.title)}</span>
           </a>
         `).join('')}
@@ -1011,6 +1150,16 @@
       field.focus();
     }
 
+    function openPicker(){
+      closeAskModelMenu(form);
+      state.mention = askMentionMatch(field);
+      state.query = state.mention?.query || '';
+      state.activeIndex = 0;
+      state.open = true;
+      renderPicker();
+      field.focus();
+    }
+
     function updateFromField(){
       const mention = askMentionMatch(field);
       if (!mention) {
@@ -1027,6 +1176,8 @@
     form._ocAskContext = {
       selected: () => state.selected.slice(),
       isOpen: () => state.open,
+      open: openPicker,
+      close: closePicker,
       clear: () => {
         state.selected = [];
         closePicker();
@@ -1035,6 +1186,11 @@
     };
 
     field.addEventListener('input', updateFromField);
+    form.querySelector('[data-ask-add-context]')?.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openPicker();
+    });
     field.addEventListener('keydown', event => {
       if (!state.open) return;
       if (event.key === 'Escape') {
@@ -1911,21 +2067,55 @@
     return raw.replace(/^\/+/, '');
   }
 
-  function mediaFromAiRecord(item){
-    const direct = urlFromAi(item, ['image', 'image_url', 'image_path', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
+  function firstAiMediaCandidate(values){
+    return uniqueMediaUrls(values).map(normalizeAccountMediaUrl).find(Boolean) || '';
+  }
+
+  function mediaFromAiRecord(item, type = ''){
+    const direct = firstAiMediaCandidate([
+      item?.media_candidates,
+      item?.images,
+      item?.image,
+      item?.image_url,
+      item?.image_path,
+      item?.thumbnail,
+      item?.thumbnail_url,
+      item?.cover,
+      item?.cover_image,
+      item?.preview,
+      item?.preview_image
+    ]) || urlFromAi(item, ['image', 'image_url', 'image_path', 'thumbnail', 'thumbnail_url', 'cover', 'preview_image']);
     if (direct) return direct;
     const media = Array.isArray(item?.media) ? item.media : [];
     const mediaUrl = media.find(entry => typeof entry === 'string' && /\.(png|jpe?g|webp|gif|avif)(\?|#|$)/i.test(entry));
     if (mediaUrl) return normalizeAccountMediaUrl(mediaUrl);
     const image = media.find(entry => entry && String(entry.type || '').toLowerCase() === 'image' && entry.url);
-    const videoThumb = media.find(entry => entry && entry.thumb);
-    return normalizeAccountMediaUrl(image?.url || videoThumb?.thumb || '');
+    const videoThumb = media.find(entry => entry && (entry.thumb || entry.thumbnail || entry.preview_image));
+    const embedded = normalizeAccountMediaUrl(image?.url || videoThumb?.thumb || videoThumb?.thumbnail || videoThumb?.preview_image || '');
+    if (embedded) return embedded;
+    const kind = resourceKind(type || item?.type || item?.resource_type || item?.kind || item?.label);
+    if (kind === 'benchmark') return firstAiMediaCandidate(benchmarkMediaCandidates(item));
+    if (kind === 'dataset') {
+      return firstAiMediaCandidate([
+        mediaAssetPath('datasets', item?.id),
+        mediaAssetPath('datasets', item?.name),
+        mediaAssetPath('datasets', item?.title)
+      ]);
+    }
+    if (kind === 'model') {
+      return firstAiMediaCandidate([
+        mediaAssetPath('models', item?.id),
+        mediaAssetPath('models', item?.name),
+        mediaAssetPath('models', item?.title)
+      ]);
+    }
+    return '';
   }
 
   function accountAiResourceFromRecord(type, item){
     const kind = resourceKind(type);
     const title = titleCaseAi(titleOfRecord(item, `Untitled ${typeLabel(kind)}`));
-    const commonMedia = mediaFromAiRecord(item);
+    const commonMedia = mediaFromAiRecord(item, kind);
     if (kind === 'dataset') {
       const tasks = listAi(item.potential_tasks || item.tasks || item.task);
       const classes = listAi(item.classes || item.object_classes || item.objects);
@@ -2373,7 +2563,7 @@
       .slice(0, limit);
   }
 
-  function candidatePoolForGemini(catalog, query, fallbackResults = [], limit = 80){
+  function candidatePoolForAskModel(catalog, query, fallbackResults = [], limit = 80){
     const requestedTypes = requestedAiTypes(query);
     const selected = selectAiCandidates(catalog, query, limit);
     if (selected.length) return selected;
@@ -2597,7 +2787,7 @@
     return String(value || '').replace(/^\.?\//, '').replace(/^https?:\/\/(?:www\.)?openconstruction\.org\//i, '');
   }
 
-  function candidatesForGeminiAi(resources, limit = 300){
+  function candidatesForAskModelAi(resources, limit = 300){
     return (Array.isArray(resources) ? resources : []).slice(0, limit).map(resource => ({
       key: resourceKeyAi(resource.href || resource.title),
       type: resource.type,
@@ -2612,11 +2802,11 @@
     }));
   }
 
-  function geminiResourceRefsAi(gemini){
+  function askModelResourceRefsAi(response){
     const refs = [
-      ...(Array.isArray(gemini?.resourceHrefs) ? gemini.resourceHrefs : []),
-      ...(Array.isArray(gemini?.resourceKeys) ? gemini.resourceKeys : []),
-      ...(Array.isArray(gemini?.resources) ? gemini.resources : [])
+      ...(Array.isArray(response?.resourceHrefs) ? response.resourceHrefs : []),
+      ...(Array.isArray(response?.resourceKeys) ? response.resourceKeys : []),
+      ...(Array.isArray(response?.resources) ? response.resources : [])
     ];
     return refs.map(ref => {
       if (typeof ref === 'string') return ref;
@@ -2624,7 +2814,7 @@
     }).filter(Boolean);
   }
 
-  function pickGeminiResultsAi(resources, refs){
+  function pickAskModelResultsAi(resources, refs){
     const rows = Array.isArray(resources) ? resources : [];
     const orderedRefs = Array.isArray(refs) ? refs.map(resourceKeyAi).filter(Boolean) : [];
     if (!orderedRefs.length) return [];
@@ -2641,13 +2831,15 @@
     return picked;
   }
 
-  async function askOpenConstructionWithGemini(query, candidates, previousMessages, previousResources = []){
+  async function askOpenConstructionWithModel(query, candidates, previousMessages, previousResources = []){
     if (!sb?.functions?.invoke) return null;
+    const model = selectedAskModel(document.querySelector('.oc-ask-form'));
     const { data, error } = await sb.functions.invoke('ask-openconstruction', {
       body: {
         query,
-        candidates: candidatesForGeminiAi(candidates),
-        previousResources: candidatesForGeminiAi(previousResources, 40),
+        model: model.id,
+        candidates: candidatesForAskModelAi(candidates),
+        previousResources: candidatesForAskModelAi(previousResources, 40),
         catalogSourceRepository: CATALOG_SOURCE_REPOSITORY,
         responseContract: {
           resourceReferences: 'Return selected catalog resources as resourceHrefs or resourceKeys using the provided href/key values only.'
@@ -3778,6 +3970,7 @@
               <div class="oc-ask-context-chips" data-ask-context-chips hidden></div>
               <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
             </div>
+            ${askComposerToolbarHtml()}
             <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context">${esc(cleanInitial)}</textarea>
             <button type="submit" class="oc-primary-action" aria-label="Send">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
@@ -3907,32 +4100,48 @@
           results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
         }
         let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
+        const selectedModel = selectedAskModel(form);
         try {
-          const geminiCandidates = isRefinement
+          const modelCandidates = isRefinement
             ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
-            : uniqueAiResources([...contextResources, ...candidatePoolForGemini(catalog, searchText, results)]);
-          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
-          if (gemini?.limited) {
+            : uniqueAiResources([...contextResources, ...candidatePoolForAskModel(catalog, searchText, results)]);
+          const modelResponse = await askOpenConstructionWithModel(clean, modelCandidates, priorMessages, previousResources);
+          if (modelResponse?.limited) {
             renderAnonymousLimit(clean);
             return;
-          } else if (gemini?.outOfScope) {
-            answer = gemini.answer;
+          } else if (modelResponse?.outOfScope) {
+            answer = modelResponse.answer;
             results = [];
-          } else if (gemini?.answer) {
-            const citedResults = pickGeminiResultsAi([...previousResources, ...geminiCandidates], geminiResourceRefsAi(gemini));
+          } else if (modelResponse?.answer) {
+            const citedResults = pickAskModelResultsAi([...previousResources, ...modelCandidates], askModelResourceRefsAi(modelResponse));
             if (citedResults.length) {
               recordAiUsage(null);
-              answer = gemini.answer;
+              answer = modelResponse.answer;
               results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
             } else {
               console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
+              if (!selectedModel.allowFallback) {
+                answer = `${selectedModel.label} responded without valid OpenConstruction resource references. Try again, or switch back to Gemini 3.5 Flash Lite.`;
+                results = [];
+              }
             }
           } else {
-            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+            if (selectedModel.allowFallback) {
+              answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+            } else {
+              answer = askModelUnavailableNotice(selectedModel);
+              results = [];
+            }
           }
         } catch (err) {
-          console.warn('Anonymous Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
-          answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          if (selectedModel.allowFallback) {
+            console.warn('Anonymous Ask OpenConstruction model enhancement unavailable; using keyword fallback.', err);
+            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          } else {
+            console.warn('Anonymous Ask OpenConstruction selected model unavailable.', err);
+            answer = askModelUnavailableNotice(selectedModel);
+            results = [];
+          }
         }
         if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
           answer = `${answer}\n\n${aiVisibleSummary(results)}`;
@@ -3974,6 +4183,7 @@
     });
     bindAskFieldAutosize(root);
     bindAskContextPicker(document.getElementById('anonymousAskForm'), { getCatalog: loadAccountAiCatalog });
+    bindAskModelPicker(root);
 
     if (cleanInitial) await run(cleanInitial);
   }
@@ -4169,6 +4379,7 @@
                   <div class="oc-ask-context-chips" data-ask-context-chips hidden></div>
                   <div class="oc-ask-context-picker" data-ask-context-picker hidden></div>
                 </div>
+                ${askComposerToolbarHtml()}
                 <textarea name="q" class="form-control" rows="1" placeholder="Ask about OpenConstruction resources or type @ to add context"></textarea>
                 <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
               </form>
@@ -4653,39 +4864,55 @@
         results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
       }
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
+      const selectedModel = selectedAskModel(form);
       const remainingAiSearches = aiUsageRemaining(user);
       if (!hasUnlimitedAiAccess && remainingAiSearches <= 0) {
         answer = `${normalSearchNotice('limit')}\n\n${answer}`;
       } else if (results.length || !isRefinement) {
         try {
-          const geminiCandidates = isRefinement
+          const modelCandidates = isRefinement
             ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
-            : uniqueAiResources([...contextResources, ...candidatePoolForGemini(catalog, searchText, results)]);
-          const gemini = await askOpenConstructionWithGemini(clean, geminiCandidates, priorMessages, previousResources);
-          if (gemini?.limited) {
-            answer = gemini.answer;
+            : uniqueAiResources([...contextResources, ...candidatePoolForAskModel(catalog, searchText, results)]);
+          const modelResponse = await askOpenConstructionWithModel(clean, modelCandidates, priorMessages, previousResources);
+          if (modelResponse?.limited) {
+            answer = modelResponse.answer;
             results = isRefinement ? previousResources : results;
-          } else if (gemini?.outOfScope) {
-            answer = gemini.answer;
+          } else if (modelResponse?.outOfScope) {
+            answer = modelResponse.answer;
             results = [];
-          } else if (gemini?.answer) {
-            const citedResults = pickGeminiResultsAi([...previousResources, ...geminiCandidates], geminiResourceRefsAi(gemini));
+          } else if (modelResponse?.answer) {
+            const citedResults = pickAskModelResultsAi([...previousResources, ...modelCandidates], askModelResourceRefsAi(modelResponse));
             if (citedResults.length) {
               if (!hasUnlimitedAiAccess) {
                 recordAiUsage(user);
                 updateAiUsageUi(user);
               }
-              answer = gemini.answer;
+              answer = modelResponse.answer;
               results = citedResults.slice(0, AI_MAX_RESULT_LIMIT);
             } else {
               console.warn('Ask OpenConstruction response omitted structured resource references; using keyword fallback.');
+              if (!selectedModel.allowFallback) {
+                answer = `${selectedModel.label} responded without valid OpenConstruction resource references. Try again, or switch back to Gemini 3.5 Flash Lite.`;
+                results = [];
+              }
             }
           } else {
-            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+            if (selectedModel.allowFallback) {
+              answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+            } else {
+              answer = askModelUnavailableNotice(selectedModel);
+              results = [];
+            }
           }
         } catch (err) {
-          console.warn('Ask OpenConstruction Gemini enhancement unavailable; using keyword fallback.', err);
-          answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          if (selectedModel.allowFallback) {
+            console.warn('Ask OpenConstruction model enhancement unavailable; using keyword fallback.', err);
+            answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
+          } else {
+            console.warn('Ask OpenConstruction selected model unavailable.', err);
+            answer = askModelUnavailableNotice(selectedModel);
+            results = [];
+          }
         }
       }
       if (results.length && !/\bShowing (?:the top )?\d+\b/i.test(answer)) {
@@ -4753,6 +4980,7 @@
       });
       bindAskFieldAutosize(document);
       bindAskContextPicker(form, { getCatalog: loadAccountAiCatalog });
+      bindAskModelPicker(document);
       const initialQuery = new URLSearchParams(window.location.search).get('q') || '';
       if (initialQuery && input && !form.dataset.initialAskHandled) {
         form.dataset.initialAskHandled = 'true';

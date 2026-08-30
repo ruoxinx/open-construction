@@ -2166,14 +2166,14 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   display:grid;
   gap:.55rem;
   margin-top:auto;
-  padding:0 0 max(clamp(1rem, 3vh, 2rem), env(safe-area-inset-bottom));
+  padding:0 0 max(.35rem, env(safe-area-inset-bottom));
 }
 
 .oc-ask-workspace.has-results .oc-ask-input-dock{
   position:sticky;
   bottom:0;
   z-index:15;
-  padding:0 0 max(.75rem, env(safe-area-inset-bottom));
+  padding:0 0 max(.45rem, env(safe-area-inset-bottom));
   background:linear-gradient(180deg, rgba(255,255,255,0), #fff 18%);
 }
 
@@ -2181,8 +2181,8 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   position:relative;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
-  gap:.28rem;
-  align-items:end;
+  gap:.12rem .28rem;
+  align-items:center;
   border:1px solid #cfcfcf;
   border-radius:10px;
   background:#fff;
@@ -2199,6 +2199,113 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .oc-ask-form.has-context-ui .oc-ask-context-layer{
   display:block;
+}
+
+.oc-ask-toolbar{
+  grid-column:1;
+  grid-row:3;
+  display:flex;
+  align-items:center;
+  gap:.2rem;
+  min-width:0;
+  padding:.33rem .08rem .02rem;
+}
+
+.oc-ask-model-control{
+  position:relative;
+  min-width:0;
+}
+
+.oc-ask-tool-button{
+  min-height:28px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.3rem;
+  border:1px solid transparent;
+  border-radius:6px;
+  background:transparent;
+  color:#64748b;
+  font-size:.74rem;
+  font-weight:750;
+  line-height:1;
+  padding:.2rem .38rem;
+  white-space:nowrap;
+}
+
+.oc-ask-tool-button svg{
+  width:14px;
+  height:14px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.oc-ask-tool-button:hover,
+.oc-ask-tool-button:focus{
+  border-color:#e2e8f0;
+  background:#f8fafc;
+  color:#334155;
+}
+
+.oc-ask-tool-button:disabled{
+  color:#94a3b8;
+  cursor:not-allowed;
+  opacity:.72;
+}
+
+.oc-ask-model-menu{
+  position:absolute;
+  left:0;
+  bottom:calc(100% + .45rem);
+  z-index:24;
+  width:min(240px, calc(100vw - 2rem));
+  display:grid;
+  gap:.18rem;
+  border:1px solid #dbe5ef;
+  border-radius:8px;
+  background:#fff;
+  box-shadow:0 18px 44px rgba(15,46,75,.18);
+  padding:.36rem;
+}
+
+.oc-ask-model-menu[hidden]{
+  display:none;
+}
+
+.oc-ask-model-menu button{
+  width:100%;
+  display:grid;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:#334155;
+  padding:.44rem .5rem;
+  text-align:left;
+}
+
+.oc-ask-model-menu button:hover,
+.oc-ask-model-menu button:focus,
+.oc-ask-model-menu button[aria-selected="true"]{
+  background:#f1f6fb;
+}
+
+.oc-ask-model-menu strong{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.oc-ask-model-menu strong{
+  color:#223049;
+  font-size:.84rem;
+  font-weight:850;
+  line-height:1.2;
 }
 
 .oc-ask-context-chips{
@@ -2231,8 +2338,8 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   text-decoration:none;
 }
 
-.oc-ask-context-chip > span:not(.oc-ask-context-kind-mark),
-.oc-ask-message-context a > span:not(.oc-ask-context-kind-mark){
+.oc-ask-context-chip > span:not(.oc-ask-context-kind-mark):not(.oc-ask-context-media),
+.oc-ask-message-context a > span:not(.oc-ask-context-kind-mark):not(.oc-ask-context-media){
   min-width:0;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -2288,6 +2395,20 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .oc-ask-context-media .oc-ask-context-kind-mark[hidden]{
   display:none;
+}
+
+.oc-ask-context-chip .oc-ask-context-media,
+.oc-ask-message-context .oc-ask-context-media{
+  width:20px;
+  height:20px;
+  border-radius:999px;
+  border-color:#e2e8f0;
+}
+
+.oc-ask-context-chip .oc-ask-context-media .oc-ask-context-kind-mark,
+.oc-ask-message-context .oc-ask-context-media .oc-ask-context-kind-mark{
+  width:18px;
+  height:18px;
 }
 
 .oc-ask-context-option > .oc-ask-context-kind-mark{
@@ -2468,6 +2589,8 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 }
 
 .oc-ask-form .form-control{
+  grid-column:1 / -1;
+  grid-row:2;
   min-height:38px;
   max-height:150px;
   border:0;
@@ -2476,7 +2599,7 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   font-size:1rem;
   line-height:1.35;
   overflow:auto;
-  padding:.55rem .65rem;
+  padding:.58rem .65rem .5rem;
   resize:none;
 }
 
@@ -2491,8 +2614,11 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 }
 
 .oc-primary-action{
+  grid-column:2;
+  grid-row:3;
   width:38px;
   min-height:38px;
+  align-self:end;
   display:grid;
   place-items:center;
   border:0;
@@ -2501,6 +2627,7 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   color:#3f3f46;
   font-weight:800;
   line-height:1.2;
+  margin-top:.24rem;
   padding:0;
   transition:background-color .18s ease, box-shadow .18s ease, color .18s ease, transform .18s ease;
 }
@@ -5347,7 +5474,7 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   }
 
   .oc-ask-input-dock{
-    padding-bottom:max(.85rem, env(safe-area-inset-bottom));
+    padding-bottom:max(.45rem, env(safe-area-inset-bottom));
   }
 
   .oc-account-ai-message.is-user{
