@@ -509,6 +509,7 @@
       flex-direction:column;
       height:100%;
       color:inherit;
+      cursor:pointer;
       text-decoration:none;
       border-radius:12px;
     }
@@ -541,6 +542,22 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+    }
+    .featured-media .submitted-by a{
+      color:var(--oc-link);
+      font-weight:700;
+      text-decoration:underline;
+      text-decoration-color:rgba(11,102,195,.45);
+      text-decoration-thickness:1px;
+      text-underline-offset:2px;
+    }
+    .featured-media .submitted-by a:hover,
+    .featured-media .submitted-by a:focus{
+      color:#084f96;
+      text-decoration:underline;
+      text-decoration-color:currentColor;
+      text-decoration-thickness:1px;
+      text-underline-offset:2px;
     }
     .featured-body{
       padding:.78rem .86rem .86rem;
@@ -1996,14 +2013,26 @@
 
     function contributorOverlayHtml(contributors){
       if (!Array.isArray(contributors) || !contributors.length) return '';
-      const names = contributors
-        .map(entry => `<strong>${esc(normalizeContributorHandle(entry.name))}</strong>`)
-        .join(', ');
+      const names = contributors.map((entry) => {
+        const label = `<strong>${esc(normalizeContributorHandle(entry.name))}</strong>`;
+        const href = safeContributorHref(entry.url);
+        return href
+          ? `<a href="${esc(href)}" target="_blank" rel="noopener">${label}</a>`
+          : label;
+      }).join(', ');
       return `
         <div class="submitted-by">
           Proposed by ${names}
         </div>
       `;
+    }
+
+    function safeContributorHref(url){
+      const text = String(url || '').trim();
+      if (!text) return '';
+      if (/^(https?:|mailto:|\/|\.\/|\.\.\/|contributors\.html)/i.test(text)) return text;
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) return `mailto:${text}`;
+      return '';
     }
 
     function formatCatalogTitle(raw){
@@ -2309,7 +2338,7 @@
 
       grid.innerHTML = items.map(item => `
         <article class="featured-card">
-          <a class="featured-card-link" href="${esc(item.href)}"${item.external ? ' target="_blank" rel="noopener"' : ''}>
+          <div class="featured-card-link" role="link" tabindex="0" data-href="${esc(item.href)}" data-external="${item.external ? 'true' : 'false'}">
             <div class="featured-media">
               <img src="${esc(item.image)}" alt=""
                    onerror="this.onerror=null;this.src='assets/img/placeholder/placeholder.png';">
@@ -2323,9 +2352,19 @@
               <h3 class="featured-title">${esc(item.title)}</h3>
               <p class="featured-meta">${esc(item.meta || 'OpenConstruction catalog resource')}</p>
             </div>
-          </a>
+          </div>
         </article>
       `).join('');
+    }
+
+    function openFeaturedCard(cardLink){
+      const href = cardLink && cardLink.dataset ? cardLink.dataset.href : '';
+      if (!href) return;
+      if (cardLink.dataset.external === 'true') {
+        window.open(href, '_blank', 'noopener');
+        return;
+      }
+      window.location.href = href;
     }
 
     const prevBtn = document.getElementById('featuredPrevBtn');
@@ -2365,6 +2404,19 @@
     if (nextBtn) nextBtn.addEventListener('click', () => scrollFeatured(1));
     if (grid){
       grid.addEventListener('scroll', () => window.requestAnimationFrame(updateFeaturedControls), { passive:true });
+      grid.addEventListener('click', (event) => {
+        if (event.target.closest('a, button')) return;
+        const cardLink = event.target.closest('.featured-card-link');
+        if (cardLink) openFeaturedCard(cardLink);
+      });
+      grid.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        if (event.target.closest('a, button')) return;
+        const cardLink = event.target.closest('.featured-card-link');
+        if (!cardLink) return;
+        event.preventDefault();
+        openFeaturedCard(cardLink);
+      });
       window.addEventListener('resize', updateFeaturedControls);
     }
 
