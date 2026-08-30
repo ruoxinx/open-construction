@@ -937,6 +937,25 @@
     return !!normStr(board?.results_url || '') || normArray(board?.results).length > 0;
   }
 
+  function datasetMatchesTask(ds, key, taskVocabulary){
+    return getDatasetTasks(ds).some(task => normalizeTaskTerm(task, taskVocabulary).canon === key);
+  }
+
+  function boardFromDataset(ds, taskLabel){
+    return {
+      task: taskLabel,
+      dataset_id: ds?.id || '',
+      dataset_name: ds?.name || ds?.title || ds?.id || '',
+      summary: ds?.paper || ds?.description || '',
+      year: ds?.year || '',
+      license: ds?.license || '',
+      dataset_url: ds?.access || '',
+      data_modality: ds?.data_modality || ds?.modality || '',
+      image_url: ds?.image_url || ds?.thumbnail || ds?.image || '',
+      results: []
+    };
+  }
+
   function datasetFallbackFromBoard(board){
     return {
       id: normStr(board?.dataset_id || board?.id),
@@ -1441,13 +1460,17 @@
     document.getElementById('pageTitle').textContent = label;
 
     const exactBoards = allTaskBoards.filter(board => boardHasResults(board));
+    const catalogDatasetMatches = datasets.filter(ds => datasetMatchesTask(ds, key, taskVocabulary));
     const taskDefinition = normalizedRequested.entry?.description
       || exactBoards.map(board => normStr(board.task_description)).find(Boolean)
       || 'Task definition not available yet.';
     document.getElementById('pageSubtitle').textContent = taskDefinition;
     updateDynamicMeta(label, key, taskDefinition);
     const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
-    const matchedDatasetIds = new Set(exactBoards.map(board => canonKey(board.dataset_id)).filter(Boolean));
+    const matchedDatasetIds = new Set([
+      ...exactBoards.map(board => canonKey(board.dataset_id)).filter(Boolean),
+      ...catalogDatasetMatches.map(ds => canonKey(ds.id)).filter(Boolean)
+    ]);
     const requestedTaskId = normalizedRequested.entry?.id || '';
     const relatedBoards = allBoards.filter(board => {
       if(!boardHasResults(board)) return false;
@@ -1460,7 +1483,11 @@
       return (requestedTaskId && boardRelatedIds.includes(requestedTaskId))
         || (normalizedBoardTask.entry?.id && requestedRelatedIds.includes(normalizedBoardTask.entry.id));
     });
-    const boards = [...exactBoards, ...relatedBoards];
+    const resultDatasetIds = new Set([...exactBoards, ...relatedBoards].map(board => canonKey(board.dataset_id)).filter(Boolean));
+    const catalogBoards = catalogDatasetMatches
+      .filter(ds => !resultDatasetIds.has(canonKey(ds.id)))
+      .map(ds => boardFromDataset(ds, label));
+    const boards = [...exactBoards, ...relatedBoards, ...catalogBoards];
     const boardByDatasetId = new Map();
     boards.forEach(board => {
       const datasetId = canonKey(board.dataset_id);
@@ -1482,7 +1509,13 @@
     const dsMatched = benchmarks.map(item => item.dataset);
 
     const cardCountNote = document.getElementById('cardCountNote');
-    if(cardCountNote) cardCountNote.textContent = benchmarks.length ? `${benchmarks.length} benchmark${benchmarks.length===1?'':'s'}` : '';
+    if(cardCountNote){
+      const resultCount = boards.filter(boardHasResults).length;
+      const datasetCount = benchmarks.length;
+      cardCountNote.textContent = datasetCount
+        ? `${datasetCount} dataset${datasetCount === 1 ? '' : 's'}${resultCount ? ` | ${resultCount} result benchmark${resultCount === 1 ? '' : 's'}` : ''}`
+        : '';
+    }
 
     renderBenchmarkCards(benchmarks);
     renderTaskMedia(dsMatched, boardByDatasetId);

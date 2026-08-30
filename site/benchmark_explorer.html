@@ -916,6 +916,7 @@
           taskId: normalized.taskId || '',
           dsCount:0,
           modelCount:0,
+          benchmarkCount:0,
           imgPrimary:'',
           imgFallback:'',
           modalityCounts:{},
@@ -932,6 +933,8 @@
         const node = touch(k);
         if(node && !seen.has(node.canon)){
           seen.add(node.canon);
+          node._datasetKeys = node._datasetKeys || new Set();
+          node._datasetKeys.add(canonKey(ds.id || ds.name || ds.title || node.canon));
           node.dsCount += 1;
           node.imgPrimary = betterImage(node.imgPrimary, img.primary);
           if(!node.imgFallback && img.fallback) node.imgFallback = img.fallback;
@@ -986,6 +989,7 @@
           taskId: normalized.taskId || '',
           dsCount: 0,
           modelCount: 0,
+          benchmarkCount: 0,
           imgPrimary: '',
           imgFallback: '',
           modalityCounts: {},
@@ -999,7 +1003,12 @@
       node._benchmarkDatasetKeys = node._benchmarkDatasetKeys || new Set();
       if(boardDatasetKey && !node._benchmarkDatasetKeys.has(boardDatasetKey)){
         node._benchmarkDatasetKeys.add(boardDatasetKey);
-        node.dsCount = node._benchmarkDatasetKeys.size;
+        node.benchmarkCount = node._benchmarkDatasetKeys.size;
+        node._datasetKeys = node._datasetKeys || new Set();
+        if(!node._datasetKeys.has(boardDatasetKey)){
+          node._datasetKeys.add(boardDatasetKey);
+          node.dsCount = node._datasetKeys.size;
+        }
         addModalitiesToNode(node, dataset || board);
       }
 
@@ -1119,7 +1128,7 @@
         <div class="index-content">
           <div class="index-title">${esc(label)}</div>
           <div class="index-meta">
-            <span>${iconDataset()} ${esc(pluralCount(x.dsCount, 'benchmark', 'benchmarks'))}</span>
+            <span>${iconDataset()} ${esc(countLabel(x))}</span>
           </div>
         </div>
       </a>`;
@@ -1270,7 +1279,12 @@
 
   function countLabel(item){
     const ds = Number(item?.dsCount || 0);
-    return ds ? `${ds} benchmark${ds === 1 ? '' : 's'}` : 'No linked benchmarks';
+    const benchmarks = Number(item?.benchmarkCount || 0);
+    if(benchmarks && ds && ds !== benchmarks){
+      return `${pluralCount(benchmarks, 'result benchmark', 'result benchmarks')} | ${pluralCount(ds, 'dataset', 'datasets')}`;
+    }
+    if(benchmarks) return pluralCount(benchmarks, 'result benchmark', 'result benchmarks');
+    return ds ? pluralCount(ds, 'dataset', 'datasets') : 'No linked datasets';
   }
 
   const DONUT_COLORS = ['#3d6f9f', '#4f8a70', '#9b7a45', '#7b7098', '#5c8a96', '#7f8792', '#b8c4cf'];
@@ -1760,11 +1774,6 @@
         latestYear ? `Latest result year ${latestYear}` : ''
       ].filter(Boolean).join(' | ');
     }
-    const resultBackedTaskCanons = new Set(
-      resultBackedBoards
-        .map(board => normalizeTaskTerm(board.task, taskVocabulary).canon)
-        .filter(Boolean)
-    );
     const models = [];
 
     const statBenchmarks = document.getElementById('statBenchmarks');
@@ -1775,10 +1784,21 @@
     if (statModels) statModels.textContent = String(models.length || 0);
     renderCatalogComposition(datasets, models);
 
-    // Benchmark task cards count datasets that have reported benchmark boards,
-    // not every catalog dataset that lists the task as a possible use.
-    let tasks = mergeBenchmarkTasks([], resultBackedBoards, datasets, taskVocabulary);
-    tasks = tasks.filter(item => resultBackedTaskCanons.has(item.canon));
+    let tasks = buildMergedIndex({
+      datasets,
+      models,
+      extractor: (obj, kind) =>
+        kind === 'dataset'
+          ? getDatasetTasks(obj)
+          : getModelTasks(obj),
+      normalizer: (raw) => normalizeTaskTerm(raw, taskVocabulary),
+      imageGetter: (obj, kind) =>
+        kind === 'dataset'
+          ? getDatasetCardImage(obj)
+          : getModelCardImage(obj)
+    });
+    tasks = mergeBenchmarkTasks(tasks, resultBackedBoards, datasets, taskVocabulary);
+    tasks = tasks.filter(item => !isApplicationOnlyTerm(item));
 
     const apps = [];
 
