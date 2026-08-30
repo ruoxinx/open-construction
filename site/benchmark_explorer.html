@@ -690,6 +690,20 @@
   function slugifyKey(s){
     return normStr(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0, 90) || 'key';
   }
+  function taskAliasKeys(...values){
+    const keys = new Set();
+    values.forEach(value => {
+      const text = normStr(value);
+      if(!text) return;
+      [text, text.replace(/^task[.:/-]/i, '')].forEach(candidate => {
+        const canonical = canonKey(candidate);
+        if(canonical) keys.add(canonical);
+        const slug = slugifyKey(candidate);
+        if(slug) keys.add(slug);
+      });
+    });
+    return [...keys];
+  }
   const APPLICATION_ONLY_TERMS = new Set([
     'construction drawing understanding'
   ]);
@@ -850,7 +864,7 @@
         preferred_label: normStr(task.preferred_label || task.canonical_key || '')
       };
       vocab.byCanonical.set(canonical, entry);
-      [entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)].forEach(alias => {
+      taskAliasKeys(entry.id, entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)).forEach(alias => {
         const aliasKey = canonKey(alias);
         if(aliasKey) vocab.byAlias.set(aliasKey, entry);
       });
@@ -861,7 +875,7 @@
   function normalizeTaskTerm(raw, vocab){
     const rawText = normStr(raw);
     const rawCanon = canonKey(rawText);
-    const entry = vocab?.byAlias?.get(rawCanon) || null;
+    const entry = taskAliasKeys(rawText).map(key => vocab?.byAlias?.get(key)).find(Boolean) || null;
     if(entry){
       return {
         canon: entry.canonical_key,
@@ -876,6 +890,9 @@
       taskId: '',
       entry: null
     };
+  }
+  function benchmarkTaskTerm(board){
+    return normStr(board?.task) || normStr(board?.task_id || board?.taskId);
   }
   function formatApplicationLabel(raw){
     return APPLICATION_LABELS.get(canonKey(raw)) || niceLabel(raw);
@@ -973,7 +990,7 @@
     const datasetById = new Map(datasets.map(ds => [canonKey(ds.id), ds]));
 
     boards.forEach(board => {
-      const normalized = normalizeTaskTerm(board.task, taskVocabulary);
+      const normalized = normalizeTaskTerm(benchmarkTaskTerm(board), taskVocabulary);
       const canon = normalized.canon;
       if(!canon) return;
 
@@ -1762,7 +1779,7 @@
     }
     const resultBackedTaskCanons = new Set(
       resultBackedBoards
-        .map(board => normalizeTaskTerm(board.task, taskVocabulary).canon)
+        .map(board => normalizeTaskTerm(benchmarkTaskTerm(board), taskVocabulary).canon)
         .filter(Boolean)
     );
     const models = [];

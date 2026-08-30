@@ -834,6 +834,23 @@
       acronymPattern.test(word) ? word.toUpperCase() : `${word.charAt(0).toUpperCase()}${word.slice(1)}`
     );
   }
+  function slugifyKey(s){
+    return normStr(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0, 90) || 'key';
+  }
+  function taskAliasKeys(...values){
+    const keys = new Set();
+    values.forEach(value => {
+      const text = normStr(value);
+      if(!text) return;
+      [text, text.replace(/^task[.:/-]/i, '')].forEach(candidate => {
+        const canonical = canonKey(candidate);
+        if(canonical) keys.add(canonical);
+        const slug = slugifyKey(candidate);
+        if(slug) keys.add(slug);
+      });
+    });
+    return [...keys];
+  }
   function emptyTaskVocabulary(){ return { byCanonical: new Map(), byAlias: new Map() }; }
   function buildTaskVocabulary(payload){
     const vocab = emptyTaskVocabulary();
@@ -847,7 +864,7 @@
         preferred_label: normStr(task.preferred_label || task.canonical_key || '')
       };
       vocab.byCanonical.set(canonical, entry);
-      [entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)].forEach(alias => {
+      taskAliasKeys(entry.id, entry.canonical_key, entry.preferred_label, ...normArray(entry.aliases)).forEach(alias => {
         const aliasKey = canonKey(alias);
         if(aliasKey) vocab.byAlias.set(aliasKey, entry);
       });
@@ -857,7 +874,7 @@
   function normalizeTaskTerm(raw, vocab){
     const rawText = normStr(raw);
     const rawCanon = canonKey(rawText);
-    const entry = vocab?.byAlias?.get(rawCanon) || null;
+    const entry = taskAliasKeys(rawText).map(key => vocab?.byAlias?.get(key)).find(Boolean) || null;
     if(entry){
       return {
         canon: entry.canonical_key,
@@ -870,6 +887,9 @@
       label: niceLabel(rawText),
       entry: null
     };
+  }
+  function benchmarkTaskTerm(board){
+    return normStr(board?.task) || normStr(board?.task_id || board?.taskId);
   }
 
   function getDatasetTasks(ds){
@@ -1432,7 +1452,7 @@
       renderDataLoadError();
       return;
     }
-    const allTaskBoards = allBoards.filter(board => normalizeTaskTerm(board.task, taskVocabulary).canon === key);
+    const allTaskBoards = allBoards.filter(board => normalizeTaskTerm(benchmarkTaskTerm(board), taskVocabulary).canon === key);
     if(!requested || (!normalizedRequested.entry && !allTaskBoards.length)){
       renderTaskNotFound(requested);
       return;
@@ -1451,7 +1471,7 @@
     const requestedTaskId = normalizedRequested.entry?.id || '';
     const relatedBoards = allBoards.filter(board => {
       if(!boardHasResults(board)) return false;
-      const normalizedBoardTask = normalizeTaskTerm(board.task, taskVocabulary);
+      const normalizedBoardTask = normalizeTaskTerm(benchmarkTaskTerm(board), taskVocabulary);
       const datasetId = canonKey(board.dataset_id);
       if(!datasetId || !matchedDatasetIds.has(datasetId)) return false;
       if(normalizedBoardTask.canon === key) return false;
