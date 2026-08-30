@@ -1140,7 +1140,7 @@
     // so it is grouped under Point Cloud even though its label contains "BIM".
     if(/\b(scan[- ]to[- ]bim|scan2bim|point[- ]cloud[- ]to[- ]bim|pcd[- ]to[- ]bim)\b/.test(labelText)) return 'Point Cloud';
     if(/\b(bim|ifc|revit|industry foundation classes|building information model|building information modeling)\b/.test(labelText)) return 'BIM / IFC';
-    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
+    if(/\b(construction drawing understanding|agentic blueprint reading|blueprint understanding|drawing understanding|design editing|design revision|editing and revision|edit and revise|visual question answering|vqa|visual grounding|referring expression|phrase grounding|image-text|text-to-image retrieval|vision-language|vision language|multimodal)\b/.test(labelText)) return 'Multimodal / Vision-Language';
     if(/\b(photovoltaic|pv power|solar power|power forecasting|power prediction|energy forecasting|load forecasting|time series|forecasting|imu|inertial measurement|accelerometer|gyroscope|sensor stream|sequence modeling)\b/.test(labelText)) return 'Time Series';
     if(modalities.includes('Time Series') || modalities.includes('Sensors')) return 'Time Series';
     if(/\b(instance segmentation|object detection|semantic segmentation|panoptic segmentation|image classification|image caption|image retrieval|keypoint|pose estimation|ocr|computer vision|remote sensing|street view|rgb|image|photo|camera|visual)\b/.test(labelText)) return 'Image';
