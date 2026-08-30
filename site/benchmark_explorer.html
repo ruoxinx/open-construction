@@ -33,7 +33,7 @@
       --oc-card:#ffffff; --oc-shadow:0 8px 24px rgba(15,46,75,.06);
       --oc-radius:10px; --oc-muted:#f6f9fc; --oc-focus:#86b7fe;
     }
-	.oc-container{ max-width:1140px; }
+	.oc-container{ max-width:1240px; }
 
     /* shared shell styles live in assets/css/shared-site.css */
 
@@ -50,7 +50,7 @@
     }
     .grouped-index{
       display:grid;
-      gap:26px;
+      gap:24px;
     }
     .benchmark-search-dock .oc-catalog-search-wrap{
       max-width:720px;
@@ -75,7 +75,7 @@
     }
     .index-group{
       display:grid;
-      gap:12px;
+      gap:10px;
     }
     .index-group-title{
       color:var(--oc-ink);
@@ -86,7 +86,7 @@
     .index-group-grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:16px;
+      gap:14px;
     }
 
     /* Index cards */
@@ -95,17 +95,18 @@
 	  gap:16px;
 	  grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
+    .grouped-index.is-loading,
     .index-grid.is-loading{
       min-height:248px;
     }
     .index-grid-skeleton{
       display:grid;
-      gap:16px;
-      grid-template-columns:inherit;
+      gap:14px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
       grid-column:1 / -1;
     }
     .index-skeleton-card{
-      min-height:76px;
+      min-height:102px;
       border:1px solid var(--oc-border);
       border-radius:10px;
       background:
@@ -451,15 +452,15 @@
     }
     .index-card{
       background:#fff; border:1px solid var(--oc-border); border-radius:10px; box-shadow:var(--oc-shadow);
-      padding:16px; text-decoration:none; color:inherit;
+      padding:12px 14px; text-decoration:none; color:inherit;
       transition:transform .12s ease, border-color .12s ease;
-      display:grid; grid-template-columns:64px minmax(0,1fr); gap:14px; align-items:center;
-      min-height:84px;
+      display:grid; grid-template-columns:76px minmax(0,1fr); gap:10px; align-items:center;
+      min-height:102px;
     }
     .index-card:hover{ transform:translateY(-1px); border-color:#d9e3ee; }
 
     .index-thumb-wrap{
-      width:64px; height:64px;
+      width:76px; height:76px;
       border-radius:8px;
       border:1px solid var(--oc-border);
       background:#f8fbff;
@@ -481,10 +482,10 @@
     .index-thumb-glyph svg{ width:26px; height:26px; opacity:.88; }
     .index-thumb-wrap.is-fallback .index-thumb{display:none}
     .index-thumb-wrap.is-fallback .index-thumb-glyph{display:grid}
-    .index-content{min-width:0;display:grid;gap:.25rem}
-    .index-title{ font-size:1rem; font-weight:800; color:var(--oc-ink); line-height:1.25; margin:0; overflow-wrap:anywhere; }
-    .index-meta{ color:var(--oc-subtle); font-size:.82rem; margin:0; display:flex; flex-wrap:wrap; gap:.35rem .8rem; }
-    .index-meta span{ display:inline-flex; gap:6px; align-items:center; }
+    .index-content{min-width:0;display:grid;gap:.16rem}
+    .index-title{ font-size:.98rem; font-weight:800; color:var(--oc-ink); line-height:1.22; margin:0; overflow-wrap:anywhere; }
+    .index-meta{ color:var(--oc-subtle); font-size:.8rem; margin:0; display:flex; flex-wrap:wrap; gap:.22rem .55rem; }
+    .index-meta span{ display:inline-flex; gap:5px; align-items:center; }
     .index-meta .dotline{ display:flex; gap:8px; align-items:center; }
     .index-meta .dotline span{ display:inline-flex; gap:6px; align-items:center; }
     .index-meta svg{ width:15px; height:15px; opacity:.85; }
@@ -509,8 +510,9 @@
       header.hero h1.oc-page-title{font-size:1.75rem;width:100%}
 	  .index-grid{ grid-template-columns: 1fr; }
       .index-group-grid{grid-template-columns:1fr}
-      .index-card{grid-template-columns:56px minmax(0,1fr);padding:12px;min-height:0}
-      .index-thumb-wrap{width:56px;height:56px}
+      .index-grid-skeleton{grid-template-columns:1fr}
+      .index-card{grid-template-columns:60px minmax(0,1fr);gap:10px;padding:10px 12px;min-height:82px}
+      .index-thumb-wrap{width:60px;height:60px}
       .rank-row{grid-template-columns:1fr}
       .rank-count{white-space:normal}
       .section-title-row{align-items:flex-start;flex-direction:column}
@@ -1095,7 +1097,7 @@
 
   // -------- Progressive reveal --------
   const gridState = {
-    insight: { all: [], defaultAll: [], shown: 0, batch: Number.POSITIVE_INFINITY }
+    insight: { all: [], defaultAll: [], shown: 0, batch: 9 }
   };
 
   function iconDataset(){
@@ -1182,12 +1184,23 @@
     return index === -1 ? GROUP_ORDER.length : index;
   }
 
+  function groupLabelsForItem(item){
+    const primary = primaryGroupLabel(item);
+    const labels = [primary];
+    const labelText = `${item?.label || ''} ${item?.canon || ''}`.toLowerCase();
+    if(/\b(scan[- ]to[- ]bim|scan2bim|point[- ]cloud[- ]to[- ]bim|pcd[- ]to[- ]bim)\b/.test(labelText) && primary !== 'BIM / IFC'){
+      labels.push('BIM / IFC');
+    }
+    return labels;
+  }
+
   function renderGroupedCards(items, hrefBuilder){
     const groups = new Map();
     items.forEach(item => {
-      const label = primaryGroupLabel(item);
-      if(!groups.has(label)) groups.set(label, []);
-      groups.get(label).push(item);
+      groupLabelsForItem(item).forEach(label => {
+        if(!groups.has(label)) groups.set(label, []);
+        groups.get(label).push(item);
+      });
     });
     return Array.from(groups, ([label, groupItems]) => ({ label, items: groupItems }))
       .sort((a,b) => groupRank(a.label) - groupRank(b.label) || a.label.localeCompare(b.label))
