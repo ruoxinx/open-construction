@@ -37,11 +37,6 @@ secrets/
 .supabase/
 supabase/*
 !supabase/config.toml
-!supabase/functions/
-supabase/functions/*
-!supabase/functions/ask-openconstruction/
-!supabase/functions/ask-openconstruction/index.ts
-!supabase/functions/ask-openconstruction/README.md
 supabase/.env
 supabase/.env.*
 supabase/.branches/
