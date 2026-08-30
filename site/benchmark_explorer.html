@@ -1194,7 +1194,7 @@
     return labels;
   }
 
-  function renderGroupedCards(items, hrefBuilder){
+  function groupedCardSections(items){
     const groups = new Map();
     items.forEach(item => {
       groupLabelsForItem(item).forEach(label => {
@@ -1203,15 +1203,32 @@
       });
     });
     return Array.from(groups, ([label, groupItems]) => ({ label, items: groupItems }))
-      .sort((a,b) => groupRank(a.label) - groupRank(b.label) || a.label.localeCompare(b.label))
-      .map(group => `
-        <section class="index-group">
-          <h3 class="index-group-title">${esc(group.label)}</h3>
-          <div class="index-group-grid">
-            ${group.items.map(item => indexCardHtml(item, hrefBuilder)).join('')}
-          </div>
-        </section>
-      `).join('');
+      .sort((a,b) => groupRank(a.label) - groupRank(b.label) || a.label.localeCompare(b.label));
+  }
+
+  function groupedCardCount(items){
+    return groupedCardSections(items).reduce((total, group) => total + group.items.length, 0);
+  }
+
+  function renderGroupedCards(items, hrefBuilder, limit = Infinity){
+    let rendered = 0;
+    return groupedCardSections(items)
+      .map(group => {
+        const available = Math.max(0, limit - rendered);
+        const visibleItems = group.items.slice(0, available);
+        rendered += visibleItems.length;
+        if(!visibleItems.length) return '';
+        return `
+          <section class="index-group">
+            <h3 class="index-group-title">${esc(group.label)}</h3>
+            <div class="index-group-grid">
+              ${visibleItems.map(item => indexCardHtml(item, hrefBuilder)).join('')}
+            </div>
+          </section>
+        `;
+      })
+      .filter(Boolean)
+      .join('');
   }
 
   function renderIndexGrid({items, elId, noteId, hrefBuilder, kind, reset=false}){
@@ -1221,7 +1238,7 @@
 
     const state = gridState[kind];
     if(reset) state.shown = 0;
-    const total = items.length;
+    const total = groupedCardCount(items);
 
     if(!total){
       el.innerHTML = `
@@ -1234,10 +1251,9 @@
     }
 
     const nextShown = Math.min(total, state.shown + state.batch);
-    const shownItems = items.slice(0, nextShown);
     state.shown = nextShown;
 
-	el.innerHTML = renderGroupedCards(shownItems, hrefBuilder);
+	el.innerHTML = renderGroupedCards(items, hrefBuilder, state.shown);
 
 
     const remaining = total - state.shown;
