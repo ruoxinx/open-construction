@@ -141,12 +141,18 @@
       transition:transform .12s ease, box-shadow .12s ease;
       min-height:100%;
     }
+    .occ-carousel .person-card{
+      height:116px !important;
+      min-height:0;
+    }
     .person-card:hover{ transform:translateY(-1px); }
     .person-card .card-body{ padding:.82rem .9rem; }
     .team-card .card-body{ padding:.78rem .86rem; }
     .person-card .card-body.compact-body{
-      align-items:flex-start;
-      gap:.78rem !important;
+      align-items:center;
+      gap:.68rem !important;
+      height:100%;
+      overflow:hidden;
     }
     .headshot{
       width:86px; height:86px; object-fit:cover; border-radius:50%;
@@ -155,15 +161,20 @@
     .team-card .headshot,
     .person-card .headshot,
     .headshot.is-initials{ width:64px; height:64px; }
+    .occ-carousel .person-card .headshot,
+    .occ-carousel .headshot.is-initials{
+      width:56px;
+      height:56px;
+    }
     .person-card.org-card .card-body.compact-body{
-      gap:.95rem !important;
+      gap:.72rem !important;
     }
     .contributor-logo-slot{
-      width:152px;
-      height:96px;
+      width:112px;
+      height:64px;
       display:grid;
       place-items:center;
-      flex:0 0 152px;
+      flex:0 0 112px;
       border:1px solid rgba(231,237,243,.95);
       border-radius:10px;
       background:#fff;
@@ -186,20 +197,20 @@
       min-width:0;
       display:flex;
       flex-direction:column;
-      gap:.24rem;
+      gap:.14rem;
       flex:1 1 auto;
     }
     .person-card .card-title{
       margin-bottom:0;
       font-weight:700;
-      font-size:1.08rem;
-      line-height:1.28;
+      font-size:1rem;
+      line-height:1.22;
     }
     .person-card .role{
-      font-size:.92rem;
+      font-size:.86rem;
       color:var(--oc-subtle);
       margin-bottom:0;
-      line-height:1.4;
+      line-height:1.25;
     }
     .person-card .project-role{
       font-size:.88rem;
@@ -209,8 +220,8 @@
       margin-top:.08rem;
     }
     .person-card .affil{
-      font-size:.94rem;
-      line-height:1.42;
+      font-size:.88rem;
+      line-height:1.3;
       color:var(--oc-text);
     }
     .person-card .card-title,
@@ -224,6 +235,7 @@
     .person-card .card-title{ -webkit-line-clamp:2; }
     .person-card .role,
     .person-card .project-role,
+    .occ-carousel .person-card .role{ -webkit-line-clamp:1; }
     .person-card .affil{ -webkit-line-clamp:2; }
     .team-card .card-title,
     .team-card .role,
@@ -638,9 +650,9 @@
       .community-links{grid-template-columns:1fr}
       .team-card .card-body{padding:.9rem}
       .contributor-logo-slot{
-        width:124px;
-        height:78px;
-        flex-basis:124px;
+        width:94px;
+        height:58px;
+        flex-basis:94px;
         padding:7px;
       }
     }
@@ -1372,17 +1384,20 @@ window.OpenConstructionContributorData = (() => {
   function cardHTML(c){
     const isOrg = isOrgContributor(c);
     const searchText = [c.name, c.role, c.affiliation, c.type].map(value => String(value || '')).join(' ').toLowerCase();
+    const name = esc(c.name || '');
+    const role = esc(c.role || '');
+    const affiliation = esc(c.affiliation || '');
     const imageAlt = isOrg ? `${c.name || 'Organization'} logo` : '';
-    const media = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${c.image}" alt="${esc(imageAlt)}">`
-                        : `<div class="headshot is-initials${isOrg ? ' is-logo' : ''}">${initials(c.name)}</div>`;
+    const media = c.image ? `<img class="headshot${isOrg ? ' is-logo' : ''}" src="${esc(c.image)}" alt="${esc(imageAlt)}">`
+                        : `<div class="headshot is-initials${isOrg ? ' is-logo' : ''}">${esc(initials(c.name))}</div>`;
     const img = isOrg ? `<div class="contributor-logo-slot">${media}</div>` : media;
     const body = `<div class="card oc-card person-card${isOrg ? ' org-card' : ''} h-100">
         <div class="card-body compact-body d-flex">${img}
-          <div class="person-meta"><h5 class="card-title">${c.name||''}</h5>
-          <div class="role">${c.role||''}</div>
-          <div class="affil">${c.affiliation||''}</div></div></div></div>`;
+          <div class="person-meta"><h5 class="card-title" title="${name}">${name}</h5>
+          <div class="role" title="${role}">${role}</div>
+          <div class="affil" title="${affiliation}">${affiliation}</div></div></div></div>`;
     return c.link_url
-      ? `<div class="col-md-6 col-xl-4" data-search="${esc(searchText)}"><a class="text-decoration-none" href="${c.link_url}" target="_blank" rel="noopener">${body}</a></div>`
+      ? `<div class="col-md-6 col-xl-4" data-search="${esc(searchText)}"><a class="text-decoration-none" href="${esc(c.link_url)}" target="_blank" rel="noopener">${body}</a></div>`
       : `<div class="col-md-6 col-xl-4" data-search="${esc(searchText)}">${body}</div>`;
   }
 
