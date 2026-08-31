@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260830-ask-placeholder" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260831-library-download" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to account</a>
@@ -3205,30 +3205,27 @@
       });
     });
 
-    document.getElementById('exportJsonBtn')?.addEventListener('click', async () => {
+    async function exportSelectedResources(format){
       const rows = selectedRows();
       if (!rows.length) {
         status.textContent = 'Select resources first.';
         return;
       }
       const exportRows = await selectedExportRows(rows, status, notesByKey);
-      downloadFile('openconstruction-saved-resources.json', JSON.stringify(exportRows, null, 2), 'application/json');
+      if (format === 'csv') {
+        const header = exportHeaders(exportRows);
+        const csv = [header.join(',')]
+          .concat(exportRows.map(row => header.map(key => csvCell(row[key])).join(',')))
+          .join('\n');
+        downloadFile('openconstruction-saved-resources.csv', csv, 'text/csv');
+      } else {
+        downloadFile('openconstruction-saved-resources.json', JSON.stringify(exportRows, null, 2), 'application/json');
+      }
       status.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'} exported.`;
-    });
+    }
 
-    document.getElementById('exportCsvBtn')?.addEventListener('click', async () => {
-      const rows = selectedRows();
-      if (!rows.length) {
-        status.textContent = 'Select resources first.';
-        return;
-      }
-      const exportRows = await selectedExportRows(rows, status, notesByKey);
-      const header = exportHeaders(exportRows);
-      const csv = [header.join(',')]
-        .concat(exportRows.map(row => header.map(key => csvCell(row[key])).join(',')))
-        .join('\n');
-      downloadFile('openconstruction-saved-resources.csv', csv, 'text/csv');
-      status.textContent = `${rows.length} resource${rows.length === 1 ? '' : 's'} exported.`;
+    document.querySelectorAll('[data-library-export-format]').forEach(button => {
+      button.addEventListener('click', () => exportSelectedResources(button.dataset.libraryExportFormat));
     });
 
     document.getElementById('compareResourcesBtn')?.addEventListener('click', async () => {
@@ -3250,7 +3247,6 @@
     const queryInput = document.getElementById('libraryFilterInput');
     const typeSelect = document.getElementById('libraryTypeSelect');
     const sortSelect = document.getElementById('librarySortSelect');
-    const exactInput = document.getElementById('libraryExactObjects');
     const grid = document.getElementById('libraryResourceGrid');
     const count = document.getElementById('libraryVisibleCount');
     if (!grid) return;
@@ -3261,19 +3257,13 @@
     function apply(){
       const query = normalize(queryInput?.value);
       const type = normalize(typeSelect?.value);
-      const exact = Boolean(exactInput?.checked);
       let visible = 0;
 
       cards.forEach(card => {
         const title = normalize(card.dataset.title);
         const objects = normalize(card.dataset.objects);
-        const objectList = objects.split(/\s*,\s*/).filter(Boolean);
         const matchesType = !type || card.dataset.type === type;
-        const matchesQuery = !query || (
-          exact
-            ? objectList.includes(query)
-            : `${title} ${objects}`.includes(query)
-        );
+        const matchesQuery = !query || `${title} ${objects}`.includes(query);
         const show = matchesType && matchesQuery;
         card.hidden = !show;
         if (show) visible += 1;
@@ -3290,7 +3280,7 @@
       if (count) count.textContent = `${visible} shown`;
     }
 
-    [queryInput, typeSelect, sortSelect, exactInput].forEach(control => {
+    [queryInput, typeSelect, sortSelect].forEach(control => {
       control?.addEventListener('input', apply);
       control?.addEventListener('change', apply);
     });
@@ -4362,6 +4352,8 @@
         plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>',
         edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h4l10-10-4-4L5 15v4z"></path><path d="m13.5 6.5 4 4"></path></svg>',
         upload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5"></path><path d="m8 9 4-4 4 4"></path><path d="M5 19h14"></path></svg>',
+        download: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v11"></path><path d="m8 12 4 4 4-4"></path><path d="M5 19h14"></path></svg>',
+        compare: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5"></path><path d="m21 3-7 7"></path><path d="M8 21H3v-5"></path><path d="m3 21 7-7"></path></svg>',
         skill: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4"></path><path d="M12 17v4"></path><path d="M3 12h4"></path><path d="M17 12h4"></path><path d="m6.6 6.6 2.8 2.8"></path><path d="m14.6 14.6 2.8 2.8"></path><path d="m17.4 6.6-2.8 2.8"></path><path d="m9.4 14.6-2.8 2.8"></path></svg>',
         report: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 19H3L12 3Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>',
         activity: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h11"></path><path d="M8 12h11"></path><path d="M8 18h11"></path><path d="m3.5 6 1 1 2-2"></path><path d="m3.5 12 1 1 2-2"></path><path d="m3.5 18 1 1 2-2"></path></svg>',
@@ -4535,13 +4527,18 @@
                   <option value="title-az">Title A-Z</option>
                   <option value="title-za">Title Z-A</option>
                 </select>
-                <label class="oc-library-check">
-                  <input id="libraryExactObjects" class="form-check-input" type="checkbox">
-                  <span>Exact object</span>
-                </label>
-                <button type="button" id="compareResourcesBtn" class="oc-text-action">Compare</button>
-                <button type="button" id="exportJsonBtn" class="oc-text-action">JSON</button>
-                <button type="button" id="exportCsvBtn" class="oc-text-action">CSV</button>
+                <div class="oc-library-actions">
+                  <button type="button" id="compareResourcesBtn" class="oc-library-action-btn">${workspaceIcon('compare')}<span>Compare</span></button>
+                  <div class="dropdown oc-library-download">
+                    <button type="button" class="oc-library-action-btn oc-library-download-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download selected resources">
+                      ${workspaceIcon('download')}<span>Download</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <button type="button" class="dropdown-item oc-library-download-item" data-library-export-format="json">JSON</button>
+                      <button type="button" class="dropdown-item oc-library-download-item" data-library-export-format="csv">CSV</button>
+                    </div>
+                  </div>
+                </div>
                 <span id="resourceToolStatus" class="small text-muted" role="status"></span>
               </div>
             ` : ''}
