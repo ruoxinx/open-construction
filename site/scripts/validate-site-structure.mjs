@@ -67,6 +67,7 @@ const expectedDataFiles = new Set([
   "dataset.schema.json",
   "datasets.json",
   "generate-updates.js",
+  "geo-locations.json",
   "guides.json",
   "institutions.json",
   "models.json",

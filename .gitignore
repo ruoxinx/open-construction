@@ -88,6 +88,7 @@ env/
 
 # Generated catalog/site assets from the data pipeline
 site/data/*.json
+!site/data/geo-locations.json
 site/data/img/
 site/assets/img/*
 !site/assets/img/

@@ -1520,48 +1520,20 @@
     renderDonut('licenseDonut', 'License status', countBy(resources, licenseStatus), 5);
   }
 
-  const GEO_LOCATIONS = [
-    { key:'australia', label:'Australia', lat:-25.27, lon:133.78 },
-    { key:'bahamas', label:'Bahamas', lat:25.03, lon:-77.40 },
-    { key:'canada', label:'Canada', lat:56.13, lon:-106.35 },
-    { key:'china', label:'China', lat:35.86, lon:104.20 },
-    { key:'denmark', label:'Denmark', lat:56.26, lon:9.50 },
-    { key:'finland', label:'Finland', lat:61.92, lon:25.75 },
-    { key:'france', label:'France', lat:46.23, lon:2.21 },
-    { key:'germany', label:'Germany', lat:51.17, lon:10.45 },
-    { key:'greece', label:'Greece', lat:39.07, lon:21.82 },
-    { key:'hong kong', label:'Hong Kong', lat:22.32, lon:114.17 },
-    { key:'japan', label:'Japan', lat:36.20, lon:138.25 },
-    { key:'macau', label:'Macau', lat:22.20, lon:113.54 },
-    { key:'morocco', label:'Morocco', lat:31.79, lon:-7.09 },
-    { key:'pakistan', label:'Pakistan', lat:30.38, lon:69.35 },
-    { key:'peru', label:'Peru', lat:-9.19, lon:-75.02 },
-    { key:'south korea', label:'South Korea', lat:35.91, lon:127.77 },
-    { key:'sweden', label:'Sweden', lat:60.13, lon:18.64 },
-    { key:'switzerland', label:'Switzerland', lat:46.82, lon:8.23 },
-    { key:'turkiye', label:'Turkiye', lat:38.96, lon:35.24 },
-    { key:'united arab emirates', label:'United Arab Emirates', lat:23.42, lon:53.85 },
-    { key:'united kingdom', label:'United Kingdom', lat:55.38, lon:-3.44 },
-    { key:'united states', label:'United States', lat:39.83, lon:-98.58 }
-  ];
-  const GEO_LOCATION_INDEX = new Map(GEO_LOCATIONS.map(item => [item.key, item]));
-  const GEO_ALIASES = {
-    'america':'united states',
-    'england':'united kingdom',
-    'great britain':'united kingdom',
-    'south korea republic of korea':'south korea',
-    'turkey':'turkiye',
-    'u k':'united kingdom',
-    'uk':'united kingdom',
-    'united states of america':'united states',
-    'us':'united states',
-    'u s':'united states',
-    'usa':'united states',
-    'u s a':'united states'
+  const DEFAULT_GEO_CONTEXT_TERMS = {
+    global: ['global', 'worldwide'],
+    regional: ['africa', 'asia', 'europe', 'north america', 'south america', 'oceania'],
+    virtual: ['virtual', 'simulator', 'synthetic'],
+    web: ['internet', 'youtube', 'wikipedia', 'website', 'web source', 'open source'],
+    unspecified: ['not specified', 'unspecified', 'unknown', 'none', 'na', 'n a']
   };
+  let GEO_LOCATIONS = [];
+  let GEO_LOCATION_INDEX = new Map();
+  let GEO_ALIASES = {};
+  let GEO_CONTEXT_TERMS = DEFAULT_GEO_CONTEXT_TERMS;
 
-  function normalizeGeoKey(value){
-    const key = normStr(value)
+  function geoBaseKey(value){
+    return normStr(value)
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
@@ -1569,6 +1541,61 @@
       .replace(/[.']/g, '')
       .replace(/[^a-z0-9]+/g, ' ')
       .trim();
+  }
+
+  function applyGeoConfig(payload){
+    const data = payload && typeof payload === 'object' ? payload : {};
+    GEO_LOCATIONS = Array.isArray(data.locations)
+      ? data.locations
+        .map(item => {
+          const key = geoBaseKey(item?.key || item?.label || item?.name);
+          const lat = Number(item?.lat);
+          const lon = Number(item?.lon);
+          if(!key || !Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+          return {
+            key,
+            label: normStr(item?.label || item?.name || item?.key),
+            lat,
+            lon
+          };
+        })
+        .filter(Boolean)
+      : [];
+    GEO_LOCATION_INDEX = new Map(GEO_LOCATIONS.map(item => [item.key, item]));
+
+    GEO_ALIASES = {};
+    Object.entries(data.aliases || {}).forEach(([rawKey, rawValue]) => {
+      const key = geoBaseKey(rawKey);
+      const value = geoBaseKey(rawValue);
+      if(key && value) GEO_ALIASES[key] = value;
+    });
+
+    GEO_CONTEXT_TERMS = {};
+    Object.entries({ ...DEFAULT_GEO_CONTEXT_TERMS, ...(data.context_terms || {}) }).forEach(([type, terms]) => {
+      GEO_CONTEXT_TERMS[type] = normArray(terms).map(geoBaseKey).filter(Boolean);
+    });
+  }
+
+  async function loadGeoConfig(){
+    try{
+      const payload = window.OCData?.loadFirstJson
+        ? await window.OCData.loadFirstJson('geoLocations', 'data/geo-locations.json')
+        : await (async () => {
+          const res = await fetch('data/geo-locations.json', { cache:'no-store' });
+          if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          return await res.json();
+        })();
+      applyGeoConfig(payload);
+      return payload;
+    }catch(err){
+      console.warn('Could not load geo-locations.json', err);
+      applyGeoConfig({});
+      return {};
+    }
+  }
+
+  function normalizeGeoKey(value){
+    const key = geoBaseKey(value);
     return GEO_ALIASES[key] || key;
   }
 
@@ -1599,16 +1626,24 @@
   }
 
   function geoContextType(key){
-    if(!key || /\b(not specified|unspecified|unknown|none|na|n a)\b/.test(key)) return 'unspecified';
-    if(/\b(global|worldwide)\b/.test(key)) return 'global';
-    if(/\b(virtual|simulator|synthetic)\b/.test(key)) return 'virtual';
-    if(/\b(internet|youtube|wikipedia|website|web source|open source)\b/.test(key)) return 'web';
+    const normalized = geoBaseKey(key);
+    if(!normalized) return 'unspecified';
+    const containsTypes = new Set(['global', 'virtual', 'web', 'unspecified']);
+    const hasTerm = (term) => {
+      const pattern = new RegExp(`(^|\\s)${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+')}(\\s|$)`);
+      return pattern.test(normalized);
+    };
+    for(const [type, terms] of Object.entries(GEO_CONTEXT_TERMS)){
+      if(terms.includes(normalized)) return type;
+      if(containsTypes.has(type) && terms.some(hasTerm)) return type;
+    }
     return '';
   }
 
   function geoContextLabel(type){
     return {
       global: 'Global',
+      regional: 'Regional scope',
       virtual: 'Synthetic / virtual',
       web: 'Web-source',
       unspecified: 'Not specified',
@@ -1631,6 +1666,7 @@
       mappedDatasets: 0,
       unspecified: 0,
       global: 0,
+      regional: 0,
       virtual: 0,
       web: 0,
       unmapped: 0
@@ -1691,7 +1727,7 @@
 
     const rows = Array.from(locations.values())
       .sort((a,b) => b.count - a.count || a.label.localeCompare(b.label));
-    const contextRows = ['global', 'virtual', 'web', 'unmapped']
+    const contextRows = ['global', 'regional', 'virtual', 'web', 'unmapped']
       .filter(type => summary[type] > 0)
       .map(type => ({
         key: `context-${type}`,
@@ -1993,10 +2029,11 @@
     // Keep your existing site paths:
     // - data/datasets.json is an object keyed by id (we read Object.values)
     // - data/models.json is an array
-    const [datasets, models, benchmarkPayload, taskVocabularyPayload] = await Promise.all([
+    const [datasets, models, benchmarkPayload, geoConfigPayload, taskVocabularyPayload] = await Promise.all([
       loadJsonSafe('data/datasets.json'),
       loadJsonSafe('data/models.json'),
       loadBenchmarkPayload(),
+      loadGeoConfig(),
       (async () => {
         try{
           const res = await fetch('data/task-vocabulary.json', {cache:'no-store'});
