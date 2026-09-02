@@ -120,6 +120,18 @@
     .path-action-link:hover{ border-color:rgba(242,162,56,.85); background:rgba(242,162,56,.2); color:var(--oc-ink); text-decoration:none; }
     .path-action-link span[aria-hidden="true"]{ color:var(--oc-accent); }
     .path-action-link svg{ width:15px; height:15px; flex:0 0 auto; fill:currentColor; }
+    .path-help-link{
+      width:38px;
+      padding:.18rem;
+      justify-content:center;
+      border-color:transparent;
+      border-radius:4px;
+      background:transparent;
+      color:var(--oc-ink);
+    }
+    .path-help-link:hover{ border-color:transparent; background:transparent; color:var(--oc-link); }
+    .path-help-link svg{ fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .path-action-link.path-help-link svg{ width:26px; height:26px; }
     .quickstart-grid{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
     .quickstart-card{
       height:100%;
@@ -416,10 +428,13 @@
           <ul class="path-list">
             <li>Add a dataset, model, workflow, or OER using the workspace submission form.</li>
             <li>Share links, source metadata, and enough context for others to evaluate the resource.</li>
-            <li>Help fill gaps in tasks, modalities, and domains across AEC.</li>
+            <li>Confirm privacy, security, permissions, and license information before submission.</li>
           </ul>
           <div class="path-actions">
             <a class="path-action-link" href="account.html?submit=resource">Submit resource <span aria-hidden="true">&rarr;</span></a>
+            <a class="path-action-link path-help-link" href="tutorials.html#tutorialGroupContribute" aria-label="Open submission tutorial" title="Submission tutorial">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="14" rx="2.5"></rect><path d="m10 9 5 3-5 3Z"></path></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -433,6 +448,9 @@
           </ul>
           <div class="path-actions">
             <a class="path-action-link" href="account.html?report=issue&amp;issue_type=metadata">Report correction <span aria-hidden="true">&rarr;</span></a>
+            <a class="path-action-link path-help-link" href="tutorials.html#tutorialGroupContribute" aria-label="Open report tutorial" title="Report tutorial">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="14" rx="2.5"></rect><path d="m10 9 5 3-5 3Z"></path></svg>
+            </a>
           </div>
         </div>
       </div>
@@ -485,6 +503,23 @@
           <li>Platform contributions can also improve schemas, validation scripts, benchmarks, documentation, and interface quality.</li>
         </ul>
         <p class="mb-0">Templates and validation scripts are available in the GitHub repository, and unclear cases can be sent to support before submission.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="oc-section" id="credentialRequest">
+    <div class="oc-kicker mb-2">Credentials</div>
+    <div class="oc-card">
+      <div class="oc-card-body">
+        <h3 class="oc-card-title mb-2">Contribution Credentials</h3>
+        <p class="section-intro">OpenConstruction credentials recognize verified contributions submitted to or recorded by the platform.</p>
+        <ul class="mb-3">
+          <li>For the fastest processing, sign in to the workspace before submitting a credential request.</li>
+          <li>Credentials are issued after maintainers verify the contributor, contribution type, title, and supporting DOI, URL, or platform record.</li>
+          <li>New resource submissions can be reviewed for credentials after the contribution is accepted or recorded.</li>
+          <li>Requests from contributors without workspace accounts can still be reviewed and answered by email.</li>
+        </ul>
+        <p class="mb-0"><a href="credential-request.html">Request credential</a> <span aria-hidden="true">&rarr;</span></p>
       </div>
     </div>
   </section>

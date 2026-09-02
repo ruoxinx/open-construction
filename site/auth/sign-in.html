@@ -194,7 +194,7 @@
   window.OCAuth.getUser().then(async (user) => {
     if (!user) return;
     const roles = await window.OCAuth.getRoles?.().catch(() => []) || [];
-    const target = await window.OCAuth.resolvePostSignInHref('../account.html');
+    const target = await window.OCAuth.resolvePostSignInHref(window.OCAuth.takeReturnTo?.() || '../account.html');
     const destinationLabel = roles.includes('admin')
       ? 'your dashboard'
       : roles.includes('reviewer')

@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Verify credential · OpenConstruction</title>
-  <meta name="description" content="Verify an OpenConstruction credential certificate.">
+  <meta name="description" content="Verify an OpenConstruction contribution credential.">
   <link rel="canonical" href="https://www.openconstruction.org/verify.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <style>
+    #credentialDescription{ white-space:pre-line; line-height:1.55; }
+  </style>
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to verification</a>
@@ -60,6 +63,7 @@
   <section class="oc-auth-card mx-auto" style="max-width: 760px;" aria-labelledby="verifyTitle">
     <p class="oc-auth-kicker mb-2">Credential verification</p>
     <h1 id="verifyTitle" class="h3 fw-bold mb-3">OpenConstruction credential record</h1>
+    <p class="text-muted mb-3">This page confirms the status of a contribution credential issued by the OpenConstruction Open Science Initiative.</p>
     <div id="verifyStatus" class="alert alert-secondary" role="status">Checking credential...</div>
     <div id="verifyResult" class="d-none">
       <div class="row g-3">
@@ -72,7 +76,7 @@
           <div id="credentialLabel" class="fs-5 fw-semibold"></div>
         </div>
         <div class="col-md-6">
-          <div class="small text-muted fw-semibold text-uppercase">Issued</div>
+          <div class="small text-muted fw-semibold text-uppercase">Credential issued</div>
           <div id="credentialIssued"></div>
         </div>
         <div class="col-md-6">
@@ -81,6 +85,7 @@
         </div>
       </div>
       <p id="credentialDescription" class="text-muted mt-4 mb-0"></p>
+      <p class="small text-muted mt-3 mb-0">This credential records OpenConstruction platform recognition only. It does not constitute professional licensure, accreditation, or academic credit.</p>
     </div>
   </section>
 </main>
@@ -150,6 +155,20 @@
     }).format(new Date(value));
   }
 
+  function parseCredentialDescription(description){
+    const source = String(description || '').trim();
+    if (!source) return 'Recognizes a verified contribution recorded by OpenConstruction.';
+    const parts = {};
+    source.replace(/\.$/, '').split(/\s+\|\s+/).forEach(part => {
+      const match = part.match(/^([A-Za-z ]+):\s*(.+)$/);
+      if (match) parts[match[1].trim().toLowerCase()] = match[2].trim();
+    });
+    const title = parts.contribution || parts.asset || parts['asset name'] || '';
+    const statement = parts.statement || source;
+    const reference = [parts.url ? `OpenConstruction record: ${parts.url}` : '', parts.doi ? `DOI: ${parts.doi}` : ''].filter(Boolean).join('\n');
+    return [title ? `Named contribution: ${title}` : '', statement, reference].filter(Boolean).join('\n');
+  }
+
   async function verify(){
     if (!code) {
       setStatus('No credential ID was provided.', 'warning');
@@ -176,14 +195,13 @@
       return;
     }
     const isValid = record.certificate_status === 'valid';
-    setStatus(isValid ? 'Verified credential.' : 'This credential has been revoked.', isValid ? 'success' : 'danger');
+    setStatus(isValid ? 'Verified OpenConstruction credential.' : 'This credential has been revoked.', isValid ? 'success' : 'danger');
     document.getElementById('credentialRecipient').textContent =
       record.recipient_name || record.recipient_github || 'OpenConstruction member';
     document.getElementById('credentialLabel').textContent = record.credential_label || 'OpenConstruction credential';
     document.getElementById('credentialIssued').textContent = formatDate(record.awarded_at || record.issued_at);
     document.getElementById('credentialCode').textContent = record.certificate_code || code;
-    document.getElementById('credentialDescription').textContent =
-      record.credential_description || 'Verified OpenConstruction platform contribution.';
+    document.getElementById('credentialDescription').textContent = parseCredentialDescription(record.credential_description);
     resultEl.classList.remove('d-none');
   }
 

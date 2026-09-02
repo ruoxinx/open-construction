@@ -117,6 +117,7 @@
   let badges = [];
   let suggestions = [];
   let issueReports = [];
+  let credentialRequests = [];
   let contributors = [];
   let catalogResources = [];
   let catalogContributorRecords = [];
@@ -135,17 +136,18 @@
   let profileRoleFilter = 'all';
   let suggestionStatusFilter = 'active';
   let issueStatusFilter = 'active';
+  let credentialRequestStatusFilter = 'active';
   let selectedSuggestionId = '';
   let dashboardTab = 'overview';
   let reviewQueueMode = 'resources';
   let resourceTrendMode = 'all';
 
   const badgeDefaults = {
-    dataset_contributor: ['Dataset Contributor', 'Verified OpenConstruction platform contribution.'],
-    model_contributor: ['Model Contributor', 'Verified OpenConstruction platform contribution.'],
-    oer_contributor: ['OER Contributor', 'Verified OpenConstruction platform contribution.'],
-    workflow_contributor: ['Workflow Contributor', 'Verified OpenConstruction platform contribution.'],
-    reviewer: ['Reviewer', 'Reviewed OpenConstruction catalog or platform contributions.'],
+    dataset_contributor: ['Dataset Contributor', 'Recognizes a verified contribution to the OpenConstruction dataset catalog.'],
+    model_contributor: ['Model Contributor', 'Recognizes a verified contribution to the OpenConstruction model catalog.'],
+    oer_contributor: ['OER Contributor', 'Recognizes a verified contribution to OpenConstruction open educational resources.'],
+    workflow_contributor: ['Workflow Contributor', 'Recognizes a verified contribution to OpenConstruction workflow records.'],
+    reviewer: ['Reviewer', 'Recognizes verified review service for OpenConstruction catalog or platform contributions.'],
     admin: ['Admin', 'Provides administrative stewardship for OpenConstruction users, roles, and credentials.'],
     tester: ['Tester', 'Invited beta access for OpenConstruction workspace features.'],
     steward: ['Steward', 'Provides ongoing governance, review, or resource stewardship for OpenConstruction.']
@@ -192,7 +194,7 @@
     const parts = [`Contribution: ${suggestion.title || 'OpenConstruction platform contribution'}`];
     if (suggestion.doi) parts.push(`DOI: ${suggestion.doi}`);
     if (suggestion.url) parts.push(`URL: ${suggestion.url}`);
-    parts.push('Statement: Verified OpenConstruction platform contribution.');
+    parts.push('Statement: Recognizes a verified contribution recorded by OpenConstruction.');
     return parts.join(' | ');
   }
 
@@ -208,12 +210,135 @@
     return badges.filter(row => row.user_id === userId);
   }
 
+  function profileById(userId){
+    return profiles.find(profile => profile.user_id === userId) || null;
+  }
+
   function rolesFor(userId){
     return userRoles.filter(row => row.user_id === userId).map(row => row.role);
   }
 
   function rowsForUser(rows, userId){
     return (rows || []).filter(row => row.user_id === userId);
+  }
+
+  function requestContributionItems(request){
+    const rows = Array.isArray(request?.contribution_items) ? request.contribution_items : [];
+    if (rows.length) {
+      return rows.map(item => ({
+        contribution_type: item.contribution_type || item.type || request.contribution_type || 'other',
+        resource_title: item.resource_title || item.title || request.resource_title || 'Untitled contribution',
+        doi: item.doi || '',
+        resource_url: item.resource_url || item.url || ''
+      }));
+    }
+    return [{
+      contribution_type: request?.contribution_type || 'other',
+      resource_title: request?.resource_title || 'Untitled contribution',
+      doi: request?.doi || '',
+      resource_url: request?.resource_url || ''
+    }];
+  }
+
+  function requestBadgeTemplate(request){
+    const items = requestContributionItems(request);
+    const types = Array.from(new Set(items.map(item => item.contribution_type).filter(Boolean)));
+    if (types.length === 1 && contributorBadgeByType[types[0]]) {
+      return contributorBadgeByType[types[0]];
+    }
+    return ['contribution_credential', 'Contribution Credential'];
+  }
+
+  function credentialRequestDescription(request){
+    const items = requestContributionItems(request);
+    const primary = items[0] || {};
+    const itemText = items.map((item, index) => {
+      const ref = [item.resource_url ? `URL: ${item.resource_url}` : '', item.doi ? `DOI: ${item.doi}` : ''].filter(Boolean).join(', ');
+      return `${index + 1}. ${item.resource_title} (${typeLabel(item.contribution_type)})${ref ? ` - ${ref}` : ''}`;
+    }).join('; ');
+    const contribution = items.length > 1
+      ? `${items.length} verified OpenConstruction contributions`
+      : (items[0]?.resource_title || 'OpenConstruction platform contribution');
+    return [
+      `Contribution: ${contribution}`,
+      items.length === 1 && primary.resource_url ? `URL: ${primary.resource_url}` : '',
+      items.length === 1 && primary.doi ? `DOI: ${primary.doi}` : '',
+      itemText ? `Items: ${itemText}` : '',
+      'Statement: This credential recognizes one or more contributions submitted to or recorded by OpenConstruction.'
+    ].filter(Boolean).join(' | ');
+  }
+
+  function credentialRequestDecisionNote(request){
+    const items = requestContributionItems(request);
+    const target = items.length > 1
+      ? `${items.length} OpenConstruction contribution records`
+      : (items[0]?.resource_title || request.resource_title || 'the submitted contribution record');
+    return `This request has been reviewed and confirmed for ${target}.`;
+  }
+
+  function credentialTargetUserId(request){
+    return request?.requester_user_id || request?.assigned_user_id || '';
+  }
+
+  function credentialTargetProfile(request){
+    return profileById(credentialTargetUserId(request));
+  }
+
+  function certificateRecipientName(request){
+    const profile = credentialTargetProfile(request);
+    return String(
+      request?.certificate_recipient_name ||
+      request?.full_name ||
+      profile?.display_name ||
+      profile?.github_username ||
+      'OpenConstruction contributor'
+    ).trim();
+  }
+
+  function certificateDownloadUrl(code){
+    return new URL(`functions/v1/issue-certificate?code=${encodeURIComponent(code)}&format=pdf`, window.SUPABASE_URL || window.location.origin).toString();
+  }
+
+  function renderCredentialRequestField(label, value, options = {}){
+    if (!value) return '';
+    const body = options.href
+      ? `<a href="${esc(options.href)}" target="_blank" rel="noopener noreferrer">${esc(value)}</a>`
+      : esc(value);
+    return `
+      <div class="oc-credential-request-field ${options.wide ? 'is-wide' : ''}">
+        <span>${esc(label)}</span>
+        <strong>${body}</strong>
+      </div>
+    `;
+  }
+
+  function certificateCode(input){
+    const compact = String(input || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 14).toUpperCase();
+    return `OC-${compact}`;
+  }
+
+  function verificationUrl(code){
+    return new URL(`verify.html?code=${encodeURIComponent(code)}`, window.location.href).toString();
+  }
+
+  function credentialReplyHref(request){
+    const code = request.certificate_code || '';
+    const targetProfile = credentialTargetProfile(request);
+    const subject = 'OpenConstruction credential request';
+    const body = [
+      `Hello ${request.full_name || ''},`,
+      '',
+      request.status === 'fulfilled' && code
+        ? `Your OpenConstruction contribution credential has been issued. Verification link: ${verificationUrl(code)}`
+        : request.status === 'approved'
+          ? 'Your OpenConstruction contribution credential request has been approved. We recommend signing in to the OpenConstruction workspace so the credential can be linked to your account.'
+          : 'Thank you for your OpenConstruction contribution credential request. Maintainers will review the submitted contribution details and supporting platform record.',
+      targetProfile ? `Linked workspace account: ${userLabel(targetProfile)}` : '',
+      request.response_message || request.maintainer_note || '',
+      '',
+      'OpenConstruction Open Science Initiative'
+    ].filter(line => line !== null).join('\n');
+    return `mailto:${encodeURIComponent(request.email || '')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   function safeRows(query, label){
@@ -351,7 +476,24 @@
       .oc-usage-chart-readout{color:#0f2e4b;background:#f6f9fc;border:1px solid #e7edf3;border-radius:6px;padding:.3rem .48rem;font-size:.82rem;font-weight:650}
       .oc-usage-ratio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem .75rem}
       .oc-usage-ratio-grid .oc-dashboard-mini-row{margin:0}
-      @media (max-width:575.98px){.oc-usage-chart-wrap{padding:.55rem}.oc-usage-line-chart{min-height:190px}.oc-usage-chart-footer{align-items:flex-start}.oc-usage-chart-readout{width:100%}.oc-usage-ratio-grid{grid-template-columns:1fr}}
+      .oc-credential-request-card{display:grid;gap:1rem;padding:1rem;border:1px solid var(--oc-border,#e7edf3);border-radius:10px;background:#fff}
+      .oc-credential-request-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+      .oc-credential-request-title{display:grid;gap:.18rem;min-width:0}
+      .oc-credential-request-title strong{font-size:1.02rem;color:var(--oc-ink,#0f2e4b);overflow-wrap:anywhere}
+      .oc-credential-request-status{display:inline-flex;align-items:center;min-height:1.6rem;padding:.18rem .5rem;border:1px solid #dce7f3;border-radius:999px;background:#f8fbfe;color:#485867;font-size:.76rem;font-weight:750;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+      .oc-credential-certificate-name{display:grid;gap:.25rem;max-width:34rem}
+      .oc-credential-certificate-name span{color:#5c6873;font-size:.76rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+      .oc-credential-request-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:.55rem}
+      .oc-credential-request-field{display:grid;gap:.08rem;min-width:0;padding:.48rem .55rem;border:1px solid var(--oc-border,#e7edf3);border-radius:7px;background:#fbfcfe}
+      .oc-credential-request-field.is-wide{grid-column:1/-1}
+      .oc-credential-request-field span{color:#5c6873;font-size:.72rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+      .oc-credential-request-field strong{color:#20303e;font-size:.84rem;font-weight:650;overflow-wrap:anywhere}
+      .oc-credential-request-items{display:grid;gap:.4rem}
+      .oc-credential-request-item{display:grid;gap:.08rem;padding:.55rem .65rem;border-left:2px solid #d7e4f1;background:#fbfcfe}
+      .oc-credential-request-item strong{font-size:.88rem;color:#0f2e4b;overflow-wrap:anywhere}
+      .oc-credential-request-item span{font-size:.78rem;color:#5c6873;overflow-wrap:anywhere}
+      .oc-credential-request-actions{display:flex;justify-content:flex-end;gap:.5rem;flex-wrap:wrap;padding-top:.75rem;border-top:1px solid #eef3f7}
+      @media (max-width:575.98px){.oc-usage-chart-wrap{padding:.55rem}.oc-usage-line-chart{min-height:190px}.oc-usage-chart-footer{align-items:flex-start}.oc-usage-chart-readout{width:100%}.oc-usage-ratio-grid,.oc-credential-request-grid{grid-template-columns:1fr}.oc-credential-request-actions{justify-content:flex-start}}
     `;
     document.head.appendChild(style);
   }
@@ -419,13 +561,14 @@
   function renderDashboardSidebar(){
     const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const activeCredentialRequests = credentialRequests.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'approved');
     const overview = roleOverviewCounts();
     const catalogTotal = catalogResources.length || suggestions.length;
     const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
       analytics: usageAnalytics?.totals?.usage_events || usageAnalytics?.totals?.visits || 0,
-      reviews: activeSuggestions.length + activeIssues.length,
+      reviews: activeSuggestions.length + activeIssues.length + activeCredentialRequests.length,
       people: profiles.length,
       credentials: badges.length
     };
@@ -464,6 +607,7 @@
           <span class="oc-dashboard-side-label">Workload</span>
           <div class="oc-dashboard-side-metric"><span>Resource reviews</span><strong>${esc(String(activeSuggestions.length))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Issues</span><strong>${esc(String(activeIssues.length))}</strong></div>
+          ${canAdmin ? `<div class="oc-dashboard-side-metric"><span>Credential requests</span><strong>${esc(String(activeCredentialRequests.length))}</strong></div>` : ''}
           ${canAdmin ? `<div class="oc-dashboard-side-metric"><span>Reviewers</span><strong>${esc(String(overview.reviewers))}</strong></div>` : ''}
         </div>
       </aside>
@@ -520,6 +664,7 @@
     const overview = roleOverviewCounts();
     const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
     const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const activeCredentialRequests = credentialRequests.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'approved');
     return {
       exported_at: new Date().toISOString(),
       exported_by: currentUserId || null,
@@ -534,6 +679,7 @@
         badges: badges.length,
         active_resource_reviews: activeSuggestions.length,
         active_issue_reports: activeIssues.length,
+        active_credential_requests: activeCredentialRequests.length,
         role_counts: overview
       },
       analytics: canAdmin ? usageAnalytics : null,
@@ -546,6 +692,7 @@
       resource_notes: canAdmin ? resourceNotes : [],
       resource_suggestions: canAdmin ? suggestions : activeSuggestions,
       site_issue_reports: canAdmin ? issueReports : activeIssues,
+      credential_requests: canAdmin ? credentialRequests : [],
       catalog_resources: catalogResources.map(row => ({
         resource_type: row.resource_type,
         catalog_title: row.catalog_title,
@@ -639,6 +786,7 @@
     if (dashboardTab === 'reviews') {
       bindSuggestionActions();
       bindIssueReportActions();
+      bindCredentialRequestActions();
       bindReviewCenterActions();
       return;
     }
@@ -1576,7 +1724,104 @@
     `;
   }
 
+  function renderCredentialRequests(){
+    const active = credentialRequests.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'approved');
+    const completed = credentialRequests.filter(row => row.status === 'fulfilled' || row.status === 'declined');
+    const queue = credentialRequestStatusFilter === 'active'
+      ? active
+      : credentialRequestStatusFilter === 'completed'
+        ? completed
+        : credentialRequests.filter(row => row.status === credentialRequestStatusFilter);
+    const filterOptions = [
+      ['active', 'Active', active.length],
+      ['pending', 'Pending', credentialRequests.filter(row => row.status === 'pending').length],
+      ['in_review', 'In review', credentialRequests.filter(row => row.status === 'in_review').length],
+      ['approved', 'Approved', credentialRequests.filter(row => row.status === 'approved').length],
+      ['completed', 'Completed', completed.length]
+    ];
+    return `
+      <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+        <div>
+          <p class="oc-auth-kicker mb-2">Credential requests</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${credentialRequestStatusFilter === 'active' ? 'active' : 'shown'}</h2>
+          <p class="text-muted small mb-0">Verify a credential claim, issue the certificate, and reply from one queue.</p>
+        </div>
+        <button type="button" id="refreshCredentialRequestsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+      <div class="oc-role-filter mb-3" aria-label="Filter credential requests by status">
+        ${filterOptions.map(([value, label, count]) => `
+          <button type="button" class="btn btn-sm ${credentialRequestStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-credential-request-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
+        `).join('')}
+      </div>
+      <div class="vstack gap-2">
+        ${queue.length ? queue.map(row => {
+          const items = requestContributionItems(row);
+          const targetProfile = credentialTargetProfile(row);
+          const code = row.certificate_code || '';
+          const requestDate = row.created_at ? formatDate(row.created_at) : '';
+          const accountStatus = targetProfile
+            ? `Linked account: ${userLabel(targetProfile)}`
+            : row.requester_user_id
+              ? 'Linked account unavailable'
+              : 'No workspace account';
+          const normalizedStatus = String(row.status || 'pending');
+          const statusLabel = normalizedStatus.replace(/_/g, ' ');
+          return `
+            <article class="oc-credential-request-card">
+              <div class="oc-credential-request-head">
+                <div class="oc-credential-request-title">
+                  <span class="oc-account-type">${esc(typeLabel(row.contribution_type))}</span>
+                  <strong>${esc(row.resource_title || 'Untitled contribution')}${items.length > 1 ? ` + ${esc(String(items.length - 1))} more` : ''}</strong>
+                </div>
+                <span class="oc-credential-request-status">${esc(statusLabel)}</span>
+              </div>
+              <label class="oc-credential-certificate-name">
+                <span>Name printed on certificate</span>
+                <input class="form-control form-control-sm" value="${esc(certificateRecipientName(row))}" data-credential-certificate-name="${esc(row.id)}" aria-label="Name printed on certificate">
+              </label>
+              <div class="oc-credential-request-grid">
+                ${renderCredentialRequestField('Requester', row.full_name || 'Requester not provided')}
+                ${renderCredentialRequestField('Email', row.email)}
+                ${renderCredentialRequestField('Institution', row.institution)}
+                ${renderCredentialRequestField('Submitted', requestDate)}
+                ${renderCredentialRequestField('Profile', row.github_or_orcid)}
+                ${renderCredentialRequestField('Workspace account', accountStatus)}
+              </div>
+              ${code ? `
+                <div class="oc-account-meta">
+                  <a href="${esc(verificationUrl(code))}" target="_blank" rel="noopener noreferrer">Verification link: ${esc(code)}</a>
+                  &nbsp;|&nbsp;
+                  <a href="${esc(certificateDownloadUrl(code))}" target="_blank" rel="noopener noreferrer">Download certificate</a>
+                </div>
+              ` : ''}
+              <div class="oc-credential-request-items">
+                ${items.map((item, index) => `
+                  <div class="oc-credential-request-item">
+                    <strong>${esc(index + 1)}. ${esc(item.resource_title)} (${esc(typeLabel(item.contribution_type))})</strong>
+                    ${item.doi ? `<span>DOI: ${esc(item.doi)}</span>` : ''}
+                    ${item.resource_url ? `<span>URL: ${esc(item.resource_url)}</span>` : ''}
+                  </div>
+                `).join('')}
+              </div>
+              ${row.notes ? `<div class="oc-account-meta">Notes: ${esc(row.notes)}</div>` : ''}
+              ${row.maintainer_note ? `<div class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</div>` : ''}
+              <div class="oc-credential-request-actions">
+                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-primary btn-sm" data-issue-credential-request="${esc(row.id)}">Approve and issue</button>` : ''}
+                <a class="btn btn-outline-secondary btn-sm" href="${esc(credentialReplyHref(row))}">Reply by email</a>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-note-credential-request="${esc(row.id)}">Internal note</button>
+                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-credential-request="${esc(row.id)}">Decline request</button>` : ''}
+              </div>
+            </article>
+          `;
+        }).join('') : '<div class="oc-workspace-empty"><strong>No matching credential requests</strong><span>New requests submitted from Contribute will appear here.</span></div>'}
+      </div>
+    `;
+  }
+
   function renderReviewCenter(){
+    const credentialOption = canAdmin
+      ? `<option value="credentials" ${reviewQueueMode === 'credentials' ? 'selected' : ''}>Credential requests</option>`
+      : '';
     return `
       <section class="oc-workspace-card oc-dashboard-review-shell">
         <div class="oc-dashboard-review-head">
@@ -1589,13 +1834,20 @@
             <label class="form-label small fw-bold" for="reviewQueueMode">Queue</label>
             <select id="reviewQueueMode" class="form-select form-select-sm" aria-label="Choose review queue">
               <option value="resources" ${reviewQueueMode === 'resources' ? 'selected' : ''}>Resource review</option>
+              ${credentialOption}
               <option value="issues" ${reviewQueueMode === 'issues' ? 'selected' : ''}>Issues review</option>
               <option value="skills" ${reviewQueueMode === 'skills' ? 'selected' : ''}>Skill review</option>
             </select>
           </div>
         </div>
         <div class="oc-dashboard-review-body">
-          ${reviewQueueMode === 'issues' ? renderIssueReports() : reviewQueueMode === 'skills' ? renderSkillReview() : renderResourceSubmissions()}
+          ${reviewQueueMode === 'credentials' && canAdmin
+            ? renderCredentialRequests()
+            : reviewQueueMode === 'issues'
+              ? renderIssueReports()
+              : reviewQueueMode === 'skills'
+                ? renderSkillReview()
+                : renderResourceSubmissions()}
         </div>
       </section>
     `;
@@ -1603,7 +1855,7 @@
 
   function bindReviewCenterActions(){
     document.getElementById('reviewQueueMode')?.addEventListener('change', event => {
-      reviewQueueMode = event.target.value || 'resources';
+      reviewQueueMode = !canAdmin && event.target.value === 'credentials' ? 'resources' : (event.target.value || 'resources');
       renderDashboard();
     });
   }
@@ -2468,6 +2720,180 @@
       .eq('id', report.id);
   }
 
+  async function updateCredentialRequestStatus(request, status, note = null){
+    const payload = {
+      status,
+      reviewed_by: currentUserId,
+      reviewed_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    if (note !== null) payload.maintainer_note = note;
+    return sb
+      .from('credential_requests')
+      .update(payload)
+      .eq('id', request.id);
+  }
+
+  function bindCredentialRequestActions(){
+    document.getElementById('refreshCredentialRequestsBtn')?.addEventListener('click', () => loadDashboard(false));
+    document.querySelectorAll('[data-credential-request-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        credentialRequestStatusFilter = button.dataset.credentialRequestFilter || 'active';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-issue-credential-request]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const request = credentialRequests.find(row => row.id === button.dataset.issueCredentialRequest);
+        if (!request) return;
+        const nameInput = document.querySelector(`[data-credential-certificate-name="${CSS.escape(button.dataset.issueCredentialRequest || '')}"]`);
+        const recipientName = String(nameInput?.value || certificateRecipientName(request)).trim();
+        if (!recipientName) {
+          alert('Enter the name to print on the certificate.');
+          return;
+        }
+        const targetUserId = credentialTargetUserId(request);
+        const targetProfile = credentialTargetProfile(request);
+        const targetLabel = targetProfile ? userLabel(targetProfile) : `${recipientName} (${request.email || 'external recipient'})`;
+        if (!window.confirm(`Approve and issue credential to ${targetLabel}?`)) return;
+        button.disabled = true;
+        const [baseBadgeKey, badgeLabel] = requestBadgeTemplate(request);
+        const badgeKey = `${baseBadgeKey}_${normalizeCredentialKey(request.id)}`;
+        const credentialDescription = credentialRequestDescription(request);
+        let finalCode = request.certificate_code || certificateCode(targetUserId ? request.id : `external-${request.id}`);
+        let badge = null;
+        if (targetUserId) {
+          const badgePayload = {
+            user_id: targetUserId,
+            badge_key: badgeKey,
+            badge_label: badgeLabel,
+            badge_description: credentialDescription,
+            public: true
+          };
+          const { data: linkedBadge, error: badgeError } = await sb
+            .from('user_badges')
+            .upsert(badgePayload, { onConflict: 'user_id,badge_key' })
+            .select('id,badge_key,badge_label')
+            .single();
+          if (badgeError || !linkedBadge) {
+            alert(badgeError?.message || 'Could not create credential badge.');
+            button.disabled = false;
+            return;
+          }
+          badge = linkedBadge;
+          const existingRequestCertificate = await sb
+            .from('credential_certificates')
+            .select('id,certificate_code')
+            .eq('credential_request_id', request.id)
+            .maybeSingle();
+          const existingBadgeCertificate = existingRequestCertificate.data
+            ? { data: null, error: null }
+            : await sb
+              .from('credential_certificates')
+              .select('id,certificate_code')
+              .eq('badge_id', badge.id)
+              .maybeSingle();
+          const existingCertificate = existingRequestCertificate.data || existingBadgeCertificate.data;
+          if (existingCertificate?.certificate_code) finalCode = existingCertificate.certificate_code;
+          const certificatePayload = {
+              user_id: targetUserId,
+              badge_id: badge.id,
+              credential_request_id: request.id,
+              certificate_code: finalCode,
+              recipient_name: recipientName,
+              recipient_email: request.email || null,
+              credential_label: badgeLabel,
+              credential_description: credentialDescription
+          };
+          const certificateResult = existingCertificate
+            ? await sb
+              .from('credential_certificates')
+              .update(certificatePayload)
+              .eq('id', existingCertificate.id)
+            : await sb
+              .from('credential_certificates')
+              .insert(certificatePayload);
+          if (existingRequestCertificate.error || existingBadgeCertificate.error || certificateResult.error) {
+            alert(existingRequestCertificate.error?.message || existingBadgeCertificate.error?.message || certificateResult.error?.message || 'Credential badge was created, but the certificate record could not be issued.');
+            button.disabled = false;
+            return;
+          }
+        } else {
+          const currentCertificate = await sb
+            .from('credential_certificates')
+            .select('id,certificate_code')
+            .eq('credential_request_id', request.id)
+            .maybeSingle();
+          if (currentCertificate.data?.certificate_code) finalCode = currentCertificate.data.certificate_code;
+          const certificatePayload = {
+            credential_request_id: request.id,
+            certificate_code: finalCode,
+            recipient_name: recipientName,
+            recipient_email: request.email || null,
+            credential_label: badgeLabel,
+            credential_description: credentialDescription,
+            user_id: null,
+            badge_id: null
+          };
+          const certificateResult = currentCertificate.data
+            ? await sb
+              .from('credential_certificates')
+              .update(certificatePayload)
+              .eq('id', currentCertificate.data.id)
+            : await sb
+              .from('credential_certificates')
+              .insert(certificatePayload);
+          if (currentCertificate.error || certificateResult.error) {
+            alert(currentCertificate.error?.message || certificateResult.error?.message || 'Could not issue external credential certificate.');
+            button.disabled = false;
+            return;
+          }
+        }
+        const responseMessage = `Credential issued. Verification link: ${verificationUrl(finalCode)} Certificate PDF: ${certificateDownloadUrl(finalCode)}`;
+        const { error: requestError } = await updateCredentialRequestStatus(request, 'fulfilled', request.maintainer_note || credentialRequestDecisionNote(request));
+        if (requestError) {
+          alert(requestError.message || 'Credential was issued, but the request could not be marked fulfilled.');
+          button.disabled = false;
+          return;
+        }
+        const { error: linkError } = await sb
+          .from('credential_requests')
+          .update({
+            fulfilled_badge_id: badge?.id || null,
+            certificate_code: finalCode,
+            certificate_recipient_name: recipientName,
+            response_message: responseMessage,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', request.id);
+        if (linkError) alert(linkError.message || 'Credential was issued, but the request link could not be saved.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-note-credential-request]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const request = credentialRequests.find(row => row.id === button.dataset.noteCredentialRequest);
+        if (!request) return;
+        const note = window.prompt('Maintainer note', request.maintainer_note || '');
+        if (note === null) return;
+        button.disabled = true;
+        const { error } = await updateCredentialRequestStatus(request, request.status || 'in_review', note.trim() || null);
+        if (error) alert(error.message || 'Could not update credential request.');
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-decline-credential-request]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const request = credentialRequests.find(row => row.id === button.dataset.declineCredentialRequest);
+        if (!request || !window.confirm(`Decline credential request for ${request.full_name || request.resource_title || 'this contribution'}?`)) return;
+        button.disabled = true;
+        const { error } = await updateCredentialRequestStatus(request, 'declined');
+        if (error) alert(error.message || 'Could not decline credential request.');
+        await loadDashboard(false);
+      });
+    });
+  }
+
   function bindSuggestionActions(){
     document.getElementById('refreshSuggestionsBtn')?.addEventListener('click', () => loadDashboard(false));
     document.querySelectorAll('[data-assign-reviewer]').forEach(select => {
@@ -2645,11 +3071,14 @@
     const usageRequest = canAdmin
       ? sb.rpc('site_usage_summary', { days: usageAnalyticsDays })
       : Promise.resolve({ data: null, error: null });
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, rolesRes, identitiesRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, credentialRequestsRes, rolesRes, identitiesRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
       sb.from('site_issue_reports').select('*').order('created_at', { ascending: false }).limit(200),
+      canAdmin
+        ? safeRows(sb.from('credential_requests').select('*').order('created_at', { ascending: false }).limit(200), 'credential requests')
+        : Promise.resolve([]),
       canAdmin
         ? sb.from('user_roles').select('*').order('granted_at', { ascending: false }).limit(1000)
         : Promise.resolve({ data: [], error: null }),
@@ -2675,6 +3104,7 @@
     badges = badgesRes.data || [];
     suggestions = suggestionsRes.error ? [] : (suggestionsRes.data || []);
     issueReports = issueReportsRes.error ? [] : (issueReportsRes.data || []);
+    credentialRequests = Array.isArray(credentialRequestsRes) ? credentialRequestsRes : [];
     userRoles = rolesRes.error ? [] : (rolesRes.data || []);
     accountIdentities = Array.isArray(identitiesRes) ? identitiesRes : [];
     resourceBookmarks = Array.isArray(bookmarksRes) ? bookmarksRes : [];

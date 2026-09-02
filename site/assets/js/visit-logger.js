@@ -55,6 +55,31 @@
     return clean ? clean.replace(/^["'\s]+|["'\s]+$/g, '').slice(0, 500) || null : null;
   }
 
+  function classifyClientKind(userAgent){
+    const ua = String(userAgent || '').toLowerCase();
+    if (!ua) return 'unknown';
+    if (/(uptimerobot|pingdom|statuscake|healthcheck|checkly|better uptime|site24x7)/.test(ua)) return 'monitor';
+    if (/(gptbot|chatgpt-user|oai-searchbot|claudebot|anthropic-ai|perplexitybot|google-extended|bytespider|meta-externalagent|amazonbot)/.test(ua)) return 'ai_fetcher';
+    if (/(bot|crawler|spider|slurp|bingpreview|duckduckbot|baiduspider|yandex|semrush|ahrefs|petalbot|applebot|headlesschrome|python-requests|curl|wget)/.test(ua)) return 'crawler_or_bot';
+    return 'browser_like';
+  }
+
+  function classifyTrafficSource(referrer){
+    const value = String(referrer || '').trim().toLowerCase();
+    if (!value) return 'direct_or_suppressed';
+    let host = '';
+    try {
+      host = new URL(value).hostname.replace(/^www\./, '');
+    } catch (_) {
+      host = value;
+    }
+    if (host.endsWith('openconstruction.org')) return 'internal';
+    if (/(chatgpt\.com|perplexity\.ai|claude\.ai|gemini\.google|copilot\.microsoft|poe\.com)/.test(host)) return 'ai_referrer';
+    if (/(google\.|bing\.com|duckduckgo\.com|baidu\.com|yandex\.|yahoo\.|ecosia\.org)/.test(host)) return 'search';
+    if (/(linkedin\.com|facebook\.com|twitter\.com|x\.com|reddit\.com|youtube\.com|t\.co)/.test(host)) return 'social';
+    return 'external';
+  }
+
   function finiteNumber(value){
     const number = Number(value);
     return Number.isFinite(number) ? number : null;
@@ -505,7 +530,9 @@
       lat: (geo && typeof geo.lat === 'number') ? geo.lat : null,
       lon: (geo && typeof geo.lon === 'number') ? geo.lon : null,
       ua: cleanUserAgent(navigator.userAgent),
-      referrer: document.referrer || null
+      referrer: document.referrer || null,
+      client_kind: classifyClientKind(navigator.userAgent),
+      traffic_source: classifyTrafficSource(document.referrer)
     };
 
     const { error } = await sb.from('visits').insert(payload);

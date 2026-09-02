@@ -18,6 +18,11 @@ const expectedTopLevelDirs = new Set([
   "workflows",
 ]);
 
+// Local fixture folders may be present during development but are not required.
+const allowedTopLevelDirs = new Set([
+  "fixtures",
+]);
+
 const expectedTopLevelHtml = new Set([
   "account.html",
   "application.html",
@@ -28,6 +33,7 @@ const expectedTopLevelHtml = new Set([
   "benchmark_task.html",
   "contribute.html",
   "contributors.html",
+  "credential-request.html",
   "dataset.html",
   "deployments.html",
   "guides.html",
@@ -132,7 +138,7 @@ for (const dir of expectedTopLevelDirs) {
 }
 
 for (const dir of topLevelDirs) {
-  if (!expectedTopLevelDirs.has(dir)) fail(`unexpected top-level directory: site/${dir}`);
+  if (!expectedTopLevelDirs.has(dir) && !allowedTopLevelDirs.has(dir)) fail(`unexpected top-level directory: site/${dir}`);
 }
 
 for (const file of expectedTopLevelHtml) {
