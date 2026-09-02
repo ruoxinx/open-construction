@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260828-maintainer-account-details" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260902-maintainer-workflow-dashboard" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to dashboard tools</a>
@@ -384,6 +384,103 @@
     return `${years} year${years === 1 ? '' : 's'}${remainingMonths ? ` ${remainingMonths} mo` : ''}`;
   }
 
+  function statusDisplayLabel(status, kind = 'resource'){
+    const value = String(status || 'pending');
+    const labels = {
+      resource: {
+        pending: 'New',
+        in_review: 'Reviewing',
+        needs_changes: 'Waiting on submitter',
+        approved: 'Ready to publish',
+        added: 'Published',
+        declined: 'Closed'
+      },
+      issue: {
+        pending: 'New',
+        in_review: 'Reviewing',
+        resolved: 'Resolved',
+        declined: 'Closed'
+      },
+      credential: {
+        pending: 'New',
+        in_review: 'Verifying',
+        approved: 'Ready to issue',
+        fulfilled: 'Issued',
+        declined: 'Closed'
+      }
+    };
+    return labels[kind]?.[value] || value.replace(/_/g, ' ');
+  }
+
+  function visibleResourceSuggestions(){
+    return canAdmin
+      ? suggestions
+      : suggestions.filter(row => row.assigned_reviewer_id === currentUserId);
+  }
+
+  function resourceReviewState(){
+    const visibleSuggestions = visibleResourceSuggestions();
+    const pending = visibleSuggestions.filter(row => row.status === 'pending');
+    const reviewing = visibleSuggestions.filter(row => row.status === 'in_review');
+    const waiting = visibleSuggestions.filter(row => row.status === 'needs_changes');
+    const ready = visibleSuggestions.filter(row => row.status === 'approved');
+    const needsAction = pending.concat(reviewing, ready);
+    const completed = visibleSuggestions.filter(row => row.status === 'added' || row.status === 'declined');
+    const queue = suggestionStatusFilter === 'active'
+      ? needsAction
+      : suggestionStatusFilter === 'waiting'
+        ? waiting
+        : suggestionStatusFilter === 'ready'
+          ? ready
+          : suggestionStatusFilter === 'completed'
+            ? completed
+            : visibleSuggestions.filter(row => row.status === suggestionStatusFilter);
+    return { visibleSuggestions, pending, reviewing, waiting, ready, needsAction, active: needsAction, completed, queue };
+  }
+
+  function issueReviewState(){
+    const pending = issueReports.filter(row => row.status === 'pending');
+    const reviewing = issueReports.filter(row => row.status === 'in_review');
+    const needsAction = pending.concat(reviewing);
+    const completed = issueReports.filter(row => row.status === 'resolved' || row.status === 'declined');
+    const queue = issueStatusFilter === 'active'
+      ? needsAction
+      : issueStatusFilter === 'completed'
+        ? completed
+        : issueReports.filter(row => row.status === issueStatusFilter);
+    return { pending, reviewing, needsAction, active: needsAction, completed, queue };
+  }
+
+  function credentialReviewState(){
+    const pending = credentialRequests.filter(row => row.status === 'pending');
+    const reviewing = credentialRequests.filter(row => row.status === 'in_review');
+    const ready = credentialRequests.filter(row => row.status === 'approved');
+    const needsAction = pending.concat(reviewing, ready);
+    const completed = credentialRequests.filter(row => row.status === 'fulfilled' || row.status === 'declined');
+    const queue = credentialRequestStatusFilter === 'active'
+      ? needsAction
+      : credentialRequestStatusFilter === 'ready'
+        ? ready
+        : credentialRequestStatusFilter === 'completed'
+          ? completed
+          : credentialRequests.filter(row => row.status === credentialRequestStatusFilter);
+    return { pending, reviewing, ready, needsAction, active: needsAction, completed, queue };
+  }
+
+  function oldestAgeLabel(rows){
+    const dates = rows.map(row => validDate(row.created_at || row.updated_at)).filter(Boolean);
+    if (!dates.length) return rows.length ? 'No dated work' : 'Clear';
+    const earliest = dates.reduce((min, date) => date < min ? date : min, dates[0]);
+    return `${durationLabel(earliest)} old`;
+  }
+
+  function reviewWorkloadSummary(){
+    const resources = resourceReviewState();
+    const issues = issueReviewState();
+    const credentials = credentialReviewState();
+    return { resources, issues, credentials };
+  }
+
   function reviewerProfiles(){
     return profiles.filter(profile => {
       const roles = rolesFor(profile.user_id);
@@ -503,7 +600,7 @@
     if (!canAdmin) {
       root.className = 'oc-dashboard-console';
       root.innerHTML = `
-        ${renderDashboardHeader('Review queue', 'OpenConstruction Dashboard', 'Review assigned resource submissions and site reports from one focused queue.')}
+        ${renderDashboardHeader('Review queue', 'OpenConstruction Dashboard', 'Review assigned submissions and reports by next action.')}
         <div class="oc-dashboard-layout">
           ${renderDashboardSidebar()}
           <section class="oc-dashboard-panel">
@@ -522,7 +619,7 @@
     selectedUserId = selected?.user_id || '';
     root.className = 'oc-dashboard-console';
     root.innerHTML = `
-      ${renderDashboardHeader('', 'OpenConstruction Dashboard', 'Track community activity, review queues, user access, and credentials.')}
+      ${renderDashboardHeader('', 'OpenConstruction Dashboard', 'Manage review work, catalog health, people, access, and credentials from one structured workspace.')}
       <div class="oc-dashboard-layout">
         ${renderDashboardSidebar()}
         <section class="oc-dashboard-panel">
@@ -559,16 +656,18 @@
   }
 
   function renderDashboardSidebar(){
-    const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
-    const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
-    const activeCredentialRequests = credentialRequests.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'approved');
+    const workload = reviewWorkloadSummary();
+    const activeSuggestions = workload.resources.needsAction;
+    const waitingSuggestions = workload.resources.waiting;
+    const activeIssues = workload.issues.needsAction;
+    const activeCredentialRequests = workload.credentials.needsAction;
     const overview = roleOverviewCounts();
     const catalogTotal = catalogResources.length || suggestions.length;
     const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
     const navCounts = {
       overview: catalogTotal,
       analytics: usageAnalytics?.totals?.usage_events || usageAnalytics?.totals?.visits || 0,
-      reviews: activeSuggestions.length + activeIssues.length + activeCredentialRequests.length,
+      reviews: activeSuggestions.length + waitingSuggestions.length + activeIssues.length + activeCredentialRequests.length,
       people: profiles.length,
       credentials: badges.length
     };
@@ -605,7 +704,8 @@
         </div>
         <div class="oc-dashboard-side-section">
           <span class="oc-dashboard-side-label">Workload</span>
-          <div class="oc-dashboard-side-metric"><span>Resource reviews</span><strong>${esc(String(activeSuggestions.length))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Resource action</span><strong>${esc(String(activeSuggestions.length))}</strong></div>
+          <div class="oc-dashboard-side-metric"><span>Waiting on submitters</span><strong>${esc(String(waitingSuggestions.length))}</strong></div>
           <div class="oc-dashboard-side-metric"><span>Issues</span><strong>${esc(String(activeIssues.length))}</strong></div>
           ${canAdmin ? `<div class="oc-dashboard-side-metric"><span>Credential requests</span><strong>${esc(String(activeCredentialRequests.length))}</strong></div>` : ''}
           ${canAdmin ? `<div class="oc-dashboard-side-metric"><span>Reviewers</span><strong>${esc(String(overview.reviewers))}</strong></div>` : ''}
@@ -619,6 +719,16 @@
     document.querySelectorAll('[data-dashboard-tab]').forEach(button => {
       button.addEventListener('click', () => {
         dashboardTab = button.dataset.dashboardTab || 'overview';
+        renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-dashboard-review-link]').forEach(button => {
+      button.addEventListener('click', () => {
+        dashboardTab = 'reviews';
+        reviewQueueMode = button.dataset.dashboardReviewLink || 'resources';
+        if (button.dataset.dashboardReviewFilter && reviewQueueMode === 'resources') {
+          suggestionStatusFilter = button.dataset.dashboardReviewFilter;
+        }
         renderDashboard();
       });
     });
@@ -1278,20 +1388,86 @@
     `;
   }
 
+  function renderMaintainerCommandCenter(){
+    const workload = reviewWorkloadSummary();
+    const credentialAction = workload.credentials.needsAction.length;
+    const rows = [
+      {
+        label: 'Resource review',
+        value: workload.resources.needsAction.length,
+        meta: `${workload.resources.pending.length} new, ${workload.resources.reviewing.length} reviewing, ${workload.resources.ready.length} ready`,
+        age: oldestAgeLabel(workload.resources.needsAction),
+        queue: 'resources'
+      },
+      {
+        label: 'Submitter follow-up',
+        value: workload.resources.waiting.length,
+        meta: 'Requests waiting on changes or clarification',
+        age: oldestAgeLabel(workload.resources.waiting),
+        queue: 'resources',
+        filter: 'waiting'
+      },
+      {
+        label: 'Issue reports',
+        value: workload.issues.needsAction.length,
+        meta: `${workload.issues.pending.length} new, ${workload.issues.reviewing.length} reviewing`,
+        age: oldestAgeLabel(workload.issues.needsAction),
+        queue: 'issues'
+      }
+    ];
+    if (canAdmin) {
+      rows.push({
+        label: 'Credential issuing',
+        value: credentialAction,
+        meta: `${workload.credentials.pending.length} new, ${workload.credentials.reviewing.length} verifying, ${workload.credentials.ready.length} ready`,
+        age: oldestAgeLabel(workload.credentials.needsAction),
+        queue: 'credentials'
+      });
+    }
+    const totalAction = rows.reduce((sum, row) => sum + row.value, 0);
+    return `
+      <section class="oc-maintainer-command" aria-label="Maintainer action summary">
+        <div class="oc-maintainer-command-head">
+          <div>
+            <p class="oc-auth-kicker mb-2">Today</p>
+            <h2 class="h5 fw-bold mb-1">${totalAction ? `${esc(String(totalAction))} item${totalAction === 1 ? '' : 's'} need attention` : 'No open maintainer actions'}</h2>
+            <p class="text-muted small mb-0">Supabase queues are grouped by next action, waiting state, and completed work.</p>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" data-dashboard-review-link="resources">Open review center</button>
+        </div>
+        <div class="oc-maintainer-command-rows">
+          ${rows.map(row => `
+            <button type="button" class="oc-maintainer-command-row" data-dashboard-review-link="${esc(row.queue)}" ${row.filter ? `data-dashboard-review-filter="${esc(row.filter)}"` : ''}>
+              <span>
+                <strong>${esc(row.label)}</strong>
+                <small>${esc(row.meta)}</small>
+              </span>
+              <span class="oc-maintainer-command-count">${esc(String(row.value))}</span>
+              <small>${esc(row.age)}</small>
+            </button>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
   function renderOverview(){
     const overview = roleOverviewCounts();
-    const activeSuggestions = suggestions.filter(row => ['pending', 'in_review', 'needs_changes', 'approved'].includes(row.status));
-    const activeIssues = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
+    const workload = reviewWorkloadSummary();
+    const activeSuggestions = workload.resources.needsAction;
+    const waitingSuggestions = workload.resources.waiting;
+    const activeIssues = workload.issues.needsAction;
     const userTrend = cumulativeTrendBuckets(profiles, row => row.created_at);
     const contributorTotal = contributors.length + coreTeamMemberCount || catalogContributorRecords.length || overview.contributors;
     return `
       <section class="oc-dashboard-overview">
+        ${renderMaintainerCommandCenter()}
         <div class="oc-account-stat-grid oc-dashboard-stat-grid" aria-label="Dashboard overview">
           ${[
             ['Resources', catalogResources.length || suggestions.length],
             ['Users', overview.users],
             ['Unique contributors/labs', contributorTotal],
-            ['Open reviews', activeSuggestions.length],
+            ['Review action', activeSuggestions.length],
             ['Issues', activeIssues.length],
             ['Verified profiles', contributors.length]
           ].map(([label, value]) => `
@@ -1319,9 +1495,10 @@
             </div>
             <div class="vstack gap-2">
               ${[
-                ['Pending resources', suggestions.filter(row => row.status === 'pending').length],
-                ['In review', suggestions.filter(row => row.status === 'in_review').length],
-                ['Needs changes', suggestions.filter(row => row.status === 'needs_changes').length],
+                ['New resources', workload.resources.pending.length],
+                ['Reviewing', workload.resources.reviewing.length],
+                ['Waiting on submitters', waitingSuggestions.length],
+                ['Ready to publish', workload.resources.ready.length],
                 ['Active issues', activeIssues.length],
                 ['Explicit catalog contributors', catalogContributorRecords.length],
                 ['Verified contributors/labs', contributors.length],
@@ -1725,30 +1902,23 @@
   }
 
   function renderCredentialRequests(){
-    const active = credentialRequests.filter(row => row.status === 'pending' || row.status === 'in_review' || row.status === 'approved');
-    const completed = credentialRequests.filter(row => row.status === 'fulfilled' || row.status === 'declined');
-    const queue = credentialRequestStatusFilter === 'active'
-      ? active
-      : credentialRequestStatusFilter === 'completed'
-        ? completed
-        : credentialRequests.filter(row => row.status === credentialRequestStatusFilter);
+    const { pending, reviewing, ready, needsAction, completed, queue } = credentialReviewState();
     const filterOptions = [
-      ['active', 'Active', active.length],
-      ['pending', 'Pending', credentialRequests.filter(row => row.status === 'pending').length],
-      ['in_review', 'In review', credentialRequests.filter(row => row.status === 'in_review').length],
-      ['approved', 'Approved', credentialRequests.filter(row => row.status === 'approved').length],
-      ['completed', 'Completed', completed.length]
+      ['active', 'Needs action', needsAction.length],
+      ['pending', 'New', pending.length],
+      ['ready', 'Ready', ready.length],
+      ['completed', 'Done', completed.length]
     ];
     return `
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
           <p class="oc-auth-kicker mb-2">Credential requests</p>
-          <h2 class="h5 fw-bold mb-1">${queue.length} ${credentialRequestStatusFilter === 'active' ? 'active' : 'shown'}</h2>
-          <p class="text-muted small mb-0">Verify a credential claim, issue the certificate, and reply from one queue.</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${credentialRequestStatusFilter === 'active' ? 'need action' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} new - ${reviewing.length} verifying - ${ready.length} ready to issue</p>
         </div>
         <button type="button" id="refreshCredentialRequestsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
       </div>
-      <div class="oc-role-filter mb-3" aria-label="Filter credential requests by status">
+      <div class="oc-workflow-filter mb-3" aria-label="Filter credential requests by workflow state">
         ${filterOptions.map(([value, label, count]) => `
           <button type="button" class="btn btn-sm ${credentialRequestStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-credential-request-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
         `).join('')}
@@ -1765,7 +1935,7 @@
               ? 'Linked account unavailable'
               : 'No workspace account';
           const normalizedStatus = String(row.status || 'pending');
-          const statusLabel = normalizedStatus.replace(/_/g, ' ');
+          const statusLabel = statusDisplayLabel(normalizedStatus, 'credential');
           return `
             <article class="oc-credential-request-card">
               <div class="oc-credential-request-head">
@@ -1806,10 +1976,11 @@
               ${row.notes ? `<div class="oc-account-meta">Notes: ${esc(row.notes)}</div>` : ''}
               ${row.maintainer_note ? `<div class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</div>` : ''}
               <div class="oc-credential-request-actions">
-                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-primary btn-sm" data-issue-credential-request="${esc(row.id)}">Approve and issue</button>` : ''}
+                ${normalizedStatus === 'pending' ? `<button type="button" class="btn btn-primary btn-sm" data-start-credential-request="${esc(row.id)}">Start review</button>` : ''}
+                ${normalizedStatus === 'in_review' || normalizedStatus === 'approved' ? `<button type="button" class="btn btn-primary btn-sm" data-issue-credential-request="${esc(row.id)}">${normalizedStatus === 'approved' ? 'Issue credential' : 'Approve and issue'}</button>` : ''}
+                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-note-credential-request="${esc(row.id)}">Internal note</button>` : ''}
                 <a class="btn btn-outline-secondary btn-sm" href="${esc(credentialReplyHref(row))}">Reply by email</a>
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-note-credential-request="${esc(row.id)}">Internal note</button>
-                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-credential-request="${esc(row.id)}">Decline request</button>` : ''}
+                ${!['fulfilled', 'declined'].includes(normalizedStatus) ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-credential-request="${esc(row.id)}">Close</button>` : ''}
               </div>
             </article>
           `;
@@ -1819,25 +1990,28 @@
   }
 
   function renderReviewCenter(){
-    const credentialOption = canAdmin
-      ? `<option value="credentials" ${reviewQueueMode === 'credentials' ? 'selected' : ''}>Credential requests</option>`
-      : '';
+    const workload = reviewWorkloadSummary();
+    const queueModes = [
+      ['resources', 'Resources', workload.resources.needsAction.length + workload.resources.waiting.length],
+      ['issues', 'Issues', workload.issues.needsAction.length],
+      ...(canAdmin ? [['credentials', 'Credentials', workload.credentials.needsAction.length]] : []),
+      ['skills', 'Skills', 0]
+    ];
     return `
       <section class="oc-workspace-card oc-dashboard-review-shell">
         <div class="oc-dashboard-review-head">
           <div>
             <p class="oc-auth-kicker mb-2">Review center</p>
-            <h2 class="h5 fw-bold mb-1">Queue review</h2>
-            <p class="text-muted small mb-0">Switch between resource, issue, and skill review without leaving the dashboard.</p>
+            <h2 class="h5 fw-bold mb-1">Work by queue</h2>
+            <p class="text-muted small mb-0">Each queue shows the next useful action for the current status.</p>
           </div>
-          <div class="oc-dashboard-review-select">
-            <label class="form-label small fw-bold" for="reviewQueueMode">Queue</label>
-            <select id="reviewQueueMode" class="form-select form-select-sm" aria-label="Choose review queue">
-              <option value="resources" ${reviewQueueMode === 'resources' ? 'selected' : ''}>Resource review</option>
-              ${credentialOption}
-              <option value="issues" ${reviewQueueMode === 'issues' ? 'selected' : ''}>Issues review</option>
-              <option value="skills" ${reviewQueueMode === 'skills' ? 'selected' : ''}>Skill review</option>
-            </select>
+          <div class="oc-review-mode-tabs" role="tablist" aria-label="Review queues">
+            ${queueModes.map(([value, label, count]) => `
+              <button type="button" class="${reviewQueueMode === value ? 'active' : ''}" data-review-queue-mode="${esc(value)}">
+                <span>${esc(label)}</span>
+                <strong>${esc(String(count))}</strong>
+              </button>
+            `).join('')}
           </div>
         </div>
         <div class="oc-dashboard-review-body">
@@ -1854,9 +2028,11 @@
   }
 
   function bindReviewCenterActions(){
-    document.getElementById('reviewQueueMode')?.addEventListener('change', event => {
-      reviewQueueMode = !canAdmin && event.target.value === 'credentials' ? 'resources' : (event.target.value || 'resources');
-      renderDashboard();
+    document.querySelectorAll('[data-review-queue-mode]').forEach(button => {
+      button.addEventListener('click', () => {
+        reviewQueueMode = !canAdmin && button.dataset.reviewQueueMode === 'credentials' ? 'resources' : (button.dataset.reviewQueueMode || 'resources');
+        renderDashboard();
+      });
     });
   }
 
@@ -2285,8 +2461,8 @@
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
           <p class="oc-auth-kicker mb-2">${canAdmin ? 'Resource queue' : 'Review queue'}</p>
-          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'active' : 'shown'}</h2>
-          <p class="text-muted small mb-0">${pending.length} pending · ${inReview.length} in review</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'need action' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} pending - ${inReview.length} in review</p>
         </div>
         <button type="button" id="refreshSuggestionsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
       </div>
@@ -2346,19 +2522,7 @@
   }
 
   function suggestionQueueState(){
-    const visibleSuggestions = canAdmin
-      ? suggestions
-      : suggestions.filter(row => row.assigned_reviewer_id === currentUserId);
-    const pending = visibleSuggestions.filter(row => row.status === 'pending');
-    const inReview = visibleSuggestions.filter(row => row.status === 'in_review' || row.status === 'needs_changes' || row.status === 'approved');
-    const active = pending.concat(inReview);
-    const completed = visibleSuggestions.filter(row => row.status === 'added' || row.status === 'declined');
-    const queue = suggestionStatusFilter === 'active'
-      ? active
-      : suggestionStatusFilter === 'completed'
-        ? completed
-        : visibleSuggestions.filter(row => row.status === suggestionStatusFilter);
-    return { visibleSuggestions, pending, inReview, active, completed, queue };
+    return resourceReviewState();
   }
 
   function renderSubmissionField(label, value, options = {}){
@@ -2372,6 +2536,35 @@
         <strong>${content}</strong>
       </div>
     `;
+  }
+
+  function renderResourceReviewActions(row){
+    const status = String(row?.status || 'pending');
+    if (status === 'added' || status === 'declined') {
+      return '<span class="oc-review-terminal-note">Decision recorded</span>';
+    }
+    const actions = [];
+    if (status === 'pending') {
+      actions.push(`<button type="button" class="btn btn-primary btn-sm" data-review-suggestion="${esc(row.id)}">Start review</button>`);
+    }
+    if (status === 'in_review') {
+      actions.push(`<button type="button" class="btn btn-primary btn-sm" data-approve-suggestion="${esc(row.id)}">Mark ready</button>`);
+      actions.push(`<button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Request changes</button>`);
+    }
+    if (status === 'needs_changes') {
+      actions.push(`<button type="button" class="btn btn-primary btn-sm" data-approve-suggestion="${esc(row.id)}">Mark ready</button>`);
+      actions.push(`<button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Update request</button>`);
+    }
+    if (status === 'approved') {
+      if (canAdmin) {
+        actions.push(`<button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Publish</button>`);
+      }
+      actions.push(`<button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Request changes</button>`);
+    }
+    if (canAdmin) {
+      actions.push(`<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Close</button>`);
+    }
+    return actions.join('');
   }
 
   function renderResourceSubmissionDetail(row, reviewers){
@@ -2393,7 +2586,7 @@
       <article class="oc-resource-submission-detail">
         <div class="oc-resource-detail-head">
           <div>
-            <span class="oc-account-type">${esc(row.resource_type || 'resource')} · ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</span>
+            <span class="oc-account-type">${esc(row.resource_type || 'resource')} - ${esc(statusDisplayLabel(row.status, 'resource'))}</span>
             <h3>${esc(row.title || 'Untitled resource')}</h3>
             <p>${esc(submitter || 'Submitter not provided')}</p>
           </div>
@@ -2428,26 +2621,20 @@
           </div>
         ` : ''}
         <div class="oc-resource-detail-actions">
-          ${row.status === 'pending' ? `<button type="button" class="btn btn-outline-primary btn-sm" data-review-suggestion="${esc(row.id)}">Start review</button>` : ''}
-          <button type="button" class="btn btn-outline-secondary btn-sm" data-needs-changes-suggestion="${esc(row.id)}">Needs changes</button>
-          <button type="button" class="btn btn-outline-primary btn-sm" data-approve-suggestion="${esc(row.id)}">Approve</button>
-          ${canAdmin ? `<button type="button" class="btn btn-primary btn-sm" data-add-suggestion="${esc(row.id)}">Mark added</button>` : ''}
-          ${canAdmin ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-suggestion="${esc(row.id)}">Decline</button>` : ''}
+          ${renderResourceReviewActions(row)}
         </div>
       </article>
     `;
   }
 
   function renderResourceSubmissions(){
-    const { visibleSuggestions, pending, inReview, active, completed, queue } = suggestionQueueState();
+    const { pending, reviewing, waiting, ready, needsAction, completed, queue } = suggestionQueueState();
     const reviewers = reviewerProfiles();
     const filterOptions = [
-      ['active', 'Active', active.length],
-      ['pending', 'Pending', pending.length],
-      ['in_review', 'In review', visibleSuggestions.filter(row => row.status === 'in_review').length],
-      ['needs_changes', 'Needs changes', visibleSuggestions.filter(row => row.status === 'needs_changes').length],
-      ['approved', 'Approved', visibleSuggestions.filter(row => row.status === 'approved').length],
-      ['completed', 'Completed', completed.length]
+      ['active', 'Needs action', needsAction.length],
+      ['waiting', 'Waiting', waiting.length],
+      ['ready', 'Ready', ready.length],
+      ['completed', 'Done', completed.length]
     ];
     if (!queue.some(row => row.id === selectedSuggestionId)) {
       selectedSuggestionId = queue[0]?.id || '';
@@ -2457,12 +2644,12 @@
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
           <p class="oc-auth-kicker mb-2">${canAdmin ? 'Resource submissions' : 'Assigned resources'}</p>
-          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'active' : 'shown'}</h2>
-          <p class="text-muted small mb-0">${pending.length} pending · ${inReview.length} in review</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${suggestionStatusFilter === 'active' ? 'need action' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} new - ${reviewing.length} reviewing - ${waiting.length} waiting - ${ready.length} ready</p>
         </div>
         <button type="button" id="refreshSuggestionsBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
       </div>
-      <div class="oc-role-filter mb-3" aria-label="Filter submissions by status">
+      <div class="oc-workflow-filter mb-3" aria-label="Filter submissions by workflow state">
         ${filterOptions.map(([value, label, count]) => `
           <button type="button" class="btn btn-sm ${suggestionStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-suggestion-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
         `).join('')}
@@ -2476,7 +2663,7 @@
               <button type="button" class="oc-resource-submission-item ${row.id === selectedSuggestionId ? 'active' : ''}" data-select-suggestion="${esc(row.id)}">
                 <span class="oc-resource-submission-title">
                   <strong>${esc(row.title || 'Untitled resource')}</strong>
-                  <small>${esc(row.resource_type || 'resource')} · ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</small>
+                  <small>${esc(row.resource_type || 'resource')} - ${esc(statusDisplayLabel(row.status, 'resource'))}</small>
                 </span>
                 <span class="oc-resource-submission-meta">${esc(row.submitter_name || userLabel(profile))}</span>
                 <span class="oc-resource-submission-meta">Reviewer: ${reviewer ? esc(userLabel(reviewer)) : 'Unassigned'}</span>
@@ -2492,7 +2679,7 @@
           ${completed.slice(0, 6).map(row => `
             <button type="button" class="oc-resource-recent-item" data-open-completed-suggestion="${esc(row.id)}">
               <strong>${esc(row.title || 'Untitled resource')}</strong>
-              <span>${esc(row.status || '')}${row.reviewed_at ? ` · ${new Date(row.reviewed_at).toLocaleDateString()}` : ''}</span>
+              <span>${esc(statusDisplayLabel(row.status, 'resource'))}${row.reviewed_at ? ` - ${new Date(row.reviewed_at).toLocaleDateString()}` : ''}</span>
             </button>
           `).join('')}
         </div>
@@ -2501,29 +2688,23 @@
   }
 
   function renderIssueReports(){
-    const active = issueReports.filter(row => row.status === 'pending' || row.status === 'in_review');
-    const completed = issueReports.filter(row => row.status === 'resolved' || row.status === 'declined');
-    const queue = issueStatusFilter === 'active'
-      ? active
-      : issueStatusFilter === 'completed'
-        ? completed
-        : issueReports.filter(row => row.status === issueStatusFilter);
+    const { pending, reviewing, needsAction, completed, queue } = issueReviewState();
     const filterOptions = [
-      ['active', 'Active', active.length],
-      ['pending', 'Pending', issueReports.filter(row => row.status === 'pending').length],
-      ['in_review', 'In review', issueReports.filter(row => row.status === 'in_review').length],
-      ['completed', 'Completed', completed.length]
+      ['active', 'Needs action', needsAction.length],
+      ['pending', 'New', pending.length],
+      ['in_review', 'Reviewing', reviewing.length],
+      ['completed', 'Done', completed.length]
     ];
     return `
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
         <div>
           <p class="oc-auth-kicker mb-2">Issue queue</p>
-          <h2 class="h5 fw-bold mb-1">${queue.length} ${issueStatusFilter === 'active' ? 'active' : 'shown'}</h2>
-          <p class="text-muted small mb-0">${active.length} active reports</p>
+          <h2 class="h5 fw-bold mb-1">${queue.length} ${issueStatusFilter === 'active' ? 'need action' : 'shown'}</h2>
+          <p class="text-muted small mb-0">${pending.length} new - ${reviewing.length} reviewing</p>
         </div>
         <button type="button" id="refreshIssuesBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
       </div>
-      <div class="oc-role-filter mb-3" aria-label="Filter issue reports by status">
+      <div class="oc-workflow-filter mb-3" aria-label="Filter issue reports by workflow state">
         ${filterOptions.map(([value, label, count]) => `
           <button type="button" class="btn btn-sm ${issueStatusFilter === value ? 'btn-primary' : 'btn-outline-secondary'}" data-issue-filter="${value}">${esc(label)} <span class="badge text-bg-light ms-1">${count}</span></button>
         `).join('')}
@@ -2532,18 +2713,18 @@
         ${queue.length ? queue.map(row => `
           <div class="oc-account-row">
             <span>
-              <span class="oc-account-type">${esc(row.issue_type)} Ã‚· ${esc(String(row.status || 'pending').replace(/_/g, ' '))}</span>
+              <span class="oc-account-type">${esc(row.issue_type)} - ${esc(statusDisplayLabel(row.status, 'issue'))}</span>
               <strong>${esc(row.summary)}</strong>
-              <span class="oc-account-meta">${esc([row.reporter_name, row.reporter_email].filter(Boolean).join(' Ã‚· ') || 'Reporter not provided')}${row.created_at ? ` Ã‚· ${new Date(row.created_at).toLocaleDateString()}` : ''}</span>
+              <span class="oc-account-meta">${esc([row.reporter_name, row.reporter_email].filter(Boolean).join(' - ') || 'Reporter not provided')}${row.created_at ? ` - ${new Date(row.created_at).toLocaleDateString()}` : ''}</span>
               ${row.page_url ? `<span class="oc-account-meta">${esc(row.page_url)}</span>` : ''}
               <span class="oc-account-meta">${esc(row.details || '')}</span>
               ${row.maintainer_note ? `<span class="oc-account-meta">Maintainer note: ${esc(row.maintainer_note)}</span>` : ''}
             </span>
             <span class="d-flex gap-2 justify-content-end flex-wrap">
-              ${row.status === 'pending' ? `<button type="button" class="btn btn-outline-primary btn-sm" data-review-issue="${esc(row.id)}">Start review</button>` : ''}
-              <button type="button" class="btn btn-primary btn-sm" data-resolve-issue="${esc(row.id)}">Resolve</button>
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-note-issue="${esc(row.id)}">Note</button>
-              ${canAdmin ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-issue="${esc(row.id)}">Decline</button>` : ''}
+              ${row.status === 'pending' ? `<button type="button" class="btn btn-primary btn-sm" data-review-issue="${esc(row.id)}">Start review</button>` : ''}
+              ${row.status === 'in_review' ? `<button type="button" class="btn btn-primary btn-sm" data-resolve-issue="${esc(row.id)}">Resolve</button>` : ''}
+              ${row.status === 'in_review' ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-note-issue="${esc(row.id)}">Note</button>` : ''}
+              ${canAdmin && (row.status === 'pending' || row.status === 'in_review') ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-decline-issue="${esc(row.id)}">Close</button>` : ''}
             </span>
           </div>
         `).join('') : '<div class="oc-workspace-empty"><strong>No matching issue reports</strong></div>'}
@@ -2740,6 +2921,16 @@
       button.addEventListener('click', () => {
         credentialRequestStatusFilter = button.dataset.credentialRequestFilter || 'active';
         renderDashboard();
+      });
+    });
+    document.querySelectorAll('[data-start-credential-request]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const request = credentialRequests.find(row => row.id === button.dataset.startCredentialRequest);
+        if (!request) return;
+        button.disabled = true;
+        const { error } = await updateCredentialRequestStatus(request, 'in_review');
+        if (error) alert(error.message || 'Could not update credential request.');
+        await loadDashboard(false);
       });
     });
     document.querySelectorAll('[data-issue-credential-request]').forEach(button => {
