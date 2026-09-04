@@ -48,6 +48,7 @@ database/
 *.tmp
 *.temp
 tmp/
+reports/ai-catalog-search-improvement-report.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

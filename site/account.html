@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260831-library-download" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260904-ai-sources" rel="stylesheet">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to account</a>
@@ -729,7 +729,46 @@
   }
 
   function askModelUnavailableNotice(model){
-    return `${model.label} is selected but is not configured or reachable yet. Configure the model in the Supabase Edge Function secrets, or switch back to Gemini 3.5 Flash Lite.`;
+    return `${model.label} could not complete this request. Try again in a moment, or switch back to Gemini 3.5 Flash Lite.`;
+  }
+
+  function cleanAskModelError(value){
+    return String(value || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 280);
+  }
+
+  async function askModelErrorDetail(error){
+    const response = error?.context || error?.response;
+    if (response?.clone) {
+      try {
+        const payload = await response.clone().json();
+        return cleanAskModelError(payload?.detail || payload?.error || payload?.message);
+      } catch (_) {
+        try {
+          return cleanAskModelError(await response.clone().text());
+        } catch (_) {}
+      }
+    }
+    return cleanAskModelError(error?.message || error);
+  }
+
+  async function askModelFailureNotice(model, error){
+    const detail = await askModelErrorDetail(error);
+    if (/QWEN_BASE_URL|GEMINI_API_KEY|not configured|secrets?/i.test(detail)) {
+      return `${model.label} is not configured in the Supabase Edge Function. Check the model secrets, or switch back to Gemini 3.5 Flash Lite.`;
+    }
+    if (/abort|timeout|timed out|networkerror|failed to fetch/i.test(detail)) {
+      return `${model.label} could not complete this request because the model service did not respond in time. Try again in a moment, or switch back to Gemini 3.5 Flash Lite.`;
+    }
+    if (/401|403|unauthorized|forbidden|api key|authentication/i.test(detail)) {
+      return `${model.label} could not complete this request because the model service rejected the request. Check the Qwen API key or service permissions, or switch back to Gemini 3.5 Flash Lite.`;
+    }
+    if (/429|rate limit|too many requests/i.test(detail)) {
+      return `${model.label} is temporarily rate limited. Try again later, or switch back to Gemini 3.5 Flash Lite.`;
+    }
+    return `${model.label} could not complete this request. Try again in a moment, or switch back to Gemini 3.5 Flash Lite.`;
   }
 
   function askComposerToolbarHtml(){
@@ -1304,7 +1343,7 @@
     if (remaining) remaining.textContent = String(aiUsageRemaining(user));
   }
 
-  function accountExportPayload({ user, profile, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports }){
+  function accountExportPayload({ user, profile, profileContact, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/references.html#privacy',
@@ -1322,6 +1361,7 @@
       },
       linked_identities: identities || [],
       profile: profile || null,
+      profile_contact: profileContact || null,
       roles: Array.from(roles || []),
       saved_resources: bookmarks || [],
       local_saved_resources: window.OCBookmark.localBookmarks?.() || [],
@@ -1971,6 +2011,48 @@
     return values.filter(Boolean).map(value => String(value).trim()).filter(Boolean);
   }
 
+  function aiCountMeta(facets = {}, fallback = ''){
+    const sampleCount = Number(facets.sample_count);
+    if (Number.isFinite(sampleCount) && sampleCount > 0) return `${sampleCount.toLocaleString()} samples`;
+    const classCount = Number(facets.class_count);
+    if (Number.isFinite(classCount) && classCount > 0) return `${classCount.toLocaleString()} classes`;
+    return fallback || '';
+  }
+
+  function aiWantsCode(query){
+    return /\b(code|github|repo|repository|source code)\b/i.test(query);
+  }
+
+  function aiWantsData(query){
+    return /\b(data|dataset|download|source)\b/i.test(query);
+  }
+
+  function aiScaleIntent(query){
+    const text = normalizeAiText(query);
+    const small = /\b(small|smaller|smallest|compact|few|fewer|least|less)\b/.test(text);
+    const large = /\b(large|larger|largest|biggest|many|more|most)\b/.test(text);
+    if (!small && !large) return { direction: '', metric: '' };
+    return { direction: small && !large ? 'small' : 'large', metric: /\b(classes|categories)\b/.test(text) ? 'class_count' : 'sample_count' };
+  }
+
+  function aiScaleTextTerm(term){
+    return /^(small|smaller|smallest|compact|few|fewer|least|less|large|larger|largest|biggest|many|more|most|size|sample|samples|image|images|record|records|class|classes)$/.test(normalizeAiText(term));
+  }
+
+  function aiScaleValue(resource, metric = 'sample_count'){
+    const facets = resource?.facets || {};
+    const direct = Number(facets[metric]);
+    if (Number.isFinite(direct) && direct > 0) return direct;
+    return resourceMagnitude(resource);
+  }
+
+  function aiScalePreferenceScore(resource, intent){
+    if (!intent?.direction) return 0;
+    const value = aiScaleValue(resource, intent.metric);
+    if (!value) return 0;
+    return intent.direction === 'small' ? Math.max(1, 12 - Math.log10(value)) : Math.log10(value);
+  }
+
   const AI_INITIAL_RESULT_LIMIT = 12;
   const AI_RESULT_INCREMENT = 12;
   const AI_MAX_RESULT_LIMIT = 80;
@@ -2175,7 +2257,7 @@
     if (kind === 'dataset') {
       const tasks = listAi(item.potential_tasks || item.tasks || item.task);
       const classes = listAi(item.classes || item.object_classes || item.objects);
-      const meta = compactAi([item.year, firstAi(item.data_modality || item.modality), firstAi(tasks), item.num_images || item.samples || item.size]).join(' - ');
+      const meta = compactAi([item.year, firstAi(item.data_modality || item.modality), item.num_images || item.samples || item.size, firstAi(tasks)]).join(' - ');
       return {
         type: 'dataset',
         label: 'Dataset',
@@ -2317,17 +2399,38 @@
   function accountAiResourceFromIndex(item){
     const kind = resourceKind(item.type);
     const title = titleCaseAi(item.title || item.name || item.id || `Untitled ${typeLabel(kind)}`);
+    const fieldText = item.field_text && typeof item.field_text === 'object' ? item.field_text : {};
+    const facets = item.facets && typeof item.facets === 'object' ? item.facets : {};
+    const metrics = listAi(item.metrics);
+    const authors = listAi(item.authors);
+    const tasks = listAi(item.tasks || item.task || item.potential_tasks);
+    const objects = listAi(item.objects || item.classes || item.object_classes);
+    const annotations = listAi(item.annotations || item.annotation_types);
+    const modalities = listAi(item.modalities || item.data_modality || item.data_modalities);
+    const applications = listAi(item.applications || item.application || item.use_cases);
+    const topics = listAi(item.topics || item.topic || item.keywords || item.tags);
+    const aiTech = listAi(item.ai_tech || item.technology || item.technologies);
+    const countMeta = aiCountMeta(facets);
+    const searchText = normalizeAiText([
+      item.search_text,
+      item.embedding_text,
+      Object.values(fieldText).join(' '),
+      metrics.join(' ')
+    ].join(' '));
     const meta = compactAi([
       item.year,
-      item.provider || item.publisher,
-      firstAi(item.modalities || item.data_modality || item.data_modalities),
-      firstAi(item.tasks || item.task || item.potential_tasks),
-      firstAi(item.topics || item.topic || item.keywords || item.tags),
+      firstAi(modalities),
+      countMeta,
+      firstAi(tasks),
+      firstAi(applications),
+      firstAi(aiTech),
+      firstAi(topics),
       firstAi(item.media || item.formats || item.format),
-      firstAi(item.annotations || item.annotation_types),
+      firstAi(annotations),
       item.license
     ]).join(' - ');
     return {
+      id: item.id || item.slug || title,
       type: kind,
       label: typeLabel(kind),
       title,
@@ -2336,10 +2439,25 @@
       codeUrl: urlFromAi(item, ['code_url', 'codeUrl', 'github_url', 'repo_url', 'repository', 'code']),
       media: mediaFromAiRecord(item),
       meta,
+      license: item.license || '',
+      authors,
+      tasks,
+      objects,
+      annotations,
+      modalities,
+      applications,
+      topics,
+      aiTech,
+      facets,
+      fieldText,
+      searchText,
+      embeddingText: normalizeAiText(item.embedding_text || ''),
+      metrics,
       summary: firstSentenceAi(item.summary || item.description || item.abstract || ''),
       haystack: normalizeAiText([
         title,
         meta,
+        searchText,
         item.summary,
         item.description,
         item.abstract,
@@ -2347,12 +2465,14 @@
         item.provider,
         item.publisher,
         item.contributor,
-        listAi(item.tasks || item.task || item.potential_tasks).join(' '),
-        listAi(item.objects || item.classes || item.object_classes).join(' '),
-        listAi(item.annotations || item.annotation_types).join(' '),
-        listAi(item.modalities || item.data_modality || item.data_modalities).join(' '),
-        listAi(item.applications || item.application || item.use_cases).join(' '),
-        listAi(item.topics || item.topic || item.keywords || item.tags).join(' '),
+        authors.join(' '),
+        tasks.join(' '),
+        objects.join(' '),
+        annotations.join(' '),
+        modalities.join(' '),
+        applications.join(' '),
+        topics.join(' '),
+        aiTech.join(' '),
         listAi(item.media || item.formats || item.format).join(' '),
         listAi(item.institutions || item.institution).join(' '),
         listAi(item.aliases).join(' ')
@@ -2403,125 +2523,14 @@
 
   function expandedAiTerms(query){
     const stopTerms = new Set([
-      'a',
-      'an',
-      'and',
-      'are',
-      'as',
-      'at',
-      'by',
-      'catalog',
-      'compare',
-      'construction',
-      'find',
-      'for',
-      'from',
-      'give',
-      'i',
-      'in',
-      'is',
-      'list',
-      'me',
-      'dataset',
-      'datasets',
-      'benchmark',
-      'benchmarks',
-      'model',
-      'models',
-      'of',
-      'on',
-      'openconstruction',
-      'or',
-      'please',
-      'resource',
-      'resources',
-      'show',
-      'that',
-      'the',
-      'to',
-      'guide',
-      'guides',
-      'workflow',
-      'workflows',
-      'with'
+      'a', 'an', 'and', 'are', 'as', 'at', 'by', 'catalog', 'compare',
+      'construction', 'find', 'for', 'from', 'give', 'i', 'in', 'is',
+      'list', 'me', 'of', 'on', 'openconstruction', 'or', 'please',
+      'resource', 'resources', 'show', 'that', 'the', 'to', 'with'
     ]);
-    const text = normalizeAiText(query);
-    const base = normalizeAiText(query)
+    return Array.from(new Set(normalizeAiText(query)
       .split(/\s+/)
-      .filter(term => term.length > 1 && !stopTerms.has(term));
-    const map = {
-      bim: ['building', 'information', 'modeling', 'ifc', 'scan', 'scan2bim'],
-      aec: ['architecture', 'engineering', 'construction'],
-      ai: ['artificial intelligence', 'generative ai', 'machine learning'],
-      ml: ['machine learning', 'artificial intelligence'],
-      ppe: ['personal', 'protective', 'equipment', 'helmet', 'hardhat', 'vest'],
-      hardhat: ['helmet', 'ppe', 'hard hat'],
-      hse: ['health safety environment', 'safety', 'inspection', 'hazard', 'incident'],
-      hazard: ['safety', 'risk', 'unsafe', 'inspection', 'incident', 'observation'],
-      hazards: ['safety', 'risk', 'unsafe', 'inspection', 'incident', 'observation'],
-      inspection: ['inspect', 'quality', 'safety', 'defect', 'closeout', 'field report'],
-      inspections: ['inspect', 'quality', 'safety', 'defect', 'closeout', 'field report'],
-      reporting: ['report', 'inspection', 'observation', 'documentation'],
-      safety: ['ppe', 'hazard', 'worker', 'accident', 'hse', 'inspection', 'unsafe'],
-      teaching: ['course', 'education', 'slides', 'lecture', 'learning', 'oer', 'open educational resource'],
-      course: ['teaching', 'education', 'slides', 'lecture', 'syllabus'],
-      slides: ['presentation', 'lecture', 'teaching'],
-      oer: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
-      oers: ['open educational resource', 'course', 'teaching', 'education', 'tutorial'],
-      license: ['licence', 'rights', 'reuse', 'creative commons', 'cc by', 'cc by nc'],
-      licence: ['license', 'rights', 'reuse', 'creative commons', 'cc by', 'cc by nc'],
-      nc: ['noncommercial', 'non commercial', 'cc by nc'],
-      nac: ['nc', 'noncommercial', 'cc by nc'],
-      labs: ['lab', 'interactive', 'code', 'notebook'],
-      lab: ['labs', 'interactive', 'code', 'notebook'],
-      reuse: ['responsible', 'license', 'open data', 'data ethics'],
-      responsible: ['reuse', 'ethics', 'license', 'open data'],
-      generative: ['generative ai', 'genai', 'llm'],
-      smart: ['smart construction', 'construction technology'],
-      workers: ['worker', 'person', 'people'],
-      equipment: ['machinery', 'vehicle', 'excavator', 'crane'],
-      annotation: ['annotated', 'label', 'labels'],
-      annotations: ['annotated', 'label', 'labels'],
-      bounding: ['bbox', 'box', 'boxes', 'detection'],
-      boxes: ['bbox', 'box', 'detection'],
-      code: ['github', 'repository', 'repo', 'source code', 'implementation'],
-      github: ['code', 'repository', 'repo', 'source code'],
-      repo: ['code', 'github', 'repository', 'source code'],
-      largest: ['images', 'samples', 'records'],
-      progress: ['tracking', 'monitoring', 'as built', 'asbuilt'],
-      tracking: ['monitoring', 'progress', 'site monitoring'],
-      monitoring: ['tracking', 'progress', 'inspection', 'site monitoring'],
-      download: ['data', 'url', 'source']
-    };
-    const terms = new Set(base);
-    base.forEach(term => (map[term] || []).forEach(extra => terms.add(extra)));
-    [
-      [/\bpoint clouds?\b|\blidar\b|\blaser scans?\b/, ['point cloud', 'pointcloud', 'lidar', 'laser scan', '3d point']],
-      [/\bscan\s*to\s*bim\b|\bscan2bim\b/, ['scan to bim', 'scan2bim', 'bim', 'point cloud']],
-      [/\bbim\b|\bbuilding information model(?:ing)?\b|\bifc\b/, ['bim', 'building information modeling', 'ifc']],
-      [/\bconstruction progress\b|\bprogress monitoring\b|\bsite monitoring\b/, ['progress monitoring', 'progress tracking', 'site monitoring', 'as built']],
-      [/\bhealth safety environment\b|\bhse\b|\bsafety reporting\b|\bhazard capture\b/, ['hse', 'safety', 'hazard', 'inspection', 'reporting']],
-      [/\bgenerative ai\b|\bgenai\b|\bllms?\b/, ['generative ai', 'artificial intelligence', 'llm', 'aec ai']],
-      [/\baec ai\b|\bai in aec\b|\bai for aec\b/, ['aec ai', 'artificial intelligence', 'architecture engineering construction']],
-      [/\bopen educational resources?\b|\boers?\b/, ['open educational resource', 'education', 'teaching', 'course', 'tutorial']],
-      [/\bwith code\b|\bgithub\b|\brepositor(?:y|ies)\b/, ['code', 'github', 'repository', 'repo', 'source code']],
-      [/\bwith data\b|\bdownload(?:able)?\b|\bdata source\b/, ['data', 'download', 'source', 'url']],
-      [/\bbenchmarks?|leaderboards?|evaluation results?\b/, ['benchmark', 'leaderboard', 'metrics', 'results', 'evaluation']],
-      [/\bguides?|documentation|docs\b/, ['guide', 'documentation', 'practices', 'how to']],
-      [/\bcc\s*[- ]?\s*by\s*[- ]?\s*n[ac]\b|\bnon[- ]?commercial\b/, ['cc by nc', 'cc-by-nc', 'noncommercial', 'non commercial']],
-      [/\bcc\s*[- ]?\s*by\b|\bcreative commons\b/, ['cc by', 'cc-by', 'creative commons', 'license']],
-      [/\bopen data\b|\bresponsible reuse\b|\bdata reuse\b/, ['open data', 'responsible reuse', 'license', 'data ethics']],
-      [/\bsmart construction\b|\bconstruction technolog(?:y|ies)\b/, ['smart construction', 'construction technology']],
-      [/\binteractive labs?\b|\bcode labs?\b/, ['interactive labs', 'interactive', 'code', 'lab']],
-      [/\bsafety helmets?\b|\bhard hats?\b|\bhardhats?\b/, ['safety helmet', 'hardhat', 'hard hat', 'helmet', 'ppe']],
-      [/\bsafety vests?\b|\bprotective equipment\b/, ['safety vest', 'vest', 'ppe', 'personal protective equipment']],
-      [/\bobject detection\b|\bdetectors?\b/, ['object detection', 'detector', 'detection']],
-      [/\bsemantic segmentation\b/, ['semantic segmentation', 'segmentation']],
-      [/\binstance segmentation\b/, ['instance segmentation', 'segmentation']]
-    ].forEach(([pattern, additions]) => {
-      if (pattern.test(text)) additions.forEach(term => terms.add(term));
-    });
-    return Array.from(terms);
+      .filter(term => term.length > 1 && !stopTerms.has(term))));
   }
 
   function aiTypeIntent(query){
@@ -2572,14 +2581,30 @@
   }
 
   function scoreAiResource(resource, query){
-    const terms = expandedAiTerms(query);
+    const scaleIntent = aiScaleIntent(query);
+    const terms = expandedAiTerms(query).filter(term => !scaleIntent.direction || !aiScaleTextTerm(term));
     const licenseTerms = requestedAiLicenseTerms(query);
     const intent = aiTypeIntent(query);
     const requestedTypes = intent.types;
     let score = 0;
     const title = normalizeAiText(resource.title);
     const meta = normalizeAiText(resource.meta);
-    const haystack = normalizeAiLicense(resource.haystack);
+    const haystack = normalizeAiLicense([
+      resource.haystack,
+      resource.searchText,
+      resource.embeddingText,
+      resource.summary,
+      resource.license,
+      resource.authors?.join?.(' '),
+      resource.tasks?.join?.(' '),
+      resource.objects?.join?.(' '),
+      resource.annotations?.join?.(' '),
+      resource.modalities?.join?.(' '),
+      resource.applications?.join?.(' '),
+      resource.topics?.join?.(' '),
+      resource.aiTech?.join?.(' ')
+    ].join(' '));
+    const normalizedQuery = normalizeAiText(query);
     if (requestedTypes.includes(resource.type)) score += intent.explicit ? 26 : 18;
     if (requestedTypes.length && !requestedTypes.includes(resource.type)) score -= intent.explicit ? 40 : 16;
     if (licenseTerms.length) {
@@ -2587,14 +2612,16 @@
       if (licenseMatched) score += 18;
       else score -= 18;
     }
+    if (normalizedQuery.length > 2 && containsAiTerm(title, normalizedQuery)) score += 20;
     terms.forEach(term => {
       const specific = term.length >= 4 || term.includes(' ');
-      if (containsAiTerm(title, term)) score += specific ? 8 : 4;
+      if (containsAiTerm(title, term)) score += specific ? 12 : 5;
       if (containsAiTerm(meta, term)) score += specific ? 4 : 2;
-      if (containsAiTerm(resource.haystack, term)) score += specific ? 1.5 : .75;
+      if (containsAiTerm(haystack, term)) score += specific ? 3 : 1;
     });
-    if (/code|github|repo|repository/i.test(query) && resource.codeUrl) score += 4;
-    if (/data|download|source/i.test(query) && resource.dataUrl) score += 2;
+    if (aiWantsCode(query)) score += resource.codeUrl || resource.facets?.has_code ? 14 : -18;
+    if (aiWantsData(query)) score += resource.dataUrl || resource.facets?.has_data ? 8 : -8;
+    if (scaleIntent.direction) score += aiScalePreferenceScore(resource, scaleIntent);
     return score;
   }
 
@@ -2604,9 +2631,34 @@
     const scored = (Array.isArray(catalog) ? catalog : [])
       .map(resource => ({ ...resource, score: scoreAiResource(resource, query) }))
       .filter(resource => resource.score > 0);
-    const narrowed = requestedTypes.length && intent.explicit
+    let narrowed = requestedTypes.length && intent.explicit
       ? scored.filter(resource => requestedTypes.includes(resource.type))
       : scored;
+    if (aiWantsCode(query)) {
+      const maxScore = narrowed.length ? Math.max(...narrowed.map(resource => resource.score)) : 0;
+      const withCode = narrowed.filter(resource => (resource.codeUrl || resource.facets?.has_code) && resource.score >= maxScore - 45);
+      if (withCode.length) narrowed = withCode;
+    }
+    if (aiWantsData(query)) {
+      const maxScore = narrowed.length ? Math.max(...narrowed.map(resource => resource.score)) : 0;
+      const withData = narrowed.filter(resource => (resource.dataUrl || resource.facets?.has_data) && resource.score >= maxScore - 45);
+      if (withData.length) narrowed = withData;
+    }
+    const scaleIntent = aiScaleIntent(query);
+    if (scaleIntent.direction && narrowed.length) {
+      const maxScore = Math.max(...narrowed.map(resource => resource.score));
+      const closeRows = narrowed.filter(resource => resource.score >= maxScore - 35 && aiScaleValue(resource, scaleIntent.metric));
+      const closeKeys = new Set(closeRows.map(resource => resourceKeyAi(resource.href || resource.title)));
+      const remainingRows = narrowed.filter(resource => !closeKeys.has(resourceKeyAi(resource.href || resource.title)));
+      const byScale = (a, b) => {
+        const left = aiScaleValue(a, scaleIntent.metric);
+        const right = aiScaleValue(b, scaleIntent.metric);
+        if (left && right && left !== right) return scaleIntent.direction === 'small' ? left - right : right - left;
+        return b.score - a.score || a.title.localeCompare(b.title);
+      };
+      const byScore = (a, b) => b.score - a.score || a.title.localeCompare(b.title);
+      return [...closeRows.sort(byScale), ...remainingRows.sort(byScore)].slice(0, limit);
+    }
     return narrowed
       .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
       .slice(0, limit);
@@ -2626,7 +2678,7 @@
   }
 
   function resourceMagnitude(resource){
-    const text = [resource.meta, resource.summary, resource.title].join(' ');
+    const text = [resource.meta, resource.summary, resource.title, resource?.facets?.sample_count, resource?.facets?.class_count].join(' ');
     const numbers = String(text).match(/\b\d[\d,]*(?:\.\d+)?\b/g) || [];
     return numbers.reduce((max, raw) => Math.max(max, Number(raw.replace(/,/g, '')) || 0), 0);
   }
@@ -2667,7 +2719,9 @@
         magnitude: resourceMagnitude(resource)
       }))
       .sort((a, b) => {
-        if (/\b(largest|biggest|most|size)\b/i.test(clean)) return b.magnitude - a.magnitude || b.score - a.score || a.title.localeCompare(b.title);
+        const scaleIntent = aiScaleIntent(clean);
+        if (scaleIntent.direction === 'large') return b.magnitude - a.magnitude || b.score - a.score || a.title.localeCompare(b.title);
+        if (scaleIntent.direction === 'small') return a.magnitude - b.magnitude || b.score - a.score || a.title.localeCompare(b.title);
         return b.score - a.score || a.title.localeCompare(b.title);
       });
     const hasSpecificScore = scored.some(resource => resource.score > 0);
@@ -2687,26 +2741,22 @@
   function answerForAiQuery(query, results, catalogLoaded, scoped = false, visibleLimit = AI_INITIAL_RESULT_LIMIT){
     if (!catalogLoaded) return 'I could not load the catalog data in this environment yet.';
     if (!results.length) {
-      const requestedTypes = requestedAiTypes(query).map(typeLabel);
-      const typeText = requestedTypes.length ? `${requestedTypes.join(' or ').toLowerCase()} ` : '';
-      return `I could not find enough ${typeText}catalog evidence for that query. Try broader terms such as safety monitoring, object detection, BIM, point cloud, or education.`;
+      return 'Please narrow the request with a resource type, task, modality, or application area so I can recommend relevant OpenConstruction resources.';
     }
-    const counts = results.reduce((acc, item) => {
-      acc[item.label] = (acc[item.label] || 0) + 1;
-      return acc;
-    }, {});
-    const summary = Object.entries(counts).map(([label, count]) => `${count} ${label.toLowerCase()}${count === 1 ? '' : 's'}`).join(', ');
     const top = results[0];
+    const alternatives = results.slice(1, 3).map(resource => resource.title).filter(Boolean);
+    const sampleText = Number(top?.facets?.sample_count)
+      ? ` It lists ${Number(top.facets.sample_count).toLocaleString()} samples.`
+      : '';
+    const alternativesText = alternatives.length
+      ? ` Alternatives: ${alternatives.join(alternatives.length === 2 ? ' and ' : '')}.`
+      : '';
     const scope = scoped ? 'From the current results, ' : '';
-    return `${scope}I found ${summary}. The strongest match is ${top.title}. ${aiVisibleSummary(results, visibleLimit)}`;
+    return `${scope}Recommendation: ${top.title}.${sampleText}${alternativesText} ${aiVisibleSummary(results, visibleLimit)}`;
   }
 
   function aiEmptyText(query){
-    const text = normalizeAiText(query);
-    if (/\bsafety|hazard|hse|ppe|helmet|hardhat\b/.test(text)) return 'Try broader terms such as safety monitoring, PPE, hazard, inspection, or worker detection.';
-    if (/\bbim|point cloud|lidar|scan\b/.test(text)) return 'Try broader terms such as BIM, scan to BIM, point cloud, IFC, or progress monitoring.';
-    if (/\boer|course|teaching|education|slides\b/.test(text)) return 'Try broader terms such as OER, teaching, smart construction, slides, or interactive labs.';
-    return 'Try broader terms such as safety monitoring, object detection, BIM, point cloud, or education.';
+    return 'Try broader terms, a resource type, or a related application area.';
   }
 
   function accountAiMediaHtml(resource){
@@ -2790,8 +2840,11 @@
     return `
       <details class="oc-ai-reply-results" data-ai-reply-results="${index}"${open ? ' open' : ''}>
         <summary>
-          <span>Cited resources</span>
-          <small>${resources.length} resource${resources.length === 1 ? '' : 's'}</small>
+          <span class="oc-ai-reply-summary-main">
+            <span class="oc-ai-reply-summary-icon" aria-hidden="true"></span>
+            <span>Supporting resources</span>
+          </span>
+          <small>${resources.length} match${resources.length === 1 ? '' : 'es'}</small>
         </summary>
         <div class="oc-library-grid oc-ai-reply-resource-grid">
           ${accountAiResourceCardsHtml(resources, round.query || '', visibleLimit, true)}
@@ -2836,6 +2889,26 @@
     return String(value || '').replace(/^\.?\//, '').replace(/^https?:\/\/(?:www\.)?openconstruction\.org\//i, '');
   }
 
+  function evidenceForAskModelAi(resource){
+    const fields = resource?.fieldText || {};
+    return compactAi([
+      resource?.summary,
+      listAi(resource?.authors).join(', '),
+      listAi(resource?.tasks).join(', '),
+      listAi(resource?.objects).join(', '),
+      listAi(resource?.annotations).join(', '),
+      listAi(resource?.modalities).join(', '),
+      listAi(resource?.applications).join(', '),
+      listAi(resource?.topics).join(', '),
+      listAi(resource?.aiTech).join(', '),
+      fields.domain,
+      fields.description,
+      fields.access,
+      fields.people,
+      resource?.searchText || resource?.haystack
+    ]).join(' ').slice(0, 800);
+  }
+
   function candidatesForAskModelAi(resources, limit = 300){
     return (Array.isArray(resources) ? resources : []).slice(0, limit).map(resource => ({
       key: resourceKeyAi(resource.href || resource.title),
@@ -2847,8 +2920,35 @@
       codeUrl: resource.codeUrl,
       meta: resource.meta,
       summary: resource.summary,
-      evidence: String(resource.haystack || '').slice(0, 600)
+      evidence: evidenceForAskModelAi(resource)
     }));
+  }
+
+  function rewriteSearchTextAi(query){
+    return query;
+  }
+
+  async function rewriteAiSearchQuery(){
+    return null;
+  }
+
+  async function searchOpenConstructionResourcesWithModel(query, previousMessages, form, limit = AI_MAX_RESULT_LIMIT){
+    if (!sb?.functions?.invoke) return [];
+    const model = selectedAskModel(form);
+    const { data, error } = await sb.functions.invoke('ask-openconstruction', {
+      body: {
+        mode: 'search',
+        query,
+        model: model.id,
+        limit,
+        previousMessages: (Array.isArray(previousMessages) ? previousMessages : []).slice(-6).map(message => ({
+          role: message.role,
+          text: message.text
+        }))
+      }
+    });
+    if (error) throw error;
+    return Array.isArray(data?.resources) ? data.resources.filter(resource => resource?.title && resource?.href) : [];
   }
 
   function askModelResourceRefsAi(response){
@@ -3957,6 +4057,7 @@
       const button = form.querySelector('button[type="submit"]');
       status.textContent = 'Saving...';
       button.disabled = true;
+      const cleanEmail = form.elements.email.value.trim().toLowerCase();
       const profilePayload = {
         user_id: user.id,
         display_name: form.elements.display_name.value.trim() || null,
@@ -3975,6 +4076,14 @@
           button.disabled = false;
           return;
         }
+      }
+      if (!error) {
+        const contactResult = await sb.from('profile_contacts').upsert({
+          user_id: user.id,
+          email: cleanEmail || null,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+        error = contactResult.error;
       }
       button.disabled = false;
       if (error) {
@@ -4015,7 +4124,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11.5h10"></path><path d="m13 7.5 4 4-4 4"></path></svg>
             </button>
           </form>
-          <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
+          <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private, confidential, or sensitive information. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
         </div>
       </section>
     `;
@@ -4130,20 +4239,27 @@
           ].map((message, index, rows) => accountAiMessageHtml(message, { loading: message.role === 'assistant' && index === rows.length - 1 })).join('');
           resultsEl.innerHTML = '';
         }
-        const catalog = await loadAccountAiCatalog();
-        const searchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+        const [catalog, serverResults] = await Promise.all([
+          loadAccountAiCatalog(),
+          isRefinement ? Promise.resolve([]) : searchOpenConstructionResourcesWithModel(clean, priorMessages, form, AI_MAX_RESULT_LIMIT).catch(err => {
+            console.warn('Private Ask OpenConstruction search unavailable; using local fallback.', err);
+            return [];
+          })
+        ]);
+        const baseSearchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+        const searchText = baseSearchText;
         let results = contextResources.length
           ? uniqueAiResources([...(refineAiResultsFromPrevious(contextResources, clean) || []), ...contextResources])
-          : (isRefinement ? refineAiResultsFromPrevious(previousResources, clean) : selectAiCandidates(catalog, searchText));
+          : (isRefinement ? refineAiResultsFromPrevious(previousResources, clean) : (serverResults.length ? serverResults : selectAiCandidates(catalog, searchText, AI_MAX_RESULT_LIMIT)));
         if (!results.length && isRefinement) {
-          results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
+          results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages), AI_MAX_RESULT_LIMIT);
         }
         let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
         const selectedModel = selectedAskModel(form);
         try {
           const modelCandidates = isRefinement
             ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
-            : uniqueAiResources([...contextResources, ...candidatePoolForAskModel(catalog, searchText, results)]);
+            : uniqueAiResources([...contextResources, ...(serverResults.length ? serverResults : candidatePoolForAskModel(catalog, searchText, results, 80))]);
           const modelResponse = await askOpenConstructionWithModel(clean, modelCandidates, priorMessages, previousResources);
           if (modelResponse?.limited) {
             renderAnonymousLimit(clean);
@@ -4178,7 +4294,7 @@
             answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
           } else {
             console.warn('Anonymous Ask OpenConstruction selected model unavailable.', err);
-            answer = askModelUnavailableNotice(selectedModel);
+            answer = await askModelFailureNotice(selectedModel, err);
             results = [];
           }
         }
@@ -4252,9 +4368,10 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes] = await Promise.all([
+    const [bookmarks, profileRes, contactRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
+      safeRows(sb.from('profile_contacts').select('user_id,email,updated_at').eq('user_id', user.id).limit(1), 'profile contact'),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
       sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       identitiesPromise,
@@ -4269,6 +4386,7 @@
     if (suggestionsRes.error) throw suggestionsRes.error;
 
     const profile = profileRes.data || {};
+    const profileContact = (contactRes.rows || [])[0] || {};
     const identities = Array.isArray(identitiesResult) ? identitiesResult : [];
     const badges = badgesRes.data || [];
     const suggestions = suggestionsRes.data || [];
@@ -4286,7 +4404,7 @@
     const name = profile.display_name && !genericNames.has(String(profile.display_name).trim().toLowerCase())
       ? profile.display_name
       : fallbackName;
-    const accountEmail = user.email || '';
+    const accountEmail = profileContact.email || user.email || '';
     const affiliation = profile.affiliation || window.OCAuth.affiliation?.(user) || '';
     const savedByType = bookmarks.reduce((acc, row) => {
       const key = row.type || 'resource';
@@ -4323,6 +4441,7 @@
     const accountDataExport = accountExportPayload({
       user,
       profile,
+      profileContact,
       bookmarks,
       badges,
       suggestions,
@@ -4360,13 +4479,18 @@
         settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"></path><path d="M19 12a7.8 7.8 0 0 0-.12-1.35l2.02-1.55-2-3.46-2.4.96a7.85 7.85 0 0 0-2.34-1.35L13.8 2.7H9.8l-.36 2.55A7.85 7.85 0 0 0 7.1 6.6l-2.4-.96-2 3.46 2.02 1.55a7.8 7.8 0 0 0 0 2.7L2.7 14.9l2 3.46 2.4-.96a7.85 7.85 0 0 0 2.34 1.35l.36 2.55h4l.36-2.55a7.85 7.85 0 0 0 2.34-1.35l2.4.96 2-3.46-2.02-1.55A7.8 7.8 0 0 0 19 12Z"></path></svg>',
         credential: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.25 19 6v5.25c0 4.2-2.75 8.1-7 9.5-4.25-1.4-7-5.3-7-9.5V6l7-2.75Z"></path><path d="m9.25 12.1 1.75 1.75 3.9-4.05"></path></svg>',
         pin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5-4 1-4.5 4.5.5 3.5-2 2-3.5-5L2 11l2-2 3.5.5L12 5l3-1Z"></path><path d="m9 15-4 4"></path></svg>',
-        trash: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M7 7l1 13h8l1-13"></path><path d="M9 7V4h6v3"></path></svg>'
+        trash: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M7 7l1 13h8l1-13"></path><path d="M9 7V4h6v3"></path></svg>',
+        historySearch: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>'
       };
       return icons[name] || '';
     }
 
     let currentAiChats = writeAiChats(user, aiChats);
     let activeAccountChatId = '';
+    let sessionSearchOpen = false;
+    let sessionSearchQuery = '';
+    let sessionHistoryExpanded = false;
+    const COLLAPSED_SESSION_LIMIT = 8;
 
     root.className = 'oc-account-grid';
     root.innerHTML = `
@@ -4382,7 +4506,10 @@
         ${canUseAsk ? `<div class="oc-sidebar-sessions">
           <div class="oc-sidebar-sessions-head">
             <span>Search sessions</span>
-            <button type="button" data-new-ai-session aria-label="New session" title="New session">${workspaceIcon('plus')}</button>
+            <div class="oc-sidebar-session-actions">
+              <button type="button" data-toggle-ai-session-search aria-label="Search sessions" aria-expanded="false" title="Search sessions">${workspaceIcon('historySearch')}</button>
+              <button type="button" data-new-ai-session aria-label="New session" title="New session">${workspaceIcon('plus')}</button>
+            </div>
           </div>
           <div id="accountAiSessions"></div>
         </div>` : ''}
@@ -4424,7 +4551,7 @@
                 <textarea name="q" class="form-control" rows="1" placeholder="Ask OpenConstruction or type @ to add context"></textarea>
                 <button type="submit" class="oc-primary-action" aria-label="Send">${workspaceIcon('search')}</button>
               </form>
-              <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private or confidential data. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
+              <p class="oc-ask-disclaimer">Ask OpenConstruction is experimental and can make mistakes. Do not include private, confidential, or sensitive information. <a href="references.html#privacy">Data &amp; Privacy</a>.</p>
             </div>
           </section>
         </section>` : ''}
@@ -4445,7 +4572,7 @@
                 <label class="form-label small fw-bold" for="profileAffiliation">Affiliation</label>
                 <input id="profileAffiliation" name="affiliation" class="form-control form-control-sm" value="${esc(affiliation)}" placeholder="University, company, or organization">
                 <label class="form-label small fw-bold" for="profileEmail">Email</label>
-                <input id="profileEmail" class="form-control form-control-sm" value="${esc(accountEmail || 'No email on file')}" disabled>
+                <input id="profileEmail" name="email" type="email" autocomplete="email" class="form-control form-control-sm" value="${esc(accountEmail)}" placeholder="you@university.edu">
                 <div class="oc-settings-actions">
                   <button type="submit" class="oc-text-action">Save profile</button>
                   <span id="profileStatus" class="small text-muted" role="status"></span>
@@ -4772,14 +4899,59 @@
       }
     }
 
+    function sessionSearchText(chat){
+      const messages = Array.isArray(chat?.messages) ? chat.messages : [];
+      return [
+        chat?.title,
+        ...messages.map(message => message?.text)
+      ].filter(Boolean).join(' ').toLowerCase();
+    }
+
+    function focusSessionSearchInput(){
+      window.requestAnimationFrame(() => {
+        const input = document.querySelector('[data-ai-session-search]');
+        if (!input) return;
+        input.focus();
+        const end = input.value.length;
+        input.setSelectionRange(end, end);
+      });
+    }
+
     function renderAccountAiSessions(activeId = ''){
       const sessionList = document.getElementById('accountAiSessions');
       if (!sessionList) return;
+      const searchToggle = document.querySelector('[data-toggle-ai-session-search]');
+      if (searchToggle) {
+        searchToggle.classList.toggle('active', sessionSearchOpen);
+        searchToggle.setAttribute('aria-expanded', sessionSearchOpen ? 'true' : 'false');
+      }
+      const query = String(sessionSearchQuery || '').trim().toLowerCase();
+      const searchHtml = sessionSearchOpen ? `
+        <div class="oc-sidebar-session-search">
+          <input type="search" data-ai-session-search aria-label="Search saved sessions" placeholder="Search sessions" autocomplete="off" value="${esc(sessionSearchQuery)}">
+          <button type="button" data-clear-ai-session-search aria-label="Clear session search" title="Clear search" ${sessionSearchQuery ? '' : 'hidden'}>x</button>
+        </div>
+      ` : '';
       if (!currentAiChats.length) {
-        sessionList.innerHTML = '<small>No saved sessions</small>';
+        sessionList.innerHTML = `${searchHtml}<small>No saved sessions</small>`;
         return;
       }
-      sessionList.innerHTML = currentAiChats.slice(0, 12).map(chat => {
+      const matchedChats = query
+        ? currentAiChats.filter(chat => sessionSearchText(chat).includes(query))
+        : currentAiChats;
+      const hasManySessions = !query && currentAiChats.length > COLLAPSED_SESSION_LIMIT;
+      const visibleChats = hasManySessions && !sessionHistoryExpanded
+        ? matchedChats.slice(0, COLLAPSED_SESSION_LIMIT)
+        : matchedChats;
+      const toggleHtml = hasManySessions ? `
+        <button type="button" class="oc-sidebar-session-toggle" data-toggle-ai-session-list aria-expanded="${sessionHistoryExpanded ? 'true' : 'false'}">
+          ${sessionHistoryExpanded ? 'Show fewer' : `Show all ${currentAiChats.length}`}
+        </button>
+      ` : '';
+      if (!visibleChats.length) {
+        sessionList.innerHTML = `${searchHtml}<small>No matching sessions</small>`;
+      } else {
+        sessionList.innerHTML = searchHtml + visibleChats.map(chat => {
         const firstUserMessage = (chat.messages || []).find(message => message.role === 'user')?.text || '';
         const title = chat.title || firstUserMessage || 'Search session';
         const rounds = aiResourceRounds(chat);
@@ -4805,7 +4977,23 @@
             </div>
           </div>
         `;
-      }).join('');
+        }).join('') + toggleHtml;
+      }
+      sessionList.querySelector('[data-ai-session-search]')?.addEventListener('input', event => {
+        sessionSearchQuery = event.target.value;
+        sessionHistoryExpanded = false;
+        renderAccountAiSessions(activeAccountChatId);
+        focusSessionSearchInput();
+      });
+      sessionList.querySelector('[data-clear-ai-session-search]')?.addEventListener('click', () => {
+        sessionSearchQuery = '';
+        renderAccountAiSessions(activeAccountChatId);
+        focusSessionSearchInput();
+      });
+      sessionList.querySelector('[data-toggle-ai-session-list]')?.addEventListener('click', () => {
+        sessionHistoryExpanded = !sessionHistoryExpanded;
+        renderAccountAiSessions(activeAccountChatId);
+      });
       sessionList.querySelectorAll('[data-open-ai-chat]').forEach(button => {
         button.addEventListener('click', () => {
           const chat = currentAiChats.find(row => row.id === button.dataset.openAiChat);
@@ -4896,20 +5084,27 @@
         resultsEl.innerHTML = '';
       }
       try {
-      const catalog = await loadAccountAiCatalog();
       const priorRounds = aiResourceRounds(existingChat);
       const latestRound = priorRounds.length ? priorRounds[priorRounds.length - 1] : null;
       const previousResources = contextResources.length ? contextResources : (latestRound?.resources || existingChat?.resources || []);
       const isRefinement = Boolean(previousResources.length && (contextResources.length || shouldRefineAiResults(clean)));
-      const searchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+      const [catalog, serverResults] = await Promise.all([
+        loadAccountAiCatalog(),
+        isRefinement ? Promise.resolve([]) : searchOpenConstructionResourcesWithModel(clean, priorMessages, form, AI_MAX_RESULT_LIMIT).catch(err => {
+          console.warn('Private Ask OpenConstruction search unavailable; using local fallback.', err);
+          return [];
+        })
+      ]);
+      const baseSearchText = isRefinement ? [clean, askContextSearchText(contextResources)].filter(Boolean).join(' ') : aiSearchTextWithContext(clean, priorMessages);
+      const searchText = baseSearchText;
       let results = contextResources.length
         ? uniqueAiResources([...(refineAiResultsFromPrevious(contextResources, clean) || []), ...contextResources])
         : (isRefinement ? refineAiResultsFromPrevious(previousResources, clean) : []);
       if (!results.length && !isRefinement) {
-        results = selectAiCandidates(catalog, searchText);
+        results = serverResults.length ? serverResults : selectAiCandidates(catalog, searchText, AI_MAX_RESULT_LIMIT);
       }
       if (!results.length && isRefinement) {
-        results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages));
+        results = selectAiCandidates(catalog, aiSearchTextWithContext(clean, priorMessages), AI_MAX_RESULT_LIMIT);
       }
       let answer = answerForAiQuery(clean, results, Boolean(catalog.length), isRefinement);
       const selectedModel = selectedAskModel(form);
@@ -4920,7 +5115,7 @@
         try {
           const modelCandidates = isRefinement
             ? uniqueAiResources([...(results.length ? results : previousResources), ...contextResources])
-            : uniqueAiResources([...contextResources, ...candidatePoolForAskModel(catalog, searchText, results)]);
+            : uniqueAiResources([...contextResources, ...(serverResults.length ? serverResults : candidatePoolForAskModel(catalog, searchText, results, 80))]);
           const modelResponse = await askOpenConstructionWithModel(clean, modelCandidates, priorMessages, previousResources);
           if (modelResponse?.limited) {
             answer = modelResponse.answer;
@@ -4958,7 +5153,7 @@
             answer = `${normalSearchNotice('unavailable')}\n\n${answer}`;
           } else {
             console.warn('Ask OpenConstruction selected model unavailable.', err);
-            answer = askModelUnavailableNotice(selectedModel);
+            answer = await askModelFailureNotice(selectedModel, err);
             results = [];
           }
         }
@@ -5035,8 +5230,19 @@
         input.value = initialQuery;
         submitAccountAsk(initialQuery);
       }
+      document.querySelector('[data-toggle-ai-session-search]')?.addEventListener('click', () => {
+        sessionSearchOpen = !sessionSearchOpen;
+        if (!sessionSearchOpen) {
+          sessionSearchQuery = '';
+          sessionHistoryExpanded = false;
+        }
+        renderAccountAiSessions(activeAccountChatId);
+        if (sessionSearchOpen) focusSessionSearchInput();
+      });
       document.querySelector('[data-new-ai-session]')?.addEventListener('click', () => {
         activeAccountChatId = '';
+        sessionSearchQuery = '';
+        sessionHistoryExpanded = false;
         if (input) {
           input.focus();
         }

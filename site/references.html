@@ -113,9 +113,9 @@
           <div>
             <div class="doc-index-label">Project Info</div>
             <ul class="doc-index-group">
-              <li><a href="#funding">Funding &amp; Acknowledgment</a></li>
               <li><a href="#contactSupport">Contact &amp; Support</a></li>
               <li><a href="#referencesTitle">References</a></li>
+              <li><a href="#funding">Funding &amp; Acknowledgment</a></li>
             </ul>
           </div>
         </div>
@@ -182,9 +182,10 @@
           <p>We may receive information you choose to provide through email, GitHub issues, update subscriptions, resource submissions, support reports, and optional account features such as saved resources, contribution activity, and workspace search history.</p>
           <h3>Accounts and Workspace Data</h3>
           <p>Sign-in is handled by third-party OAuth providers such as GitHub and Google. OpenConstruction does not manage passwords. User-owned profile, saved-resource, submission, support report, role, credential, and AI search records are stored in Supabase and protected with row-level access controls.</p>
-          <h3>AI-Assisted Search</h3>
-          <p>Ask OpenConstruction uses Google Gemini to enhance catalog search and summarize matching public resource records. Questions submitted to Ask OpenConstruction and selected catalog context may be processed by Google Gemini for this purpose. Users should not submit private, confidential, or sensitive information to AI-assisted search.</p>
-          <p>Signed-in users may optionally rate Ask OpenConstruction results or leave a short comment; this feedback is stored with the related query, answer, and returned result summaries to improve search quality.</p>
+          <h3>Ask OpenConstruction</h3>
+          <p>Ask OpenConstruction uses the model provider selected by the user. When Gemini is selected, the user's question, recent Ask conversation text, and selected public OpenConstruction catalog context may be transmitted to and processed by Google. When Qwen is selected, the same Ask content may be processed by the OpenConstruction-configured Qwen inference service.</p>
+          <p>Ask requests do not include account profiles, saved-resource libraries, resource submissions, credential records, or email addresses. Users should not submit private, confidential, sensitive, or regulated information to Ask OpenConstruction.</p>
+          <p>Signed-in users may choose to rate an Ask OpenConstruction response or leave a short comment. This feedback is stored with the associated query, generated answer, and returned result summaries, and is used to monitor quality, improve retrieval behavior, and prioritize corrections.</p>
           <h3>Use, Choices, and Services</h3>
           <p>We use information only to operate the platform, respond to requests, coordinate community contributions, maintain personal workspace features, improve catalog quality, and send updates users explicitly request. OpenConstruction Open Science Initiative does not sell personal information.</p>
           <p>Signed-in users can download their account data or request account deletion from the workspace account page. Privacy, access, correction, or deletion requests can also be sent to <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>. Third-party services such as GitHub, Google, Supabase, DOI providers, CDNs, mailing-list tools, and linked resource providers operate under their own policies and terms.</p>
@@ -194,31 +195,21 @@
       </div>
     </section>
 
-    <section class="doc-section" id="funding" aria-labelledby="fundingTitle">
-      <h2 id="fundingTitle">Funding &amp; Acknowledgment</h2>
-      <div>
-        <div class="doc-callout">
-          <img src="assets/img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="58" height="58" loading="lazy">
-          <p>This material is supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>. Any opinions, findings, conclusions, or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</p>
-        </div>
-      </div>
-    </section>
-
     <section class="doc-section" id="contactSupport" aria-labelledby="contactSupportTitle">
       <h2 id="contactSupportTitle">Contact &amp; Support</h2>
       <div>
-        <p>Questions, corrections, and platform feedback are welcome through the project support channels.</p>
+        <p>Questions, corrections, and platform feedback are welcome through the project support channels. For privacy, access, correction, or deletion requests, email <a href="mailto:support@openconstruction.org">support@openconstruction.org</a>.</p>
         <ul class="doc-contact-actions" aria-label="Contact and support actions">
-          <li>
-            <a class="doc-action-link" href="account.html?report=issue&amp;issue_type=platform">
-              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4Zm0 3.1c.4 0 .7.3.7.7v3.6a.7.7 0 1 1-1.4 0V5.2c0-.4.3-.7.7-.7Zm0 7.2a.85.85 0 1 1 0-1.7.85.85 0 0 1 0 1.7Z"/></svg>
-              Report issue
-            </a>
-          </li>
           <li>
             <a class="doc-action-link" href="mailto:support@openconstruction.org" aria-label="Email support at support@openconstruction.org">
               <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.4 3h11.2c.77 0 1.4.63 1.4 1.4v7.2c0 .77-.63 1.4-1.4 1.4H2.4c-.77 0-1.4-.63-1.4-1.4V4.4C1 3.63 1.63 3 2.4 3Zm.08 1.25L8 8.02l5.52-3.77H2.48Zm11.27 1.12-5.35 3.65a.7.7 0 0 1-.8 0L2.25 5.37v6.23c0 .08.07.15.15.15h11.2c.08 0 .15-.07.15-.15V5.37Z"/></svg>
               Email
+            </a>
+          </li>
+          <li>
+            <a class="doc-action-link" href="account.html?report=issue&amp;issue_type=platform">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.4a6.6 6.6 0 1 0 0 13.2A6.6 6.6 0 0 0 8 1.4Zm0 3.1c.4 0 .7.3.7.7v3.6a.7.7 0 1 1-1.4 0V5.2c0-.4.3-.7.7-.7Zm0 7.2a.85.85 0 1 1 0-1.7.85.85 0 0 1 0 1.7Z"/></svg>
+              Report issue
             </a>
           </li>
           <li>
@@ -245,6 +236,16 @@
           <li><span class="paper-title">OpenConstruction: A systematic synthesis of open visual data sets for data-centric intelligence in construction monitoring</span>Xiong, R., Wang, Y., Cai, J., Liu, K., Zhu, Y., Tang, P., and El-Gohary, N. Journal of Computing in Civil Engineering, 40(5), 03126002, 2026. <a href="https://doi.org/10.1061/JCCEE5.CPENG-7313" target="_blank" rel="noopener">https://doi.org/10.1061/JCCEE5.CPENG-7313</a><div class="reference-tools"><button class="bib-copy" type="button" data-copy-bibtex="openconstruction-synthesis">Copy BibTeX</button><span class="bib-status" aria-live="polite"></span></div></li>
           <li><span class="paper-title">Toward open science in the AEC community: An ecosystem for sustainable digital assets sharing and reuse</span>Xiong, R., Wang, Y., Cai, J., Liu, K., Zhu, Y., Tang, P., El-Gohary, N., and Gibson Jr, G. E. Developments in the Built Environment, 26, 100909, 2026. <a href="https://doi.org/10.1016/j.dibe.2026.100909" target="_blank" rel="noopener">https://doi.org/10.1016/j.dibe.2026.100909</a><div class="reference-tools"><button class="bib-copy" type="button" data-copy-bibtex="aec-open-science">Copy BibTeX</button><span class="bib-status" aria-live="polite"></span></div></li>
         </ul>
+      </div>
+    </section>
+
+    <section class="doc-section" id="funding" aria-labelledby="fundingTitle">
+      <h2 id="fundingTitle">Funding &amp; Acknowledgment</h2>
+      <div>
+        <div class="doc-callout">
+          <img src="assets/img/nsf-logo.png" alt="U.S. National Science Foundation logo" width="58" height="58" loading="lazy">
+          <p>This material is supported by the U.S. National Science Foundation under <a href="https://www.nsf.gov/awardsearch/show-award?AWD_ID=2612086" target="_blank" rel="noopener">Award No. 2612086</a>. Any opinions, findings, conclusions, or recommendations expressed in this material do not necessarily reflect the views of the U.S. National Science Foundation.</p>
+        </div>
       </div>
     </section>
   </div>

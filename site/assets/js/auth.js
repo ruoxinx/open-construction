@@ -262,6 +262,11 @@
     return message.includes("'affiliation' column") || message.includes('schema cache');
   }
 
+  function isMissingProfileContactsTable(error){
+    const message = String(error?.message || error?.details || '');
+    return message.includes("'profile_contacts'") || message.includes('schema cache');
+  }
+
   function initials(value){
     const parts = String(value || 'OC').trim().split(/\s+/).filter(Boolean);
     const letters = parts.length > 1 ? `${parts[0][0]}${parts[1][0]}` : String(parts[0] || 'OC').slice(0, 2);
@@ -273,6 +278,28 @@
     const identity = (user?.identities || []).find(item => item.provider === 'github');
     const identityMeta = identity?.identity_data || {};
     return meta.user_name || meta.preferred_username || identityMeta.user_name || identityMeta.preferred_username || '';
+  }
+
+  async function syncProfileContactEmail(user){
+    const sb = getClient();
+    const email = String(user?.email || '').trim().toLowerCase();
+    if (!sb || !user?.id || !email) return;
+    const { data: existing, error: readError } = await sb
+      .from('profile_contacts')
+      .select('email')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (readError) {
+      if (!isMissingProfileContactsTable(readError)) console.warn('Profile contact sync failed', readError);
+      return;
+    }
+    if (String(existing?.email || '').trim()) return;
+    const { error } = await sb.from('profile_contacts').upsert({
+      user_id: user.id,
+      email,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
+    if (error && !isMissingProfileContactsTable(error)) console.warn('Profile contact sync failed', error);
   }
 
   async function upsertProfile(user){
@@ -303,6 +330,8 @@
     } else if (profileError) {
       console.warn('Profile sync failed', profileError);
     }
+
+    await syncProfileContactEmail(user);
 
     const identities = Array.isArray(user.identities) ? user.identities : [];
     await Promise.all(identities

@@ -123,6 +123,7 @@
   let catalogContributorRecords = [];
   let catalogAuthorRecords = [];
   let accountIdentities = [];
+  let profileContacts = [];
   let resourceBookmarks = [];
   let accountCollections = [];
   let resourceNotes = [];
@@ -796,6 +797,7 @@
       profiles: canAdmin ? profiles : [],
       user_roles: canAdmin ? userRoles : [],
       user_identities: canAdmin ? accountIdentities : [],
+      profile_contacts: canAdmin ? profileContacts : [],
       badges: canAdmin ? badges : [],
       saved_resources: canAdmin ? resourceBookmarks : [],
       resource_collections: canAdmin ? accountCollections : [],
@@ -1240,6 +1242,11 @@
     if (rows.length) return rows;
     const profile = profiles.find(row => row.user_id === userId);
     return profile?.github_username ? [{ user_id: userId, provider: 'github', username: profile.github_username }] : [];
+  }
+
+  function profileContactEmail(userId){
+    const contact = profileContacts.find(row => row.user_id === userId);
+    return contact?.email || '';
   }
 
   function identityProviderLabel(provider){
@@ -2179,6 +2186,7 @@
     const bookmarks = enrichedBookmarkRows(userId);
     const identities = profileIdentities(userId);
     const assignedReviews = suggestions.filter(row => row.assigned_reviewer_id === userId);
+    const contactEmail = profileContactEmail(userId);
     const submittedEmails = Array.from(new Set(userSuggestions.map(row => row.submitter_email).filter(Boolean)));
     const institutionDomains = Array.from(new Set(submittedEmails.map(emailDomain).filter(Boolean)));
     const providerLabels = identities.map(row => row.provider || row.identity_provider).filter(Boolean);
@@ -2280,7 +2288,7 @@
             ${renderAccountFact('Permissions', userRolesForAccount.length ? userRolesForAccount.map(role => role.replace(/^\w/, c => c.toUpperCase())).join(', ') : 'User')}
             ${renderAccountFact('Sign-in method', providerSummary)}
             ${renderAccountFact('Institution', profile.affiliation || institutionDomains[0] || 'Not available')}
-            ${renderAccountFact('Email', submittedEmails[0] || profile.email || 'Not synced to dashboard')}
+            ${renderAccountFact('Email', contactEmail || submittedEmails[0] || 'Not synced to dashboard')}
           </div>
         </div>
 
@@ -3262,7 +3270,7 @@
     const usageRequest = canAdmin
       ? sb.rpc('site_usage_summary', { days: usageAnalyticsDays })
       : Promise.resolve({ data: null, error: null });
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, credentialRequestsRes, rolesRes, identitiesRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, credentialRequestsRes, rolesRes, identitiesRes, contactsRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
@@ -3275,6 +3283,9 @@
         : Promise.resolve({ data: [], error: null }),
       canAdmin
         ? safeRows(sb.from('user_identities').select('*').order('updated_at', { ascending: false }).limit(1000), 'linked identities')
+        : Promise.resolve([]),
+      canAdmin
+        ? safeRows(sb.from('profile_contacts').select('user_id,email,updated_at').order('updated_at', { ascending: false }).limit(1000), 'profile contacts')
         : Promise.resolve([]),
       canAdmin
         ? safeRows(sb.from('resource_bookmarks').select('*').order('created_at', { ascending: false }).limit(2000), 'saved resources')
@@ -3298,6 +3309,7 @@
     credentialRequests = Array.isArray(credentialRequestsRes) ? credentialRequestsRes : [];
     userRoles = rolesRes.error ? [] : (rolesRes.data || []);
     accountIdentities = Array.isArray(identitiesRes) ? identitiesRes : [];
+    profileContacts = Array.isArray(contactsRes) ? contactsRes : [];
     resourceBookmarks = Array.isArray(bookmarksRes) ? bookmarksRes : [];
     accountCollections = Array.isArray(collectionsRes) ? collectionsRes : [];
     resourceNotes = Array.isArray(notesRes) ? notesRes : [];
