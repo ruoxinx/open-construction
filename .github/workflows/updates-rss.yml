@@ -3,8 +3,13 @@ name: Build updates.xml (RSS)
 permissions:
   contents: write  # allow pushing commits
 
+concurrency:
+  group: updates-rss-main
+  cancel-in-progress: false
+
 on:
   push:
+    branches: [main]
     paths:
       - site/data/generate-updates.js
       - .github/workflows/updates-rss.yml
@@ -19,10 +24,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Checkout catalog data
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ruoxinx/open-construction-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
@@ -35,19 +40,41 @@ jobs:
       - name: Copy catalog data into site/data
         run: cp _catalog-data/*.json site/data/
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
 
-      - run: node site/data/generate-updates.js
+      - name: Rebuild and publish updates.xml
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Commit updates.xml
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update RSS feed"
-          file_pattern: "updates.xml"
-          
-          commit_user_name: "OpenConstruction Bot"
-          commit_user_email: "support@openconstruction.org"
-          commit_author: "OpenConstruction Bot <support@openconstruction.org>"
+          git config user.name "OpenConstruction Bot"
+          git config user.email "support@openconstruction.org"
+
+          for attempt in 1 2 3; do
+            # Start every attempt from the latest main, including force-updates.
+            git fetch origin +main:refs/remotes/origin/main
+            git checkout -B main refs/remotes/origin/main
+
+            node site/data/generate-updates.js
+
+            if git diff --quiet -- updates.xml; then
+              echo "updates.xml is already current."
+              exit 0
+            fi
+
+            git add -- updates.xml
+            git commit -m "chore: update RSS feed"
+
+            if git push origin HEAD:main; then
+              echo "Published updates.xml on attempt ${attempt}."
+              exit 0
+            fi
+
+            echo "main advanced during attempt ${attempt}; retrying from origin/main."
+          done
+
+          echo "Could not publish updates.xml after three attempts." >&2
+          exit 1
 
