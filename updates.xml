@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: UrbanGround: From Local Perception to Spatial Agency in a Real-Scale City]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:urbanground:2026-09-07</guid>
+    <pubDate>Mon, 07 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Urban Navigation model using Egocentric RGB (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Dataset: Tunnel Bi-Temporal Crack Change Detection Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=tunnel_bi_temporal_change</link>
     <guid isPermaLink="false">datasets:tunnel_bi_temporal_change:2026-09-03</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">models:crackgeofm:2026-08-19</guid>
     <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[Infrastructure Inspection model using Ground RGB (2026)]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: RT-DETR Floor Plan Understanding and Reconstruction]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:floorplan_scan_robustness:2026-08-19</guid>
-    <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[Construction drawing understanding model using Rasterized CAD images (2026)]]></description>
   </item>
   </channel>
 </rss>
