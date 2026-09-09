@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: Annotation-free crack segmentation using vision-language model-driven pseudo-labels and a lightweight Cartesian multi-view network]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:cmvu2-net:2026-09-09</guid>
+    <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Crack detection model using Ground RGB (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: BIM-informed Bayesian post-hoc correction for deep learning-based concrete defect classification]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:bim-bpc:2026-09-08</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=seismllm_1k</link>
     <guid isPermaLink="false">datasets:seismllm_1k:2026-08-20</guid>
     <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: CubiCasa5k-ScanShift]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=cubicasa5k_scanshift</link>
-    <guid isPermaLink="false">datasets:cubicasa5k_scanshift:2026-08-19</guid>
-    <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
