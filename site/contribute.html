@@ -121,17 +121,18 @@
     .path-action-link span[aria-hidden="true"]{ color:var(--oc-accent); }
     .path-action-link svg{ width:15px; height:15px; flex:0 0 auto; fill:currentColor; }
     .path-help-link{
-      width:38px;
-      padding:.18rem;
-      justify-content:center;
+      width:auto;
+      padding:.18rem .35rem;
+      justify-content:flex-start;
       border-color:transparent;
       border-radius:4px;
       background:transparent;
       color:var(--oc-ink);
+      font-weight:650;
     }
     .path-help-link:hover{ border-color:transparent; background:transparent; color:var(--oc-link); }
     .path-help-link svg{ fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-    .path-action-link.path-help-link svg{ width:26px; height:26px; }
+    .path-action-link.path-help-link svg{ width:18px; height:18px; }
     .quickstart-grid{ display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr)); }
     .quickstart-card{
       height:100%;
@@ -434,6 +435,7 @@
             <a class="path-action-link" href="account.html?submit=resource">Submit resource <span aria-hidden="true">&rarr;</span></a>
             <a class="path-action-link path-help-link" href="tutorials.html#tutorialGroupContribute" aria-label="Open submission tutorial" title="Submission tutorial">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="14" rx="2.5"></rect><path d="m10 9 5 3-5 3Z"></path></svg>
+              Submission guide
             </a>
           </div>
         </div>
@@ -450,6 +452,7 @@
             <a class="path-action-link" href="account.html?report=issue&amp;issue_type=metadata">Report correction <span aria-hidden="true">&rarr;</span></a>
             <a class="path-action-link path-help-link" href="tutorials.html#tutorialGroupContribute" aria-label="Open report tutorial" title="Report tutorial">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="14" rx="2.5"></rect><path d="m10 9 5 3-5 3Z"></path></svg>
+              Reporting guide
             </a>
           </div>
         </div>
