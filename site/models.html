@@ -525,9 +525,31 @@ function fmtDate(d){
     return `${y}-${m}-${day}`;
   } catch { return null; }
 }
-/* Escape helper for safe innerHTML text insertion */
+/* Escape helper for text and attribute values inserted into HTML templates. */
 function esc(s){
-  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  return String(s)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#39;');
+}
+function safeHttpHref(value){
+  if (!value) return '';
+  try {
+    const url = new URL(String(value).trim(), document.baseURI);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
+    return url.href;
+  } catch { return ''; }
+}
+function safeImageSrc(value){
+  return safeHttpHref(value) || PLACEHOLDER_PNG;
+}
+function setAbstractText(target, value){
+  target.replaceChildren();
+  const label = document.createElement('strong');
+  label.textContent = 'Abstract.';
+  target.append(label, document.createTextNode(` ${value || ''}`));
 }
 
 /* ===== Normalizers & splitters ===== */
@@ -1016,7 +1038,6 @@ function render(items){
   byId('emptyState').classList.add('d-none');
 
   items.forEach(m=>{
-    const doiLink = m.doi ? (m.doi.startsWith('http') ? m.doi : `https://doi.org/${m.doi}`) : '';
     const thumb = m.thumbnail || m.icon || PLACEHOLDER_PNG;
     const abstract = (m.abstract || '').trim();
     const MAX = 320;
@@ -1027,8 +1048,15 @@ function render(items){
     const addedTxt = m.added_date_fmt ? `Added ${m.added_date_fmt}` : null;
     const detailHref = `models/details.html?id=${encodeURIComponent(m.id)}`;
 
+    const safeTitle = esc(displayTitle || 'Untitled');
+    const safeDetailHref = esc(detailHref);
     const safeFull  = esc(abstract);
     const safeShort = esc(shortAbs);
+    const yearText = Number.isFinite(m.year) ? esc(String(m.year)) : '—';
+    const contributor = String(m.contributor || '').trim();
+    const contributorLabel = contributor
+      ? (contributor.startsWith('@') ? contributor : `@${contributor}`)
+      : 'Contributor';
 
     const el = document.createElement('div');
     el.className = 'paper-card clickable';
@@ -1039,24 +1067,23 @@ function render(items){
     el.innerHTML = `
       <div class="d-flex gap-3 align-items-start">
         <div class="left position-relative">
-          <img src="${thumb}" alt="${displayTitle || 'thumbnail'}"
-               onerror="this.onerror=null; this.src='${PLACEHOLDER_PNG}'; this.setAttribute('onerror', \\'this.src=\\'${ICON_FALLBACK}\\'\\');">
+          <img class="model-thumbnail" src="${esc(PLACEHOLDER_PNG)}" alt="thumbnail">
           ${m.contributor || m.contributor_url ? `
             <div class="submitted-by">
-              <a href="${m.contributor_url || '#'}" target="_blank" rel="noopener">
-                Proposed by <strong>${m.contributor?.startsWith('@') ? m.contributor : '@' + m.contributor}</strong>
+              <a class="contributor-link" target="_blank" rel="noopener">
+                Proposed by <strong>${esc(contributorLabel)}</strong>
               </a>
             </div>` : ''}
         </div>
 
         <div class="flex-grow-1">
-          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${detailHref}">${displayTitle || 'Untitled'}</a></h3>
+          <h3 class="h6 title mb-1"><a class="text-decoration-none" href="${safeDetailHref}">${safeTitle}</a></h3>
 			${(() => {
 			  const licHTML = licenseLinkHTML(m.license, m);
 			  return `
 				<div class="meta mb-1">
 				  ${(m.authors && m.authors.length) ? `${esc(m.authors.join(', '))} • ` : ''}
-				  ${m.year || '—'}
+				  ${yearText}
 				  ${licHTML ? ` • ${licHTML}` : ''}
 				</div>
 			  `;
@@ -1064,8 +1091,8 @@ function render(items){
 
           <!-- Compact combined tag row -->
           <div class="tag-row">
-            ${(m.tasks_pretty||[]).map(t=>`<span class="badge-task">${t}</span>`).join('')}
-            ${(m.applications_pretty||[]).map(a=>`<span class="badge-app">${a}</span>`).join('')}
+            ${(m.tasks_pretty||[]).map(t=>`<span class="badge-task">${esc(t)}</span>`).join('')}
+            ${(m.applications_pretty||[]).map(a=>`<span class="badge-app">${esc(a)}</span>`).join('')}
           </div>
 
           <!-- Abstract -->
@@ -1090,12 +1117,27 @@ function render(items){
 
           <!-- Actions + Added note -->
           <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-            <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
+            <a class="btn btn-sm btn-primary" href="${safeDetailHref}">View details</a>
             ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'model', id: m.id || m.title, title: displayTitle, url: detailHref }) : ''}
-            ${addedTxt ? `<span class="added-note ms-auto">${addedTxt}</span>`:''}
+            ${addedTxt ? `<span class="added-note ms-auto">${esc(addedTxt)}</span>`:''}
           </div>
         </div>
       </div>`;
+    const image = el.querySelector('.model-thumbnail');
+    if (image) {
+      image.alt = displayTitle || 'thumbnail';
+      image.src = safeImageSrc(thumb);
+      image.addEventListener('error', () => {
+        image.onerror = null;
+        image.src = ICON_FALLBACK;
+      }, { once: true });
+    }
+    const contributorLink = el.querySelector('.contributor-link');
+    if (contributorLink) {
+      const contributorHref = safeHttpHref(m.contributor_url);
+      if (contributorHref) contributorLink.href = contributorHref;
+      else contributorLink.removeAttribute('href');
+    }
     grid.appendChild(el);
   });
   window.OCBookmark?.mount(grid);
@@ -1113,7 +1155,7 @@ document.addEventListener('click', (e)=>{
 
   const expanded = p.getAttribute('data-expanded') === 'true';
   if(expanded){
-    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-short')||''}`;
+    setAbstractText(span, p.getAttribute('data-short') || '');
     p.setAttribute('data-expanded','false');
     btn.textContent = 'Show more';
     btn.setAttribute('aria-expanded','false');
@@ -1122,7 +1164,7 @@ document.addEventListener('click', (e)=>{
       p.appendChild(fade);
     }
   }else{
-    span.innerHTML = `<strong>Abstract.</strong> ${p.getAttribute('data-full')||''}`;
+    setAbstractText(span, p.getAttribute('data-full') || '');
     p.setAttribute('data-expanded','true');
     btn.textContent = 'Show less';
     btn.setAttribute('aria-expanded','true');

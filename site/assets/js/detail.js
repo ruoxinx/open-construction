@@ -8,8 +8,17 @@
 /* ========== helpers ========== */
 function doiHref(doiVal){
   if (!doiVal) return null;
-  const raw = String(doiVal).trim();
-  try { return new URL(raw).href; } catch { return `https://doi.org/${raw}`; }
+  const raw = String(doiVal).trim().replace(/^doi:\s*/i, '');
+  let doi = raw;
+  try {
+    const url = new URL(raw);
+    if (!/^(doi\.org|dx\.doi\.org)$/i.test(url.hostname)) return null;
+    doi = decodeURIComponent(url.pathname.replace(/^\/+/, ''));
+  } catch {}
+
+  if (!/^10\.\d{4,9}\/\S+$/i.test(doi)) return null;
+  const encoded = doi.split('/').map(part => encodeURIComponent(part)).join('/');
+  return `https://doi.org/${encoded}`;
 }
 
 function formatDoi(doiVal){
@@ -18,10 +27,10 @@ function formatDoi(doiVal){
   try {
     const u = new URL(href);
     if (/doi\.org$/i.test(u.hostname) || /dx\.doi\.org$/i.test(u.hostname)) {
-      return `<a href="${href}" target="_blank" rel="noopener">${u.pathname.replace(/^\/+/, '')}</a>`;
+      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(u.pathname.replace(/^\/+/, ''))}</a>`;
     }
   } catch {}
-  return `<a href="${href}" target="_blank" rel="noopener">${href}</a>`;
+  return '—';
 }
 
 function safeFormatInt(v){
@@ -124,9 +133,7 @@ function safeHref(href){
 }
 
 function publicationDoiHref(doi){
-  if (!doi) return '';
-  const raw = String(doi).trim();
-  return safeHref(raw.startsWith('http') ? raw : `https://doi.org/${raw}`);
+  return doiHref(doi) || '';
 }
 
 function normalizePublicationEntry(pub){
@@ -1389,9 +1396,7 @@ async function initDetail(){
       const paperUrl = primaryPublicationUrl || safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
       const modelSourceUrl = safeHref(codeUrl);
       const doiSource = primaryPublication?.doi || m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
-      const doiUrl = doiSource
-        ? (String(doiSource).startsWith('http') ? String(doiSource).trim() : `https://doi.org/${String(doiSource).trim()}`)
-        : '';
+      const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
       const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
       const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license, m)}</div>` : '';
