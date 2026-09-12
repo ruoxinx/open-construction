@@ -16,7 +16,7 @@ jobs:
       HAS_SUPABASE_SYNC_CONFIG: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY != '' && secrets.SUPABASE_URL != '' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Sync GitHub contribution events
         if: env.HAS_SUPABASE_SYNC_CONFIG == 'true'

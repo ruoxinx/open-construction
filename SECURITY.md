@@ -23,3 +23,16 @@ The primary security considerations are:
 - **Dependency vulnerabilities**: Third-party libraries used in the frontend or SDK
 - **Authentication and authorization**: Supabase Row Level Security must protect user-owned profile and bookmark rows
 - **Secrets handling**: Supabase service-role keys and GitHub tokens must remain in provider dashboards or GitHub Actions secrets, never in repository files
+
+## Deployment security headers
+
+The static pages include a source-level Content Security Policy and Permissions Policy. GitHub Pages does not let this repository set arbitrary HTTP response headers, so the production host must also enforce these response headers at the CDN, reverse proxy, or custom hosting layer:
+
+```text
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'self'
+X-Frame-Options: DENY
+Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
+```
+
+Use `Strict-Transport-Security` only after HTTPS is working on every subdomain. The CI security-source check verifies that every HTML page retains its source policies and that GitHub Actions references remain pinned to full commit SHAs.
