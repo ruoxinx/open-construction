@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Find the Right Dataset | OpenConstruction</title>
+  <meta name="description" content="A step-by-step HTML guide to searching, filtering, sorting, and evaluating datasets in OpenConstruction.">
+  <link rel="canonical" href="https://www.openconstruction.org/find-right-dataset.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="How to Find the Right Dataset">
+  <meta property="og:description" content="Search, filter, sort, and evaluate datasets in the OpenConstruction catalog.">
+  <meta property="og:url" content="https://www.openconstruction.org/find-right-dataset.html">
+  <meta property="og:image" content="https://www.openconstruction.org/docs/tutorials/find%20dataset.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link);text-underline-offset:3px}
+    .oc-container{max-width:1080px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:54px 0 32px;text-align:left}
+    header.hero h1{max-width:none;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 1.7vw,2.85rem);font-weight:800;line-height:1.08;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem}
+    .kicker a{color:var(--oc-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+    .kicker a:hover,.kicker a:focus-visible{text-decoration-thickness:2px}
+    .guide-main{padding:46px 0 58px;background:#fff}
+    .guide-main .oc-container{max-width:960px}
+    .guide-section{display:block;padding:0 0 4.75rem}
+    .guide-section:last-of-type{padding-bottom:3.5rem}
+    .guide-section h2{display:flex;align-items:center;gap:.8rem;color:#252525;font-size:clamp(1.35rem,1.16rem + .55vw,1.7rem);font-weight:700;line-height:1.25;margin:0 0 .85rem}
+    .guide-step-number{display:inline-grid;place-items:center;flex:0 0 auto;width:2rem;height:2rem;border-radius:50%;background:#fff;color:#111;font-size:.84rem;font-weight:700;line-height:1}
+    .guide-section p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0 0 .8rem}
+    .guide-section p:last-of-type{margin-bottom:0}
+    .guide-figure{width:100%;max-width:760px;margin:1rem auto 0}
+    .guide-figure img{display:block;width:100%;height:auto;border:0;border-radius:14px;background:#fff}
+    .guide-end{padding:0;margin:0}
+    .guide-end p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0}
+    .guide-nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+    .guide-nav a{font-size:.95rem;font-weight:500;text-decoration:none}
+    .guide-nav a:hover{text-decoration:underline}
+    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.guide-main{padding:34px 0 46px}.guide-section{padding-bottom:3.5rem}.guide-section h2{gap:.65rem}.guide-step-number{width:1.85rem;height:1.85rem;font-size:.78rem}}
+  </style>
+</head>
+<body id="top">
+<a class="skip-link" href="#mainContent">Skip to guide</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav"><div class="container oc-container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a><button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Insights</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item active" href="tutorials.html">Tutorial</a></li><li><a class="dropdown-item" href="references.html">Documentation</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div></div></nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="kicker"><a href="https://www.openconstruction.org/tutorials.html">Tutorial</a> / Discover &amp; Reuse</div>
+    <h1>How to Find the Right Dataset</h1>
+  </div>
+</header>
+
+<main id="mainContent" class="guide-main">
+  <div class="container oc-container">
+    <article aria-label="How to Find the Right Dataset guide">
+      <section class="guide-section" aria-labelledby="criteriaTitle">
+        <h2 id="criteriaTitle"><span class="guide-step-number" aria-hidden="true">01</span>Define Dataset Search Criteria</h2>
+        <p>Before searching, define what matters most for your use case. Consider the required modality, task, license, release year, and object classes. In this example, we are looking for a recent object-detection dataset with a clearly specified license.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/01-criteria.jpg" alt="Criteria for choosing a dataset, including modality, task, license, release year, and object classes" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="homeSearchTitle">
+        <h2 id="homeSearchTitle"><span class="guide-step-number" aria-hidden="true">02</span>Enter Keywords in the Homepage Search</h2>
+        <p>From the <a href="https://www.openconstruction.org/">OpenConstruction homepage</a>, enter a task or topic such as <em>object detection</em>. The search returns candidate resources related to those keywords.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/02-home-search.jpg" alt="OpenConstruction homepage search field highlighted" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="catalogMenuTitle">
+        <h2 id="catalogMenuTitle"><span class="guide-step-number" aria-hidden="true">03</span>Open the Dataset Catalog</h2>
+        <p>You can also go directly to the <a href="https://www.openconstruction.org/dataset.html">Dataset Catalog</a>. Open the <strong>Catalog</strong> menu and select <strong>Datasets</strong>.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/03-catalog-menu.jpg" alt="Catalog navigation menu with Datasets highlighted" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="datasetCountTitle">
+        <h2 id="datasetCountTitle"><span class="guide-step-number" aria-hidden="true">04</span>Use the Dataset Count Shortcut</h2>
+        <p>As another entry point, select the homepage indicator showing the number of available datasets to open the full dataset catalog.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/04-dataset-count.jpg" alt="Dataset count shortcut highlighted on the OpenConstruction homepage" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="simpleSearchTitle">
+        <h2 id="simpleSearchTitle"><span class="guide-step-number" aria-hidden="true">05</span>Start with a Simple Search</h2>
+        <p>The Dataset Catalog provides search, filter, and sorting controls. Begin with a simple task description, such as <em>object detection</em>.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/05-dataset-catalog.jpg" alt="Dataset Catalog with search, filter, and sorting controls" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="searchTermsTitle">
+        <h2 id="searchTermsTitle"><span class="guide-step-number" aria-hidden="true">06</span>Search by Name, Class, or Term</h2>
+        <p>Search using a dataset name, task, object class, or another related term. Use the language most closely associated with your intended application.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/06-search-field.jpg" alt="Search field in the Dataset Catalog" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="searchActionTitle">
+        <h2 id="searchActionTitle"><span class="guide-step-number" aria-hidden="true">07</span>Run the Search</h2>
+        <p>After entering your terms, select the search action to query the OpenConstruction catalog.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/07-search-action.jpg" alt="Search action highlighted in the Dataset Catalog" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="objectSearchTitle">
+        <h2 id="objectSearchTitle"><span class="guide-step-number" aria-hidden="true">08</span>Search for Object Detection</h2>
+        <p>For this example, enter <em>object detection</em> and press Enter or use the search action.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/08-object-detection-search.jpg" alt="Object detection entered in the Dataset Catalog search field" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="candidateTitle">
+        <h2 id="candidateTitle"><span class="guide-step-number" aria-hidden="true">09</span>Review Candidate Datasets</h2>
+        <p>The catalog returns candidate datasets matching the search. Review the initial results, then use filters to narrow the list.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/09-search-results.jpg" alt="Dataset Catalog results for an object detection search" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="filterPanelTitle">
+        <h2 id="filterPanelTitle"><span class="guide-step-number" aria-hidden="true">10</span>Use the Filter Panel</h2>
+        <p>Refine the results by modality, task, license, release year, and object class. Combine only the criteria necessary for your use case.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/10-filter-panel.jpg" alt="Dataset Catalog filter panel highlighted" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="modalityTitle">
+        <h2 id="modalityTitle"><span class="guide-step-number" aria-hidden="true">11</span>Filter by Modality</h2>
+        <p>Select the data type you need, such as 3D point clouds or aerial RGB imagery, to exclude incompatible datasets.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/11-modality-filters.jpg" alt="Modality options in the Dataset Catalog filter panel" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="taskLicenseTitle">
+        <h2 id="taskLicenseTitle"><span class="guide-step-number" aria-hidden="true">12</span>Filter by Task and License</h2>
+        <p>Next, narrow the results by task and license. Review the <a href="https://www.openconstruction.org/references.html#terms">license terms</a> carefully to confirm that the permitted use aligns with your project.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/12-task-license-filters.jpg" alt="Task and license options in the Dataset Catalog filter panel" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="filterImpactTitle">
+        <h2 id="filterImpactTitle"><span class="guide-step-number" aria-hidden="true">13</span>Assess the Filter Impact</h2>
+        <p>Watch the result count as you apply filters. The changing count helps indicate whether the search is still too broad or has become too restrictive.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/13-result-count.jpg" alt="Filtered dataset result count highlighted" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="sortTitle">
+        <h2 id="sortTitle"><span class="guide-step-number" aria-hidden="true">14</span>Sort the Remaining Results</h2>
+        <p>Use <strong>Sort by</strong> to organize the remaining datasets by year, added date, name, sample count, or number of classes. To find a recent dataset, sort by year in descending order.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/14-sort-results.jpg" alt="Sort control highlighted above filtered dataset results" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="detailsTitle">
+        <h2 id="detailsTitle"><span class="guide-step-number" aria-hidden="true">15</span>Open the Dataset Details</h2>
+        <p>Select <strong>View details</strong> to inspect the complete record for a promising dataset.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/15-view-details.jpg" alt="View details action highlighted on a dataset result" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="verifyTitle">
+        <h2 id="verifyTitle"><span class="guide-step-number" aria-hidden="true">16</span>Verify the Dataset Information</h2>
+        <p>Before deciding to use the dataset, confirm that its task, modality, license, release information, and original source align with your requirements. Follow the provider link to review the authoritative access and license terms.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/16-verify-details.jpg" alt="Dataset detail page showing imagery, metadata, license, and source access" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="returnTitle">
+        <h2 id="returnTitle"><span class="guide-step-number" aria-hidden="true">17</span>Return to the Catalog</h2>
+        <p>If the dataset is not a good fit, return to the catalog and adjust the search terms or filters. Finding the right dataset is usually an iterative process.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/17-back-to-catalog.jpg" alt="Back to catalog action highlighted on a dataset detail page" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="refineTitle">
+        <h2 id="refineTitle"><span class="guide-step-number" aria-hidden="true">18</span>Refine the Search Iteratively</h2>
+        <p>Search, filter, verify, and refine until you identify a strong candidate. This process moves you from a broad idea to a relevant dataset with clear supporting information.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/find-right-dataset/18-strong-candidate.jpg" alt="Tutorial conclusion stating that a strong dataset candidate has been found" loading="lazy" width="2177" height="1099"></figure>
+      </section>
+
+      <div class="guide-end"><p>You are now ready to search the OpenConstruction dataset catalog with clear criteria and evaluate each candidate carefully.</p></div>
+      <nav class="guide-nav" aria-label="Guide navigation">
+        <a href="tutorials.html">&larr; Back to Tutorials</a>
+        <a href="#top">Back to top &uarr;</a>
+      </nav>
+    </article>
+  </div>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html" class="text-muted">Documentation</a> &middot; <span class="oc-footer-socials" aria-label="OpenConstruction social links"><a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn"><img class="oc-footer-social-icon" src="assets/img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a><a href="https://github.com/ruoxinx/open-construction" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub"><img class="oc-footer-social-icon" src="assets/img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a></span></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

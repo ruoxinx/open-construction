@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Explore AEC Benchmarks | OpenConstruction</title>
+  <meta name="description" content="A step-by-step HTML guide to exploring AEC benchmark tasks and interpreting reported results responsibly.">
+  <link rel="canonical" href="https://www.openconstruction.org/explore-aec-benchmarks.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="Explore AEC Benchmarks">
+  <meta property="og:description" content="Explore AEC benchmark tasks, evidence, metrics, models, and reported results in OpenConstruction.">
+  <meta property="og:url" content="https://www.openconstruction.org/explore-aec-benchmarks.html">
+  <meta property="og:image" content="https://www.openconstruction.org/docs/tutorials/Explore%20AEC%20Benchmarks.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link);text-underline-offset:3px}
+    .oc-container{max-width:1080px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:54px 0 32px;text-align:left}
+    header.hero h1{max-width:none;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 1.7vw,2.85rem);font-weight:800;line-height:1.08;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem}
+    .kicker a{color:var(--oc-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+    .kicker a:hover,.kicker a:focus-visible{text-decoration-thickness:2px}
+    .guide-main{padding:46px 0 58px;background:#fff}
+    .guide-main .oc-container{max-width:960px}
+    .guide-section{display:block;padding:0 0 4.75rem}
+    .guide-section:last-of-type{padding-bottom:3.5rem}
+    .guide-section h2{display:flex;align-items:center;gap:.8rem;color:#252525;font-size:clamp(1.35rem,1.16rem + .55vw,1.7rem);font-weight:700;line-height:1.25;margin:0 0 .85rem}
+    .guide-step-number{display:inline-grid;place-items:center;flex:0 0 auto;width:2rem;height:2rem;border-radius:50%;background:#fff;color:#111;font-size:.84rem;font-weight:700;line-height:1}
+    .guide-section p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0 0 .8rem}
+    .guide-section p:last-of-type{margin-bottom:0}
+    .guide-figure{width:100%;max-width:760px;margin:1rem auto 0}
+    .guide-figure img{display:block;width:100%;height:auto;border:0;border-radius:14px;background:#fff}
+    .guide-end{padding:0;margin:0}
+    .guide-end p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0}
+    .guide-nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+    .guide-nav a{font-size:.95rem;font-weight:500;text-decoration:none}
+    .guide-nav a:hover{text-decoration:underline}
+    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.guide-main{padding:34px 0 46px}.guide-section{padding-bottom:3.5rem}.guide-section h2{gap:.65rem}.guide-step-number{width:1.85rem;height:1.85rem;font-size:.78rem}}
+  </style>
+</head>
+<body id="top">
+<a class="skip-link" href="#mainContent">Skip to guide</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav"><div class="container oc-container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a><button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Insights</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item active" href="tutorials.html">Tutorial</a></li><li><a class="dropdown-item" href="references.html">Documentation</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div></div></nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="kicker"><a href="https://www.openconstruction.org/tutorials.html">Tutorial</a> / Discover &amp; Reuse</div>
+    <h1>Explore AEC Benchmarks</h1>
+  </div>
+</header>
+
+<main id="mainContent" class="guide-main">
+  <div class="container oc-container">
+    <article aria-label="Explore AEC Benchmarks guide">
+      <section class="guide-section" aria-labelledby="welcomeTitle">
+        <h2 id="welcomeTitle"><span class="guide-step-number" aria-hidden="true">01</span>Welcome to the Benchmark Tutorial</h2>
+        <p>OpenConstruction benchmarks organize evaluation evidence for architecture, engineering, and construction tasks. This guide explains how to explore benchmark tasks and interpret reported results responsibly.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/01-overview.jpg" alt="Explore AEC Benchmarks tutorial title slide" width="1280" height="720"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="explorerTitle">
+        <h2 id="explorerTitle"><span class="guide-step-number" aria-hidden="true">02</span>Open the Benchmark Explorer</h2>
+        <p>Open the public <a href="https://www.openconstruction.org/benchmark_explorer.html">Benchmark Explorer</a> from the Insights area. You can search for benchmark tasks and browse the available task categories.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/02-benchmark-explorer.jpg" alt="OpenConstruction Benchmark Explorer with search and task categories" loading="lazy" width="2560" height="1227"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="taskSearchTitle">
+        <h2 id="taskSearchTitle"><span class="guide-step-number" aria-hidden="true">03</span>Search by Task</h2>
+        <p>Enter a task or application in the search field. Task-based search helps you find comparable evidence more efficiently than browsing every reported result at once.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/03-task-search.jpg" alt="Benchmark Explorer filtered using an object-related task search" loading="lazy" width="2560" height="1227"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="taskPageTitle">
+        <h2 id="taskPageTitle"><span class="guide-step-number" aria-hidden="true">04</span>Select a Benchmark Task</h2>
+        <p>Choose a benchmark task from the results. A task page organizes the problem definition, associated datasets, candidate models, evaluation metrics, and reported benchmark results.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/04-task-categories.jpg" alt="Benchmark Explorer showing tasks grouped by data modality" loading="lazy" width="2560" height="1227"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="evidenceTitle">
+        <h2 id="evidenceTitle"><span class="guide-step-number" aria-hidden="true">05</span>Inspect the Reported Evidence</h2>
+        <p>Review the evidence before interpreting the numbers. Confirm which dataset was used, which model was evaluated, which metric was reported, and where the result originated.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/05-reported-results.jpg" alt="Benchmark leaderboard showing models and reported metric values" loading="lazy" width="2560" height="1227"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="contextTitle">
+        <h2 id="contextTitle"><span class="guide-step-number" aria-hidden="true">06</span>Interpret Scores in Context</h2>
+        <p>A model score is meaningful only when its task, dataset, data split, metric, and source are understood. Open the benchmark record and, when available, follow its dataset and paper links to verify the underlying evidence.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/06-benchmark-details.jpg" alt="Benchmark detail page showing task, dataset, metric, license, and source information" loading="lazy" width="2560" height="1227"></figure>
+      </section>
+
+      <section class="guide-section" aria-labelledby="decisionTitle">
+        <h2 id="decisionTitle"><span class="guide-step-number" aria-hidden="true">07</span>Use Benchmarks for Decision-Making</h2>
+        <p>Benchmarks provide evidence for decision-making, not automatic endorsements. Use them to identify promising methods, evidence gaps, and useful next experiments.</p>
+        <figure class="guide-figure"><img src="docs/tutorials/explore-aec-benchmarks/07-next-step.jpg" alt="Tutorial conclusion encouraging responsible use of benchmark evidence" loading="lazy" width="1280" height="720"></figure>
+      </section>
+
+      <div class="guide-end"><p>You are now ready to search benchmark tasks, inspect their evidence, and interpret reported results in context.</p></div>
+      <nav class="guide-nav" aria-label="Guide navigation">
+        <a href="tutorials.html">&larr; Back to Tutorials</a>
+        <a href="#top">Back to top &uarr;</a>
+      </nav>
+    </article>
+  </div>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html" class="text-muted">Documentation</a> &middot; <span class="oc-footer-socials" aria-label="OpenConstruction social links"><a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn"><img class="oc-footer-social-icon" src="assets/img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a><a href="https://github.com/ruoxinx/open-construction" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub"><img class="oc-footer-social-icon" src="assets/img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a></span></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

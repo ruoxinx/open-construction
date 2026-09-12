@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#0f2e4b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit an Asset to OpenConstruction | OpenConstruction</title>
+  <meta name="description" content="A step-by-step HTML guide to preparing and submitting a dataset, model, workflow, or educational resource to OpenConstruction.">
+  <link rel="canonical" href="https://www.openconstruction.org/submit-an-asset.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="OpenConstruction.org">
+  <meta property="og:title" content="Submit an Asset to OpenConstruction">
+  <meta property="og:description" content="Prepare and submit a dataset, model, workflow, or educational resource to OpenConstruction.">
+  <meta property="og:url" content="https://www.openconstruction.org/submit-an-asset.html">
+  <meta property="og:image" content="https://www.openconstruction.org/docs/tutorials/submit%20an%20asset.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260828-sticky-footer" rel="stylesheet">
+  <style>
+    :root{--oc-bg:#fff;--oc-text:#1e2a36;--oc-sub:#4f5d6c;--oc-border:#e7edf3;--oc-ink:#0f2e4b;--oc-link:#0b66c3}
+    html,body{background:var(--oc-bg);color:var(--oc-text)}
+    a{color:var(--oc-link);text-underline-offset:3px}
+    .oc-container{max-width:1080px}
+    header.hero{border-bottom:1px solid var(--oc-border);background:#fff}
+    header.hero .content{padding:54px 0 32px;text-align:left}
+    header.hero h1{max-width:none;color:var(--oc-ink);font-size:clamp(2rem,1.45rem + 1.7vw,2.85rem);font-weight:800;line-height:1.08;margin:0}
+    .kicker{color:var(--oc-sub);font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.45rem}
+    .kicker a{color:var(--oc-link);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+    .kicker a:hover,.kicker a:focus-visible{text-decoration-thickness:2px}
+    .guide-main{padding:46px 0 58px;background:#fff}
+    .guide-main .oc-container{max-width:960px}
+    .guide-section{display:block;padding:0 0 4.75rem}
+    .guide-section:last-of-type{padding-bottom:3.5rem}
+    .guide-section h2{display:flex;align-items:center;gap:.8rem;color:#252525;font-size:clamp(1.35rem,1.16rem + .55vw,1.7rem);font-weight:700;line-height:1.25;margin:0 0 .85rem}
+    .guide-step-number{display:inline-grid;place-items:center;flex:0 0 auto;width:2rem;height:2rem;border-radius:50%;background:#fff;color:#111;font-size:.84rem;font-weight:700;line-height:1}
+    .guide-section p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0 0 .8rem}
+    .guide-section p:last-of-type{margin-bottom:0}
+    .guide-figure{width:100%;max-width:760px;margin:1rem auto 0}
+    .guide-figure img{display:block;width:100%;height:auto;border:0;border-radius:14px;background:#fff}
+    .guide-end{padding:0;margin:0}
+    .guide-end p{max-width:none;color:#2f3337;font-size:1.03rem;line-height:1.58;margin:0}
+    .guide-nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+    .guide-nav a{font-size:.95rem;font-weight:500;text-decoration:none}
+    .guide-nav a:hover{text-decoration:underline}
+    @media (max-width:767.98px){header.hero .content{padding:40px 0 26px}.guide-main{padding:34px 0 46px}.guide-section{padding-bottom:3.5rem}.guide-section h2{gap:.65rem}.guide-step-number{width:1.85rem;height:1.85rem;font-size:.78rem}}
+  </style>
+</head>
+<body id="top">
+<a class="skip-link" href="#mainContent">Skip to guide</a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top oc-nav"><div class="container oc-container"><a class="navbar-brand d-flex align-items-center gap-2" href="index.html"><img src="assets/img/icon.png" alt="OpenConstruction logo" class="oc-logo" height="44" width="44"><span class="brand-wordmark"><span class="oc-open">OpenConstruction</span><span class="oc-construction">Open Science</span></span></a><button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarsExample"><ul class="navbar-nav ms-auto align-items-lg-center gap-2"><li class="nav-item"><a class="nav-link plain" href="index.html" data-route="index">Home</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle" href="#" id="ddLibraries" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libraries</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddLibraries"><li><a class="dropdown-item" href="dataset.html">Datasets</a></li><li><a class="dropdown-item" href="models.html">Models</a></li><li><a class="dropdown-item" href="deployments.html">Workflows</a></li><li><a class="dropdown-item" href="oer.html">OERs</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="benchmarks.html" data-route="benchmarks">Insights</a></li><li class="nav-item dropdown"><a class="nav-link plain dropdown-toggle active" href="#" id="ddResourcesMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a><ul class="dropdown-menu dropdown-menu-end" aria-labelledby="ddResourcesMenu"><li><a class="dropdown-item active" href="tutorials.html">Tutorial</a></li><li><a class="dropdown-item" href="references.html">Documentation</a></li></ul></li><li class="nav-item"><a class="nav-link plain" href="contribute.html" data-route="contribute">Contribute</a></li><li class="nav-item"><a class="nav-link plain" href="contributors.html" data-route="contributors">Community</a></li><li class="nav-item" id="ocAuthNavItem"><div class="oc-auth-actions"><a class="nav-link plain oc-auth-login-link" href="auth/sign-in.html?mode=login" rel="nofollow">Log in</a><a class="nav-link plain oc-auth-signup-link" href="auth/sign-in.html?mode=signup" rel="nofollow">Sign up</a></div></li></ul></div></div></nav>
+
+<header class="hero">
+  <div class="container oc-container content">
+    <div class="kicker"><a href="https://www.openconstruction.org/tutorials.html">Tutorial</a> / Contribute</div>
+    <h1>Submit an Asset to OpenConstruction</h1>
+  </div>
+</header>
+
+<main id="mainContent" class="guide-main">
+  <div class="container oc-container">
+    <article aria-label="Submit an Asset to OpenConstruction guide">
+      <section class="guide-section" aria-labelledby="prepareTitle"><h2 id="prepareTitle"><span class="guide-step-number" aria-hidden="true">01</span>Prepare the Required Information</h2><p>Before beginning, gather the official asset title, DOI when available, license, original public resource URL, author or contributor information, and a short description of the asset.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/01-prepare-information.jpg" alt="Checklist of information needed before submitting an asset" width="1280" height="720"></figure></section>
+
+      <section class="guide-section" aria-labelledby="contributeTitle"><h2 id="contributeTitle"><span class="guide-step-number" aria-hidden="true">02</span>Open the Contribute Page</h2><p>From the public OpenConstruction website, open the <a href="https://www.openconstruction.org/contribute.html">Contribute page</a>.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/02-homepage.jpg" alt="OpenConstruction homepage used to reach the Contribute page" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="contributeButtonTitle"><h2 id="contributeButtonTitle"><span class="guide-step-number" aria-hidden="true">03</span>Select Contribute</h2><p>Select <strong>Contribute</strong> in the main navigation to begin the contribution process.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/03-contribute-link.jpg" alt="Contribute navigation link highlighted" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="workspaceTitle"><h2 id="workspaceTitle"><span class="guide-step-number" aria-hidden="true">04</span>Open the Submission Workspace</h2><p>Under <strong>Propose Resources</strong>, select <strong>Submit resource</strong>. This opens the OpenConstruction submission workspace.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/04-contribute-options.jpg" alt="Contribute page showing the Submit resource option" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="loginTitle"><h2 id="loginTitle"><span class="guide-step-number" aria-hidden="true">05</span>Sign In Securely</h2><p>Sign in using a trusted identity provider or secure email link. OpenConstruction does not store passwords.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/05-sign-in.jpg" alt="OpenConstruction sign-in options" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="contactTitle"><h2 id="contactTitle"><span class="guide-step-number" aria-hidden="true">06</span>Enter Contact Information</h2><p>Begin the submission with your current name and email address so reviewers can contact you if clarification is needed.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/06-contact-information.jpg" alt="Submission form contact-information fields" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="affiliationTitle"><h2 id="affiliationTitle"><span class="guide-step-number" aria-hidden="true">07</span>Enter Your Affiliation</h2><p>Add your organization or institutional affiliation in the provided field.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/07-affiliation.jpg" alt="Affiliation field highlighted in the submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="typeTitle"><h2 id="typeTitle"><span class="guide-step-number" aria-hidden="true">08</span>Select the Asset Type and Title</h2><p>Choose whether the asset is a dataset, model, open educational resource, or workflow, then enter its official title.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/08-asset-type-title.jpg" alt="Asset type and title fields in the submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="doiTitle"><h2 id="doiTitle"><span class="guide-step-number" aria-hidden="true">09</span>Add the DOI</h2><p>Enter the asset's DOI when one is available. A DOI is optional but useful for verification.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/09-doi.jpg" alt="DOI field in the asset submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="licenseTitle"><h2 id="licenseTitle"><span class="guide-step-number" aria-hidden="true">10</span>Choose the License</h2><p>Select the license that accurately governs reuse and sharing. Confirm it against the original public source before submitting.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/10-license.jpg" alt="License field in the asset submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="summaryTitle"><h2 id="summaryTitle"><span class="guide-step-number" aria-hidden="true">11</span>Write a Short Summary</h2><p>Add a concise note that gives reviewers useful context about the asset, its scope, or its intended use.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/11-summary-note.jpg" alt="Summary note field in the asset submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="authorshipTitle"><h2 id="authorshipTitle"><span class="guide-step-number" aria-hidden="true">12</span>Confirm Authorship and Permissions</h2><p>Under <strong>Authorship and credit</strong>, select the option that accurately describes your relationship to the asset and your permission to submit it.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/12-authorship.jpg" alt="Authorship and credit options in the submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="communityTitle"><h2 id="communityTitle"><span class="guide-step-number" aria-hidden="true">13</span>Choose Community Recognition</h2><p>Complete the required permission statement and indicate whether contributor names may appear on the public OpenConstruction Community page.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/13-community-permission.jpg" alt="Community-page contributor permission option" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="contributorsTitle"><h2 id="contributorsTitle"><span class="guide-step-number" aria-hidden="true">14</span>List the Contributors</h2><p>Add the names of contributors who should receive credit for the asset or submission.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/14-contributors.jpg" alt="Contributor-name fields in the submission form" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="checklistTitle"><h2 id="checklistTitle"><span class="guide-step-number" aria-hidden="true">15</span>Review the Submission Checklist</h2><p>Before submitting, confirm that the contact information is current, metadata and license are accurate, no private or sensitive information is included, and the record may be published by OpenConstruction.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/15-checklist.jpg" alt="Submission checklist with accuracy, privacy, and publication confirmations" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="confirmContactTitle"><h2 id="confirmContactTitle"><span class="guide-step-number" aria-hidden="true">16</span>Confirm Your Contact Information</h2><p>Select the confirmation stating that your contact information is current.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/16-confirm-contact.jpg" alt="Contact-information confirmation highlighted" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="confirmLicenseTitle"><h2 id="confirmLicenseTitle"><span class="guide-step-number" aria-hidden="true">17</span>Confirm the License Information</h2><p>Select the confirmation stating that the license information is accurate.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/17-confirm-license.jpg" alt="License-information confirmation highlighted" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="confirmPrivacyTitle"><h2 id="confirmPrivacyTitle"><span class="guide-step-number" aria-hidden="true">18</span>Confirm No Private Information Is Included</h2><p>Confirm that the submission contains no private or sensitive information.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/18-confirm-privacy.jpg" alt="No-private-information confirmation highlighted" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="publicationTitle"><h2 id="publicationTitle"><span class="guide-step-number" aria-hidden="true">19</span>Agree to Publication</h2><p>Confirm that the submitted record may be published in OpenConstruction after review.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/19-confirm-publication.jpg" alt="Publication agreement highlighted" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="submitTitle"><h2 id="submitTitle"><span class="guide-step-number" aria-hidden="true">20</span>Submit the Resource</h2><p>When every field and confirmation is correct, select <strong>Submit resource</strong>.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/20-submit-resource.jpg" alt="Completed submission form with Submit resource action" loading="lazy" width="2177" height="1099"></figure></section>
+
+      <section class="guide-section" aria-labelledby="reviewTitle"><h2 id="reviewTitle"><span class="guide-step-number" aria-hidden="true">21</span>Understand the Review Process</h2><p>Your contribution will be reviewed before it is added to the OpenConstruction catalog. Review may include checks for metadata quality, attribution, licensing, and public-source verification.</p><figure class="guide-figure"><img src="docs/tutorials/submit-an-asset/21-review-process.jpg" alt="Submission-complete slide explaining the review process" loading="lazy" width="1280" height="720"></figure></section>
+
+      <div class="guide-end"><p>You are now ready to prepare a complete resource record and submit it for OpenConstruction review.</p></div>
+      <nav class="guide-nav" aria-label="Guide navigation">
+        <a href="tutorials.html">&larr; Back to Tutorials</a>
+        <a href="#top">Back to top &uarr;</a>
+      </nav>
+    </article>
+  </div>
+</main>
+
+<footer class="py-4 mt-3 oc-site-footer"><div class="container oc-container small text-muted text-center"><div><img src="assets/img/icon.png" alt="OpenConstruction logo" width="24" height="24" style="vertical-align:-5px; margin-right:4px;"> &copy; <span id="yearNow"></span> OpenConstruction Open Science Initiative</div><div class="mt-1"><small>Licensed under Apache 2.0. Images are &copy; their respective creators unless otherwise noted.</small></div><div class="mt-1"><small><a href="references.html#terms" class="text-muted">Terms</a> &middot; <a href="references.html#privacy" class="text-muted">Data &amp; Privacy</a> &middot; <a href="references.html" class="text-muted">Documentation</a> &middot; <span class="oc-footer-socials" aria-label="OpenConstruction social links"><a href="https://www.linkedin.com/company/openconstruction-open-science-initiative/" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on LinkedIn" title="LinkedIn"><img class="oc-footer-social-icon" src="assets/img/footer-linkedin.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a><a href="https://github.com/ruoxinx/open-construction" class="text-muted oc-footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="OpenConstruction on GitHub" title="GitHub"><img class="oc-footer-social-icon" src="assets/img/footer-github.svg?v=20260825-footer-social-icons-color" alt="" width="16" height="16"></a></span></small></div></div></footer>
+<script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -101,6 +101,7 @@ openconstruction-*-certificate.pdf
 
 # Local-only source/support files for public tutorial assets
 site/docs/tutorials/*.docx
+site/docs/tutorials/*.pdf
 /References
 
 site/mcp.html
