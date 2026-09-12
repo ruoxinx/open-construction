@@ -1127,8 +1127,6 @@ api.renderInstitutionMarquee({
 <!-- Render homepage history as heatmap -->
 <script>
 (async function(){
-  const PAGE_TO_SHOW = 'index'; // showing homepage visits
-
   // Map
   const map = L.map('visitorMap', {
     zoomControl: true,
@@ -1163,30 +1161,23 @@ api.renderInstitutionMarquee({
   if (!sb) { console.warn('Supabase not configured; skipping heatmap'); return; }
 
   try {
-    const pageSize = 1000;
-    let from = 0, to = pageSize - 1;
     const bounds = L.latLngBounds();
     const heatPoints = [];
+    const { data: rows, error } = await sb.functions.invoke('platform-reach', {
+      method: 'GET'
+    });
 
-    while (true) {
-      const { data: rows, error } = await sb
-        .from('visits')
-        .select('lat,lon')
-        .eq('page', PAGE_TO_SHOW)
-        .order('created_at', { ascending:false })
-        .range(from, to);
+    if (error) throw error;
+    if (!Array.isArray(rows)) throw new Error('Unexpected reach data format');
 
-      if (error) { console.error(error); break; }
-      if (!rows || rows.length === 0) break;
-
-      for (const r of rows) {
-        if (typeof r.lat === 'number' && typeof r.lon === 'number') {
-          heatPoints.push([r.lat, r.lon, 1]);
-          bounds.extend([r.lat, r.lon]);
-        }
+    for (const row of rows) {
+      const latitude = Number(row?.latitude);
+      const longitude = Number(row?.longitude);
+      const count = Number(row?.count);
+      if (Number.isFinite(latitude) && Number.isFinite(longitude) && Number.isFinite(count) && count > 0) {
+        heatPoints.push([latitude, longitude, count]);
+        bounds.extend([latitude, longitude]);
       }
-      if (rows.length < pageSize) break;
-      from += pageSize; to += pageSize;
     }
 
     L.heatLayer(heatPoints, { radius:20, blur:15, maxZoom:11 }).addTo(map);
