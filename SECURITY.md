@@ -2,37 +2,30 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in OpenConstruction Open Science Initiative, **please do not open a public GitHub issue**.
+We welcome responsible reports of security vulnerabilities affecting OpenConstruction. Please do not disclose a vulnerability through a public GitHub issue or other public channel before we have had an opportunity to review it.
 
-Instead, report it by emailing **support@openconstruction.org**.
+Please email **support@openconstruction.org** instead.
 
-Please include:
-- A description of the vulnerability
-- Steps to reproduce
-- Potential impact
+When possible, include:
 
-We will acknowledge your report within 5 business days and work with you on a coordinated disclosure timeline.
+- The affected page, feature, or resource
+- Clear steps to reproduce the issue
+- The potential impact
+- Any proof of concept or supporting evidence
+
+Please test only accounts and resources that you own or are authorized to use. Avoid actions that could interrupt service, access other users' information, or alter or destroy data.
+
+We aim to acknowledge reports within 5 business days. We will review the report, keep you informed where appropriate, and work with you on a coordinated disclosure timeline.
 
 ## Scope
 
-OpenConstruction Open Science Initiative indexes external resources and may use Supabase Auth for optional user accounts, saved resources, contribution summaries, and badge views. OpenConstruction does not manage passwords; sign-in is delegated to OAuth providers such as GitHub and Google.
+This policy covers the OpenConstruction website, its public code, and its platform features. OpenConstruction is an open-science catalog for external resources and may offer optional accounts, saved resources, contribution summaries, and badge views. We do not manage user passwords; account sign-in is handled by external identity providers.
 
-The primary security considerations are:
+External websites and resources listed in the catalog are operated by their respective owners. Please report vulnerabilities in those services to the appropriate owner as well as, where relevant, to us.
 
-- **Data integrity**: Ensuring catalog entries are accurate and not tampered with
-- **Dependency vulnerabilities**: Third-party libraries used in the frontend or SDK
-- **Authentication and authorization**: Supabase Row Level Security must protect user-owned profile and bookmark rows
-- **Secrets handling**: Supabase service-role keys and GitHub tokens must remain in provider dashboards or GitHub Actions secrets, never in repository files
+Our security priorities include:
 
-## Deployment security headers
-
-The static pages include a source-level Content Security Policy and Permissions Policy. GitHub Pages does not let this repository set arbitrary HTTP response headers, so the production host must also enforce these response headers at the CDN, reverse proxy, or custom hosting layer:
-
-```text
-Strict-Transport-Security: max-age=31536000; includeSubDomains
-Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'self'
-X-Frame-Options: DENY
-Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
-```
-
-Use `Strict-Transport-Security` only after HTTPS is working on every subdomain. The CI security-source check verifies that every HTML page retains its source policies and that GitHub Actions references remain pinned to full commit SHAs.
+- **Data integrity**: Keeping catalog entries accurate and trustworthy.
+- **Service security**: Reviewing changes and external services that support the site.
+- **Account protection**: Safeguarding user accounts and platform data.
+- **Privacy**: Limiting the information collected and handling it responsibly.
