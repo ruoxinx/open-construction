@@ -2,12 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 async function fetchDatasets(){
-  const candidates = [
+  const nestedResourcePage = /\/(?:datasets|models|oers|workflows)\//i.test(window.location.pathname);
+  const candidates = (nestedResourcePage ? [
+    '../data/datasets.json',
+    'data/datasets.json',
+    './data/datasets.json'
+  ] : [
     'data/datasets.json',
     './data/datasets.json',
-    '/open-construction/data/datasets.json',
-    (window.location.pathname.includes('/datasets/') ? '../data/datasets.json' : null)
-  ].filter(Boolean);
+    '../data/datasets.json'
+  ]).concat('/open-construction/data/datasets.json');
   let lastErr = null;
   for(const url of candidates){
     try{
@@ -63,12 +67,17 @@ function normalizeOcTaskKey(value){
   }
 
   function vocabCandidates(){
-    return Array.from(new Set([
+    const nestedResourcePage = /\/(?:datasets|models|oers|workflows)\//i.test(window.location.pathname);
+    const candidates = nestedResourcePage ? [
+      '../data/task-vocabulary.json',
+      'data/task-vocabulary.json',
+      './data/task-vocabulary.json'
+    ] : [
       'data/task-vocabulary.json',
       './data/task-vocabulary.json',
-      '../data/task-vocabulary.json',
-      '/open-construction/data/task-vocabulary.json'
-    ]));
+      '../data/task-vocabulary.json'
+    ];
+    return Array.from(new Set(candidates.concat('/open-construction/data/task-vocabulary.json')));
   }
 
   async function loadTaskVocabulary(){

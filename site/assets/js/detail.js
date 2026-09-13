@@ -1065,19 +1065,28 @@ function wireDatasetLicenseGate(root){
 }
 
 /* ---------- publication badges (Altmetric / Dimensions) ---------- */
+const externalScriptLoads = new Map();
 function ensureExternalScript(src, id){
-  if (!src) return;
-  if (id && document.getElementById(id)) return;
-  // If same src already present, don't add again
+  if (!src) return Promise.resolve(false);
+  if (externalScriptLoads.has(src)) return externalScriptLoads.get(src);
   const exists = Array.from(document.scripts || []).some(s => s?.src === src);
-  if (exists) return;
+  if (exists) return Promise.resolve(true);
 
-  const s = document.createElement('script');
-  if (id) s.id = id;
-  s.src = src;
-  s.async = true;
-  s.defer = true;
-  document.head.appendChild(s);
+  const load = new Promise(resolve => {
+    const s = document.createElement('script');
+    if (id) s.id = id;
+    s.src = src;
+    s.async = true;
+    s.defer = true;
+    s.addEventListener('load', () => resolve(true), { once: true });
+    s.addEventListener('error', () => {
+      console.warn('Could not load external badge script', src);
+      resolve(false);
+    }, { once: true });
+    document.head.appendChild(s);
+  });
+  externalScriptLoads.set(src, load);
+  return load;
 }
 
 function parseScholarlyId(idVal){
@@ -1138,13 +1147,11 @@ function publicationBadgesHtml(doiVal, cfg){
 
   // Config precedence:
   // - If cfg.altmetric / cfg.dimensions is boolean, respect it.
-  // - If cfg.altmetric / cfg.dimensions is 0 or "0", treat as disabled (hide badges for zero metrics).
+  // - A numeric zero is valid metric data; keep the provider badge visible so it can render its zero state.
   // - Otherwise default to true when identifier exists.
   const asBool = v => (v === true || v === false) ? v : undefined;
-  const isZero = v => v === 0 || v === '0' || v === '0.0';
-
-  const altmetricOn  = isZero(cfg?.altmetric)  ? false : (asBool(cfg?.altmetric)  ?? true);
-  const dimensionsOn = isZero(cfg?.dimensions) ? false : (asBool(cfg?.dimensions) ?? true);
+  const altmetricOn  = asBool(cfg?.altmetric)  ?? true;
+  const dimensionsOn = asBool(cfg?.dimensions) ?? true;
 
   const blocks = [];
 
@@ -1156,7 +1163,7 @@ function publicationBadgesHtml(doiVal, cfg){
     else altAttr = `data-doi="${escapeHtml(id.value)}"`; // default DOI
 
     blocks.push(`
-      <div class="mb-2">
+      <div class="oc-publication-badge">
         <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
       </div>
     `);
@@ -1172,8 +1179,8 @@ function publicationBadgesHtml(doiVal, cfg){
 
     if (dimAttr) {
       blocks.push(`
-        <div class="mb-1">
-          <span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_rectangle"></span>
+        <div class="oc-publication-badge">
+          <span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_circle"></span>
         </div>
       `);
     }
@@ -1181,11 +1188,60 @@ function publicationBadgesHtml(doiVal, cfg){
 
   if (!blocks.length) return '';
 
-  // Ensure scripts are loaded once when the blocks exist.
-  if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
-  if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
+  return `<div class="oc-publication-badges">${blocks.join('')}</div>`;
+}
 
-  return `<div class="mt-2">${blocks.join('')}</div>`;
+function normalizeAltmetricNoScore(root){
+  if (typeof MutationObserver !== 'function') return;
+  root?.querySelectorAll('.altmetric-embed').forEach(badge => {
+    const replaceQuestionMark = () => {
+      const image = badge.querySelector('img');
+      if (image) {
+        const source = image.getAttribute('src') || '';
+        const noScoreImage = /score\s+of\s+0\b/i.test(image.getAttribute('alt') || '')
+          || /[?&]score=(?:\?|)(?=&|$)/.test(source)
+          || /[?&]types=\?{4,}(?=&|$)/.test(source);
+        const zeroSource = source
+          .replace(/([?&]score=)(?:\?|)(?=&|$)/, '$10');
+        if (noScoreImage) {
+          image.setAttribute('src', zeroSource);
+          badge.classList.add('oc-altmetric-zero');
+          badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
+          return true;
+        }
+      }
+      const marker = Array.from(badge.querySelectorAll('text, tspan, span, div'))
+        .find(node => node.childElementCount === 0 && node.textContent.trim() === '?');
+      if (!marker) return false;
+      marker.textContent = '0';
+      badge.classList.add('oc-altmetric-zero');
+      badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
+      return true;
+    };
+
+    if (replaceQuestionMark()) return;
+    const observer = new MutationObserver(() => {
+      if (replaceQuestionMark()) observer.disconnect();
+    });
+    observer.observe(badge, { childList: true, subtree: true, characterData: true });
+    window.setTimeout(() => observer.disconnect(), 10000);
+  });
+}
+
+async function initializePublicationBadges(root){
+  const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
+  const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
+  const loads = [];
+  if (hasAltmetric) loads.push(ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed'));
+  if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
+  await Promise.all(loads);
+  if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
+    normalizeAltmetricNoScore(root);
+    window._altmetric_embed_init(root);
+  }
+  if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {
+    window.__dimensions_embed.addBadges();
+  }
 }
 
 /* ---------- chip helpers ---------- */
@@ -1284,12 +1340,11 @@ function findModelById(modelsArr, id){
 }
 
 async function loadBenchmarkPayload(){
-  const candidates = window.OCData?.candidates
-    ? window.OCData.candidates('benchmarkResults', '../data/benchmark-results.json')
-    : [
-      '../data/benchmark-results.json',
-      '/open-construction/data/benchmark-results.json'
-    ];
+  const localUrl = '../data/benchmark-results.json';
+  const configuredCandidates = window.OCData?.candidates
+    ? window.OCData.candidates('benchmarkResults', localUrl)
+    : ['/open-construction/data/benchmark-results.json'];
+  const candidates = [localUrl, ...configuredCandidates.filter(url => url !== localUrl)];
   for (const url of candidates) {
     try {
       const res = await fetch(url, { cache: 'no-cache' });
@@ -1806,6 +1861,7 @@ async function initDetail(){
         </div>
         ${modelLicenseModalHtml(m)}
       `;
+      await initializePublicationBadges(root);
 
       // Abstract toggle wiring (model detail)
       root.querySelectorAll('[data-oc-abs]').forEach(wrap => {
@@ -2301,6 +2357,7 @@ async function initDetail(){
       </div>
       ${datasetLicenseModalHtml(ds)}
     `;
+    await initializePublicationBadges(root);
 
     const imgEl = root.querySelector('.ds-img');
     const modalEl = root.querySelector('#imgModal');

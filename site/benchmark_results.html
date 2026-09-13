@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -148,8 +148,10 @@
     .benchmark-citation-copy{margin-top:.35rem;max-width:100%;color:#7d8ba0;font-size:.68rem}
     .benchmark-citation-details a{color:#7d8ba0;text-decoration:underline;text-decoration-color:#d8e0ea;text-underline-offset:2px}
     .benchmark-citation-details a:hover{color:#475569;text-decoration-color:#94a3b8}
-    .benchmark-publication-badges{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin:0;opacity:.9}
-    .benchmark-publication-badges > div{display:inline-flex;align-items:center;overflow:visible}
+    .benchmark-publication-badges{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:0;opacity:1}
+    .benchmark-publication-badges > div{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px;overflow:visible}
+    .benchmark-publication-badges .oc-altmetric-zero{position:relative;width:64px;height:64px}
+    .benchmark-publication-badges .oc-altmetric-zero::after{content:"0";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;color:#27313d;font-size:16px;font-weight:500;line-height:1;pointer-events:none}
     @media (max-width: 991.98px){
       .benchmark-hero-grid,.benchmark-overview-grid,.leaderboard-grid{grid-template-columns:1fr}
     }
@@ -290,6 +292,10 @@
   const canonKey = (s) => normStr(s).toLowerCase().replace(/\s+/g, ' ').trim();
 
   async function loadJson(url){
+    try {
+      const localRes = await fetch(url, { cache: 'no-store' });
+      if (localRes.ok) return await localRes.json();
+    } catch {}
     if(window.OCData?.loadFirstJson){
       if(/data\/benchmark-results\.json$/i.test(url)){
         const data = await window.OCData.loadFirstJson('benchmarkResults', url);
@@ -468,17 +474,27 @@
     return years.length ? String(Math.max(...years)) : '';
   }
 
+  const externalScriptLoads = new Map();
   function ensureExternalScript(src, id){
-    if (!src) return;
-    if (id && document.getElementById(id)) return;
+    if (!src) return Promise.resolve(false);
+    if (externalScriptLoads.has(src)) return externalScriptLoads.get(src);
     const exists = Array.from(document.scripts || []).some(script => script?.src === src);
-    if (exists) return;
-    const script = document.createElement('script');
-    if (id) script.id = id;
-    script.src = src;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
+    if (exists) return Promise.resolve(true);
+    const load = new Promise(resolve => {
+      const script = document.createElement('script');
+      if (id) script.id = id;
+      script.src = src;
+      script.async = true;
+      script.defer = true;
+      script.addEventListener('load', () => resolve(true), { once: true });
+      script.addEventListener('error', () => {
+        console.warn('Could not load external badge script', src);
+        resolve(false);
+      }, { once: true });
+      document.head.appendChild(script);
+    });
+    externalScriptLoads.set(src, load);
+    return load;
   }
 
   function parseScholarlyId(idVal){
@@ -511,9 +527,9 @@
     const id = parseScholarlyId(doiVal);
     if (!id.value || id.kind === 'unknown') return '';
     const asBool = value => (value === true || value === false) ? value : undefined;
-    const isZero = value => value === 0 || value === '0' || value === '0.0';
-    const altmetricOn = isZero(cfg?.altmetric) ? false : (asBool(cfg?.altmetric) ?? true);
-    const dimensionsOn = isZero(cfg?.dimensions) ? false : (asBool(cfg?.dimensions) ?? true);
+    // A numeric zero is valid metric data; keep the provider badge visible so it can render its zero state.
+    const altmetricOn = asBool(cfg?.altmetric) ?? true;
+    const dimensionsOn = asBool(cfg?.dimensions) ?? true;
     const blocks = [];
 
     if (altmetricOn) {
@@ -529,13 +545,64 @@
       if (id.kind === 'doi') dimAttr = `data-doi="${esc(id.value)}"`;
       else if (id.kind === 'pmid') dimAttr = `data-pmid="${esc(id.value)}"`;
       else if (id.kind === 'dimensions_id') dimAttr = `data-id="${esc(id.value)}"`;
-      if (dimAttr) blocks.push(`<div><span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_rectangle"></span></div>`);
+      if (dimAttr) blocks.push(`<div><span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_circle"></span></div>`);
     }
 
     if (!blocks.length) return '';
-    if (altmetricOn) ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed');
-    if (dimensionsOn) ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge');
     return `<div class="benchmark-publication-badges">${blocks.join('')}</div>`;
+  }
+
+  function normalizeAltmetricNoScore(root){
+    if (typeof MutationObserver !== 'function') return;
+    root?.querySelectorAll('.altmetric-embed').forEach(badge => {
+      const replaceQuestionMark = () => {
+        const image = badge.querySelector('img');
+        if (image) {
+          const source = image.getAttribute('src') || '';
+          const noScoreImage = /score\s+of\s+0\b/i.test(image.getAttribute('alt') || '')
+            || /[?&]score=(?:\?|)(?=&|$)/.test(source)
+            || /[?&]types=\?{4,}(?=&|$)/.test(source);
+          const zeroSource = source
+            .replace(/([?&]score=)(?:\?|)(?=&|$)/, '$10');
+          if (noScoreImage) {
+            image.setAttribute('src', zeroSource);
+            badge.classList.add('oc-altmetric-zero');
+            badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
+            return true;
+          }
+        }
+        const marker = Array.from(badge.querySelectorAll('text, tspan, span, div'))
+          .find(node => node.childElementCount === 0 && node.textContent.trim() === '?');
+        if (!marker) return false;
+        marker.textContent = '0';
+        badge.classList.add('oc-altmetric-zero');
+        badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
+        return true;
+      };
+
+      if (replaceQuestionMark()) return;
+      const observer = new MutationObserver(() => {
+        if (replaceQuestionMark()) observer.disconnect();
+      });
+      observer.observe(badge, { childList: true, subtree: true, characterData: true });
+      window.setTimeout(() => observer.disconnect(), 10000);
+    });
+  }
+
+  async function initializePublicationBadges(root){
+    const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
+    const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
+    const loads = [];
+    if (hasAltmetric) loads.push(ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed'));
+    if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
+    await Promise.all(loads);
+    if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
+      normalizeAltmetricNoScore(root);
+      window._altmetric_embed_init(root);
+    }
+    if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {
+      window.__dimensions_embed.addBadges();
+    }
   }
 
   function benchmarkSourceYearHtml(board, dataset){
@@ -1091,6 +1158,7 @@
       const dataset = findDatasetById(datasets, board.dataset_id);
       const mount = document.getElementById('contentMount');
       mount.innerHTML = boardBenchmarkHtml(board, dataset, taskVocabulary);
+      await initializePublicationBadges(mount);
       wireBenchmarkActions(mount);
       initResultFigure(board, models);
     }catch(err){

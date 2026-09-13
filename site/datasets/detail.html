@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
 	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -64,6 +64,10 @@
     .oc-badge > .license-pill{display:inline-flex; align-items:center; gap:.35rem;}
     .license-mini-strip{display:inline-flex; align-items:center; gap:.18rem;}
     .license-mini-icon{display:block; width:1rem; height:1rem; object-fit:contain;}
+    .oc-publication-badges{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-top:.75rem;}
+    .oc-publication-badge{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px;overflow:visible;}
+    .oc-altmetric-zero{position:relative;width:64px;height:64px;}
+    .oc-altmetric-zero::after{content:"0";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;color:#27313d;font-size:16px;font-weight:500;line-height:1;pointer-events:none;}
 
     /* ---- Loading skeleton ---- */
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:140px}
@@ -183,7 +187,7 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
 <script src="../assets/js/config.js"></script>
 <script src="../assets/js/terms.js?v=20260827-idm-mvd-acronym"></script>
-<script src="../assets/js/app.js"></script>
+<script src="../assets/js/app.js?v=20260912-detail-paths"></script>
 <script src="../assets/js/auth.js?v=20260821-ask-role-gate"></script>
 <script src="../assets/js/site-shell.js?v=20260830-benchmark-ruler"></script>
 
@@ -308,7 +312,7 @@
 })();
 </script>
 
-<script src="../assets/js/detail.js?v=20260829-benchmark-card" defer></script>
+<script src="../assets/js/detail.js?v=20260912-badge-zero-image-v4" defer></script>
 
 
 <!-- Subscribe Modal -->
