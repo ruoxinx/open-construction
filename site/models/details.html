@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://api.crossref.org https://api.datacite.org https://citation.doi.org https://doi.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
 	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -33,6 +33,8 @@
     body{display:flex; flex-direction:column; min-height:100vh;}
     main{flex:1 0 auto;}
     a{color:var(--oc-link)}
+    #detailRoot a:not(.btn):not(.badge){text-decoration:none;text-underline-offset:.16em}
+    #detailRoot a:not(.btn):not(.badge):hover,#detailRoot a:not(.btn):not(.badge):focus-visible{text-decoration:underline}
     .oc-container{max-width:1320px}
 
     .page-head{border-bottom:1px solid var(--oc-border); background:#fff;}
@@ -60,6 +62,70 @@
     .oc-publication-badge{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px;overflow:visible;}
     .oc-altmetric-zero{position:relative;width:64px;height:64px;}
     .oc-altmetric-zero::after{content:"0";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;color:#27313d;font-size:16px;font-weight:500;line-height:1;pointer-events:none;}
+    .oc-openalex-citation{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;width:64px;min-width:64px;height:64px;padding:.35rem;border:0;border-radius:50%;background:#f1f5f9;color:var(--oc-sub);line-height:1.1;text-align:center;text-decoration:none;box-shadow:none;transition:background-color .15s ease,color .15s ease,transform .15s ease;}
+    .oc-openalex-citation:hover,.oc-openalex-citation:focus{background:#e7eff6;color:var(--oc-ink);box-shadow:none;transform:translateY(-1px);}
+    .openalex-icon{display:block;width:16px;height:16px;object-fit:contain;}
+    .oc-openalex-citation-value{font-size:.95rem;font-weight:400;line-height:1;}
+    .scholarly-provider-icon{display:block;width:.95rem;height:.95rem;object-fit:contain;}
+    .scholarly-crossref-icon{width:5.8rem;height:1.35rem;object-fit:contain;}
+    .scholarly-datacite-icon{width:5.8rem;height:1.35rem;object-fit:contain;}
+    .scholarly-reference-source{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem .7rem;margin-top:.55rem;color:var(--oc-sub);font-size:.78rem;}
+    .scholarly-reference-source[hidden]{display:none;}
+    .scholarly-reference-providers{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.55rem;}
+    .scholarly-reference-provider{display:inline-flex;align-items:center;gap:.25rem;color:var(--oc-link);font-weight:600;text-decoration:none;}
+    .scholarly-reference-provider:hover,.scholarly-reference-provider:focus{text-decoration:underline;text-underline-offset:.15em;}
+    .scholarly-reference-export{margin-top:.45rem;}
+    .scholarly-reference-export summary{display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;color:var(--oc-link);font-size:.78rem;font-weight:600;list-style:none;}
+    .scholarly-reference-export summary::-webkit-details-marker{display:none;}
+    .scholarly-reference-export summary::after{content:"⌄";font-size:.9rem;font-weight:400;line-height:1;}
+    .scholarly-reference-export[open] summary::after{content:"⌃";}
+    .scholarly-reference-export-menu{display:grid;gap:.5rem;margin-top:.45rem;padding:.6rem .65rem;border:1px solid var(--oc-border);border-radius:8px;background:#fbfcfe;}
+    .scholarly-reference-export-help{margin:0;color:var(--oc-sub);font-size:.72rem;}
+    .scholarly-reference-export-preview{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:.55rem;padding-top:0;}
+    .scholarly-reference-export-value{min-width:0;color:var(--oc-text);font-size:.76rem;line-height:1.4;}
+    .scholarly-reference-export-files{display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;padding-top:0;}
+    .scholarly-reference-export-label{color:var(--oc-sub);font-size:.72rem;font-weight:600;}
+    .scholarly-reference-export button{border:0;background:transparent;padding:.1rem 0;color:var(--oc-link);font-size:.76rem;font-weight:400;}
+    .scholarly-reference-export button:hover,.scholarly-reference-export button:focus{text-decoration:underline;text-underline-offset:.15em;}
+    .scholarly-reference-export button:disabled{cursor:wait;opacity:.55;}
+    .scholarly-reference-export-status{color:var(--oc-sub);font-size:.72rem;}
+    .scholarly-cite-trigger{display:inline-flex;align-items:center;gap:.45rem;border:1px solid #cbd5e1;border-radius:.375rem;background:#fff;padding:.4rem .75rem;color:var(--oc-link);font-size:.84rem;font-weight:600;line-height:1.3;}
+    .scholarly-cite-trigger .btn-action-icon{width:1rem;height:1rem;}
+    .scholarly-cite-trigger:hover,.scholarly-cite-trigger:focus{border-color:#9fb9d4;background:#f7fbff;color:var(--oc-link);text-decoration:none;}
+    .scholarly-cite-dialog{width:min(680px,calc(100% - 2rem));max-width:680px;padding:0;border:1px solid var(--oc-border);border-radius:10px;box-shadow:0 18px 45px rgba(26,45,64,.2);color:var(--oc-text);}
+    .scholarly-cite-dialog::backdrop{background:rgba(31,45,58,.28);}
+    .scholarly-cite-dialog-inner{background:#fff;}
+    .scholarly-cite-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1rem;border-bottom:1px solid var(--oc-border);}
+    .scholarly-cite-dialog-header h2{margin:0;color:var(--oc-ink);font-size:1rem;font-weight:600;}
+    .scholarly-reference-export .scholarly-cite-close{-webkit-appearance:none;appearance:none;display:inline-grid;place-items:center;width:30px;height:30px;border:0;border-radius:4px;background:transparent;padding:0;color:#64748b;font-family:inherit;font-size:1.3rem;font-weight:400;line-height:1;outline:none;text-decoration:none!important;box-shadow:none!important;}
+    .scholarly-reference-export .scholarly-cite-close:hover,.scholarly-reference-export .scholarly-cite-close:active{border-color:transparent;background:#f1f5f9;color:#334155;text-decoration:none!important;box-shadow:none!important;}
+    .scholarly-reference-export .scholarly-cite-close:focus{color:#334155;text-decoration:none!important;box-shadow:none!important;}
+    .scholarly-reference-export .scholarly-cite-close:focus-visible{outline:2px solid #94a3b8;outline-offset:2px;}
+    .scholarly-cite-dialog-body{display:grid;gap:.7rem;padding:1rem;}
+    .scholarly-reference-export-menu{display:grid;gap:.7rem;margin-top:.45rem;padding:0;border:0;background:transparent;}
+    .scholarly-reference-export-help{margin:0;color:var(--oc-sub);font-size:.76rem;}
+    .scholarly-cite-source{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:.35rem .55rem;width:100%;margin-top:-.1rem;color:var(--oc-sub);font-size:.72rem;text-align:right;}
+    .scholarly-cite-source-link{display:inline-flex;align-items:center;}
+    .scholarly-cite-source .scholarly-crossref-icon,.scholarly-cite-source .scholarly-datacite-icon{width:4.2rem;height:1rem;}
+    .scholarly-reference-export-preview{display:grid;grid-template-columns:4.8rem minmax(0,1fr) auto;align-items:start;gap:.6rem;border-top:0;padding-top:0;}
+    .scholarly-cite-format{color:var(--oc-sub);font-size:.76rem;font-weight:600;}
+    .scholarly-reference-export-value{min-width:0;color:var(--oc-text);font-size:.8rem;line-height:1.45;}
+    .scholarly-reference-export-files{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;border-top:1px solid var(--oc-border);padding-top:.65rem;margin-top:.1rem;}
+    .scholarly-reference-export-label{color:var(--oc-sub);font-size:.72rem;font-weight:600;}
+    .scholarly-reference-export button{border:0;background:transparent;padding:.1rem 0;color:var(--oc-link);font-size:.76rem;font-weight:400;}
+    .scholarly-reference-export button:hover,.scholarly-reference-export button:focus{text-decoration:underline;text-underline-offset:.15em;}
+    .scholarly-reference-export button:disabled{cursor:wait;opacity:.55;}
+    .scholarly-reference-export-status{color:var(--oc-sub);font-size:.72rem;}
+    @media (max-width:575.98px){.scholarly-reference-export-preview{grid-template-columns:4.2rem minmax(0,1fr);}.scholarly-reference-export-preview button{grid-column:2;justify-self:start;}.scholarly-cite-source{justify-content:flex-start;text-align:left;}.scholarly-cite-dialog{width:calc(100% - 1rem);}.scholarly-cite-dialog-body{padding:.85rem;}}
+    .detail-subhead-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.8rem;}
+    .detail-subhead-row .detail-subhead{margin-bottom:0;}
+    .scholarly-related-heading-source{display:inline-flex;align-items:center;gap:.3rem;color:var(--oc-sub);font-size:.74rem;font-weight:400;white-space:nowrap;}
+    .scholarly-related-source-link{display:inline-flex;align-items:center;color:var(--oc-sub);font-weight:400;text-decoration:none;}
+    .scholarly-related-source-link:hover,.scholarly-related-source-link:focus{color:var(--oc-link);text-decoration:underline;text-underline-offset:.15em;}
+    .scholarly-related-source-link .openalex-icon{width:1rem;height:1rem;margin-right:.3rem;}
+    .scholarly-related-link{gap:.28rem;padding:.62rem 0;}
+    .scholarly-related-title{color:var(--oc-ink);font-size:.9rem;font-weight:400;line-height:1.35;}
+    .scholarly-related-meta{color:var(--oc-sub);font-size:.76rem;font-weight:400;line-height:1.35;}
 
     .skeleton{position:relative;overflow:hidden;background:var(--oc-muted);border-radius:10px;min-height:140px}
     .skeleton::after{
@@ -268,7 +334,7 @@
 
 <!-- Load before DOMContentLoaded so dynamically-rendered Dimensions badges can initialize. -->
 <script src="https://badge.dimensions.ai/badge.js" charset="utf-8" defer></script>
-<script src="../assets/js/detail.js?v=20260912-badge-zero-image-v4" defer></script>
+<script src="../assets/js/detail.js?v=20260913-scholarly-layout-v31" defer></script>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">

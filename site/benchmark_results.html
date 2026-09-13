@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://citation.doi.org https://doi.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -95,7 +95,7 @@
     .benchmark-definition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem;margin:0}
     .benchmark-definition-grid dt,.benchmark-side-label{color:#64748b;font-size:.74rem;font-weight:800;letter-spacing:.08em;line-height:1.2;text-transform:uppercase}
     .benchmark-definition-grid dd,.benchmark-side-value{margin:.22rem 0 0;color:#334155;font-size:1rem;line-height:1.45}
-    .benchmark-side-value a{color:#0b66c3;text-decoration:none;text-underline-offset:2px}
+    .benchmark-side-value a{color:#0b66c3;text-decoration:none;text-underline-offset:2px;overflow-wrap:anywhere}
     .benchmark-side-value a:hover{text-decoration:underline}
     .benchmark-summary-row{margin-top:1rem;color:#334155;font-size:1rem;line-height:1.55}
     .benchmark-summary-row .summary-note-label{font-weight:700;color:#475569}
@@ -123,10 +123,10 @@
     .lb-value-label{fill:#3a3a37;font-size:8.5px;font-weight:700}
     .lb-dot{fill:#d8704c;stroke:#d8704c;stroke-width:1}
     .lb-dot.claimed{fill:#ebc5a8;stroke:#5c5b58;stroke-width:1.5}
-    .leaderboard-table-wrap{overflow-x:auto;border:1px solid #dbe4ee;border-radius:6px}
+    .leaderboard-table-wrap{max-height:min(60vh,34rem);overflow:auto;border:1px solid #dbe4ee;border-radius:6px;overscroll-behavior:contain}
     .leaderboard-table{width:100%;border-collapse:collapse;font-size:.92rem;table-layout:auto}
     .leaderboard-table thead{background:#f8fafc}
-    .leaderboard-table th{padding:.72rem .8rem;color:#64748b;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase;vertical-align:bottom}
+    .leaderboard-table th{position:sticky;top:0;z-index:1;padding:.72rem .8rem;color:#64748b;background:#f8fafc;font-size:.72rem;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase;vertical-align:bottom}
     .leaderboard-table td{padding:.62rem .8rem;color:#1e293b;vertical-align:top;border-top:1px solid rgba(226,232,240,.65)}
     .leaderboard-table tbody tr:nth-child(even){background:#f8fafc66}
     .leaderboard-table th.col-rank,.leaderboard-table th.col-value{text-align:right;letter-spacing:0}
@@ -145,13 +145,44 @@
     .benchmark-provenance-note a:hover{text-decoration:underline}
     .benchmark-citation-details{margin:.85rem 0 0;color:#8a97a8;line-height:1.35}
     .benchmark-citation-title{margin:0 0 .45rem;color:#64748b;font-size:.74rem;font-weight:800;letter-spacing:.08em;line-height:1.2;text-transform:uppercase}
-    .benchmark-citation-copy{margin-top:.35rem;max-width:100%;color:#7d8ba0;font-size:.68rem}
-    .benchmark-citation-details a{color:#7d8ba0;text-decoration:underline;text-decoration-color:#d8e0ea;text-underline-offset:2px}
-    .benchmark-citation-details a:hover{color:#475569;text-decoration-color:#94a3b8}
+    .benchmark-citation-copy{margin:0 0 .55rem;max-width:100%;color:#6c757d;font-size:.76rem;line-height:1.4}
+    .benchmark-citation-details a{color:#0b66c3;text-decoration:underline;text-underline-offset:2px}
+    .benchmark-citation-details a:hover{color:#075eaa}
+    .benchmark-openalex-citation{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px}
+    .benchmark-openalex-citation[hidden]{display:none}
+    .benchmark-openalex-citation .oc-openalex-citation{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;width:64px;min-width:64px;height:64px;padding:.35rem;border:0;border-radius:50%;background:#f1f5f9;color:#64748b;line-height:1.1;text-align:center;text-decoration:none;box-shadow:none;transition:background-color .15s ease,color .15s ease,transform .15s ease}
+    .benchmark-openalex-citation .oc-openalex-citation:hover,.benchmark-openalex-citation .oc-openalex-citation:focus{background:#e7eff6;color:#0f2e4b;box-shadow:none;transform:translateY(-1px)}
+    .benchmark-openalex-citation .openalex-icon{display:block;width:16px;height:16px;object-fit:contain}
+    .benchmark-openalex-citation .oc-openalex-citation-value{font-size:.95rem;font-weight:400;line-height:1;font-variant-numeric:tabular-nums}
     .benchmark-publication-badges{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:0;opacity:1}
     .benchmark-publication-badges > div{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px;overflow:visible}
     .benchmark-publication-badges .oc-altmetric-zero{position:relative;width:64px;height:64px}
     .benchmark-publication-badges .oc-altmetric-zero::after{content:"0";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;color:#27313d;font-size:16px;font-weight:500;line-height:1;pointer-events:none}
+    .scholarly-cite-inline{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;min-height:30px;padding:0 .2rem;border:0;background:transparent;color:#0b66c3;font-size:.84rem;font-weight:600;line-height:1;text-decoration:none!important}
+    .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{background:transparent;color:#075eaa;text-decoration:none!important}
+    .scholarly-cite-quote{color:#0b66c3;font-size:1.38rem;font-weight:700;line-height:.7}
+    .scholarly-cite-dialog{width:min(680px,calc(100% - 2rem));max-width:680px;padding:0;border:1px solid #dbe4ee;border-radius:10px;box-shadow:0 18px 45px rgba(26,45,64,.2);color:#334155}
+    .scholarly-cite-dialog::backdrop{background:rgba(31,45,58,.28)}
+    .scholarly-cite-dialog-inner{background:#fff}
+    .scholarly-cite-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1rem;border-bottom:1px solid #dbe4ee}
+    .scholarly-cite-dialog-header h2{margin:0;color:#0f2e4b;font-size:1rem;font-weight:600}
+    .benchmark-citation-export .scholarly-cite-close{-webkit-appearance:none;appearance:none;display:inline-grid;place-items:center;width:30px;height:30px;border:0;border-radius:4px;background:transparent;padding:0;color:#64748b;font-family:inherit;font-size:1.3rem;font-weight:400;line-height:1;outline:none;text-decoration:none!important;box-shadow:none!important}
+    .benchmark-citation-export .scholarly-cite-close:hover,.benchmark-citation-export .scholarly-cite-close:active{border-color:transparent;background:#f1f5f9;color:#334155;text-decoration:none!important;box-shadow:none!important}
+    .benchmark-citation-export .scholarly-cite-close:focus{color:#334155;text-decoration:none!important;box-shadow:none!important}
+    .benchmark-citation-export .scholarly-cite-close:focus-visible{outline:2px solid #94a3b8;outline-offset:2px}
+    .scholarly-cite-dialog-body{display:grid;gap:.7rem;padding:1rem}
+    .scholarly-reference-export-preview{display:grid;grid-template-columns:4.8rem minmax(0,1fr) auto;align-items:start;gap:.6rem}
+    .scholarly-cite-format{color:#64748b;font-size:.76rem;font-weight:600}
+    .scholarly-reference-export-value{min-width:0;color:#334155;font-size:.8rem;line-height:1.45;overflow-wrap:anywhere}
+    .scholarly-reference-export button{border:0;background:transparent;padding:.1rem 0;color:#0b66c3;font-size:.76rem;font-weight:400}
+    .scholarly-reference-export button:hover,.scholarly-reference-export button:focus{text-decoration:underline;text-underline-offset:.15em}
+    .scholarly-reference-export button:disabled{cursor:wait;opacity:.55}
+    .scholarly-reference-export-files{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;border-top:1px solid #dbe4ee;padding-top:.65rem;margin-top:.1rem}
+    .scholarly-reference-export-label{color:#64748b;font-size:.72rem;font-weight:600}
+    .scholarly-cite-source{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:.35rem .55rem;width:100%;margin-top:-.1rem;color:#64748b;font-size:.72rem;text-align:right}
+    .scholarly-cite-source a{color:#64748b;text-decoration:none}
+    .scholarly-cite-source a:hover,.scholarly-cite-source a:focus{color:#0b66c3;text-decoration:underline;text-underline-offset:.15em}
+    .scholarly-reference-export-status{color:#64748b;font-size:.72rem}
     @media (max-width: 991.98px){
       .benchmark-hero-grid,.benchmark-overview-grid,.leaderboard-grid{grid-template-columns:1fr}
     }
@@ -176,6 +207,11 @@
       .license-title-line a{white-space:normal}
       .benchmark-preview-media{justify-self:stretch;max-width:none}
       .benchmark-citation-copy{margin-top:.4rem}
+      .scholarly-reference-export-preview{grid-template-columns:4.2rem minmax(0,1fr)}
+      .scholarly-reference-export-preview button{grid-column:2;justify-self:start}
+      .scholarly-cite-source{justify-content:flex-start;text-align:left}
+      .scholarly-cite-dialog{width:calc(100% - 1rem)}
+      .scholarly-cite-dialog-body{padding:.85rem}
     }
   </style>
 </head>
@@ -451,6 +487,28 @@
     return firstValue(board.doi, board.paper_doi, dataset?.doi, dataset?.paper_doi, board.source_url, board.paper_url);
   }
 
+  function benchmarkDoiValue(value){
+    const raw = firstValue(value);
+    const match = raw.match(/10\.\d{4,9}\/[^\s<>\]]+/i);
+    return match ? match[0].replace(/[),.;]+$/, '') : '';
+  }
+
+  function benchmarkDoiHref(value){
+    const doi = benchmarkDoiValue(value);
+    return doi ? `https://doi.org/${doi.split('/').map(encodeURIComponent).join('/')}` : '';
+  }
+
+  function benchmarkOpenAlexIconHtml(){
+    return '<img class="openalex-icon" src="https://help.openalex.org/favicon.svg" alt="" decoding="async">';
+  }
+
+  function benchmarkDoiHtml(value){
+    const doi = benchmarkDoiValue(value);
+    const doiHref = benchmarkDoiHref(doi);
+    if (!doi || !doiHref) return '';
+    return `<a href="${esc(doiHref)}" target="_blank" rel="noopener">${esc(doi)}</a>`;
+  }
+
   function benchmarkSourceLabel(board, dataset){
     const explicit = firstValue(board.source_label, board.paper_label, dataset?.paper, dataset?.publication);
     if (explicit) return explicit;
@@ -550,6 +608,14 @@
       if (dimAttr) blocks.push(`<div><span class="__dimensions_badge_embed__" ${dimAttr} data-style="small_circle"></span></div>`);
     }
 
+    if (id.kind === 'doi') {
+      blocks.push(`<div class="benchmark-openalex-citation" data-openalex-citation hidden><a class="oc-openalex-citation" data-openalex-citation-link target="_blank" rel="noopener" aria-label="OpenAlex citations: loading">${benchmarkOpenAlexIconHtml()}<span class="oc-openalex-citation-value">&mdash;</span></a></div>`);
+    }
+
+    if (false && id.kind === 'doi') {
+      blocks.push(`<div class="benchmark-semantic-scholar-citation" data-semantic-scholar-citation hidden><a class="oc-semantic-scholar-citation" data-semantic-scholar-citation-link target="_blank" rel="noopener" aria-label="Semantic Scholar citations: loading">${benchmarkSemanticScholarIconHtml()}<span class="oc-semantic-scholar-citation-value">—</span></a></div>`);
+    }
+
     if (!blocks.length) return '';
     return `<div class="benchmark-publication-badges">${blocks.join('')}</div>`;
   }
@@ -623,22 +689,218 @@
   }
 
   function benchmarkCitationAttentionHtml(board, dataset){
-    const badges = publicationBadgesHtml(paperDoi(board, dataset), {
+    const doi = benchmarkDoiValue(paperDoi(board, dataset));
+    const badges = publicationBadgesHtml(doi, {
       altmetric: board?.altmetric ?? dataset?.altmetric,
       dimensions: board?.dimensions ?? dataset?.dimensions
     });
-    if (!badges) return '';
+    if (!badges && !doi) return '';
     return `
       <div class="benchmark-citation-details">
         <h3 class="benchmark-citation-title">Citation &amp; Attention</h3>
-        ${badges}
         <div class="benchmark-citation-copy">
           Data source:
-          <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a> and
-          <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>
-          (records may be incomplete and coverage varies by venue and year).
+          <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
+          <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
+          <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
+          <span>(coverage varies by provider, venue, and year)</span>
         </div>
+        ${badges || ''}
       </div>`;
+  }
+
+  async function initializeBenchmarkOpenAlex(root, value){
+    const host = root?.querySelector?.('[data-openalex-citation]');
+    if (!host) return;
+    const doi = benchmarkDoiValue(value);
+    if (!doi) return;
+    try {
+      const endpoint = `https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}`;
+      const response = await fetch(endpoint, { cache: 'no-store', headers: { Accept: 'application/json' } });
+      if (!response.ok) return;
+      const record = await response.json();
+      const count = Number(record?.cited_by_count);
+      const recordHref = normStr(record?.id);
+      const workId = recordHref.match(/(?:^|\/)(W\d+)$/i)?.[1]?.toUpperCase() || '';
+      const citedByHref = workId ? `https://openalex.org/works?filter=${encodeURIComponent(`cites:${workId}`)}&sort=publication_date%3Adesc` : '';
+      if (!citedByHref || !Number.isFinite(count)) return;
+      const countNode = host.querySelector('.oc-openalex-citation-value');
+      const link = host.querySelector('[data-openalex-citation-link]');
+      if (countNode) countNode.textContent = count.toLocaleString();
+      if (link) {
+        link.href = citedByHref;
+        link.setAttribute('aria-label', `OpenAlex cited-by results: ${count.toLocaleString()} citations`);
+      }
+      host.hidden = false;
+    } catch {}
+  }
+
+  function benchmarkCitationButtonHtml(doi){
+    return doi ? '<button type="button" class="scholarly-cite-inline" data-citation-open aria-haspopup="dialog"><span class="scholarly-cite-quote" aria-hidden="true">&#10077;</span><span>Cite</span></button>' : '';
+  }
+
+  function benchmarkCitationDialogHtml(doi){
+    if (!doi) return '';
+    const sourceHref = `https://citation.doi.org/format?doi=${encodeURIComponent(doi)}&style=apa&lang=en-US`;
+    return `<div class="benchmark-citation-export scholarly-reference-export" data-citation-export>
+      <dialog class="scholarly-cite-dialog" data-citation-dialog aria-labelledby="benchmark-cite-title">
+        <div class="scholarly-cite-dialog-inner">
+          <div class="scholarly-cite-dialog-header">
+            <h2 id="benchmark-cite-title">Cite</h2>
+            <button type="button" class="scholarly-cite-close" data-citation-close aria-label="Close citation dialog">&times;</button>
+          </div>
+          <div class="scholarly-cite-dialog-body">
+            <div class="scholarly-reference-export-preview" data-citation-preview data-citation-format="apa">
+              <div class="scholarly-cite-format">APA</div>
+              <div class="scholarly-reference-export-value" data-citation-value>Open to retrieve citation.</div>
+              <button type="button" data-citation-action="copy" data-citation-format="apa">Copy</button>
+            </div>
+            <div class="scholarly-reference-export-preview" data-citation-preview data-citation-format="chicago-author-date">
+              <div class="scholarly-cite-format">Chicago</div>
+              <div class="scholarly-reference-export-value" data-citation-value>Open to retrieve citation.</div>
+              <button type="button" data-citation-action="copy" data-citation-format="chicago-author-date">Copy</button>
+            </div>
+            <div class="scholarly-reference-export-preview" data-citation-preview data-citation-format="ieee">
+              <div class="scholarly-cite-format">IEEE</div>
+              <div class="scholarly-reference-export-value" data-citation-value>Open to retrieve citation.</div>
+              <button type="button" data-citation-action="copy" data-citation-format="ieee">Copy</button>
+            </div>
+            <div class="scholarly-reference-export-files" aria-label="Download citation file">
+              <span class="scholarly-reference-export-label">Download</span>
+              <button type="button" data-citation-action="download" data-citation-format="bibtex">BibTeX</button>
+              <button type="button" data-citation-action="download" data-citation-format="ris">RIS</button>
+            </div>
+            <div class="scholarly-cite-source"><span>Data source:</span><a href="${esc(sourceHref)}" target="_blank" rel="noopener">DOI Citation Formatter</a></div>
+            <span class="scholarly-reference-export-status" data-citation-status role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </dialog>
+    </div>`;
+  }
+
+  function benchmarkCitationRequest(doi, format){
+    const encodedDoi = encodeURIComponent(doi);
+    if (format === 'bibtex') return { url: `https://doi.org/${encodedDoi}`, accept: 'application/x-bibtex', extension: 'bib', mime: 'application/x-bibtex;charset=utf-8' };
+    if (format === 'ris') return { url: `https://doi.org/${encodedDoi}`, accept: 'application/x-research-info-systems', extension: 'ris', mime: 'application/x-research-info-systems;charset=utf-8' };
+    const styles = { apa: 'apa', ieee: 'ieee', 'chicago-author-date': 'chicago-author-date' };
+    const style = styles[format];
+    if (!style) return null;
+    return {
+      url: `https://citation.doi.org/format?doi=${encodedDoi}&style=${encodeURIComponent(style)}&lang=en-US`,
+      accept: 'text/plain',
+      fallbackUrl: `https://doi.org/${encodedDoi}`,
+      fallbackAccept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
+      extension: 'txt',
+      mime: 'text/plain;charset=utf-8'
+    };
+  }
+
+  async function fetchBenchmarkCitation(url, accept){
+    const controller = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = controller ? window.setTimeout(() => controller.abort(), 4500) : null;
+    try {
+      const response = await fetch(url, { cache: 'no-store', headers: { Accept: accept }, signal: controller?.signal });
+      if (!response.ok) return null;
+      const value = await response.text();
+      return value.trim() || null;
+    } catch {
+      return null;
+    } finally {
+      if (timer) window.clearTimeout(timer);
+    }
+  }
+
+  function benchmarkCitationDisplayText(value, format){
+    const text = String(value || '').trim();
+    return format === 'ieee' ? text.replace(/^\s*(?:\[\d+\]|\d+\.)\s*/, '') : text;
+  }
+
+  async function benchmarkCopyCitation(value){
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { copied = false; }
+    textarea.remove();
+    return copied;
+  }
+
+  function benchmarkDownloadCitation(value, filename, mime){
+    const url = URL.createObjectURL(new Blob([value], { type: mime }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function initializeBenchmarkCitation(root, value){
+    const doi = benchmarkDoiValue(value);
+    const exportRoot = root?.querySelector?.('[data-citation-export]');
+    if (!doi || !exportRoot) return;
+    const dialog = exportRoot.querySelector('[data-citation-dialog]');
+    const status = exportRoot.querySelector('[data-citation-status]');
+    const cache = new Map();
+    const getCitation = format => {
+      if (!cache.has(format)) {
+        const request = benchmarkCitationRequest(doi, format);
+        cache.set(format, request ? (async () => {
+          const primary = await fetchBenchmarkCitation(request.url, request.accept);
+          return primary || !request.fallbackUrl ? primary : fetchBenchmarkCitation(request.fallbackUrl, request.fallbackAccept);
+        })() : Promise.resolve(null));
+      }
+      return cache.get(format);
+    };
+    let lastFocused = null;
+    root.querySelectorAll('[data-citation-open]').forEach(button => button.addEventListener('click', () => {
+      lastFocused = document.activeElement;
+      if (dialog?.showModal) dialog.showModal(); else dialog?.setAttribute('open', '');
+      if (!exportRoot.dataset.loaded) {
+        exportRoot.dataset.loaded = 'true';
+        if (status) status.textContent = 'Retrieving official citations...';
+        Promise.all(Array.from(exportRoot.querySelectorAll('[data-citation-preview]')).map(async preview => ({ preview, value: await getCitation(preview.dataset.citationFormat) }))).then(results => {
+          let unavailable = 0;
+          results.forEach(({ preview, value: citation }) => {
+            const valueNode = preview.querySelector('[data-citation-value]');
+            if (valueNode) valueNode.textContent = citation ? benchmarkCitationDisplayText(citation, preview.dataset.citationFormat) : 'Citation unavailable for this format.';
+            if (!citation) unavailable += 1;
+          });
+          if (status) status.textContent = unavailable ? 'Some formats are unavailable for this DOI.' : '';
+        });
+      }
+    }));
+    exportRoot.querySelector('[data-citation-close]')?.addEventListener('click', () => dialog?.close?.());
+    dialog?.addEventListener('close', () => lastFocused?.focus?.());
+    dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close?.(); });
+    exportRoot.querySelectorAll('[data-citation-action]').forEach(button => button.addEventListener('click', async () => {
+      const format = button.dataset.citationFormat;
+      const action = button.dataset.citationAction;
+      const request = benchmarkCitationRequest(doi, format);
+      if (!request) return;
+      exportRoot.querySelectorAll('button').forEach(item => { item.disabled = true; });
+      const citation = await getCitation(format);
+      if (!citation) {
+        if (status) status.textContent = 'Citation unavailable right now.';
+      } else if (action === 'copy') {
+        const copied = await benchmarkCopyCitation(benchmarkCitationDisplayText(citation, format)).catch(() => false);
+        if (status) status.textContent = copied ? 'Copied.' : 'Copy failed; please try again.';
+      } else {
+        const stem = doi.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 80) || 'citation';
+        benchmarkDownloadCitation(citation, `${stem}.${request.extension}`, request.mime);
+        if (status) status.textContent = `Downloaded ${request.extension.toUpperCase()}.`;
+      }
+      exportRoot.querySelectorAll('button').forEach(item => { item.disabled = false; });
+    }));
   }
 
   function codeHref(board, dataset){
@@ -1018,6 +1280,7 @@
     const summary = firstValue(board.summary, board.task_description, dataset?.description, dataset?.summary);
     const pageTitle = firstValue(board.page_title, board.name, `${datasetLabel} ${taskLabel}`);
     const metaHtml = authorYearHtml(dataset);
+    const benchmarkDoi = benchmarkDoiValue(paperDoi(board, dataset));
     const licenseRecord = Object.assign({}, board || {}, dataset || {});
     const leaderboardHtml = board.results_url
       ? `<a class="benchmark-action" href="${esc(board.results_url)}" target="_blank" rel="noopener">${actionIcon('leaderboard')}<span>Open Leaderboard</span></a>`
@@ -1028,7 +1291,8 @@
       shareBenchmarkButton(pageTitle),
       repositoryHref ? actionLink(repositoryHref, 'Access Code', 'code', true) : '',
       leaderboardHtml,
-      benchmarkBookmarkButton(board, pageTitle)
+      benchmarkBookmarkButton(board, pageTitle),
+      benchmarkCitationButtonHtml(benchmarkDoi)
     ].filter(Boolean).join('');
     const detailRows = [
       { label: 'Primary Metric', value: metricDisplayLabel(primaryDef) || board.primary_metric_key || '-' },
@@ -1043,6 +1307,7 @@
       { label: 'Classes', value: firstValue(dataset?.num_classes, compactList(dataset?.classes, 4)) },
       { label: 'Annotations', value: compactList(dataset?.annotation_types || dataset?.annotations || dataset?.annotation, 4) },
       { label: 'Location', value: firstValue(dataset?.geographical_location, dataset?.location, compactList(dataset?.locations, 3)) },
+      { label: 'DOI', value: benchmarkDoiHtml(benchmarkDoi), html: true },
       { label: 'License', value: formatLicenseHtml(firstValue(dataset?.license, board.license), licenseRecord), html: true }
     ].filter(item => normStr(item.value));
     const citationHtml = benchmarkCitationAttentionHtml(board, dataset);
@@ -1089,6 +1354,7 @@
               ${summary ? `<p class="benchmark-summary-row mb-0"><span class="summary-note-label">Note:</span> ${esc(summary)}</p>` : ''}
             </section>
             ${board.results_url ? benchmarkSourceYearHtml(board, dataset) : resultFigureCard(board, dataset)}
+            ${benchmarkCitationDialogHtml(benchmarkDoi)}
           </div>
         </div>
       </div>
@@ -1161,6 +1427,8 @@
       const mount = document.getElementById('contentMount');
       mount.innerHTML = boardBenchmarkHtml(board, dataset, taskVocabulary);
       await initializePublicationBadges(mount);
+      await initializeBenchmarkOpenAlex(mount, paperDoi(board, dataset));
+      initializeBenchmarkCitation(mount, paperDoi(board, dataset));
       wireBenchmarkActions(mount);
       initResultFigure(board, models);
     }catch(err){
