@@ -55,6 +55,7 @@ const expectedTopLevelHtml = new Set([
   "task.html",
   "tutorials.html",
   "references.html",
+  "related-resources.html",
   "verify.html",
 ]);
 

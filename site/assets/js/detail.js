@@ -1341,6 +1341,13 @@ async function fetchScholarlyText(url, accept){
   }
 }
 
+function citationExportSourceHtml(doiVal, records){
+  if (!Array.isArray(records) || !records.some(record => record.provider === 'Crossref')) return '';
+  const href = crossrefRecordHref(doiVal);
+  if (!href) return '';
+  return `<span>Data source:</span><a class="scholarly-cite-source-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the Crossref record">${crossrefIconHtml()}</a>`;
+}
+
 function citationExportHtml(doiVal){
   const doi = normalizedDoiValue(doiVal);
   if (!doi) return '';
@@ -1375,7 +1382,7 @@ function citationExportHtml(doiVal){
             <button type="button" data-citation-action="download" data-citation-format="bibtex">BibTeX</button>
             <button type="button" data-citation-action="download" data-citation-format="ris">RIS</button>
           </div>
-          <div class="scholarly-cite-source" data-citation-source hidden></div>
+      <div class="scholarly-cite-source" data-citation-source hidden></div>
           <span class="scholarly-reference-export-status" data-citation-status role="status" aria-live="polite"></span>
         </div>
       </div>
@@ -1391,10 +1398,12 @@ function citationInlineButtonHtml(doiVal){
 function citationExportRequest(doi, format){
   const encodedDoi = encodeURIComponent(doi);
   const url = `https://api.crossref.org/v1/works/${encodedDoi}/transform`;
+  const fallbackUrl = `https://doi.org/${encodedDoi}`;
   if (format === 'bibtex') {
     return {
       url,
       accept: 'application/x-bibtex',
+      fallbackRequests: [{ url: fallbackUrl, accept: 'application/x-bibtex' }],
       extension: 'bib',
       mime: 'application/x-bibtex;charset=utf-8'
     };
@@ -1403,6 +1412,7 @@ function citationExportRequest(doi, format){
     return {
       url,
       accept: 'application/x-research-info-systems',
+      fallbackRequests: [{ url: fallbackUrl, accept: 'application/x-research-info-systems' }],
       extension: 'ris',
       mime: 'application/x-research-info-systems;charset=utf-8'
     };
@@ -1413,6 +1423,10 @@ function citationExportRequest(doi, format){
   return {
     url,
     accept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
+    fallbackRequests: [
+      { url: `https://citation.doi.org/format?doi=${encodedDoi}&style=${encodeURIComponent(style)}&lang=en-US`, accept: 'text/plain' },
+      { url: fallbackUrl, accept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US` }
+    ],
     extension: 'txt',
     mime: 'text/plain;charset=utf-8'
   };
@@ -1471,8 +1485,12 @@ function initializeCitationExport(root, doiVal){
       const request = citationExportRequest(doi, format);
       citationCache.set(format, request ? (async () => {
         const primary = await fetchScholarlyText(request.url, request.accept);
-        if (primary || !request.fallbackUrl) return primary;
-        return fetchScholarlyText(request.fallbackUrl, request.fallbackAccept);
+        if (primary) return primary;
+        for (const fallback of request.fallbackRequests || []) {
+          const value = await fetchScholarlyText(fallback.url, fallback.accept);
+          if (value) return value;
+        }
+        return null;
       })() : Promise.resolve(null));
     }
     return citationCache.get(format);
@@ -1554,44 +1572,21 @@ function normalizeScholarlyResponses(responses){
 function renderCitationExportSource(root, records, doi){
   const host = root?.querySelector?.('[data-citation-source]');
   if (!host) return;
-  const providers = records.map(record => {
-    const href = record.provider === 'DataCite'
-      ? dataciteRecordHref(doi)
-      : crossrefRecordHref(doi);
-    const icon = record.provider === 'DataCite' ? dataciteIconHtml() : crossrefIconHtml();
-    return href
-      ? `<a class="scholarly-cite-source-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the ${escapeHtml(record.provider)} record">${icon}</a>`
-      : '';
-  }).join('');
-  host.hidden = false;
-  if (!providers) {
+  const source = citationExportSourceHtml(doi, records);
+  if (!source) {
     host.hidden = true;
     host.innerHTML = '';
     return;
   }
-  host.innerHTML = `<span>Data source:</span>${providers}`;
+  host.hidden = false;
+  host.innerHTML = source;
 }
 
 function renderScholarlyMetadata(root, records, doi){
   const host = root?.querySelector?.('[data-scholarly-reference-sources]');
   const registryRecords = records.filter(record => ['Crossref', 'DataCite'].includes(record.provider));
   renderCitationExportSource(root, registryRecords, doi);
-  if (!host) return;
-  const referenceRecords = registryRecords.filter(record => record.provider !== 'Crossref');
-  if (!referenceRecords.length) {
-    host.remove();
-    return;
-  }
-  host.hidden = false;
-  const providers = referenceRecords.map(record => {
-    if (record.provider === 'DataCite') {
-      const href = escapeHtml(dataciteRecordHref(doi) || '');
-      return `<a class="scholarly-reference-provider" href="${href}" target="_blank" rel="noopener" aria-label="Open the DataCite record for this DOI">${dataciteIconHtml()}</a>`;
-    }
-    const href = escapeHtml(crossrefRecordHref(doi) || '');
-    return `<a class="scholarly-reference-provider" href="${href}" target="_blank" rel="noopener" aria-label="Open the Crossref record for this DOI">${crossrefIconHtml()}</a>`;
-  }).join('');
-  host.innerHTML = `<span class="scholarly-reference-providers">${providers}</span>`;
+  if (host) host.remove();
 }
 
 function semanticScholarPaperHref(record){
@@ -1996,8 +1991,8 @@ async function initDetail(){
       const doiSource = primaryPublication?.doi || m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
       const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
-      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(doiSource)}</div>` : '';
-      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(m.license, m)}</div>` : '';
+      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> <span class="scholarly-reference-value">${formatDoi(doiSource)}</span></div>` : '';
+      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> <span class="scholarly-reference-value">${formatLicense(m.license, m)}</span></div>` : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
       const badgeIdSource = doiSource || paperUrl;
       const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
@@ -2035,6 +2030,9 @@ async function initDetail(){
       }
       function modelHref(model){
         return `details.html?id=${encodeURIComponent(model.id || model.title || '')}`;
+      }
+      function relatedCatalogHref(targetType){
+        return `../related-resources.html?source_type=model&source_id=${encodeURIComponent(m.id || m.title || '')}&target_type=${encodeURIComponent(targetType)}`;
       }
     function scoreOverlap(a, b){
       const setA = new Set(normalizeList(a).map(normKey));
@@ -2099,7 +2097,7 @@ async function initDetail(){
             <div class="detail-subcard h-100">
               <div class="detail-subhead-row">
                 <div class="detail-subhead">Related models</div>
-                <span class="related-section-source"><span>Data source:</span>${openConstructionIconHtml()}<span>OpenConstruction</span></span>
+                <span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('model')}" aria-label="View related models in OpenConstruction">${openConstructionIconHtml()}<span>OpenConstruction</span></a></span>
               </div>
               ${relatedModels.length ? relatedModels.map(other => `
                 <a class="related-link" href="${modelHref(other)}">
@@ -2107,13 +2105,14 @@ async function initDetail(){
                   <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.tasks || other.task)[0], normalizeList(other.modalities || other.modality || other.data_modalities)[0], uniquePrettyTerms(other.applications || other.application)[0]].filter(Boolean).join(' • ') || 'Similar task or application area', 90))}</span>
                 </a>
               `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
+              ${relatedModels.length ? `<a class="related-section-more" href="${relatedCatalogHref('model')}">View all related models <span aria-hidden="true">&rarr;</span></a>` : ''}
             </div>
           </div>
           <div class="col-lg-6">
             <div class="detail-subcard h-100">
               <div class="detail-subhead-row">
                 <div class="detail-subhead">Related datasets</div>
-                <span class="related-section-source"><span>Data source:</span>${openConstructionIconHtml()}<span>OpenConstruction</span></span>
+                <span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('dataset')}" aria-label="View related datasets in OpenConstruction">${openConstructionIconHtml()}<span>OpenConstruction</span></a></span>
               </div>
               ${relatedDatasets.length ? relatedDatasets.map(ds => `
                 <a class="related-link" href="${datasetHref(ds)}">
@@ -2121,6 +2120,7 @@ async function initDetail(){
                   <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
                 </a>
               `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
+              ${relatedDatasets.length ? `<a class="related-section-more" href="${relatedCatalogHref('dataset')}">View all related datasets <span aria-hidden="true">&rarr;</span></a>` : ''}
             </div>
           </div>
           ${doiUrl ? `
@@ -2159,13 +2159,15 @@ async function initDetail(){
           .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; }
           .meta-val > a:hover,.meta-val > a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.14em; }
           .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
+          .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
+          .scholarly-reference-card .scholarly-reference-value a:hover,.scholarly-reference-card .scholarly-reference-value a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
           .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
           .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
           .detail-primary-actions{ display:inline-flex; align-items:center; gap:.35rem; margin-left:.1rem; }
-          .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.3rem; min-height:30px; padding:0 .2rem; border:0; background:transparent; color:var(--oc-link); font-size:.84rem; font-weight:600; line-height:1; text-decoration:none!important; }
+          .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.25rem; min-height:28px; padding:0 .15rem; border:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; }
           .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
-          .scholarly-cite-quote{ color:var(--oc-link); font-size:1.38rem; font-weight:700; line-height:.7; }
+          .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
           .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:0; }
           .scholarly-reference-export .scholarly-cite-reference-link{ display:inline-flex; align-items:center; min-height:0; padding:0; border:0; background:transparent; color:var(--oc-link); font-size:.78rem; font-weight:600; line-height:1.3; text-decoration:none!important; }
           .scholarly-reference-export .scholarly-cite-reference-link:hover,.scholarly-reference-export .scholarly-cite-reference-link:focus{ background:transparent; color:#075eaa; text-decoration:underline!important; text-underline-offset:.16em; }
@@ -2192,7 +2194,11 @@ async function initDetail(){
           .detail-subcard{ padding:1rem; }
           .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
           .related-section-source{ display:inline-flex; align-items:center; gap:.3rem; color:var(--oc-sub); font-size:.72rem; font-weight:400; white-space:nowrap; }
+          .related-section-source-link{ display:inline-flex; align-items:center; gap:.25rem; color:var(--oc-sub); text-decoration:none; }
+          .related-section-source-link:hover,.related-section-source-link:focus{ color:var(--oc-link); text-decoration:none; }
           .related-section-source .openconstruction-icon{ width:1rem; height:1rem; object-fit:contain; }
+          .related-section-more{ display:inline-flex; align-items:center; gap:.25rem; margin-top:.2rem; color:var(--oc-sub); font-size:.75rem; font-weight:400; text-decoration:none; }
+          .related-section-more:hover,.related-section-more:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
           .publication-subcard{ padding:.15rem 0 0; border:0; box-shadow:none; background:transparent; }
           .publications-disclosure summary{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.1rem 0 .35rem; cursor:pointer; list-style:none; }
           .publications-disclosure summary::-webkit-details-marker{ display:none; }
@@ -2395,7 +2401,7 @@ async function initDetail(){
           </div>
 
           ${(doiBlock || licenseBlock) ? `
-          <div class="card border-0 shadow-sm mb-3">
+          <div class="card border-0 shadow-sm mb-3 scholarly-reference-card">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
               <div class="small">${doiBlock}${licenseBlock}</div>
@@ -2571,6 +2577,9 @@ async function initDetail(){
     function modelHref(model){
       return `../models/details.html?id=${encodeURIComponent(model.id || model.title || '')}`;
     }
+    function relatedCatalogHref(targetType){
+      return `../related-resources.html?source_type=dataset&source_id=${encodeURIComponent(ds.id || ds.name || '')}&target_type=${encodeURIComponent(targetType)}`;
+    }
     function scoreOverlap(a, b){
       const setA = new Set(normalizeList(a).map(normKey));
       const setB = new Set(normalizeList(b).map(normKey));
@@ -2656,7 +2665,7 @@ async function initDetail(){
           <div class="detail-subcard h-100">
             <div class="detail-subhead-row">
               <div class="detail-subhead">Related models</div>
-              <span class="related-section-source"><span>Data source:</span>${openConstructionIconHtml()}<span>OpenConstruction</span></span>
+              <span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('model')}" aria-label="View related models in OpenConstruction">${openConstructionIconHtml()}<span>OpenConstruction</span></a></span>
             </div>
             ${relatedModels.length ? relatedModels.map(model => `
               <a class="related-link" href="${modelHref(model)}">
@@ -2664,13 +2673,14 @@ async function initDetail(){
                 <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(model.tasks || model.task)[0], normalizeList(model.modalities || model.modality || model.data_modalities)[0], uniquePrettyTerms(model.applications || model.application)[0]].filter(Boolean).join(' • ') || 'Likely compatible with this dataset', 90))}</span>
               </a>
             `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
+            ${relatedModels.length ? `<a class="related-section-more" href="${relatedCatalogHref('model')}">View all related models <span aria-hidden="true">&rarr;</span></a>` : ''}
           </div>
         </div>
         <div class="col-lg-6">
           <div class="detail-subcard h-100">
             <div class="detail-subhead-row">
               <div class="detail-subhead">Related datasets</div>
-              <span class="related-section-source"><span>Data source:</span>${openConstructionIconHtml()}<span>OpenConstruction</span></span>
+              <span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('dataset')}" aria-label="View related datasets in OpenConstruction">${openConstructionIconHtml()}<span>OpenConstruction</span></a></span>
             </div>
             ${relatedDatasets.length ? relatedDatasets.map(({ other, sharedTasks }) => `
               <a class="related-link" href="${datasetHref(other)}">
@@ -2678,6 +2688,7 @@ async function initDetail(){
                 <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.potential_tasks || other.tasks || other.task)[0], normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task coverage', 90))}</span>
               </a>
             `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
+            ${relatedDatasets.length ? `<a class="related-section-more" href="${relatedCatalogHref('dataset')}">View all related datasets <span aria-hidden="true">&rarr;</span></a>` : ''}
           </div>
         </div>
         ${normalizedDoiValue(ds.doi) ? `
@@ -2716,13 +2727,15 @@ async function initDetail(){
         .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; }
         .meta-val > a:hover,.meta-val > a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.14em; }
         .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
+        .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
+        .scholarly-reference-card .scholarly-reference-value a:hover,.scholarly-reference-card .scholarly-reference-value a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
         .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
         .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
         .detail-primary-actions{ display:inline-flex; align-items:center; gap:.35rem; margin-left:.1rem; }
-        .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.3rem; min-height:30px; padding:0 .2rem; border:0; background:transparent; color:var(--oc-link); font-size:.84rem; font-weight:600; line-height:1; text-decoration:none!important; }
+        .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.25rem; min-height:28px; padding:0 .15rem; border:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; }
         .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
-        .scholarly-cite-quote{ color:var(--oc-link); font-size:1.38rem; font-weight:700; line-height:.7; }
+        .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
         .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:0; }
         .scholarly-reference-export .scholarly-cite-reference-link{ display:inline-flex; align-items:center; min-height:0; padding:0; border:0; background:transparent; color:var(--oc-link); font-size:.78rem; font-weight:600; line-height:1.3; text-decoration:none!important; }
         .scholarly-reference-export .scholarly-cite-reference-link:hover,.scholarly-reference-export .scholarly-cite-reference-link:focus{ background:transparent; color:#075eaa; text-decoration:underline!important; text-underline-offset:.16em; }
@@ -2747,7 +2760,11 @@ async function initDetail(){
         .detail-subcard{ padding:1rem; }
         .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
         .related-section-source{ display:inline-flex; align-items:center; gap:.3rem; color:var(--oc-sub); font-size:.72rem; font-weight:400; white-space:nowrap; }
+        .related-section-source-link{ display:inline-flex; align-items:center; gap:.25rem; color:var(--oc-sub); text-decoration:none; }
+        .related-section-source-link:hover,.related-section-source-link:focus{ color:var(--oc-link); text-decoration:none; }
         .related-section-source .openconstruction-icon{ width:1rem; height:1rem; object-fit:contain; }
+        .related-section-more{ display:inline-flex; align-items:center; gap:.25rem; margin-top:.2rem; color:var(--oc-sub); font-size:.75rem; font-weight:400; text-decoration:none; }
+        .related-section-more:hover,.related-section-more:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
         .related-link{ display:flex; flex-direction:column; gap:.18rem; padding:.8rem 0; color:inherit; text-decoration:none; }
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
@@ -2884,8 +2901,8 @@ async function initDetail(){
       </div>
     `;
 
-    const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> ${formatDoi(ds.doi)}</div>` : '';
-    const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> ${formatLicense(ds.license, ds)}</div>` : '';
+      const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> <span class="scholarly-reference-value">${formatDoi(ds.doi)}</span></div>` : '';
+      const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> <span class="scholarly-reference-value">${formatLicense(ds.license, ds)}</span></div>` : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
     // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
     const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
@@ -2936,7 +2953,7 @@ async function initDetail(){
         </div>
 
         ${(doiBlock || licenseBlock) ? `
-        <div class="card border-0 shadow-sm mb-3">
+        <div class="card border-0 shadow-sm mb-3 scholarly-reference-card">
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
             <div class="small">${doiBlock}${licenseBlock}</div>

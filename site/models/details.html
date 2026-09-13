@@ -105,7 +105,8 @@
     .scholarly-reference-export-menu{display:grid;gap:.7rem;margin-top:.45rem;padding:0;border:0;background:transparent;}
     .scholarly-reference-export-help{margin:0;color:var(--oc-sub);font-size:.76rem;}
     .scholarly-cite-source{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:.35rem .55rem;width:100%;margin-top:-.1rem;color:var(--oc-sub);font-size:.72rem;text-align:right;}
-    .scholarly-cite-source-link{display:inline-flex;align-items:center;}
+    .scholarly-cite-source-link{display:inline-flex;align-items:center;gap:.35rem;color:var(--oc-sub);text-decoration:none!important;}
+    .scholarly-cite-source-link:hover,.scholarly-cite-source-link:focus{color:var(--oc-link);text-decoration:none!important;}
     .scholarly-cite-source .scholarly-crossref-icon,.scholarly-cite-source .scholarly-datacite-icon{width:4.2rem;height:1rem;}
     .scholarly-reference-export-preview{display:grid;grid-template-columns:4.8rem minmax(0,1fr) auto;align-items:start;gap:.6rem;border-top:0;padding-top:0;}
     .scholarly-cite-format{color:var(--oc-sub);font-size:.76rem;font-weight:600;}
@@ -334,7 +335,7 @@
 
 <!-- Load before DOMContentLoaded so dynamically-rendered Dimensions badges can initialize. -->
 <script src="https://badge.dimensions.ai/badge.js" charset="utf-8" defer></script>
-<script src="../assets/js/detail.js?v=20260913-scholarly-layout-v34" defer></script>
+<script src="../assets/js/detail.js?v=20260913-scholarly-layout-v45" defer></script>
 
 <!-- Subscribe Modal -->
 <div class="modal fade" id="subscribeModal" tabindex="-1" aria-hidden="true">

@@ -269,6 +269,10 @@ async function initWorkflowDetail(){
       .slice(0, 3)
       .map(({ model }) => model);
 
+    function relatedCatalogHref(targetType){
+      return `../related-resources.html?source_type=workflow&source_id=${encodeURIComponent(item.title || '')}&target_type=${encodeURIComponent(targetType)}`;
+    }
+
     const quickFacts = [
       { label: 'Year', value: escapeHtml(item.year || '—') },
       { label: 'Phase', value: escapeHtml(item.phase || '—') },
@@ -295,7 +299,15 @@ async function initWorkflowDetail(){
         .detail-kicker{ color:var(--oc-sub); font-size:.76rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:.45rem; }
         .detail-heading{ font-size:1.1rem; font-weight:700; color:var(--oc-ink); margin:0 0 .85rem; }
         .detail-subcard{ padding:1rem; }
+        .detail-subhead-row{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.8rem; }
         .detail-subhead{ font-size:.92rem; font-weight:700; color:var(--oc-ink); margin-bottom:.8rem; }
+        .detail-subhead-row .detail-subhead{ margin-bottom:0; }
+        .related-section-source{ display:inline-flex; align-items:center; gap:.3rem; color:var(--oc-sub); font-size:.72rem; font-weight:400; white-space:nowrap; }
+        .related-section-source-link{ display:inline-flex; align-items:center; gap:.25rem; color:var(--oc-sub); text-decoration:none; }
+        .related-section-source-link:hover,.related-section-source-link:focus{ color:var(--oc-link); text-decoration:none; }
+        .related-section-source-icon{ width:1rem; height:1rem; object-fit:contain; }
+        .related-section-more{ display:inline-flex; align-items:center; gap:.25rem; margin-top:.2rem; color:var(--oc-sub); font-size:.75rem; font-weight:400; text-decoration:none; }
+        .related-section-more:hover,.related-section-more:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
         .quickfact-grid{ display:grid; gap:0; }
         .quickfact-row{ display:grid; gap:.16rem; padding:.55rem 0; }
         .quickfact-row + .quickfact-row{ border-top:1px solid var(--oc-border); }
@@ -377,14 +389,16 @@ async function initWorkflowDetail(){
             <div class="row g-4">
               <div class="col-lg-6">
                 <div class="detail-subcard h-100">
-                  <div class="detail-subhead">Related workflows</div>
+                  <div class="detail-subhead-row"><div class="detail-subhead">Related workflows</div><span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('workflow')}" aria-label="View related workflows in OpenConstruction"><img class="related-section-source-icon" src="../assets/img/icon.png" alt=""><span>OpenConstruction</span></a></span></div>
                   ${relatedWorkflowHtml(relatedWorkflows)}
+                  ${relatedWorkflows.length ? `<a class="related-section-more" href="${relatedCatalogHref('workflow')}">View all related workflows <span aria-hidden="true">&rarr;</span></a>` : ''}
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="detail-subcard h-100">
-                  <div class="detail-subhead">Related models</div>
+                  <div class="detail-subhead-row"><div class="detail-subhead">Related models</div><span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('model')}" aria-label="View related models in OpenConstruction"><img class="related-section-source-icon" src="../assets/img/icon.png" alt=""><span>OpenConstruction</span></a></span></div>
                   ${relatedModelHtml(relatedModels)}
+                  ${relatedModels.length ? `<a class="related-section-more" href="${relatedCatalogHref('model')}">View all related models <span aria-hidden="true">&rarr;</span></a>` : ''}
                 </div>
               </div>
             </div>
