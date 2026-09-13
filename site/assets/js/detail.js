@@ -1427,7 +1427,7 @@ async function initDetail(){
       const quickFacts = [
         { label: 'Year', value: escapeHtml(safeText(year)) },
         { label: 'Tasks', value: taskList.length ? linkedTaskChipLane(taskList) : '—' },
-        { label: 'Primary Application', value: appList.length ? linkedApplicationChipLane(appList.slice(0, 1)) : '—' },
+        { label: 'Applications', value: appList.length ? linkedApplicationChipLane(appList) : '—' },
         { label: 'Modality', value: modalityList.length ? escapeHtml(modalityList[0]) : '—' },
         { label: 'License', value: formatLicense(m.license, m) || '—' }
       ];
