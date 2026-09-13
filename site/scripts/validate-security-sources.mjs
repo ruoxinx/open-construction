@@ -26,6 +26,10 @@ const requiredMeta = [
   /<meta\b[^>]*http-equiv=["']Content-Security-Policy["']/i,
   /<meta\b[^>]*http-equiv=["']Permissions-Policy["']/i,
 ];
+const requiredCspSources = [
+  "https://static.cloudflareinsights.com",
+  "https://cloudflareinsights.com",
+];
 const pinnedIntegrity = new Map([
   ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css", "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"],
   ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js", "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"],
@@ -41,6 +45,9 @@ for (const file of htmlFiles) {
   const html = fs.readFileSync(file, "utf8");
   for (const pattern of requiredMeta) {
     if (!pattern.test(html)) fail(`${relative} is missing ${pattern.source}`);
+  }
+  for (const source of requiredCspSources) {
+    if (!html.includes(source)) fail(`${relative} CSP is missing ${source}`);
   }
 
   const externalTags = html.match(/<(?:script\b[^>]*\bsrc|link\b[^>]*\bhref)=["']https:\/\/(?:cdn\.jsdelivr\.net|unpkg\.com)[^"']+["'][^>]*>/gi) ?? [];
