@@ -1703,7 +1703,13 @@ function renderOpenAlexRelatedWorks(root, record, works){
   const sourceHref = openAlexRelatedWorksHref(record);
   const relatedWorks = Array.isArray(works) ? works.slice(0, 5) : [];
   if (!relatedWorks.length) {
-    source?.closest('.scholarly-related-heading-source')?.setAttribute('hidden', '');
+    if (source && sourceHref) {
+      source.href = sourceHref;
+      source.setAttribute('aria-label', 'View related works in OpenAlex');
+      source.closest('.scholarly-related-heading-source')?.removeAttribute('hidden');
+    } else {
+      source?.closest('.scholarly-related-heading-source')?.setAttribute('hidden', '');
+    }
     more?.setAttribute('hidden', '');
     host.innerHTML = record
       ? '<p class="text-muted small mb-0">No related works are available for this item yet.</p>'
@@ -1742,12 +1748,13 @@ async function fetchOpenAlexWork(doi){
 }
 
 async function fetchOpenAlexRelatedWorks(record){
-  const ids = Array.isArray(record?.related_works)
-    ? record.related_works.map(value => String(value || '').match(/(?:^|\/)(W\d+)$/i)?.[1]?.toUpperCase()).filter(Boolean).slice(0, 5)
-    : [];
-  if (!ids.length) return [];
-  const filter = encodeURIComponent(`openalex_id:${ids.join('|')}`);
-  const payload = await fetchScholarlyJson(`https://api.openalex.org/works?filter=${filter}&per-page=${ids.length}&select=id,display_name,publication_year,authorships`);
+  const id = String(record?.id || record?.openalex_id || '').match(/(?:^|\/)(W\d+)$/i)?.[1]?.toUpperCase();
+  if (!id) return [];
+  // Query OpenAlex's Related to field directly so the API can return its
+  // relevance-ranked candidates, rather than expanding a limited ID list
+  // from the work record and potentially changing that order.
+  const filter = encodeURIComponent(`related_to:${id}`);
+  const payload = await fetchScholarlyJson(`https://api.openalex.org/works?filter=${filter}&per-page=5&select=id,display_name,publication_year,authorships`);
   return Array.isArray(payload?.results) ? payload.results : [];
 }
 
