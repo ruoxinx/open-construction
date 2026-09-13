@@ -47,6 +47,18 @@
     return score;
   }
 
+  function modalityValues(value){
+    if (!list(value).length) return [];
+    if (window.OCTerms?.canonicalizeModalityLabels) {
+      return window.OCTerms.canonicalizeModalityLabels(value);
+    }
+    return displayFacetValues(value);
+  }
+
+  function modalityOverlap(left, right){
+    return overlap(modalityValues(left), modalityValues(right));
+  }
+
   function modalityFamilies(value){
     const raw = list(value).join(' ').toLowerCase();
     if (!raw) return [];
@@ -114,7 +126,7 @@
         const taskFamilyScore = overlap(taskFamilies(source.tasks), taskFamilies(candidate.tasks));
         const applicationScore = overlap(source.applications, candidate.applications);
         const applicationFamilyScore = overlap(applicationFamilies(source.applications), applicationFamilies(candidate.applications));
-        const modalityScore = overlap(source.modalities, candidate.modalities);
+        const modalityScore = modalityOverlap(source.modalities, candidate.modalities);
         const modalityFamilyScore = overlap(modalityFamilies(source.modalities), modalityFamilies(candidate.modalities));
         const sharedTrainingScore = overlap(source.training_data, candidate.training_data);
         const score = sharedTrainingScore * 6 + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
@@ -126,8 +138,8 @@
           (applicationScore > 0 && modalityFamilyScore > 0);
         return hasStrongSignal ? score : 0;
       }
-      if (source.type === 'dataset') return overlap(source.potential_tasks, candidate.potential_tasks) * 4 + overlap(source.applications, candidate.applications) * 2 + overlap(source.data_modality, candidate.data_modality) * 2 + overlap(source.classes, candidate.classes);
-      if (source.type === 'workflow') return overlap(source.applications, candidate.applications) * 4 + overlap(source.ai_tech, candidate.ai_tech) * 3 + overlap(source.stakeholders, candidate.stakeholders) * 2 + overlap(source.data_modalities, candidate.data_modalities);
+      if (source.type === 'dataset') return overlap(source.potential_tasks, candidate.potential_tasks) * 4 + overlap(source.applications, candidate.applications) * 2 + modalityOverlap(source.data_modality, candidate.data_modality) * 2 + overlap(source.classes, candidate.classes);
+      if (source.type === 'workflow') return overlap(source.applications, candidate.applications) * 4 + overlap(source.ai_tech, candidate.ai_tech) * 3 + overlap(source.stakeholders, candidate.stakeholders) * 2 + modalityOverlap(source.data_modalities, candidate.data_modalities);
       return overlap(source.topics, candidate.topics) * 4 + overlap(source.media, candidate.media) * 2 + overlap(source.language, candidate.language);
     }
     const sourceTasks = source.tasks || source.potential_tasks;
@@ -138,7 +150,7 @@
     const candidateApps = candidate.applications || candidate.application;
     const directDataMatch = source.type === 'model' && candidate.type === 'dataset' && list(source.training_data || source.datasets || source.dataset).some(item => [candidate.id, candidate.name].some(value => key(item) === key(value)));
     const reverseDataMatch = source.type === 'dataset' && candidate.type === 'model' && list(candidate.training_data || candidate.datasets || candidate.dataset).some(item => [source.id, source.name].some(value => key(item) === key(value)));
-    return (directDataMatch || reverseDataMatch ? 10 : 0) + overlap(sourceTasks, candidateTasks) * 3 + overlap(sourceApps, candidateApps) * 2 + overlap(sourceModalities, candidateModalities) * 2 + overlap(source.topics, candidate.topics) * 2 + overlap(source.ai_tech, candidate.ai_tech);
+    return (directDataMatch || reverseDataMatch ? 10 : 0) + overlap(sourceTasks, candidateTasks) * 3 + overlap(sourceApps, candidateApps) * 2 + modalityOverlap(sourceModalities, candidateModalities) * 2 + overlap(source.topics, candidate.topics) * 2 + overlap(source.ai_tech, candidate.ai_tech);
   }
 
   function normalizeModel(item){ return { ...item, type: 'model', key: item.id || item.title || item.name || '', title: item.title || item.name || item.id || 'Untitled model', year: item.year || '', tasks: item.tasks || item.task || item.potential_tasks || [], applications: item.applications || item.application || [], modalities: item.modalities || item.modality || item.data_modalities || [], training_data: item.training_data || item.datasets || item.dataset || [] }; }
@@ -166,10 +178,14 @@
     return [...labels.values()];
   }
 
+  function displayModalityValues(value){
+    return modalityValues(value).map(label => String(label).trim()).filter(Boolean);
+  }
+
   function itemFacets(item){
-    if (item.type === 'model') return { tasks: displayFacetValues(item.tasks), modalities: displayFacetValues(item.modalities), meta: [displayFacetValues(item.tasks)[0], displayFacetValues(item.modalities)[0], displayFacetValues(item.applications)[0]] };
-    if (item.type === 'dataset') return { tasks: displayFacetValues(item.potential_tasks), modalities: displayFacetValues(item.data_modality), meta: [displayFacetValues(item.potential_tasks)[0], displayFacetValues(item.data_modality)[0], displayFacetValues(item.applications)[0]] };
-    if (item.type === 'workflow') return { tasks: displayFacetValues(item.applications), modalities: displayFacetValues(item.data_modalities), meta: [item.phase, displayFacetValues(item.applications)[0], displayFacetValues(item.ai_tech)[0]] };
+    if (item.type === 'model') return { tasks: displayFacetValues(item.tasks), modalities: displayModalityValues(item.modalities), meta: [displayFacetValues(item.tasks)[0], displayModalityValues(item.modalities)[0], displayFacetValues(item.applications)[0]] };
+    if (item.type === 'dataset') return { tasks: displayFacetValues(item.potential_tasks), modalities: displayModalityValues(item.data_modality), meta: [displayFacetValues(item.potential_tasks)[0], displayModalityValues(item.data_modality)[0], displayFacetValues(item.applications)[0]] };
+    if (item.type === 'workflow') return { tasks: displayFacetValues(item.applications), modalities: displayModalityValues(item.data_modalities), meta: [item.phase, displayFacetValues(item.applications)[0], displayFacetValues(item.ai_tech)[0]] };
     return { tasks: displayFacetValues(item.topics), modalities: displayFacetValues(item.media), meta: [displayFacetValues(item.topics)[0], displayFacetValues(item.media)[0]] };
   }
 

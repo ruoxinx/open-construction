@@ -297,6 +297,14 @@ function normalizeList(val){
   return String(val).split(',').map(v => v.trim()).filter(Boolean);
 }
 
+function canonicalModalityList(val){
+  if (!normalizeList(val).length) return [];
+  if (window.OCTerms?.canonicalizeModalityLabels) {
+    return window.OCTerms.canonicalizeModalityLabels(val);
+  }
+  return normalizeList(val);
+}
+
 function relatedYearLabel(value){
   const year = String(value ?? '').trim();
   return /^\d{4}$/.test(year) ? `(${year})` : '';
@@ -2014,7 +2022,7 @@ async function initDetail(){
       const taskFamilyList = taskFamilies(tasks);
       const appList = uniquePrettyTerms(applications);
       const appFamilyList = applicationFamilies(applications);
-      const modalityList = normalizeList(modality);
+      const modalityList = canonicalModalityList(modality);
       const modalityFamilyList = modalityFamilies(modality);
       const trainingList = normalizeList(m.training_data || m.datasets || m.dataset || '');
       const quickFacts = [
@@ -2051,7 +2059,7 @@ async function initDetail(){
         const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(ds.potential_tasks || ds.tasks || ds.task));
         const applicationScore = scoreOverlap(appList, uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case));
         const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(ds.applications || ds.application || ds.use_cases || ds.use_case));
-        const modalityScore = scoreOverlap(modalityList, ds.data_modality);
+        const modalityScore = scoreOverlap(modalityList, canonicalModalityList(ds.data_modality));
         const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(ds.data_modality || ds.data_modalities));
         const score = (trainMatch ? 10 : 0) + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
         const hasStrongSignal =
@@ -2074,7 +2082,7 @@ async function initDetail(){
           const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(other.tasks || other.task || other.potential_tasks));
           const applicationScore = scoreOverlap(appList, uniquePrettyTerms(other.applications || other.application));
           const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(other.applications || other.application));
-          const modalityScore = scoreOverlap(modalityList, other.modalities || other.modality || other.data_modalities);
+          const modalityScore = scoreOverlap(modalityList, canonicalModalityList(other.modalities || other.modality || other.data_modalities));
           const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(other.modalities || other.modality || other.data_modalities));
           const sharedTrainingScore = scoreOverlap(trainingList, other.training_data || other.datasets || other.dataset);
           const score = sharedTrainingScore * 6 + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
@@ -2102,7 +2110,7 @@ async function initDetail(){
               ${relatedModels.length ? relatedModels.map(other => `
                 <a class="related-link" href="${modelHref(other)}">
                   <span class="related-link-title">${escapeHtml(other.title || other.id || 'Untitled model')}${relatedYearLabel(other.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(other.year))}</span>` : ''}</span>
-                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.tasks || other.task)[0], normalizeList(other.modalities || other.modality || other.data_modalities)[0], uniquePrettyTerms(other.applications || other.application)[0]].filter(Boolean).join(' • ') || 'Similar task or application area', 90))}</span>
+                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.tasks || other.task)[0], canonicalModalityList(other.modalities || other.modality || other.data_modalities)[0], uniquePrettyTerms(other.applications || other.application)[0]].filter(Boolean).join(' • ') || 'Similar task or application area', 90))}</span>
                 </a>
               `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
               ${relatedModels.length ? `<a class="related-section-more" href="${relatedCatalogHref('model')}">View all related models <span aria-hidden="true">&rarr;</span></a>` : ''}
@@ -2117,7 +2125,7 @@ async function initDetail(){
               ${relatedDatasets.length ? relatedDatasets.map(ds => `
                 <a class="related-link" href="${datasetHref(ds)}">
                   <span class="related-link-title">${escapeHtml(ds.name || ds.id || 'Untitled dataset')}${relatedYearLabel(ds.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(ds.year))}</span>` : ''}</span>
-                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], normalizeList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
+                  <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(ds.potential_tasks)[0], canonicalModalityList(ds.data_modality)[0]].filter(Boolean).join(' • ') || 'Relevant training or evaluation dataset', 90))}</span>
                 </a>
               `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
               ${relatedDatasets.length ? `<a class="related-section-more" href="${relatedCatalogHref('dataset')}">View all related datasets <span aria-hidden="true">&rarr;</span></a>` : ''}
@@ -2306,7 +2314,7 @@ async function initDetail(){
               ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
             )}</div>
             <div class="chip-lane">
-              ${chipLane(modality).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
+              ${chipLane(modalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               ${chipLane(taskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               <span class="detail-primary-actions">
@@ -2380,7 +2388,7 @@ async function initDetail(){
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
               <div class="d-grid gap-2">
-                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'View Code')}</a>` : ''}
+                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'Access Code')}</a>` : ''}
                 ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${paperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View Paper')}</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
@@ -2536,7 +2544,7 @@ async function initDetail(){
     const datasetApplicationList = uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case);
     const datasetApplicationFamilies = applicationFamilies(ds.applications || ds.application || ds.use_cases || ds.use_case);
     const datasetClassList = normalizeList(ds.classes);
-    const datasetModalityList = normalizeList(ds.data_modality);
+    const datasetModalityList = canonicalModalityList(ds.data_modality);
     const datasetModalityFamilies = modalityFamilies(ds.data_modality);
     const datasetFocusDomains = domainFamilies([
       ds.id,
@@ -2596,7 +2604,7 @@ async function initDetail(){
         const taskScore = sharedTasks.length;
         const taskFamilyScore = scoreOverlap(datasetTaskFamilies, otherTaskFamilies);
         const applicationScore = scoreOverlap(datasetApplicationList, uniquePrettyTerms(other.applications || other.application || other.use_cases || other.use_case));
-        const modalityScore = scoreOverlap(datasetModalityList, other.data_modality);
+        const modalityScore = scoreOverlap(datasetModalityList, canonicalModalityList(other.data_modality));
         const modalityFamilyScore = scoreOverlap(datasetModalityFamilies, modalityFamilies(other.data_modality || other.data_modalities));
         const classScore = Math.min(scoreOverlap(datasetClassList, other.classes), 2);
         const score = taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + modalityFamilyScore * 2 + modalityScore + classScore;
@@ -2616,7 +2624,7 @@ async function initDetail(){
         const taskFamilyScore = scoreOverlap(datasetTaskFamilies, taskFamilies(model.tasks || model.task || model.potential_tasks));
         const applicationScore = scoreOverlap(datasetApplicationList, uniquePrettyTerms(model.applications || model.application));
         const applicationFamilyScore = scoreOverlap(datasetApplicationFamilies, applicationFamilies(model.applications || model.application));
-        const modalityScore = scoreOverlap(datasetModalityList, model.modalities || model.modality || model.data_modalities);
+        const modalityScore = scoreOverlap(datasetModalityList, canonicalModalityList(model.modalities || model.modality || model.data_modalities));
         const modalityFamilyScore = scoreOverlap(datasetModalityFamilies, modalityFamilies(model.modalities || model.modality || model.data_modalities));
         const domainFamilyScore = scoreOverlap(datasetDomainFamilies, domainFamilies([
           model.id,
@@ -2670,7 +2678,7 @@ async function initDetail(){
             ${relatedModels.length ? relatedModels.map(model => `
               <a class="related-link" href="${modelHref(model)}">
                 <span class="related-link-title">${escapeHtml(model.title || model.id || 'Untitled model')}${relatedYearLabel(model.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(model.year))}</span>` : ''}</span>
-                <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(model.tasks || model.task)[0], normalizeList(model.modalities || model.modality || model.data_modalities)[0], uniquePrettyTerms(model.applications || model.application)[0]].filter(Boolean).join(' • ') || 'Likely compatible with this dataset', 90))}</span>
+                <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(model.tasks || model.task)[0], canonicalModalityList(model.modalities || model.modality || model.data_modalities)[0], uniquePrettyTerms(model.applications || model.application)[0]].filter(Boolean).join(' • ') || 'Likely compatible with this dataset', 90))}</span>
               </a>
             `).join('') : '<p class="text-muted small mb-0">No related models were identified from the current catalog.</p>'}
             ${relatedModels.length ? `<a class="related-section-more" href="${relatedCatalogHref('model')}">View all related models <span aria-hidden="true">&rarr;</span></a>` : ''}
@@ -2685,7 +2693,7 @@ async function initDetail(){
             ${relatedDatasets.length ? relatedDatasets.map(({ other, sharedTasks }) => `
               <a class="related-link" href="${datasetHref(other)}">
                 <span class="related-link-title">${escapeHtml(other.name || other.id || 'Untitled dataset')}${relatedYearLabel(other.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(other.year))}</span>` : ''}</span>
-                <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.potential_tasks || other.tasks || other.task)[0], normalizeList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task coverage', 90))}</span>
+                <span class="related-link-meta">${escapeHtml(truncateText([uniquePrettyTerms(other.potential_tasks || other.tasks || other.task)[0], canonicalModalityList(other.data_modality)[0]].filter(Boolean).join(' • ') || 'Similar task coverage', 90))}</span>
               </a>
             `).join('') : '<p class="text-muted small mb-0">No related datasets were identified from the current catalog.</p>'}
             ${relatedDatasets.length ? `<a class="related-section-more" href="${relatedCatalogHref('dataset')}">View all related datasets <span aria-hidden="true">&rarr;</span></a>` : ''}
@@ -2859,7 +2867,7 @@ async function initDetail(){
         <h2 class="detail-heading">What this dataset contains</h2>
         <dl class="meta mb-0">
           ${metaRow('Data · Classes', datasetCountSummary(ds))}
-          ${metaRow('Modalities', chipLane(ds.data_modality))}
+          ${metaRow('Modalities', chipLane(datasetModalityList))}
           ${metaRow('Tasks', linkedTaskChipLane(datasetTaskList))}
           ${metaRow('Classes', chipLane(ds.classes))}
           ${metaRow('Annotations', chipLane(ds.annotation_types))}
