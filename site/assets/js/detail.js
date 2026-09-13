@@ -1390,9 +1390,10 @@ function citationInlineButtonHtml(doiVal){
 
 function citationExportRequest(doi, format){
   const encodedDoi = encodeURIComponent(doi);
+  const url = `https://api.crossref.org/v1/works/${encodedDoi}/transform`;
   if (format === 'bibtex') {
     return {
-      url: `https://doi.org/${encodedDoi}`,
+      url,
       accept: 'application/x-bibtex',
       extension: 'bib',
       mime: 'application/x-bibtex;charset=utf-8'
@@ -1400,7 +1401,7 @@ function citationExportRequest(doi, format){
   }
   if (format === 'ris') {
     return {
-      url: `https://doi.org/${encodedDoi}`,
+      url,
       accept: 'application/x-research-info-systems',
       extension: 'ris',
       mime: 'application/x-research-info-systems;charset=utf-8'
@@ -1410,10 +1411,8 @@ function citationExportRequest(doi, format){
   const style = styles[format];
   if (!style) return null;
   return {
-    url: `https://citation.doi.org/format?doi=${encodedDoi}&style=${encodeURIComponent(style)}&lang=en-US`,
-    accept: 'text/plain',
-    fallbackUrl: `https://doi.org/${encodedDoi}`,
-    fallbackAccept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
+    url,
+    accept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
     extension: 'txt',
     mime: 'text/plain;charset=utf-8'
   };
@@ -1565,7 +1564,12 @@ function renderCitationExportSource(root, records, doi){
       : '';
   }).join('');
   host.hidden = false;
-  host.innerHTML = `<span>Data source:</span>${providers || '<span>DOI Citation Formatter</span>'}`;
+  if (!providers) {
+    host.hidden = true;
+    host.innerHTML = '';
+    return;
+  }
+  host.innerHTML = `<span>Data source:</span>${providers}`;
 }
 
 function renderScholarlyMetadata(root, records, doi){

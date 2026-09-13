@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://citation.doi.org https://doi.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://api.crossref.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -741,7 +741,7 @@
 
   function benchmarkCitationDialogHtml(doi){
     if (!doi) return '';
-    const sourceHref = `https://citation.doi.org/format?doi=${encodeURIComponent(doi)}&style=apa&lang=en-US`;
+    const sourceHref = `https://api.crossref.org/v1/works/${encodeURIComponent(doi)}`;
     return `<div class="benchmark-citation-export scholarly-reference-export" data-citation-export>
       <dialog class="scholarly-cite-dialog" data-citation-dialog aria-labelledby="benchmark-cite-title">
         <div class="scholarly-cite-dialog-inner">
@@ -770,7 +770,7 @@
               <button type="button" data-citation-action="download" data-citation-format="bibtex">BibTeX</button>
               <button type="button" data-citation-action="download" data-citation-format="ris">RIS</button>
             </div>
-            <div class="scholarly-cite-source"><span>Data source:</span><a href="${esc(sourceHref)}" target="_blank" rel="noopener">DOI Citation Formatter</a></div>
+            <div class="scholarly-cite-source"><span>Data source:</span><a href="${esc(sourceHref)}" target="_blank" rel="noopener" aria-label="Open the Crossref record"><img class="scholarly-crossref-icon" src="https://assets.crossref.org/logo/crossref-logo-landscape-200.svg" alt="Crossref" decoding="async"></a></div>
             <span class="scholarly-reference-export-status" data-citation-status role="status" aria-live="polite"></span>
           </div>
         </div>
@@ -780,16 +780,15 @@
 
   function benchmarkCitationRequest(doi, format){
     const encodedDoi = encodeURIComponent(doi);
-    if (format === 'bibtex') return { url: `https://doi.org/${encodedDoi}`, accept: 'application/x-bibtex', extension: 'bib', mime: 'application/x-bibtex;charset=utf-8' };
-    if (format === 'ris') return { url: `https://doi.org/${encodedDoi}`, accept: 'application/x-research-info-systems', extension: 'ris', mime: 'application/x-research-info-systems;charset=utf-8' };
+    const url = `https://api.crossref.org/v1/works/${encodedDoi}/transform`;
+    if (format === 'bibtex') return { url, accept: 'application/x-bibtex', extension: 'bib', mime: 'application/x-bibtex;charset=utf-8' };
+    if (format === 'ris') return { url, accept: 'application/x-research-info-systems', extension: 'ris', mime: 'application/x-research-info-systems;charset=utf-8' };
     const styles = { apa: 'apa', ieee: 'ieee', 'chicago-author-date': 'chicago-author-date' };
     const style = styles[format];
     if (!style) return null;
     return {
-      url: `https://citation.doi.org/format?doi=${encodedDoi}&style=${encodeURIComponent(style)}&lang=en-US`,
-      accept: 'text/plain',
-      fallbackUrl: `https://doi.org/${encodedDoi}`,
-      fallbackAccept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
+      url,
+      accept: `text/x-bibliography; style=${encodeURIComponent(style)}; locale=en-US`,
       extension: 'txt',
       mime: 'text/plain;charset=utf-8'
     };
