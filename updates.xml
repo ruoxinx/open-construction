@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Model: PyPBEE: Python Library for Performance-Based Earthquake Engineering]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:pypbee:2026-09-12</guid>
+    <pubDate>Sat, 12 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Seismic Risk Assessment model using Ground Motion Records (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: Annotation-free crack segmentation using vision-language model-driven pseudo-labels and a lightweight Cartesian multi-view network]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:cmvu2-net:2026-09-09</guid>
@@ -75,14 +83,6 @@
     <link>https://www.openconstruction.org/datasets/detail.html?id=elina</link>
     <guid isPermaLink="false">datasets:elina:2026-08-21</guid>
     <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: SeisMLLM-1K: A Multimodal Dataset for Post-Earthquake Building Safety Evaluation]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=seismllm_1k</link>
-    <guid isPermaLink="false">datasets:seismllm_1k:2026-08-20</guid>
-    <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
   </channel>
