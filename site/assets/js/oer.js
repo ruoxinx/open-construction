@@ -391,7 +391,6 @@
       const href  = detailHref(r);
       const addedTxt = r.added ? `Added ${fmtAdded(r.added)}` : '';
       const year  = r.year;
-      const sourceHref = safeHref(r.source);
       const contributorHref = safeHref(r.contributor_url);
       const providerLine = r.provider || '';
       const licHTML = licenseLinkHTML(r.license, r);
@@ -435,8 +434,7 @@
                 ${tagsHTML}
 
                 <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-                  ${sourceHref ? `<a class="btn btn-sm btn-primary" href="${sourceHref}" target="_blank" rel="noopener">Source</a>` : ''}
-                  <a class="btn btn-sm btn-outline-secondary" href="${href}">View Details</a>
+                  <a class="btn btn-sm btn-primary" href="${href}">View details</a>
                   ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
                 </div>
               </div>

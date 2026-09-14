@@ -166,12 +166,16 @@ function scoreOverlap(a, b){
   return score;
 }
 
+function relatedYearLabel(value){
+  const year = String(value == null ? '' : value).trim();
+  return /^\d{4}$/.test(year) ? `(${year})` : '';
+}
+
 function relatedWorkflowHtml(items){
   if (!items.length) return '<p class="text-muted small mb-0">No closely related workflows were found from the current catalog metadata.</p>';
   return items.map(other => `
     <a class="related-link" href="../workflows/details.html?id=${encodeURIComponent(other.title || '')}">
-      <span class="related-link-type">Workflow</span>
-      <span class="related-link-title">${escapeHtml(other.title || 'Untitled workflow')}</span>
+      <span class="related-link-title">${escapeHtml(other.title || 'Untitled workflow')}${relatedYearLabel(other.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(other.year))}</span>` : ''}</span>
       <span class="related-link-meta">${escapeHtml([normalizeList(other.applications)[0], normalizeList(other.ai_tech)[0]].filter(Boolean).join(' • ') || 'Similar application or implementation pattern')}</span>
     </a>
   `).join('');
@@ -181,8 +185,7 @@ function relatedModelHtml(items){
   if (!items.length) return '<p class="text-muted small mb-0">No closely related models were identified from the current catalog metadata.</p>';
   return items.map(model => `
     <a class="related-link" href="../models/details.html?id=${encodeURIComponent(model.id || model.title || '')}">
-      <span class="related-link-type">Model</span>
-      <span class="related-link-title">${escapeHtml(model.title || model.id || 'Untitled model')}</span>
+      <span class="related-link-title">${escapeHtml(model.title || model.id || 'Untitled model')}${relatedYearLabel(model.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(model.year))}</span>` : ''}</span>
       <span class="related-link-meta">${escapeHtml([normalizeList(model.applications || model.application)[0], normalizeList(model.tasks || model.task)[0]].filter(Boolean).join(' • ') || 'Related application or task coverage')}</span>
     </a>
   `).join('');
@@ -215,9 +218,10 @@ async function initWorkflowDetail(){
   if (!root) return;
 
   try {
-    const [workflowsPayload, modelsPayload] = await Promise.all([
+    const [workflowsPayload, modelsPayload, linkHealth] = await Promise.all([
       fetch('../data/use-cases.json', { cache: 'no-cache' }).then(r => r.json()),
-      fetch('../data/models.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => [])
+      fetch('../data/models.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => []),
+      window.OCLinkHealth?.loadCache?.() || Promise.resolve(null)
     ]);
 
     const workflows = Array.isArray(workflowsPayload?.use_cases) ? workflowsPayload.use_cases : (Array.isArray(workflowsPayload) ? workflowsPayload : []);
@@ -239,6 +243,9 @@ async function initWorkflowDetail(){
 
     const companies = companyLinks(item);
     const sourceUrl = safeHref(item.links?.source);
+    const sourceHealth = sourceUrl
+      ? (window.OCLinkHealth?.html(linkHealth, 'workflow', item.id || item.title || '', item.title || 'Workflow', 'source', sourceUrl) || '')
+      : '';
     const paperUrl = safeHref(item.links?.paper);
     const codeUrl = safeHref(item.links?.code);
     const doiValue = item.links?.doi || '';
@@ -317,7 +324,7 @@ async function initWorkflowDetail(){
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
+        .related-link-title{ font-weight:400; color:var(--oc-ink); transition:color .15s ease; }
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
@@ -362,9 +369,7 @@ async function initWorkflowDetail(){
               ${metaRow('Stakeholders', chipLane(item.stakeholders))}
               ${metaRow('AI technologies', chipLane(item.ai_tech))}
               ${metaRow('Data modalities', chipLane(item.data_modalities))}
-              ${metaRow('Organizations', chipLane(item.organizations))}
               ${metaRow('Companies', companies.length ? companies.join(', ') : '—')}
-              ${metaRow('Tags', chipLane(item.tags))}
             </dl>
           </section>
 
@@ -374,7 +379,7 @@ async function initWorkflowDetail(){
             <dl class="meta mb-0">
               ${metaRow('Deployment stage', escapeHtml(item.deployment_stage || '—'))}
               ${metaRow('Evidence level', escapeHtml(item.evidence_level || '—'))}
-              ${metaRow('Source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener">${escapeHtml(sourceUrl)}</a>` : '—')}
+              ${metaRow('Source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener">${escapeHtml(sourceUrl)}</a> ${sourceHealth}` : '—')}
               ${metaRow('Paper', paperUrl ? `<a href="${paperUrl}" target="_blank" rel="noopener">${escapeHtml(paperUrl)}</a>` : '—')}
               ${metaRow('Code', codeUrl ? `<a href="${codeUrl}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}
               ${metaRow('DOI', doiValue ? doiLinkHtml(doiValue) : '—')}
@@ -420,7 +425,7 @@ async function initWorkflowDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">Workflow Links</h2>
                 <div class="d-grid gap-2">
-                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener">View Source</a>` : ''}
+                  ${sourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${sourceUrl}" target="_blank" rel="noopener">${window.OCActionButton?.content?.('access', 'Access Source') || 'Access Source'}</a>` : ''}
                   ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${paperUrl}" target="_blank" rel="noopener">View Paper</a>` : ''}
                   ${codeUrl ? `<a class="btn btn-outline-secondary btn-sm" href="${codeUrl}" target="_blank" rel="noopener">View Code</a>` : ''}
                   ${doiValue ? `<a class="btn btn-outline-secondary btn-sm" href="${escapeHtml((String(doiValue).startsWith('http') ? doiValue : `https://doi.org/${doiValue}`))}" target="_blank" rel="noopener">DOI</a>` : ''}
@@ -432,7 +437,7 @@ async function initWorkflowDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">Share</h2>
                 <div class="d-grid gap-2">
-                  <button type="button" class="btn btn-outline-secondary btn-sm" id="shareWorkflowBtn">Share or Copy Link</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm btn-with-icon" id="shareWorkflowBtn">${window.OCActionButton?.content?.('share', 'Share or Copy Link') || 'Share or Copy Link'}</button>
                 </div>
               </div>
             </div>
@@ -453,14 +458,17 @@ async function initWorkflowDetail(){
       </div>
     `;
 
+    window.OCLinkHealth?.bindNotes?.(root);
     const shareBtn = byId('shareWorkflowBtn');
     if (shareBtn) {
       shareBtn.addEventListener('click', async () => {
-        const original = shareBtn.textContent;
+        const original = shareBtn.querySelector('.btn-label')?.textContent || shareBtn.textContent;
         const result = await shareWorkflowLink(item.title || 'Workflow');
         if (result === 'cancelled') return;
-        shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
-        window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+        const label = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
+        const labelEl = shareBtn.querySelector('.btn-label');
+        if (labelEl) labelEl.textContent = label; else shareBtn.textContent = label;
+        window.setTimeout(() => { if (labelEl) labelEl.textContent = original; else shareBtn.textContent = original; }, 1800);
       });
     }
     window.OCBookmark?.mount(root);

@@ -776,11 +776,7 @@ function render(items){
 
     const mediaBlock = chooseMediaBlock(u);
 
-    const srcBtn   = u.links?.source ? `<a class="btn btn-sm btn-primary" href="${u.links.source}" target="_blank" rel="noopener">Source</a>` : '';
-    const paperBtn = u.links?.paper  ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.paper}" target="_blank" rel="noopener">Paper</a>` : '';
-    const codeBtn  = u.links?.code   ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.code}" target="_blank" rel="noopener">Code</a>` : '';
-    const doiBtn   = u.links?.doi    ? `<a class="btn btn-sm btn-outline-secondary" href="${u.links.doi?.startsWith('http')?u.links.doi:('https://doi.org/'+u.links.doi)}" target="_blank" rel="noopener">DOI</a>` : '';
-    const detailBtn = `<a class="btn btn-sm btn-outline-secondary" href="${detailHref}">View details</a>`;
+    const detailBtn = `<a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>`;
 
     const apps = facetValues(u.applications).slice(0,2).map(a=>`<span class="badge-app">${escapeHTML(a)}</span>`).join('');
     const tech = facetValues(u.ai_tech).slice(0,1).map(t=>`<span class="badge-tech">${escapeHTML(t)}</span>`).join('');
@@ -817,7 +813,7 @@ function render(items){
           ${u.summary ? `<p class="small m-0">${escapeHTML(u.summary)}</p>` : ''}
 
           <div class="actions mt-2">
-            ${srcBtn}${paperBtn}${codeBtn}${doiBtn}${detailBtn}
+            ${detailBtn}
             ${addedTxt ? `<span class="added-note ms-md-auto">${addedTxt}</span>` : ''}
           </div>
         </div>

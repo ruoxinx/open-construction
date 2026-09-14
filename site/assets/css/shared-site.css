@@ -4399,6 +4399,24 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   font-size:.74rem;
 }
 
+.btn-with-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.45rem;
+}
+
+.btn-action-icon{
+  width:1rem;
+  height:1rem;
+  flex:0 0 auto;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
 .oc-source-action{
   display:flex;
   align-items:center;

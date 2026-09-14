@@ -596,13 +596,17 @@ function getMediaEmbed(item){
   return `<div class="media-wrap placeholder"><div class="placeholder-copy">No preview image available</div></div>`;
 }
 
+function relatedYearLabel(value){
+  const year = String(value == null ? '' : value).trim();
+  return /^\d{4}$/.test(year) ? `(${year})` : '';
+}
+
 function relatedOerHtml(items){
   if (!items.length) return '<p class="text-muted small mb-0">No closely related OERs were found from the current catalog metadata.</p>';
   return items.map(other => `
     <a class="related-link" href="../oers/details.html?id=${encodeURIComponent(other.id || other.title || '')}">
-      <span class="related-link-type">OER</span>
-      <span class="related-link-title">${escapeHtml(other.title || 'Untitled resource')}</span>
-      <span class="related-link-meta">${escapeHtml([normalizeList(other.topics)[0], normalizeList(other.media)[0], other.year || ''].filter(Boolean).join(' • ') || 'Related learning resource')}</span>
+      <span class="related-link-title">${escapeHtml(other.title || 'Untitled resource')}${relatedYearLabel(other.year) ? ` <span class="related-link-year">${escapeHtml(relatedYearLabel(other.year))}</span>` : ''}</span>
+      <span class="related-link-meta">${escapeHtml([normalizeList(other.topics)[0], normalizeList(other.media)[0]].filter(Boolean).join(' • ') || 'Related learning resource')}</span>
     </a>
   `).join('');
 }
@@ -653,6 +657,10 @@ async function initOerDetail(){
     setBadge('badge-license', item.license ? [item.license] : []);
 
     const sourceUrl = safeHref(item.source);
+    const linkHealth = await (window.OCLinkHealth?.loadCache?.() || Promise.resolve(null));
+    const sourceHealth = sourceUrl
+      ? (window.OCLinkHealth?.html(linkHealth, 'oer', item.id || item.title || '', item.title || 'OER', 'source', sourceUrl) || '')
+      : '';
     const contributorUrl = safeHref(item.contributorUrl);
     const related = all
       .filter(other => other !== item)
@@ -678,8 +686,7 @@ async function initOerDetail(){
       { label: 'Publisher', value: escapeHtml(item.publisher || '—') },
       { label: 'Language', value: escapeHtml(item.language.join(', ') || '—') },
       { label: 'Media', value: escapeHtml(item.media.join(', ') || '—') },
-      { label: 'License', value: formatLicense(item.license, item) || '—' },
-      { label: 'Added', value: escapeHtml(fmtDate(item.added) || '—') }
+      { label: 'License', value: formatLicense(item.license, item) || '—' }
     ];
 
     root.innerHTML = `
@@ -717,7 +724,7 @@ async function initOerDetail(){
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .related-link-title{ font-weight:700; color:var(--oc-ink); transition:color .15s ease; }
+        .related-link-title{ font-weight:400; color:var(--oc-ink); transition:color .15s ease; }
         .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
@@ -793,16 +800,15 @@ async function initOerDetail(){
             <div class="detail-kicker">Access & Usage</div>
             <h2 class="detail-heading">How to access and verify it</h2>
             <dl class="meta mb-0">
-              ${metaRow('OER source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(sourceUrl)}</a>` : '—')}
+              ${metaRow('OER source', sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(sourceUrl)}</a> ${sourceHealth}` : '—')}
               ${metaRow('License', formatLicense(item.license, item) || '—')}
-              ${metaRow('Added to catalog', escapeHtml(fmtDate(item.added) || '—'))}
               ${metaRow('Submitted by', item.contributor ? (contributorUrl ? `<a href="${contributorUrl}" target="_blank" rel="noopener">${escapeHtml(item.contributor)}</a>` : escapeHtml(item.contributor)) : '—')}
             </dl>
           </section>
 
           <section id="related-resources" class="detail-section">
-            <div class="detail-kicker">Related Resources</div>
-            <h2 class="detail-heading">More OERs with similar coverage</h2>
+            <div class="detail-kicker">Related OERs</div>
+            <h2 class="detail-heading">Keep exploring from here</h2>
             <div class="detail-subcard">
               <div class="detail-subhead-row"><div class="detail-subhead">Related OERs</div><span class="related-section-source"><span>Data source:</span><a class="related-section-source-link" href="${relatedCatalogHref('oer')}" aria-label="View related OERs in OpenConstruction"><img class="related-section-source-icon" src="../assets/img/icon.png" alt=""><span>OpenConstruction</span></a></span></div>
               ${relatedOerHtml(related)}
@@ -826,7 +832,7 @@ async function initOerDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">OER Links</h2>
                 <div class="d-grid gap-2">
-                  ${sourceUrl ? `<a class="btn btn-primary btn-sm" href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>Source</a>` : ''}
+                  ${sourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${sourceUrl}" target="_blank" rel="noopener" data-license-gate>${window.OCActionButton?.content?.('access', 'Access Source') || 'Access Source'}</a>` : ''}
                 </div>
               </div>
             </div>
@@ -835,7 +841,7 @@ async function initOerDetail(){
               <div class="card-body">
                 <h2 class="h6 text-uppercase text-muted mb-3">Share</h2>
                 <div class="d-grid gap-2">
-                  <button type="button" class="btn btn-outline-secondary btn-sm" id="shareOerBtn">Share or Copy Link</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm btn-with-icon" id="shareOerBtn">${window.OCActionButton?.content?.('share', 'Share or Copy Link') || 'Share or Copy Link'}</button>
                 </div>
               </div>
             </div>
@@ -857,14 +863,17 @@ async function initOerDetail(){
       ${oerLicenseModalHtml(item)}
     `;
 
+    window.OCLinkHealth?.bindNotes?.(root);
     const shareBtn = byId('shareOerBtn');
     if (shareBtn) {
       shareBtn.addEventListener('click', async () => {
-        const original = shareBtn.textContent;
+        const original = shareBtn.querySelector('.btn-label')?.textContent || shareBtn.textContent;
         const result = await shareOerLink(item.title || 'OER');
         if (result === 'cancelled') return;
-        shareBtn.textContent = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
-        window.setTimeout(() => { shareBtn.textContent = original; }, 1800);
+        const label = result === 'shared' ? 'Shared' : (result === 'copied' ? 'Link Copied' : 'Copy Failed');
+        const labelEl = shareBtn.querySelector('.btn-label');
+        if (labelEl) labelEl.textContent = label; else shareBtn.textContent = label;
+        window.setTimeout(() => { if (labelEl) labelEl.textContent = original; else shareBtn.textContent = original; }, 1800);
       });
     }
     wireLicenseGate(root);
