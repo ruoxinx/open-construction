@@ -4369,6 +4369,43 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   height:1rem;
 }
 
+.doi-crossref-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:.45rem;
+  vertical-align:middle;
+}
+
+.doi-crossref-link{
+  display:inline-flex;
+  align-items:center;
+  gap:.15rem;
+  color:var(--oc-link);
+  font-size:.72rem;
+  text-decoration:none;
+  line-height:1;
+}
+
+.doi-crossref-link:hover,
+.doi-crossref-link:focus{
+  color:var(--oc-link);
+  text-decoration:underline;
+  text-underline-offset:.15em;
+}
+
+.doi-crossref-check{
+  display:inline-grid;
+  place-items:center;
+  width:.9rem;
+  height:.9rem;
+  border-radius:50%;
+  background:#a5ce39;
+  color:#fff;
+  font-size:.6rem;
+  font-weight:700;
+  line-height:1;
+}
+
 .scholarly-reference-export-status{
   color:var(--oc-sub);
   font-size:.72rem;

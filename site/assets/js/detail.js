@@ -706,7 +706,14 @@ function licenseDisplayLabel(licVal){
     'CC BY-SA 4.0': 'Creative Commons Attribution-ShareAlike 4.0 International',
     'CC BY-NC-ND 3.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 3.0',
     'CC BY-NC-ND 4.0': 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International',
-    'CC BY-NC-SA 4.0': 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International'
+    'CC BY-NC-SA 4.0': 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
+    'AGPL 3.0': 'GNU Affero General Public License 3.0',
+    'AGPL-3.0-ONLY': 'GNU Affero General Public License v3.0 only',
+    'AGPL-3.0-OR-LATER': 'GNU Affero General Public License v3.0 or later',
+    'GPL-3.0-ONLY': 'GNU General Public License v3.0 only',
+    'GPL-3.0-OR-LATER': 'GNU General Public License v3.0 or later',
+    'LGPL-3.0-ONLY': 'GNU Lesser General Public License v3.0 only',
+    'LGPL-3.0-OR-LATER': 'GNU Lesser General Public License v3.0 or later'
   };
   return labels[key] || norm;
 }
@@ -774,7 +781,13 @@ function formatLicense(licVal, record){
     'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
     'CC BY-NC-ND 3.0': 'https://creativecommons.org/licenses/by-nc-nd/3.0/',
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
-    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/agpl-3.0.html',
+    'AGPL-3.0-ONLY': 'https://spdx.org/licenses/AGPL-3.0-only.html',
+    'AGPL-3.0-OR-LATER': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+    'GPL-3.0-ONLY': 'https://spdx.org/licenses/GPL-3.0-only.html',
+    'GPL-3.0-OR-LATER': 'https://spdx.org/licenses/GPL-3.0-or-later.html',
+    'LGPL-3.0-ONLY': 'https://spdx.org/licenses/LGPL-3.0-only.html',
+    'LGPL-3.0-OR-LATER': 'https://spdx.org/licenses/LGPL-3.0-or-later.html',
     'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
     'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en',
@@ -818,7 +831,9 @@ function licenseHrefFor(licVal, record){
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
     'GPL 3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/agpl-3.0.html',
+    'AGPL-3.0-ONLY': 'https://spdx.org/licenses/AGPL-3.0-only.html',
+    'AGPL-3.0-OR-LATER': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
     'MIT': 'https://opensource.org/licenses/MIT',
     'MIT LICENSE WITH COMMONS CLAUSE RESTRICTION': 'https://github.com/zhu-xlab/GlobalBuildingAtlas/blob/main/LICENSE',
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
@@ -1028,9 +1043,63 @@ function licenseBadgeHtml(kind, label){
   return `<img class="license-badge license-badge-${kind}" src="../assets/img/licenses/${kind}.svg" alt="" title="${escapeHtml(label)}" aria-hidden="true" loading="lazy" decoding="async">`;
 }
 
+function apacheLicenseBadgeHtml(licenseValue){
+  const key = String(licenseValue || '').trim().toUpperCase();
+  if (!new Set(['APACHE 2.0', 'APACHE-2.0', 'APACHE LICENSE 2.0', 'APACHE LICENSE, VERSION 2.0', 'APACHE LICENSE VERSION 2.0']).has(key)) return '';
+  return '<img class="license-badge license-badge-apache" src="https://www.apache.org/images/oakleaf.svg" alt="" title="Apache Software Foundation mark" aria-hidden="true" loading="lazy" decoding="async">';
+}
+
+function odcLicenseBadgeHtml(licenseValue){
+  const key = String(licenseValue || '').trim().toUpperCase();
+  if (!new Set(['ODC-BY', 'ODC BY', 'OPEN DATA COMMONS ATTRIBUTION LICENSE']).has(key)) return '';
+  return '<a class="license-badge-link" href="https://opendatacommons.org/licenses/by/" target="_blank" rel="noopener" aria-label="Open the Open Data Commons Attribution License"><img class="license-badge license-badge-odc" src="https://opendatacommons.org/favicon.ico" alt="" title="Open Data Commons mark" aria-hidden="true" loading="lazy" decoding="async"></a>';
+}
+
+function osiApprovedLicenseBadgeHtml(licenseValue){
+  const key = String(licenseValue || '').trim().toUpperCase();
+  if (!new Set(['MIT', 'BSD 2-CLAUSE', 'BSD-2-CLAUSE', 'BSD 3-CLAUSE', 'BSD-3-CLAUSE', 'BSD 3-CLAUSE LICENSE', 'BSD-3-CLAUSE LICENSE']).has(key)) return '';
+  return '<a class="license-badge-link" href="https://opensource.org/licenses" target="_blank" rel="noopener" aria-label="Open the OSI Approved Licenses list"><img class="license-badge license-badge-osi" src="https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png" alt="" title="OSI Approved License" aria-hidden="true" loading="lazy" decoding="async"></a>';
+}
+
+function gnuLicenseBadgeHtml(licenseValue){
+  const logos = {
+    'GPL 3.0': ['gplv3-88x31.png', 'GNU GPLv3'],
+    'GPL-3.0': ['gplv3-88x31.png', 'GNU GPLv3'],
+    'LGPL 3.0': ['lgplv3-88x31.png', 'GNU LGPLv3'],
+    'LGPL-3.0': ['lgplv3-88x31.png', 'GNU LGPLv3'],
+    'AGPL 3.0': ['agplv3-88x31.png', 'GNU AGPLv3'],
+    'AGPL-3.0': ['agplv3-88x31.png', 'GNU AGPLv3'],
+    'AGPL-3.0-ONLY': ['agplv3-88x31.png', 'GNU AGPLv3'],
+    'AGPL-3.0-OR-LATER': ['agplv3-88x31.png', 'GNU AGPLv3'],
+    'GPL-3.0-ONLY': ['gplv3-88x31.png', 'GNU GPLv3'],
+    'GPL-3.0-OR-LATER': ['gplv3-88x31.png', 'GNU GPLv3'],
+    'LGPL-3.0-ONLY': ['lgplv3-88x31.png', 'GNU LGPLv3'],
+    'LGPL-3.0-OR-LATER': ['lgplv3-88x31.png', 'GNU LGPLv3']
+  };
+  const logo = logos[String(licenseValue || '').trim().toUpperCase()];
+  if (!logo) return '';
+  return `<img class="license-badge license-badge-gnu" src="https://www.gnu.org/graphics/${logo[0]}" alt="" title="${logo[1]} license logo" aria-hidden="true" loading="lazy" decoding="async">`;
+}
+
 function licenseIconStripHtml(licenseValue){
   const upper = String(licenseValue || '').trim().toUpperCase();
   const normalized = upper.replace(/[-_/]+/g, ' ');
+  const gnuBadge = gnuLicenseBadgeHtml(upper);
+  if (gnuBadge) {
+    return `<span class="license-icon-strip" role="img" aria-label="GNU license">${gnuBadge}</span>`;
+  }
+  const apacheBadge = apacheLicenseBadgeHtml(upper);
+  if (apacheBadge) {
+    return `<span class="license-icon-strip" role="img" aria-label="Apache Software Foundation">${apacheBadge}</span>`;
+  }
+  const odcBadge = odcLicenseBadgeHtml(upper);
+  if (odcBadge) {
+    return `<span class="license-icon-strip" aria-label="Open Data Commons Attribution License">${odcBadge}</span>`;
+  }
+  const osiBadge = osiApprovedLicenseBadgeHtml(upper);
+  if (osiBadge) {
+    return `<span class="license-icon-strip" aria-label="OSI Approved License">${osiBadge}</span>`;
+  }
   if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
 
   const badges = [{ kind: 'cc', label: 'Creative Commons' }];
@@ -1218,7 +1287,7 @@ function parseScholarlyId(idVal){
     // DOI resolvers
     if (host === 'doi.org' || host === 'dx.doi.org') {
       const doi = (u.pathname || '').replace(/^\/+/, '');
-      return doi ? { kind: 'doi', value: doi } : { kind: 'unknown', value: raw };
+      return doi ? { kind: 'doi', value: doi, arxiv: arxivIdFromDoi(doi) } : { kind: 'unknown', value: raw };
     }
 
     // arXiv URLs
@@ -1253,7 +1322,15 @@ function parseScholarlyId(idVal){
   if (mArxiv) return { kind: 'arxiv', value: mArxiv[1] };
 
   // Otherwise, assume it’s a DOI-like string (fallback).
+  const arxiv = arxivIdFromDoi(raw);
+  if (arxiv) return { kind: 'doi', value: raw, arxiv };
+
   return { kind: 'doi', value: raw };
+}
+
+function arxivIdFromDoi(doiVal){
+  const match = String(doiVal || '').trim().replace(/^doi:\s*/i, '').match(/^10\.48550\/arxiv\.(\d{4}\.\d{4,5}(?:v\d+)?)$/i);
+  return match ? match[1] : '';
 }
 
 function publicationBadgesHtml(doiVal, cfg){
@@ -1399,6 +1476,42 @@ function crossrefRecordHref(doiVal){
   return doi ? `https://search.crossref.org/search/works?q=${encodeURIComponent(doi)}&from_ui=yes` : '';
 }
 
+function doiFieldHtml(doiVal){
+  const doi = normalizedDoiValue(doiVal);
+  if (!doi) return '—';
+  const parsed = parseScholarlyId(doiVal);
+  if (parsed.arxiv) {
+    return `${formatDoi(doiVal)}<span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.arxiv)}" hidden></span>`;
+  }
+  return `${formatDoi(doiVal)}<span class="doi-crossref-badge" data-doi-crossref-badge hidden></span>`;
+}
+
+function scholarlyIdentifierLabel(identifier){
+  return parseScholarlyId(identifier).kind === 'arxiv' ? 'arXiv' : 'DOI';
+}
+
+function arxivRecordHref(identifier){
+  const parsed = parseScholarlyId(identifier);
+  return parsed.kind === 'arxiv' && parsed.value
+    ? `https://arxiv.org/abs/${encodeURIComponent(parsed.value)}`
+    : '';
+}
+
+function scholarlyIdentifierFieldHtml(identifier){
+  const parsed = parseScholarlyId(identifier);
+  if (parsed.kind === 'arxiv') {
+    const href = arxivRecordHref(identifier);
+    if (!href) return '—';
+    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(parsed.value)}</a><span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.value)}" hidden></span>`;
+  }
+  return doiFieldHtml(identifier);
+}
+
+function recognizedScholarlyIdentifier(value){
+  const parsed = parseScholarlyId(value);
+  return parsed.kind === 'doi' || parsed.kind === 'arxiv' ? String(value || '').trim() : '';
+}
+
 function dataciteRecordHref(doiVal){
   const doi = normalizedDoiValue(doiVal);
   return doi ? `https://commons.datacite.org/doi.org/${encodeURIComponent(doi)}` : '';
@@ -1446,6 +1559,10 @@ function citationExportSourceHtml(doiVal, records){
   const href = crossrefRecordHref(doiVal);
   if (!href) return '';
   return `<span>Data source:</span><a class="scholarly-cite-source-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the Crossref record">${crossrefIconHtml()}</a>`;
+}
+
+function scholarlyReferenceLineHtml(label, value){
+  return `<div class="scholarly-reference-line"><span class="text-muted scholarly-reference-label">${label}</span><span class="scholarly-reference-value">${value}</span></div>`;
 }
 
 function citationExportHtml(doiVal){
@@ -1689,6 +1806,69 @@ function renderScholarlyMetadata(root, records, doi){
   if (host) host.remove();
 }
 
+function renderDoiCrossrefBadge(root, crossrefPayload, doi){
+  const hosts = root?.querySelectorAll?.('[data-doi-crossref-badge]');
+  if (!hosts?.length) return;
+  const href = crossrefPayload?.message ? crossrefRecordHref(doi) : '';
+  hosts.forEach(host => {
+    if (!href) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    host.hidden = false;
+    host.innerHTML = `<a class="doi-crossref-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the Crossref record for this DOI"><span class="doi-crossref-check" aria-hidden="true">✓</span><span>Crossref</span></a>`;
+  });
+}
+
+async function fetchArxivRecord(arxivId){
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = controller ? window.setTimeout(() => controller.abort(), scholarlyMetadataTimeoutMs) : null;
+  try {
+    const response = await fetch(`https://export.arxiv.org/api/query?id_list=${encodeURIComponent(arxivId)}`, {
+      cache: 'no-store',
+      headers: { Accept: 'application/atom+xml' },
+      signal: controller?.signal
+    });
+    if (!response.ok) return null;
+    const xml = await response.text();
+    return /<entry[\s>]/i.test(xml) ? { found: true } : null;
+  } catch {
+    return null;
+  } finally {
+    if (timer) window.clearTimeout(timer);
+  }
+}
+
+function renderArxivVerificationBadge(root, arxivPayload, arxivId){
+  const hosts = root?.querySelectorAll?.('[data-arxiv-verification]');
+  if (!hosts?.length) return;
+  const href = arxivPayload?.found ? arxivRecordHref(arxivId) : '';
+  hosts.forEach(host => {
+    if (!href) {
+      host.hidden = true;
+      host.innerHTML = '';
+      return;
+    }
+    host.hidden = false;
+    host.innerHTML = `<a class="doi-crossref-link arxiv-verification-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the verified arXiv record"><span class="doi-crossref-check" aria-hidden="true">✓</span><span>arXiv</span></a>`;
+  });
+}
+
+async function initializeArxivVerification(root, identifier){
+  const parsed = parseScholarlyId(identifier);
+  if (parsed.kind !== 'arxiv' || !parsed.value) return;
+  const payload = await fetchArxivRecord(parsed.value);
+  renderArxivVerificationBadge(root, payload, parsed.value);
+}
+
+function initializeScholarlyIdentifier(root, identifier){
+  const parsed = parseScholarlyId(identifier);
+  if (parsed.kind === 'arxiv' || parsed.arxiv) return initializeArxivVerification(root, parsed.arxiv || parsed.value);
+  const href = doiHref(identifier);
+  return href ? initializeScholarlyMetadata(root, href) : Promise.resolve();
+}
+
 function semanticScholarPaperHref(record){
   const direct = safeHref(record?.url || record?.paper_url);
   if (direct) return direct;
@@ -1879,6 +2059,7 @@ async function initializeScholarlyMetadata(root, doiVal){
     fetchOpenAlexWork(doi)
   ]);
   const openAlexRelatedWorks = await fetchOpenAlexRelatedWorks(openAlexPayload);
+  renderDoiCrossrefBadge(root, crossrefPayload, doi);
   renderOpenAlexCitation(root, openAlexPayload);
   renderScholarlyMetadata(root, normalizeScholarlyResponses([crossrefPayload, datacitePayload]), doi);
   renderOpenAlexRelatedWorks(root, openAlexPayload, openAlexRelatedWorks);
@@ -2093,11 +2274,11 @@ async function initDetail(){
       const modelSourceHealth = modelSourceUrl
         ? linkHealthHtml(linkHealth, 'model', m.id || id || m.title || '', modelTitle, modelSourceField, modelSourceUrl)
         : missingLinkHtml('model', m.id || id || m.title || '', modelTitle, modelSourceField, 'code');
-      const doiSource = primaryPublication?.doi || m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
+      const doiSource = recognizedScholarlyIdentifier(primaryPublication?.doi) || recognizedScholarlyIdentifier(m.doi) || recognizedScholarlyIdentifier(paperUrl);
       const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
-      const doiBlock = doiSource ? `<div class="mb-2"><span class="text-muted">DOI:</span> <span class="scholarly-reference-value">${formatDoi(doiSource)}</span></div>` : '';
-      const licenseBlock = m.license ? `<div class="mb-0"><span class="text-muted">License:</span> <span class="scholarly-reference-value">${formatLicense(m.license, m)}</span></div>` : '';
+      const doiBlock = doiSource ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(doiSource)}:`, scholarlyIdentifierFieldHtml(doiSource)) : '';
+      const licenseBlock = m.license ? scholarlyReferenceLineHtml('License:', formatLicense(m.license, m)) : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
       const badgeIdSource = doiSource || paperUrl;
       const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
@@ -2268,6 +2449,12 @@ async function initDetail(){
           .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
           .scholarly-reference-card .scholarly-reference-value a:hover,.scholarly-reference-card .scholarly-reference-value a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
+          .scholarly-reference-lines{ display:grid; gap:.42rem; }
+          .scholarly-reference-line{ display:grid; grid-template-columns:3.75rem minmax(0,1fr); column-gap:.5rem; align-items:start; }
+          .scholarly-reference-label{ white-space:nowrap; }
+          .scholarly-reference-value{ min-width:0; line-height:1.35; overflow-wrap:anywhere; }
+          .scholarly-reference-value .license-inline{ display:inline-flex; align-items:center; gap:.45rem; max-width:100%; }
+          .scholarly-reference-value .license-title-line{ min-width:0; overflow-wrap:anywhere; }
           .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
           .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
@@ -2275,7 +2462,7 @@ async function initDetail(){
           .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.25rem; min-height:28px; padding:0 .15rem; border:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; }
           .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
           .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
-          .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:0; }
+          .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:.52rem; }
           .scholarly-reference-export .scholarly-cite-reference-link{ display:inline-flex; align-items:center; min-height:0; padding:0; border:0; background:transparent; color:var(--oc-link); font-size:.78rem; font-weight:600; line-height:1.3; text-decoration:none!important; }
           .scholarly-reference-export .scholarly-cite-reference-link:hover,.scholarly-reference-export .scholarly-cite-reference-link:focus{ background:transparent; color:#075eaa; text-decoration:underline!important; text-underline-offset:.16em; }
           .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
@@ -2344,6 +2531,11 @@ async function initDetail(){
           .license-title-line{ display:inline-flex; align-items:center; min-width:0; }
           .license-icon-strip{ display:inline-flex; flex:0 0 auto; align-items:center; gap:.28rem; }
           .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
+          .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
+          .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
+          .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; }
+          .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
+          .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
           .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
           .license-summary + .license-section{ border-top:0; padding-top:0; }
           .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
@@ -2441,7 +2633,7 @@ async function initDetail(){
             ${metaRow('Associated paper', modelPaperTitle !== '—' ? ((doiUrl || safeHref(paperUrl || '')) ? `<a href="${doiUrl || safeHref(paperUrl || '')}" target="_blank" rel="noopener">${escapeHtml(modelPaperTitle)}</a>` : escapeHtml(modelPaperTitle)) : '—')}
             ${metaRow('Source status', escapeHtml(formatSourceStatus(m.source_status)))}
             ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a> ${modelSourceHealth}` : modelSourceHealth)}
-            ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
+            ${metaRow(scholarlyIdentifierLabel(doiSource), doiSource ? scholarlyIdentifierFieldHtml(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license, m) || '—')}
           </dl>
         </section>
@@ -2511,7 +2703,7 @@ async function initDetail(){
           <div class="card border-0 shadow-sm mb-3 scholarly-reference-card">
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
-              <div class="small">${doiBlock}${licenseBlock}</div>
+              <div class="small scholarly-reference-lines">${doiBlock}${licenseBlock}</div>
               ${citationExportHtml(doiSource)}
               ${doiUrl ? '<div class="scholarly-reference-source" data-scholarly-reference-sources hidden aria-live="polite"></div>' : ''}
             </div>
@@ -2550,7 +2742,7 @@ async function initDetail(){
         ${modelLicenseModalHtml(m)}
       `;
       bindLinkHealthNotes(root);
-      if (doiUrl) initializeScholarlyMetadata(root, doiUrl).catch(err => console.warn('Scholarly metadata unavailable', err));
+      if (doiSource) initializeScholarlyIdentifier(root, doiSource).catch(err => console.warn('Scholarly metadata unavailable', err));
       await initializePublicationBadges(root);
 
       // Abstract toggle wiring (model detail)
@@ -2667,7 +2859,8 @@ async function initDetail(){
     ]);
     const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
-    const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
+    const datasetIdentifier = recognizedScholarlyIdentifier(ds.doi) || recognizedScholarlyIdentifier(ds.paper_url) || recognizedScholarlyIdentifier(ds.paper_link);
+    const datasetPaperUrl = (doiHref(datasetIdentifier || '') || arxivRecordHref(datasetIdentifier || '')) || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
     const datasetAccessValue = ds.access || ds.source_url || '';
     const datasetAccessUrl = safeHref(datasetAccessValue);
     const datasetAccessField = ds.access ? 'access' : 'source_url';
@@ -2811,7 +3004,7 @@ async function initDetail(){
             ${relatedDatasets.length ? `<a class="related-section-more" href="${relatedCatalogHref('dataset')}">View all related datasets <span aria-hidden="true">&rarr;</span></a>` : ''}
           </div>
         </div>
-        ${normalizedDoiValue(ds.doi) ? `
+        ${normalizedDoiValue(datasetIdentifier) ? `
           <div class="col-12" data-openalex-related-slot>
             <div class="detail-subcard">
                 <div class="detail-subhead-row">
@@ -2849,6 +3042,12 @@ async function initDetail(){
         .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
         .scholarly-reference-card .scholarly-reference-value a:hover,.scholarly-reference-card .scholarly-reference-value a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.15em; }
+        .scholarly-reference-lines{ display:grid; gap:.42rem; }
+        .scholarly-reference-line{ display:grid; grid-template-columns:3.75rem minmax(0,1fr); column-gap:.5rem; align-items:start; }
+        .scholarly-reference-label{ white-space:nowrap; }
+        .scholarly-reference-value{ min-width:0; line-height:1.35; overflow-wrap:anywhere; }
+        .scholarly-reference-value .license-inline{ display:inline-flex; align-items:center; gap:.45rem; max-width:100%; }
+        .scholarly-reference-value .license-title-line{ min-width:0; overflow-wrap:anywhere; }
         .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
         .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
@@ -2856,7 +3055,7 @@ async function initDetail(){
         .scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; gap:.25rem; min-height:28px; padding:0 .15rem; border:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; }
         .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
         .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
-        .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:0; }
+        .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:.52rem; }
         .scholarly-reference-export .scholarly-cite-reference-link{ display:inline-flex; align-items:center; min-height:0; padding:0; border:0; background:transparent; color:var(--oc-link); font-size:.78rem; font-weight:600; line-height:1.3; text-decoration:none!important; }
         .scholarly-reference-export .scholarly-cite-reference-link:hover,.scholarly-reference-export .scholarly-cite-reference-link:focus{ background:transparent; color:#075eaa; text-decoration:underline!important; text-underline-offset:.16em; }
         .chip{ display:inline-flex; align-items:center; padding:.28rem .6rem; background:var(--oc-muted); border:1px solid var(--oc-border); border-radius:999px; font-weight:600; font-size:.82rem; color:var(--oc-text);}
@@ -2913,6 +3112,11 @@ async function initDetail(){
         .license-title-line{ display:inline-flex; align-items:center; min-width:0; }
         .license-icon-strip{ display:inline-flex; flex:0 0 auto; align-items:center; gap:.28rem; }
         .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
+        .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
+        .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
+        .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; }
+        .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
+        .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
         .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
         .license-summary + .license-section{ border-top:0; padding-top:0; }
         .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
@@ -2968,7 +3172,7 @@ async function initDetail(){
             ${linkedTaskChipLane(datasetTaskList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
             <span class="detail-primary-actions">
               ${bookmarkInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
-              ${citationInlineButtonHtml(ds.doi)}
+              ${citationInlineButtonHtml(datasetIdentifier)}
             </span>
           </div>
         </div>
@@ -2995,7 +3199,7 @@ async function initDetail(){
         <dl class="meta mb-0">
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('Source status', escapeHtml(formatSourceStatus(ds.source_status)))}
-          ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
+          ${metaRow(scholarlyIdentifierLabel(datasetIdentifier), datasetIdentifier ? scholarlyIdentifierFieldHtml(datasetIdentifier) : '—')}
           ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(datasetAccessValue)}</a> ${datasetAccessHealth}` : datasetAccessHealth)}
           ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a> ${datasetCodeHealth}` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
@@ -3021,11 +3225,11 @@ async function initDetail(){
       </div>
     `;
 
-      const doiBlock = ds.doi ? `<div class="mb-2"><span class="text-muted">DOI:</span> <span class="scholarly-reference-value">${formatDoi(ds.doi)}</span></div>` : '';
-      const licenseBlock = ds.license ? `<div class="mb-0"><span class="text-muted">License:</span> <span class="scholarly-reference-value">${formatLicense(ds.license, ds)}</span></div>` : '';
+      const doiBlock = datasetIdentifier ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(datasetIdentifier)}:`, scholarlyIdentifierFieldHtml(datasetIdentifier)) : '';
+      const licenseBlock = ds.license ? scholarlyReferenceLineHtml('License:', formatLicense(ds.license, ds)) : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
     // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
-    const pubBadgesBlock = publicationBadgesHtml(ds.doi, {
+    const pubBadgesBlock = publicationBadgesHtml(datasetIdentifier, {
       altmetric: (ds.altmetric !== undefined) ? ds.altmetric : undefined,
       dimensions: (ds.dimensions !== undefined) ? ds.dimensions : undefined
     });
@@ -3076,9 +3280,9 @@ async function initDetail(){
         <div class="card border-0 shadow-sm mb-3 scholarly-reference-card">
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Reference</h2>
-            <div class="small">${doiBlock}${licenseBlock}</div>
-            ${citationExportHtml(ds.doi)}
-            ${normalizedDoiValue(ds.doi) ? '<div class="scholarly-reference-source" data-scholarly-reference-sources hidden aria-live="polite"></div>' : ''}
+            <div class="small scholarly-reference-lines">${doiBlock}${licenseBlock}</div>
+            ${citationExportHtml(datasetIdentifier)}
+            ${normalizedDoiValue(datasetIdentifier) ? '<div class="scholarly-reference-source" data-scholarly-reference-sources hidden aria-live="polite"></div>' : ''}
           </div>
         </div>` : ''}
 
@@ -3115,7 +3319,7 @@ async function initDetail(){
       ${datasetLicenseModalHtml(ds)}
     `;
     bindLinkHealthNotes(root);
-    if (normalizedDoiValue(ds.doi)) initializeScholarlyMetadata(root, ds.doi).catch(err => console.warn('Scholarly metadata unavailable', err));
+    if (datasetIdentifier) initializeScholarlyIdentifier(root, datasetIdentifier).catch(err => console.warn('Scholarly metadata unavailable', err));
     await initializePublicationBadges(root);
 
     const imgEl = root.querySelector('.ds-img');

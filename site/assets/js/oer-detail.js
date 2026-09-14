@@ -79,6 +79,8 @@ function setBadge(id, values){
 function licenseMiniIconStripHtml(licenseValue){
   const upper = String(licenseValue || '').trim().toUpperCase();
   const normalized = upper.replace(/[-_/]+/g, ' ');
+  const providerBadge = licenseProviderBadgeHtml(upper, true);
+  if (providerBadge) return `<span class="license-mini-strip" aria-hidden="true">${providerBadge}</span>`;
   if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
   const badges = ['cc'];
   if (upper === 'CC0' || /\bCC0\b/.test(normalized)) {
@@ -167,7 +169,7 @@ function formatLicense(licenseValue, record){
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
     'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/agpl-3.0.html',
     'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
     'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
@@ -214,7 +216,7 @@ function licenseHrefFor(licenseValue, record){
     'CC BY-NC-ND 4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
     'CC BY-ND 4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
     'GPL-3.0': 'https://www.gnu.org/licenses/gpl-3.0.html',
-    'AGPL 3.0': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+    'AGPL 3.0': 'https://www.gnu.org/licenses/agpl-3.0.html',
     'GNU 3.0': 'https://www.gnu.org/licenses/gpl-3.0.en.html',
     'GNU 2.1': 'https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html',
     'LGPL-3.0': 'https://www.gnu.org/licenses/lgpl-3.0.html',
@@ -409,9 +411,49 @@ function licenseBadgeHtml(kind, label){
   return `<img class="license-badge license-badge-${kind}" src="../assets/img/licenses/${kind}.svg" alt="" title="${escapeHtml(label)}" aria-hidden="true" loading="lazy" decoding="async">`;
 }
 
+function licenseProviderBadgeHtml(licenseValue, mini = false){
+  const key = String(licenseValue || '').trim().toUpperCase();
+  const providers = {
+    'APACHE 2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
+    'APACHE-2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
+    'ODC-BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'ODC BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'OPEN DATA COMMONS ATTRIBUTION LICENSE': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'MIT': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD 2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD-2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD 3-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD-3-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD 3-CLAUSE LICENSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'BSD-3-CLAUSE LICENSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
+    'GPL 3.0': ['gnu', 'https://www.gnu.org/graphics/gplv3-88x31.png', 'GNU GPLv3'],
+    'GPL-3.0': ['gnu', 'https://www.gnu.org/graphics/gplv3-88x31.png', 'GNU GPLv3'],
+    'LGPL 3.0': ['gnu', 'https://www.gnu.org/graphics/lgplv3-88x31.png', 'GNU LGPLv3'],
+    'LGPL-3.0': ['gnu', 'https://www.gnu.org/graphics/lgplv3-88x31.png', 'GNU LGPLv3'],
+    'AGPL 3.0': ['gnu', 'https://www.gnu.org/graphics/agplv3-88x31.png', 'GNU AGPLv3'],
+    'AGPL-3.0': ['gnu', 'https://www.gnu.org/graphics/agplv3-88x31.png', 'GNU AGPLv3']
+  }[key];
+  if (!providers) return '';
+  const [kind, src, label] = providers;
+  const className = mini ? `license-mini-provider license-mini-provider-${kind}` : `license-badge license-badge-${kind}`;
+  const image = `<img class="${className}" src="${src}" alt="" title="${label}" aria-hidden="true" loading="lazy" decoding="async">`;
+  const href = kind === 'osi'
+    ? 'https://opensource.org/licenses'
+    : kind === 'odc'
+      ? 'https://opendatacommons.org/licenses/by/'
+      : '';
+  return href
+    ? `<a class="license-badge-link" href="${href}" target="_blank" rel="noopener" aria-label="Open the ${kind === 'odc' ? 'Open Data Commons Attribution License' : 'OSI Approved Licenses list'}">${image}</a>`
+    : image;
+}
+
 function licenseIconStripHtml(licenseValue){
   const upper = String(licenseValue || '').trim().toUpperCase();
   const normalized = upper.replace(/[-_/]+/g, ' ');
+  const providerBadge = licenseProviderBadgeHtml(upper);
+  if (providerBadge) {
+    return `<span class="license-icon-strip" aria-label="License provider">${providerBadge}</span>`;
+  }
   if (!upper || (!/\bCC\b/.test(normalized) && !/\bCC0\b/.test(normalized))) return '';
 
   const badges = [{ kind: 'cc', label: 'Creative Commons' }];
@@ -743,10 +785,19 @@ async function initOerDetail(){
         .license-summary-row + .license-summary-row{ border-top:1px solid var(--oc-border); }
         .license-summary-label{ color:var(--oc-sub); font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
         .license-summary-value{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; min-width:0; }
+        .license-mini-provider{ display:block; width:1rem; height:1rem; object-fit:contain; }
+        .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
+        .license-mini-provider-osi{ width:1rem; height:1rem; }
+        .license-mini-provider-gnu{ width:1.7rem; height:.62rem; }
         .license-inline{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:.45rem; min-width:0; }
         .license-title-line{ display:inline-flex; align-items:center; min-width:0; }
         .license-icon-strip{ display:inline-flex; flex:0 0 auto; align-items:center; gap:.28rem; }
         .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
+        .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
+        .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
+        .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; }
+        .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
+        .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
         .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
         .license-summary + .license-section{ border-top:0; padding-top:0; }
         .license-section h3{ color:var(--oc-ink); font-size:.94rem; font-weight:700; margin:0 0 .55rem; }
