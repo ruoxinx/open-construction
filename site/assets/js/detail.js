@@ -758,9 +758,10 @@ function recordSourceHref(record){
   return '';
 }
 
-function formatLicense(licVal, record){
+function formatLicense(licVal, record, options = {}){
   const norm = safeText(licVal);
   if (norm === '—') return '';
+  const includeIcon = options.includeIcon !== false;
 
   const displayLabel = licenseDisplayLabel(licVal);
   const key = String(licVal).trim().toUpperCase();
@@ -804,9 +805,9 @@ function formatLicense(licVal, record){
 
   const licenseUrl = licenseMap[key] || licenseHrefFor(licVal, record);
   if (licenseUrl) {
-    return `<span class="license-inline">${licenseIconStripHtml(licVal)}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
+    return `<span class="license-inline">${includeIcon ? licenseIconStripHtml(licVal) : ''}<span class="license-title-line"><a href="${licenseUrl}" target="_blank" rel="noopener">${escapeHtml(displayLabel)}</a></span></span>`;
   }
-  return `<span class="license-inline"><span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
+  return `<span class="license-inline">${includeIcon ? licenseIconStripHtml(licVal) : ''}<span class="license-title-line">${escapeHtml(displayLabel)}</span></span>`;
 }
 
 function licenseHrefFor(licVal, record){
@@ -1476,14 +1477,15 @@ function crossrefRecordHref(doiVal){
   return doi ? `https://search.crossref.org/search/works?q=${encodeURIComponent(doi)}&from_ui=yes` : '';
 }
 
-function doiFieldHtml(doiVal){
+function doiFieldHtml(doiVal, options = {}){
   const doi = normalizedDoiValue(doiVal);
   if (!doi) return '—';
+  const includeVerification = options.includeVerification !== false;
   const parsed = parseScholarlyId(doiVal);
   if (parsed.arxiv) {
-    return `${formatDoi(doiVal)}<span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.arxiv)}" hidden></span>`;
+    return `${formatDoi(doiVal)}${includeVerification ? `<span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.arxiv)}" hidden></span>` : ''}`;
   }
-  return `${formatDoi(doiVal)}<span class="doi-crossref-badge" data-doi-crossref-badge hidden></span>`;
+  return `${formatDoi(doiVal)}${includeVerification ? '<span class="doi-crossref-badge" data-doi-crossref-badge hidden></span>' : ''}`;
 }
 
 function scholarlyIdentifierLabel(identifier){
@@ -1497,14 +1499,14 @@ function arxivRecordHref(identifier){
     : '';
 }
 
-function scholarlyIdentifierFieldHtml(identifier){
+function scholarlyIdentifierFieldHtml(identifier, options = {}){
   const parsed = parseScholarlyId(identifier);
   if (parsed.kind === 'arxiv') {
     const href = arxivRecordHref(identifier);
     if (!href) return '—';
-    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(parsed.value)}</a><span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.value)}" hidden></span>`;
+    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(parsed.value)}</a>${options.includeVerification === false ? '' : `<span class="doi-crossref-badge arxiv-verification-badge" data-arxiv-verification="${escapeHtml(parsed.value)}" hidden></span>`}`;
   }
-  return doiFieldHtml(identifier);
+  return doiFieldHtml(identifier, options);
 }
 
 function recognizedScholarlyIdentifier(value){
@@ -1858,8 +1860,8 @@ function renderArxivVerificationBadge(root, arxivPayload, arxivId){
 async function initializeArxivVerification(root, identifier){
   const parsed = parseScholarlyId(identifier);
   if (parsed.kind !== 'arxiv' || !parsed.value) return;
-  const payload = await fetchArxivRecord(parsed.value);
-  renderArxivVerificationBadge(root, payload, parsed.value);
+  const href = arxivRecordHref(parsed.value);
+  if (href) renderArxivVerificationBadge(root, { found: true }, parsed.value);
 }
 
 function initializeScholarlyIdentifier(root, identifier){
@@ -2277,8 +2279,8 @@ async function initDetail(){
       const doiSource = recognizedScholarlyIdentifier(primaryPublication?.doi) || recognizedScholarlyIdentifier(m.doi) || recognizedScholarlyIdentifier(paperUrl);
       const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
-      const doiBlock = doiSource ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(doiSource)}:`, scholarlyIdentifierFieldHtml(doiSource)) : '';
-      const licenseBlock = m.license ? scholarlyReferenceLineHtml('License:', formatLicense(m.license, m)) : '';
+      const doiBlock = doiSource ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(doiSource)}:`, scholarlyIdentifierFieldHtml(doiSource, { includeVerification: false })) : '';
+      const licenseBlock = m.license ? scholarlyReferenceLineHtml('License:', formatLicense(m.license, m, { includeIcon: false })) : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
       const badgeIdSource = doiSource || paperUrl;
       const pubBadgesBlock = publicationBadgesHtml(badgeIdSource, {
@@ -3230,8 +3232,8 @@ async function initDetail(){
       </div>
     `;
 
-      const doiBlock = datasetIdentifier ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(datasetIdentifier)}:`, scholarlyIdentifierFieldHtml(datasetIdentifier)) : '';
-      const licenseBlock = ds.license ? scholarlyReferenceLineHtml('License:', formatLicense(ds.license, ds)) : '';
+      const doiBlock = datasetIdentifier ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(datasetIdentifier)}:`, scholarlyIdentifierFieldHtml(datasetIdentifier, { includeVerification: false })) : '';
+      const licenseBlock = ds.license ? scholarlyReferenceLineHtml('License:', formatLicense(ds.license, ds, { includeIcon: false })) : '';
     const authorBlock = authorListHtml(ds.authors, ds.author_urls || ds.authors_url || ds.author_links);
     // Automatic publication badges when identifier exists (doi.org DOI, raw DOI, arXiv URL/ID, PMID, pub.id)
     const pubBadgesBlock = publicationBadgesHtml(datasetIdentifier, {
