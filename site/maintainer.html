@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260902-maintainer-workflow-dashboard" rel="stylesheet"></head>
+  <link href="assets/css/shared-site.css?v=20260914-link-health-replacement-admin" rel="stylesheet"></head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to dashboard tools</a>
 
@@ -132,6 +132,12 @@
   let resourceNotes = [];
   let usageAnalytics = null;
   let usageAnalyticsDays = 30;
+  let linkHealthRecords = [];
+  let linkHealthOverrides = [];
+  let linkHealthUpdatedAt = '';
+  let linkHealthOverridesError = '';
+  let linkHealthStatusFilter = 'attention';
+  let linkHealthQuery = '';
   let selectedUserId = '';
   let currentMaintainerId = '';
   let userRoles = [];
@@ -673,7 +679,8 @@
       analytics: usageAnalytics?.totals?.usage_events || usageAnalytics?.totals?.visits || 0,
       reviews: activeSuggestions.length + waitingSuggestions.length + activeIssues.length + activeCredentialRequests.length,
       people: profiles.length,
-      credentials: badges.length
+      credentials: badges.length,
+      'link-health': linkHealthRecords.filter(row => ['broken', 'needs_review'].includes(linkHealthEffectiveStatus(row))).length
     };
     const tabs = canAdmin
       ? [
@@ -681,7 +688,8 @@
           ['analytics', 'Analytics'],
           ['reviews', 'Reviews'],
           ['people', 'People & Access'],
-          ['credentials', 'Credentials']
+          ['credentials', 'Credentials'],
+          ['link-health', 'Link health']
         ]
       : [
           ['reviews', 'Reviews']
@@ -808,6 +816,8 @@
       resource_suggestions: canAdmin ? suggestions : activeSuggestions,
       site_issue_reports: canAdmin ? issueReports : activeIssues,
       credential_requests: canAdmin ? credentialRequests : [],
+      link_health: canAdmin ? linkHealthRecords : [],
+      link_health_overrides: canAdmin ? linkHealthOverrides : [],
       catalog_resources: catalogResources.map(row => ({
         resource_type: row.resource_type,
         catalog_title: row.catalog_title,
@@ -894,6 +904,7 @@
     if (dashboardTab === 'reviews') return renderReviewCenter();
     if (dashboardTab === 'people') return renderPeopleAccess(selected);
     if (dashboardTab === 'credentials') return renderCredentials(selected);
+    if (dashboardTab === 'link-health') return renderLinkHealthDashboard();
     return renderOverview();
   }
 
@@ -919,6 +930,10 @@
       bindUsageAnalyticsActions();
       return;
     }
+    if (dashboardTab === 'link-health') {
+      bindLinkHealthActions();
+      return;
+    }
     bindResourceTrendActions();
   }
 
@@ -927,6 +942,235 @@
       button.addEventListener('click', () => {
         resourceTrendMode = button.dataset.resourceTrendMode || 'all';
         renderDashboard();
+      });
+    });
+  }
+
+  function linkHealthKey(row){
+    return [normalizedResourceType(row?.resource_type), row?.resource_id, row?.field]
+      .map(value => String(value || '').trim().toLowerCase())
+      .join(':');
+  }
+
+  function linkHealthStatusLabel(status){
+    return {
+      working: 'Working',
+      broken: 'Broken',
+      needs_review: 'Needs review'
+    }[String(status || '').toLowerCase()] || 'Unknown';
+  }
+
+  function linkHealthStatusClass(status){
+    return ['working', 'broken', 'needs_review'].includes(String(status || '').toLowerCase())
+      ? String(status).toLowerCase()
+      : 'unknown';
+  }
+
+  function linkHealthCatalogRecord(row){
+    const type = normalizedResourceType(row?.resource_type);
+    const id = String(row?.resource_id || '').trim().toLowerCase();
+    return catalogResources.find(resource =>
+      normalizedResourceType(resource.resource_type) === type
+      && [resource.id, resource.name, resource.title].some(value => String(value || '').trim().toLowerCase() === id)
+    ) || null;
+  }
+
+  function linkHealthTitle(row){
+    return linkHealthCatalogRecord(row)?.catalog_title || row.resource_id || 'Untitled resource';
+  }
+
+  function linkHealthOverride(row){
+    return linkHealthOverrides.find(override => linkHealthKey(override) === linkHealthKey(row))?.status_override || '';
+  }
+
+  function linkHealthReplacement(row){
+    return linkHealthOverrides.find(override => linkHealthKey(override) === linkHealthKey(row))?.replacement_url || '';
+  }
+
+  function linkHealthOriginalUrl(row){
+    return linkHealthOverrides.find(override => linkHealthKey(override) === linkHealthKey(row))?.original_url || row.url || '';
+  }
+
+  function linkHealthEffectiveStatus(row){
+    return linkHealthOverride(row) || row.status || 'needs_review';
+  }
+
+  function linkHealthFilteredRows(){
+    const query = linkHealthQuery.trim().toLowerCase();
+    const status = String(linkHealthStatusFilter || 'attention');
+    return linkHealthRecords
+      .filter(row => status === 'all' || (status === 'attention' && ['broken', 'needs_review'].includes(linkHealthEffectiveStatus(row))) || linkHealthEffectiveStatus(row) === status)
+      .filter(row => !query || [linkHealthTitle(row), row.resource_id, row.resource_type, row.field, row.url, row.status, linkHealthEffectiveStatus(row)].join(' ').toLowerCase().includes(query))
+      .sort((a, b) => {
+        const order = { broken: 0, needs_review: 1, working: 2 };
+        return (order[linkHealthEffectiveStatus(a)] ?? 3) - (order[linkHealthEffectiveStatus(b)] ?? 3)
+          || String(linkHealthTitle(a)).localeCompare(String(linkHealthTitle(b)));
+      });
+  }
+
+  function renderLinkHealthDashboard(){
+    const counts = linkHealthRecords.reduce((acc, row) => {
+      const key = ['working', 'broken', 'needs_review'].includes(linkHealthEffectiveStatus(row)) ? linkHealthEffectiveStatus(row) : 'unknown';
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, { working: 0, broken: 0, needs_review: 0, unknown: 0 });
+    const rows = linkHealthFilteredRows();
+    const overrideStorageUnavailable = Boolean(linkHealthOverridesError);
+    return `
+      <section class="oc-workspace-card oc-dashboard-review-shell oc-link-health-panel">
+        <div class="oc-dashboard-review-head">
+          <div>
+            <p class="oc-auth-kicker mb-2">Catalog maintenance</p>
+            <h2 class="h5 fw-bold mb-1">Link health</h2>
+          <p class="text-muted small mb-0">Review the latest cached link checks and record a maintainer status when the automated result is wrong.</p>
+          </div>
+          <div class="text-muted small text-end">${linkHealthUpdatedAt ? `Checked ${esc(formatDateTime(linkHealthUpdatedAt))}` : 'Check time unavailable'}</div>
+        </div>
+        <div class="oc-link-health-summary" aria-label="Link health summary">
+          <span><strong>${esc(String(linkHealthRecords.length))}</strong> checked</span>
+          <span class="oc-link-health-summary-broken"><strong>${esc(String(counts.broken))}</strong> broken</span>
+          <span class="oc-link-health-summary-review"><strong>${esc(String(counts.needs_review))}</strong> needs review</span>
+          <span class="oc-link-health-summary-working"><strong>${esc(String(counts.working))}</strong> working</span>
+        </div>
+        <div class="oc-link-health-toolbar">
+          <div class="oc-review-mode-tabs" role="tablist" aria-label="Link health status">
+            ${[
+              ['attention', 'Needs attention', counts.broken + counts.needs_review],
+              ['working', 'Working', counts.working],
+              ['all', 'All links', linkHealthRecords.length]
+            ].map(([value, label, count]) => `
+              <button type="button" class="${linkHealthStatusFilter === value ? 'active' : ''}" data-link-health-filter="${esc(value)}">
+                <span>${esc(label)}</span><strong>${esc(String(count))}</strong>
+              </button>
+            `).join('')}
+          </div>
+          <form class="oc-link-health-search" data-link-health-search-form>
+            <label class="visually-hidden" for="linkHealthSearch">Search link checks</label>
+            <input id="linkHealthSearch" class="form-control form-control-sm" type="search" value="${esc(linkHealthQuery)}" placeholder="Search resources or URLs">
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Search</button>
+          </form>
+        </div>
+        ${overrideStorageUnavailable ? `<div class="alert alert-warning py-2 mb-0 small" role="status">Status overrides are not available until the Supabase migration is applied.</div>` : ''}
+        ${!linkHealthRecords.length ? `
+          <div class="oc-workspace-empty"><strong>No cached link checks</strong><span>Run the scheduled link-health check or refresh the dashboard after the cache is published.</span></div>
+        ` : !rows.length ? `
+          <div class="oc-workspace-empty"><strong>No matching link checks</strong><span>Try another search or change the status filter.</span></div>
+        ` : `
+          <div class="oc-link-health-list">
+            ${rows.map(row => {
+              const key = linkHealthKey(row);
+              const override = linkHealthOverride(row);
+              const effectiveStatus = linkHealthEffectiveStatus(row);
+              const statusClass = linkHealthStatusClass(effectiveStatus);
+              return `
+                <form class="oc-link-health-row" data-link-health-form="${esc(key)}">
+                  <div class="oc-link-health-record">
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                      <span class="oc-link-health-status oc-link-health-status-${esc(statusClass)}">${esc(linkHealthStatusLabel(effectiveStatus))}</span>
+                      ${override ? '<span class="oc-link-health-override">Manual override</span>' : ''}
+                      <span class="text-muted small">${esc(typeLabel(row.resource_type))} · ${esc(row.field || 'link')}</span>
+                    </div>
+                    <h3 class="h6 fw-bold mb-1">${esc(linkHealthTitle(row))}</h3>
+                    <div class="text-muted small">${esc(row.resource_id || '')}</div>
+                    <div class="oc-link-health-url" title="${esc(row.url || '')}">${esc(row.url || 'URL not listed')}</div>
+                    ${linkHealthReplacement(row) ? `<div class="oc-link-health-replacement"><strong>Replacement queued:</strong> ${esc(linkHealthReplacement(row))}</div>` : ''}
+                    <div class="text-muted small">Checker: ${esc(linkHealthStatusLabel(row.status))} · ${esc(row.http_status ? `HTTP ${row.http_status}` : 'No HTTP status')} · checked ${esc(formatDateTime(row.checked_at, 'Not available'))}</div>
+                  </div>
+                  <div class="oc-link-health-editor">
+                    <label class="form-label small fw-bold mb-1" for="link-health-status-${esc(key)}">Maintainer status</label>
+                    <select id="link-health-status-${esc(key)}" name="status_override" class="form-select form-select-sm" ${overrideStorageUnavailable ? 'disabled' : ''}>
+                      <option value="" ${!override ? 'selected' : ''}>Use checker result (${esc(linkHealthStatusLabel(row.status))})</option>
+                      <option value="working" ${override === 'working' ? 'selected' : ''}>Working</option>
+                      <option value="broken" ${override === 'broken' ? 'selected' : ''}>Broken</option>
+                      <option value="needs_review" ${override === 'needs_review' ? 'selected' : ''}>Needs review</option>
+                    </select>
+                    <label class="form-label small fw-bold mb-1 mt-3" for="link-health-replacement-${esc(key)}">Replacement URL</label>
+                    <input id="link-health-replacement-${esc(key)}" name="replacement_url" class="form-control form-control-sm" type="url" value="${esc(linkHealthReplacement(row))}" placeholder="https://..." ${overrideStorageUnavailable ? 'disabled' : ''}>
+                    <div class="d-flex align-items-center gap-2 mt-2">
+                      <button type="submit" class="btn btn-outline-primary btn-sm" data-link-health-save ${overrideStorageUnavailable ? 'disabled' : ''}>Save changes</button>
+                      <span class="text-muted small" role="status"></span>
+                    </div>
+                  </div>
+                </form>
+              `;
+            }).join('')}
+          </div>
+        `}
+      </section>
+    `;
+  }
+
+  async function saveLinkHealthStatus(form){
+    const key = form.dataset.linkHealthForm;
+    const record = linkHealthRecords.find(row => linkHealthKey(row) === key);
+    const status = form.querySelector('[role="status"]');
+    const button = form.querySelector('[data-link-health-save]');
+    if (!record || !status || !button || linkHealthOverridesError) return;
+    const statusOverride = String(form.elements.status_override?.value || '').trim();
+    if (statusOverride && !['working', 'broken', 'needs_review'].includes(statusOverride)) {
+      status.textContent = 'Choose a valid status.';
+      return;
+    }
+    const replacementUrl = String(form.elements.replacement_url?.value || '').trim();
+    if (replacementUrl) {
+      try {
+        const parsed = new URL(replacementUrl);
+        if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('invalid protocol');
+      } catch {
+        status.textContent = 'Enter a valid HTTP or HTTPS URL.';
+        return;
+      }
+    }
+    button.disabled = true;
+    status.textContent = 'Saving...';
+    const result = await sb.from('link_health_labels').upsert({
+      resource_type: normalizedResourceType(record.resource_type),
+      resource_id: String(record.resource_id || '').trim(),
+      field: String(record.field || '').trim(),
+      url: String(record.url || '').trim(),
+      original_url: linkHealthOriginalUrl(record),
+      label: null,
+      status_override: statusOverride || null,
+      replacement_url: replacementUrl || null,
+      overridden_at: statusOverride || replacementUrl ? new Date().toISOString() : null,
+      updated_by: currentUserId
+    }, { onConflict: 'resource_type,resource_id,field' }).select().single();
+    if (result.error) {
+      status.textContent = result.error.message || 'Could not save this status override.';
+      button.disabled = false;
+      return;
+    }
+    linkHealthOverrides = linkHealthOverrides.filter(row => linkHealthKey(row) !== key);
+    if (statusOverride || replacementUrl) linkHealthOverrides.push(result.data || {
+      resource_type: normalizedResourceType(record.resource_type),
+      resource_id: record.resource_id,
+      field: record.field,
+      url: record.url,
+      label: null,
+      status_override: statusOverride || null,
+      replacement_url: replacementUrl || null,
+      overridden_at: new Date().toISOString(),
+      updated_by: currentUserId
+    });
+    renderDashboard();
+  }
+
+  function bindLinkHealthActions(){
+    document.querySelectorAll('[data-link-health-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        linkHealthStatusFilter = button.dataset.linkHealthFilter || 'attention';
+        renderDashboard();
+      });
+    });
+    document.querySelector('[data-link-health-search-form]')?.addEventListener('submit', event => {
+      event.preventDefault();
+      linkHealthQuery = String(event.currentTarget.elements.linkHealthSearch?.value || '');
+      renderDashboard();
+    });
+    document.querySelectorAll('[data-link-health-form]').forEach(form => {
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        await saveLinkHealthStatus(form);
       });
     });
   }
@@ -1510,6 +1754,7 @@
                 ['Waiting on submitters', waitingSuggestions.length],
                 ['Ready to publish', workload.resources.ready.length],
                 ['Active issues', activeIssues.length],
+                ['Links needing review', linkHealthRecords.filter(row => ['broken', 'needs_review'].includes(linkHealthEffectiveStatus(row))).length],
                 ['Explicit catalog contributors', catalogContributorRecords.length],
                 ['Verified contributors/labs', contributors.length],
                 ['Core team members', coreTeamMemberCount]
@@ -1536,6 +1781,28 @@
                 ['Developers', overview.developers],
                 ['Testers', overview.testers],
                 ['Potential author credits', catalogAuthorRecords.length]
+              ].map(([label, value]) => `
+                <div class="oc-dashboard-mini-row">
+                  <span>${esc(label)}</span>
+                  <strong>${esc(String(value))}</strong>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+          <section class="oc-workspace-card">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+              <div>
+                <p class="oc-auth-kicker mb-2">Catalog maintenance</p>
+                <h2 class="h5 fw-bold mb-0">Link review</h2>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" data-dashboard-tab="link-health">Open link health</button>
+            </div>
+            <div class="vstack gap-2">
+              ${[
+                ['Checked links', linkHealthRecords.length],
+                ['Working', linkHealthRecords.filter(row => linkHealthEffectiveStatus(row) === 'working').length],
+                ['Needs attention', linkHealthRecords.filter(row => ['broken', 'needs_review'].includes(linkHealthEffectiveStatus(row))).length],
+                ['Maintainer edits', linkHealthOverrides.length]
               ].map(([label, value]) => `
                 <div class="oc-dashboard-mini-row">
                   <span>${esc(label)}</span>
@@ -3273,7 +3540,14 @@
     const usageRequest = canAdmin
       ? sb.rpc('site_usage_summary', { days: usageAnalyticsDays })
       : Promise.resolve({ data: null, error: null });
-    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, credentialRequestsRes, rolesRes, identitiesRes, contactsRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes] = await Promise.all([
+    const linkHealthRequest = fetchFirstJson([
+      'data/link-health.json',
+      'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/link-health.json'
+    ], { records: {}, updated_at: '' });
+    const linkHealthLabelsRequest = canAdmin
+      ? sb.from('link_health_labels').select('*').order('updated_at', { ascending: false }).limit(2000)
+      : Promise.resolve({ data: [], error: null });
+    const [profilesRes, badgesRes, suggestionsRes, issueReportsRes, credentialRequestsRes, rolesRes, identitiesRes, contactsRes, bookmarksRes, collectionsRes, notesRes, contributorsRes, catalogRes, usageRes, linkHealthRes, linkHealthLabelsRes] = await Promise.all([
       profilesRequest,
       sb.from('user_badges').select('*').order('awarded_at', { ascending: false }).limit(1000),
       sb.from('resource_suggestions').select('*').order('created_at', { ascending: false }).limit(200),
@@ -3301,7 +3575,9 @@
         : Promise.resolve([]),
       contributorsRequest,
       Promise.all(catalogRequests),
-      usageRequest
+      usageRequest,
+      linkHealthRequest,
+      linkHealthLabelsRequest
     ]);
     if (profilesRes.error) throw profilesRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -3322,6 +3598,12 @@
     catalogContributorRecords = catalogRecords.contributorRecords;
     catalogAuthorRecords = catalogRecords.authorRecords;
     usageAnalytics = usageRes?.error ? null : (usageRes?.data || null);
+    linkHealthUpdatedAt = linkHealthRes?.updated_at || '';
+    linkHealthRecords = Array.isArray(linkHealthRes?.records)
+      ? linkHealthRes.records.filter(row => row && typeof row === 'object')
+      : Object.values(linkHealthRes?.records || {}).filter(row => row && typeof row === 'object');
+    linkHealthOverridesError = linkHealthLabelsRes?.error ? 'Status override storage is not available.' : '';
+    linkHealthOverrides = linkHealthLabelsRes?.error ? [] : (linkHealthLabelsRes?.data || []);
     if (usageRes?.error) console.warn('Usage analytics summary failed', usageRes.error);
     if (resetSelection || !profiles.some(row => row.user_id === selectedUserId)) {
       selectedUserId = profiles[0]?.user_id || '';

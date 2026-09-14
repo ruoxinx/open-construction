@@ -305,6 +305,98 @@ function canonicalModalityList(val){
   return normalizeList(val);
 }
 
+async function loadLinkHealthCache(){
+  const candidates = ['../data/link-health.json', '/open-construction/data/link-health.json'];
+  for (const url of candidates){
+    try {
+      const response = await fetch(url, { cache: 'no-cache' });
+      if (response.ok) return await response.json();
+    } catch {}
+  }
+  return null;
+}
+
+function linkHealthRecord(cache, resourceType, resourceId, field, url){
+  const records = cache?.records;
+  if (!records) return null;
+  const key = `${resourceType}:${resourceId}:${field}`;
+  const record = Array.isArray(records)
+    ? records.find(item => item?.resource_type === resourceType && item?.resource_id === resourceId && item?.field === field)
+    : records[key];
+  if (!record || !record.checked_at) return null;
+  const recordUrl = safeHref(record.url) || record.url;
+  const currentUrl = safeHref(url) || url;
+  if (recordUrl !== currentUrl) return null;
+  const age = Date.now() - Date.parse(record.checked_at);
+  return Number.isFinite(age) && age >= 0 && age <= 45 * 86400000 ? record : null;
+}
+
+function linkIssueHref(resourceType, resourceId, title, field, url, issueType = 'Broken link', summaryPrefix = 'Review'){
+  const params = new URLSearchParams({
+    report: 'issue',
+    issue_type: issueType,
+    page: detailPageUrl(),
+    summary: `${summaryPrefix} ${field.replace(/_/g, ' ')} link for ${title}`,
+    details: `Resource type: ${resourceType}\nResource ID: ${resourceId}\nField: ${field}\nCurrent URL: ${url}\n\nPlease verify the source link and update it if an authoritative replacement is available.`
+  });
+  return `../account.html?${params.toString()}`;
+}
+
+function bindLinkHealthNotes(root){
+  root?.querySelectorAll('.oc-link-health-working, .oc-link-health-review, .oc-link-health-broken').forEach(status => {
+    if (status.dataset.ocLinkHealthReady) return;
+    status.dataset.ocLinkHealthReady = 'true';
+    status.setAttribute('role', 'button');
+    status.setAttribute('tabindex', '0');
+    status.setAttribute('aria-expanded', 'false');
+    const toggleNote = () => {
+      const currentNote = status.nextElementSibling?.classList.contains('oc-link-health-note')
+        ? status.nextElementSibling
+        : null;
+      if (currentNote) {
+        currentNote.remove();
+        status.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      const checked = String(status.getAttribute('title') || '').replace(/^Link checked\s*/i, '').trim();
+      const statusTitle = String(status.getAttribute('title') || '').trim();
+      const noteText = statusTitle
+        .replace(/^Link checked\s*/i, 'Working link, checked ')
+        .replace(/\.\s*Checked\s+/i, ', checked ');
+      const note = document.createElement('span');
+      note.className = 'oc-link-health-note';
+      note.textContent = checked ? `Working link · checked ${checked}` : 'Working link';
+      note.textContent = noteText || 'Link status';
+      status.insertAdjacentElement('afterend', note);
+      status.setAttribute('aria-expanded', 'true');
+    };
+    status.addEventListener('click', toggleNote);
+    status.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggleNote();
+    });
+  });
+}
+
+function linkHealthHtml(cache, resourceType, resourceId, title, field, url){
+  const record = linkHealthRecord(cache, resourceType, resourceId, field, url);
+  if (!record) return '';
+  const checked = new Date(record.checked_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  if (record.status === 'working') {
+    const suggestHref = escapeHtml(linkIssueHref(resourceType, resourceId, title, field, url, 'Metadata correction', 'Suggest a replacement for'));
+    return `<span class="oc-link-health oc-link-health-working" title="Link checked ${escapeHtml(checked)}" aria-label="Working link, checked ${escapeHtml(checked)}">✓</span><a class="oc-link-health-suggest" href="${suggestHref}" title="Suggest a replacement" aria-label="Suggest a replacement"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9.5 14.5-1.8 1.8a3.1 3.1 0 0 1-4.4-4.4l3.3-3.3a3.1 3.1 0 0 1 4.4 0"></path><path d="m14.5 9.5 1.8-1.8a3.1 3.1 0 0 1 4.4 4.4l-3.3 3.3a3.1 3.1 0 0 1-4.4 0"></path><path d="m8.5 15.5 7-7"></path></svg></a>`;
+  }
+  const review = record.status === 'needs_review';
+  const label = review ? 'Link could not be verified' : 'Link may be unavailable';
+  const reportHref = escapeHtml(linkIssueHref(resourceType, resourceId, title, field, url));
+  return `<span class="oc-link-health ${review ? 'oc-link-health-review' : 'oc-link-health-broken'}" title="${label}. Checked ${escapeHtml(checked)}" aria-label="${label}. Checked ${escapeHtml(checked)}">!</span><a class="oc-link-health-suggest" href="${reportHref}" title="Suggest a replacement" aria-label="Suggest a replacement"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9.5 14.5-1.8 1.8a3.1 3.1 0 0 1-4.4-4.4l3.3-3.3a3.1 3.1 0 0 1 4.4 0"></path><path d="m14.5 9.5 1.8-1.8a3.1 3.1 0 0 1 4.4 4.4l-3.3 3.3a3.1 3.1 0 0 1-4.4 0"></path><path d="m8.5 15.5 7-7"></path></svg></a>`;
+}
+
+function missingLinkHtml(resourceType, resourceId, title, field, label){
+  return `<span class="oc-source-missing">No public ${escapeHtml(label.toLowerCase())} link listed.</span> <a class="oc-link-health-report" href="${linkIssueHref(resourceType, resourceId, title, field, '')}">Suggest a link</a>`;
+}
+
 function relatedYearLabel(value){
   const year = String(value ?? '').trim();
   return /^\d{4}$/.test(year) ? `(${year})` : '';
@@ -1947,9 +2039,10 @@ async function initDetail(){
 
   try{
     if (type === 'model') {
-      const [modelsRes, datasetsRes] = await Promise.all([
+      const [modelsRes, datasetsRes, linkHealth] = await Promise.all([
         fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null),
-        fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null)
+        fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null),
+        loadLinkHealthCache()
       ]);
       const payload = modelsRes?.ok
         ? await modelsRes.json()
@@ -1989,13 +2082,17 @@ async function initDetail(){
       const imgCandidates = getModelImageCandidates(m, id, codeUrl);
       const imgPlaceholder = `../assets/img/models/_placeholder.png`;
       const captionText = m.sample_caption || m.caption || 'Media from public websites are © their respective creators unless otherwise noted.';
-      const rawPaperField = safeText(m.paper || '');
+      const rawPaperField = safeText(m.paper || m.Paper || '');
       const paperFieldIsUrl = rawPaperField !== '—' && !!safeHref(rawPaperField);
       const publications = recordPublications(m);
       const primaryPublication = publications[0] || null;
       const primaryPublicationUrl = primaryPublication?.url || '';
       const paperUrl = primaryPublicationUrl || safeHref(m.paper_url || m.paper_link || '') || (paperFieldIsUrl ? safeHref(rawPaperField) : '');
       const modelSourceUrl = safeHref(codeUrl);
+      const modelSourceField = m.code_url ? 'code_url' : 'code';
+      const modelSourceHealth = modelSourceUrl
+        ? linkHealthHtml(linkHealth, 'model', m.id || id || m.title || '', modelTitle, modelSourceField, modelSourceUrl)
+        : missingLinkHtml('model', m.id || id || m.title || '', modelTitle, modelSourceField, 'code');
       const doiSource = primaryPublication?.doi || m.doi || (paperUrl && paperUrl.includes('doi.org/') ? paperUrl : '');
       const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
@@ -2007,13 +2104,15 @@ async function initDetail(){
         altmetric: (m.altmetric !== undefined) ? m.altmetric : undefined,
         dimensions: (m.dimensions !== undefined) ? m.dimensions : undefined
       });
+      const primaryPublicationTitle = safeText(primaryPublication?.title || '');
+      const usablePublicationTitle = primaryPublicationTitle !== '—' &&
+        !safeHref(primaryPublicationTitle) &&
+        !normalizedDoiValue(primaryPublicationTitle)
+        ? primaryPublicationTitle
+        : '';
       const modelPaperTitle = safeText(
-        primaryPublication?.title ||
         (rawPaperField !== '—' && !paperFieldIsUrl ? rawPaperField : '') ||
-        m.Paper ||
-        m.paper_title ||
-        m.paper_name ||
-        m.publication ||
+        usablePublicationTitle ||
         m.title ||
         m.name ||
         ''
@@ -2163,8 +2262,8 @@ async function initDetail(){
           .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
           .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
           .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
-          .meta-val{ font-size:.9rem; font-weight:500; line-height:1.4; }
-          .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; }
+          .meta-val{ min-width:0; font-size:.9rem; font-weight:500; line-height:1.4; }
+          .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; overflow-wrap:anywhere; word-break:break-word; }
           .meta-val > a:hover,.meta-val > a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.14em; }
           .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
@@ -2341,7 +2440,7 @@ async function initDetail(){
             ${metaRow('Training data', chipLane(m.training_data || m.datasets || m.dataset || ''))}
             ${metaRow('Associated paper', modelPaperTitle !== '—' ? ((doiUrl || safeHref(paperUrl || '')) ? `<a href="${doiUrl || safeHref(paperUrl || '')}" target="_blank" rel="noopener">${escapeHtml(modelPaperTitle)}</a>` : escapeHtml(modelPaperTitle)) : '—')}
             ${metaRow('Source status', escapeHtml(formatSourceStatus(m.source_status)))}
-            ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a>` : '—')}
+            ${metaRow('Code URL', modelSourceUrl ? `<a href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(codeUrl)}</a> ${modelSourceHealth}` : modelSourceHealth)}
             ${metaRow('DOI', doiSource ? formatDoi(doiSource) : '—')}
             ${metaRow('License', formatLicense(m.license, m) || '—')}
           </dl>
@@ -2388,7 +2487,7 @@ async function initDetail(){
             <div class="card-body">
               <h2 class="h6 text-uppercase text-muted mb-3">Model Links</h2>
               <div class="d-grid gap-2">
-                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'Access Code')}</a>` : ''}
+                ${modelSourceUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${modelSourceUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('code', 'Access Code')}</a>` : `<div class="oc-source-missing-card">${modelSourceHealth}</div>`}
                 ${paperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${paperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View Paper')}</a>` : ''}
                 ${showDoiButton ? `<a class="btn btn-outline-secondary btn-sm" href="${doiUrl}" target="_blank" rel="noopener">DOI</a>` : ''}
               </div>
@@ -2450,6 +2549,7 @@ async function initDetail(){
         </div>
         ${modelLicenseModalHtml(m)}
       `;
+      bindLinkHealthNotes(root);
       if (doiUrl) initializeScholarlyMetadata(root, doiUrl).catch(err => console.warn('Scholarly metadata unavailable', err));
       await initializePublicationBadges(root);
 
@@ -2503,16 +2603,19 @@ async function initDetail(){
     let dataObj = {};
     let modelArr = [];
     let benchmarkPayload = { benchmarks: [] };
+    let linkHealth = null;
     try{
-      const [datasetRes, modelRes, benchmarkData] = await Promise.all([
+      const [datasetRes, modelRes, benchmarkData, linkHealthData] = await Promise.all([
         fetch('../data/datasets.json', { cache: 'no-cache' }).catch(() => null),
         fetch('../data/models.json', { cache: 'no-cache' }).catch(() => null),
-        loadBenchmarkPayload()
+        loadBenchmarkPayload(),
+        loadLinkHealthCache()
       ]);
       dataObj = datasetRes?.ok ? await datasetRes.json() : await (await fetch('/open-construction/data/datasets.json', { cache: 'no-cache' })).json();
       const modelPayload = modelRes?.ok ? await modelRes.json() : await (await fetch('/open-construction/data/models.json', { cache: 'no-cache' })).json();
       modelArr = normalizeModelPayload(modelPayload);
       benchmarkPayload = benchmarkData || benchmarkPayload;
+      linkHealth = linkHealthData;
     }catch(e){
       if (typeof showErrorBanner === 'function') showErrorBanner('Could not load data/datasets.json for detail page.');
       console.error(e);
@@ -2565,9 +2668,18 @@ async function initDetail(){
     const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetPaperUrl = doiHref(ds.doi || '') || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
-    const datasetAccessUrl = safeHref(ds.access || '');
+    const datasetAccessValue = ds.access || ds.source_url || '';
+    const datasetAccessUrl = safeHref(datasetAccessValue);
+    const datasetAccessField = ds.access ? 'access' : 'source_url';
     const datasetCodeValue = ds.code || ds.code_url || '';
     const datasetCodeUrl = safeHref(datasetCodeValue);
+    const datasetAccessHealth = datasetAccessUrl
+      ? linkHealthHtml(linkHealth, 'dataset', ds.id || id || ds.name || '', ds.name || id || 'Dataset', datasetAccessField, datasetAccessUrl)
+      : missingLinkHtml('dataset', ds.id || id || ds.name || '', ds.name || id || 'Dataset', datasetAccessField, 'dataset source');
+    const datasetCodeField = ds.code ? 'code' : 'code_url';
+    const datasetCodeHealth = datasetCodeUrl
+      ? linkHealthHtml(linkHealth, 'dataset', ds.id || id || ds.name || '', ds.name || id || 'Dataset', datasetCodeField, datasetCodeUrl)
+      : '';
     const quickFacts = [
       { label: 'Year', value: escapeHtml(safeText(ds.year ?? '')) },
       { label: datasetSampleLabel, value: escapeHtml(safeFormatInt(ds.num_images)) },
@@ -2731,8 +2843,8 @@ async function initDetail(){
         .meta-row{ display:grid; grid-template-columns: 180px 1fr; gap:14px; padding:10px 0; align-items:start; }
         .meta-row + .meta-row{ border-top:1px solid var(--oc-border); }
         .meta-label{ color:var(--oc-sub); font-size:.92rem; white-space:nowrap; }
-        .meta-val{ font-size:.9rem; font-weight:500; line-height:1.4; }
-        .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; }
+        .meta-val{ min-width:0; font-size:.9rem; font-weight:500; line-height:1.4; }
+        .meta-val > a{ color:var(--oc-text); font-size:.9rem; font-weight:500; text-decoration:none; overflow-wrap:anywhere; word-break:break-word; }
         .meta-val > a:hover,.meta-val > a:focus{ color:var(--oc-link); text-decoration:underline; text-underline-offset:.14em; }
         .meta-row .license-inline,.meta-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .scholarly-reference-card .scholarly-reference-value a{ color:var(--oc-text); text-decoration:none; }
@@ -2884,8 +2996,8 @@ async function initDetail(){
           ${metaRow('Associated paper', datasetPaperTitle !== '—' ? (datasetPaperUrl ? `<a href="${datasetPaperUrl}" target="_blank" rel="noopener">${escapeHtml(datasetPaperTitle)}</a>` : escapeHtml(datasetPaperTitle)) : '—')}
           ${metaRow('Source status', escapeHtml(formatSourceStatus(ds.source_status)))}
           ${metaRow('DOI', ds.doi ? formatDoi(ds.doi) : '—')}
-          ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(ds.access)}</a>` : '—')}
-          ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a>` : '—')}
+          ${metaRow('Dataset source', datasetAccessUrl ? `<a href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${escapeHtml(datasetAccessValue)}</a> ${datasetAccessHealth}` : datasetAccessHealth)}
+          ${metaRow('Code source', datasetCodeUrl ? `<a href="${datasetCodeUrl}" target="_blank" rel="noopener">${escapeHtml(datasetCodeValue)}</a> ${datasetCodeHealth}` : '—')}
           ${metaRow('Blog', ds.blog_url ? `<a href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">${escapeHtml(ds.blog_url)}</a>` : '—')}
           ${metaRow('License', formatLicense(ds.license, ds) || '—')}
           ${metaRow('Notes', noteText !== '—' ? escapeHtml(noteText) : '—')}
@@ -2938,7 +3050,7 @@ async function initDetail(){
           <div class="card-body">
             <h2 class="h6 text-uppercase text-muted mb-3">Dataset Access</h2>
             <div class="d-grid gap-2">
-              ${datasetAccessUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('access', 'Access dataset')}</a>` : ''}
+              ${datasetAccessUrl ? `<a class="btn btn-primary btn-sm btn-with-icon" href="${datasetAccessUrl}" target="_blank" rel="noopener" data-license-gate>${actionButtonContent('access', 'Access dataset')}</a>` : `<div class="oc-source-missing-card">${datasetAccessHealth}</div>`}
               ${datasetPaperUrl ? `<a class="btn btn-outline-secondary btn-sm btn-with-icon" href="${datasetPaperUrl}" target="_blank" rel="noopener">${actionButtonContent('paper', 'View paper')}</a>` : ''}
               ${ds.blog_url ? `<a class="btn btn-outline-secondary btn-sm" href="${safeHref(ds.blog_url)}" target="_blank" rel="noopener">Blog</a>` : ''}
             </div>
@@ -3002,6 +3114,7 @@ async function initDetail(){
       </div>
       ${datasetLicenseModalHtml(ds)}
     `;
+    bindLinkHealthNotes(root);
     if (normalizedDoiValue(ds.doi)) initializeScholarlyMetadata(root, ds.doi).catch(err => console.warn('Scholarly metadata unavailable', err));
     await initializePublicationBadges(root);
 

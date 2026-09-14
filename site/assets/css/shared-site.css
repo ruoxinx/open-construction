@@ -4399,6 +4399,141 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   font-size:.74rem;
 }
 
+.oc-source-action{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.45rem .6rem;
+}
+
+.oc-link-health{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.05rem;
+  height:1.05rem;
+  border-radius:50%;
+  font-size:.68rem;
+  font-weight:700;
+  line-height:1;
+  vertical-align:middle;
+}
+
+.oc-link-health-working,
+.oc-link-health-review,
+.oc-link-health-broken{
+  cursor:pointer;
+}
+
+.oc-link-health-working{
+  color:#166534;
+  background:#dcfce7;
+}
+
+.oc-link-health-working:focus-visible{
+  outline:2px solid #166534;
+  outline-offset:2px;
+}
+
+.oc-link-health-review:focus-visible{
+  outline:2px solid #92400e;
+  outline-offset:2px;
+}
+
+.oc-link-health-broken:focus-visible{
+  outline:2px solid #991b1b;
+  outline-offset:2px;
+}
+
+.oc-link-health-review{
+  color:#92400e;
+  background:#fef3c7;
+}
+
+.oc-link-health-broken{
+  color:#991b1b;
+  background:#fee2e2;
+}
+
+#detailRoot .meta-val > a.oc-link-health-working,
+#detailRoot .meta-val > a.oc-link-health-working:hover,
+#detailRoot .meta-val > a.oc-link-health-working:focus-visible{
+  color:#166534;
+}
+
+#detailRoot .meta-val > a.oc-link-health-review,
+#detailRoot .meta-val > a.oc-link-health-review:hover,
+#detailRoot .meta-val > a.oc-link-health-review:focus-visible{
+  color:#92400e;
+}
+
+#detailRoot .meta-val > a.oc-link-health-broken,
+#detailRoot .meta-val > a.oc-link-health-broken:hover,
+#detailRoot .meta-val > a.oc-link-health-broken:focus-visible{
+  color:#991b1b;
+}
+
+.oc-link-health-suggest{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.05rem;
+  height:1.05rem;
+  margin-left:.3rem;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  color:#1d4ed8 !important;
+  background:#dbeafe;
+  line-height:1;
+  text-decoration:none !important;
+  vertical-align:middle;
+}
+
+.oc-link-health-suggest svg{
+  width:.76rem;
+  height:.76rem;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.oc-link-health-suggest:hover,
+.oc-link-health-suggest:focus-visible{
+  color:#1e40af !important;
+  background:#bfdbfe;
+}
+
+.oc-link-health-report,
+.oc-link-health-note,
+.oc-source-missing{
+  color:var(--oc-sub);
+  font-size:.74rem;
+}
+
+.oc-link-health-note{
+  margin-left:.1rem;
+}
+
+.oc-link-health-report{
+  text-decoration:none;
+}
+
+.oc-link-health-report:hover,
+.oc-link-health-report:focus{
+  color:var(--oc-link);
+  text-decoration:underline;
+  text-underline-offset:.15em;
+}
+
+.oc-source-missing-card{
+  color:var(--oc-sub);
+  font-size:.78rem;
+  line-height:1.45;
+}
+
 .oc-resource-main{
   display:grid;
   gap:.18rem;
@@ -5311,6 +5446,111 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   min-width:0;
 }
 
+.oc-link-health-panel{
+  min-width:0;
+}
+
+.oc-link-health-summary{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  color:var(--oc-sub);
+  font-size:.8rem;
+  font-weight:700;
+}
+
+.oc-link-health-summary strong{
+  color:var(--oc-ink);
+  font-size:.92rem;
+  margin-right:.2rem;
+}
+
+.oc-link-health-summary-broken strong,
+.oc-link-health-status-broken{
+  color:#a83b3b;
+}
+
+.oc-link-health-summary-review strong,
+.oc-link-health-status-needs_review{
+  color:#8a570d;
+}
+
+.oc-link-health-summary-working strong,
+.oc-link-health-status-working{
+  color:#287a52;
+}
+
+.oc-link-health-toolbar{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+  padding-top:.2rem;
+}
+
+.oc-link-health-search{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  min-width:min(100%, 320px);
+}
+
+.oc-link-health-search .form-control{
+  min-width:180px;
+}
+
+.oc-link-health-list{
+  display:grid;
+  gap:.65rem;
+}
+
+.oc-link-health-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(220px,280px);
+  gap:1rem;
+  border-top:1px solid var(--oc-border);
+  padding-top:.8rem;
+}
+
+.oc-link-health-record,
+.oc-link-health-editor{
+  min-width:0;
+}
+
+.oc-link-health-status{
+  font-size:.74rem;
+  font-weight:800;
+}
+
+.oc-link-health-status-unknown{
+  color:var(--oc-sub);
+}
+
+.oc-link-health-override{
+  color:#174d7c;
+  font-size:.72rem;
+  font-weight:800;
+}
+
+.oc-link-health-url{
+  overflow:hidden;
+  color:var(--oc-sub);
+  font-family:var(--bs-font-monospace);
+  font-size:.75rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  margin:.3rem 0;
+}
+
+.oc-link-health-replacement{
+  overflow:hidden;
+  color:#174d7c;
+  font-size:.75rem;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 .oc-resource-review-layout{
   display:grid;
   grid-template-columns:minmax(230px, 320px) minmax(0, 1fr);
@@ -6011,6 +6251,7 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   .oc-maintainer-command-rows,
   .oc-dashboard-split,
   .oc-resource-review-layout,
+  .oc-link-health-row,
   .oc-selected-account-stats,
   .oc-account-fact-grid,
   .oc-selected-account-grid,
@@ -6044,6 +6285,18 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   .oc-review-mode-tabs,
   .oc-workflow-filter{
     justify-content:flex-start;
+    width:100%;
+  }
+
+  .oc-link-health-search{
+    width:100%;
+  }
+
+  .oc-link-health-search .form-control{
+    flex:1 1 auto;
+  }
+
+  .oc-link-health-toolbar .oc-review-mode-tabs{
     width:100%;
   }
 
