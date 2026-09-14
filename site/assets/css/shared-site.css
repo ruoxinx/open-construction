@@ -4406,6 +4406,19 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   line-height:1;
 }
 
+.meta-val .doi-crossref-link,
+.scholarly-reference-value .doi-crossref-link{
+  gap:.28rem;
+  font-size:inherit;
+}
+
+.meta-val .doi-crossref-check,
+.scholarly-reference-value .doi-crossref-check{
+  width:1.35rem;
+  height:1.35rem;
+  font-size:.78rem;
+}
+
 .scholarly-reference-export-status{
   color:var(--oc-sub);
   font-size:.72rem;

@@ -416,9 +416,9 @@ function licenseProviderBadgeHtml(licenseValue, mini = false){
   const providers = {
     'APACHE 2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
     'APACHE-2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
-    'ODC-BY': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
-    'ODC BY': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
-    'OPEN DATA COMMONS ATTRIBUTION LICENSE': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
+    'ODC-BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'ODC BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'OPEN DATA COMMONS ATTRIBUTION LICENSE': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
     'MIT': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
     'BSD 2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
     'BSD-2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
@@ -795,7 +795,7 @@ async function initOerDetail(){
         .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
         .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
         .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
-        .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; }
+        .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; background:#0f2e4b; border:1px solid #d8e4ef; border-radius:4px; padding:.16rem; }
         .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
         .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
         .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
