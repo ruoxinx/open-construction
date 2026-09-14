@@ -1058,8 +1058,7 @@ function odcLicenseBadgeHtml(licenseValue){
 function osiApprovedLicenseBadgeHtml(licenseValue){
   const key = String(licenseValue || '').trim().toUpperCase();
   if (!new Set(['MIT', 'BSD 2-CLAUSE', 'BSD-2-CLAUSE', 'BSD 3-CLAUSE', 'BSD-3-CLAUSE', 'BSD 3-CLAUSE LICENSE', 'BSD-3-CLAUSE LICENSE']).has(key)) return '';
-  const shortLabel = key === 'MIT' ? 'MIT' : 'BSD';
-  return `<a class="license-badge-link" href="https://opensource.org/licenses" target="_blank" rel="noopener" aria-label="Open the OSI Approved Licenses list"><svg class="license-badge license-badge-osi" viewBox="0 0 48 48" role="img" aria-label="${shortLabel} license"><title>${shortLabel} license</title><rect x="2" y="2" width="44" height="44" rx="8" fill="#eef4fa" stroke="#c7d7e6"/><text x="24" y="29" text-anchor="middle" fill="#0f2e4b" font-size="11" font-weight="700" font-family="system-ui, sans-serif">${shortLabel}</text></svg></a>`;
+  return '<a class="license-badge-link" href="https://opensource.org/licenses" target="_blank" rel="noopener" aria-label="Open the OSI Approved Licenses list"><img class="license-badge license-badge-osi" src="https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png" alt="" title="OSI Approved License" aria-hidden="true" loading="lazy" decoding="async"></a>';
 }
 
 function gnuLicenseBadgeHtml(licenseValue){
@@ -1453,7 +1452,7 @@ async function initializePublicationBadges(root){
 const scholarlyMetadataTimeoutMs = 4500;
 
 function crossrefIconHtml(){
-  return '<svg class="scholarly-provider-icon scholarly-crossref-icon" viewBox="0 0 200 68" role="img" aria-label="Crossref"><title>Crossref</title><text x="4" y="47" fill="currentColor" font-size="42" font-weight="700" font-family="system-ui, sans-serif" letter-spacing="-1">Crossref</text></svg>';
+  return '<img class="scholarly-provider-icon scholarly-crossref-icon" src="https://assets.crossref.org/logo/crossref-logo-landscape-200.svg" alt="Crossref" decoding="async">';
 }
 
 function dataciteIconHtml(){
