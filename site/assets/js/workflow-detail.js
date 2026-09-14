@@ -289,6 +289,7 @@ async function initWorkflowDetail(){
       { label: 'Geography', value: escapeHtml(item.geography || '—') }
     ];
 
+    // Keep item.notes in the source data for future evidence/provenance use; workflow details intentionally do not render it.
     root.innerHTML = `
       <style>
         .detail-card,.detail-section,.detail-subcard,.quickfact-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); background:#fff; }
@@ -324,8 +325,9 @@ async function initWorkflowDetail(){
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .related-link-title{ font-weight:400; color:var(--oc-ink); transition:color .15s ease; }
-        .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+        .related-link-title{ font-weight:400; color:var(--oc-ink); font-size:.9rem; line-height:1.35; transition:color .15s ease; }
+        .related-link-year{ color:var(--oc-sub); font-weight:400; white-space:nowrap; }
+        .related-link-meta{ color:var(--oc-sub); font-size:.76rem; font-weight:400; line-height:1.35; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
         .media-figure{ margin:0; }
@@ -384,7 +386,6 @@ async function initWorkflowDetail(){
               ${metaRow('Code', codeUrl ? `<a href="${codeUrl}" target="_blank" rel="noopener">${escapeHtml(codeUrl)}</a>` : '—')}
               ${metaRow('DOI', doiValue ? doiLinkHtml(doiValue) : '—')}
               ${metaRow('License', escapeHtml(item.license || '—'))}
-              ${metaRow('Notes', escapeHtml(item.notes || '—'))}
             </dl>
           </section>
 

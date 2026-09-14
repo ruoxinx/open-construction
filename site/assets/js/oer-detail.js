@@ -724,8 +724,9 @@ async function initOerDetail(){
         .related-link + .related-link{ border-top:1px solid var(--oc-border); }
         .related-link:hover .related-link-title{ color:var(--oc-link); }
         .related-link-type{ color:var(--oc-sub); font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
-        .related-link-title{ font-weight:400; color:var(--oc-ink); transition:color .15s ease; }
-        .related-link-meta{ color:var(--oc-sub); font-size:.9rem; }
+        .related-link-title{ font-weight:400; color:var(--oc-ink); font-size:.9rem; line-height:1.35; transition:color .15s ease; }
+        .related-link-year{ color:var(--oc-sub); font-weight:400; white-space:nowrap; }
+        .related-link-meta{ color:var(--oc-sub); font-size:.76rem; font-weight:400; line-height:1.35; }
         .section-nav a{ color:var(--oc-link); text-decoration:none; }
         .section-nav a:hover{ text-decoration:underline; }
         .media-figure{ margin:0; }
