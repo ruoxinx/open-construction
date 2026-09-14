@@ -4408,15 +4408,15 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .meta-val .doi-crossref-link,
 .scholarly-reference-value .doi-crossref-link{
-  gap:.2rem;
-  font-size:inherit;
+  gap:.15rem;
+  font-size:.85rem;
 }
 
 .meta-val .doi-crossref-check,
 .scholarly-reference-value .doi-crossref-check{
-  width:1.05rem;
-  height:1.05rem;
-  font-size:.62rem;
+  width:.9rem;
+  height:.9rem;
+  font-size:.55rem;
 }
 
 .scholarly-reference-export-status{
