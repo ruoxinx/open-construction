@@ -1052,7 +1052,7 @@ function apacheLicenseBadgeHtml(licenseValue){
 function odcLicenseBadgeHtml(licenseValue){
   const key = String(licenseValue || '').trim().toUpperCase();
   if (!new Set(['ODC-BY', 'ODC BY', 'OPEN DATA COMMONS ATTRIBUTION LICENSE']).has(key)) return '';
-  return '<a class="license-badge-link" href="https://opendatacommons.org/licenses/by/" target="_blank" rel="noopener" aria-label="Open the Open Data Commons Attribution License"><img class="license-badge license-badge-odc" src="https://opendatacommons.org/favicon.ico" alt="" title="Open Data Commons mark" aria-hidden="true" loading="lazy" decoding="async"></a>';
+  return '<a class="license-badge-link" href="https://opendatacommons.org/licenses/by/" target="_blank" rel="noopener" aria-label="Open the Open Data Commons Attribution License"><img class="license-badge license-badge-odc" src="../assets/img/licenses/odc.svg" alt="" title="Open Data Commons mark" aria-hidden="true" loading="lazy" decoding="async"></a>';
 }
 
 function osiApprovedLicenseBadgeHtml(licenseValue){

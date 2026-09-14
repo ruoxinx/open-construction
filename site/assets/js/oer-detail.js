@@ -416,9 +416,9 @@ function licenseProviderBadgeHtml(licenseValue, mini = false){
   const providers = {
     'APACHE 2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
     'APACHE-2.0': ['apache', 'https://www.apache.org/images/oakleaf.svg', 'Apache Software Foundation mark'],
-    'ODC-BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
-    'ODC BY': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
-    'OPEN DATA COMMONS ATTRIBUTION LICENSE': ['odc', 'https://opendatacommons.org/favicon.ico', 'Open Data Commons mark'],
+    'ODC-BY': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
+    'ODC BY': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
+    'OPEN DATA COMMONS ATTRIBUTION LICENSE': ['odc', '../assets/img/licenses/odc.svg', 'Open Data Commons mark'],
     'MIT': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
     'BSD 2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
     'BSD-2-CLAUSE': ['osi', 'https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png', 'OSI Approved License'],
