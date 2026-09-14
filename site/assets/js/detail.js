@@ -1050,12 +1050,6 @@ function apacheLicenseBadgeHtml(licenseValue){
   return '<img class="license-badge license-badge-apache" src="https://www.apache.org/images/oakleaf.svg" alt="" title="Apache Software Foundation mark" aria-hidden="true" loading="lazy" decoding="async">';
 }
 
-function odcLicenseBadgeHtml(licenseValue){
-  const key = String(licenseValue || '').trim().toUpperCase();
-  if (!new Set(['ODC-BY', 'ODC BY', 'OPEN DATA COMMONS ATTRIBUTION LICENSE']).has(key)) return '';
-  return '<a class="license-badge-link" href="https://opendatacommons.org/licenses/by/" target="_blank" rel="noopener" aria-label="Open the Open Data Commons Attribution License"><img class="license-badge license-badge-odc" src="https://opendatacommons.org/favicon.ico" alt="" title="Open Data Commons mark" aria-hidden="true" loading="lazy" decoding="async"></a>';
-}
-
 function osiApprovedLicenseBadgeHtml(licenseValue){
   const key = String(licenseValue || '').trim().toUpperCase();
   if (!new Set(['MIT', 'BSD 2-CLAUSE', 'BSD-2-CLAUSE', 'BSD 3-CLAUSE', 'BSD-3-CLAUSE', 'BSD 3-CLAUSE LICENSE', 'BSD-3-CLAUSE LICENSE']).has(key)) return '';
@@ -1092,10 +1086,6 @@ function licenseIconStripHtml(licenseValue){
   const apacheBadge = apacheLicenseBadgeHtml(upper);
   if (apacheBadge) {
     return `<span class="license-icon-strip" role="img" aria-label="Apache Software Foundation">${apacheBadge}</span>`;
-  }
-  const odcBadge = odcLicenseBadgeHtml(upper);
-  if (odcBadge) {
-    return `<span class="license-icon-strip" aria-label="Open Data Commons Attribution License">${odcBadge}</span>`;
   }
   const osiBadge = osiApprovedLicenseBadgeHtml(upper);
   if (osiBadge) {
@@ -2540,7 +2530,6 @@ async function initDetail(){
           .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
           .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
           .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
-          .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; background:#0f2e4b; border:1px solid #d8e4ef; border-radius:4px; padding:.16rem; }
           .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
           .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
           .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
@@ -3121,7 +3110,6 @@ async function initDetail(){
         .license-badge{ display:block; width:1.55rem; min-width:1.55rem; height:1.55rem; object-fit:contain; }
         .license-badge-link{ display:inline-flex; align-items:center; line-height:1; text-decoration:none; }
         .license-badge-apache{ width:1.45rem; min-width:1.45rem; height:1.45rem; }
-        .license-badge-odc{ width:1.3rem; min-width:1.3rem; height:1.3rem; background:#0f2e4b; border:1px solid #d8e4ef; border-radius:4px; padding:.16rem; }
         .license-badge-osi{ width:1.2rem; min-width:1.2rem; height:1.55rem; }
         .license-badge-gnu{ width:2.2rem; min-width:2.2rem; height:1.05rem; }
         .license-section{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--oc-border); }
