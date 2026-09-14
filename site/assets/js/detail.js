@@ -1058,7 +1058,8 @@ function odcLicenseBadgeHtml(licenseValue){
 function osiApprovedLicenseBadgeHtml(licenseValue){
   const key = String(licenseValue || '').trim().toUpperCase();
   if (!new Set(['MIT', 'BSD 2-CLAUSE', 'BSD-2-CLAUSE', 'BSD 3-CLAUSE', 'BSD-3-CLAUSE', 'BSD 3-CLAUSE LICENSE', 'BSD-3-CLAUSE LICENSE']).has(key)) return '';
-  return '<a class="license-badge-link" href="https://opensource.org/licenses" target="_blank" rel="noopener" aria-label="Open the OSI Approved Licenses list"><img class="license-badge license-badge-osi" src="https://opensource.org/wp-content/uploads/2006/09/OSIApproved.png" alt="" title="OSI Approved License" aria-hidden="true" loading="lazy" decoding="async"></a>';
+  const shortLabel = key === 'MIT' ? 'MIT' : 'BSD';
+  return `<a class="license-badge-link" href="https://opensource.org/licenses" target="_blank" rel="noopener" aria-label="Open the OSI Approved Licenses list"><svg class="license-badge license-badge-osi" viewBox="0 0 48 48" role="img" aria-label="${shortLabel} license"><title>${shortLabel} license</title><rect x="2" y="2" width="44" height="44" rx="8" fill="#eef4fa" stroke="#c7d7e6"/><text x="24" y="29" text-anchor="middle" fill="#0f2e4b" font-size="11" font-weight="700" font-family="system-ui, sans-serif">${shortLabel}</text></svg></a>`;
 }
 
 function gnuLicenseBadgeHtml(licenseValue){
@@ -1452,7 +1453,7 @@ async function initializePublicationBadges(root){
 const scholarlyMetadataTimeoutMs = 4500;
 
 function crossrefIconHtml(){
-  return '<img class="scholarly-provider-icon scholarly-crossref-icon" src="https://assets.crossref.org/logo/crossref-logo-landscape-200.svg" alt="Crossref" decoding="async">';
+  return '<svg class="scholarly-provider-icon scholarly-crossref-icon" viewBox="0 0 200 68" role="img" aria-label="Crossref"><title>Crossref</title><text x="4" y="47" fill="currentColor" font-size="42" font-weight="700" font-family="system-ui, sans-serif" letter-spacing="-1">Crossref</text></svg>';
 }
 
 function dataciteIconHtml(){
@@ -2302,7 +2303,12 @@ async function initDetail(){
       const taskFamilyList = taskFamilies(tasks);
       const appList = uniquePrettyTerms(applications);
       const appFamilyList = applicationFamilies(applications);
-      const modalityList = canonicalModalityList(modality);
+      // Keep the catalog's original modality labels for display. Canonical
+      // labels are useful for matching, but replacing source values here can
+      // collapse distinct engineering modalities such as "Ground Motion
+      // Records" and "Finite Element Models" into one broad family.
+      const modalityList = normalizeList(modality);
+      const modalityCanonicalList = canonicalModalityList(modality);
       const modalityFamilyList = modalityFamilies(modality);
       const trainingList = normalizeList(m.training_data || m.datasets || m.dataset || '');
       const quickFacts = [
@@ -2339,7 +2345,7 @@ async function initDetail(){
         const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(ds.potential_tasks || ds.tasks || ds.task));
         const applicationScore = scoreOverlap(appList, uniquePrettyTerms(ds.applications || ds.application || ds.use_cases || ds.use_case));
         const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(ds.applications || ds.application || ds.use_cases || ds.use_case));
-        const modalityScore = scoreOverlap(modalityList, canonicalModalityList(ds.data_modality));
+        const modalityScore = scoreOverlap(modalityCanonicalList, canonicalModalityList(ds.data_modality));
         const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(ds.data_modality || ds.data_modalities));
         const score = (trainMatch ? 10 : 0) + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
         const hasStrongSignal =
@@ -2362,7 +2368,7 @@ async function initDetail(){
           const taskFamilyScore = scoreOverlap(taskFamilyList, taskFamilies(other.tasks || other.task || other.potential_tasks));
           const applicationScore = scoreOverlap(appList, uniquePrettyTerms(other.applications || other.application));
           const applicationFamilyScore = scoreOverlap(appFamilyList, applicationFamilies(other.applications || other.application));
-          const modalityScore = scoreOverlap(modalityList, canonicalModalityList(other.modalities || other.modality || other.data_modalities));
+          const modalityScore = scoreOverlap(modalityCanonicalList, canonicalModalityList(other.modalities || other.modality || other.data_modalities));
           const modalityFamilyScore = scoreOverlap(modalityFamilyList, modalityFamilies(other.modalities || other.modality || other.data_modalities));
           const sharedTrainingScore = scoreOverlap(trainingList, other.training_data || other.datasets || other.dataset);
           const score = sharedTrainingScore * 6 + taskScore * 4 + taskFamilyScore * 2 + applicationScore * 2 + applicationFamilyScore + modalityFamilyScore * 2 + modalityScore;
