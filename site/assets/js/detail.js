@@ -1453,7 +1453,7 @@ async function initializePublicationBadges(root){
 const scholarlyMetadataTimeoutMs = 4500;
 
 function crossrefIconHtml(){
-  return '<span class="doi-crossref-check" aria-hidden="true">✓</span><span>Crossref</span>';
+  return '<img class="scholarly-provider-icon scholarly-crossref-icon" src="https://assets.crossref.org/logo/crossref-logo-landscape-200.svg" alt="Crossref" decoding="async">';
 }
 
 function dataciteIconHtml(){
@@ -1560,7 +1560,7 @@ function citationExportSourceHtml(doiVal, records){
   if (!Array.isArray(records) || !records.some(record => record.provider === 'Crossref')) return '';
   const href = crossrefRecordHref(doiVal);
   if (!href) return '';
-  return `<span>Data source:</span><a class="scholarly-cite-source-link doi-crossref-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the Crossref record">${crossrefIconHtml()}</a>`;
+  return `<span>Data source:</span><a class="scholarly-cite-source-link" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="Open the Crossref record">${crossrefIconHtml()}</a>`;
 }
 
 function scholarlyReferenceLineHtml(label, value){
