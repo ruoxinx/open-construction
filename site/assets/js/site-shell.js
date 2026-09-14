@@ -1210,7 +1210,7 @@
     if (!footer || footer.dataset.ocFooterNormalized === 'true') return;
     const openConstructionLogo = footer.querySelector('img[alt="OpenConstruction logo"]');
     if (!openConstructionLogo) return;
-    const container = footer.querySelector('.container') || footer;
+    const container = footer.querySelector('.container, .container-xxl') || footer;
     const linksBlock = Array.from(container.children).find(element =>
       /Terms/i.test(element.textContent || '') && /Privacy/i.test(element.textContent || '')
     );
