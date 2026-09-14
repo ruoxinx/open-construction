@@ -4414,9 +4414,9 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
 
 .meta-val .doi-crossref-check,
 .scholarly-reference-value .doi-crossref-check{
-  width:1.35rem;
-  height:1.35rem;
-  font-size:.78rem;
+  width:1.1rem;
+  height:1.1rem;
+  font-size:.65rem;
 }
 
 .scholarly-reference-export-status{
