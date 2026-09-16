@@ -3796,6 +3796,108 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   font-weight:800;
 }
 
+.oc-notification-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:1.45rem;
+  height:1.45rem;
+  margin-left:.2rem;
+  border-radius:999px;
+  background:#eef5fc;
+  color:var(--oc-blue);
+  font-size:.72rem;
+  font-weight:800;
+  vertical-align:.12em;
+}
+
+.oc-notification-inbox{
+  display:grid;
+  gap:.7rem;
+  border-top:1px solid var(--oc-border);
+  margin-top:.95rem;
+  padding-top:.9rem;
+}
+
+.oc-notification-inbox-head{
+  display:flex;
+  align-items:start;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.oc-notification-inbox-head h4{
+  color:var(--oc-ink);
+  font-size:.98rem;
+  font-weight:800;
+  margin:0 0 .2rem;
+}
+
+.oc-notification-list{
+  display:grid;
+  gap:.55rem;
+}
+
+.oc-notification-row{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:start;
+  gap:.7rem;
+  padding:.78rem .9rem;
+  border:1px solid var(--oc-border);
+  border-radius:10px;
+  background:#fff;
+  color:var(--oc-text);
+  text-decoration:none;
+}
+
+.oc-notification-row:hover,
+.oc-notification-row:focus-visible{
+  border-color:#cfe0f3;
+  background:#f8fbff;
+  color:var(--oc-ink);
+}
+
+.oc-notification-row.is-unread{
+  border-color:#c9def2;
+  background:#f7fbff;
+}
+
+.oc-notification-marker{
+  width:.48rem;
+  height:.48rem;
+  margin-top:.42rem;
+  border-radius:50%;
+  background:transparent;
+}
+
+.oc-notification-row.is-unread .oc-notification-marker{
+  background:var(--oc-blue);
+}
+
+.oc-notification-body{
+  display:grid;
+  gap:.24rem;
+  min-width:0;
+}
+
+.oc-notification-body strong{
+  color:var(--oc-ink);
+  font-size:.96rem;
+  line-height:1.25;
+}
+
+.oc-notification-state{
+  color:#64748b;
+  font-size:.75rem;
+  padding-top:.1rem;
+}
+
+.oc-notification-row.is-unread .oc-notification-state{
+  color:var(--oc-blue);
+  font-weight:700;
+}
+
 .oc-status-section{
   display:grid;
   gap:.55rem;
@@ -6482,6 +6584,9 @@ body.oc-auth-mode-signup .oc-workspace-kicker{
   .brand-wordmark .oc-construction{ font-size:1.02rem; }
   header.hero .content{ padding:34px 0 24px; }
   .search-input{ padding:.82rem 1rem; }
+  .oc-notification-inbox-head{ flex-direction:column; }
+  .oc-notification-row{ grid-template-columns:auto minmax(0,1fr); }
+  .oc-notification-state{ grid-column:2; padding-top:0; }
 }
 
 @media (prefers-reduced-motion: reduce){

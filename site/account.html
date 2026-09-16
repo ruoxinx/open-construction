@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260913-crossref-citation" rel="stylesheet"></head>
+  <link href="assets/css/shared-site.css?v=20260916-workspace-notifications" rel="stylesheet"></head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to account</a>
 
@@ -1346,7 +1346,7 @@
     if (remaining) remaining.textContent = String(aiUsageRemaining(user));
   }
 
-  function accountExportPayload({ user, profile, profileContact, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports }){
+  function accountExportPayload({ user, profile, profileContact, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports, notifications }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/references.html#privacy',
@@ -1375,7 +1375,8 @@
       search_feedback: aiFeedback || [],
       badges: badges || [],
       resource_submissions: suggestions || [],
-      issue_reports: issueReports || []
+      issue_reports: issueReports || [],
+      workspace_notifications: notifications || []
     };
   }
 
@@ -3794,6 +3795,38 @@
     `).join('');
   }
 
+  function notificationTypeLabel(type){
+    return {
+      resource_submission: 'Resource submission',
+      issue_report: 'Feedback report',
+      credential: 'Credential',
+      saved_resource_link: 'Saved resource link'
+    }[type] || 'Workspace notification';
+  }
+
+  function notificationTargetHref(row){
+    const tab = ['reports', 'credentials', 'library'].includes(row?.target_tab)
+      ? row.target_tab
+      : 'reports';
+    return `account.html?tab=${encodeURIComponent(tab)}`;
+  }
+
+  function workspaceNotificationsHtml(rows){
+    const items = Array.isArray(rows) ? rows : [];
+    if (!items.length) return empty('No notifications yet', 'Updates about your submissions, reports, credentials, and saved resources will appear here.');
+    return items.map(row => `
+      <a class="oc-notification-row${row.read_at ? '' : ' is-unread'}" href="${esc(notificationTargetHref(row))}" data-workspace-notification="${esc(row.id)}">
+        <span class="oc-notification-marker" aria-hidden="true"></span>
+        <span class="oc-notification-body">
+          <span class="oc-account-type">${esc(notificationTypeLabel(row.notification_type))} · ${esc(formatDate(row.created_at))}</span>
+          <strong>${esc(row.title || 'Workspace notification')}</strong>
+          ${row.body ? `<span class="oc-account-meta">${esc(row.body)}</span>` : ''}
+        </span>
+        <span class="oc-notification-state">${row.read_at ? 'Read' : 'New'}</span>
+      </a>
+    `).join('');
+  }
+
   function showWorkspacePanel(id){
     const tabs = Array.from(document.querySelectorAll('[data-workspace-tab]'));
     const panels = Array.from(document.querySelectorAll('[data-workspace-panel]'));
@@ -4596,7 +4629,7 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, contactRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes] = await Promise.all([
+    const [bookmarks, profileRes, contactRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes, notificationsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       safeRows(sb.from('profile_contacts').select('user_id,email,updated_at').eq('user_id', user.id).limit(1), 'profile contact'),
@@ -4607,7 +4640,8 @@
       safeRows(sb.from('resource_collection_items').select('*').eq('user_id', user.id).order('created_at', { ascending: false }), 'collection items'),
       safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes'),
       safeRows(sb.from('ai_search_feedback').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(500), 'AI search feedback'),
-      safeRows(sb.from('site_issue_reports').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50), 'issue reports')
+      safeRows(sb.from('site_issue_reports').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50), 'issue reports'),
+      safeRows(sb.from('workspace_notifications').select('id,user_id,notification_type,title,body,target_tab,source_table,source_id,resource_type,resource_id,dedupe_key,metadata,read_at,created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100), 'workspace notifications')
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -4623,6 +4657,7 @@
     const notes = notesRes.rows || [];
     let aiFeedback = aiFeedbackRes.rows || [];
     let issueReports = issueReportsRes.rows || [];
+    let notifications = notificationsRes.rows || [];
     let issueReportsReady = !issueReportsRes.error;
     const aiChats = readAiChats(user);
     const notesByKey = workspaceRowsByKey(notes);
@@ -4680,7 +4715,8 @@
       notes,
       aiChats,
       aiFeedback,
-      issueReports
+      issueReports,
+      notifications
     });
 
     function badgeIcon(){
@@ -4969,7 +5005,7 @@
           <section class="oc-workspace-card oc-report-workspace">
             <div class="oc-library-header">
               <div>
-                <h3 class="h4 fw-bold mb-1">Activity</h3>
+                <h3 class="h4 fw-bold mb-1">Activity <span id="workspaceNotificationUnreadCount" class="oc-notification-count" aria-label="Unread notifications">${notifications.filter(row => !row.read_at).length}</span></h3>
               </div>
               <div class="oc-activity-actions">
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#suggestResourceModal">${workspaceIcon('upload')}<span>Submit resource</span></button>
@@ -4977,6 +5013,18 @@
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Submit feedback</span></button>
               </div>
             </div>
+            <section class="oc-notification-inbox" aria-labelledby="workspaceNotificationTitle">
+              <div class="oc-notification-inbox-head">
+                <div>
+                  <h4 id="workspaceNotificationTitle">Notifications</h4>
+                  <p class="small text-muted mb-0">Status changes and responses that need your attention.</p>
+                </div>
+                <button type="button" class="oc-text-action" id="markAllNotificationsRead" ${notifications.some(row => !row.read_at) ? '' : 'disabled'}>Mark all as read</button>
+              </div>
+              <div id="workspaceNotificationList" class="oc-notification-list">
+                ${workspaceNotificationsHtml(notifications)}
+              </div>
+            </section>
             <div id="issueReportsDashboard">
               ${workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady)}
             </div>
@@ -5008,6 +5056,60 @@
       if (list) list.innerHTML = issueReportListHtml(issueReports, issueReportsReady);
       accountDataExport.issue_reports = issueReports;
     }
+
+    function renderWorkspaceNotifications(){
+      const list = document.getElementById('workspaceNotificationList');
+      const unreadCount = document.getElementById('workspaceNotificationUnreadCount');
+      const markAll = document.getElementById('markAllNotificationsRead');
+      if (list) list.innerHTML = workspaceNotificationsHtml(notifications);
+      const unread = notifications.filter(row => !row.read_at).length;
+      if (unreadCount) {
+        unreadCount.textContent = String(unread);
+        unreadCount.setAttribute('aria-label', `${unread} unread notification${unread === 1 ? '' : 's'}`);
+      }
+      if (markAll) markAll.disabled = unread === 0;
+      accountDataExport.workspace_notifications = notifications;
+      bindWorkspaceNotificationActions();
+    }
+
+    function bindWorkspaceNotificationActions(){
+      document.querySelectorAll('[data-workspace-notification]').forEach(link => {
+        if (link.dataset.bound) return;
+        link.dataset.bound = 'true';
+        link.addEventListener('click', async event => {
+          const row = notifications.find(item => item.id === link.dataset.workspaceNotification);
+          if (!row || row.read_at) return;
+          event.preventDefault();
+          const href = link.href;
+          const { error } = await sb.from('workspace_notifications')
+            .update({ read_at: new Date().toISOString() })
+            .eq('id', row.id)
+            .eq('user_id', user.id)
+            .is('read_at', null);
+          if (!error) {
+            row.read_at = new Date().toISOString();
+            renderWorkspaceNotifications();
+          }
+          window.location.href = href;
+        });
+      });
+    }
+
+    document.getElementById('markAllNotificationsRead')?.addEventListener('click', async event => {
+      const button = event.currentTarget;
+      button.disabled = true;
+      const readAt = new Date().toISOString();
+      const { error } = await sb.from('workspace_notifications')
+        .update({ read_at: readAt })
+        .eq('user_id', user.id)
+        .is('read_at', null);
+      if (error) {
+        button.disabled = false;
+        return;
+      }
+      notifications.forEach(row => { if (!row.read_at) row.read_at = readAt; });
+      renderWorkspaceNotifications();
+    });
 
     function renderAccountAiResults(query, answer, results, messages = [], previousRounds = [], visibleLimit = AI_INITIAL_RESULT_LIMIT){
       const output = document.getElementById('accountAiOutput');
@@ -5604,6 +5706,7 @@
       renderAccountAiSessions();
     }
     bindResourceTools(recentBookmarks, notesByKey);
+    bindWorkspaceNotificationActions();
     initializeWorkspaceCitation(root);
     bindLibraryFilters();
     bindBadgeCertificates(publicBadges, name);
