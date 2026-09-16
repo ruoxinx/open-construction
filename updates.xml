@@ -23,6 +23,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Model: CrisiSense-RAG: Crisis Sensing Multimodal Retrieval-Augmented Generation for Rapid Disaster Impact Assessment]]></title>
+    <link>https://www.openconstruction.org/models.html</link>
+    <guid isPermaLink="false">models:crisissense-rag:2026-09-16</guid>
+    <pubDate>Wed, 16 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[Disaster Impact Assessment model using Aerial RGB (2026)]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: PyPBEE: Python Library for Performance-Based Earthquake Engineering]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:pypbee:2026-09-12</guid>
@@ -74,14 +82,6 @@
     <title><![CDATA[Dataset: MEP Plant Room Pipe Routing Dataset]]></title>
     <link>https://www.openconstruction.org/datasets/detail.html?id=mep_plant_room_pipe_routing</link>
     <guid isPermaLink="false">datasets:mep_plant_room_pipe_routing:2026-08-26</guid>
-    <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Dataset: BIM-Edit Dataset]]></title>
-    <link>https://www.openconstruction.org/datasets/detail.html?id=bim_edit</link>
-    <guid isPermaLink="false">datasets:bim_edit:2026-08-26</guid>
     <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
   </item>
