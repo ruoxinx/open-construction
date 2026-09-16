@@ -15,6 +15,14 @@
   </item>
 
   <item>
+    <title><![CDATA[Dataset: CrisiSense-RAG Dataset]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=crisisense_rag</link>
+    <guid isPermaLink="false">datasets:crisisense_rag:2026-09-16</guid>
+    <pubDate>Wed, 16 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: PyPBEE: Python Library for Performance-Based Earthquake Engineering]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:pypbee:2026-09-12</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:bim_edit:2026-08-26</guid>
     <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: Augmented BIM log-based real-time design change monitoring, selective rollback, and design patching]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:augmented-bim-log:2026-08-26</guid>
-    <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[BIM Design Change Management model using BIM/IFC (2026)]]></description>
   </item>
   </channel>
 </rss>
