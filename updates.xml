@@ -7,6 +7,14 @@
     <language>en-US</language>
 
   <item>
+    <title><![CDATA[Dataset: ShotcreteDepth: A Bi-modal Dataset for Robust Robotic Depth Perception in Shotcrete Construction Environments]]></title>
+    <link>https://www.openconstruction.org/datasets/detail.html?id=shotcrete_depth</link>
+    <guid isPermaLink="false">datasets:shotcrete_depth:2026-09-17</guid>
+    <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+    <description><![CDATA[New dataset added to OpenConstruction.]]></description>
+  </item>
+
+  <item>
     <title><![CDATA[Model: HyBridgeSeg: A Hybrid Semantic Segmentation Framework for Reinforced Concrete Bridge Point Clouds]]></title>
     <link>https://www.openconstruction.org/models.html</link>
     <guid isPermaLink="false">models:hybridgeseg:2026-09-17</guid>
@@ -76,14 +84,6 @@
     <guid isPermaLink="false">datasets:tunnel_bi_temporal_change:2026-09-03</guid>
     <pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate>
     <description><![CDATA[New dataset added to OpenConstruction.]]></description>
-  </item>
-
-  <item>
-    <title><![CDATA[Model: IDMxPPM neo-Seoul: An open-source Information Delivery Manual (IDM) authoring tool compliant with ISO 29481-1 and ISO 29481-3]]></title>
-    <link>https://www.openconstruction.org/models.html</link>
-    <guid isPermaLink="false">models:IDMxPPM:2026-08-27</guid>
-    <pubDate>Thu, 27 Aug 2026 00:00:00 GMT</pubDate>
-    <description><![CDATA[BIM Interoperability model using BIM/IFC (2026)]]></description>
   </item>
   </channel>
 </rss>
