@@ -30,6 +30,16 @@ const requiredCspSources = [
   "https://static.cloudflareinsights.com",
   "https://cloudflareinsights.com",
 ];
+const dimensionsLoaderPages = new Set([
+  "site/benchmark_results.html",
+  "site/datasets/detail.html",
+  "site/models/details.html",
+]);
+const citationBadgePages = dimensionsLoaderPages;
+const requiredCitationCspSources = [
+  "https://embed.altmetric.com",
+  "https://badge.dimensions.ai",
+];
 const pinnedIntegrity = new Map([
   ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css", "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"],
   ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js", "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"],
@@ -48,6 +58,14 @@ for (const file of htmlFiles) {
   }
   for (const source of requiredCspSources) {
     if (!html.includes(source)) fail(`${relative} CSP is missing ${source}`);
+  }
+  if (dimensionsLoaderPages.has(relative) && !/<script\b[^>]*\bsrc=["']https:\/\/badge\.dimensions\.ai\/badge\.js["'][^>]*\bdefer\b[^>]*>/i.test(html)) {
+    fail(`${relative} is missing the deferred Dimensions badge loader`);
+  }
+  if (citationBadgePages.has(relative)) {
+    for (const source of requiredCitationCspSources) {
+      if (!html.includes(source)) fail(`${relative} citation CSP is missing ${source}`);
+    }
   }
 
   const externalTags = html.match(/<(?:script\b[^>]*\bsrc|link\b[^>]*\bhref)=["']https:\/\/(?:cdn\.jsdelivr\.net|unpkg\.com)[^"']+["'][^>]*>/gi) ?? [];

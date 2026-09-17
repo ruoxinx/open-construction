@@ -1856,9 +1856,15 @@ async function initializeArxivVerification(root, identifier){
 
 function initializeScholarlyIdentifier(root, identifier){
   const parsed = parseScholarlyId(identifier);
-  if (parsed.kind === 'arxiv' || parsed.arxiv) return initializeArxivVerification(root, parsed.arxiv || parsed.value);
+  if (parsed.kind === 'arxiv') return initializeArxivVerification(root, parsed.value);
   const href = doiHref(identifier);
-  return href ? initializeScholarlyMetadata(root, href) : Promise.resolve();
+  if (!href) return Promise.resolve();
+  // arXiv DOI records still resolve through OpenAlex. Keep arXiv verification
+  // separate, but do not bypass the metadata/related-works initializer.
+  const metadata = initializeScholarlyMetadata(root, href);
+  return parsed.arxiv
+    ? Promise.all([initializeArxivVerification(root, parsed.arxiv), metadata])
+    : metadata;
 }
 
 function semanticScholarPaperHref(record){
