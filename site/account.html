@@ -3484,6 +3484,10 @@
     return new URL(`verify.html?code=${encodeURIComponent(certificate?.certificate_code || '')}`, window.location.href).toString();
   }
 
+  function credentialCertificateUrl(certificate){
+    return new URL(`functions/v1/issue-certificate?code=${encodeURIComponent(certificate?.certificate_code || '')}&format=pdf`, `${window.SUPABASE_URL}/`).toString();
+  }
+
   async function shareBadgeCredential(badge, certificate){
     const url = credentialVerificationUrl(certificate);
     const label = badge.badge_label || badge.badge_name || 'OpenConstruction credential';
@@ -4933,17 +4937,18 @@
               <div class="oc-badge-grid">
                 ${publicBadges.map((badge, index) => {
                   const certificate = certificates.find(row => row.badge_id === badge.id && !row.revoked_at);
+                  const badgeTitle = badge.badge_label || badge.badge_name || badge.name || typeLabel(String(badge.badge_key || '').replace(/_/g, ' '));
                   return `
                     <article class="oc-badge-card">
                       <div class="oc-badge-card-icon">${badgeIcon()}</div>
                       <div class="oc-badge-card-body">
-                        <strong>${esc(badge.badge_name || badge.name || typeLabel(String(badge.badge_key || '').replace(/_/g, ' ')))}</strong>
+                        <strong>${esc(badgeTitle)}</strong>
                         <span>${esc(formatDate(badge.awarded_at || badge.created_at) || 'OpenConstruction credential')}</span>
                       </div>
                       <div class="oc-badge-card-actions">
                         ${certificate
                           ? `<div class="d-flex gap-2 flex-wrap">
-                              <button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>
+                              <a class="btn btn-sm btn-outline-primary" href="${esc(credentialCertificateUrl(certificate))}" target="_blank" rel="noopener">Certificate</a>
                               <button type="button" class="btn btn-sm btn-outline-secondary" data-badge-share="${index}">Share</button>
                             </div>`
                           : '<span class="small text-muted">Certificate pending review</span>'}

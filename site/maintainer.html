@@ -169,6 +169,12 @@
     oer: ['oer_contributor', 'OER Contributor'],
     workflow: ['workflow_contributor', 'Workflow Contributor']
   };
+  const certificateContributionTypes = [
+    ['dataset', 'Dataset contribution'],
+    ['model', 'Model contribution'],
+    ['workflow', 'Workflow contribution'],
+    ['oer', 'OER contribution']
+  ];
   const coreTeamMemberCount = 7;
   const contributorDataUrls = [
     'https://raw.githubusercontent.com/ruoxinx/open-construction-data/main/contributors.json',
@@ -311,10 +317,21 @@
   }
 
   function certificateBadgeTemplate(suggestion){
-    return contributorBadgeByType[suggestion?.resource_type] || ['contribution_credential', 'Contribution Credential'];
+    const type = suggestion?.certificate_contribution_type || suggestion?.resource_type;
+    return contributorBadgeByType[type] || ['contribution_credential', 'Contribution Credential'];
   }
 
-  async function requestSubmissionCertificate(suggestion, mode, recipientName){
+  function certificateContributionType(value, fallback = 'dataset'){
+    const normalized = normalizedResourceType(value);
+    return certificateContributionTypes.some(([key]) => key === normalized) ? normalized : fallback;
+  }
+
+  function certificateContributionLabel(value){
+    const type = certificateContributionType(value);
+    return certificateContributionTypes.find(([key]) => key === type)?.[1] || 'Dataset contribution';
+  }
+
+  async function requestSubmissionCertificate(suggestion, mode, recipientName, contributionType){
     const { data: sessionData } = await sb.auth.getSession();
     const token = sessionData?.session?.access_token;
     if (!token) throw new Error('Please sign in again before managing certificates.');
@@ -327,7 +344,8 @@
       body: JSON.stringify({
         resource_suggestion_id: suggestion.id,
         mode,
-        recipient_name: recipientName
+        recipient_name: recipientName,
+        contribution_type: contributionType
       })
     });
     if (!response.ok) {
@@ -1378,18 +1396,81 @@
     return new URL(`${detailPaths[type]}?id=${encodeURIComponent(id)}`, `${catalogPlatformOrigin}/`).toString();
   }
 
+  function catalogSearchValue(value){
+    if (Array.isArray(value)) return value.map(catalogSearchValue).join(' ');
+    if (value && typeof value === 'object') return Object.values(value).map(catalogSearchValue).join(' ');
+    return String(value || '');
+  }
+
+  function catalogSearchText(row){
+    return [
+      row?.id,
+      row?.name,
+      row?.slug,
+      row?.title,
+      row?.catalog_title,
+      row?.description,
+      row?.summary,
+      row?.details,
+      row?.keywords,
+      row?.keyword,
+      row?.tags,
+      row?.aliases,
+      row?.provider,
+      row?.publisher,
+      row?.organization,
+      row?.contributor,
+      row?.contributors,
+      row?.authors,
+      row?.applications,
+      row?.tasks,
+      row?.category,
+      row?.topic,
+      row?.topics,
+      row?.metadata,
+      row?.meta,
+      row?.search_text
+    ].map(catalogSearchValue).join(' ').toLowerCase();
+  }
+
   function publishedCatalogOptions(suggestion){
-    const type = normalizedResourceType(suggestion?.resource_type);
     return catalogResources
-      .filter(row => normalizedResourceType(row?.resource_type) === type)
       .map(row => ({
         id: catalogRecordId(row),
         title: catalogItemTitle(row),
-        type,
-        url: catalogPlatformUrl(row)
+        type: normalizedResourceType(row?.resource_type),
+        url: catalogPlatformUrl(row),
+        searchText: catalogSearchText(row)
       }))
       .filter(row => row.id && row.url)
       .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
+  }
+
+  function publishedCatalogMatches(suggestion, query = ''){
+    const normalizedQuery = String(query || '').trim().toLowerCase();
+    const options = publishedCatalogOptions(suggestion);
+    if (!normalizedQuery) return options.slice(0, 20);
+    const terms = normalizedQuery.split(/\s+/).filter(Boolean);
+    return options.filter(option => {
+      const searchText = [
+      option.title,
+      option.id,
+      typeLabel(option.type),
+      option.searchText
+      ].join(' ').toLowerCase();
+      return terms.every(term => searchText.includes(term));
+    }).slice(0, 50);
+  }
+
+  function publishedCatalogOptionsHtml(suggestion, query = '', selectedId = ''){
+    const matches = publishedCatalogMatches(suggestion, query);
+    if (!matches.length) return '<div class="small text-muted p-2 border rounded">No matching catalog records.</div>';
+    return matches.map(option => `
+      <button type="button" class="list-group-item list-group-item-action${option.id === selectedId ? ' active' : ''}" data-published-resource-option="${esc(suggestion.id)}" data-published-resource-id="${esc(option.id)}" data-published-resource-title="${esc(option.title)}" role="option" aria-selected="${option.id === selectedId ? 'true' : 'false'}">
+        <span class="d-block fw-semibold">${esc(option.title)}</span>
+        <span class="d-block small${option.id === selectedId ? '' : ' text-muted'}">${esc(typeLabel(option.type))} · ${esc(option.id)}</span>
+      </button>
+    `).join('');
   }
 
   function normalizePersonName(value){
@@ -2977,18 +3058,18 @@
         ` : ''}
         ${canAdmin && row.status === 'added' ? (() => {
           const options = publishedCatalogOptions(row);
-          const selectedId = String(row.published_resource_id || '');
-          const selectedOption = options.find(option => option.id === selectedId);
-          const certificateIssued = row.certificate_status === 'issued';
-          return `
-            <div class="oc-resource-detail-description">
-              <span>Published OpenConstruction record</span>
-              <label class="visually-hidden" for="publishedResource${esc(row.id)}">Select the published OpenConstruction record</label>
-              <select id="publishedResource${esc(row.id)}" class="form-select form-select-sm mt-1" data-published-resource-select="${esc(row.id)}" ${options.length && !certificateIssued ? '' : 'disabled'}>
-                <option value="">${options.length ? 'Select the published catalog record' : 'No matching catalog records loaded'}</option>
-                ${options.map(option => `<option value="${esc(option.id)}" ${option.id === selectedId ? 'selected' : ''}>${esc(option.title)}</option>`).join('')}
-              </select>
-              <small class="d-block text-muted mt-1">${certificateIssued ? 'The canonical record is locked because recognition has been issued.' : `Choose the existing ${esc(typeLabel(row.resource_type))} page. The platform ID and canonical URL will be saved to this submission.`}</small>
+           const selectedId = String(row.published_resource_id || '');
+           const selectedOption = options.find(option => option.id === selectedId);
+           const certificateIssued = row.certificate_status === 'issued';
+           return `
+             <div class="oc-resource-detail-description">
+               <span>Published OpenConstruction record</span>
+              <label class="small fw-semibold mt-1" for="publishedResource${esc(row.id)}">Search by name, title, keyword, ID, or description</label>
+              <input id="publishedResource${esc(row.id)}" class="form-control form-control-sm mt-1" type="search" data-published-resource-query="${esc(row.id)}" autocomplete="off" placeholder="Search catalog records..." ${options.length && !certificateIssued ? '' : 'disabled'}>
+              <input type="hidden" data-published-resource-select="${esc(row.id)}" value="${esc(selectedId)}">
+              <div class="list-group mt-2" style="max-height: 220px; overflow-y: auto;" data-published-resource-options="${esc(row.id)}" role="listbox" aria-label="Matching OpenConstruction catalog records">${publishedCatalogOptionsHtml(row, '', selectedId)}</div>
+              <div class="small mt-2" data-published-resource-selection="${esc(row.id)}">${selectedOption ? `Selected: <strong>${esc(selectedOption.title)}</strong> · ${esc(typeLabel(selectedOption.type))}` : 'No catalog record selected.'}</div>
+              <small class="d-block text-muted mt-1">${certificateIssued ? 'The canonical record is locked because recognition has been issued.' : 'Select the correct existing platform record. The platform ID and canonical URL will be saved to this submission, even when the submitted resource type was incorrect.'}</small>
               ${selectedOption ? `<a class="d-inline-block small mt-1" href="${esc(selectedOption.url)}" target="_blank" rel="noopener">${esc(selectedOption.url)}</a>` : ''}
               ${certificateIssued ? '' : `<div class="d-flex align-items-center gap-2 flex-wrap mt-2">
                 <button type="button" class="btn btn-outline-primary btn-sm" data-save-published-resource="${esc(row.id)}" ${selectedOption ? '' : 'disabled'}>Save platform record</button>
@@ -2998,10 +3079,11 @@
           `;
         })() : ''}
         ${canAdmin && row.status === 'added' && row.published_resource_id && row.published_resource_url ? (() => {
-          const [, defaultBadgeLabel] = certificateBadgeTemplate(row);
-          const issued = row.certificate_status === 'issued';
-          const recipientName = row.certificate_recipient_name || row.submitter_name || userLabel(profile);
-          return `
+           const [, defaultBadgeLabel] = certificateBadgeTemplate(row);
+           const issued = row.certificate_status === 'issued';
+           const recipientName = row.certificate_recipient_name || row.submitter_name || userLabel(profile);
+          const selectedContributionType = certificateContributionType(row.certificate_contribution_type || row.resource_type);
+           return `
             <div class="oc-resource-detail-description oc-recognition-panel">
               <span>Recognition</span>
               <strong>${issued ? 'Certificate issued' : 'Prepare certificate'}</strong>
@@ -3011,6 +3093,7 @@
               <div class="oc-resource-detail-grid">
                 ${renderSubmissionField('Recipient name', recipientName)}
                 ${renderSubmissionField('Badge type', row.certificate_badge_label || defaultBadgeLabel)}
+                ${renderSubmissionField('Contribution type', certificateContributionLabel(selectedContributionType))}
                 ${renderSubmissionField('Contribution title', row.title || 'OpenConstruction contribution')}
                 ${renderSubmissionField('Platform record', row.published_resource_url, { href: true })}
               </div>
@@ -3020,9 +3103,14 @@
                   ${row.certificate_code ? `<a class="btn btn-outline-primary btn-sm" href="${esc(certificateDownloadUrl(row.certificate_code))}" target="_blank" rel="noopener">Download certificate</a>` : ''}
                 </div>
               ` : `
-                <label class="small fw-bold mt-2" for="certificateRecipient${esc(row.id)}">Name printed on certificate</label>
-                <input id="certificateRecipient${esc(row.id)}" class="form-control form-control-sm mt-1" value="${esc(recipientName)}" data-certificate-recipient="${esc(row.id)}" maxlength="200" autocomplete="name">
-                <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                 <label class="small fw-bold mt-2" for="certificateRecipient${esc(row.id)}">Name printed on certificate</label>
+                 <input id="certificateRecipient${esc(row.id)}" class="form-control form-control-sm mt-1" value="${esc(recipientName)}" data-certificate-recipient="${esc(row.id)}" maxlength="200" autocomplete="name">
+                 <label class="small fw-bold mt-2" for="certificateContributionType${esc(row.id)}">Contribution type</label>
+                 <select id="certificateContributionType${esc(row.id)}" class="form-select form-select-sm mt-1" data-certificate-contribution-type="${esc(row.id)}">
+                   ${certificateContributionTypes.map(([value, label]) => `<option value="${esc(value)}" ${value === selectedContributionType ? 'selected' : ''}>${esc(label)}</option>`).join('')}
+                 </select>
+                 <small class="d-block text-muted mt-1">Choose the recognition category independently from the submitter's original catalog selection.</small>
+                 <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
                   <button type="button" class="btn btn-outline-primary btn-sm" data-preview-submission-certificate="${esc(row.id)}">Preview certificate</button>
                   <button type="button" class="btn btn-primary btn-sm" data-issue-submission-certificate="${esc(row.id)}">Issue certificate</button>
                   <span class="small text-muted" data-submission-certificate-status="${esc(row.id)}" role="status"></span>
@@ -3528,25 +3616,62 @@
         renderDashboard();
       });
     });
-    document.querySelectorAll('[data-published-resource-select]').forEach(select => {
-      select.addEventListener('change', () => {
-        const button = document.querySelector(`[data-save-published-resource="${CSS.escape(select.dataset.publishedResourceSelect || '')}"]`);
-        if (button) button.disabled = !select.value;
+    const bindPublishedCatalogOptions = suggestion => {
+      document.querySelectorAll(`[data-published-resource-option="${CSS.escape(suggestion.id || '')}"]`).forEach(optionButton => {
+        optionButton.addEventListener('click', () => {
+          const hidden = document.querySelector(`[data-published-resource-select="${CSS.escape(suggestion.id || '')}"]`);
+          const queryInput = document.querySelector(`[data-published-resource-query="${CSS.escape(suggestion.id || '')}"]`);
+          const optionsHost = document.querySelector(`[data-published-resource-options="${CSS.escape(suggestion.id || '')}"]`);
+          const selection = document.querySelector(`[data-published-resource-selection="${CSS.escape(suggestion.id || '')}"]`);
+          const saveButton = document.querySelector(`[data-save-published-resource="${CSS.escape(suggestion.id || '')}"]`);
+          if (!hidden || !queryInput || !optionsHost || queryInput.disabled) return;
+          hidden.value = optionButton.dataset.publishedResourceId || '';
+          queryInput.value = '';
+          const selectedOption = publishedCatalogOptions(suggestion).find(option => option.id === hidden.value);
+          if (selection) selection.innerHTML = selectedOption
+            ? `Selected: <strong>${esc(selectedOption.title)}</strong> · ${esc(typeLabel(selectedOption.type))}`
+            : 'No catalog record selected.';
+          if (saveButton) saveButton.disabled = !hidden.value;
+          optionsHost.innerHTML = publishedCatalogOptionsHtml(suggestion, '', hidden.value);
+          bindPublishedCatalogOptions(suggestion);
+        });
       });
+    };
+    document.querySelectorAll('[data-published-resource-query]').forEach(queryInput => {
+      const suggestion = suggestions.find(row => row.id === queryInput.dataset.publishedResourceQuery);
+      if (!suggestion) return;
+      const optionsHost = document.querySelector(`[data-published-resource-options="${CSS.escape(suggestion.id || '')}"]`);
+      const refreshOptions = () => {
+        if (!optionsHost) return;
+        const hidden = document.querySelector(`[data-published-resource-select="${CSS.escape(suggestion.id || '')}"]`);
+        const selection = document.querySelector(`[data-published-resource-selection="${CSS.escape(suggestion.id || '')}"]`);
+        const saveButton = document.querySelector(`[data-save-published-resource="${CSS.escape(suggestion.id || '')}"]`);
+        if (queryInput.value.trim() && hidden?.value) {
+          hidden.value = '';
+          if (selection) selection.textContent = 'No catalog record selected.';
+          if (saveButton) saveButton.disabled = true;
+        }
+        optionsHost.innerHTML = publishedCatalogOptionsHtml(suggestion, queryInput.value, hidden?.value || '');
+        bindPublishedCatalogOptions(suggestion);
+      };
+      queryInput.addEventListener('input', refreshOptions);
+      queryInput.addEventListener('focus', refreshOptions);
+      bindPublishedCatalogOptions(suggestion);
     });
     document.querySelectorAll('[data-save-published-resource]').forEach(button => {
       button.addEventListener('click', async () => {
         const suggestion = suggestions.find(row => row.id === button.dataset.savePublishedResource);
         const select = document.querySelector(`[data-published-resource-select="${CSS.escape(button.dataset.savePublishedResource || '')}"]`);
+        const queryInput = document.querySelector(`[data-published-resource-query="${CSS.escape(button.dataset.savePublishedResource || '')}"]`);
         const status = document.querySelector(`[data-published-resource-status="${CSS.escape(button.dataset.savePublishedResource || '')}"]`);
         if (!suggestion || !select || !status) return;
         const option = publishedCatalogOptions(suggestion).find(row => row.id === select.value);
         if (!option) {
           status.textContent = 'Select an existing catalog record first.';
           return;
-        }
-        button.disabled = true;
-        select.disabled = true;
+         }
+         button.disabled = true;
+        if (queryInput) queryInput.disabled = true;
         status.textContent = 'Saving...';
         const { error } = await sb
           .from('resource_suggestions')
@@ -3558,7 +3683,7 @@
         if (error) {
           status.textContent = error.message || 'Could not save the platform record.';
           button.disabled = false;
-          select.disabled = false;
+          if (queryInput) queryInput.disabled = false;
           return;
         }
         status.textContent = 'Platform record saved.';
@@ -3571,7 +3696,9 @@
         const suggestion = suggestions.find(row => row.id === suggestionId);
         const status = document.querySelector(`[data-submission-certificate-status="${CSS.escape(suggestionId)}"]`);
         const nameInput = document.querySelector(`[data-certificate-recipient="${CSS.escape(suggestionId)}"]`);
+        const contributionTypeInput = document.querySelector(`[data-certificate-contribution-type="${CSS.escape(suggestionId)}"]`);
         const recipientName = String(nameInput?.value || suggestion?.submitter_name || '').trim();
+        const contributionType = certificateContributionType(contributionTypeInput?.value || suggestion?.certificate_contribution_type || suggestion?.resource_type);
         const mode = button.dataset.previewSubmissionCertificate ? 'preview' : 'issue';
         if (!suggestion || !status) return;
         if (!recipientName) {
@@ -3584,7 +3711,7 @@
         button.disabled = true;
         status.textContent = mode === 'preview' ? 'Generating preview...' : 'Issuing certificate...';
         try {
-          const blob = await requestSubmissionCertificate(suggestion, mode, recipientName);
+          const blob = await requestSubmissionCertificate(suggestion, mode, recipientName, contributionType);
           const opened = openCertificatePdf(
             blob,
             mode === 'preview' ? 'openconstruction-certificate-preview.pdf' : 'openconstruction-certificate.pdf',
