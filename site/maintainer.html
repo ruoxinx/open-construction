@@ -671,6 +671,7 @@
 
   function renderDashboard(){
     ensureUsageChartStyles();
+    bindSuggestionFilterActions();
     if (!canAdmin) {
       root.className = 'oc-dashboard-console';
       root.innerHTML = `
