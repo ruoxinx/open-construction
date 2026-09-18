@@ -3480,6 +3480,38 @@
     downloadBlob(filename, blob);
   }
 
+  function credentialVerificationUrl(certificate){
+    return new URL(`verify.html?code=${encodeURIComponent(certificate?.certificate_code || '')}`, window.location.href).toString();
+  }
+
+  async function shareBadgeCredential(badge, certificate){
+    const url = credentialVerificationUrl(certificate);
+    const label = badge.badge_label || badge.badge_name || 'OpenConstruction credential';
+    const shareData = {
+      title: `${label} | OpenConstruction`,
+      text: `View my ${label} on OpenConstruction.`,
+      url
+    };
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return 'Credential shared.';
+    }
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+      return 'Verification link copied.';
+    }
+    const field = document.createElement('textarea');
+    field.value = url;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.opacity = '0';
+    document.body.appendChild(field);
+    field.select();
+    document.execCommand('copy');
+    field.remove();
+    return 'Verification link copied.';
+  }
+
   function bindResourceTools(bookmarks, notesByKey = new Map()){
     const status = document.getElementById('resourceToolStatus') || { textContent: '' };
     const compareOutput = document.getElementById('resourceCompareOutput');
@@ -4130,6 +4162,26 @@
         } finally {
           button.disabled = false;
           if (button.textContent === 'Preparing...') button.textContent = original;
+        }
+      });
+    });
+    document.querySelectorAll('[data-badge-share]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const badge = badges[Number(button.dataset.badgeShare)];
+        const certificate = certificates.find(row => row.badge_id === badge?.id && !row.revoked_at);
+        if (!badge || !certificate) return;
+        const original = button.textContent;
+        button.disabled = true;
+        try {
+          button.textContent = await shareBadgeCredential(badge, certificate);
+        } catch (err) {
+          if (err?.name !== 'AbortError') console.warn('Credential sharing failed', err);
+          button.textContent = err?.name === 'AbortError' ? original : 'Share failed';
+        } finally {
+          window.setTimeout(() => {
+            button.textContent = original;
+            button.disabled = false;
+          }, 1800);
         }
       });
     });
@@ -4890,7 +4942,10 @@
                       </div>
                       <div class="oc-badge-card-actions">
                         ${certificate
-                          ? `<button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>`
+                          ? `<div class="d-flex gap-2 flex-wrap">
+                              <button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" data-badge-share="${index}">Share</button>
+                            </div>`
                           : '<span class="small text-muted">Certificate pending review</span>'}
                       </div>
                     </article>

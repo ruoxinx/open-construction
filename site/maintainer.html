@@ -337,16 +337,22 @@
     return response.blob();
   }
 
-  function openCertificatePdf(blob, filename = 'openconstruction-certificate.pdf'){
+  function openCertificatePdf(blob, filename = 'openconstruction-certificate.pdf', previewWindow = null, allowDownloadFallback = true){
     const url = URL.createObjectURL(blob);
-    const preview = window.open(url, '_blank', 'noopener,noreferrer');
-    if (!preview) {
+    const preview = previewWindow || (allowDownloadFallback ? window.open(url, '_blank', 'noopener,noreferrer') : null);
+    if (preview) {
+      preview.location.href = url;
+    } else if (allowDownloadFallback) {
       const link = document.createElement('a');
       link.href = url;
       link.download = filename;
       link.click();
+    } else {
+      URL.revokeObjectURL(url);
+      return false;
     }
     window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return true;
   }
 
   function renderCredentialRequestField(label, value, options = {}){
@@ -3574,16 +3580,23 @@
           return;
         }
         if (mode === 'issue' && !window.confirm(`Issue a permanent certificate and badge for ${recipientName}?`)) return;
+        const previewWindow = mode === 'preview' ? window.open('about:blank', '_blank') : null;
         button.disabled = true;
         status.textContent = mode === 'preview' ? 'Generating preview...' : 'Issuing certificate...';
         try {
           const blob = await requestSubmissionCertificate(suggestion, mode, recipientName);
-          openCertificatePdf(blob, mode === 'preview' ? 'openconstruction-certificate-preview.pdf' : 'openconstruction-certificate.pdf');
+          const opened = openCertificatePdf(
+            blob,
+            mode === 'preview' ? 'openconstruction-certificate-preview.pdf' : 'openconstruction-certificate.pdf',
+            previewWindow,
+            mode !== 'preview'
+          );
           status.textContent = mode === 'preview'
-            ? 'Preview opened. Nothing has been issued or saved.'
+            ? (opened ? 'Preview opened. Nothing has been issued or saved.' : 'Preview popup was blocked. Allow pop-ups and try again.')
             : 'Certificate issued. The contributor can download it from Account → Credentials.';
           if (mode === 'issue') await loadDashboard(false);
         } catch (error) {
+          if (previewWindow && !previewWindow.closed) previewWindow.close();
           status.textContent = error.message || 'Certificate action failed.';
         } finally {
           button.disabled = false;
