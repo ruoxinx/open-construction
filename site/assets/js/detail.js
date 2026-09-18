@@ -387,7 +387,7 @@ function followInlineHtml(type, id, label){
     follow_id: id,
     follow_title: label || type
   });
-  return `<a class="btn btn-outline-secondary btn-sm oc-follow-inline" href="../account.html?${params.toString()}" aria-label="Follow related resources for ${escapeHtml(label || type)}">Follow</a>`;
+  return `<a class="btn oc-follow-inline" href="../account.html?${params.toString()}" aria-label="Follow related resources for ${escapeHtml(label || type)}"><span class="oc-follow-mark" aria-hidden="true">+</span><span>Follow</span></a>`;
 }
 
 function linkHealthHtml(cache, resourceType, resourceId, title, field, url){
@@ -1355,11 +1355,12 @@ function publicationBadgesHtml(doiVal, cfg){
     let altAttr = '';
     if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${escapeHtml(id.value)}"`;
     else if (id.kind === 'pmid') altAttr = `data-pmid="${escapeHtml(id.value)}"`;
+    else if (id.arxiv) altAttr = `data-arxiv-id="${escapeHtml(id.arxiv)}"`;
     else altAttr = `data-doi="${escapeHtml(fullDoi)}"`; // Altmetric expects the full DOI, not a details-page URL
 
     blocks.push(`
       <div class="oc-publication-badge">
-        <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
+        <div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>
       </div>
     `);
   }
@@ -1454,7 +1455,7 @@ async function initializePublicationBadges(root){
   const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
   const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
   const loads = [];
-  if (hasAltmetric) loads.push(ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed'));
+  if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
   if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
   await Promise.all(loads);
   if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
