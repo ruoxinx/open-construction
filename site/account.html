@@ -3464,21 +3464,15 @@
     return enriched.map(item => exportResourceRow(item, notesByKey.get(bookmarkKey(item.bookmark))));
   }
 
-  async function downloadBadgeCertificatePdf(badge, recipient){
-    const { data: sessionData } = await sb.auth.getSession();
-    const token = sessionData?.session?.access_token;
-    if (!token) throw new Error('Please sign in again to download this certificate.');
-    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/issue-certificate`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ badge_id: badge.id })
+  async function downloadBadgeCertificatePdf(badge, certificate){
+    const code = String(certificate?.certificate_code || '').trim();
+    if (!code) throw new Error('This credential is not ready for download yet.');
+    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/issue-certificate?code=${encodeURIComponent(code)}&format=pdf`, {
+      headers: { Accept: 'application/pdf' }
     });
     if (!response.ok) {
       const payload = await response.json().catch(() => ({}));
-      throw new Error(payload.error || 'Certificate could not be issued.');
+      throw new Error(payload.error || 'Certificate could not be downloaded.');
     }
     const blob = await response.blob();
     const filename = response.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1]
@@ -4118,16 +4112,17 @@
     });
   }
 
-  function bindBadgeCertificates(badges, recipient){
+  function bindBadgeCertificates(badges, certificates){
     document.querySelectorAll('[data-badge-certificate]').forEach(button => {
       button.addEventListener('click', async () => {
         const badge = badges[Number(button.dataset.badgeCertificate)];
-        if (!badge) return;
+        const certificate = certificates.find(row => row.badge_id === badge?.id);
+        if (!badge || !certificate) return;
         const original = button.textContent;
         button.disabled = true;
         button.textContent = 'Preparing...';
         try {
-          await downloadBadgeCertificatePdf(badge, recipient);
+          await downloadBadgeCertificatePdf(badge, certificate);
         } catch (err) {
           console.warn('Certificate download failed', err);
           button.textContent = 'Try again';
@@ -4629,11 +4624,12 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, contactRes, badgesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes, notificationsRes] = await Promise.all([
+    const [bookmarks, profileRes, contactRes, badgesRes, certificatesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes, notificationsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       safeRows(sb.from('profile_contacts').select('user_id,email,updated_at').eq('user_id', user.id).limit(1), 'profile contact'),
       sb.from('user_badges').select('*').eq('user_id', user.id).order('awarded_at', { ascending: false }),
+      safeRows(sb.from('credential_certificates').select('id,badge_id,certificate_code,issued_at,revoked_at').eq('user_id', user.id).order('issued_at', { ascending: false }), 'credential certificates'),
       sb.from('resource_suggestions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       identitiesPromise,
       safeRows(sb.from('resource_collections').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource collections'),
@@ -4651,6 +4647,7 @@
     const profileContact = (contactRes.rows || [])[0] || {};
     const identities = Array.isArray(identitiesResult) ? identitiesResult : [];
     const badges = badgesRes.data || [];
+    const certificates = certificatesRes.rows || [];
     const suggestions = suggestionsRes.data || [];
     const collections = collectionsRes.rows || [];
     const collectionItems = collectionItemsRes.rows || [];
@@ -4882,18 +4879,23 @@
             </div>
             ${publicBadges.length ? `
               <div class="oc-badge-grid">
-                ${publicBadges.map((badge, index) => `
-                  <article class="oc-badge-card">
-                    <div class="oc-badge-card-icon">${badgeIcon()}</div>
-                    <div class="oc-badge-card-body">
-                      <strong>${esc(badge.badge_name || badge.name || typeLabel(String(badge.badge_key || '').replace(/_/g, ' ')))}</strong>
-                      <span>${esc(formatDate(badge.awarded_at || badge.created_at) || 'OpenConstruction credential')}</span>
-                    </div>
-                    <div class="oc-badge-card-actions">
-                      <button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>
-                    </div>
-                  </article>
-                `).join('')}
+                ${publicBadges.map((badge, index) => {
+                  const certificate = certificates.find(row => row.badge_id === badge.id && !row.revoked_at);
+                  return `
+                    <article class="oc-badge-card">
+                      <div class="oc-badge-card-icon">${badgeIcon()}</div>
+                      <div class="oc-badge-card-body">
+                        <strong>${esc(badge.badge_name || badge.name || typeLabel(String(badge.badge_key || '').replace(/_/g, ' ')))}</strong>
+                        <span>${esc(formatDate(badge.awarded_at || badge.created_at) || 'OpenConstruction credential')}</span>
+                      </div>
+                      <div class="oc-badge-card-actions">
+                        ${certificate
+                          ? `<button type="button" class="btn btn-sm btn-outline-primary" data-badge-certificate="${index}">Certificate</button>`
+                          : '<span class="small text-muted">Certificate pending review</span>'}
+                      </div>
+                    </article>
+                  `;
+                }).join('')}
               </div>
             ` : empty('No credentials yet', 'Contributor credentials will appear here after review.')}
           </section>
@@ -5708,7 +5710,7 @@
     bindWorkspaceNotificationActions();
     initializeWorkspaceCitation(root);
     bindLibraryFilters();
-    bindBadgeCertificates(publicBadges, name);
+    bindBadgeCertificates(publicBadges, certificates);
     bindIdentityTools(identities);
     bindPrivacyTools(accountDataExport, user);
     openRequestedSubmission();

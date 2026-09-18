@@ -1374,7 +1374,7 @@ function publicationBadgesHtml(doiVal, cfg){
       <div class="oc-publication-badge">
         <a class="oc-openalex-citation" data-openalex-citation target="_blank" rel="noopener" aria-label="OpenAlex citations: loading" hidden>
           ${openAlexIconHtml()}
-          <span class="oc-semantic-scholar-citation-value">—</span>
+          <span class="oc-openalex-citation-value">—</span>
         </a>
       </div>
     `);
@@ -1439,7 +1439,7 @@ async function initializePublicationBadges(root){
 }
 
 /* ---------- chip helpers ---------- */
-/* ---------- public scholarly metadata (Crossref / DataCite / OpenAlex; Semantic Scholar ready for later) ---------- */
+/* ---------- public scholarly metadata (Crossref / DataCite / OpenAlex) ---------- */
 const scholarlyMetadataTimeoutMs = 4500;
 
 function crossrefIconHtml(){
@@ -1448,10 +1448,6 @@ function crossrefIconHtml(){
 
 function dataciteIconHtml(){
   return '<img class="scholarly-provider-icon scholarly-datacite-icon" src="https://datacite.org/wp-content/uploads/2023/08/DataCite-Logo_primary.svg" alt="DataCite" decoding="async">';
-}
-
-function semanticScholarIconHtml(){
-  return '<img class="semantic-scholar-icon" src="https://www.semanticscholar.org/favicon.ico" alt="" decoding="async">';
 }
 
 function openAlexIconHtml(){
@@ -1867,62 +1863,6 @@ function initializeScholarlyIdentifier(root, identifier){
     : metadata;
 }
 
-function semanticScholarPaperHref(record){
-  const direct = safeHref(record?.url || record?.paper_url);
-  if (direct) return direct;
-  const id = String(record?.paperId || record?.paper_id || '').trim();
-  return id ? `https://www.semanticscholar.org/paper/${encodeURIComponent(id)}` : '';
-}
-
-function renderSemanticScholarCitation(root, record){
-  const host = root?.querySelector?.('[data-semantic-scholar-citation]');
-  if (!host) return;
-  const count = record?.citationCount ?? record?.citation_count;
-  const recordHref = semanticScholarPaperHref(record);
-  if (!recordHref || count == null || !Number.isFinite(Number(count))) {
-    host.closest('.oc-publication-badge')?.remove();
-    return;
-  }
-  const value = Number(count);
-  host.href = recordHref;
-  host.innerHTML = `${semanticScholarIconHtml()}<span class="oc-semantic-scholar-citation-value">${escapeHtml(value.toLocaleString())}</span>`;
-  host.setAttribute('aria-label', `Semantic Scholar citations: ${value.toLocaleString()}`);
-  host.hidden = false;
-}
-
-function initializeSemanticScholarRelatedWorks(root, record){
-  const host = root?.querySelector?.('[data-semantic-scholar-related-list]');
-  if (!host) return;
-  const source = root?.querySelector?.('[data-semantic-scholar-source]');
-  const sourceHref = semanticScholarPaperHref(record);
-  if (source && sourceHref) {
-    source.href = sourceHref;
-    source.setAttribute('aria-label', 'Open this work in Semantic Scholar');
-  } else {
-    source?.closest('.scholarly-related-heading-source')?.setAttribute('hidden', '');
-  }
-  const works = Array.isArray(record?.recommendations) ? record.recommendations.slice(0, 5) : [];
-  if (!works.length) {
-    host.innerHTML = record
-      ? '<p class="text-muted small mb-0">No related works were returned by Semantic Scholar.</p>'
-      : '<p class="text-muted small mb-0">Related works will appear after the next cache refresh.</p>';
-    return;
-  }
-  host.innerHTML = works.map(work => {
-    const title = escapeHtml(work.title || work.name || 'Untitled scholarly work');
-    const year = work.year ? `(${escapeHtml(String(work.year))})` : '';
-    const authors = Array.isArray(work.authors)
-      ? work.authors.map(author => author?.name).filter(Boolean).slice(0, 3)
-      : [];
-    const authorText = authors.length ? `${authors.join(', ')}${Array.isArray(work.authors) && work.authors.length > authors.length ? ', et al.' : ''}` : '';
-    const meta = [authorText, year].filter(Boolean).join(' ');
-    const href = escapeHtml(semanticScholarPaperHref(work));
-    return href
-      ? `<a class="related-link scholarly-related-link" href="${href}" target="_blank" rel="noopener"><span class="scholarly-related-title">${title}</span>${meta ? `<span class="scholarly-related-meta">${escapeHtml(meta)}</span>` : ''}</a>`
-      : '';
-  }).join('') || '<p class="text-muted small mb-0">Related works are not available in the current cache.</p>';
-}
-
 function openAlexWorkId(record){
   const raw = String(record?.id || record?.openalex_id || '').trim();
   const match = raw.match(/(?:^|\/)(W\d+)$/i);
@@ -2029,21 +1969,6 @@ async function fetchOpenAlexRelatedWorks(record){
   const filter = encodeURIComponent(`related_to:${id}`);
   const payload = await fetchScholarlyJson(`https://api.openalex.org/works?filter=${filter}&per-page=5&select=id,display_name,publication_year,authorships`);
   return Array.isArray(payload?.results) ? payload.results : [];
-}
-
-async function fetchSemanticScholarCache(){
-  try {
-    const response = await fetch('../data/semantic-scholar-cache.json', { cache: 'default', headers: { Accept: 'application/json' } });
-    if (!response.ok) return null;
-    return await response.json();
-  } catch {
-    return null;
-  }
-}
-
-function semanticScholarCacheRecord(cache, doi){
-  const key = normalizedDoiValue(doi).toLowerCase();
-  return key ? cache?.records?.[key] || null : null;
 }
 
 async function initializeScholarlyMetadata(root, doiVal){

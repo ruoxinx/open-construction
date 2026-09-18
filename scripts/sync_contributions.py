@@ -4,8 +4,8 @@
 This job intentionally stays narrow:
   - GitHub pull requests are synced automatically when they map to a signed-in
     profile's GitHub username.
-  - Catalog, OER, workflow, and practitioner contributions are verified by
-    maintainers and recognized with direct badges in Supabase.
+  - GitHub activity is recorded as contribution evidence; maintainers decide
+    when a contribution is recognized with a badge and certificate.
 
 Required env:
   SUPABASE_URL
@@ -95,24 +95,6 @@ def upsert_contribution_events(rows):
     request_json(url, method="POST", headers=supabase_headers(), body=rows)
 
 
-def upsert_badges(rows):
-    user_ids = sorted({row.get("user_id") for row in rows if row.get("user_id")})
-    if not user_ids:
-        return
-    badge_rows = [
-        {
-            "user_id": user_id,
-            "badge_key": "contributor",
-            "badge_label": "Contributor",
-            "badge_description": "Verified OpenConstruction platform contribution.",
-            "public": True,
-        }
-        for user_id in user_ids
-    ]
-    url = f"{SUPABASE_URL}/rest/v1/user_badges?on_conflict=user_id,badge_key"
-    request_json(url, method="POST", headers=supabase_headers(), body=badge_rows)
-
-
 def github_contribution_events(profile_by_username):
     rows = []
     for pr in fetch_merged_prs():
@@ -141,7 +123,6 @@ def main() -> int:
         return 0
 
     upsert_contribution_events(rows)
-    upsert_badges(rows)
     print(f"Synced {len(rows)} GitHub contribution events from {REPO}.")
     return 0
 

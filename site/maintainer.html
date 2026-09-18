@@ -151,6 +151,7 @@
   let dashboardTab = 'overview';
   let reviewQueueMode = 'resources';
   let resourceTrendMode = 'all';
+  const catalogPlatformOrigin = 'https://www.openconstruction.org';
 
   const badgeDefaults = {
     dataset_contributor: ['Dataset Contributor', 'Recognizes a verified contribution to the OpenConstruction dataset catalog.'],
@@ -307,6 +308,45 @@
 
   function certificateDownloadUrl(code){
     return new URL(`functions/v1/issue-certificate?code=${encodeURIComponent(code)}&format=pdf`, window.SUPABASE_URL || window.location.origin).toString();
+  }
+
+  function certificateBadgeTemplate(suggestion){
+    return contributorBadgeByType[suggestion?.resource_type] || ['contribution_credential', 'Contribution Credential'];
+  }
+
+  async function requestSubmissionCertificate(suggestion, mode, recipientName){
+    const { data: sessionData } = await sb.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (!token) throw new Error('Please sign in again before managing certificates.');
+    const response = await fetch(`${window.SUPABASE_URL}/functions/v1/issue-certificate`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        resource_suggestion_id: suggestion.id,
+        mode,
+        recipient_name: recipientName
+      })
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || 'The certificate service could not complete this action.');
+    }
+    return response.blob();
+  }
+
+  function openCertificatePdf(blob, filename = 'openconstruction-certificate.pdf'){
+    const url = URL.createObjectURL(blob);
+    const preview = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!preview) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+    }
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
   }
 
   function renderCredentialRequestField(label, value, options = {}){
@@ -1313,6 +1353,37 @@
       return Object.values(data).filter(row => row && typeof row === 'object' && !Array.isArray(row));
     }
     return [];
+  }
+
+  function catalogRecordId(row){
+    return String(row?.id || row?.name || row?.slug || row?.title || '').trim();
+  }
+
+  function catalogPlatformUrl(row){
+    const type = normalizedResourceType(row?.resource_type);
+    const id = catalogRecordId(row);
+    const detailPaths = {
+      dataset: 'datasets/detail.html',
+      model: 'models/details.html',
+      oer: 'oers/details.html',
+      workflow: 'workflows/details.html'
+    };
+    if (!id || !detailPaths[type]) return '';
+    return new URL(`${detailPaths[type]}?id=${encodeURIComponent(id)}`, `${catalogPlatformOrigin}/`).toString();
+  }
+
+  function publishedCatalogOptions(suggestion){
+    const type = normalizedResourceType(suggestion?.resource_type);
+    return catalogResources
+      .filter(row => normalizedResourceType(row?.resource_type) === type)
+      .map(row => ({
+        id: catalogRecordId(row),
+        title: catalogItemTitle(row),
+        type,
+        url: catalogPlatformUrl(row)
+      }))
+      .filter(row => row.id && row.url)
+      .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }));
   }
 
   function normalizePersonName(value){
@@ -2898,6 +2969,62 @@
             <p>${esc(row.maintainer_note)}</p>
           </div>
         ` : ''}
+        ${canAdmin && row.status === 'added' ? (() => {
+          const options = publishedCatalogOptions(row);
+          const selectedId = String(row.published_resource_id || '');
+          const selectedOption = options.find(option => option.id === selectedId);
+          const certificateIssued = row.certificate_status === 'issued';
+          return `
+            <div class="oc-resource-detail-description">
+              <span>Published OpenConstruction record</span>
+              <label class="visually-hidden" for="publishedResource${esc(row.id)}">Select the published OpenConstruction record</label>
+              <select id="publishedResource${esc(row.id)}" class="form-select form-select-sm mt-1" data-published-resource-select="${esc(row.id)}" ${options.length && !certificateIssued ? '' : 'disabled'}>
+                <option value="">${options.length ? 'Select the published catalog record' : 'No matching catalog records loaded'}</option>
+                ${options.map(option => `<option value="${esc(option.id)}" ${option.id === selectedId ? 'selected' : ''}>${esc(option.title)}</option>`).join('')}
+              </select>
+              <small class="d-block text-muted mt-1">${certificateIssued ? 'The canonical record is locked because recognition has been issued.' : `Choose the existing ${esc(typeLabel(row.resource_type))} page. The platform ID and canonical URL will be saved to this submission.`}</small>
+              ${selectedOption ? `<a class="d-inline-block small mt-1" href="${esc(selectedOption.url)}" target="_blank" rel="noopener">${esc(selectedOption.url)}</a>` : ''}
+              ${certificateIssued ? '' : `<div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                <button type="button" class="btn btn-outline-primary btn-sm" data-save-published-resource="${esc(row.id)}" ${selectedOption ? '' : 'disabled'}>Save platform record</button>
+                <span class="small text-muted" data-published-resource-status="${esc(row.id)}" role="status"></span>
+              </div>`}
+            </div>
+          `;
+        })() : ''}
+        ${canAdmin && row.status === 'added' && row.published_resource_id && row.published_resource_url ? (() => {
+          const [, defaultBadgeLabel] = certificateBadgeTemplate(row);
+          const issued = row.certificate_status === 'issued';
+          const recipientName = row.certificate_recipient_name || row.submitter_name || userLabel(profile);
+          return `
+            <div class="oc-resource-detail-description oc-recognition-panel">
+              <span>Recognition</span>
+              <strong>${issued ? 'Certificate issued' : 'Prepare certificate'}</strong>
+              <p>${issued
+                ? 'This contribution has a permanent badge and certificate.'
+                : 'Review the recipient and recognition details, then preview the PDF before issuing it.'}</p>
+              <div class="oc-resource-detail-grid">
+                ${renderSubmissionField('Recipient name', recipientName)}
+                ${renderSubmissionField('Badge type', row.certificate_badge_label || defaultBadgeLabel)}
+                ${renderSubmissionField('Contribution title', row.title || 'OpenConstruction contribution')}
+                ${renderSubmissionField('Platform record', row.published_resource_url, { href: true })}
+              </div>
+              ${issued ? `
+                <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                  <span class="small text-muted">Issued ${row.certificate_issued_at ? new Date(row.certificate_issued_at).toLocaleString() : ''}</span>
+                  ${row.certificate_code ? `<a class="btn btn-outline-primary btn-sm" href="${esc(certificateDownloadUrl(row.certificate_code))}" target="_blank" rel="noopener">Download certificate</a>` : ''}
+                </div>
+              ` : `
+                <label class="small fw-bold mt-2" for="certificateRecipient${esc(row.id)}">Name printed on certificate</label>
+                <input id="certificateRecipient${esc(row.id)}" class="form-control form-control-sm mt-1" value="${esc(recipientName)}" data-certificate-recipient="${esc(row.id)}" maxlength="200" autocomplete="name">
+                <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                  <button type="button" class="btn btn-outline-primary btn-sm" data-preview-submission-certificate="${esc(row.id)}">Preview certificate</button>
+                  <button type="button" class="btn btn-primary btn-sm" data-issue-submission-certificate="${esc(row.id)}">Issue certificate</button>
+                  <span class="small text-muted" data-submission-certificate-status="${esc(row.id)}" role="status"></span>
+                </div>
+              `}
+            </div>
+          `;
+        })() : ''}
         <div class="oc-resource-detail-actions">
           ${renderResourceReviewActions(row)}
         </div>
@@ -3395,6 +3522,74 @@
         renderDashboard();
       });
     });
+    document.querySelectorAll('[data-published-resource-select]').forEach(select => {
+      select.addEventListener('change', () => {
+        const button = document.querySelector(`[data-save-published-resource="${CSS.escape(select.dataset.publishedResourceSelect || '')}"]`);
+        if (button) button.disabled = !select.value;
+      });
+    });
+    document.querySelectorAll('[data-save-published-resource]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestion = suggestions.find(row => row.id === button.dataset.savePublishedResource);
+        const select = document.querySelector(`[data-published-resource-select="${CSS.escape(button.dataset.savePublishedResource || '')}"]`);
+        const status = document.querySelector(`[data-published-resource-status="${CSS.escape(button.dataset.savePublishedResource || '')}"]`);
+        if (!suggestion || !select || !status) return;
+        const option = publishedCatalogOptions(suggestion).find(row => row.id === select.value);
+        if (!option) {
+          status.textContent = 'Select an existing catalog record first.';
+          return;
+        }
+        button.disabled = true;
+        select.disabled = true;
+        status.textContent = 'Saving...';
+        const { error } = await sb
+          .from('resource_suggestions')
+          .update({
+            published_resource_id: option.id,
+            published_resource_url: option.url
+          })
+          .eq('id', suggestion.id);
+        if (error) {
+          status.textContent = error.message || 'Could not save the platform record.';
+          button.disabled = false;
+          select.disabled = false;
+          return;
+        }
+        status.textContent = 'Platform record saved.';
+        await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-preview-submission-certificate], [data-issue-submission-certificate]').forEach(button => {
+      button.addEventListener('click', async () => {
+        const suggestionId = button.dataset.previewSubmissionCertificate || button.dataset.issueSubmissionCertificate || '';
+        const suggestion = suggestions.find(row => row.id === suggestionId);
+        const status = document.querySelector(`[data-submission-certificate-status="${CSS.escape(suggestionId)}"]`);
+        const nameInput = document.querySelector(`[data-certificate-recipient="${CSS.escape(suggestionId)}"]`);
+        const recipientName = String(nameInput?.value || suggestion?.submitter_name || '').trim();
+        const mode = button.dataset.previewSubmissionCertificate ? 'preview' : 'issue';
+        if (!suggestion || !status) return;
+        if (!recipientName) {
+          status.textContent = 'Enter the name to print on the certificate.';
+          nameInput?.focus();
+          return;
+        }
+        if (mode === 'issue' && !window.confirm(`Issue a permanent certificate and badge for ${recipientName}?`)) return;
+        button.disabled = true;
+        status.textContent = mode === 'preview' ? 'Generating preview...' : 'Issuing certificate...';
+        try {
+          const blob = await requestSubmissionCertificate(suggestion, mode, recipientName);
+          openCertificatePdf(blob, mode === 'preview' ? 'openconstruction-certificate-preview.pdf' : 'openconstruction-certificate.pdf');
+          status.textContent = mode === 'preview'
+            ? 'Preview opened. Nothing has been issued or saved.'
+            : 'Certificate issued. The contributor can download it from Account → Credentials.';
+          if (mode === 'issue') await loadDashboard(false);
+        } catch (error) {
+          status.textContent = error.message || 'Certificate action failed.';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    });
     document.querySelectorAll('[data-open-completed-suggestion]').forEach(button => {
       button.addEventListener('click', () => {
         suggestionStatusFilter = 'completed';
@@ -3439,23 +3634,11 @@
         const suggestion = suggestions.find(row => row.id === button.dataset.addSuggestion);
         if (!suggestion) return;
         button.disabled = true;
-        const [baseBadgeKey, badgeLabel] = contributorBadgeByType[suggestion.resource_type] || [];
-        const badgeKey = baseBadgeKey ? contributionBadgeKey(baseBadgeKey, suggestion) : '';
         const { error: suggestionError } = await updateSuggestionStatus(suggestion, 'added');
         if (suggestionError) {
           alert(suggestionError.message || 'Could not update suggestion.');
           button.disabled = false;
           return;
-        }
-        if (canAdmin && badgeKey) {
-          const { error: badgeError } = await sb.from('user_badges').upsert({
-            user_id: suggestion.user_id,
-            badge_key: badgeKey,
-            badge_label: badgeLabel,
-            badge_description: contributionCredentialDescription(suggestion),
-            public: true
-          }, { onConflict: 'user_id,badge_key' });
-          if (badgeError) alert(badgeError.message || 'Suggestion was updated, but the badge could not be awarded.');
         }
         await loadDashboard(false);
       });

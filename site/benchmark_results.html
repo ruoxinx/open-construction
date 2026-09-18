@@ -613,10 +613,6 @@
       blocks.push(`<div class="benchmark-openalex-citation" data-openalex-citation hidden><a class="oc-openalex-citation" data-openalex-citation-link target="_blank" rel="noopener" aria-label="OpenAlex citations: loading">${benchmarkOpenAlexIconHtml()}<span class="oc-openalex-citation-value">&mdash;</span></a></div>`);
     }
 
-    if (false && id.kind === 'doi') {
-      blocks.push(`<div class="benchmark-semantic-scholar-citation" data-semantic-scholar-citation hidden><a class="oc-semantic-scholar-citation" data-semantic-scholar-citation-link target="_blank" rel="noopener" aria-label="Semantic Scholar citations: loading">${benchmarkSemanticScholarIconHtml()}<span class="oc-semantic-scholar-citation-value">—</span></a></div>`);
-    }
-
     if (!blocks.length) return '';
     return `<div class="benchmark-publication-badges">${blocks.join('')}</div>`;
   }
