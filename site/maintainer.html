@@ -1532,7 +1532,7 @@
   }
 
   function catalogItemTitle(row){
-    return row.title || row.name || row.id || 'Untitled resource';
+    return catalogSearchValue(row.title || row.name || row.id || 'Untitled resource') || 'Untitled resource';
   }
 
   function typeLabel(value){
