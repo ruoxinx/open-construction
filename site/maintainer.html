@@ -671,7 +671,6 @@
 
   function renderDashboard(){
     ensureUsageChartStyles();
-    bindSuggestionFilterActions();
     if (!canAdmin) {
       root.className = 'oc-dashboard-console';
       root.innerHTML = `
@@ -974,7 +973,6 @@
   }
 
   function bindCurrentDashboardPanel(){
-    bindSuggestionFilterActions();
     if (dashboardTab === 'reviews') {
       bindSuggestionActions();
       bindIssueReportActions();
@@ -1009,19 +1007,6 @@
         resourceTrendMode = button.dataset.resourceTrendMode || 'all';
         renderDashboard();
       });
-    });
-  }
-
-  function bindSuggestionFilterActions(){
-    if (root.dataset.suggestionFiltersBound === 'true') return;
-    root.dataset.suggestionFiltersBound = 'true';
-    root.addEventListener('click', event => {
-      const target = event.target;
-      const button = target instanceof Element ? target.closest('[data-suggestion-filter]') : null;
-      if (!button || !root.contains(button)) return;
-      suggestionStatusFilter = button.dataset.suggestionFilter || 'active';
-      selectedSuggestionId = '';
-      renderDashboard();
     });
   }
 
@@ -3696,6 +3681,13 @@
         }
         status.textContent = 'Platform record saved.';
         await loadDashboard(false);
+      });
+    });
+    document.querySelectorAll('[data-suggestion-filter]').forEach(button => {
+      button.addEventListener('click', () => {
+        suggestionStatusFilter = button.dataset.suggestionFilter || 'active';
+        selectedSuggestionId = '';
+        renderDashboard();
       });
     });
     document.querySelectorAll('[data-preview-submission-certificate], [data-issue-submission-certificate]').forEach(button => {
