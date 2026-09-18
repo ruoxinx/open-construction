@@ -1335,19 +1335,6 @@ function arxivIdFromDoi(doiVal){
   return match ? match[1] : '';
 }
 
-function altmetricDetailsHref(id){
-  if (!id?.value) return '';
-  let doi = '';
-  if (id.kind === 'arxiv') doi = `10.48550/arxiv.${id.value}`;
-  else if (id.kind === 'doi') doi = id.arxiv ? `10.48550/arxiv.${id.arxiv}` : id.value;
-  if (!doi) return '';
-  const params = new URLSearchParams({
-    domain: 'www.openconstruction.org',
-    doi
-  });
-  return `https://www.altmetric.com/details.php?${params.toString()}`;
-}
-
 function publicationBadgesHtml(doiVal, cfg){
   const id = parseScholarlyId(doiVal);
   if (!id.value) return '';
@@ -1361,19 +1348,18 @@ function publicationBadgesHtml(doiVal, cfg){
   const dimensionsOn = asBool(cfg?.dimensions) ?? true;
 
   const blocks = [];
-  const altmetricHref = altmetricDetailsHref(id);
+  const fullDoi = id.kind === 'doi' ? (normalizedDoiValue(id.value) || id.value) : '';
 
   // ----- Altmetric (supports DOI + arXiv IDs + PMID) -----
   if (altmetricOn) {
     let altAttr = '';
     if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${escapeHtml(id.value)}"`;
     else if (id.kind === 'pmid') altAttr = `data-pmid="${escapeHtml(id.value)}"`;
-    else altAttr = `data-doi="${escapeHtml(id.value)}"`; // default DOI
+    else altAttr = `data-doi="${escapeHtml(fullDoi)}"`; // Altmetric expects the full DOI, not a details-page URL
 
     blocks.push(`
       <div class="oc-publication-badge">
         <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
-        ${altmetricHref ? `<a class="oc-altmetric-details-link" href="${escapeHtml(altmetricHref)}" target="_blank" rel="noopener">Altmetric details</a>` : ''}
       </div>
     `);
   }
@@ -1382,7 +1368,7 @@ function publicationBadgesHtml(doiVal, cfg){
   // Official embed supports data-doi / data-pmid / data-id (Dimensions internal id like pub.123...)
   if (dimensionsOn) {
     let dimAttr = '';
-    if (id.kind === 'doi') dimAttr = `data-doi="${escapeHtml(id.value)}"`;
+    if (id.kind === 'doi') dimAttr = `data-doi="${escapeHtml(fullDoi)}"`;
     else if (id.kind === 'pmid') dimAttr = `data-pmid="${escapeHtml(id.value)}"`;
     else if (id.kind === 'dimensions_id') dimAttr = `data-id="${escapeHtml(id.value)}"`;
 

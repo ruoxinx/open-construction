@@ -1290,22 +1290,6 @@ header.hero p{
   border-color:#9fb9d4;
 }
 
-.oc-altmetric-details-link{
-  display:inline-flex;
-  margin-top:.3rem;
-  color:var(--oc-sub);
-  font-size:.7rem;
-  line-height:1.2;
-  text-decoration:none;
-}
-
-.oc-altmetric-details-link:hover,
-.oc-altmetric-details-link:focus-visible{
-  color:var(--oc-link);
-  text-decoration:underline;
-  text-underline-offset:.15em;
-}
-
 .oc-auth-page{
   display:grid;
   grid-template-columns:minmax(0,1.05fr) minmax(340px,.72fr);
