@@ -379,6 +379,17 @@ function bindLinkHealthNotes(root){
   });
 }
 
+function followInlineHtml(type, id, label){
+  if (!id || !['dataset', 'model'].includes(type)) return '';
+  const params = new URLSearchParams({
+    tab: 'library',
+    follow_type: type,
+    follow_id: id,
+    follow_title: label || type
+  });
+  return `<a class="btn btn-outline-secondary btn-sm oc-follow-inline" href="../account.html?${params.toString()}" aria-label="Follow related resources for ${escapeHtml(label || type)}">Follow</a>`;
+}
+
 function linkHealthHtml(cache, resourceType, resourceId, title, field, url){
   const record = linkHealthRecord(cache, resourceType, resourceId, field, url);
   if (!record) return '';
@@ -1324,6 +1335,19 @@ function arxivIdFromDoi(doiVal){
   return match ? match[1] : '';
 }
 
+function altmetricDetailsHref(id){
+  if (!id?.value) return '';
+  let doi = '';
+  if (id.kind === 'arxiv') doi = `10.48550/arxiv.${id.value}`;
+  else if (id.kind === 'doi') doi = id.arxiv ? `10.48550/arxiv.${id.arxiv}` : id.value;
+  if (!doi) return '';
+  const params = new URLSearchParams({
+    domain: 'www.openconstruction.org',
+    doi
+  });
+  return `https://www.altmetric.com/details.php?${params.toString()}`;
+}
+
 function publicationBadgesHtml(doiVal, cfg){
   const id = parseScholarlyId(doiVal);
   if (!id.value) return '';
@@ -1337,6 +1361,7 @@ function publicationBadgesHtml(doiVal, cfg){
   const dimensionsOn = asBool(cfg?.dimensions) ?? true;
 
   const blocks = [];
+  const altmetricHref = altmetricDetailsHref(id);
 
   // ----- Altmetric (supports DOI + arXiv IDs + PMID) -----
   if (altmetricOn) {
@@ -1348,6 +1373,7 @@ function publicationBadgesHtml(doiVal, cfg){
     blocks.push(`
       <div class="oc-publication-badge">
         <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
+        ${altmetricHref ? `<a class="oc-altmetric-details-link" href="${escapeHtml(altmetricHref)}" target="_blank" rel="noopener">Altmetric details</a>` : ''}
       </div>
     `);
   }
@@ -2537,6 +2563,7 @@ async function initDetail(){
               ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
               <span class="detail-primary-actions">
                 ${bookmarkInlineHtml('model', m.id || id || modelTitle, modelTitle)}
+                ${followInlineHtml('model', m.id || id || modelTitle, modelTitle)}
                 ${citationInlineButtonHtml(doiSource)}
               </span>
             </div>
@@ -3098,6 +3125,7 @@ async function initDetail(){
             ${linkedTaskChipLane(datasetTaskList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
             <span class="detail-primary-actions">
               ${bookmarkInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
+              ${followInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
               ${citationInlineButtonHtml(datasetIdentifier)}
             </span>
           </div>

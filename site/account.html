@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260916-workspace-notifications" rel="stylesheet"></head>
+  <link href="assets/css/shared-site.css?v=20260918-workspace-follow-normalization" rel="stylesheet"></head>
 <body>
 <a class="skip-link" href="#mainContent">Skip to account</a>
 
@@ -427,6 +427,7 @@
 <script src="assets/js/config.js"></script>
 <script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
 <script src="assets/js/site-shell.js?v=20260830-benchmark-ruler"></script>
+<script src="assets/js/terms.js?v=20260827-idm-mvd-acronym"></script>
 <script>
 (async () => {
   document.getElementById('yearNow').textContent = new Date().getFullYear();
@@ -1346,7 +1347,7 @@
     if (remaining) remaining.textContent = String(aiUsageRemaining(user));
   }
 
-  function accountExportPayload({ user, profile, profileContact, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports, notifications }){
+  function accountExportPayload({ user, profile, profileContact, bookmarks, badges, suggestions, roles, identities, collections, collectionItems, notes, aiChats, aiFeedback, issueReports, notifications, alerts, follows }){
     return {
       exported_at: new Date().toISOString(),
       privacy_notice: 'https://www.openconstruction.org/references.html#privacy',
@@ -1376,7 +1377,9 @@
       badges: badges || [],
       resource_submissions: suggestions || [],
       issue_reports: issueReports || [],
-      workspace_notifications: notifications || []
+      workspace_notifications: notifications || [],
+      workspace_alerts: alerts || [],
+      workspace_resource_follows: follows || []
     };
   }
 
@@ -1487,6 +1490,12 @@
 
   function bookmarkKey(row){
     return resourceKey(row.type, row.id || row.resource_id);
+  }
+
+  function workspaceFollowKey(row){
+    const type = resourceKind(row?.resource_type || row?.type);
+    const id = row?.resource_id || row?.id || '';
+    return `${type}:${String(id).trim()}`;
   }
 
   function normalizeWorkspaceRow(row){
@@ -2163,13 +2172,15 @@
     }));
   }
 
-  function savedResourceCardsHtml(items){
+  function savedResourceCardsHtml(items, follows = []){
     if (!items.length) return empty('No saved resources yet', 'Save resources from catalog pages to add them here.');
+    const followByKey = new Map((follows || []).map(row => [workspaceFollowKey(row), row]));
     return items.map((item, index) => {
       const row = item.bookmark;
       const meta = resourceCardMeta(item);
       const title = titleOfRecord(item.record, row.title || row.id || row.resource_id);
       const doi = workspaceResourceDoi(item);
+      const follow = ['dataset', 'model'].includes(item.kind) ? followByKey.get(workspaceFollowKey(row)) : null;
       const objectsLabel = meta.objects.join(', ');
       const cardMeta = [
         meta.added ? `<span>Added ${esc(meta.added)}</span>` : '',
@@ -2193,6 +2204,7 @@
             <div class="oc-library-card-actions">
               <div class="oc-library-card-action-links">
                 <button type="button" class="oc-text-action oc-workspace-cite" data-workspace-citation="${esc(doi)}" data-workspace-citation-title="${esc(title)}">Cite</button>
+                ${['dataset', 'model'].includes(item.kind) ? `<button type="button" class="oc-text-action" data-resource-follow="${index}" aria-pressed="${follow ? 'true' : 'false'}">${follow ? 'Following' : 'Follow'}</button>` : ''}
               </div>
             </div>
           </div>
@@ -3775,23 +3787,6 @@
     return `<span class="${statusClass(status)} oc-activity-status">${esc(statusLabel(status))}</span>`;
   }
 
-  function workspaceStatusDashboardHtml(submissions, reports, reportsReady = true){
-    const submissionRows = Array.isArray(submissions) ? submissions : [];
-    const reportRows = reportsReady && Array.isArray(reports) ? reports : [];
-    const inReviewCount = submissionRows.filter(row => row.status === 'in_review').length
-      + reportRows.filter(row => row.status === 'in_review').length;
-    const completedCount = submissionRows.filter(row => ['added', 'approved'].includes(row.status)).length
-      + reportRows.filter(row => row.status === 'resolved').length;
-    return `
-      <section class="oc-activity-summary" aria-label="Workspace status summary">
-        <span><strong>${submissionRows.length}</strong> submissions</span>
-        <span><strong>${reportRows.length}</strong> reports</span>
-        <span><strong>${inReviewCount}</strong> in review</span>
-        <span><strong>${completedCount}</strong> completed</span>
-      </section>
-    `;
-  }
-
   function resourceSubmissionListHtml(submissions){
     const rows = Array.isArray(submissions) ? submissions : [];
     if (!rows.length) return empty('No resource submissions yet', 'Use Submit when you want OpenConstruction maintainers to review an open resource.');
@@ -3830,7 +3825,8 @@
       resource_submission: 'Resource submission',
       issue_report: 'Feedback report',
       credential: 'Credential',
-      saved_resource_link: 'Saved resource link'
+      saved_resource_link: 'Saved resource link',
+      resource_alert: 'Resource alert'
     }[type] || 'Workspace notification';
   }
 
@@ -3855,6 +3851,280 @@
         <span class="oc-notification-state">${row.read_at ? 'Read' : 'New'}</span>
       </a>
     `).join('');
+  }
+
+  function workspaceAlertTypeLabel(type){
+    return ({ dataset: 'Dataset', model: 'Model', workflow: 'Workflow', oer: 'OER' }[type] || 'Any resource');
+  }
+
+  const WORKSPACE_ALERT_FILTER_DEFINITIONS = [
+    { key: 'resource_types', label: 'Resource types' },
+    { key: 'modalities', label: 'Modalities' },
+    { key: 'tasks', label: 'Tasks' },
+    { key: 'applications', label: 'Applications' },
+    { key: 'authors', label: 'Authors' },
+    { key: 'locations', label: 'Locations' }
+  ];
+
+  function workspaceAlertValues(row, key){
+    const value = row?.[key];
+    if (Array.isArray(value)) return value.map(item => String(item || '').trim()).filter(Boolean);
+    if (key === 'resource_types' && row?.resource_type) return [String(row.resource_type).trim()];
+    return value ? [String(value).trim()].filter(Boolean) : [];
+  }
+
+  function workspaceAlertSummaryValues(values, limit = 3){
+    const items = Array.isArray(values) ? values : [];
+    if (!items.length) return '';
+    const visible = items.slice(0, limit).join(', ');
+    return items.length > limit ? `${visible} +${items.length - limit}` : visible;
+  }
+
+  function workspaceAlertCriteriaSummary(row){
+    const parts = [];
+    const types = workspaceAlertValues(row, 'resource_types').map(workspaceAlertTypeLabel);
+    if (types.length) parts.push(workspaceAlertSummaryValues(types));
+    for (const definition of WORKSPACE_ALERT_FILTER_DEFINITIONS.slice(1)) {
+      const values = workspaceAlertUniqueValues(workspaceAlertValues(row, definition.key), definition.key);
+      if (values.length) parts.push(`${definition.label}: ${workspaceAlertSummaryValues(values, 2)}`);
+    }
+    if (row?.keywords) parts.push(`Keywords: ${row.keywords}`);
+    return parts.join(' · ') || 'Any newly accepted resource';
+  }
+
+  function workspaceAlertsHtml(rows, available = true){
+    if (!available) return empty('Alerts are not available yet', 'Apply the Workspace alerts migration before creating a saved alert.');
+    const items = Array.isArray(rows) ? rows : [];
+    if (!items.length) return empty('No resource alerts yet', 'Create an alert to see an in-app notification when a matching resource is accepted into the catalog.');
+    return items.map(row => `
+      <article class="oc-workspace-alert-row${row.is_active === false ? ' is-disabled' : ''}">
+        <span class="oc-workspace-alert-body">
+          <strong>${esc(row.name || 'Resource alert')}</strong>
+          <span class="oc-account-meta">${esc(workspaceAlertCriteriaSummary(row))}</span>
+          <span class="oc-account-meta">${row.is_active === false ? 'Paused' : 'In-app notifications enabled'}</span>
+        </span>
+        <span class="oc-workspace-alert-actions">
+          <button type="button" class="oc-text-action" data-workspace-alert-edit="${esc(row.id)}">Edit</button>
+          <button type="button" class="oc-text-action oc-text-action-danger" data-workspace-alert-delete="${esc(row.id)}">Delete</button>
+        </span>
+      </article>
+    `).join('');
+  }
+
+  let workspaceAlertFilterOptionsPromise = null;
+
+  function workspaceAlertStringValues(value){
+    if (Array.isArray(value)) return value.flatMap(workspaceAlertStringValues);
+    if (value && typeof value === 'object') return workspaceAlertStringValues(value.name || value.title || value.label);
+    return String(value || '')
+      .split(/;|\band\b|,(?=\s*[A-Z@])/gi)
+      .map(item => item.trim())
+      .filter(Boolean);
+  }
+
+  function workspaceAlertValueKey(value){
+    return String(value || '')
+      .normalize('NFKC')
+      .toLowerCase()
+      .replace(/[–—−]/g, '-')
+      .replace(/[-_/]+/g, ' ')
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/([^s])s$/, '$1');
+  }
+
+  function workspaceAlertDisplayValue(value, filterKey = ''){
+    const raw = String(value || '')
+      .replace(/[–—−]/g, '-')
+      .replace(/[-_/]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!raw) return '';
+    if (filterKey === 'modalities' && window.OCTerms?.canonicalizeModalityLabels) {
+      return window.OCTerms.canonicalizeModalityLabels(raw)[0] || raw;
+    }
+    if (['tasks', 'applications'].includes(filterKey) && window.OCTerms?.prettyTermLabel) {
+      return window.OCTerms.prettyTermLabel(raw) || raw;
+    }
+    return raw.replace(/\b(\d+)d\b/gi, '$1D');
+  }
+
+  function workspaceAlertUniqueValues(values, filterKey = ''){
+    const unique = new Map();
+    (Array.isArray(values) ? values : []).forEach(value => {
+      const display = workspaceAlertDisplayValue(value, filterKey);
+      const key = workspaceAlertValueKey(display);
+      if (key && !unique.has(key)) unique.set(key, display);
+    });
+    return [...unique.values()];
+  }
+
+  function workspaceAlertRecordValues(record, keys, filterKey = ''){
+    return workspaceAlertUniqueValues(keys.flatMap(key => workspaceAlertStringValues(record?.[key])), filterKey);
+  }
+
+  async function workspaceAlertFilterOptions(){
+    if (workspaceAlertFilterOptionsPromise) return workspaceAlertFilterOptionsPromise;
+    workspaceAlertFilterOptionsPromise = Promise.all([
+      loadCatalog('dataset'),
+      loadCatalog('model'),
+      loadCatalog('workflow'),
+      loadCatalog('oer')
+    ]).then(([datasets, models, workflows, oers]) => {
+      const rows = [
+        ...(datasets || []).map(record => ({ type: 'dataset', record })),
+        ...(models || []).map(record => ({ type: 'model', record })),
+        ...(workflows || []).map(record => ({ type: 'workflow', record })),
+        ...(oers || []).map(record => ({ type: 'oer', record }))
+      ];
+      const values = {
+        resource_types: ['dataset', 'model', 'workflow', 'oer'],
+        modalities: [...new Set(rows.flatMap(({ record }) => workspaceAlertRecordValues(record, ['data_modality', 'modalities', 'data_modalities'], 'modalities')))].sort((a, b) => a.localeCompare(b)),
+        tasks: [...new Set(rows.flatMap(({ record }) => workspaceAlertRecordValues(record, ['potential_tasks', 'tasks'], 'tasks')))].sort((a, b) => a.localeCompare(b)),
+        applications: [...new Set(rows.flatMap(({ record }) => workspaceAlertRecordValues(record, ['applications'], 'applications')))].sort((a, b) => a.localeCompare(b)),
+        authors: [...new Set(rows.flatMap(({ record }) => workspaceAlertRecordValues(record, ['authors', 'author'])))].sort((a, b) => a.localeCompare(b)),
+        locations: [...new Set(rows.flatMap(({ record }) => workspaceAlertRecordValues(record, ['geographical_location', 'geography', 'location', 'locations'])))].sort((a, b) => a.localeCompare(b))
+      };
+      return values;
+    }).catch(error => {
+      console.warn('Workspace alert filter options unavailable', error);
+      return {
+        resource_types: ['dataset', 'model', 'workflow', 'oer'],
+        modalities: [],
+        tasks: [],
+        applications: [],
+        authors: [],
+        locations: []
+      };
+    });
+    return workspaceAlertFilterOptionsPromise;
+  }
+
+  function workspaceAlertOptionLabel(key, value){
+    if (key === 'resource_types') return workspaceAlertTypeLabel(value);
+    return value;
+  }
+
+  function addWorkspaceAlertFilterValue(form, key, value, checked = false){
+    const normalized = workspaceAlertDisplayValue(value, key);
+    if (!form || !normalized || key === 'resource_types') return;
+    const existing = Array.from(form.querySelectorAll(`[data-workspace-alert-filter="${key}"]`))
+      .find(input => workspaceAlertValueKey(input.value) === workspaceAlertValueKey(normalized));
+    if (existing) {
+      existing.checked = checked || existing.checked;
+      return;
+    }
+    const host = form.querySelector(`[data-workspace-alert-options="${key}"]`);
+    if (!host) return;
+    host.querySelector('.oc-resource-help')?.remove();
+    host.insertAdjacentHTML('beforeend', `
+      <label class="oc-alert-filter-option oc-alert-filter-custom-option">
+        <input type="checkbox" value="${esc(normalized)}" data-workspace-alert-filter="${key}"${checked ? ' checked' : ''}>
+        <span>${esc(normalized)}</span>
+      </label>
+    `);
+  }
+
+  function addWorkspaceAlertCustomValue(form, key){
+    const input = form?.querySelector(`[data-workspace-alert-custom-input="${key}"]`);
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) return;
+    addWorkspaceAlertFilterValue(form, key, value, true);
+    input.value = '';
+    updateWorkspaceAlertFilterCounts(form);
+  }
+
+  async function populateWorkspaceAlertFilterOptions(){
+    const form = document.getElementById('workspaceAlertForm');
+    if (!form) return;
+    const options = await workspaceAlertFilterOptions();
+    WORKSPACE_ALERT_FILTER_DEFINITIONS.forEach(definition => {
+      const host = form.querySelector(`[data-workspace-alert-options="${definition.key}"]`);
+      if (!host) return;
+      const values = options[definition.key] || [];
+      host.innerHTML = values.length
+        ? values.map(value => `
+          <label class="oc-alert-filter-option">
+            <input type="checkbox" value="${esc(value)}" data-workspace-alert-filter="${definition.key}">
+            <span>${esc(workspaceAlertOptionLabel(definition.key, value))}</span>
+          </label>
+        `).join('')
+        : '<span class="oc-alert-filter-empty">No catalog values available. Add one below.</span>';
+    });
+  }
+
+  function selectedWorkspaceAlertFilters(form){
+    return WORKSPACE_ALERT_FILTER_DEFINITIONS.reduce((filters, definition) => {
+      filters[definition.key] = Array.from(form.querySelectorAll(`[data-workspace-alert-filter="${definition.key}"]:checked`)).map(input => input.value);
+      return filters;
+    }, {});
+  }
+
+  function updateWorkspaceAlertFilterCounts(form){
+    WORKSPACE_ALERT_FILTER_DEFINITIONS.forEach(definition => {
+      const count = form.querySelector(`[data-workspace-alert-count="${definition.key}"]`);
+      if (!count) return;
+      const selected = form.querySelectorAll(`[data-workspace-alert-filter="${definition.key}"]:checked`).length;
+      count.textContent = selected ? `${selected} selected` : 'Any';
+    });
+  }
+
+  function workspaceAlertHasStructuredFilters(row){
+    return ['modalities', 'tasks', 'applications', 'authors', 'locations', 'size_bands']
+      .some(key => workspaceAlertValues(row, key).length > 0);
+  }
+
+  function workspaceAlertRecordSizeBand(record){
+    const raw = [record?.num_images, record?.num_records, record?.record_count, record?.size]
+      .find(value => value !== undefined && value !== null && String(value).trim() !== '');
+    const number = Number(String(raw || '').replace(/[^0-9.]/g, ''));
+    if (!Number.isFinite(number)) return '';
+    if (number < 10000) return 'small';
+    if (number <= 100000) return 'medium';
+    return 'large';
+  }
+
+  function workspaceAlertRecordId(record){
+    return String(record?.id || record?.slug || record?.name || record?.title || '').trim();
+  }
+
+  function workspaceAlertRecordTitle(record){
+    return String(record?.title || record?.name || workspaceAlertRecordId(record) || 'New catalog resource').trim();
+  }
+
+  function workspaceAlertRecordIsRecent(record, alert){
+    const recordDate = String(record?.added_date || record?.created_at || '').slice(0, 10);
+    const alertDate = String(alert?.created_at || '').slice(0, 10);
+    return !recordDate || !alertDate || recordDate >= alertDate;
+  }
+
+  function workspaceAlertCatalogMatches(alert, type, record){
+    const selectedTypes = workspaceAlertValues(alert, 'resource_types');
+    if (selectedTypes.length && !selectedTypes.includes(type)) return false;
+    const filterFields = [
+      ['modalities', ['data_modality', 'modalities', 'data_modalities']],
+      ['tasks', ['potential_tasks', 'tasks']],
+      ['applications', ['applications']],
+      ['authors', ['authors', 'author']],
+      ['locations', ['geographical_location', 'geography', 'location', 'locations']]
+    ];
+    for (const [filterKey, recordKeys] of filterFields) {
+      const selected = workspaceAlertValues(alert, filterKey).map(workspaceAlertValueKey);
+      if (selected.length) {
+        const available = workspaceAlertRecordValues(record, recordKeys, filterKey).map(workspaceAlertValueKey);
+        if (!selected.some(value => available.includes(value))) return false;
+      }
+    }
+    const selectedSizeBands = workspaceAlertValues(alert, 'size_bands');
+    if (selectedSizeBands.length && !selectedSizeBands.includes(workspaceAlertRecordSizeBand(record))) return false;
+    const keywords = String(alert?.keywords || '').split(/\s*,\s*/).map(value => value.trim().toLowerCase()).filter(Boolean);
+    if (keywords.length) {
+      const searchable = JSON.stringify(record || {}).toLowerCase();
+      if (!keywords.some(keyword => searchable.includes(keyword))) return false;
+    }
+    return true;
   }
 
   function showWorkspacePanel(id){
@@ -3891,6 +4161,33 @@
     const requested = new URLSearchParams(window.location.search).get('tab');
     const fallback = tabs[0]?.dataset.workspaceTab || 'library';
     showWorkspacePanel(tabs.some(tab => tab.dataset.workspaceTab === requested) ? requested : fallback);
+  }
+
+  function showActivityView(view, updateUrl = true){
+    const allowed = new Set(['overview', 'alerts', 'submissions', 'feedback']);
+    const selected = allowed.has(view) ? view : 'overview';
+    document.querySelectorAll('[data-activity-view]').forEach(button => {
+      const active = button.dataset.activityView === selected;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('[data-activity-sections]').forEach(section => {
+      const groups = String(section.dataset.activitySections || '').split(/\s+/);
+      section.hidden = !groups.includes(selected);
+    });
+    if (updateUrl) {
+      const params = new URLSearchParams(window.location.search);
+      params.set('tab', 'reports');
+      params.set('activity', selected);
+      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
+    }
+  }
+
+  function bindActivityViews(){
+    const views = Array.from(document.querySelectorAll('[data-activity-view]'));
+    views.forEach(view => view.addEventListener('click', () => showActivityView(view.dataset.activityView)));
+    const requested = new URLSearchParams(window.location.search).get('activity') || 'overview';
+    showActivityView(requested, false);
   }
 
   function selectorValue(value){
@@ -4680,7 +4977,7 @@
         console.warn('Identity list failed', err);
         return Array.isArray(user.identities) ? user.identities : [];
       }) || Promise.resolve(Array.isArray(user.identities) ? user.identities : []);
-    const [bookmarks, profileRes, contactRes, badgesRes, certificatesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes, notificationsRes] = await Promise.all([
+    const [bookmarks, profileRes, contactRes, badgesRes, certificatesRes, suggestionsRes, identitiesResult, collectionsRes, collectionItemsRes, notesRes, aiFeedbackRes, issueReportsRes, notificationsRes, alertsRes, followsRes] = await Promise.all([
       window.OCBookmark.list(),
       sb.from('profiles').select('user_id,display_name,avatar_url,github_username,affiliation,public_profile,created_at,updated_at').eq('user_id', user.id).maybeSingle(),
       safeRows(sb.from('profile_contacts').select('user_id,email,updated_at').eq('user_id', user.id).limit(1), 'profile contact'),
@@ -4693,7 +4990,9 @@
       safeRows(sb.from('resource_notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }), 'resource notes'),
       safeRows(sb.from('ai_search_feedback').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(500), 'AI search feedback'),
       safeRows(sb.from('site_issue_reports').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50), 'issue reports'),
-      safeRows(sb.from('workspace_notifications').select('id,user_id,notification_type,title,body,target_tab,source_table,source_id,resource_type,resource_id,dedupe_key,metadata,read_at,created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100), 'workspace notifications')
+      safeRows(sb.from('workspace_notifications').select('id,user_id,notification_type,title,body,target_tab,source_table,source_id,resource_type,resource_id,dedupe_key,metadata,read_at,created_at').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100), 'workspace notifications'),
+      safeRows(sb.from('workspace_alerts').select('id,user_id,name,resource_type,resource_types,modalities,tasks,applications,authors,locations,size_bands,keywords,is_active,created_at,updated_at').eq('user_id', user.id).order('created_at', { ascending: false }), 'workspace alerts'),
+      safeRows(sb.from('workspace_resource_follows').select('id,user_id,resource_type,resource_id,resource_title,related_types,relation_fields,is_active,created_at,updated_at').eq('user_id', user.id).order('created_at', { ascending: false }), 'workspace resource follows')
     ]);
     if (profileRes.error) throw profileRes.error;
     if (badgesRes.error) throw badgesRes.error;
@@ -4711,6 +5010,8 @@
     let aiFeedback = aiFeedbackRes.rows || [];
     let issueReports = issueReportsRes.rows || [];
     let notifications = notificationsRes.rows || [];
+    let alerts = alertsRes.rows || [];
+    let follows = followsRes.rows || [];
     let issueReportsReady = !issueReportsRes.error;
     const aiChats = readAiChats(user);
     const notesByKey = workspaceRowsByKey(notes);
@@ -4769,7 +5070,9 @@
       aiChats,
       aiFeedback,
       issueReports,
-      notifications
+      notifications,
+      alerts,
+      follows
     });
 
     function badgeIcon(){
@@ -4983,6 +5286,7 @@
                   <option value="title-za">Title Z-A</option>
                 </select>
                 <div class="oc-library-actions">
+                  <button type="button" id="followRelatedResourcesBtn" class="oc-library-action-btn">Follow</button>
                   <button type="button" id="compareResourcesBtn" class="oc-library-action-btn">${workspaceIcon('compare')}<span>Compare</span></button>
                   <div class="dropdown oc-library-download">
                     <button type="button" class="oc-library-action-btn oc-library-download-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download selected resources">
@@ -4998,7 +5302,7 @@
               </div>
             ` : ''}
             <div id="libraryResourceGrid" class="oc-library-grid">
-              ${savedResourceCardsHtml(enrichedBookmarks)}
+              ${savedResourceCardsHtml(enrichedBookmarks, follows)}
             </div>
             <div id="resourceCompareOutput"></div>
           </section>
@@ -5075,7 +5379,13 @@
                 <button type="button" class="oc-text-action" data-bs-toggle="modal" data-bs-target="#reportIssueModal">${workspaceIcon('report')}<span>Submit feedback</span></button>
               </div>
             </div>
-            <section class="oc-notification-inbox" aria-labelledby="workspaceNotificationTitle">
+            <nav class="oc-activity-views" aria-label="Activity views" role="tablist">
+              <button type="button" class="oc-activity-view active" data-activity-view="overview" role="tab" aria-selected="true">Overview</button>
+              <button type="button" class="oc-activity-view" data-activity-view="alerts" role="tab" aria-selected="false">Alerts <span>${alerts.length}</span></button>
+              <button type="button" class="oc-activity-view" data-activity-view="submissions" role="tab" aria-selected="false">Submissions <span>${suggestions.length}</span></button>
+              <button type="button" class="oc-activity-view" data-activity-view="feedback" role="tab" aria-selected="false">Feedback <span>${issueReportsReady ? issueReports.length : 0}</span></button>
+            </nav>
+            <section class="oc-notification-inbox" data-activity-sections="overview notifications" aria-labelledby="workspaceNotificationTitle">
               <div class="oc-notification-inbox-head">
                 <div>
                   <h4 id="workspaceNotificationTitle">Notifications</h4>
@@ -5086,16 +5396,24 @@
                 ${workspaceNotificationsHtml(notifications)}
               </div>
             </section>
-            <div id="issueReportsDashboard">
-              ${workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady)}
-            </div>
-            <div class="oc-status-section">
+            <section class="oc-workspace-alerts" data-activity-sections="overview alerts" aria-labelledby="workspaceAlertsTitle">
+              <div class="oc-workspace-alert-head">
+                <div>
+                  <h4 id="workspaceAlertsTitle">Resource alerts</h4>
+                </div>
+                <button type="button" class="oc-text-action" data-workspace-alert-create data-bs-toggle="modal" data-bs-target="#workspaceAlertModal" ${alertsRes.error ? 'disabled aria-disabled="true"' : ''}>${workspaceIcon('plus')}<span>New alert</span></button>
+              </div>
+              <div id="workspaceAlertList" class="oc-workspace-alert-list">
+                ${workspaceAlertsHtml(alerts, !alertsRes.error)}
+              </div>
+            </section>
+            <div class="oc-status-section" data-activity-sections="submissions">
               <h4>Resource submissions <span>${suggestions.length}</span></h4>
               <div id="resourceSubmissionsList" class="oc-report-list">
                 ${resourceSubmissionListHtml(suggestions)}
               </div>
             </div>
-            <div class="oc-status-section">
+            <div class="oc-status-section" data-activity-sections="feedback">
               <h4>Feedback reports <span>${issueReportsReady ? issueReports.length : 0}</span></h4>
               <div id="issueReportsList" class="oc-report-list">
                 ${issueReportListHtml(issueReports, issueReportsReady)}
@@ -5111,9 +5429,7 @@
     }
 
     function renderIssueReportsWorkspace(){
-      const dashboard = document.getElementById('issueReportsDashboard');
       const list = document.getElementById('issueReportsList');
-      if (dashboard) dashboard.innerHTML = workspaceStatusDashboardHtml(suggestions, issueReports, issueReportsReady);
       if (list) list.innerHTML = issueReportListHtml(issueReports, issueReportsReady);
       accountDataExport.issue_reports = issueReports;
     }
@@ -5131,6 +5447,411 @@
       if (markAll) markAll.disabled = unread === 0;
       accountDataExport.workspace_notifications = notifications;
       bindWorkspaceNotificationActions();
+    }
+
+    function renderWorkspaceAlerts(){
+      const list = document.getElementById('workspaceAlertList');
+      if (list) list.innerHTML = workspaceAlertsHtml(alerts, !alertsRes.error);
+      accountDataExport.workspace_alerts = alerts;
+    }
+
+    let workspaceFollowPendingRows = [];
+
+    function renderWorkspaceFollowButtons(){
+      document.querySelectorAll('[data-resource-follow]').forEach(button => {
+        const row = bookmarks[Number(button.dataset.resourceFollow)];
+        const following = row && follows.some(item => workspaceFollowKey(item) === workspaceFollowKey(row) && item.is_active !== false);
+        button.textContent = following ? 'Following' : 'Follow';
+        button.setAttribute('aria-pressed', following ? 'true' : 'false');
+      });
+    }
+
+    function openWorkspaceFollowModal(rows){
+      const form = document.getElementById('workspaceFollowForm');
+      const list = document.getElementById('workspaceFollowResourceList');
+      const modal = document.getElementById('workspaceFollowModal');
+      if (!form || !list || !modal) return;
+      workspaceFollowPendingRows = (rows || []).filter(row => ['dataset', 'model'].includes(resourceKind(row?.type)));
+      if (!workspaceFollowPendingRows.length) return;
+      form.reset();
+      list.innerHTML = workspaceFollowPendingRows.map(row => `
+        <div>${esc(row.title || row.id || row.resource_id || 'Saved resource')} <span>${esc(typeLabel(row.type))}</span></div>
+      `).join('');
+      if (workspaceFollowPendingRows.length === 1) {
+        const existing = follows.find(item => workspaceFollowKey(item) === workspaceFollowKey(workspaceFollowPendingRows[0]));
+        if (existing) {
+          form.querySelectorAll('input[name="related_types"]').forEach(input => {
+            input.checked = (existing.related_types || []).includes(input.value);
+          });
+          form.querySelectorAll('input[name="relation_fields"]').forEach(input => {
+            input.checked = (existing.relation_fields || []).includes(input.value);
+          });
+        }
+      }
+      const status = document.getElementById('workspaceFollowStatus');
+      if (status) status.textContent = '';
+      window.bootstrap?.Modal.getOrCreateInstance(modal).show();
+    }
+
+    function bindWorkspaceResourceFollowTools(){
+      const form = document.getElementById('workspaceFollowForm');
+      if (!form || form.dataset.bound) return;
+      form.dataset.bound = 'true';
+      document.getElementById('followRelatedResourcesBtn')?.addEventListener('click', () => {
+        const rows = selectedResourceIndexes().map(index => bookmarks[index]).filter(Boolean);
+        if (!rows.length) {
+          const status = document.getElementById('resourceToolStatus');
+          if (status) status.textContent = 'Select one or more datasets or models first.';
+          return;
+        }
+        openWorkspaceFollowModal(rows);
+      });
+      document.querySelectorAll('[data-resource-follow]').forEach(button => {
+        button.addEventListener('click', async event => {
+          event.preventDefault();
+          event.stopPropagation();
+          const row = bookmarks[Number(button.dataset.resourceFollow)];
+          if (!row) return;
+          const existing = follows.find(item => workspaceFollowKey(item) === workspaceFollowKey(row));
+          if (!existing) {
+            openWorkspaceFollowModal([row]);
+            return;
+          }
+          if (!window.confirm(`Stop following resources related to "${row.title || row.id}"?`)) return;
+          button.disabled = true;
+          const { error } = await sb.from('workspace_resource_follows').delete().eq('id', existing.id).eq('user_id', user.id);
+          if (error) {
+            button.disabled = false;
+            window.alert(error.message || 'Could not stop following this resource.');
+            return;
+          }
+          follows = follows.filter(item => item.id !== existing.id);
+          accountDataExport.workspace_resource_follows = follows;
+          renderWorkspaceFollowButtons();
+        });
+      });
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const status = document.getElementById('workspaceFollowStatus');
+        const submit = form.querySelector('[type="submit"]');
+        const relatedTypes = Array.from(form.querySelectorAll('input[name="related_types"]:checked')).map(input => input.value);
+        const relationFields = Array.from(form.querySelectorAll('input[name="relation_fields"]:checked')).map(input => input.value);
+        if (!relatedTypes.length || !relationFields.length || !workspaceFollowPendingRows.length) {
+          if (status) status.textContent = 'Choose at least one resource type and one match field.';
+          return;
+        }
+        const payload = workspaceFollowPendingRows.map(row => ({
+          user_id: user.id,
+          resource_type: resourceKind(row.type),
+          resource_id: row.id || row.resource_id,
+          resource_title: row.title || row.id || row.resource_id,
+          related_types: relatedTypes,
+          relation_fields: relationFields,
+          is_active: true
+        }));
+        if (submit) submit.disabled = true;
+        if (status) status.textContent = 'Saving...';
+        const result = await sb.from('workspace_resource_follows').upsert(payload, { onConflict: 'user_id,resource_type,resource_id' }).select('id,user_id,resource_type,resource_id,resource_title,related_types,relation_fields,is_active,created_at,updated_at');
+        if (submit) submit.disabled = false;
+        if (result.error) {
+          if (status) status.textContent = result.error.message || 'Could not save the follow.';
+          return;
+        }
+        (result.data || []).forEach(row => {
+          const index = follows.findIndex(item => item.id === row.id || workspaceFollowKey(item) === workspaceFollowKey(row));
+          if (index >= 0) follows[index] = row;
+          else follows.push(row);
+        });
+        accountDataExport.workspace_resource_follows = follows;
+        renderWorkspaceFollowButtons();
+        if (status) status.textContent = 'Related resource follow saved.';
+        window.bootstrap?.Modal.getOrCreateInstance(document.getElementById('workspaceFollowModal'))?.hide();
+      });
+    }
+
+    function openRequestedWorkspaceFollow(){
+      const params = new URLSearchParams(window.location.search);
+      const type = resourceKind(params.get('follow_type'));
+      const id = String(params.get('follow_id') || '').trim();
+      if (!id || !['dataset', 'model'].includes(type)) return;
+      const title = String(params.get('follow_title') || id).trim();
+      showWorkspacePanel('library');
+      openWorkspaceFollowModal([{ type, id, title }]);
+      params.delete('follow_type');
+      params.delete('follow_id');
+      params.delete('follow_title');
+      const nextQuery = params.toString();
+      window.history.replaceState(null, '', `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`);
+    }
+
+    function setWorkspaceAlertModalMode(editing = false){
+      const title = document.getElementById('workspaceAlertModalTitle');
+      const submit = document.querySelector('#workspaceAlertForm [type="submit"]');
+      if (title) title.textContent = editing ? 'Edit resource alert' : 'Create a resource alert';
+      if (submit) submit.textContent = editing ? 'Save changes' : 'Save alert';
+    }
+
+    function setWorkspaceAlertFormValues(row = null){
+      const form = document.getElementById('workspaceAlertForm');
+      if (!form) return;
+      const selected = row || {};
+      form.elements.alert_name.value = selected.name || '';
+      form.elements.keywords.value = selected.keywords || '';
+    form.elements.is_active.checked = selected.is_active !== false;
+    WORKSPACE_ALERT_FILTER_DEFINITIONS.forEach(definition => {
+      const values = new Set(workspaceAlertValues(selected, definition.key));
+      values.forEach(value => addWorkspaceAlertFilterValue(form, definition.key, value));
+      form.querySelectorAll(`[data-workspace-alert-filter="${definition.key}"]`).forEach(input => {
+        input.checked = values.has(input.value);
+      });
+      });
+      updateWorkspaceAlertFilterCounts(form);
+    }
+
+    function prepareWorkspaceAlertCreate(){
+      const form = document.getElementById('workspaceAlertForm');
+      if (!form) return;
+      form.dataset.editingAlertId = '';
+      form.reset();
+      form.elements.is_active.checked = true;
+      setWorkspaceAlertModalMode(false);
+      updateWorkspaceAlertFilterCounts(form);
+      populateWorkspaceAlertFilterOptions();
+    }
+
+    async function openWorkspaceAlertEditor(row){
+      const form = document.getElementById('workspaceAlertForm');
+      const modal = document.getElementById('workspaceAlertModal');
+      if (!form || !modal || !row) return;
+      form.dataset.editingAlertId = row.id;
+      setWorkspaceAlertModalMode(true);
+      setWorkspaceAlertFormValues(row);
+      await populateWorkspaceAlertFilterOptions();
+      setWorkspaceAlertFormValues(row);
+      window.bootstrap?.Modal.getOrCreateInstance(modal).show();
+    }
+
+    function bindWorkspaceAlertActions(){
+      const list = document.getElementById('workspaceAlertList');
+      if (!list || list.dataset.bound) return;
+      list.dataset.bound = 'true';
+      list.addEventListener('click', async event => {
+        const edit = event.target.closest('[data-workspace-alert-edit]');
+        const remove = event.target.closest('[data-workspace-alert-delete]');
+        const button = edit || remove;
+        if (!button) return;
+        const id = button.dataset.workspaceAlertEdit || button.dataset.workspaceAlertDelete;
+        const row = alerts.find(item => item.id === id);
+        if (!row) return;
+        if (edit) {
+          await openWorkspaceAlertEditor(row);
+          return;
+        }
+        button.disabled = true;
+        if (remove) {
+          if (!window.confirm(`Delete the “${row.name || 'resource alert'}” alert?`)) {
+            button.disabled = false;
+            return;
+          }
+          const { error } = await sb.from('workspace_alerts').delete().eq('id', id).eq('user_id', user.id);
+          if (error) {
+            button.disabled = false;
+            window.alert(error.message || 'Could not delete the alert.');
+          }
+          else {
+            alerts = alerts.filter(item => item.id !== id);
+            renderWorkspaceAlerts();
+          }
+          return;
+        }
+      });
+    }
+
+    function bindWorkspaceAlertForm(){
+    const form = document.getElementById('workspaceAlertForm');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    form.querySelectorAll('details.oc-alert-filter-group').forEach(details => {
+      const summary = details.querySelector('summary');
+      if (!summary) return;
+      const syncExpandedState = () => {
+        summary.setAttribute('aria-expanded', details.open ? 'true' : 'false');
+      };
+      details.addEventListener('toggle', syncExpandedState);
+      syncExpandedState();
+    });
+    form.addEventListener('change', () => updateWorkspaceAlertFilterCounts(form));
+      form.addEventListener('click', event => {
+        const button = event.target.closest('[data-workspace-alert-add-filter]');
+        if (!button) return;
+        event.preventDefault();
+        addWorkspaceAlertCustomValue(form, button.dataset.workspaceAlertAddFilter);
+      });
+      form.addEventListener('keydown', event => {
+        const input = event.target.closest('[data-workspace-alert-custom-input]');
+        if (!input || event.key !== 'Enter') return;
+        event.preventDefault();
+        addWorkspaceAlertCustomValue(form, input.dataset.workspaceAlertCustomInput);
+      });
+      populateWorkspaceAlertFilterOptions();
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const status = document.getElementById('workspaceAlertStatus');
+        const submit = form.querySelector('[type="submit"]');
+        const name = form.elements.alert_name.value.trim();
+        const filters = selectedWorkspaceAlertFilters(form);
+        const resourceType = filters.resource_types[0] || null;
+        const keywords = form.elements.keywords.value.trim() || null;
+        const editingId = form.dataset.editingAlertId || '';
+        if (!name) return;
+        if (status) status.textContent = 'Saving...';
+        if (submit) submit.disabled = true;
+        const payload = {
+          user_id: user.id,
+          name,
+          resource_type: resourceType,
+          resource_types: filters.resource_types,
+          modalities: filters.modalities,
+          tasks: filters.tasks,
+          applications: filters.applications,
+          authors: filters.authors,
+          locations: filters.locations,
+          keywords,
+          is_active: form.elements.is_active.checked
+        };
+        const result = editingId
+          ? await sb.from('workspace_alerts').update(payload).eq('id', editingId).eq('user_id', user.id).select('id,user_id,name,resource_type,resource_types,modalities,tasks,applications,authors,locations,size_bands,keywords,is_active,created_at,updated_at').single()
+          : await sb.from('workspace_alerts').insert(payload).select('id,user_id,name,resource_type,resource_types,modalities,tasks,applications,authors,locations,size_bands,keywords,is_active,created_at,updated_at').single();
+        const { data, error } = result;
+        if (submit) submit.disabled = false;
+        if (error) {
+          if (status) status.textContent = error.message || 'Could not save the alert.';
+          return;
+        }
+        alerts = editingId
+          ? alerts.map(row => row.id === editingId ? data : row)
+          : [data, ...alerts];
+        renderWorkspaceAlerts();
+        form.reset();
+        form.dataset.editingAlertId = '';
+        form.elements.is_active.checked = true;
+        setWorkspaceAlertModalMode(false);
+        if (status) status.textContent = '';
+        window.bootstrap?.Modal.getOrCreateInstance(document.getElementById('workspaceAlertModal'))?.hide();
+      });
+    }
+
+    async function refreshWorkspaceAlertMatches(){
+      const structuredAlerts = alerts.filter(row => row.is_active !== false && workspaceAlertHasStructuredFilters(row));
+      if (!structuredAlerts.length) return;
+      const [datasets, models, workflows, oers] = await Promise.all([
+        loadCatalog('dataset').catch(() => []),
+        loadCatalog('model').catch(() => []),
+        loadCatalog('workflow').catch(() => []),
+        loadCatalog('oer').catch(() => [])
+      ]);
+      const records = [
+        ...(datasets || []).map(record => ({ type: 'dataset', record })),
+        ...(models || []).map(record => ({ type: 'model', record })),
+        ...(workflows || []).map(record => ({ type: 'workflow', record })),
+        ...(oers || []).map(record => ({ type: 'oer', record }))
+      ];
+      const matches = [];
+      structuredAlerts.forEach(alert => {
+        records.forEach(({ type, record }) => {
+          if (!workspaceAlertRecordIsRecent(record, alert) || !workspaceAlertCatalogMatches(alert, type, record)) return;
+          const resourceId = workspaceAlertRecordId(record);
+          if (!resourceId) return;
+          matches.push({
+            alert_id: alert.id,
+            resource_type: type,
+            resource_id: resourceId,
+            resource_title: workspaceAlertRecordTitle(record)
+          });
+        });
+      });
+      if (!matches.length) return;
+      const { error } = await sb.rpc('record_workspace_alert_matches', { p_matches: matches.slice(0, 200) });
+      if (error) {
+        console.warn('Workspace alert matches unavailable', error);
+        return;
+      }
+      const freshNotifications = await safeRows(
+        sb.from('workspace_notifications')
+          .select('id,user_id,notification_type,title,body,target_tab,source_table,source_id,resource_type,resource_id,dedupe_key,metadata,read_at,created_at')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(100),
+        'workspace notifications after alert refresh'
+      );
+      if (!freshNotifications.error) {
+        notifications = freshNotifications.rows;
+        renderWorkspaceNotifications();
+      }
+    }
+
+    function workspaceFollowMatchesRecord(source, candidate, relationFields){
+      const fieldKeys = {
+        modalities: ['data_modality', 'modalities', 'data_modalities'],
+        tasks: ['potential_tasks', 'tasks'],
+        applications: ['applications']
+      };
+      return relationFields.some(field => {
+        const keys = fieldKeys[field] || [];
+        const sourceValues = workspaceAlertRecordValues(source, keys, field).map(workspaceAlertValueKey);
+        const candidateValues = workspaceAlertRecordValues(candidate, keys, field).map(workspaceAlertValueKey);
+        return sourceValues.length > 0 && sourceValues.some(value => candidateValues.includes(value));
+      });
+    }
+
+    async function refreshWorkspaceResourceFollowMatches(){
+      const activeFollows = follows.filter(row => row.is_active !== false);
+      if (!activeFollows.length) return;
+      const [datasets, models] = await Promise.all([
+        loadCatalog('dataset').catch(() => []),
+        loadCatalog('model').catch(() => [])
+      ]);
+      const records = [
+        ...(datasets || []).map(record => ({ type: 'dataset', record })),
+        ...(models || []).map(record => ({ type: 'model', record }))
+      ];
+      const matches = [];
+      activeFollows.forEach(follow => {
+        const source = records.find(({ type, record }) => type === follow.resource_type && workspaceAlertRecordId(record) === follow.resource_id);
+        if (!source) return;
+        const relatedTypes = Array.isArray(follow.related_types) ? follow.related_types : ['dataset', 'model'];
+        const relationFields = Array.isArray(follow.relation_fields) ? follow.relation_fields : ['modalities', 'tasks', 'applications'];
+        records.forEach(({ type, record }) => {
+          const resourceId = workspaceAlertRecordId(record);
+          if (!resourceId || (type === source.type && resourceId === follow.resource_id)) return;
+          if (!relatedTypes.includes(type) || !workspaceAlertRecordIsRecent(record, follow)) return;
+          if (!workspaceFollowMatchesRecord(source.record, record, relationFields)) return;
+          matches.push({
+            follow_id: follow.id,
+            resource_type: type,
+            resource_id: resourceId,
+            resource_title: workspaceAlertRecordTitle(record)
+          });
+        });
+      });
+      if (!matches.length) return;
+      const { error } = await sb.rpc('record_workspace_resource_follow_matches', { p_matches: matches.slice(0, 200) });
+      if (error) {
+        console.warn('Workspace resource follow matches unavailable', error);
+        return;
+      }
+      const freshNotifications = await safeRows(
+        sb.from('workspace_notifications')
+          .select('id,user_id,notification_type,title,body,target_tab,source_table,source_id,resource_type,resource_id,dedupe_key,metadata,read_at,created_at')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(100),
+        'workspace notifications after follow refresh'
+      );
+      if (!freshNotifications.error) {
+        notifications = freshNotifications.rows;
+        renderWorkspaceNotifications();
+      }
     }
 
     function bindWorkspaceNotificationActions(){
@@ -5697,10 +6418,15 @@
       renderIssueReportsWorkspace();
     });
     root.addEventListener('click', event => {
-      const trigger = event.target.closest('[data-ask-example]');
-      if (!trigger) return;
+      const trigger = event.target.closest('[data-workspace-alert-create]');
+      if (trigger) {
+        prepareWorkspaceAlertCreate();
+        return;
+      }
+      const askTrigger = event.target.closest('[data-ask-example]');
+      if (!askTrigger) return;
       event.preventDefault();
-      openAskWithPrompt(trigger.dataset.askExample || '');
+      openAskWithPrompt(askTrigger.dataset.askExample || '');
     });
     root.addEventListener('click', async event => {
       const button = event.target.closest('[data-ai-feedback-rating]');
@@ -5762,12 +6488,20 @@
     });
     bindProfileForm(user);
     bindWorkspaceTabs();
+    bindActivityViews();
     if (canUseAsk) {
       bindAccountAsk();
       renderAccountAiSessions();
     }
     bindResourceTools(recentBookmarks, notesByKey);
     bindWorkspaceNotificationActions();
+    bindWorkspaceAlertActions();
+    bindWorkspaceAlertForm();
+    window.setTimeout(bindWorkspaceResourceFollowTools, 0);
+    window.setTimeout(openRequestedWorkspaceFollow, 0);
+    window.setTimeout(bindWorkspaceAlertForm, 0);
+    window.setTimeout(refreshWorkspaceAlertMatches, 0);
+    window.setTimeout(refreshWorkspaceResourceFollowMatches, 0);
     initializeWorkspaceCitation(root);
     bindLibraryFilters();
     bindBadgeCertificates(publicBadges, certificates);
@@ -5782,5 +6516,140 @@
   }
 })();
 </script>
+<div class="modal fade" id="workspaceAlertModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered oc-resource-modal">
+    <div class="modal-content oc-resource-content">
+      <div class="modal-header">
+        <div>
+          <p class="oc-auth-kicker mb-1">Workspace alert</p>
+          <h2 id="workspaceAlertModalTitle" class="modal-title oc-resource-title">Create a resource alert</h2>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="workspaceAlertForm">
+        <div class="modal-body">
+          <div class="oc-resource-sections">
+            <fieldset class="oc-resource-fieldset">
+              <legend>Alert details</legend>
+              <div class="oc-resource-form-grid">
+                <div class="oc-resource-form-wide">
+                  <label for="workspaceAlertName" class="form-label">Alert name</label>
+                  <input id="workspaceAlertName" name="alert_name" class="form-control" maxlength="120" placeholder="Scan-to-BIM datasets" required>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <p class="form-label mb-2">Resource types <span>choose any that apply</span></p>
+                  <div class="oc-alert-filter-options oc-alert-filter-options-inline" data-workspace-alert-options="resource_types"><span class="oc-resource-help">Loading resource types…</span></div>
+                </div>
+                <div class="oc-resource-form-wide">
+                  <label class="oc-alert-filter-option">
+                    <input type="checkbox" name="is_active" checked>
+                    <span>Keep this alert active</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="oc-resource-fieldset">
+              <legend>Catalog filters <span>optional</span></legend>
+              <p class="oc-resource-help">Expand a filter to choose catalog values or add your own.</p>
+              <div class="oc-alert-filter-grid">
+                <details class="oc-alert-filter-group">
+                  <summary>Modalities <span data-workspace-alert-count="modalities">Any</span></summary>
+                  <div class="oc-alert-filter-options" data-workspace-alert-options="modalities"><span class="oc-resource-help">Loading options…</span></div>
+                  <div class="oc-alert-filter-add">
+                    <input class="form-control form-control-sm" data-workspace-alert-custom-input="modalities" placeholder="Add a modality" aria-label="Add a modality">
+                    <button type="button" class="oc-text-action" data-workspace-alert-add-filter="modalities">Add</button>
+                  </div>
+                </details>
+                <details class="oc-alert-filter-group">
+                  <summary>Tasks <span data-workspace-alert-count="tasks">Any</span></summary>
+                  <div class="oc-alert-filter-options" data-workspace-alert-options="tasks"><span class="oc-resource-help">Loading options…</span></div>
+                  <div class="oc-alert-filter-add">
+                    <input class="form-control form-control-sm" data-workspace-alert-custom-input="tasks" placeholder="Add a task" aria-label="Add a task">
+                    <button type="button" class="oc-text-action" data-workspace-alert-add-filter="tasks">Add</button>
+                  </div>
+                </details>
+                <details class="oc-alert-filter-group">
+                  <summary>Applications <span data-workspace-alert-count="applications">Any</span></summary>
+                  <div class="oc-alert-filter-options" data-workspace-alert-options="applications"><span class="oc-resource-help">Loading options…</span></div>
+                  <div class="oc-alert-filter-add">
+                    <input class="form-control form-control-sm" data-workspace-alert-custom-input="applications" placeholder="Add an application" aria-label="Add an application">
+                    <button type="button" class="oc-text-action" data-workspace-alert-add-filter="applications">Add</button>
+                  </div>
+                </details>
+                <details class="oc-alert-filter-group">
+                  <summary>Authors <span data-workspace-alert-count="authors">Any</span></summary>
+                  <div class="oc-alert-filter-options" data-workspace-alert-options="authors"><span class="oc-resource-help">Loading options…</span></div>
+                  <div class="oc-alert-filter-add">
+                    <input class="form-control form-control-sm" data-workspace-alert-custom-input="authors" placeholder="Add an author" aria-label="Add an author">
+                    <button type="button" class="oc-text-action" data-workspace-alert-add-filter="authors">Add</button>
+                  </div>
+                </details>
+                <details class="oc-alert-filter-group">
+                  <summary>Locations <span data-workspace-alert-count="locations">Any</span></summary>
+                  <div class="oc-alert-filter-options" data-workspace-alert-options="locations"><span class="oc-resource-help">Loading options…</span></div>
+                  <div class="oc-alert-filter-add">
+                    <input class="form-control form-control-sm" data-workspace-alert-custom-input="locations" placeholder="Add a location" aria-label="Add a location">
+                    <button type="button" class="oc-text-action" data-workspace-alert-add-filter="locations">Add</button>
+                  </div>
+                </details>
+              </div>
+            </fieldset>
+            <fieldset class="oc-resource-fieldset">
+              <legend>Keywords <span>optional</span></legend>
+              <input id="workspaceAlertKeywords" name="keywords" class="form-control" maxlength="240" placeholder="scan-to-BIM, point cloud, progress monitoring">
+              <p class="oc-resource-help mb-0">Use keywords when a phrase is more specific than the catalog filters.</p>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div id="workspaceAlertStatus" class="small text-muted me-auto" role="status"></div>
+          <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Save alert</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="workspaceFollowModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered oc-resource-modal">
+    <div class="modal-content oc-resource-content">
+      <div class="modal-header">
+        <div>
+          <p class="oc-auth-kicker mb-1">Workspace follow</p>
+          <h2 id="workspaceFollowModalTitle" class="modal-title oc-resource-title">Follow related resources</h2>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="workspaceFollowForm">
+        <div class="modal-body">
+          <div id="workspaceFollowResourceList" class="oc-follow-resource-list"></div>
+          <fieldset class="oc-resource-fieldset">
+            <legend>Resource types</legend>
+            <div class="oc-follow-choice-grid">
+              <label class="oc-alert-filter-option"><input type="checkbox" name="related_types" value="dataset" checked><span>Datasets</span></label>
+              <label class="oc-alert-filter-option"><input type="checkbox" name="related_types" value="model" checked><span>Models</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="oc-resource-fieldset">
+            <legend>Match by</legend>
+            <p class="oc-resource-help">A related resource matches when it shares at least one selected field.</p>
+            <div class="oc-follow-choice-grid">
+              <label class="oc-alert-filter-option"><input type="checkbox" name="relation_fields" value="modalities" checked><span>Modality</span></label>
+              <label class="oc-alert-filter-option"><input type="checkbox" name="relation_fields" value="tasks" checked><span>Task</span></label>
+              <label class="oc-alert-filter-option"><input type="checkbox" name="relation_fields" value="applications" checked><span>Application</span></label>
+            </div>
+          </fieldset>
+          <div id="workspaceFollowStatus" class="small text-muted" role="status"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Save follow</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
