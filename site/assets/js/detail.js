@@ -1400,6 +1400,21 @@ function publicationBadgesHtml(doiVal, cfg){
 function normalizeAltmetricNoScore(root){
   if (typeof MutationObserver !== 'function') return;
   root?.querySelectorAll('.altmetric-embed').forEach(badge => {
+    const replaceMissingRecord = () => {
+      const providerText = [
+        badge.textContent || '',
+        ...Array.from(badge.querySelectorAll('[alt], [title]')).flatMap(node => [node.getAttribute('alt') || '', node.getAttribute('title') || ''])
+      ].join(' ');
+      if (!/file\s+not\s+found|record\s+not\s+found/i.test(providerText)) return false;
+      badge.replaceChildren();
+      badge.classList.remove('oc-altmetric-zero');
+      badge.classList.add('oc-altmetric-unavailable');
+      badge.setAttribute('role', 'img');
+      badge.setAttribute('aria-label', 'No Altmetric record found for this DOI');
+      badge.textContent = 'No Altmetric record';
+      return true;
+    };
+
     const replaceQuestionMark = () => {
       const image = badge.querySelector('img');
       if (image) {
@@ -1425,9 +1440,10 @@ function normalizeAltmetricNoScore(root){
       return true;
     };
 
+    if (replaceMissingRecord()) return;
     if (replaceQuestionMark()) return;
     const observer = new MutationObserver(() => {
-      if (replaceQuestionMark()) observer.disconnect();
+      if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
     });
     observer.observe(badge, { childList: true, subtree: true, characterData: true });
     window.setTimeout(() => observer.disconnect(), 10000);
