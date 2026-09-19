@@ -156,8 +156,6 @@
     .benchmark-openalex-citation .oc-openalex-citation-value{font-size:.95rem;font-weight:400;line-height:1;font-variant-numeric:tabular-nums}
     .benchmark-publication-badges{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:0;opacity:1}
     .benchmark-publication-badges > div{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:64px;overflow:visible}
-    .benchmark-publication-badges .oc-altmetric-zero{position:relative;width:64px;height:64px}
-    .benchmark-publication-badges .oc-altmetric-zero::after{content:"0";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;color:#27313d;font-size:16px;font-weight:500;line-height:1;pointer-events:none}
     .scholarly-cite-inline{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;min-height:30px;padding:0 .2rem;border:0;background:transparent;color:#0b66c3;font-size:.84rem;font-weight:600;line-height:1;text-decoration:none!important}
     .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{background:transparent;color:#075eaa;text-decoration:none!important}
     .scholarly-cite-quote{color:#0b66c3;font-size:1.38rem;font-weight:700;line-height:.7}
@@ -601,7 +599,7 @@
       else if (id.kind === 'pmid') altAttr = `data-pmid="${esc(id.value)}"`;
       else if (id.arxiv) altAttr = `data-arxiv-id="${esc(id.arxiv)}"`;
       else altAttr = `data-doi="${esc(id.value)}"`;
-      blocks.push(`<div><div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div></div>`);
+      blocks.push(`<div><div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div></div>`);
     }
 
     if (dimensionsOn) {
@@ -620,69 +618,6 @@
     return `<div class="benchmark-publication-badges">${blocks.join('')}</div>`;
   }
 
-  function normalizeAltmetricNoScore(root){
-    if (typeof MutationObserver !== 'function') return;
-    root?.querySelectorAll('.altmetric-embed').forEach(badge => {
-      const noRecordGraceUntil = Date.now() + 4000;
-      const markUnavailable = () => {
-        badge.replaceChildren();
-        badge.classList.remove('oc-altmetric-zero');
-        badge.classList.add('oc-altmetric-unavailable');
-        badge.setAttribute('role', 'img');
-        badge.setAttribute('aria-label', 'No Altmetric record found for this DOI');
-        badge.textContent = 'No Altmetric record';
-        return true;
-      };
-      const replaceMissingRecord = () => {
-        const providerText = [
-          badge.textContent || '',
-          ...Array.from(badge.querySelectorAll('[alt], [title]')).flatMap(node => [node.getAttribute('alt') || '', node.getAttribute('title') || ''])
-        ].join(' ');
-        if (!/file\s+not\s+found|record\s+not\s+found/i.test(providerText)) return false;
-        return markUnavailable();
-      };
-      const replaceQuestionMark = () => {
-        if (Date.now() < noRecordGraceUntil) return false;
-        const providerLink = badge.querySelector('a[href]')?.href || '';
-        const unresolvedIdentifierLink = /\/details\.php\?[^#]*(?:doi|arxiv_id|pmid)=/i.test(providerLink);
-        const image = badge.querySelector('img');
-        if (image) {
-          const source = image.getAttribute('src') || '';
-          const noScoreImage = /score\s+of\s+0\b/i.test(image.getAttribute('alt') || '')
-            || /[?&]score=(?:\?|)(?=&|$)/.test(source)
-            || /[?&]types=\?{4,}(?=&|$)/.test(source);
-          const zeroSource = source
-            .replace(/([?&]score=)(?:\?|)(?=&|$)/, '$10');
-          if (noScoreImage) {
-            if (unresolvedIdentifierLink) return markUnavailable();
-            image.setAttribute('src', zeroSource);
-            badge.classList.add('oc-altmetric-zero');
-            badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
-            return true;
-          }
-        }
-        const marker = Array.from(badge.querySelectorAll('text, tspan, span, div'))
-          .find(node => node.childElementCount === 0 && node.textContent.trim() === '?');
-        if (!marker) return false;
-        if (unresolvedIdentifierLink) return markUnavailable();
-        marker.textContent = '0';
-        badge.classList.add('oc-altmetric-zero');
-        badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
-        return true;
-      };
-
-      if (replaceMissingRecord() || replaceQuestionMark()) return;
-      const observer = new MutationObserver(() => {
-        if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
-      });
-      observer.observe(badge, { childList: true, subtree: true, characterData: true });
-      window.setTimeout(() => observer.disconnect(), 10000);
-      window.setTimeout(() => {
-        if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
-      }, 4500);
-    });
-  }
-
   function waitForGlobalFunction(name, timeoutMs = 5000){
     return new Promise(resolve => {
       const started = Date.now();
@@ -698,9 +633,6 @@
   async function initializePublicationBadges(root){
     const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
     const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
-    if (hasAltmetric) {
-      normalizeAltmetricNoScore(root);
-    }
     const loads = [];
     if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
     if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
@@ -740,7 +672,6 @@
         <h3 class="benchmark-citation-title">Citation &amp; Attention</h3>
         <div class="benchmark-citation-copy">
           Data source:
-          <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
           <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
           <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
           <span>(coverage varies by provider, venue, and year)</span>

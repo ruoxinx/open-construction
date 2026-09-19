@@ -1372,7 +1372,7 @@ function publicationBadgesHtml(doiVal, cfg){
 
     blocks.push(`
       <div class="oc-publication-badge">
-        <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
+        <div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>
       </div>
     `);
   }
@@ -1410,77 +1410,9 @@ function publicationBadgesHtml(doiVal, cfg){
   return `<div class="oc-publication-badges">${blocks.join('')}</div>`;
 }
 
-function normalizeAltmetricNoScore(root){
-  if (typeof MutationObserver !== 'function') return;
-  root?.querySelectorAll('.altmetric-embed').forEach(badge => {
-    const noRecordGraceUntil = Date.now() + 4000;
-    const markUnavailable = () => {
-      badge.replaceChildren();
-      badge.classList.remove('oc-altmetric-zero');
-      badge.classList.add('oc-altmetric-unavailable');
-      badge.setAttribute('role', 'img');
-      badge.setAttribute('aria-label', 'No Altmetric record found for this DOI');
-      badge.textContent = 'No Altmetric record';
-      return true;
-    };
-    const replaceMissingRecord = () => {
-      const providerText = [
-        badge.textContent || '',
-        ...Array.from(badge.querySelectorAll('[alt], [title]')).flatMap(node => [node.getAttribute('alt') || '', node.getAttribute('title') || ''])
-      ].join(' ');
-      if (!/file\s+not\s+found|record\s+not\s+found/i.test(providerText)) return false;
-      return markUnavailable();
-    };
-
-    const replaceQuestionMark = () => {
-      if (Date.now() < noRecordGraceUntil) return false;
-      const providerLink = badge.querySelector('a[href]')?.href || '';
-      const unresolvedIdentifierLink = /\/details\.php\?[^#]*(?:doi|arxiv_id|pmid)=/i.test(providerLink);
-      const image = badge.querySelector('img');
-      if (image) {
-        const source = image.getAttribute('src') || '';
-        const noScoreImage = /score\s+of\s+0\b/i.test(image.getAttribute('alt') || '')
-          || /[?&]score=(?:\?|)(?=&|$)/.test(source)
-          || /[?&]types=\?{4,}(?=&|$)/.test(source);
-        const zeroSource = source
-          .replace(/([?&]score=)(?:\?|)(?=&|$)/, '$10');
-        if (noScoreImage) {
-          if (unresolvedIdentifierLink) return markUnavailable();
-          image.setAttribute('src', zeroSource);
-          badge.classList.add('oc-altmetric-zero');
-          badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
-          return true;
-        }
-      }
-      const marker = Array.from(badge.querySelectorAll('text, tspan, span, div'))
-        .find(node => node.childElementCount === 0 && node.textContent.trim() === '?');
-      if (!marker) return false;
-      if (unresolvedIdentifierLink) return markUnavailable();
-      marker.textContent = '0';
-      badge.classList.add('oc-altmetric-zero');
-      badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
-      return true;
-    };
-
-    if (replaceMissingRecord()) return;
-    if (replaceQuestionMark()) return;
-    const observer = new MutationObserver(() => {
-      if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
-    });
-    observer.observe(badge, { childList: true, subtree: true, characterData: true });
-    window.setTimeout(() => observer.disconnect(), 10000);
-    window.setTimeout(() => {
-      if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
-    }, 4500);
-  });
-}
-
 async function initializePublicationBadges(root){
   const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
   const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
-  if (hasAltmetric) {
-    normalizeAltmetricNoScore(root);
-  }
   const loads = [];
   if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
   if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
@@ -2708,7 +2640,6 @@ async function initDetail(){
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
 			<div class="text-muted small mb-2">
 			  Data source:
-			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
 			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
 			  <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
 			  <span class="ms-1">(coverage varies by provider, venue, and year)</span>
@@ -3285,7 +3216,6 @@ async function initDetail(){
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
 			<div class="text-muted small mb-2">
 			  Data source:
-			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
 			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
 			  <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
 			  <span class="ms-1">(coverage varies by provider, venue, and year)</span>
