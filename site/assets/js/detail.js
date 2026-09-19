@@ -1360,7 +1360,7 @@ function publicationBadgesHtml(doiVal, cfg){
 
     blocks.push(`
       <div class="oc-publication-badge">
-        <div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>
+        <div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div>
       </div>
     `);
   }
@@ -1396,6 +1396,32 @@ function publicationBadgesHtml(doiVal, cfg){
   if (!blocks.length) return '';
 
   return `<div class="oc-publication-badges">${blocks.join('')}</div>`;
+}
+
+function normalizeAltmetricDetailsLinks(root){
+  const rewrite = () => {
+    root?.querySelectorAll('.altmetric-embed a[href]').forEach(link => {
+      try {
+        const url = new URL(link.href, window.location.href);
+        const hostname = (url.hostname || '').toLowerCase();
+        const citationId = url.searchParams.get('citation_id') || '';
+        if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
+          || url.pathname.toLowerCase() !== '/details.php'
+          || !/^\d+$/.test(citationId)) return;
+
+        const canonical = new URL(`https://www.altmetric.com/details/${citationId}`);
+        if (link.href !== canonical.href) link.href = canonical.href;
+      } catch {
+        // Ignore provider markup that is not a valid URL.
+      }
+    });
+  };
+
+  rewrite();
+  if (typeof MutationObserver !== 'function' || !root) return;
+  const observer = new MutationObserver(rewrite);
+  observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+  window.setTimeout(() => observer.disconnect(), 10000);
 }
 
 function normalizeAltmetricNoScore(root){
@@ -1460,6 +1486,7 @@ async function initializePublicationBadges(root){
   await Promise.all(loads);
   if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
     normalizeAltmetricNoScore(root);
+    normalizeAltmetricDetailsLinks(root);
     window._altmetric_embed_init(root);
   }
   if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {
@@ -2005,11 +2032,13 @@ async function initializeScholarlyMetadata(root, doiVal){
   if (!doi) return;
   initializeCitationExport(root, doi);
   const encodedDoi = encodeURIComponent(doi);
-  const [crossrefPayload, datacitePayload, openAlexPayload] = await Promise.all([
+  const [crossrefPayload, openAlexPayload] = await Promise.all([
     fetchScholarlyJson(`https://api.crossref.org/works/${encodedDoi}`),
-    fetchScholarlyJson(`https://api.datacite.org/dois/${encodedDoi}`),
     fetchOpenAlexWork(doi)
   ]);
+  const datacitePayload = crossrefPayload?.message
+    ? null
+    : await fetchScholarlyJson(`https://api.datacite.org/dois/${encodedDoi}`);
   const openAlexRelatedWorks = await fetchOpenAlexRelatedWorks(openAlexPayload);
   renderDoiCrossrefBadge(root, crossrefPayload, doi);
   renderOpenAlexCitation(root, openAlexPayload);
