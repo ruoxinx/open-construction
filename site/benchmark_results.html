@@ -599,7 +599,7 @@
       else if (id.kind === 'pmid') altAttr = `data-pmid="${esc(id.value)}"`;
       else if (id.arxiv) altAttr = `data-arxiv-id="${esc(id.arxiv)}"`;
       else altAttr = `data-doi="${esc(id.value)}"`;
-      blocks.push(`<div><div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div></div>`);
+      blocks.push(`<div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>`);
     }
 
     if (dimensionsOn) {
@@ -665,7 +665,7 @@
           || badge.getAttribute('aria-hidden') === 'true'
           || style?.display === 'none';
         if (!hidden) return;
-        badge.closest('.oc-publication-badge, .benchmark-publication-badges > div')?.remove();
+        badge.closest('.oc-publication-badge, .benchmark-publication-badges > div, .benchmark-publication-badges > .altmetric-embed')?.remove();
       });
     };
     removeHiddenWrappers();

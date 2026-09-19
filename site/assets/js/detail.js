@@ -1370,11 +1370,7 @@ function publicationBadgesHtml(doiVal, cfg){
     else if (id.arxiv) altAttr = `data-arxiv-id="${escapeHtml(id.arxiv)}"`;
     else altAttr = `data-doi="${escapeHtml(fullDoi)}"`; // Altmetric expects the full DOI, not a details-page URL
 
-    blocks.push(`
-      <div class="oc-publication-badge">
-        <div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>
-      </div>
-    `);
+    blocks.push(`<div class="altmetric-embed" data-badge-type="donut" data-hide-no-mentions="true" ${altAttr}></div>`);
   }
 
   // ----- Dimensions badge -----
@@ -1457,7 +1453,7 @@ function collapseHiddenAltmetricBadges(root){
         || badge.getAttribute('aria-hidden') === 'true'
         || style?.display === 'none';
       if (!hidden) return;
-      badge.closest('.oc-publication-badge, .benchmark-publication-badges > div')?.remove();
+      badge.closest('.oc-publication-badge, .benchmark-publication-badges > div, .oc-publication-badges > .altmetric-embed')?.remove();
     });
   };
   removeHiddenWrappers();
