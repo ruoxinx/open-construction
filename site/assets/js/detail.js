@@ -2695,12 +2695,6 @@ async function initDetail(){
           <div class="card border-0 shadow-sm">
             <div class="card-body">
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
-			<div class="text-muted small mb-2">
-			  Data source:
-			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
-			  <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
-			  <span class="ms-1">(coverage varies by provider, venue, and year)</span>
-			</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
@@ -3271,12 +3265,6 @@ async function initDetail(){
           <div class="card border-0 shadow-sm">
             <div class="card-body">
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
-			<div class="text-muted small mb-2">
-			  Data source:
-			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a>, and
-			  <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
-			  <span class="ms-1">(coverage varies by provider, venue, and year)</span>
-			</div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
