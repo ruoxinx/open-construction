@@ -1275,6 +1275,18 @@ function ensureExternalScript(src, id){
   return load;
 }
 
+function waitForGlobalFunction(name, timeoutMs = 5000){
+  return new Promise(resolve => {
+    const started = Date.now();
+    const check = () => {
+      if (typeof window?.[name] === 'function') return resolve(true);
+      if (Date.now() - started >= timeoutMs) return resolve(false);
+      window.setTimeout(check, 50);
+    };
+    check();
+  });
+}
+
 function parseScholarlyId(idVal){
   // Returns: { kind: 'doi'|'arxiv'|'pmid'|'dimensions_id'|'unknown', value: string }
   if (!idVal) return { kind: 'unknown', value: '' };
@@ -1428,7 +1440,10 @@ function normalizeAltmetricDetailsLinks(root){
     const link = event.target?.closest?.('.altmetric-embed a[href]');
     const canonical = link ? canonicalHref(link.href) : '';
     if (!link || !canonical) return;
+    event.preventDefault();
     link.href = canonical;
+    if (link.target === '_blank') window.open(canonical, '_blank', 'noopener,noreferrer');
+    else window.location.assign(canonical);
   };
   root.addEventListener('click', clickGuard, true);
   window.setTimeout(() => {
@@ -1493,13 +1508,15 @@ function normalizeAltmetricNoScore(root){
 async function initializePublicationBadges(root){
   const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
   const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
+  if (hasAltmetric) {
+    normalizeAltmetricNoScore(root);
+    normalizeAltmetricDetailsLinks(root);
+  }
   const loads = [];
   if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
   if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
   await Promise.all(loads);
-  if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
-    normalizeAltmetricNoScore(root);
-    normalizeAltmetricDetailsLinks(root);
+  if (hasAltmetric && await waitForGlobalFunction('_altmetric_embed_init')) {
     window._altmetric_embed_init(root);
   }
   if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {
