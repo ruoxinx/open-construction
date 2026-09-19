@@ -2432,8 +2432,8 @@ async function initDetail(){
           .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
           .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
-          .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; margin-left:.25rem; }
-          .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.25rem; margin:0; padding:0; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; }
+          .detail-primary-actions{ display:inline-flex; align-items:center; gap:.4rem; margin-left:.25rem; }
+          .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.3rem; margin:0; padding:0 .15rem; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; white-space:nowrap; }
           .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
           .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
           .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:.52rem; }
@@ -3024,8 +3024,8 @@ async function initDetail(){
         .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
         .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
-        .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; margin-left:.25rem; }
-        .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.25rem; margin:0; padding:0; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; }
+        .detail-primary-actions{ display:inline-flex; align-items:center; gap:.4rem; margin-left:.25rem; }
+        .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.3rem; margin:0; padding:0 .15rem; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; white-space:nowrap; }
         .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
         .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
         .scholarly-reference-cite-row{ display:flex; justify-content:flex-start; margin-top:.52rem; }
