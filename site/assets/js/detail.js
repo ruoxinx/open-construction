@@ -1461,12 +1461,8 @@ function normalizeAltmetricDetailsLinks(root){
 function normalizeAltmetricNoScore(root){
   if (typeof MutationObserver !== 'function') return;
   root?.querySelectorAll('.altmetric-embed').forEach(badge => {
-    const replaceMissingRecord = () => {
-      const providerText = [
-        badge.textContent || '',
-        ...Array.from(badge.querySelectorAll('[alt], [title]')).flatMap(node => [node.getAttribute('alt') || '', node.getAttribute('title') || ''])
-      ].join(' ');
-      if (!/file\s+not\s+found|record\s+not\s+found/i.test(providerText)) return false;
+    const noRecordGraceUntil = Date.now() + 4000;
+    const markUnavailable = () => {
       badge.replaceChildren();
       badge.classList.remove('oc-altmetric-zero');
       badge.classList.add('oc-altmetric-unavailable');
@@ -1475,8 +1471,19 @@ function normalizeAltmetricNoScore(root){
       badge.textContent = 'No Altmetric record';
       return true;
     };
+    const replaceMissingRecord = () => {
+      const providerText = [
+        badge.textContent || '',
+        ...Array.from(badge.querySelectorAll('[alt], [title]')).flatMap(node => [node.getAttribute('alt') || '', node.getAttribute('title') || ''])
+      ].join(' ');
+      if (!/file\s+not\s+found|record\s+not\s+found/i.test(providerText)) return false;
+      return markUnavailable();
+    };
 
     const replaceQuestionMark = () => {
+      if (Date.now() < noRecordGraceUntil) return false;
+      const providerLink = badge.querySelector('a[href]')?.href || '';
+      const unresolvedIdentifierLink = /\/details\.php\?[^#]*(?:doi|arxiv_id|pmid)=/i.test(providerLink);
       const image = badge.querySelector('img');
       if (image) {
         const source = image.getAttribute('src') || '';
@@ -1486,6 +1493,7 @@ function normalizeAltmetricNoScore(root){
         const zeroSource = source
           .replace(/([?&]score=)(?:\?|)(?=&|$)/, '$10');
         if (noScoreImage) {
+          if (unresolvedIdentifierLink) return markUnavailable();
           image.setAttribute('src', zeroSource);
           badge.classList.add('oc-altmetric-zero');
           badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
@@ -1495,6 +1503,7 @@ function normalizeAltmetricNoScore(root){
       const marker = Array.from(badge.querySelectorAll('text, tspan, span, div'))
         .find(node => node.childElementCount === 0 && node.textContent.trim() === '?');
       if (!marker) return false;
+      if (unresolvedIdentifierLink) return markUnavailable();
       marker.textContent = '0';
       badge.classList.add('oc-altmetric-zero');
       badge.setAttribute('aria-label', 'Altmetric Attention Score: 0; no mentions recorded');
@@ -1508,6 +1517,9 @@ function normalizeAltmetricNoScore(root){
     });
     observer.observe(badge, { childList: true, subtree: true, characterData: true });
     window.setTimeout(() => observer.disconnect(), 10000);
+    window.setTimeout(() => {
+      if (replaceMissingRecord() || replaceQuestionMark()) observer.disconnect();
+    }, 4500);
   });
 }
 
