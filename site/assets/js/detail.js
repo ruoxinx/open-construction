@@ -1410,54 +1410,6 @@ function publicationBadgesHtml(doiVal, cfg){
   return `<div class="oc-publication-badges">${blocks.join('')}</div>`;
 }
 
-function canonicalAltmetricDetailsHref(href){
-  try {
-    const url = new URL(href, window.location.href);
-    const hostname = (url.hostname || '').toLowerCase();
-    const citationId = url.searchParams.get('citation_id') || '';
-    const doi = url.searchParams.get('doi') || '';
-    if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
-      || url.pathname.toLowerCase() !== '/details.php') return '';
-    if (/^\d+$/.test(citationId)) return `https://www.altmetric.com/details/${citationId}`;
-    if (/^10\.\d{4,9}\/\S+$/i.test(doi)) return `https://www.altmetric.com/details/doi/${encodeURIComponent(doi)}`;
-    return '';
-  } catch {
-    return '';
-  }
-}
-
-let altmetricDetailsLinkGuardInstalled = false;
-function installAltmetricDetailsLinkGuard(){
-  if (altmetricDetailsLinkGuardInstalled || !document?.addEventListener) return;
-  altmetricDetailsLinkGuardInstalled = true;
-  document.addEventListener('click', event => {
-    const link = event.target?.closest?.('.altmetric-embed a[href]');
-    const canonical = link ? canonicalAltmetricDetailsHref(link.href) : '';
-    if (!link || !canonical) return;
-    event.preventDefault();
-    event.stopPropagation();
-    link.href = canonical;
-    if (link.target === '_blank') window.open(canonical, '_blank', 'noopener,noreferrer');
-    else window.location.assign(canonical);
-  }, true);
-}
-
-function normalizeAltmetricDetailsLinks(root){
-
-  const rewrite = () => {
-    root?.querySelectorAll('.altmetric-embed a[href]').forEach(link => {
-      const canonical = canonicalAltmetricDetailsHref(link.href);
-      if (canonical && link.href !== canonical) link.href = canonical;
-    });
-  };
-
-  rewrite();
-  if (typeof MutationObserver !== 'function' || !root) return;
-  const observer = new MutationObserver(rewrite);
-  observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
-  window.setTimeout(() => observer.disconnect(), 60000);
-}
-
 function normalizeAltmetricNoScore(root){
   if (typeof MutationObserver !== 'function') return;
   root?.querySelectorAll('.altmetric-embed').forEach(badge => {
@@ -1527,9 +1479,7 @@ async function initializePublicationBadges(root){
   const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
   const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
   if (hasAltmetric) {
-    installAltmetricDetailsLinkGuard();
     normalizeAltmetricNoScore(root);
-    normalizeAltmetricDetailsLinks(root);
   }
   const loads = [];
   if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
