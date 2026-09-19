@@ -1278,8 +1278,10 @@ header.hero p{
   align-items:center;
   justify-content:center;
   gap:.25rem;
-  min-height:28px;
-  padding:0 .15rem;
+  height:30px;
+  min-height:30px;
+  margin:0;
+  padding:0;
   border:0;
   border-radius:0;
   background:transparent;
@@ -1287,6 +1289,7 @@ header.hero p{
   font-size:.8rem;
   font-weight:500;
   line-height:1;
+  vertical-align:middle;
   text-decoration:none !important;
 }
 
