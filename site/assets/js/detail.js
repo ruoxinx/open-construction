@@ -1399,21 +1399,24 @@ function publicationBadgesHtml(doiVal, cfg){
 }
 
 function normalizeAltmetricDetailsLinks(root){
+  const canonicalHref = href => {
+    try {
+      const url = new URL(href, window.location.href);
+      const hostname = (url.hostname || '').toLowerCase();
+      const citationId = url.searchParams.get('citation_id') || '';
+      if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
+        || url.pathname.toLowerCase() !== '/details.php'
+        || !/^\d+$/.test(citationId)) return '';
+      return `https://www.altmetric.com/details/${citationId}`;
+    } catch {
+      return '';
+    }
+  };
+
   const rewrite = () => {
     root?.querySelectorAll('.altmetric-embed a[href]').forEach(link => {
-      try {
-        const url = new URL(link.href, window.location.href);
-        const hostname = (url.hostname || '').toLowerCase();
-        const citationId = url.searchParams.get('citation_id') || '';
-        if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
-          || url.pathname.toLowerCase() !== '/details.php'
-          || !/^\d+$/.test(citationId)) return;
-
-        const canonical = new URL(`https://www.altmetric.com/details/${citationId}`);
-        if (link.href !== canonical.href) link.href = canonical.href;
-      } catch {
-        // Ignore provider markup that is not a valid URL.
-      }
+      const canonical = canonicalHref(link.href);
+      if (canonical && link.href !== canonical) link.href = canonical;
     });
   };
 
@@ -1421,7 +1424,17 @@ function normalizeAltmetricDetailsLinks(root){
   if (typeof MutationObserver !== 'function' || !root) return;
   const observer = new MutationObserver(rewrite);
   observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
-  window.setTimeout(() => observer.disconnect(), 10000);
+  const clickGuard = event => {
+    const link = event.target?.closest?.('.altmetric-embed a[href]');
+    const canonical = link ? canonicalHref(link.href) : '';
+    if (!link || !canonical) return;
+    link.href = canonical;
+  };
+  root.addEventListener('click', clickGuard, true);
+  window.setTimeout(() => {
+    observer.disconnect();
+    root.removeEventListener('click', clickGuard, true);
+  }, 60000);
 }
 
 function normalizeAltmetricNoScore(root){
