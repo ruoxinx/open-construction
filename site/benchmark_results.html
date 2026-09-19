@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Source-level policy; response headers are still required for HSTS and clickjacking. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://d1bxh8uas1mnw7.cloudfront.net https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://api.crossref.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' https://static.cloudflareinsights.com 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://api.altmetric.com https://badge.dimensions.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com https://embed.altmetric.com https://badge.dimensions.ai; font-src https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://cloudflareinsights.com https://nytzjmixkvrnwvaenxme.supabase.co https://raw.githubusercontent.com https://get.geojs.io https://ipapi.co https://cdn.jsdelivr.net https://unpkg.com https://api.altmetric.com https://badge.dimensions.ai https://metrics-api.dimensions.ai https://api.crossref.org https://api.openalex.org; frame-src https://player.vimeo.com https://www.youtube.com; media-src 'self' https://player.vimeo.com https://www.youtube.com; form-action 'self' https://github.us5.list-manage.com https://github.us10.list-manage.com; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=()">
 
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
@@ -566,7 +566,9 @@
       const host = (url.hostname || '').toLowerCase();
       if (host === 'doi.org' || host === 'dx.doi.org') {
         const doi = (url.pathname || '').replace(/^\/+/, '');
-        return doi ? { kind: 'doi', value: doi } : { kind: 'unknown', value: raw };
+        if (!doi) return { kind: 'unknown', value: raw };
+        const arxivDoi = doi.match(/^10\.48550\/arxiv\.(\d{4}\.\d{4,5}(?:v\d+)?)$/i);
+        return { kind: 'doi', value: doi, arxiv: arxivDoi ? arxivDoi[1] : '' };
       }
       if (host.endsWith('arxiv.org')) {
         const abs = (url.pathname || '').match(/^\/abs\/([^\/?#]+)/i);
@@ -597,6 +599,7 @@
       let altAttr = '';
       if (id.kind === 'arxiv') altAttr = `data-arxiv-id="${esc(id.value)}"`;
       else if (id.kind === 'pmid') altAttr = `data-pmid="${esc(id.value)}"`;
+      else if (id.arxiv) altAttr = `data-arxiv-id="${esc(id.arxiv)}"`;
       else altAttr = `data-doi="${esc(id.value)}"`;
       blocks.push(`<div><div class="altmetric-embed" data-badge-type="donut" ${altAttr}></div></div>`);
     }
@@ -654,15 +657,75 @@
     });
   }
 
+  function waitForGlobalFunction(name, timeoutMs = 5000){
+    return new Promise(resolve => {
+      const started = Date.now();
+      const check = () => {
+        if (typeof window?.[name] === 'function') return resolve(true);
+        if (Date.now() - started >= timeoutMs) return resolve(false);
+        window.setTimeout(check, 50);
+      };
+      check();
+    });
+  }
+
+  function canonicalAltmetricDetailsHref(href){
+    try {
+      const url = new URL(href, window.location.href);
+      const hostname = (url.hostname || '').toLowerCase();
+      const citationId = url.searchParams.get('citation_id') || '';
+      const doi = url.searchParams.get('doi') || '';
+      if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
+        || url.pathname.toLowerCase() !== '/details.php') return '';
+      if (/^\d+$/.test(citationId)) return `https://www.altmetric.com/details/${citationId}`;
+      if (/^10\.\d{4,9}\/\S+$/i.test(doi)) return `https://www.altmetric.com/details/doi/${encodeURIComponent(doi)}`;
+      return '';
+    } catch {
+      return '';
+    }
+  }
+
+  let altmetricDetailsLinkGuardInstalled = false;
+  function installAltmetricDetailsLinkGuard(){
+    if (altmetricDetailsLinkGuardInstalled || !document?.addEventListener) return;
+    altmetricDetailsLinkGuardInstalled = true;
+    document.addEventListener('click', event => {
+      const link = event.target?.closest?.('.altmetric-embed a[href]');
+      const canonical = link ? canonicalAltmetricDetailsHref(link.href) : '';
+      if (!link || !canonical) return;
+      event.preventDefault();
+      event.stopPropagation();
+      link.href = canonical;
+      if (link.target === '_blank') window.open(canonical, '_blank', 'noopener,noreferrer');
+      else window.location.assign(canonical);
+    }, true);
+  }
+
+  function normalizeAltmetricDetailsLinks(root){
+    const rewrite = () => root?.querySelectorAll('.altmetric-embed a[href]').forEach(link => {
+      const canonical = canonicalAltmetricDetailsHref(link.href);
+      if (canonical && link.href !== canonical) link.href = canonical;
+    });
+    rewrite();
+    if (typeof MutationObserver !== 'function' || !root) return;
+    const observer = new MutationObserver(rewrite);
+    observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+    window.setTimeout(() => observer.disconnect(), 60000);
+  }
+
   async function initializePublicationBadges(root){
     const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
     const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
+    if (hasAltmetric) {
+      installAltmetricDetailsLinkGuard();
+      normalizeAltmetricNoScore(root);
+      normalizeAltmetricDetailsLinks(root);
+    }
     const loads = [];
-    if (hasAltmetric) loads.push(ensureExternalScript('https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js', 'oc-altmetric-embed'));
+    if (hasAltmetric) loads.push(ensureExternalScript('https://embed.altmetric.com/assets/embed.js', 'oc-altmetric-embed'));
     if (hasDimensions) loads.push(ensureExternalScript('https://badge.dimensions.ai/badge.js', 'oc-dimensions-badge'));
     await Promise.all(loads);
-    if (hasAltmetric && typeof window._altmetric_embed_init === 'function') {
-      normalizeAltmetricNoScore(root);
+    if (hasAltmetric && await waitForGlobalFunction('_altmetric_embed_init')) {
       window._altmetric_embed_init(root);
     }
     if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {

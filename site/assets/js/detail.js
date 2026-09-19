@@ -1415,10 +1415,12 @@ function canonicalAltmetricDetailsHref(href){
     const url = new URL(href, window.location.href);
     const hostname = (url.hostname || '').toLowerCase();
     const citationId = url.searchParams.get('citation_id') || '';
+    const doi = url.searchParams.get('doi') || '';
     if (!['altmetric.com', 'www.altmetric.com'].includes(hostname)
-      || url.pathname.toLowerCase() !== '/details.php'
-      || !/^\d+$/.test(citationId)) return '';
-    return `https://www.altmetric.com/details/${citationId}`;
+      || url.pathname.toLowerCase() !== '/details.php') return '';
+    if (/^\d+$/.test(citationId)) return `https://www.altmetric.com/details/${citationId}`;
+    if (/^10\.\d{4,9}\/\S+$/i.test(doi)) return `https://www.altmetric.com/details/doi/${encodeURIComponent(doi)}`;
+    return '';
   } catch {
     return '';
   }
