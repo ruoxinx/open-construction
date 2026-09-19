@@ -1448,6 +1448,24 @@ function normalizeAltmetricCitationLinks(root){
   window.setTimeout(() => observer.disconnect(), 60000);
 }
 
+function collapseHiddenAltmetricBadges(root){
+  if (typeof MutationObserver !== 'function' || !root) return;
+  const removeHiddenWrappers = () => {
+    root.querySelectorAll('.altmetric-embed').forEach(badge => {
+      const style = window.getComputedStyle?.(badge);
+      const hidden = badge.hidden
+        || badge.getAttribute('aria-hidden') === 'true'
+        || style?.display === 'none';
+      if (!hidden) return;
+      badge.closest('.oc-publication-badge, .benchmark-publication-badges > div')?.remove();
+    });
+  };
+  removeHiddenWrappers();
+  const observer = new MutationObserver(removeHiddenWrappers);
+  observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'style', 'aria-hidden'] });
+  window.setTimeout(() => observer.disconnect(), 10000);
+}
+
 async function initializePublicationBadges(root){
   const hasAltmetric = Boolean(root?.querySelector('.altmetric-embed'));
   const hasDimensions = Boolean(root?.querySelector('.__dimensions_badge_embed__'));
@@ -1462,6 +1480,7 @@ async function initializePublicationBadges(root){
   if (hasAltmetric && await waitForGlobalFunction('_altmetric_embed_init')) {
     window._altmetric_embed_init(root);
   }
+  if (hasAltmetric) collapseHiddenAltmetricBadges(root);
   if (hasDimensions && typeof window.__dimensions_embed?.addBadges === 'function') {
     window.__dimensions_embed.addBadges();
   }
