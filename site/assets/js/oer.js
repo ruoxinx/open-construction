@@ -426,6 +426,7 @@
                     </a>
                   </h3>
                   ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'oer', id: r.id || r.title, title: r.title, url: href }) : ''}
+                  ${window.OCRecommend ? window.OCRecommend.buttonHtml({ type: 'oer', id: r.id || r.title, title: r.title, variant: 'card' }) : ''}
                 </div>
                 <div class="meta mb-2">
                   ${providerLine ? `${esc(providerLine)}` : ''}${year ? ` • ${esc(year)}` : ''}${licHTML ? ` · ${licHTML}` : ''}
@@ -433,8 +434,8 @@
 
                 ${tagsHTML}
 
-                <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
-                  <a class="btn btn-sm btn-primary" href="${href}">View details</a>
+                <div class="d-flex flex-nowrap align-items-center gap-2 mt-2 oc-card-actions">
+                  <a class="btn btn-sm btn-primary text-nowrap" href="${href}" aria-label="View details for ${esc(r.title || 'this OER')}">View</a>
                   ${addedTxt ? `<span class="added-note">${addedTxt}</span>` : ''}
                 </div>
               </div>
@@ -444,6 +445,7 @@
       `);
     });
     window.OCBookmark?.mount(els.grid);
+    window.OCRecommend?.mount(els.grid);
   }
 
   // ---------- filtering / sorting ----------

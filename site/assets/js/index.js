@@ -737,6 +737,7 @@ function renderGrid(){
   if (count) count.textContent = LIST.length;
   if (grid) grid.innerHTML = LIST.map(ds=>cardHTML(ds)).join('');
   if (grid) window.OCBookmark?.mount(grid);
+  if (grid) window.OCRecommend?.mount(grid);
 }
 
 // ---------- card UI (uniform thumbnails) ----------
@@ -767,10 +768,11 @@ function cardHTML(ds){
         <div class="small text-muted mb-2">
           ${datasetCountSummary(ds)} · Classes <strong>${formatInt(ds.num_classes)}</strong>
         </div>
-        <div class="mt-auto d-flex justify-content-between align-items-center">
+        <div class="mt-auto d-flex justify-content-between align-items-center oc-card-actions">
           <div class="d-flex align-items-center gap-2">
-            <a class="btn btn-sm btn-primary" href="${detailHref}">View details</a>
+            <a class="btn btn-sm btn-primary text-nowrap" href="${detailHref}" aria-label="View details for ${displayTitle}">View</a>
             ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'dataset', id, title: displayTitle, url: detailHref }) : ''}
+            ${window.OCRecommend ? window.OCRecommend.buttonHtml({ type: 'dataset', id, title: displayTitle, variant: 'card' }) : ''}
           </div>
           ${ds.added_date ? `<span class="badge text-bg-light ms-auto fw-normal">Added ${ds.added_date}</span>` : ''}
         </div>

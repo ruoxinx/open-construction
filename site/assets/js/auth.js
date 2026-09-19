@@ -611,7 +611,7 @@
     const clean = cleanResource(resource);
     if (!clean) return '';
     const variant = resource?.variant === 'text' ? 'text' : 'icon';
-    const content = variant === 'text' ? '<span>Save</span>' : bookmarkIcon();
+    const content = variant === 'text' ? `${bookmarkIcon()}<span>Save</span>` : bookmarkIcon();
     return `<button type="button" class="oc-bookmark-btn oc-bookmark-btn-${variant}" data-oc-bookmark data-bookmark-variant="${variant}" data-resource-type="${escapeHtml(clean.type)}" data-resource-id="${escapeHtml(clean.id)}" data-resource-title="${escapeHtml(clean.title)}" data-resource-url="${escapeHtml(clean.url)}" aria-pressed="false" aria-label="Save this resource" title="Save this resource">${content}</button>`;
   }
 
@@ -634,7 +634,7 @@
             : (isText ? 'Sign in to save' : 'Sign in to save this resource');
     button.setAttribute('aria-label', label);
     button.title = label;
-    button.innerHTML = isText ? `<span>${escapeHtml(label)}</span>` : bookmarkIcon();
+    button.innerHTML = isText ? `${bookmarkIcon()}<span>${escapeHtml(label)}</span>` : bookmarkIcon();
   }
 
   async function refreshBookmarkButtons(root = document){

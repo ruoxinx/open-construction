@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" rel="stylesheet">
-  <link href="assets/css/shared-site.css?v=20260830-catalog-search-type" rel="stylesheet">
+  <link href="assets/css/shared-site.css?v=20260919-author-line" rel="stylesheet">
 
   <style>
     /* ---------- Design tokens (LIGHT ONLY) ---------- */
@@ -71,6 +71,8 @@
     .dataset-card .card-body{ padding:1rem 1rem }
     .dataset-card .title{ font-weight:700; color:var(--oc-ink); margin-bottom:.15rem }
     .dataset-card .meta{ font-size:.85rem; color:var(--oc-sub) }
+    .dataset-card .oc-card-actions{ min-width:0; flex-wrap:nowrap }
+    .dataset-card .oc-card-actions .btn{ white-space:nowrap }
     .badge-soft{ background:var(--oc-muted); border:1px solid var(--oc-border); color:var(--oc-text); font-weight:600 }
 
     /* ---------- Empty state & skeleton ---------- */
@@ -299,9 +301,10 @@
 <script src="assets/js/config.js"></script>
 <script src="assets/js/terms.js?v=20260826-mep-acronym"></script>
 <script src="assets/js/app.js"></script>
-<script src="assets/js/auth.js?v=20260821-ask-role-gate"></script>
+<script src="assets/js/auth.js?v=20260919-card-and-save"></script>
+<script src="assets/js/recommendations.js?v=20260919-short-star-note"></script>
 <script src="assets/js/site-shell.js?v=20260830-benchmark-ruler"></script>
-<script src="assets/js/index.js?v=20260826-mep-acronym"></script>
+<script src="assets/js/index.js?v=20260919-card-one-row"></script>
 
 <script>
 	  // Docked search + selected-range bar

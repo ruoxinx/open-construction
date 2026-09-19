@@ -1222,12 +1222,12 @@ header.hero p{
   width:100%;
   min-height:34px;
   padding:.38rem .7rem;
-  border:1px solid var(--oc-accent);
+  border:1px solid var(--oc-border);
   border-radius:6px;
-  color:#8a5a0a;
+  color:var(--oc-text);
   font-size:.875rem;
   font-weight:700;
-  background:#fff;
+  background:#f6f8fa;
 }
 
 .oc-bookmark-btn:hover,
@@ -1308,6 +1308,304 @@ header.hero p{
   font-size:1rem;
   font-weight:400;
   line-height:1;
+}
+
+.oc-recommend-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.28rem;
+  min-height:30px;
+  margin:0;
+  padding:0 .15rem;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:500;
+  line-height:1;
+  vertical-align:middle;
+  text-decoration:none !important;
+}
+
+.oc-recommend-btn:hover,
+.oc-recommend-btn:focus-visible{
+  color:var(--oc-link);
+  background:transparent;
+}
+
+.oc-recommend-btn.active{
+  color:var(--oc-accent);
+}
+
+.oc-recommend-icon,
+.oc-recommend-icon svg{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:.9rem;
+  height:.9rem;
+}
+
+.oc-recommend-icon .oc-recommend-fill{
+  fill:transparent;
+}
+
+.oc-recommend-btn.active .oc-recommend-fill{
+  fill:currentColor;
+}
+
+.oc-recommend-count{
+  min-width:1rem;
+  color:var(--oc-sub);
+  font-variant-numeric:tabular-nums;
+}
+
+.oc-recommend-btn.active .oc-recommend-count{
+  color:currentColor;
+}
+
+.oc-recommend-btn-card{
+  color:var(--oc-sub);
+  font-size:.76rem;
+  gap:.2rem;
+}
+
+.oc-recommend-btn-card .oc-recommend-icon,
+.oc-recommend-btn-card .oc-recommend-icon svg{
+  width:1rem;
+  height:1rem;
+}
+
+.oc-recommend-btn-card .oc-recommend-count{
+  min-width:.65rem;
+  color:var(--oc-sub);
+}
+
+.detail-header-line{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+}
+
+.detail-header-actions{
+  flex:0 0 auto;
+}
+
+.detail-action-bar{
+  display:flex;
+  justify-content:flex-end;
+  margin:0;
+}
+
+.detail-primary-actions{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+
+.detail-primary-actions > .oc-bookmark-btn,
+.detail-primary-actions > .oc-recommend-btn,
+.detail-primary-actions > .oc-follow-inline,
+.detail-primary-actions > .scholarly-cite-inline{
+  box-sizing:border-box;
+  width:auto;
+  height:32px;
+  min-height:32px;
+  padding:0 .65rem;
+  border:1px solid var(--oc-border);
+  border-radius:6px;
+  background:#f6f8fa;
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:600;
+}
+
+.detail-primary-actions > .oc-bookmark-btn-text{
+  width:auto;
+  min-height:32px;
+  padding:0 .65rem;
+  border-color:var(--oc-border);
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:600;
+  background:#f6f8fa;
+}
+
+.detail-primary-actions > .oc-bookmark-btn:not(.active):hover,
+.detail-primary-actions > .oc-recommend-btn:hover,
+.detail-primary-actions > .oc-follow-inline:hover,
+.detail-primary-actions > .oc-follow-inline:focus-visible,
+.detail-primary-actions > .scholarly-cite-inline:hover,
+.detail-primary-actions > .scholarly-cite-inline:focus-visible{
+  background:#eef2f6;
+  border-color:#b8c3cf;
+  color:var(--oc-link);
+}
+
+.detail-primary-actions > .oc-bookmark-btn.active,
+.detail-primary-actions > .oc-recommend-btn.active{
+  background:#fff8ec;
+  border-color:#e5c98f;
+}
+
+.detail-primary-actions .oc-detail-action-icon,
+.detail-primary-actions .oc-recommend-icon,
+.detail-primary-actions .oc-recommend-icon svg,
+.detail-primary-actions .oc-bookmark-btn svg{
+  width:.95rem;
+  height:.95rem;
+}
+
+.oc-follow-inline,
+.scholarly-cite-inline{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:30px;
+  min-height:30px;
+  gap:.3rem;
+  margin:0;
+  padding:0 .15rem;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:500;
+  line-height:1;
+  text-decoration:none!important;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+
+.scholarly-cite-inline:focus,
+.scholarly-cite-inline:active{
+  background:transparent;
+  color:var(--oc-link);
+  text-decoration:none!important;
+}
+
+.oc-detail-action-icon{
+  width:.95rem;
+  height:.95rem;
+  flex:0 0 auto;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.scholarly-cite-quote{
+  color:currentColor;
+}
+
+.detail-author-cite{
+  display:inline-flex;
+  align-items:center;
+  margin-left:.65rem;
+  vertical-align:middle;
+}
+
+.detail-author-cite .scholarly-cite-inline{
+  height:auto;
+  min-height:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--oc-link);
+  font-size:.78rem;
+  font-weight:600;
+}
+
+.detail-author-cite .scholarly-cite-inline:hover,
+.detail-author-cite .scholarly-cite-inline:focus-visible{
+  background:transparent;
+  border:0;
+  color:var(--oc-link);
+  text-decoration:underline !important;
+  text-underline-offset:.15em;
+}
+
+/* Header actions keep the compact GitHub-style button treatment even when a detail renderer adds local styles. */
+.detail-header-actions .detail-action-bar{
+  justify-content:flex-end;
+  margin-top:0;
+}
+
+.detail-header-actions .detail-primary-actions{
+  gap:.35rem;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+
+.detail-header-actions .detail-primary-actions > .oc-bookmark-btn,
+.detail-header-actions .detail-primary-actions > .oc-recommend-btn,
+.detail-header-actions .detail-primary-actions > .oc-follow-inline,
+.detail-header-actions .detail-primary-actions > .scholarly-cite-inline{
+  width:auto;
+  height:32px;
+  min-height:32px;
+  padding:0 .65rem;
+  border:1px solid var(--oc-border);
+  border-radius:6px;
+  background:#f6f8fa;
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:600;
+}
+
+.detail-header-actions .detail-primary-actions > .oc-bookmark-btn-text{
+  width:auto;
+  min-height:32px;
+  padding:0 .65rem;
+  border-color:var(--oc-border);
+  color:var(--oc-text);
+  font-size:.8rem;
+  font-weight:600;
+  background:#f6f8fa;
+}
+
+.detail-header-actions .detail-primary-actions > .oc-bookmark-btn:not(.active):hover,
+.detail-header-actions .detail-primary-actions > .oc-recommend-btn:hover,
+.detail-header-actions .detail-primary-actions > .oc-follow-inline:hover,
+.detail-header-actions .detail-primary-actions > .oc-follow-inline:focus-visible,
+.detail-header-actions .detail-primary-actions > .scholarly-cite-inline:hover,
+.detail-header-actions .detail-primary-actions > .scholarly-cite-inline:focus-visible{
+  background:#eef2f6;
+  border-color:#b8c3cf;
+  color:var(--oc-link);
+}
+
+.detail-header-actions .detail-primary-actions > .oc-bookmark-btn.active,
+.detail-header-actions .detail-primary-actions > .oc-recommend-btn.active{
+  background:#fff8ec;
+  border-color:#e5c98f;
+}
+
+.detail-header-actions .detail-primary-actions .oc-detail-action-icon,
+.detail-header-actions .detail-primary-actions .oc-recommend-icon,
+.detail-header-actions .detail-primary-actions .oc-recommend-icon svg,
+.detail-header-actions .detail-primary-actions .oc-bookmark-btn svg{
+  width:.95rem;
+  height:.95rem;
+}
+
+@media (max-width: 575.98px){
+  .detail-header-line{ align-items:flex-start; flex-direction:column; gap:.65rem; }
+  .detail-header-actions,
+  .detail-action-bar,
+  .detail-primary-actions{ max-width:100%; }
+  .detail-primary-actions{ overflow-x:auto; padding-bottom:.1rem; }
 }
 
 .oc-auth-page{

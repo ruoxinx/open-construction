@@ -76,6 +76,14 @@ function setBadge(id, values){
   }).join('');
 }
 
+function renderDetailHeaderActions(actionsHtml){
+  const target = byId('detailHeaderActions');
+  if (!target) return;
+  target.innerHTML = `<div class="detail-action-bar" aria-label="Resource actions"><span class="detail-primary-actions">${actionsHtml}</span></div>`;
+  window.OCBookmark?.mount(target);
+  window.OCRecommend?.mount(target);
+}
+
 function licenseMiniIconStripHtml(licenseValue){
   const upper = String(licenseValue || '').trim().toUpperCase();
   const normalized = upper.replace(/[-_/]+/g, ' ');
@@ -691,6 +699,7 @@ async function initOerDetail(){
     }
 
     document.title = `${item.title || 'OER'} · OER Details`;
+    renderDetailHeaderActions(`${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'oer', id: item.id || item.title, title: item.title || 'OER', url: window.location.href, variant: 'text' }) : ''}${window.OCRecommend ? window.OCRecommend.buttonHtml({ type: 'oer', id: item.id || item.title, title: item.title || 'OER' }) : ''}`);
     setBadge('badge-topics', item.topics.slice(0, 2));
     setBadge('badge-media', item.media.slice(0, 2));
     setBadge('badge-license', item.license ? [item.license] : []);
@@ -817,11 +826,6 @@ async function initOerDetail(){
             <div class="detail-body">
               <h1 class="detail-title">${escapeHtml(item.title || 'Untitled OER')}</h1>
               <div class="detail-meta-line">${escapeHtml([item.provider || '', item.year || '', item.publisher || ''].filter(Boolean).join(' • ') || 'OER metadata not yet available')}</div>
-              <div class="chip-lane">
-                ${chipLane(item.topics).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${chipLane(item.media).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'oer', id: item.id || item.title, title: item.title || 'OER', url: window.location.href }) : ''}
-              </div>
             </div>
           </div>
 
@@ -926,6 +930,7 @@ async function initOerDetail(){
     }
     wireLicenseGate(root);
     window.OCBookmark?.mount(root);
+    window.OCRecommend?.mount(root);
   } catch (err) {
     console.error(err);
     root.innerHTML = '<div class="alert alert-danger">Failed to load OER details.</div>';

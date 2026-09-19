@@ -283,12 +283,15 @@ function setActionButtonLabel(button, label){
 
 function bookmarkInlineHtml(type, id, label){
   if (!window.OCBookmark || !id) return '';
-  return window.OCBookmark.buttonHtml({
+  const bookmark = window.OCBookmark.buttonHtml({
     type,
     id,
     title: label,
-    url: detailPageUrl()
+    url: detailPageUrl(),
+    variant: 'text'
   });
+  const recommendation = window.OCRecommend?.buttonHtml?.({ type, id, title: label }) || '';
+  return `${bookmark}${recommendation}`;
 }
 
 function normalizeList(val){
@@ -387,7 +390,15 @@ function followInlineHtml(type, id, label){
     follow_id: id,
     follow_title: label || type
   });
-  return `<a class="oc-follow-inline" href="../account.html?${params.toString()}" aria-label="Follow related resources for ${escapeHtml(label || type)}"><span class="oc-follow-mark" aria-hidden="true">+</span><span>Follow</span></a>`;
+  return `<a class="oc-follow-inline" href="../account.html?${params.toString()}" aria-label="Follow related resources for ${escapeHtml(label || type)}" title="Follow related resources"><svg class="oc-detail-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 5.5h15v13h-15z"></path><path d="M8 5.5a4 4 0 0 1 8 0"></path><path d="M12 9v6"></path><path d="M9 12h6"></path></svg><span>Follow</span></a>`;
+}
+
+function renderDetailHeaderActions(actionsHtml){
+  const target = document.getElementById('detailHeaderActions');
+  if (!target) return;
+  target.innerHTML = `<div class="detail-action-bar" aria-label="Resource actions"><span class="detail-primary-actions">${actionsHtml}</span></div>`;
+  window.OCBookmark?.mount(target);
+  window.OCRecommend?.mount(target);
 }
 
 function linkHealthHtml(cache, resourceType, resourceId, title, field, url){
@@ -1639,9 +1650,14 @@ function citationExportHtml(doiVal){
   </div>`;
 }
 
-function citationInlineButtonHtml(doiVal){
+function citationInlineButtonHtmlLegacy(doiVal){
   if (!normalizedDoiValue(doiVal)) return '';
   return '<button type="button" class="scholarly-cite-inline" data-citation-open aria-haspopup="dialog"><span class="scholarly-cite-quote" aria-hidden="true">❝</span><span>Cite</span></button>';
+}
+
+function citationInlineButtonHtml(doiVal){
+  if (!normalizedDoiValue(doiVal)) return '';
+  return '<button type="button" class="scholarly-cite-inline" data-citation-open aria-haspopup="dialog"><svg class="oc-detail-action-icon scholarly-cite-quote" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 10.5h4v4h-4z"></path><path d="M13.5 10.5h4v4h-4z"></path><path d="M7 10.5c0-2.1.9-3.5 2.8-4.4"></path><path d="M14 10.5c0-2.1.9-3.5 2.8-4.4"></path></svg><span>Cite</span></button>';
 }
 
 function citationExportRequest(doi, format){
@@ -2246,6 +2262,7 @@ async function initDetail(){
       const doiSource = recognizedScholarlyIdentifier(primaryPublication?.doi) || recognizedScholarlyIdentifier(m.doi) || recognizedScholarlyIdentifier(paperUrl);
       const doiUrl = doiSource ? doiHref(doiSource) : '';
       const showDoiButton = !!doiUrl && doiUrl !== paperUrl;
+      renderDetailHeaderActions(`${bookmarkInlineHtml('model', m.id || id || modelTitle, modelTitle)}${followInlineHtml('model', m.id || id || modelTitle, modelTitle)}`);
       const doiBlock = doiSource ? scholarlyReferenceLineHtml(`${scholarlyIdentifierLabel(doiSource)}:`, scholarlyIdentifierFieldHtml(doiSource, { includeVerification: false })) : '';
       const licenseBlock = m.license ? scholarlyReferenceLineHtml('License:', formatLicense(m.license, m, { includeIcon: false })) : '';
       const authorBlock = authorListHtml(m.authors, m.author_urls || m.authors_url || m.author_links);
@@ -2403,6 +2420,11 @@ async function initDetail(){
         </div>
       `;
 
+      const modelAuthorLine = [
+        Array.isArray(m.authors) ? m.authors.join(', ') : safeText(m.authors || ''),
+        year && year !== 'â€”' ? year : ''
+      ].filter(Boolean).join(' \u00b7 ') || 'Author and publication information not yet available';
+
       const mainHero = `
         <style>
           .ds-card,.detail-section,.detail-subcard,.quickfact-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); background:#fff; }
@@ -2432,17 +2454,22 @@ async function initDetail(){
           .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
           .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
           .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
-          .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; margin-left:.45rem; padding-left:.55rem; border-left:1px solid var(--oc-border); }
+          .detail-action-bar{ display:flex; justify-content:flex-end; margin-top:.8rem; }
+          .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; padding:.18rem; border:1px solid var(--oc-border); border-radius:7px; background:#fff; }
           .detail-primary-actions > .oc-bookmark-btn,
+          .detail-primary-actions > .oc-recommend-btn,
           .detail-primary-actions > .oc-follow-inline,
           .detail-primary-actions > .scholarly-cite-inline{ height:30px; min-height:30px; padding:0 .4rem; border-radius:6px; }
           .detail-primary-actions > .oc-bookmark-btn{ width:30px; padding:0; }
+          .detail-primary-actions > .oc-recommend-btn{ min-width:94px; }
           .detail-primary-actions > .oc-bookmark-btn:not(.active):hover,
+          .detail-primary-actions > .oc-recommend-btn:hover,
           .detail-primary-actions > .oc-follow-inline:hover,
           .detail-primary-actions > .oc-follow-inline:focus-visible,
           .detail-primary-actions > .scholarly-cite-inline:hover,
           .detail-primary-actions > .scholarly-cite-inline:focus-visible{ background:#f4f7fb; color:var(--oc-link); }
-          .detail-primary-actions > .oc-bookmark-btn.active{ background:#fff8ec; }
+          .detail-primary-actions > .oc-bookmark-btn.active,
+          .detail-primary-actions > .oc-recommend-btn.active{ background:#fff8ec; }
           .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.3rem; margin:0; padding:0 .15rem; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; white-space:nowrap; }
           .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
           .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
@@ -2581,22 +2608,7 @@ async function initDetail(){
           </figure>
           <div class="ds-body">
             <h1 class="ds-title">${escapeHtml(modelTitle)}</h1>
-            <div class="ds-meta-line">${escapeHtml(
-              [
-                Array.isArray(m.authors) ? m.authors.join(', ') : safeText(m.authors || ''),
-                year && year !== '—' ? year : ''
-              ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
-            )}</div>
-            <div class="chip-lane">
-              ${chipLane(modalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-              ${chipLane(taskList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-              ${chipLane(appList.slice(0, 2)).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-              <span class="detail-primary-actions">
-                ${bookmarkInlineHtml('model', m.id || id || modelTitle, modelTitle)}
-                ${followInlineHtml('model', m.id || id || modelTitle, modelTitle)}
-                ${citationInlineButtonHtml(doiSource)}
-              </span>
-            </div>
+            <div class="ds-meta-line">${escapeHtml(modelAuthorLine)}${doiSource ? `<span class="detail-author-cite">${citationInlineButtonHtml(doiSource)}</span>` : ''}</div>
           </div>
         </div>
 
@@ -2707,6 +2719,7 @@ async function initDetail(){
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
 			<div class="text-muted small mb-2">
 			  Data source:
+			  <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
 			  <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a> and
 			  <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
 			  <span class="ms-1">(coverage varies by provider, venue, and year)</span>
@@ -2757,6 +2770,7 @@ async function initDetail(){
       }
       wireLicenseGate(root);
       window.OCBookmark?.mount(root);
+      window.OCRecommend?.mount(root);
 
       const imgEl = root.querySelector('.ds-img');
       const modalEl = root.querySelector('#imgModal');
@@ -2843,6 +2857,7 @@ async function initDetail(){
     const datasetSampleLabel = datasetCountLabel(ds.data_modality);
     const datasetPaperTitle = safeText(ds.paper || ds.paper_title || ds.publication || '');
     const datasetIdentifier = recognizedScholarlyIdentifier(ds.doi) || recognizedScholarlyIdentifier(ds.paper_url) || recognizedScholarlyIdentifier(ds.paper_link);
+    renderDetailHeaderActions(`${bookmarkInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}${followInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}`);
     const datasetPaperUrl = (doiHref(datasetIdentifier || '') || arxivRecordHref(datasetIdentifier || '')) || safeHref(ds.paper_url || ds.paper_link || ds.source || '');
     const datasetAccessValue = ds.access || ds.source_url || '';
     const datasetAccessUrl = safeHref(datasetAccessValue);
@@ -3005,6 +3020,11 @@ async function initDetail(){
       </div>
     `;
 
+    const datasetAuthorLine = [
+      Array.isArray(ds.authors) ? ds.authors.join(', ') : safeText(ds.authors || ''),
+      safeText(ds.year ?? '') !== 'â€”' ? safeText(ds.year ?? '') : ''
+    ].filter(Boolean).join(' \u00b7 ') || 'Author and publication information not yet available';
+
     const mainHero = `
       <style>
         .ds-card,.detail-section,.detail-subcard,.quickfact-card{ border:1px solid var(--oc-border); border-radius:16px; box-shadow:var(--oc-shadow); background:#fff; }
@@ -3034,17 +3054,22 @@ async function initDetail(){
         .meta-row .license-inline a:hover,.meta-row .license-inline a:focus{ color:var(--oc-link); }
         .quickfact-row .license-inline,.quickfact-row .license-inline a{ color:var(--oc-text); font-size:.9rem; font-weight:400; }
         .chip-lane{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .5rem; }
-        .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; margin-left:.45rem; padding-left:.55rem; border-left:1px solid var(--oc-border); }
+        .detail-action-bar{ display:flex; justify-content:flex-end; margin-top:.8rem; }
+        .detail-primary-actions{ display:inline-flex; align-items:center; gap:.15rem; padding:.18rem; border:1px solid var(--oc-border); border-radius:7px; background:#fff; }
         .detail-primary-actions > .oc-bookmark-btn,
+        .detail-primary-actions > .oc-recommend-btn,
         .detail-primary-actions > .oc-follow-inline,
         .detail-primary-actions > .scholarly-cite-inline{ height:30px; min-height:30px; padding:0 .4rem; border-radius:6px; }
         .detail-primary-actions > .oc-bookmark-btn{ width:30px; padding:0; }
+        .detail-primary-actions > .oc-recommend-btn{ min-width:94px; }
         .detail-primary-actions > .oc-bookmark-btn:not(.active):hover,
+        .detail-primary-actions > .oc-recommend-btn:hover,
         .detail-primary-actions > .oc-follow-inline:hover,
         .detail-primary-actions > .oc-follow-inline:focus-visible,
         .detail-primary-actions > .scholarly-cite-inline:hover,
         .detail-primary-actions > .scholarly-cite-inline:focus-visible{ background:#f4f7fb; color:var(--oc-link); }
-        .detail-primary-actions > .oc-bookmark-btn.active{ background:#fff8ec; }
+        .detail-primary-actions > .oc-bookmark-btn.active,
+        .detail-primary-actions > .oc-recommend-btn.active{ background:#fff8ec; }
         .oc-follow-inline,.scholarly-cite-inline{ display:inline-flex; align-items:center; justify-content:center; height:30px; min-height:30px; gap:.3rem; margin:0; padding:0 .15rem; border:0; border-radius:0; background:transparent; color:var(--oc-text); font-size:.8rem; font-weight:500; line-height:1; text-decoration:none!important; vertical-align:middle; white-space:nowrap; }
         .scholarly-cite-inline:hover,.scholarly-cite-inline:focus,.scholarly-cite-inline:active{ background:transparent; color:#075eaa; text-decoration:none!important; }
         .scholarly-cite-quote{ color:var(--oc-text); font-size:1.1rem; font-weight:600; line-height:.7; }
@@ -3153,21 +3178,7 @@ async function initDetail(){
         </figure>
         <div class="ds-body">
           <h1 class="ds-title">${ds.name}</h1>
-          <div class="ds-meta-line">${escapeHtml(
-            [
-              Array.isArray(ds.authors) ? ds.authors.join(', ') : safeText(ds.authors || ''),
-              safeText(ds.year ?? '') !== '—' ? safeText(ds.year ?? '') : ''
-            ].filter(Boolean).join(' • ') || 'Author and publication information not yet available'
-          )}</div>
-          <div class="chip-lane">
-            ${chipLane(datasetModalityList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-            ${linkedTaskChipLane(datasetTaskList).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-            <span class="detail-primary-actions">
-              ${bookmarkInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
-              ${followInlineHtml('dataset', ds.id || id || ds.name, ds.name || ds.id || 'Dataset')}
-              ${citationInlineButtonHtml(datasetIdentifier)}
-            </span>
-          </div>
+          <div class="ds-meta-line">${escapeHtml(datasetAuthorLine)}${datasetIdentifier ? `<span class="detail-author-cite">${citationInlineButtonHtml(datasetIdentifier)}</span>` : ''}</div>
         </div>
       </div>
 
@@ -3291,6 +3302,13 @@ async function initDetail(){
           <div class="card border-0 shadow-sm">
             <div class="card-body">
 			<h2 class="h6 text-uppercase text-muted mb-2">Citation &amp; Attention</h2>
+              <div class="text-muted small mb-2">
+                Data source:
+                <a href="https://www.altmetric.com" target="_blank" rel="noopener">Altmetric</a>,
+                <a href="https://www.dimensions.ai" target="_blank" rel="noopener">Dimensions</a> and
+                <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>
+                <span class="ms-1">(coverage varies by provider, venue, and year)</span>
+              </div>
               ${pubBadgesBlock}
             </div>
           </div>` : ''}
@@ -3326,6 +3344,7 @@ async function initDetail(){
     }
     wireDatasetLicenseGate(root);
     window.OCBookmark?.mount(root);
+    window.OCRecommend?.mount(root);
     if (imgEl && modalEl) {
       imgEl.addEventListener('click', () => {
         const modalImg = modalEl.querySelector('.modal-img');

@@ -76,6 +76,14 @@ function setBadge(id, values){
   el.innerHTML = list.map(v => `<span class="badge">${escapeHtml(v)}</span>`).join('');
 }
 
+function renderDetailHeaderActions(actionsHtml){
+  const target = byId('detailHeaderActions');
+  if (!target) return;
+  target.innerHTML = `<div class="detail-action-bar" aria-label="Resource actions"><span class="detail-primary-actions">${actionsHtml}</span></div>`;
+  window.OCBookmark?.mount(target);
+  window.OCRecommend?.mount(target);
+}
+
 function getWorkflowId(){
   const url = new URL(window.location.href);
   return url.searchParams.get('id') || '';
@@ -236,6 +244,7 @@ async function initWorkflowDetail(){
 
     document.title = `${item.title || 'Workflow'} · Workflow Details`;
     byId('yearNow').textContent = new Date().getFullYear();
+    renderDetailHeaderActions(`${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'workflow', id: item.id || item.title, title: item.title || 'Workflow', url: window.location.href, variant: 'text' }) : ''}${window.OCRecommend ? window.OCRecommend.buttonHtml({ type: 'workflow', id: item.id || item.title, title: item.title || 'Workflow' }) : ''}`);
     setBadge('badge-phase', item.phase ? [item.phase] : []);
     setBadge('badge-apps', (item.applications || []).slice(0, 2));
     setBadge('badge-tech', (item.ai_tech || []).slice(0, 2));
@@ -349,11 +358,6 @@ async function initWorkflowDetail(){
             <div class="detail-body">
               <h1 class="detail-title">${escapeHtml(item.title || 'Untitled workflow')}</h1>
               <div class="detail-meta-line">${escapeHtml([item.year || '', item.geography || '', item.provider || ''].filter(Boolean).join(' • ') || 'Workflow metadata not yet available')}</div>
-              <div class="chip-lane">
-                ${chipLane(item.applications).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${chipLane(item.ai_tech).replace(/^<div class="chip-lane">|<\/div>$/g, '')}
-                ${window.OCBookmark ? window.OCBookmark.buttonHtml({ type: 'workflow', id: item.id || item.title, title: item.title || 'Workflow', url: window.location.href }) : ''}
-              </div>
             </div>
           </div>
 
@@ -473,6 +477,7 @@ async function initWorkflowDetail(){
       });
     }
     window.OCBookmark?.mount(root);
+    window.OCRecommend?.mount(root);
   } catch (err) {
     console.error(err);
     root.innerHTML = '<div class="alert alert-danger">Failed to load workflow details.</div>';

@@ -5286,7 +5286,7 @@
                   <option value="title-za">Title Z-A</option>
                 </select>
                 <div class="oc-library-actions">
-                  <button type="button" id="followRelatedResourcesBtn" class="oc-library-action-btn">Follow</button>
+                  <button type="button" id="followRelatedResourcesBtn" class="oc-library-action-btn">Follow related</button>
                   <button type="button" id="compareResourcesBtn" class="oc-library-action-btn">${workspaceIcon('compare')}<span>Compare</span></button>
                   <div class="dropdown oc-library-download">
                     <button type="button" class="oc-library-action-btn oc-library-download-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download selected resources">
@@ -5461,9 +5461,16 @@
       document.querySelectorAll('[data-resource-follow]').forEach(button => {
         const row = bookmarks[Number(button.dataset.resourceFollow)];
         const following = row && follows.some(item => workspaceFollowKey(item) === workspaceFollowKey(row) && item.is_active !== false);
-        button.textContent = following ? 'Following' : 'Follow';
+        button.textContent = following ? 'Following related' : 'Follow related';
         button.setAttribute('aria-pressed', following ? 'true' : 'false');
       });
+    }
+
+    function setWorkspaceFollowModalMode(editing = false){
+      const title = document.getElementById('workspaceFollowModalTitle');
+      const submit = document.querySelector('#workspaceFollowForm [type="submit"]');
+      if (title) title.textContent = editing ? 'Edit related-resource follow' : 'Follow related resources';
+      if (submit) submit.textContent = editing ? 'Save changes' : 'Create follow';
     }
 
     function openWorkspaceFollowModal(rows){
@@ -5474,19 +5481,26 @@
       workspaceFollowPendingRows = (rows || []).filter(row => ['dataset', 'model'].includes(resourceKind(row?.type)));
       if (!workspaceFollowPendingRows.length) return;
       form.reset();
+      const existing = workspaceFollowPendingRows.length === 1
+        ? follows.find(item => workspaceFollowKey(item) === workspaceFollowKey(workspaceFollowPendingRows[0]))
+        : null;
+      setWorkspaceFollowModalMode(Boolean(existing));
       list.innerHTML = workspaceFollowPendingRows.map(row => `
-        <div>${esc(row.title || row.id || row.resource_id || 'Saved resource')} <span>${esc(typeLabel(row.type))}</span></div>
+        <div class="oc-follow-resource-card">
+          <span class="oc-follow-resource-card-icon" aria-hidden="true">${esc(resourceKind(row.type) === 'model' ? 'Model' : 'Dataset')}</span>
+          <span class="oc-follow-resource-card-copy">
+            <strong>${esc(row.title || row.id || row.resource_id || 'Saved resource')}</strong>
+            <span>${esc(typeLabel(row.type))}</span>
+          </span>
+        </div>
       `).join('');
-      if (workspaceFollowPendingRows.length === 1) {
-        const existing = follows.find(item => workspaceFollowKey(item) === workspaceFollowKey(workspaceFollowPendingRows[0]));
-        if (existing) {
-          form.querySelectorAll('input[name="related_types"]').forEach(input => {
-            input.checked = (existing.related_types || []).includes(input.value);
-          });
-          form.querySelectorAll('input[name="relation_fields"]').forEach(input => {
-            input.checked = (existing.relation_fields || []).includes(input.value);
-          });
-        }
+      if (existing) {
+        form.querySelectorAll('input[name="related_types"]').forEach(input => {
+          input.checked = (existing.related_types || []).includes(input.value);
+        });
+        form.querySelectorAll('input[name="relation_fields"]').forEach(input => {
+          input.checked = (existing.relation_fields || []).includes(input.value);
+        });
       }
       const status = document.getElementById('workspaceFollowStatus');
       if (status) status.textContent = '';
@@ -6611,19 +6625,84 @@
   </div>
 </div>
 
-<div class="modal fade" id="workspaceFollowModal" tabindex="-1" aria-hidden="true">
+<style>
+  #workspaceFollowModal .oc-resource-modal .modal-content{
+    height:auto;
+    max-height:min(620px,calc(100vh - 2rem));
+  }
+  #workspaceFollowModal .oc-resource-content .modal-body{
+    flex:0 1 auto;
+    max-height:min(470px,calc(100vh - 10rem));
+    padding:.25rem 1.25rem .85rem;
+  }
+  #workspaceFollowModal .oc-resource-fieldset{
+    padding:.72rem 0 .2rem;
+  }
+  #workspaceFollowModal .oc-resource-fieldset legend{
+    margin-bottom:.5rem;
+  }
+  #workspaceFollowModal .oc-resource-help{
+    margin:.2rem 0 .55rem;
+  }
+  #workspaceFollowModal .oc-follow-resource-list{
+    margin:0 0 .25rem;
+  }
+  #workspaceFollowModal .oc-follow-resource-card{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    padding:.62rem .72rem;
+    border:1px solid var(--oc-border);
+    border-radius:9px;
+    background:#f8fafc;
+  }
+  #workspaceFollowModal .oc-follow-resource-card-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:3.6rem;
+    min-height:1.55rem;
+    padding:.16rem .42rem;
+    border:1px solid #d7e1eb;
+    border-radius:5px;
+    color:var(--oc-sub);
+    background:#fff;
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+  #workspaceFollowModal .oc-follow-resource-card-copy{
+    display:grid;
+    gap:.08rem;
+    min-width:0;
+  }
+  #workspaceFollowModal .oc-follow-resource-card-copy strong{
+    color:var(--oc-ink);
+    font-size:.9rem;
+    line-height:1.3;
+    overflow-wrap:anywhere;
+  }
+  #workspaceFollowModal .oc-follow-resource-card-copy span{
+    color:var(--oc-sub);
+    font-size:.75rem;
+    font-weight:600;
+  }
+</style>
+
+<div class="modal fade" id="workspaceFollowModal" tabindex="-1" aria-hidden="true" aria-label="Resource subscription">
   <div class="modal-dialog modal-dialog-centered oc-resource-modal">
     <div class="modal-content oc-resource-content">
       <div class="modal-header">
         <div>
-          <p class="oc-auth-kicker mb-1">Workspace follow</p>
-          <h2 id="workspaceFollowModalTitle" class="modal-title oc-resource-title">Follow related resources</h2>
+          <p class="oc-auth-kicker mb-1">Resource subscription</p>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="workspaceFollowForm">
         <div class="modal-body">
-          <div id="workspaceFollowResourceList" class="oc-follow-resource-list"></div>
+          <div id="workspaceFollowResourceList" class="oc-follow-resource-list" aria-label="Selected resources"></div>
+          <p class="oc-resource-help">You will receive workspace notifications when new catalog resources match these fields.</p>
           <fieldset class="oc-resource-fieldset">
             <legend>Resource types</legend>
             <div class="oc-follow-choice-grid">
@@ -6644,7 +6723,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm oc-resource-footer-action" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Save follow</button>
+          <button type="submit" class="btn btn-primary btn-sm oc-resource-footer-action">Create follow</button>
         </div>
       </form>
     </div>
